@@ -112,6 +112,24 @@ void Plane_Segment::expand_segment(const Plane_Segment& ps) {
     this->pointCount += ps.pointCount;
 }
 
+void Plane_Segment::expand_segment(const std::unique_ptr<Plane_Segment>& ps) {
+    //merge this nodes' PCA plane characteristics with those of another node
+    //DO NOT MAKE PLANE CALCULATIONS
+    this->Sx += ps->Sx;
+    this->Sy += ps->Sy;
+    this->Sz += ps->Sz;
+
+    this->Sxs += ps->Sxs;
+    this->Sys += ps->Sys;
+    this->Szs += ps->Szs;
+
+    this->Sxy += ps->Sxy;
+    this->Syz += ps->Syz;
+    this->Szx += ps->Szx;
+
+    this->pointCount += ps->pointCount;
+}
+
 void Plane_Segment::fit_plane() {
     //fit a plane to the stored points
     this->mean = Vector3d(Sx, Sy, Sz);

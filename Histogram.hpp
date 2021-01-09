@@ -12,14 +12,22 @@ namespace planeDetection {
 
     class Histogram {
         public:
-            Histogram(int h);
+            Histogram(int binPerCoordCount);
 
-            std::vector<int>& get_points_from_most_frequent_bin();
+            void init_histogram(Eigen::MatrixXd& points, std::vector<bool>& flags);
+            std::vector<int> get_points_from_most_frequent_bin();
+	        void remove_point(int pointId);
 
+            ~Histogram();
+        
+        protected:
+            
+
+        private:
             std::vector<int> H;
             std::vector<int> B;
 
-            int binPerCoordsCount;
+            int binPerCoordCount;
             int binCount;
             int pointCount;
     };

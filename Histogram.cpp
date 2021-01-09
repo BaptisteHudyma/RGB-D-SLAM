@@ -1,0 +1,68 @@
+#include "Histogram.hpp"
+
+using namespace planeDetection;
+
+Histogram::Histogram(int binPerCoordCount) 
+    : binPerCoordCount(binPerCoordCount)
+{
+    this->binCount = this->binPerCoordCount * this->binPerCoordCount;
+    this->H.assign(this->binCount, 0);
+}
+
+void Histogram::init_histogram(Eigen::MatrixXd& points, std::vector<bool>& flags) {
+    this->pointCount = points.rows();
+    this->B.assign(this->pointCount, -1);
+
+    //set limits
+    double minX(0), maxX(M_PI);
+    double minY(-M_PI), maxY(M_PI);
+
+    int xQ, yQ;
+    for(int i = 0; i < this->pointCount; i += 1) {
+        if(flags[i]) {
+            xQ = (this->binPerCoordCount - 1) * (points(i, 0) - minX) / (maxX - minX);
+            //dealing with degeneracy
+            yQ = 0;
+            if(xQ > 0)
+                yQ = (this->binPerCoordCount - 1) * (points(i, 1) - minY) / (maxY - minY);
+
+            int bin = yQ * this->binPerCoordCount + xQ;
+            B[i] = bin;
+            H[bin] += 1;
+        }
+    }
+}
+
+std::vector<int> Histogram::get_points_from_most_frequent_bin() {
+    int mostFrequentBin = -1;
+    int maxOccurencesCount = 0;
+    for(int i = 0; i < this->binCount; i += 1) {
+        //get most frequent bin index
+        if(H[i] > maxOccurencesCount) {
+            mostFrequentBin = i;
+            maxOccurencesCount = H[i];
+        }
+    }
+
+    std::vector<int> pointIds;
+    if(maxOccurencesCount > 0) {
+        //most frequent bin is not empty
+        for(int i = 0; i < this->pointCount; i += 1) {
+            if(B[i] == mostFrequentBin) {
+                pointIds.push_back(i);
+            }
+        }
+    }
+    return pointIds;
+}
+
+void Histogram::remove_point(int pointId) {
+    H[B[pointId]] -= 1;
+    B[pointId] = 1;
+}
+
+Histogram::~Histogram() {
+
+}
+
+

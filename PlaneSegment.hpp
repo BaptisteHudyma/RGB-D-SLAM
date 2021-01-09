@@ -2,6 +2,7 @@
 #define PLANE_SEGMENT_H 
 
 #include <Eigen/Dense>
+#include <memory>
 
 #define DEPTH_SIGMA_COEFF 1
 #define DEPTH_SIGMA_MARGIN 1
@@ -19,15 +20,18 @@ namespace planeDetection {
         public:
             Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int ptsPerCellCount, int cellWidth);
             void expand_segment(const Plane_Segment& planeSegment);   //merge this plane segment with another one. Do not make plane fitting calculations
+            void expand_segment(const std::unique_ptr<Plane_Segment>& planeSegment);
+
             void fit_plane();   //fit a plane to this node points
             ~Plane_Segment();
 
-        public:
+        public: //getters
             const double get_MSE() const { return MSE; };
             const Eigen::Vector3d& get_normal() const { return normal; };
             const Eigen::Vector3d& get_mean() const { return mean; };
             const double get_plane_d() const { return d; };
             const bool is_planar() const { return isPlanar; };
+            const double get_score() const { return score; };
 
 
         protected:
