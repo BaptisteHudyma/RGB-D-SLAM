@@ -3,6 +3,8 @@
 using namespace planeDetection;
 using namespace Eigen;
 
+#include <iostream>
+
 Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int ptsPerCellCount, int cellWidth) {
     clear_plane_parameters();
     this->isPlanar = true;
@@ -37,7 +39,7 @@ Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int p
     float zLast = std::max(Z_matrix(i), Z_matrix(i+1)); /* handles missing pixels on the borders*/
     i++;
     // Scan horizontally through the middle
-    while(i<j){
+    while(i < j){
         z = Z_matrix(i);
         if(z > 0 and abs(z - zLast) < maxDiff){
             zLast = z;
@@ -154,23 +156,21 @@ void Plane_Segment::fit_plane() {
 
     d = - (v[0] * this->mean[0] + v[1] * this->mean[1] + v[2] * this->mean[2]);
     // Enforce normal orientation
-    this->normal = Vector3d(v);
-    if (this->d <= 0) {
-        this->normal.inverse(); 
+    /*this->normal = Vector3d(v);
+      if (this->d <= 0) {
+      this->normal.inverse(); 
+      this->d = -this->d;
+      }*/
+    if(this->d > 0) {
+        this->normal[0] = v[0];
+        this->normal[1] = v[1];
+        this->normal[2] = v[2];
+    } else {
+        this->normal[0] = -v[0];
+        this->normal[1] = -v[1];
+        this->normal[2] = -v[2];
         this->d = -this->d;
-    }
-    /*
-       if(this->d > 0) {
-       this->normal[0] = v[0];
-       this->normal[1] = v[1];
-       this->normal[2] = v[2];
-       } else {
-       this->normal[0] = -v[0];
-       this->normal[1] = -v[1];
-       this->normal[2] = -v[2];
-       this->d = -this->d;
-       } 
-     */
+    } 
 
     const Eigen::VectorXd& eigenValues = es.eigenvalues();
     this->MSE   = eigenValues[0] / this->pointCount;

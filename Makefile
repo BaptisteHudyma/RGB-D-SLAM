@@ -4,7 +4,8 @@ OPENCV = `pkg-config --cflags --libs opencv4`
 EIGEN = `pkg-config --cflags --libs eigen3`
 
 LIBS = $(OPENCV) $(EIGEN)
-CFLAGS = -Wall
+DEBUG = -g -O0
+CFLAGS = -O4 -Wall
 
 OUTFILE = ./build/
 

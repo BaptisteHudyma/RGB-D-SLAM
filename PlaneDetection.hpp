@@ -21,17 +21,19 @@ namespace planeDetection {
         public:
             Plane_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.0, float maxMergeDist = 0.0);
 
-            void find_plane_regions(Eigen::MatrixXf& depthMatrix);  //detect planes in depth image
+            void find_plane_regions(Eigen::MatrixXf& depthMatrix, cv::Mat& segOut);  //detect planes in depth image
 
             ~Plane_Detection();
 
         protected:
-            std::vector<float> init_planar_cell_fitting(Eigen::MatrixXf& depthCloudArray);
-            void init_histogram(std::vector<std::unique_ptr<Plane_Segment>>& grid);
+            void reset_data();
+
+            void init_planar_cell_fitting(Eigen::MatrixXf& depthCloudArray, std::vector<float>& cellDistTols);
+            void init_histogram(std::vector<std::unique_ptr<Plane_Segment>>& grid, int& remainingPlanarCells);
             void region_growing(std::vector<float>& cellDistTols, const unsigned short x, const unsigned short y, const Eigen::Vector3d seedPlaneNormal, const double seedPlaneD);
 
-            std::vector<unsigned int> merge_planes();
-            std::vector<Plane_Segment> refine_plane_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels);
+            void merge_planes(std::vector<unsigned int>& planeMergeLabels);
+            void refine_plane_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal);
             void get_connected_components(cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
 
 

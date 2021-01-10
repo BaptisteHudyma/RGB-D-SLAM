@@ -18,6 +18,8 @@ namespace planeDetection {
             std::vector<int> get_points_from_most_frequent_bin();
 	        void remove_point(int pointId);
 
+            void reset();
+
             ~Histogram();
         
         protected:
@@ -27,7 +29,7 @@ namespace planeDetection {
             std::vector<int> H;
             std::vector<int> B;
 
-            int binPerCoordCount;
+            const int binPerCoordCount;
             int binCount;
             int pointCount;
     };

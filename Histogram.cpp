@@ -9,6 +9,12 @@ Histogram::Histogram(int binPerCoordCount)
     this->H.assign(this->binCount, 0);
 }
 
+void Histogram::reset() {
+    this->H.clear();
+    this->H.assign(this->binCount, 0);
+    this->B.clear();
+}
+
 void Histogram::init_histogram(Eigen::MatrixXd& points, std::vector<bool>& flags) {
     this->pointCount = points.rows();
     this->B.assign(this->pointCount, -1);
