@@ -19,7 +19,7 @@ namespace planeDetection {
     class Plane_Detection {
         //check for planes in an organized depth points matrix 
         public:
-            Plane_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.0, float maxMergeDist = 0.0);
+            Plane_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.9659, float maxMergeDist = 50);
 
             void find_plane_regions(Eigen::MatrixXf& depthMatrix, cv::Mat& segOut);  //detect planes in depth image
 
@@ -29,8 +29,8 @@ namespace planeDetection {
             void reset_data();
 
             void init_planar_cell_fitting(Eigen::MatrixXf& depthCloudArray, std::vector<float>& cellDistTols);
-            void init_histogram(std::vector<std::unique_ptr<Plane_Segment>>& grid, int& remainingPlanarCells);
-            void region_growing(std::vector<float>& cellDistTols, const unsigned short x, const unsigned short y, const Eigen::Vector3d seedPlaneNormal, const double seedPlaneD);
+            int init_histogram(std::vector<std::unique_ptr<Plane_Segment>>& grid);
+            void region_growing(std::vector<float>& cellDistTols, const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
 
             void merge_planes(std::vector<unsigned int>& planeMergeLabels);
             void refine_plane_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal);
@@ -41,7 +41,7 @@ namespace planeDetection {
             std::vector<std::unique_ptr<Plane_Segment>> planeGrid;
             std::vector<Plane_Segment> planeSegments;
 
-            cv::Mat_<int> gridPlaneSegMap;
+            cv::Mat_<int> gridPlaneSegmentMap;
             cv::Mat_<uchar> gridPlaneSegMapEroded;
             cv::Mat_<int> gridCylinderSegMap;
             cv::Mat_<uchar> gridCylinderSegMapEroded;
@@ -71,7 +71,6 @@ namespace planeDetection {
             unsigned char * segMapStacked;
 
             //mat
-            cv::Mat_<int> gridPlaneSegmentMap;
             cv::Mat mask;
             cv::Mat maskEroded;
             cv::Mat maskSquareEroded;

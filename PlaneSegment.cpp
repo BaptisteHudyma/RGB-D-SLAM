@@ -5,6 +5,10 @@ using namespace Eigen;
 
 #include <iostream>
 
+/*
+ * Initialize the plane segment with the points from the depth matrix
+ * 
+ */
 Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int ptsPerCellCount, int cellWidth) {
     clear_plane_parameters();
     this->isPlanar = true;
@@ -14,7 +18,6 @@ Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int p
     this->minZeroPointCount = ptsPerCellCount/2;
     int offset = cellId * ptsPerCellCount;
     int cellHeight = ptsPerCellCount / cellWidth;
-    double maxDiff = 100;
 
     //get z of depth points
     Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, ptsPerCellCount, 1);
@@ -34,19 +37,18 @@ Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int p
     // Check for discontinuities using cross search
     int discontinuityCounter = 0;
     int i = cellWidth * (cellHeight / 2);
-    int j = i + cellWidth;
-    float z = 0;
     float zLast = std::max(Z_matrix(i), Z_matrix(i+1)); /* handles missing pixels on the borders*/
+    int j = i + cellWidth;
     i++;
     // Scan horizontally through the middle
     while(i < j){
-        z = Z_matrix(i);
-        if(z > 0 and abs(z - zLast) < maxDiff){
+        float z = Z_matrix(i);
+        if(z > 0 and abs(z - zLast) < 2 * DEPTH_ALPHA * (abs(z) + 0.5)) {
             zLast = z;
         }
         else if(z > 0) {
             discontinuityCounter++;
-            if(discontinuityCounter > 1) {
+            if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
                 this->hasDepthDiscontinuity = true;
                 this->isPlanar = false;
                 return;
@@ -60,15 +62,15 @@ Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int p
     j = ptsPerCellCount - i;
     zLast = std::max(Z_matrix(i), Z_matrix(i + cellWidth));  /* handles missing pixels on the borders*/
     i += cellWidth;
-    //discontinuityCounter = 0;
+    discontinuityCounter = 0;
     while(i < j){
-        z = Z_matrix(i);
-        if(z > 0 and abs(z - zLast) < maxDiff){
+        float z = Z_matrix(i);
+        if(z > 0 and abs(z - zLast) < 2 * DEPTH_ALPHA * (abs(z) + 0.5)) {
             zLast = z;
         }
         else if(z > 0) {
             discontinuityCounter++;
-            if(discontinuityCounter > 1) {
+            if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
                 this->hasDepthDiscontinuity = true;
                 this->isPlanar = false;
                 return;
@@ -77,6 +79,7 @@ Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int p
         i += cellWidth;
     }
 
+    //set PCA components
     this->Sx = X_matrix.sum();
     this->Sy = Y_matrix.sum();
     this->Sz = Z_matrix.sum();
@@ -87,18 +90,30 @@ Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int p
     this->Szx = (X_matrix.array() * Z_matrix.array()).sum();
     this->Syz = (Y_matrix.array() * Z_matrix.array()).sum();
 
-
-    //check plane MSE
+    //fit a plane to those points 
     if(this->isPlanar) {
         fit_plane();
-        if(this->MSE > pow(DEPTH_SIGMA_COEFF * pow(mean[2], 2) + DEPTH_SIGMA_MARGIN, 2))
+        //MSE > T_MSE
+        if(this->MSE > pow(DEPTH_SIGMA_COEFF * pow(this->mean[2], 2) + DEPTH_SIGMA_MARGIN, 2))
             this->isPlanar = false;
     }
 }
 
+
+/*
+ * True if this plane segment presents a depth discontinuity with another one.
+ * False if there is no depth discontinuity
+ */
+bool Plane_Segment::is_depth_discontinuous(const Plane_Segment& planeSegment) {
+    return abs(mean[2] - planeSegment.mean[2]) < 2 * DEPTH_ALPHA * (abs(mean[2]) + 0.5);
+}
+
+
+/*
+ * Merge the PCA saved values in prevision of a plane fitting
+ * This function do not make any plane calculations
+ */
 void Plane_Segment::expand_segment(const Plane_Segment& ps) {
-    //merge this nodes' PCA plane characteristics with those of another node
-    //DO NOT MAKE PLANE CALCULATIONS
     this->Sx += ps.Sx;
     this->Sy += ps.Sy;
     this->Sz += ps.Sz;
@@ -114,37 +129,28 @@ void Plane_Segment::expand_segment(const Plane_Segment& ps) {
     this->pointCount += ps.pointCount;
 }
 
+/*
+ * Merge the PCA saved values in prevision of a plane fitting
+ * This function do not make any plane calculations
+ */
 void Plane_Segment::expand_segment(const std::unique_ptr<Plane_Segment>& ps) {
-    //merge this nodes' PCA plane characteristics with those of another node
-    //DO NOT MAKE PLANE CALCULATIONS
-    this->Sx += ps->Sx;
-    this->Sy += ps->Sy;
-    this->Sz += ps->Sz;
-
-    this->Sxs += ps->Sxs;
-    this->Sys += ps->Sys;
-    this->Szs += ps->Szs;
-
-    this->Sxy += ps->Sxy;
-    this->Syz += ps->Syz;
-    this->Szx += ps->Szx;
-
-    this->pointCount += ps->pointCount;
+    expand_segment(*ps);
 }
 
+/*
+ * Fit a plane to the contained points using PCA
+ */
 void Plane_Segment::fit_plane() {
+    const double oneOverCount = 1.0 / this->pointCount;
     //fit a plane to the stored points
     this->mean = Vector3d(Sx, Sy, Sz);
-    this->mean /= this->pointCount;
-    //this->mean[0] = Sx / this->pointCount;
-    //this->mean[1] = Sy / this->pointCount;
-    //this->mean[2] = Sz / this->pointCount;
+    this->mean *= oneOverCount;
 
     // Expressing covariance as E[PP^t] + E[P]*E[P^T]
     double cov[3][3] = {
-        {Sxs - Sx * Sx / this->pointCount, Sxy - Sx * Sy / this->pointCount, Szx - Sx * Sz / this->pointCount},
-        {0                               , Sys - Sy * Sy / this->pointCount, Syz - Sy * Sz / this->pointCount},
-        {0                               , 0,                                Szs - Sz * Sz / this->pointCount }
+        {Sxs - Sx * Sx * oneOverCount, Sxy - Sx * Sy * oneOverCount, Szx - Sx * Sz * oneOverCount},
+        {0                           , Sys - Sy * Sy * oneOverCount, Syz - Sy * Sz * oneOverCount},
+        {0                           , 0,                            Szs - Sz * Sz * oneOverCount }
     };
     cov[1][0] = cov[0][1]; 
     cov[2][0] = cov[0][2];
@@ -154,14 +160,9 @@ void Plane_Segment::fit_plane() {
     Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> es(Eigen::Map<Eigen::Matrix3d>(cov[0], 3, 3) );
     Eigen::Vector3d v = es.eigenvectors().col(0);
 
-    d = - (v[0] * this->mean[0] + v[1] * this->mean[1] + v[2] * this->mean[2]);
+    this->d = -v.dot(this->mean);
     // Enforce normal orientation
-    /*this->normal = Vector3d(v);
-      if (this->d <= 0) {
-      this->normal.inverse(); 
-      this->d = -this->d;
-      }*/
-    if(this->d > 0) {
+    if(this->d > 0) {   //point normal toward the camera
         this->normal[0] = v[0];
         this->normal[1] = v[1];
         this->normal[2] = v[2];
@@ -173,11 +174,14 @@ void Plane_Segment::fit_plane() {
     } 
 
     const Eigen::VectorXd& eigenValues = es.eigenvalues();
-    this->MSE   = eigenValues[0] / this->pointCount;
+    this->MSE   = eigenValues[0] * oneOverCount; 
     this->score = eigenValues[1] / eigenValues[0];
 
 }
 
+/*
+ * Sets all the plane parameters to zero 
+ */
 void Plane_Segment::clear_plane_parameters() {
     //Clear saved plane parameters
     this->isPlanar = false; 
@@ -205,6 +209,33 @@ void Plane_Segment::clear_plane_parameters() {
 
     this->pointCount = 0;
 }
+
+
+/*
+ *   Check similarity of two planes. 
+ * Return value of 1 indicates similar normals.
+ * Return Value of 0 indicates perpendicular normals
+ */
+double Plane_Segment::get_normal_similarity(const Plane_Segment& p) {
+    return abs(normal.dot(p.normal));
+}
+
+/*
+ *  Return the signed distance form a point to this plane
+ */
+double Plane_Segment::get_signed_distance(const double point[3]) {
+    return 
+        normal[0] * (point[0] - mean[0]) + 
+        normal[1] * (point[1] - mean[1]) + 
+        normal[2] * (point[2] - mean[2]); 
+}
+/*
+ *  Return the signed distance form a point to this plane
+ */
+double Plane_Segment::get_signed_distance(const Eigen::Vector3d& point) {
+    return normal.dot(point - mean);
+}
+
 
 
 Plane_Segment::~Plane_Segment() {

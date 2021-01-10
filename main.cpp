@@ -98,13 +98,13 @@ void organizePointCloudByCell(Eigen::MatrixXf & cloud_in, Eigen::MatrixXf & clou
 
 
 int main() {
-    std::string dataPath = "./data/";
+    std::string dataPath = "./data/yoga_mat/";
 
 
     // Get intrinsics
     cv::Mat K_rgb, K_ir, dist_coeffs_rgb, dist_coeffs_ir, R_stereo, t_stereo;
     std::stringstream calib_path;
-    calib_path << dataPath << "/calib_params.xml";
+    calib_path << dataPath << "calib_params.xml";
     loadCalibParameters(calib_path.str(), K_rgb, dist_coeffs_rgb, K_ir, dist_coeffs_ir, R_stereo, t_stereo);
     float fx_ir = K_ir.at<double>(0,0); float fy_ir = K_ir.at<double>(1,1);
     float cx_ir = K_ir.at<double>(0,2); float cy_ir = K_ir.at<double>(1,2);
@@ -196,7 +196,7 @@ int main() {
 
         depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
         rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
-        if (!depthImage.data)
+        if (!depthImage.data or !rgbImage.data)
             break;
 
         depthImage.convertTo(depthImage, CV_32F);
@@ -225,25 +225,32 @@ int main() {
 
         double t2 = cv::getTickCount();
         double time_elapsed = (t2-t1)/(double)cv::getTickFrequency();
-        cout<<"Total time elapsed: "<<time_elapsed<<endl;
+        cout<<"Total time elapsed: "<< time_elapsed << endl;
 
-        int code;
+        //convert to 8 bits
+        double min, max;
+        cv::minMaxLoc(depthImage, &min, &max);
+        if (min!=max){ 
+            depthImage -= min;
+            depthImage.convertTo(depthImage, CV_8U, 255.0/(max-min));
+        }
         for(int r = 0; r <  height; r++){
             uchar* dColor = seg_rz.ptr<uchar>(r);
             uchar* sCode = seg_output.ptr<uchar>(r);
             uchar* srgb = rgbImage.ptr<uchar>(r);
+            //uchar* srgb = depthImage.ptr<uchar>(r);
             for(int c=0; c< width; c++){
-                code = *sCode;
+                int code = *sCode;
                 if (code > 0){
                     dColor[c*3] =   color_code[code-1][0]/2 + srgb[0]/2;
                     dColor[c*3+1] = color_code[code-1][1]/2 + srgb[1]/2;
-                    dColor[c*3+2] = color_code[code-1][2]/2 + srgb[2]/2;;
+                    dColor[c*3+2] = color_code[code-1][2]/2 + srgb[2]/2;
                 }else{
-                    dColor[c*3]  =  srgb[0];
-                    dColor[c*3+1] = srgb[1];
-                    dColor[c*3+2] = srgb[2];
+                    dColor[c*3]  =  srgb[0]/2;
+                    dColor[c*3+1] = srgb[1]/2;
+                    dColor[c*3+2] = srgb[2]/2;
                 }
-                sCode++; srgb++; srgb++; srgb++;
+                sCode++; srgb+=3; 
             }
         }
 
@@ -252,7 +259,6 @@ int main() {
         std::stringstream fps;
         fps<<(int)(1/time_elapsed+0.5)<<" fps";
         cv::putText(seg_rz, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,255,255,1));
-
 
         cv::imshow("Seg", seg_rz);
         cv::waitKey(1);

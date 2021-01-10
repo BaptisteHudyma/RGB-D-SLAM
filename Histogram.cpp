@@ -15,7 +15,7 @@ void Histogram::reset() {
     this->B.clear();
 }
 
-void Histogram::init_histogram(Eigen::MatrixXd& points, std::vector<bool>& flags) {
+void Histogram::init_histogram(Eigen::MatrixXd& points, bool* flags) {
     this->pointCount = points.rows();
     this->B.assign(this->pointCount, -1);
 
@@ -23,12 +23,11 @@ void Histogram::init_histogram(Eigen::MatrixXd& points, std::vector<bool>& flags
     double minX(0), maxX(M_PI);
     double minY(-M_PI), maxY(M_PI);
 
-    int xQ, yQ;
     for(int i = 0; i < this->pointCount; i += 1) {
         if(flags[i]) {
-            xQ = (this->binPerCoordCount - 1) * (points(i, 0) - minX) / (maxX - minX);
+            int xQ = (this->binPerCoordCount - 1) * (points(i, 0) - minX) / (maxX - minX);
             //dealing with degeneracy
-            yQ = 0;
+            int yQ = 0;
             if(xQ > 0)
                 yQ = (this->binPerCoordCount - 1) * (points(i, 1) - minY) / (maxY - minY);
 

@@ -14,7 +14,7 @@ namespace planeDetection {
         public:
             Histogram(int binPerCoordCount);
 
-            void init_histogram(Eigen::MatrixXd& points, std::vector<bool>& flags);
+            void init_histogram(Eigen::MatrixXd& points, bool* flags);
             std::vector<int> get_points_from_most_frequent_bin();
 	        void remove_point(int pointId);
 

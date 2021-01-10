@@ -4,8 +4,10 @@
 #include <Eigen/Dense>
 #include <memory>
 
-#define DEPTH_SIGMA_COEFF 1
-#define DEPTH_SIGMA_MARGIN 1
+#define DEPTH_SIGMA_COEFF 1.6e-6
+#define DEPTH_SIGMA_MARGIN 4        //[3, 8]
+#define DEPTH_DISCONTINUITY_LIMIT 2
+#define DEPTH_ALPHA 0.02            //[0.01, 0.02]
 
 namespace planeDetection {
 
@@ -19,8 +21,14 @@ namespace planeDetection {
     class Plane_Segment {
         public:
             Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int ptsPerCellCount, int cellWidth);
-            void expand_segment(const Plane_Segment& planeSegment);   //merge this plane segment with another one. Do not make plane fitting calculations
+
+            bool is_depth_discontinuous(const Plane_Segment& planeSegment);
+            void expand_segment(const Plane_Segment& planeSegment);
             void expand_segment(const std::unique_ptr<Plane_Segment>& planeSegment);
+
+            double get_normal_similarity(const Plane_Segment& p);
+            double get_signed_distance(const double point[3]);
+            double get_signed_distance(const Eigen::Vector3d& point);
 
             void fit_plane();   //fit a plane to this node points
             ~Plane_Segment();
