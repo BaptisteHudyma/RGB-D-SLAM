@@ -9,74 +9,78 @@ using namespace Eigen;
  * Initialize the plane segment with the points from the depth matrix
  * 
  */
-Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int ptsPerCellCount, int cellWidth) {
+Plane_Segment::Plane_Segment(int cellWidth, int ptsPerCellCount)
+    : ptsPerCellCount(ptsPerCellCount), minZeroPointCount(ptsPerCellCount/2.0), cellWidth(cellWidth), cellHeight(ptsPerCellCount / cellWidth)
+{
     clear_plane_parameters();
     this->isPlanar = true;
-    this->hasEmpty = false;
-    this->hasDepthDiscontinuity = false;
+}
 
-    this->minZeroPointCount = ptsPerCellCount/2;
-    int offset = cellId * ptsPerCellCount;
-    int cellHeight = ptsPerCellCount / cellWidth;
+void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cellId) {
+    clear_plane_parameters();
+    this->isPlanar = true;
+
+    int offset = cellId * this->ptsPerCellCount;
 
     //get z of depth points
-    Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, ptsPerCellCount, 1);
+    Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, this->ptsPerCellCount, 1);
 
     // Check nbr of missing depth points
     this->pointCount =  (Z_matrix.array() > 0).count();
     if (this->pointCount < this->minZeroPointCount){
-        this->hasEmpty = true;
         this->isPlanar = false;
         return;
     }
 
     //get points x and y coords
-    Eigen::MatrixXf X_matrix = depthCloudArray.block(offset, 0, ptsPerCellCount, 1);
-    Eigen::MatrixXf Y_matrix = depthCloudArray.block(offset, 1, ptsPerCellCount, 1);
+    Eigen::MatrixXf X_matrix = depthCloudArray.block(offset, 0, this->ptsPerCellCount, 1);
+    Eigen::MatrixXf Y_matrix = depthCloudArray.block(offset, 1, this->ptsPerCellCount, 1);
 
     // Check for discontinuities using cross search
     int discontinuityCounter = 0;
-    int i = cellWidth * (cellHeight / 2);
-    float zLast = std::max(Z_matrix(i), Z_matrix(i+1)); /* handles missing pixels on the borders*/
-    int j = i + cellWidth;
+    int i = this->cellWidth * (this->cellHeight / 2);
+    int j = i + this->cellWidth;
+    float zLast = std::max(Z_matrix(i), Z_matrix(i + 1)); /* handles missing pixels on the borders*/
     i++;
     // Scan horizontally through the middle
     while(i < j){
         float z = Z_matrix(i);
-        if(z > 0 and abs(z - zLast) < 2 * DEPTH_ALPHA * (abs(z) + 0.5)) {
-            zLast = z;
-        }
-        else if(z > 0) {
-            discontinuityCounter++;
-            if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
-                this->hasDepthDiscontinuity = true;
-                this->isPlanar = false;
-                return;
+        if(z > 0) {
+            if(abs(z - zLast) < DEPTH_ALPHA * (abs(z) + 0.5)) {
+                zLast = z;
+            }
+            else { 
+                discontinuityCounter += 1;
+                if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
+                    this->isPlanar = false;
+                    return;
+                }
             }
         }
         i++;
     }
 
     // Scan vertically through the middle
-    i = cellWidth/2;
-    j = ptsPerCellCount - i;
-    zLast = std::max(Z_matrix(i), Z_matrix(i + cellWidth));  /* handles missing pixels on the borders*/
-    i += cellWidth;
+    i = this->cellWidth/2;
+    j = this->ptsPerCellCount - i;
+    zLast = std::max(Z_matrix(i), Z_matrix(i + this->cellWidth));  /* handles missing pixels on the borders*/
+    i += this->cellWidth;
     discontinuityCounter = 0;
     while(i < j){
         float z = Z_matrix(i);
-        if(z > 0 and abs(z - zLast) < 2 * DEPTH_ALPHA * (abs(z) + 0.5)) {
-            zLast = z;
-        }
-        else if(z > 0) {
-            discontinuityCounter++;
-            if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
-                this->hasDepthDiscontinuity = true;
-                this->isPlanar = false;
-                return;
+        if(z > 0) {
+            if(abs(z - zLast) < DEPTH_ALPHA * (abs(z) + 0.5)) {
+                zLast = z;
+            }
+            else {
+                discontinuityCounter += 1;
+                if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
+                    this->isPlanar = false;
+                    return;
+                }
             }
         }
-        i += cellWidth;
+        i += this->cellWidth;
     }
 
     //set PCA components
@@ -97,8 +101,8 @@ Plane_Segment::Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int p
         if(this->MSE > pow(DEPTH_SIGMA_COEFF * pow(this->mean[2], 2) + DEPTH_SIGMA_MARGIN, 2))
             this->isPlanar = false;
     }
-}
 
+}
 
 /*
  * True if this plane segment presents a depth discontinuity with another one.
@@ -141,7 +145,7 @@ void Plane_Segment::expand_segment(const std::unique_ptr<Plane_Segment>& ps) {
  * Fit a plane to the contained points using PCA
  */
 void Plane_Segment::fit_plane() {
-    const double oneOverCount = 1.0 / this->pointCount;
+    const double oneOverCount = 1.0 / (double)this->pointCount;
     //fit a plane to the stored points
     this->mean = Vector3d(Sx, Sy, Sz);
     this->mean *= oneOverCount;
@@ -175,6 +179,7 @@ void Plane_Segment::fit_plane() {
 
     const Eigen::VectorXd& eigenValues = es.eigenvalues();
     this->MSE   = eigenValues[0] * oneOverCount; 
+    //this->score = eigenValues[0] / (eigenValues[0] + eigenValues[1] + eigenValues[2]);
     this->score = eigenValues[1] / eigenValues[0];
 
 }
@@ -184,7 +189,6 @@ void Plane_Segment::fit_plane() {
  */
 void Plane_Segment::clear_plane_parameters() {
     //Clear saved plane parameters
-    this->isPlanar = false; 
     this->Sx = 0; 
     this->Sy = 0;  
     this->Sz = 0;  
@@ -195,6 +199,7 @@ void Plane_Segment::clear_plane_parameters() {
     this->Syz = 0; 
     this->Szx = 0; 
 
+    this->isPlanar = false; 
     this->MSE = 0;
     this->score = 0;
 
@@ -240,4 +245,5 @@ double Plane_Segment::get_signed_distance(const Eigen::Vector3d& point) {
 
 Plane_Segment::~Plane_Segment() {
     //destructor
+
 }

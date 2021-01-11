@@ -4,10 +4,10 @@
 #include <Eigen/Dense>
 #include <memory>
 
-#define DEPTH_SIGMA_COEFF 1.6e-6
-#define DEPTH_SIGMA_MARGIN 4        //[3, 8]
-#define DEPTH_DISCONTINUITY_LIMIT 2
-#define DEPTH_ALPHA 0.02            //[0.01, 0.02]
+const double DEPTH_SIGMA_COEFF = 2.76e-6;        //1.425e-6
+const double DEPTH_SIGMA_MARGIN = 10;           //[3, 8]
+const double DEPTH_ALPHA = 0.04;                //[0.02, 0.04]
+const double DEPTH_DISCONTINUITY_LIMIT = 5;     //max number of discontinuities in cell before rejection
 
 namespace planeDetection {
 
@@ -20,7 +20,9 @@ namespace planeDetection {
      */
     class Plane_Segment {
         public:
-            Plane_Segment(Eigen::MatrixXf& depthCloudArray, int cellId, int ptsPerCellCount, int cellWidth);
+            Plane_Segment(int cellWidth, int ptsPerCellCount);
+
+            void init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cellId);
 
             bool is_depth_discontinuous(const Plane_Segment& planeSegment);
             void expand_segment(const Plane_Segment& planeSegment);
@@ -31,6 +33,8 @@ namespace planeDetection {
             double get_signed_distance(const Eigen::Vector3d& point);
 
             void fit_plane();   //fit a plane to this node points
+            void clear_plane_parameters();    //clear node plane parameters  
+
             ~Plane_Segment();
 
         public: //getters
@@ -43,18 +47,17 @@ namespace planeDetection {
 
 
         protected:
-            void clear_plane_parameters();    //clear node plane parameters  
 
         private:
+            const int ptsPerCellCount;  //max nb of points per initial cell
+            const int minZeroPointCount;  //min acceptable zero points in a node
+            const int cellWidth;
+            const int cellHeight;
             int pointCount;         //point count
-            int minZeroPointCount;  //min acceptable zero points in a node
 
             double score;    //plane fitting score
             double MSE;     //plane fitting mean square error
             bool isPlanar;  //true if node represent a correct node, false: ignore node while mapping
-
-            bool hasEmpty;  //stored empty point check
-            bool hasDepthDiscontinuity;    //stored depth discontinuity check
 
             Eigen::Vector3d mean;     //mean point of all points in node
             Eigen::Vector3d normal;   //fitted plane normal

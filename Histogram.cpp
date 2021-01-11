@@ -38,7 +38,7 @@ void Histogram::init_histogram(Eigen::MatrixXd& points, bool* flags) {
     }
 }
 
-std::vector<int> Histogram::get_points_from_most_frequent_bin() {
+void Histogram::get_points_from_most_frequent_bin(std::vector<int>& pointIds ) {
     int mostFrequentBin = -1;
     int maxOccurencesCount = 0;
     for(int i = 0; i < this->binCount; i += 1) {
@@ -49,7 +49,6 @@ std::vector<int> Histogram::get_points_from_most_frequent_bin() {
         }
     }
 
-    std::vector<int> pointIds;
     if(maxOccurencesCount > 0) {
         //most frequent bin is not empty
         for(int i = 0; i < this->pointCount; i += 1) {
@@ -58,7 +57,6 @@ std::vector<int> Histogram::get_points_from_most_frequent_bin() {
             }
         }
     }
-    return pointIds;
 }
 
 void Histogram::remove_point(int pointId) {

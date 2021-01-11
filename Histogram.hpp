@@ -2,11 +2,7 @@
 #define HISTOGRAM_H
 
 #include <Eigen/Dense>
-#include <iostream>
 #include <vector>
-
-#define DMAX std::numeric_limits<float>::max()
-#define DMIN std::numeric_limits<float>::min()
 
 namespace planeDetection {
 
@@ -15,7 +11,7 @@ namespace planeDetection {
             Histogram(int binPerCoordCount);
 
             void init_histogram(Eigen::MatrixXd& points, bool* flags);
-            std::vector<int> get_points_from_most_frequent_bin();
+            void get_points_from_most_frequent_bin(std::vector<int>&);
 	        void remove_point(int pointId);
 
             void reset();
