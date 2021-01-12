@@ -63,9 +63,3 @@ void Histogram::remove_point(int pointId) {
     H[B[pointId]] -= 1;
     B[pointId] = 1;
 }
-
-Histogram::~Histogram() {
-
-}
-
-

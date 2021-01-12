@@ -269,7 +269,3 @@ double Plane_Segment::get_signed_distance(const Eigen::Vector3d& point) {
 
 
 
-Plane_Segment::~Plane_Segment() {
-    //destructor
-
-}

@@ -598,23 +598,6 @@ Plane_Detection::~Plane_Detection() {
     delete []this->activationMap;
     delete []this->segMapStacked;
     delete []this->distancesStacked;
-
-    this->planeGrid.clear();
-    this->planeSegments.clear();
-    this->cylinderSegments.clear();
-
-    this->gridPlaneSegmentMap.release();
-    this->gridPlaneSegMapEroded.release();
-    this->gridCylinderSegMap.release();
-    this->gridCylinderSegMapEroded.release();
-
-    this->mask.release();
-    this->maskEroded.release();
-    this->maskDilated.release();
-    this->maskDiff.release();
-
-    this->maskSquareKernel.release();
-    this->maskCrossKernel.release();
 }
 
 

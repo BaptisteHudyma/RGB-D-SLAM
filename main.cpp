@@ -3,6 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 
+#include "DepthOperations.hpp"
 #include "PlaneDetection.hpp"
 #include "PlaneSegment.hpp"
 
@@ -13,76 +14,6 @@ const float COS_ANGLE_MAX = cos(M_PI/12.0);
 const float MAX_MERGE_DIST = 100;//50.0f;
 const unsigned int PATCH_SIZE = 20;   //depth grid cell size
 
-bool loadCalibParameters(std::string filepath, cv::Mat& intrinsics_rgb, cv::Mat& dist_coeffs_rgb, cv::Mat& intrinsics_ir, cv::Mat& dist_coeffs_ir, cv::Mat& R, cv::Mat& T){
-    cv::FileStorage fs(filepath, cv::FileStorage::READ);
-    if (fs.isOpened()){
-        fs["RGB_intrinsic_params"] >> intrinsics_rgb;
-        fs["RGB_distortion_coefficients"] >> dist_coeffs_rgb;
-        fs["IR_intrinsic_params"] >> intrinsics_ir;
-        fs["IR_distortion_coefficients"] >> dist_coeffs_ir;
-        fs["Rotation"] >> R;
-        fs["Translation"] >> T;
-        fs.release();
-        return true;
-    }else{
-        std::cerr << "Calibration file " << filepath << " missing" << std::endl;
-        return false;
-    }
-    fs.release();
-}
-
-void projectPointCloud(cv::Mat& X, cv::Mat& Y, cv::Mat& Z, cv::Mat& U, cv::Mat& V, float fx_rgb, float fy_rgb, float cx_rgb, float cy_rgb, double z_min, Eigen::MatrixXf& cloud_array){
-
-    int width = X.cols;
-    int height = X.rows;
-
-    // Project to image coordinates
-    cv::divide(X, Z, U, 1);
-    cv::divide(Y, Z, V, 1);
-    U = U * fx_rgb + cx_rgb;
-    V = V * fy_rgb + cy_rgb;
-    // Reusing U as cloud index
-    //U = V*width + U + 0.5;
-
-    for(int r=0; r< height; r++){
-        float* sx = X.ptr<float>(r);
-        float* sy = Y.ptr<float>(r);
-        float* sz = Z.ptr<float>(r);
-        float* u_ptr = U.ptr<float>(r);
-        float* v_ptr = V.ptr<float>(r);
-        for(int c=0; c< width; c++){
-            float z = sz[c];
-            float u = u_ptr[c];
-            float v = v_ptr[c];
-            if(z > z_min and u > 0 and v > 0 and u < width and v < height){
-                int id = floor(v) * width + u;
-                cloud_array(id, 0) = sx[c];
-                cloud_array(id, 1) = sy[c];
-                cloud_array(id, 2) = z;
-            }
-        }
-    }
-}
-
-void organizePointCloudByCell(Eigen::MatrixXf & cloud_in, Eigen::MatrixXf & cloud_out, cv::Mat & cell_map){
-
-    int width = cell_map.cols;
-    int height = cell_map.rows;
-    int mxn = width * height;
-    int mxn2 = 2 * mxn;
-
-    int it(0);
-    for(int r = 0; r < height; r++){
-        int* cell_map_ptr = cell_map.ptr<int>(r);
-        for(int c = 0; c < width; c++){
-            int id = cell_map_ptr[c];
-            *(cloud_out.data() + id) = *(cloud_in.data() + it);
-            *(cloud_out.data() + mxn + id) = *(cloud_in.data() + mxn + it);
-            *(cloud_out.data() + mxn2 + id) = *(cloud_in.data() + mxn2 + it);
-            it++;
-        }
-    }
-}
 
 std::vector<cv::Vec3b> get_color_vector() {
     std::vector<cv::Vec3b> color_code;
@@ -108,8 +39,6 @@ std::vector<cv::Vec3b> get_color_vector() {
 }
 
 
-
-
 int main(int argc, char** argv) {
     //std::string dataPath = "./data/yoga_mat/";
     std::stringstream dataPath;
@@ -131,84 +60,37 @@ int main(int argc, char** argv) {
         dataPath << "tunnel/";
     }
 
-    // Get intrinsics
-    cv::Mat K_rgb, K_ir, dist_coeffs_rgb, dist_coeffs_ir, R_stereo, t_stereo;
-    std::stringstream calib_path;
-    calib_path << dataPath.str() << "calib_params.xml";
-    bool res = loadCalibParameters(calib_path.str(), K_rgb, dist_coeffs_rgb, K_ir, dist_coeffs_ir, R_stereo, t_stereo);
-    if(not res) {
-        exit(-1);
-    }
-
-    float fx_ir = K_ir.at<double>(0,0);
-    float fy_ir = K_ir.at<double>(1,1);
-    float cx_ir = K_ir.at<double>(0,2);
-    float cy_ir = K_ir.at<double>(1,2);
-    float fx_rgb = K_rgb.at<double>(0,0);
-    float fy_rgb = K_rgb.at<double>(1,1);
-    float cx_rgb = K_rgb.at<double>(0,2);
-    float cy_rgb = K_rgb.at<double>(1,2);
-
 
     std::stringstream depthImagePath, rgbImgPath;
     depthImagePath << dataPath.str() << "depth_0.png";
 
     int width, height;
-    cv::Mat depthImage;
-    cv::Mat rgbImage;
-
-    depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
-    if(depthImage.data) {
-        width = depthImage.cols;
-        height = depthImage.rows;
+    cv::Mat dImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
+    if(dImage.data) {
+        width = dImage.cols;
+        height = dImage.rows;
     }
     else {
         std::cout << "Error loading first depth image at " << depthImagePath.str() << std::endl;
         return -1;
     }
 
-    planeDetection::Plane_Detection detector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
+    // Get intrinsics parameters
+    std::stringstream calibPath;
+    calibPath << dataPath.str() << "calib_params.xml";
 
-    std::cout << "Starting extraction" << std::endl;
+    Depth_Operations depthOps(calibPath.str(), width, height, PATCH_SIZE);
+    if (not depthOps.is_ok()) {
+        exit(-1);
+    }
 
-    int horizontalCellsCount = width / PATCH_SIZE;
-
+    Plane_Detection detector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
 
     // Populate with random color codes
     std::vector<cv::Vec3b> color_code = get_color_vector();
 
-
-    // Pre-computations for backprojection
-    cv::Mat_<float> X_pre(height, width);
-    cv::Mat_<float> Y_pre(height, width);
-    cv::Mat_<float> U(height, width);
-    cv::Mat_<float> V(height, width);
-    for (int r = 0; r < height; r++){
-        for (int c = 0; c < width; c++){
-            // Not efficient but at this stage doesn t matter
-            X_pre.at<float>(r, c) = (c - cx_ir) / fx_ir; 
-            Y_pre.at<float>(r, c) = (r - cy_ir) / fy_ir;
-        }
-    }
-
-    // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point clouds are contiguous
-    cv::Mat_<int> cell_map(height,width);
-    for (int r = 0;r < height; r++){
-        int cell_r = r / PATCH_SIZE;
-        int local_r = r % PATCH_SIZE;
-        for (int c = 0;c < width; c++){
-            int cell_c = c / PATCH_SIZE;
-            int local_c = c % PATCH_SIZE;
-            cell_map.at<int>(r, c) = (cell_r * horizontalCellsCount + cell_c) * PATCH_SIZE * PATCH_SIZE + local_r * PATCH_SIZE + local_c;
-        }
-    }
-
-    cv::Mat_<float> X(height, width);
-    cv::Mat_<float> Y(height, width);
-    cv::Mat_<float> X_t(height, width);
-    cv::Mat_<float> Y_t(height, width);
-    Eigen::MatrixXf cloud_array(width * height,3);
-    Eigen::MatrixXf cloud_array_organized(width * height,3);
+    //organized 3D depth image
+    Eigen::MatrixXf cloudArrayOrganized(width * height,3);
 
     int i = 1;
     double meanTreatmentTime = 0.0;
@@ -221,87 +103,89 @@ int main(int argc, char** argv) {
         rgbImgPath.str("");
         rgbImgPath << dataPath.str() << "rgb_"<< i <<".png";
 
-        depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
-        rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
+        cv::Mat depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
+        cv::Mat rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
         if (!depthImage.data or !rgbImage.data)
             break;
         std::cout << "Read frame " << i << std::endl;
 
         depthImage.convertTo(depthImage, CV_32F);
 
-        // Backproject to point cloud
-        X = X_pre.mul(depthImage); 
-        Y = Y_pre.mul(depthImage);
-        cloud_array.setZero();
 
-        // The following transformation+projection is only necessary to visualize RGB with overlapped segments
-        // Transform point cloud to color reference frame
-        X_t = ((float)R_stereo.at<double>(0,0)) * X + ((float)R_stereo.at<double>(0,1)) * Y + ((float)R_stereo.at<double>(0,2)) * depthImage + (float)t_stereo.at<double>(0);
-        Y_t = ((float)R_stereo.at<double>(1,0)) * X + ((float)R_stereo.at<double>(1,1)) * Y + ((float)R_stereo.at<double>(1,2)) * depthImage + (float)t_stereo.at<double>(1);
-        depthImage = ((float)R_stereo.at<double>(2,0)) * X + ((float)R_stereo.at<double>(2,1)) * Y + ((float)R_stereo.at<double>(2,2)) * depthImage + (float)t_stereo.at<double>(2);
-
-        projectPointCloud(X_t, Y_t, depthImage, U, V, fx_rgb, fy_rgb, cx_rgb, cy_rgb, t_stereo.at<double>(2), cloud_array);
-
-        cv::Mat seg_rz(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-        cv::Mat_<uchar> seg_output = cv::Mat_<uchar>(height, width, uchar(0));
+        //project depth image in an organized cloud
+        depthOps.get_organized_cloud_array(depthImage, cloudArrayOrganized);
 
 
-        // Run plane and cylinder detection 
+        double t1 = cv::getTickCount();
 
         vector<Plane_Segment> planeParams;
         vector<Cylinder_Segment> cylinderParams;
+        cv::Mat_<uchar> seg_output = cv::Mat_<uchar>(height, width, uchar(0));
 
-        double t1 = cv::getTickCount();
-        organizePointCloudByCell(cloud_array, cloud_array_organized, cell_map);
+        // Run plane and cylinder detection 
+        detector.find_plane_regions(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
 
-        detector.find_plane_regions(cloud_array_organized, planeParams, cylinderParams, seg_output);
-
-        double t2 = cv::getTickCount();
-        double time_elapsed = (t2-t1)/(double)cv::getTickFrequency();
+        //get elapsed time
+        double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
-        //convert to 8 bits
 
+        //convert to 8 bits
         double min, max;
         cv::minMaxLoc(depthImage, &min, &max);
         if (min != max){ 
             depthImage -= min;
             depthImage.convertTo(depthImage, CV_8U, 255.0/(max-min));
         }
+        cv::Mat segRgb(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
+        cv::Mat segDepth(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
         for(int r = 0; r < height; r++){
-            uchar* dColor = seg_rz.ptr<uchar>(r);
+            uchar* dColor = segRgb.ptr<uchar>(r);
+            uchar* dDepth = segDepth.ptr<uchar>(r);
             uchar* sCode = seg_output.ptr<uchar>(r);
             uchar* srgb = rgbImage.ptr<uchar>(r);
-            //uchar* srgb = depthImage.ptr<uchar>(r);
+            uchar* sdepth = depthImage.ptr<uchar>(r);
             for(int c = 0; c < width; c++){
                 int code = seg_output(r, c);
                 if (code > 0){
                     dColor[c*3] =   color_code[code-1][0]/2 + srgb[0]/2;
                     dColor[c*3+1] = color_code[code-1][1]/2 + srgb[1]/2;
                     dColor[c*3+2] = color_code[code-1][2]/2 + srgb[2]/2;
-                }else{
+                }else {
                     dColor[c*3]  =  srgb[0]/2;
                     dColor[c*3+1] = srgb[1]/2;
                     dColor[c*3+2] = srgb[2]/2;
                 }
-                sCode++; srgb+=3; 
+
+                if(sdepth[0] == 0) {
+                    dDepth[c*3]  =  sdepth[0];
+                    dDepth[c*3+1] = sdepth[1];
+                    dDepth[c*3+2] = sdepth[2];
+                }
+                else {
+                    dDepth[c*3]  =  255 - sdepth[0];
+                    dDepth[c*3+1] = 255 - sdepth[1];
+                    dDepth[c*3+2] = 255 - sdepth[2];
+                }
+                sCode++; srgb += 3; sdepth += 1; 
             }
         }
+        cv::hconcat(segDepth, segRgb, segRgb);
 
         // Show frame rate and labels
-        cv::rectangle(seg_rz,  cv::Point(0,0),cv::Point(width,20), cv::Scalar(0,0,0),-1);
+        cv::rectangle(segRgb,  cv::Point(0,0),cv::Point(width * 2, 20), cv::Scalar(0,0,0),-1);
         std::stringstream fps;
         fps << (int)(1/time_elapsed+0.5) << " fps";
-        cv::putText(seg_rz, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,255,255,1));
+        cv::putText(segRgb, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,255,255,1));
 
         // show cylinder labels
         if (cylinderParams.size() > 0){
             std::stringstream text;
             text << "Cylinders:";
-            cv::putText(seg_rz, text.str(), cv::Point(width/2,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+            cv::putText(segRgb, text.str(), cv::Point(width, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
             for(unsigned int j = 0; j < cylinderParams.size(); j += 1){
-                cv::rectangle(seg_rz,  cv::Point(width/2 + 80 + 15 * j, 6),
-                        cv::Point(width / 2 + 90 + 15 * j, 16), 
+                cv::rectangle(segRgb,  cv::Point(width + 80 + 15 * j, 6),
+                        cv::Point(width + 90 + 15 * j, 16), 
                         cv::Scalar(
                             color_code[CYLINDER_CODE_OFFSET + j][0],
                             color_code[CYLINDER_CODE_OFFSET + j][1],
@@ -310,8 +194,12 @@ int main(int argc, char** argv) {
             }
         }
 
-        cv::imshow("Seg", seg_rz);
-        cv::waitKey(1);
+        cv::imshow("Seg", segRgb);
+        char key = cv::waitKey(5);
+        if (key == 'q')
+            break;
+        if (key == 'p' or cylinderParams.size() > 2)
+            cv::waitKey(-1); //wait until any key is pressed
         i++;
     }
     std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;

@@ -357,11 +357,4 @@ Cylinder_Segment::~Cylinder_Segment() {
         this->local2globalMap = nullptr;
     }
     this->cellActivatedCount = 0;
-    this->radius.clear();
-    this->centers.clear();
-    this->pointsAxis1.clear();
-    this->pointsAxis2.clear();
-    this->normalsAxis1Axis2.clear();
-    this->MSE.clear();
-    this->inliers.clear();
 }

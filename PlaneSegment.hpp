@@ -38,8 +38,6 @@ namespace planeDetection {
             void fit_plane();   //fit a plane to this node points
             void clear_plane_parameters();    //clear node plane parameters  
 
-            ~Plane_Segment();
-
         public: //getters
             const double get_MSE() const { return MSE; };
             const Eigen::Vector3d& get_normal() const { return normal; };

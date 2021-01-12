@@ -15,8 +15,6 @@ namespace planeDetection {
 	        void remove_point(int pointId);
 
             void reset();
-
-            ~Histogram();
         
         protected:
             
