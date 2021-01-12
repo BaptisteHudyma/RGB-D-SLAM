@@ -6,14 +6,12 @@
 #include "PlaneDetection.hpp"
 #include "PlaneSegment.hpp"
 
-#define BLOC_SIZE 20    //20*20 divided depth bloc size
-#define PATCH_SIZE 20
-
 using namespace planeDetection;
 using namespace std;
 
-const float COS_ANGLE_MAX = cos(M_PI/12);
-const float MAX_MERGE_DIST = 50.0f;
+const float COS_ANGLE_MAX = cos(M_PI/12.0);
+const float MAX_MERGE_DIST = 100;//50.0f;
+const unsigned int PATCH_SIZE = 20;   //depth grid cell size
 
 bool loadCalibParameters(std::string filepath, cv::Mat& intrinsics_rgb, cv::Mat& dist_coeffs_rgb, cv::Mat& intrinsics_ir, cv::Mat& dist_coeffs_ir, cv::Mat& R, cv::Mat& T){
     cv::FileStorage fs(filepath, cv::FileStorage::READ);

@@ -28,6 +28,11 @@ namespace planeDetection {
             const int binPerCoordCount;
             int binCount;
             int pointCount;
+
+        private:
+            //prevent backend copy
+            Histogram(const Histogram&);
+            Histogram& operator=(const Histogram&);
     };
 
 }

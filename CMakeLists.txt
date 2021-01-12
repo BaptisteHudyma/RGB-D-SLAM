@@ -6,7 +6,7 @@ find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 
-set (CMAKE_CXX_FLAGS "-Wall -O2")
+set (CMAKE_CXX_FLAGS "-Wall -O4")
 
 set(CMAKE_BUILD_TYPE Release)
 

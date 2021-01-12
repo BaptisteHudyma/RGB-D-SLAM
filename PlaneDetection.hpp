@@ -33,23 +33,22 @@ namespace planeDetection {
 
             void init_planar_cell_fitting(Eigen::MatrixXf& depthCloudArray, std::vector<float>& cellDistTols);
             int init_histogram();
-            void region_growing(std::vector<float>& cellDistTols, const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
 
+            void grow_planes_and_cylinders(std::vector<float>& cellDistanceTols, std::vector<std::pair<int, int>>& cylinderToRegionMap, int remainingPlanarCells);
             void merge_planes(std::vector<unsigned int>& planeMergeLabels);
-
             void refine_plane_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal);
-            void refine_cylinder_boundaries(std::vector<std::pair<int, int>>& cylinderToRegionMap, int cylinderCount);
-            void refine_cylinder_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<std::pair<int, int>>& cylinderToRegionMap, int cylinderCount, std::vector<Cylinder_Segment>& cylinderSegmentsFinal); 
+            void refine_cylinder_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<std::pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal); 
+            void set_masked_display(cv::Mat& segOut); 
 
+            void region_growing(std::vector<float>& cellDistTols, const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
             void get_connected_components(cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
-
 
         private:
             Histogram histogram;
 
             std::vector<std::unique_ptr<Plane_Segment>> planeGrid;
-            std::vector<Plane_Segment> planeSegments;
-            std::vector<Cylinder_Segment> cylinderSegments;
+            std::vector<std::unique_ptr<Plane_Segment>> planeSegments;
+            std::vector<std::unique_ptr<Cylinder_Segment>> cylinderSegments;
 
             cv::Mat_<int> gridPlaneSegmentMap;
             cv::Mat_<uchar> gridPlaneSegMapEroded;
@@ -89,6 +88,11 @@ namespace planeDetection {
             //kernels
             cv::Mat maskSquareKernel;
             cv::Mat maskCrossKernel;
+
+        private:
+            //prevent backend copy
+            Plane_Detection(const Plane_Detection&);
+            Plane_Detection& operator=(const Plane_Detection&);
     };
 
 }

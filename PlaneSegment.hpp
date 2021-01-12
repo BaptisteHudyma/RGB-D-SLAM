@@ -4,7 +4,9 @@
 #include <Eigen/Dense>
 #include <memory>
 
+//depth estimated std uncertainty in a depth segment (depends on depth)
 const double DEPTH_SIGMA_COEFF = 2.76e-6;        //1.425e-6
+//depth discontinuity tolerance coefficient
 const double DEPTH_SIGMA_MARGIN = 10;           //[3, 8]
 const double DEPTH_ALPHA = 0.04;                //[0.02, 0.04]
 const double DEPTH_DISCONTINUITY_LIMIT = 5;     //max number of discontinuities in cell before rejection
@@ -21,6 +23,7 @@ namespace planeDetection {
     class Plane_Segment {
         public:
             Plane_Segment(int cellWidth, int ptsPerCellCount);
+            Plane_Segment(const Plane_Segment& seg);
 
             void init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cellId);
 
@@ -75,6 +78,10 @@ namespace planeDetection {
             double Sxy;     //sum of x*y
             double Syz;     //sum of y*z
             double Szx;     //sum of z*x
+
+        private:
+            //prevent backend copy
+            Plane_Segment& operator=(const Plane_Segment& seg);
 
     };
 

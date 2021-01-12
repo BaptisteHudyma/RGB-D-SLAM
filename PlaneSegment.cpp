@@ -16,6 +16,32 @@ Plane_Segment::Plane_Segment(int cellWidth, int ptsPerCellCount)
     this->isPlanar = true;
 }
 
+/*
+ *  Copy constructor
+ */
+Plane_Segment::Plane_Segment(const Plane_Segment& seg) 
+    : ptsPerCellCount(seg.ptsPerCellCount), minZeroPointCount(seg.minZeroPointCount), cellWidth(seg.cellWidth), cellHeight(seg.cellHeight)
+{
+    pointCount = seg.pointCount;
+    score = seg.score;
+    MSE = seg.MSE;
+    isPlanar = seg.isPlanar;
+
+    mean = seg.mean;
+    normal = seg.normal;
+    d = seg.d;
+
+    Sx = seg.Sx;
+    Sy = seg.Sy;
+    Sz = seg.Sz;
+    Sxs = seg.Sxs;
+    Sys = seg.Sys;
+    Szs = seg.Szs;
+    Sxy = seg.Sxy;
+    Syz = seg.Syz;
+    Szx = seg.Szx;
+}
+
 void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cellId) {
     clear_plane_parameters();
     this->isPlanar = true;
@@ -37,6 +63,7 @@ void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cel
     Eigen::MatrixXf Y_matrix = depthCloudArray.block(offset, 1, this->ptsPerCellCount, 1);
 
     // Check for discontinuities using cross search
+    //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
     int discontinuityCounter = 0;
     int i = this->cellWidth * (this->cellHeight / 2);
     int j = i + this->cellWidth;
@@ -59,7 +86,6 @@ void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cel
         }
         i++;
     }
-
     // Scan vertically through the middle
     i = this->cellWidth/2;
     j = this->ptsPerCellCount - i;

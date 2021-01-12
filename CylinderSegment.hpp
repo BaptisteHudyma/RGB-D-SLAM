@@ -15,28 +15,29 @@ namespace planeDetection {
 
     class Cylinder_Segment {
         public:
-            Cylinder_Segment(std::vector<std::unique_ptr<Plane_Segment>>& planeGrid, const bool* activated_mask, const int cellActivatedCount);
+            Cylinder_Segment(std::vector<std::unique_ptr<Plane_Segment>>& planeGrid, const bool* activated_mask, const unsigned int cellActivatedCount);
+            Cylinder_Segment(const Cylinder_Segment& seg, int subRegionId);
+            Cylinder_Segment(const Cylinder_Segment& seg);              //copy constructor
+
             ~Cylinder_Segment();
-            Cylinder_Segment(Cylinder_Segment& seg, int subRegionId);
 
         public:
-            int get_segment_count() const { return segmentCount; };
-            double get_MSE_at(int index) const { return MSE[index]; };
-            bool get_inlier_at (int indexA, int indexB) { return inliers[indexA](indexB); };
-            int get_local_to_global_mapping(int index) { return local2globalMap[index]; };
-            const Eigen::Vector3d& get_axis1_point(int index) const { return pointsAxis1[index];};
-            const Eigen::Vector3d& get_axis2_point(int index) const { return pointsAxis2[index];};
-            double get_axis_normal(int index) const { return normalsAxis1Axis2[index]; };
-            double get_radius(int index) const { return radius[index]; };
+            int get_segment_count() const;
+            double get_MSE_at(unsigned int index) const;
+            bool get_inlier_at (unsigned int indexA, unsigned int indexB) const;
+            const unsigned int get_local_to_global_mapping(unsigned int index) const;
+            const Eigen::Vector3d& get_axis1_point(unsigned int index) const;
+            const Eigen::Vector3d& get_axis2_point(unsigned int index) const;
+            double get_axis_normal(unsigned int index) const;
+            double get_radius(unsigned int index) const;
 
-            void set_cylindrical_mask(int index, bool val) { cylindricalMask[index] = val; };
-            double* get_axis() {return axis;};
 
 
         protected:
             double distance(const Eigen::Vector3d& point, int segmentId);
 
         private:
+
             double axis[3];
 
             std::vector<Eigen::MatrixXd> centers;
@@ -47,10 +48,14 @@ namespace planeDetection {
 
             std::vector<double> MSE;
             std::vector<double> radius;
-            std::vector<bool> cylindricalMask;
 
-            int segmentCount;
-            int* local2globalMap;
+            unsigned int cellActivatedCount;
+            unsigned int segmentCount;
+            unsigned int* local2globalMap;
+
+        private:
+            //prevent dangerous backend copy
+            Cylinder_Segment& operator=(const Cylinder_Segment& seg);   //copy operator
     };
 
 }
