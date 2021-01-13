@@ -1,4 +1,5 @@
 #include "PlaneSegment.hpp"
+#include "eig33sym.hpp"
 
 using namespace planeDetection;
 using namespace Eigen;
@@ -22,24 +23,24 @@ Plane_Segment::Plane_Segment(int cellWidth, int ptsPerCellCount)
 Plane_Segment::Plane_Segment(const Plane_Segment& seg) 
     : ptsPerCellCount(seg.ptsPerCellCount), minZeroPointCount(seg.minZeroPointCount), cellWidth(seg.cellWidth), cellHeight(seg.cellHeight)
 {
-    pointCount = seg.pointCount;
-    score = seg.score;
-    MSE = seg.MSE;
-    isPlanar = seg.isPlanar;
+    this->pointCount = seg.pointCount;
+    this->score = seg.score;
+    this->MSE = seg.MSE;
+    this->isPlanar = seg.isPlanar;
 
-    mean = seg.mean;
-    normal = seg.normal;
-    d = seg.d;
+    this->mean = seg.mean;
+    this->normal = seg.normal;
+    this->d = seg.d;
 
-    Sx = seg.Sx;
-    Sy = seg.Sy;
-    Sz = seg.Sz;
-    Sxs = seg.Sxs;
-    Sys = seg.Sys;
-    Szs = seg.Szs;
-    Sxy = seg.Sxy;
-    Syz = seg.Syz;
-    Szx = seg.Szx;
+    this->Sx = seg.Sx;
+    this->Sy = seg.Sy;
+    this->Sz = seg.Sz;
+    this->Sxs = seg.Sxs;
+    this->Sys = seg.Sys;
+    this->Szs = seg.Szs;
+    this->Sxy = seg.Sxy;
+    this->Syz = seg.Syz;
+    this->Szx = seg.Szx;
 }
 
 void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cellId) {
@@ -49,7 +50,7 @@ void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cel
     int offset = cellId * this->ptsPerCellCount;
 
     //get z of depth points
-    Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, this->ptsPerCellCount, 1);
+    const Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, this->ptsPerCellCount, 1);
 
     // Check nbr of missing depth points
     this->pointCount =  (Z_matrix.array() > 0).count();
@@ -59,8 +60,8 @@ void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cel
     }
 
     //get points x and y coords
-    Eigen::MatrixXf X_matrix = depthCloudArray.block(offset, 0, this->ptsPerCellCount, 1);
-    Eigen::MatrixXf Y_matrix = depthCloudArray.block(offset, 1, this->ptsPerCellCount, 1);
+    const Eigen::MatrixXf X_matrix = depthCloudArray.block(offset, 0, this->ptsPerCellCount, 1);
+    const Eigen::MatrixXf Y_matrix = depthCloudArray.block(offset, 1, this->ptsPerCellCount, 1);
 
     // Check for discontinuities using cross search
     //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
@@ -187,13 +188,17 @@ void Plane_Segment::fit_plane() {
     cov[2][1] = cov[1][2];
 
     // This uses QR decomposition for symmetric matrices
-    Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> es(Eigen::Map<Eigen::Matrix3d>(cov[0], 3, 3) );
-    Eigen::Vector3d v = es.eigenvectors().col(0);
+    double sv[3] = {0, 0, 0};
+    double v[3] = {0};
+    if(not LA::eig33sym(cov, sv, v))
+        std::cout << "Too much error" << std::endl;
 
-    this->d = -v.dot(this->mean);
+    //this->d = -v.dot(this->mean);
+    this->d = -(v[0] * mean[0] + v[1] * mean[1] + v[2] * mean[2]);
+
     // Enforce normal orientation
     if(this->d > 0) {   //point normal toward the camera
-        this->normal[0] = v[0];
+        this->normal[0] = v[0]; 
         this->normal[1] = v[1];
         this->normal[2] = v[2];
     } else {
@@ -203,17 +208,28 @@ void Plane_Segment::fit_plane() {
         this->d = -this->d;
     } 
 
-    const Eigen::VectorXd& eigenValues = es.eigenvalues();
-    this->MSE   = eigenValues[0] * oneOverCount; 
-    //this->score = eigenValues[0] / (eigenValues[0] + eigenValues[1] + eigenValues[2]);
-    this->score = eigenValues[1] / eigenValues[0];
-
+    //this->score = sv[0] / (sv[0] + sv[1] + sv[2]);
+    this->MSE = sv[0] * oneOverCount;
+    this->score = sv[1] / sv[0];
 }
 
 /*
  * Sets all the plane parameters to zero 
  */
 void Plane_Segment::clear_plane_parameters() {
+    this->pointCount = 0;
+    this->score = 0;
+    this->MSE = 0;
+    this->isPlanar = false; 
+
+    this->mean[0] = 0;
+    this->mean[1] = 0;
+    this->mean[2] = 0;
+    this->normal[0] = 0;
+    this->normal[1] = 0;
+    this->normal[2] = 0;
+    this->d = 0;
+
     //Clear saved plane parameters
     this->Sx = 0; 
     this->Sy = 0;  
@@ -224,21 +240,6 @@ void Plane_Segment::clear_plane_parameters() {
     this->Sxy = 0; 
     this->Syz = 0; 
     this->Szx = 0; 
-
-    this->isPlanar = false; 
-    this->MSE = 0;
-    this->score = 0;
-
-    this->normal[0] = 0;
-    this->normal[1] = 0;
-    this->normal[2] = 0;
-    this->d = 0;
-
-    this->mean[0] = 0;
-    this->mean[1] = 0;
-    this->mean[2] = 0;
-
-    this->pointCount = 0;
 }
 
 

@@ -6,7 +6,7 @@ find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 
-set (CMAKE_CXX_FLAGS "-g -Wall -O0")
+set (CMAKE_CXX_FLAGS "-O2")
 
 set(CMAKE_BUILD_TYPE Release)
 
@@ -16,6 +16,7 @@ add_executable(planeExtraction
     main.cpp
     DepthOperations.cpp
     PlaneDetection.cpp
+    dsyevh3.cpp
     PlaneSegment.cpp
 	CylinderSegment.cpp
 	Histogram.cpp)

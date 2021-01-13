@@ -44,6 +44,7 @@ int main(int argc, char** argv) {
     std::stringstream dataPath;
     dataPath << "./data/";
     bool useCylinderFitting = false;
+    int startIndex = 0;
     if(argc > 1) {
         if(strcmp(argv[1], "-h") == 0) {
             std::cout << "Use of the prog:" << std::endl;
@@ -54,6 +55,9 @@ int main(int argc, char** argv) {
 
         if (argc > 2) {
             useCylinderFitting = atoi(argv[2]) > 0;
+        }
+        if (argc > 3) {
+            startIndex = atoi(argv[3]);
         }
     }
     else {
@@ -92,49 +96,48 @@ int main(int argc, char** argv) {
     //organized 3D depth image
     Eigen::MatrixXf cloudArrayOrganized(width * height,3);
 
-    int i = 1;
+
+    int i = startIndex;
     double meanTreatmentTime = 0.0;
     double meanMatTreatmentTime = 0.0;
     double maxTreatTime = 0.0;
     std::cout << "Starting extraction" << std::endl;
-    cv::namedWindow("Seg");
-    while(1) {
+    bool runLoop = true;
+    while(runLoop) {
+        rgbImgPath.str("");
         depthImagePath.str("");
+        rgbImgPath << dataPath.str() << "rgb_"<< i <<".png";
         depthImagePath << dataPath.str() << "depth_" << i << ".png";
 
-        rgbImgPath.str("");
-        rgbImgPath << dataPath.str() << "rgb_"<< i <<".png";
-
-        cv::Mat depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
         cv::Mat rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
+        cv::Mat depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
         if (!depthImage.data or !rgbImage.data)
             break;
         std::cout << "Read frame " << i << std::endl;
 
         //set variables
         depthImage.convertTo(depthImage, CV_32F);
+        cv::Mat_<uchar> seg_output(height, width, uchar(0));
         vector<Plane_Segment> planeParams;
         vector<Cylinder_Segment> cylinderParams;
-        cv::Mat_<uchar> seg_output = cv::Mat_<uchar>(height, width, uchar(0));
 
-        double t1 = cv::getTickCount();
 
         //project depth image in an organized cloud
+        double t1 = cv::getTickCount();
         depthOps.get_organized_cloud_array(depthImage, cloudArrayOrganized);
         double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanMatTreatmentTime += time_elapsed;
 
 
-        t1 = cv::getTickCount();
         // Run plane and cylinder detection 
+        t1 = cv::getTickCount();
         detector.find_plane_regions(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
-
-        //get elapsed time
         time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
-        //convert to 8 bits
+
+        //display 
         double min, max;
         cv::minMaxLoc(depthImage, &min, &max);
         if (min != max){ 
@@ -151,7 +154,7 @@ int main(int argc, char** argv) {
             cv::Vec3b* dptPtr = segDepth.ptr<cv::Vec3b>(r);
             for(int c = 0; c < width; c++){
                 int index = seg_output(r, c);   //get index of plane/cylinder at [r, c]
-                if(index > 0) 
+                if(index > 0)   //there is a mask to display 
                     outPtr[c] = color_code[index - 1] / 2 + rgbPtr[c] / 2;
                 else 
                     outPtr[c] = rgbPtr[c] / 2;
@@ -169,7 +172,22 @@ int main(int argc, char** argv) {
         fps << (int)(1/time_elapsed+0.5) << " fps";
         cv::putText(segRgb, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,255,255,1));
 
-        // show cylinder labels
+        //show plane labels
+        if (planeParams.size() > 0){
+            std::stringstream text;
+            text << "Planes:";
+            cv::putText(segRgb, text.str(), cv::Point(width/4, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+            for(unsigned int j = 0; j < planeParams.size(); j += 1){
+                cv::rectangle(segRgb,  cv::Point(width/4 + 80 + 15 * j, 6),
+                        cv::Point(width/4 + 90 + 15 * j, 16), 
+                        cv::Scalar(
+                            color_code[j][0],
+                            color_code[j][1],
+                            color_code[j][2]),
+                        -1);
+            }
+        }
+        //show cylinder labels
         if (cylinderParams.size() > 0){
             std::stringstream text;
             text << "Cylinders:";
@@ -184,18 +202,40 @@ int main(int argc, char** argv) {
                         -1);
             }
         }
-
         cv::imshow("Seg", segRgb);
-        char key = cv::waitKey(5);
-        if (key == 'q')
-            break;
-        if (key == 'p' or cylinderParams.size() > 2)
-            cv::waitKey(-1); //wait until any key is pressed
+        switch(cv::waitKey(1)) {
+            //check pressent key
+            case 'p': //pause button
+                cv::waitKey(-1); //wait until any key is pressed
+                break;
+            case 'q': //quit button
+                runLoop = false;
+            default:
+                break;
+        }
         i++;
     }
     std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;
     std::cout << "Mean image shape treatment time is " << meanMatTreatmentTime/i << std::endl;
     std::cout << "max treat time is " << maxTreatTime << std::endl;
+
+    std::cout << "init planes " << detector.resetTime/i << std::endl;
+    std::cout << "Init hist " << detector.initTime/i << std::endl;
+    std::cout << "grow " << detector.growTime/i << std::endl;
+    std::cout << "refine planes " << detector.mergeTime/i << std::endl;
+    std::cout << "refine cylinder " << detector.refineTime/i << std::endl;
+    std::cout << "setMask " << detector.setMaskTime/i << std::endl;
+
     cv::destroyAllWindows();
     exit(0);
 }
+
+
+
+
+
+
+
+
+
+

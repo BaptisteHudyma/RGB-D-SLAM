@@ -15,6 +15,7 @@
 #include "CylinderSegment.hpp"
 #include "Histogram.hpp"
 
+//index offset of a cylinder to a plane: used for masks display purposes
 const unsigned int CYLINDER_CODE_OFFSET = 50;
 
 namespace planeDetection {
@@ -28,25 +29,48 @@ namespace planeDetection {
 
             ~Plane_Detection();
 
+            double resetTime;
+            double initTime;
+            double growTime;
+            double mergeTime;
+            double refineTime;
+            double setMaskTime;
+
         protected:
             void reset_data();
 
-            void init_planar_cell_fitting(Eigen::MatrixXf& depthCloudArray, std::vector<float>& cellDistTols);
+            void init_planar_cell_fitting(Eigen::MatrixXf& depthCloudArray);
             int init_histogram();
 
-            void grow_planes_and_cylinders(std::vector<float>& cellDistanceTols, std::vector<std::pair<int, int>>& cylinderToRegionMap, int remainingPlanarCells);
+            void grow_planes_and_cylinders(std::vector<std::pair<int, int>>& cylinderToRegionMap, int remainingPlanarCells);
             void merge_planes(std::vector<unsigned int>& planeMergeLabels);
             void refine_plane_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal);
             void refine_cylinder_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<std::pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal); 
             void set_masked_display(cv::Mat& segOut); 
 
-            void region_growing(std::vector<float>& cellDistTols, const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
+            void region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
             void get_connected_components(cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
 
         private:
             Histogram histogram;
 
-            std::vector<std::unique_ptr<Plane_Segment>> planeGrid;
+            const int width;
+            const int height;
+            const int blocSize;
+            const int pointsPerCellCount;
+            const float minCosAngleForMerge;
+            const float maxMergeDist;
+
+            const bool useCylinderDetection;
+
+            const int cellWidth;
+            const int cellHeight;
+
+            const int horizontalCellsCount;
+            const int verticalCellsCount;
+            const int totalCellCount;
+
+            std::unique_ptr<Plane_Segment> *planeGrid;
             std::vector<std::unique_ptr<Plane_Segment>> planeSegments;
             std::vector<std::unique_ptr<Cylinder_Segment>> cylinderSegments;
 
@@ -57,27 +81,12 @@ namespace planeDetection {
 
             Eigen::ArrayXf distancesCellStacked;
 
-            const int width;
-            const int height;
-            const int blocSize;
-            const int pointsPerCellCount;
-            const float minCosAngleForMerge;
-            const float maxMergeDist;
-
-            bool useCylinderDetection;
-
-            int cellWidth;
-            int cellHeight;
-
-            int totalCellCount;
-            int horizontalCellsCount;
-            int verticalCellsCount;
-
             //arrays
             bool* activationMap;
             bool* unassignedMask;
             float* distancesStacked;
             unsigned char* segMapStacked;
+            float* cellDistanceTols;
 
             //mat
             cv::Mat mask;

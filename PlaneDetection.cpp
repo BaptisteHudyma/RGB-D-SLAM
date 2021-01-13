@@ -15,23 +15,22 @@ using namespace std;
  * maxMergeDistance
  */
 Plane_Detection::Plane_Detection(unsigned int height, unsigned int width, unsigned int blocSize, float minCosAngleForMerge, float maxMergeDistance, bool useCylinderDetection)
-    :  histogram(20), width(width), height(height),  blocSize(blocSize), pointsPerCellCount(blocSize * blocSize), minCosAngleForMerge(minCosAngleForMerge), maxMergeDist(maxMergeDistance)
+    :  histogram(20), 
+    width(width), height(height),  blocSize(blocSize), 
+    pointsPerCellCount(blocSize * blocSize), 
+    minCosAngleForMerge(minCosAngleForMerge), maxMergeDist(maxMergeDistance),
+    useCylinderDetection(useCylinderDetection),
+    cellWidth(blocSize), cellHeight(blocSize),
+    horizontalCellsCount(width / cellWidth), verticalCellsCount(height / cellHeight),
+    totalCellCount(verticalCellsCount * horizontalCellsCount)
+
 {
     //Init variables
-    this->cellWidth = this->blocSize;
-    this->cellHeight = this->blocSize;
-
-    this->horizontalCellsCount = this->width / this->cellWidth;
-    this->verticalCellsCount = this->height / this->cellHeight;
-    this->totalCellCount = this->verticalCellsCount * this->horizontalCellsCount;
-
     this->activationMap = new bool[this->totalCellCount];
     this->unassignedMask = new bool[this->totalCellCount];
     this->distancesStacked = new float[this->width * this->height];
     this->segMapStacked = new unsigned char[this->width * this->height];
-
-    //this->cylinder_detection = cylinder_detection;
-    this->useCylinderDetection = useCylinderDetection;
+    this->cellDistanceTols = new float[this->totalCellCount];
 
     this->gridPlaneSegmentMap = cv::Mat_<int>(this->verticalCellsCount, this->horizontalCellsCount, 0);
     this->gridPlaneSegMapEroded = cv::Mat_<uchar>(verticalCellsCount, horizontalCellsCount, uchar(0));
@@ -54,29 +53,19 @@ Plane_Detection::Plane_Detection(unsigned int height, unsigned int width, unsign
     this->maskCrossKernel.at<uchar>(0,2) = 0;
     this->maskCrossKernel.at<uchar>(2,0) = 0;
 
+    //array of unique_ptr<Plane_Segment>
+    this->planeGrid = new unique_ptr<Plane_Segment>[this->totalCellCount];
     for(int i = 0; i < this->totalCellCount; i += 1) {
-        //fill with null nodes
-        this->planeGrid.push_back(make_unique<Plane_Segment>(this->cellWidth, this->pointsPerCellCount));
+        //fill with empty nodes
+        this->planeGrid[i] = make_unique<Plane_Segment>(this->cellWidth, this->pointsPerCellCount);
     }
-}
 
-/*
- *  Reset the stored data in prevision of another analysis 
- *
- */
-void Plane_Detection::reset_data() {
-    this->distancesCellStacked.setZero();
-    this->gridPlaneSegmentMap = 0;
-    this->gridPlaneSegMapEroded = 0;
-    this->gridCylinderSegMap = 0;
-    this->gridCylinderSegMapEroded = 0;
-
-    //reset stacked distances
-    std::fill_n(this->segMapStacked, this->height * this->width, 0);
-    std::fill_n(this->distancesStacked, this->height * this->width, std::numeric_limits<float>::max());
-
-    this->planeSegments.clear();
-    this->cylinderSegments.clear();
+    resetTime = 0;
+    initTime = 0;
+    growTime = 0;
+    mergeTime = 0;
+    refineTime = 0;
+    setMaskTime = 0;
 }
 
 /*
@@ -84,37 +73,135 @@ void Plane_Detection::reset_data() {
  * Segout will contain a 2D representation of the planes
  */
 void Plane_Detection::find_plane_regions(Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut) {
+
     //reset used data structures
     reset_data();
 
+    double t1 = cv::getTickCount();
     //init planar grid
-    vector<float> cellDistanceTols(this->totalCellCount, 0); 
-    init_planar_cell_fitting(depthMatrix, cellDistanceTols);
+    init_planar_cell_fitting(depthMatrix);
+    double td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+    resetTime += td;
 
     //init and fill histogram
+    t1 = cv::getTickCount();
     int remainingPlanarCells = init_histogram();
+    td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+    initTime += td;
+
+
+    t1 = cv::getTickCount();
     std::vector<std::pair<int,int>> cylinder2regionMap;
-    grow_planes_and_cylinders(cellDistanceTols, cylinder2regionMap, remainingPlanarCells);
+    grow_planes_and_cylinders(cylinder2regionMap, remainingPlanarCells);
+    td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+    growTime += td;
 
     //merge sparse planes
     vector<unsigned int> planeMergeLabels;
     merge_planes(planeMergeLabels);
 
-    //refine planes boundaries
+    t1 = cv::getTickCount();
+    //refine planes boundaries and fill the final planes vector
     refine_plane_boundaries(depthMatrix, planeMergeLabels, planeSegmentsFinal);
+    td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+    mergeTime += td;
 
-    //refine cylinders boundaries
+    t1 = cv::getTickCount();
+    //refine cylinders boundaries and fill the final cylinders vector
     refine_cylinder_boundaries(depthMatrix, cylinder2regionMap, cylinderSegmentsFinal); 
+    td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+    refineTime += td;
 
+    t1 = cv::getTickCount();
     //set mask image
     set_masked_display(segOut);
+    td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+    setMaskTime += td;
 }
 
+/*
+ *  Reset the stored data in prevision of another analysis 
+ *
+ */
+void Plane_Detection::reset_data() {
+    this->histogram.reset();
+
+    //planeGrid SHOULD NOT be cleared
+    this->planeSegments.clear();
+    this->cylinderSegments.clear();
+
+    this->gridPlaneSegmentMap = 0;
+    this->gridPlaneSegMapEroded = 0;
+    this->gridCylinderSegMap = 0;
+    this->gridCylinderSegMapEroded = 0;
+
+    this->distancesCellStacked.setZero();
+
+    //reset stacked distances
+    //activation map do not need to be cleared
+    std::fill_n(this->unassignedMask, this->totalCellCount, false);
+    std::fill_n(this->distancesStacked, this->height * this->width, std::numeric_limits<float>::max());
+    std::fill_n(this->segMapStacked, this->height * this->width, 0);
+    std::fill_n(this->cellDistanceTols, this->totalCellCount, 0.0);
+
+    //mat masks do not need to be cleared
+    //kernels should not be cleared
+}
+
+/*
+ *  Init planeGrid and cellDistanceTols
+ *
+ */
+void Plane_Detection::init_planar_cell_fitting(MatrixXf& depthCloudArray) {
+    float sinCosAngleForMerge = sqrt(1 - pow(this->minCosAngleForMerge, 2));
+
+    //for each planeGrid cell
+    for(int stackedCellId = 0; stackedCellId < this->totalCellCount; stackedCellId += 1) {
+        //init the plane grid cell
+        this->planeGrid[stackedCellId]->init_plane_segment(depthCloudArray, stackedCellId);
+
+        if (this->planeGrid[stackedCellId]->is_planar()) {
+            int cellDiameter = (
+                    depthCloudArray.block(stackedCellId * this->pointsPerCellCount + this->pointsPerCellCount - 1, 0, 1, 3) - 
+                    depthCloudArray.block(stackedCellId * this->pointsPerCellCount, 0, 1, 3)
+                    ).norm(); 
+
+            //array of depth metrics: neighbors merging threshold
+            this->cellDistanceTols[stackedCellId] = pow(min(max(cellDiameter * sinCosAngleForMerge, 20.0f), this->maxMergeDist), 2);
+        }
+    }
+}
+
+/*
+ *  Initialize and fill the histogram
+ *
+ * returns the number of initial planar surfaces
+ */
+int Plane_Detection::init_histogram() {
+    int remainingPlanarCells = 0;
+
+    MatrixXd histBins(this->totalCellCount, 2);
+    for(int cellId = 0; cellId < this->totalCellCount; cellId += 1) {  
+        if(this->planeGrid[cellId]->is_planar()) {
+            const Vector3d& planeNormal = this->planeGrid[cellId]->get_normal();
+            const double nx = planeNormal[0];
+            const double ny = planeNormal[1];
+
+            double projNormal = 1 / sqrt(nx * nx + ny * ny);
+            histBins(cellId, 0) = acos( -planeNormal[2] );  //acos(normal.z)
+            histBins(cellId, 1) = atan2(nx * projNormal, ny * projNormal);
+            remainingPlanarCells += 1;
+            this->unassignedMask[cellId] = true; 
+        }
+    }
+    histogram.init_histogram(histBins, this->unassignedMask);
+    return remainingPlanarCells;
+}
 
 /*
  *  grow planes and find cylinders from those planes
  */
-void Plane_Detection::grow_planes_and_cylinders(std::vector<float>& cellDistanceTols, std::vector<std::pair<int,int>>& cylinder2regionMap, int remainingPlanarCells) {
+void Plane_Detection::grow_planes_and_cylinders(std::vector<std::pair<int,int>>& cylinder2regionMap, int remainingPlanarCells) {
     int cylinderCount = 0;
     //find seed planes and make them grow
     while(remainingPlanarCells > 0) {
@@ -152,11 +239,11 @@ void Plane_Detection::grow_planes_and_cylinders(std::vector<float>& cellDistance
 
         //activationMap set to false
         std::fill_n(this->activationMap, this->totalCellCount, false);
-
         //grow plane region
-        region_growing(cellDistanceTols, x, y, newPlaneSegment.get_normal(), newPlaneSegment.get_plane_d());
+        region_growing(x, y, newPlaneSegment.get_normal(), newPlaneSegment.get_plane_d());
 
-        //merge activated cells & remove them from histogram an list of remaining cells
+
+        //merge activated cells & remove them from histogram
         unsigned int cellActivatedCount = 0;
         for(int i = 0; i < this->totalCellCount; i+=1) {
             if(this->activationMap[i]) {
@@ -168,8 +255,10 @@ void Plane_Detection::grow_planes_and_cylinders(std::vector<float>& cellDistance
             }
         }
 
-        if(cellActivatedCount < 4)
+        if(cellActivatedCount < 4) {
+            this->histogram.remove_point(seedId);
             continue;
+        }
 
         //fit plane to merged data
         newPlaneSegment.fit_plane();
@@ -193,7 +282,7 @@ void Plane_Detection::grow_planes_and_cylinders(std::vector<float>& cellDistance
         else if(this->useCylinderDetection and cellActivatedCount > 5) {
             //cylinder fitting
             // It is an extrusion
-            this->cylinderSegments.push_back(make_unique<Cylinder_Segment>(this->planeGrid, this->activationMap, cellActivatedCount));
+            this->cylinderSegments.push_back(make_unique<Cylinder_Segment>(this->planeGrid,this->totalCellCount, this->activationMap, cellActivatedCount));
             const unique_ptr<Cylinder_Segment>& cy = this->cylinderSegments.back();
 
             // Fit planes to subsegments
@@ -231,81 +320,6 @@ void Plane_Detection::grow_planes_and_cylinders(std::vector<float>& cellDistance
     }//\while
 }
 
-
-/*
- *  Set output image pixel value with the index of the detected shape
- */
-void Plane_Detection::set_masked_display(cv::Mat& segOut) {
-    //copy and rearranging
-    // Copy inlier list to matrix form
-    for (int cellR = 0; cellR < this->verticalCellsCount; cellR += 1){
-        uchar* gridPlaneErodedRowPtr = this->gridPlaneSegMapEroded.ptr<uchar>(cellR);
-        uchar* gridCylinderErodedRowPtr = this->gridCylinderSegMapEroded.ptr<uchar>(cellR);
-        int rOffset = cellR * this->cellHeight;
-        int rLimit = rOffset + this->cellHeight;
-
-        for (int cellC = 0; cellC < this->horizontalCellsCount; cellC += 1){
-            int cOffset = cellC * this->cellWidth;
-
-            if (gridPlaneErodedRowPtr[cellC] > 0){
-                // Set rectangle equal to assigned cell
-                segOut(cv::Rect(cOffset, rOffset, this->cellWidth, this->cellHeight)).setTo(gridPlaneErodedRowPtr[cellC]);
-            } 
-            else if(gridCylinderErodedRowPtr[cellC] > 0) {
-                // Set rectangle equal to assigned cell
-                segOut(cv::Rect(cOffset, rOffset, this->cellWidth, this->cellHeight)).setTo(gridCylinderErodedRowPtr[cellC]);
-            }
-            else {
-                int cLimit = cOffset + this->cellWidth;
-                // Set cell pixels one by one
-                uchar* stackPtr = &this->segMapStacked[this->pointsPerCellCount * cellR * this->horizontalCellsCount + this->pointsPerCellCount * cellC];
-                for(int r = rOffset, i = 0; r < rLimit; r++){
-                    uchar* rowPtr = segOut.ptr<uchar>(r);
-                    for(int c = cOffset; c < cLimit; c++, i++){
-                        if(stackPtr[i] > 0){
-                            rowPtr[c] = stackPtr[i];
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-/*
- *  Recursively Grow a plane seed and merge it with it's neighbors
- */
-void Plane_Detection::region_growing(vector<float>& cellDistTols, const unsigned short x, const unsigned short y, const Vector3d& seedPlaneNormal, const double seedPlaneD) {
-    int index = x + horizontalCellsCount * y;
-    if (index >= horizontalCellsCount * verticalCellsCount or 
-            not this->unassignedMask[index] or this->activationMap[index]) {
-        //pixel is not part of a component or already labelled
-        return;
-    }
-
-    const Vector3d& secPlaneNormal = planeGrid[index]->get_normal();
-    const Vector3d& secPlaneMean = planeGrid[index]->get_mean();
-    const double& secPlaneD = planeGrid[index]->get_plane_d();
-
-    if (
-            //planeGrid[index].is_depth_discontinuous() 
-            seedPlaneNormal.dot(secPlaneNormal) < this->minCosAngleForMerge
-            or pow(seedPlaneNormal.dot(secPlaneMean) + seedPlaneD, 2) > cellDistTols[index]
-       )//max_merge_dist
-        return;
-    activationMap[index] = true;
-
-    // Now label the 4 neighbours:
-    if (x > 0)
-        region_growing(cellDistTols, x - 1, y, secPlaneNormal, secPlaneD);   // left  pixel
-    if (x < this->width - 1)  
-        region_growing(cellDistTols, x + 1, y, secPlaneNormal, secPlaneD);  // right pixel
-    if (y > 0)        
-        region_growing(cellDistTols, x, y - 1, secPlaneNormal, secPlaneD);   // upper pixel 
-    if (y < this->height - 1) 
-        region_growing(cellDistTols, x, y + 1, secPlaneNormal, secPlaneD);   // lower pixel
-}
-
 /*
  *  Merge close planes by comparing normals and MSE
  */
@@ -331,17 +345,19 @@ void Plane_Detection::merge_planes(vector<unsigned int>& planeMergeLabels) {
                 double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
 
                 const Vector3d& mergePlaneMean = mergePlane->get_mean();
-                double distance = pow(
-                        testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d()
-                        , 2);
-                //from CAPE: wrong ?
                 /*double distance = pow(
-                  this->planeSegments[r]->get_normal()[0] * mergePlaneMean[0] 
-                  + testPlaneNormal[1] * mergePlaneMean[1]  
-                  + testPlaneNormal[2] * mergePlaneMean[2] 
-                  + testPlane->get_plane_d(), 2);
+                  testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d()
+                  , 2);
                  */
+                //from CAPE: wrong ?
+                double distance = pow(
+                        this->planeSegments[r]->get_normal()[0] * mergePlaneMean[0] 
+                        + testPlaneNormal[1] * mergePlaneMean[1]  
+                        + testPlaneNormal[2] * mergePlaneMean[2] 
+                        + testPlane->get_plane_d(), 2);
+
                 if(cosAngle > this->minCosAngleForMerge and distance < this->maxMergeDist) {
+                    //merge plane segments
                     this->planeSegments[planeId]->expand_segment(mergePlane);
                     planeMergeLabels[c] = planeId;
                     planeWasExpanded = true;
@@ -429,7 +445,9 @@ void Plane_Detection::refine_plane_boundaries(MatrixXf& depthCloudArray, vector<
     }
 }
 
-
+/*
+ *  Refine the cylinder edges in mask images
+ */
 void Plane_Detection::refine_cylinder_boundaries(MatrixXf& depthCloudArray, std::vector<pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal) {
     if(not this->useCylinderDetection)
         return; //no cylinder detections
@@ -484,15 +502,10 @@ void Plane_Detection::refine_cylinder_boundaries(MatrixXf& depthCloudArray, std:
                 int nextOffset = offset + this->pointsPerCellCount;
                 if(rowPtr[cellC] > 0){
                     // Update cells
-                    int j = 0;
-                    for(int pt = offset; pt < nextOffset; j++,pt++) {
-                        Vector3d point;
-                        point(2) = depthCloudArray(pt, 2);
+                    for(int pt = offset, j = 0; pt < nextOffset; pt++, j++) {
+                        Eigen::Vector3d point = depthCloudArray.row(pt).cast<double>();
                         if(point(2) > 0){
-                            point(0) = depthCloudArray(pt,0);
-                            point(1) = depthCloudArray(pt,1);
-                            double dist = P1P2.cross(point - P2).norm() / P1P2Normal - radius;
-                            dist *= dist;
+                            double dist = pow(P1P2.cross(point - P2).norm() / P1P2Normal - radius, 2);
                             if(dist < maxDist and dist < this->distancesStacked[pt]){ 
                                 this->distancesStacked[pt] = dist;
                                 this->segMapStacked[pt] = CYLINDER_CODE_OFFSET + cylinderFinalCount;
@@ -501,6 +514,46 @@ void Plane_Detection::refine_cylinder_boundaries(MatrixXf& depthCloudArray, std:
                     }
                 }
                 stackedCellId += 1;
+            }
+        }
+    }
+}
+
+/*
+ *  Set output image pixel value with the index of the detected shape
+ */
+void Plane_Detection::set_masked_display(cv::Mat& segOut) {
+    //copy and rearranging
+    // Copy inlier list to matrix form
+    for (int cellR = 0; cellR < this->verticalCellsCount; cellR += 1){
+        uchar* gridPlaneErodedRowPtr = this->gridPlaneSegMapEroded.ptr<uchar>(cellR);
+        uchar* gridCylinderErodedRowPtr = this->gridCylinderSegMapEroded.ptr<uchar>(cellR);
+        int rOffset = cellR * this->cellHeight;
+        int rLimit = rOffset + this->cellHeight;
+
+        for (int cellC = 0; cellC < this->horizontalCellsCount; cellC += 1){
+            int cOffset = cellC * this->cellWidth;
+
+            if (gridPlaneErodedRowPtr[cellC] > 0){
+                // Set rectangle equal to assigned cell
+                segOut(cv::Rect(cOffset, rOffset, this->cellWidth, this->cellHeight)).setTo(gridPlaneErodedRowPtr[cellC]);
+            } 
+            else if(gridCylinderErodedRowPtr[cellC] > 0) {
+                // Set rectangle equal to assigned cell
+                segOut(cv::Rect(cOffset, rOffset, this->cellWidth, this->cellHeight)).setTo(gridCylinderErodedRowPtr[cellC]);
+            }
+            else {
+                int cLimit = cOffset + this->cellWidth;
+                // Set cell pixels one by one
+                uchar* stackPtr = &this->segMapStacked[this->pointsPerCellCount * cellR * this->horizontalCellsCount + this->pointsPerCellCount * cellC];
+                for(int r = rOffset, i = 0; r < rLimit; r++){
+                    uchar* rowPtr = segOut.ptr<uchar>(r);
+                    for(int c = cOffset; c < cLimit; c++, i++){
+                        if(stackPtr[i] > 0){
+                            rowPtr[c] = stackPtr[i];
+                        }
+                    }
+                }
             }
         }
     }
@@ -536,59 +589,40 @@ void Plane_Detection::get_connected_components(cv::Mat& segmentMap, Eigen::Matri
 }
 
 
-
-
-
 /*
- *  Initialize and fill the histogram
- *
- * returns the number of initial planar surfaces
+ *  Recursively Grow a plane seed and merge it with it's neighbors
  */
-int Plane_Detection::init_histogram() {
-    int remainingPlanarCells = 0;
-
-    MatrixXd histBins(this->totalCellCount, 2);
-    for(int cellId = 0; cellId < this->totalCellCount; cellId += 1) {  
-        this->unassignedMask[cellId] = false; 
-        if(this->planeGrid[cellId]->is_planar()) {
-            const Vector3d& planeNormal = this->planeGrid[cellId]->get_normal();
-            const double nx = planeNormal[0];
-            const double ny = planeNormal[1];
-
-            double projNormal = 1 / sqrt(nx * nx + ny * ny);
-            histBins(cellId, 0) = acos( -planeNormal[2] );  //acos(normal.z)
-            histBins(cellId, 1) = atan2(nx * projNormal, ny * projNormal);
-            remainingPlanarCells += 1;
-            this->unassignedMask[cellId] = true; 
-        }
+void Plane_Detection::region_growing(const unsigned short x, const unsigned short y, const Vector3d& seedPlaneNormal, const double seedPlaneD) {
+    int index = x + horizontalCellsCount * y;
+    if (index >= horizontalCellsCount * verticalCellsCount or 
+            not this->unassignedMask[index] or this->activationMap[index]) {
+        //pixel is not part of a component or already labelled
+        return;
     }
-    histogram.init_histogram(histBins, this->unassignedMask);
-    return remainingPlanarCells;
+
+    const Vector3d& secPlaneNormal = planeGrid[index]->get_normal();
+    const Vector3d& secPlaneMean = planeGrid[index]->get_mean();
+    const double& secPlaneD = planeGrid[index]->get_plane_d();
+
+    if (
+            //planeGrid[index].is_depth_discontinuous() 
+            seedPlaneNormal.dot(secPlaneNormal) < this->minCosAngleForMerge
+            or pow(seedPlaneNormal.dot(secPlaneMean) + seedPlaneD, 2) > this->cellDistanceTols[index]
+       )//angle between planes < threshold or dist between planes > threshold
+        return;
+    activationMap[index] = true;
+
+    // Now label the 4 neighbours:
+    if (x > 0)
+        region_growing(x - 1, y, secPlaneNormal, secPlaneD);   // left  pixel
+    if (x < this->width - 1)  
+        region_growing(x + 1, y, secPlaneNormal, secPlaneD);  // right pixel
+    if (y > 0)        
+        region_growing(x, y - 1, secPlaneNormal, secPlaneD);   // upper pixel 
+    if (y < this->height - 1) 
+        region_growing(x, y + 1, secPlaneNormal, secPlaneD);   // lower pixel
 }
 
-/*
- *  Init planeGrid and cellDistanceTols
- *
- */
-void Plane_Detection::init_planar_cell_fitting(MatrixXf& depthCloudArray, vector<float>& cellDistanceTols) {
-    float sinCosAngleForMerge = sqrt(1 - pow(this->minCosAngleForMerge, 2));
-
-    //fro each planeGrid cell
-    for(int stackedCellId = 0; stackedCellId < this->totalCellCount; stackedCellId += 1) {
-        //init the cell
-        this->planeGrid[stackedCellId]->init_plane_segment(depthCloudArray, stackedCellId);
-
-        if (this->planeGrid[stackedCellId]->is_planar()) {
-            int cellDiameter = (
-                    depthCloudArray.block(stackedCellId * this->pointsPerCellCount + this->pointsPerCellCount - 1, 0, 1, 3) - 
-                    depthCloudArray.block(stackedCellId * this->pointsPerCellCount, 0, 1, 3)
-                    ).norm(); 
-
-            //array of depth metrics: neighbors merging threshold
-            cellDistanceTols[stackedCellId] = pow(min(max(cellDiameter * sinCosAngleForMerge, 20.0f), this->maxMergeDist), 2);
-        }
-    }
-}
 
 
 Plane_Detection::~Plane_Detection() {
@@ -596,6 +630,9 @@ Plane_Detection::~Plane_Detection() {
     delete []this->activationMap;
     delete []this->segMapStacked;
     delete []this->distancesStacked;
+    delete []this->cellDistanceTols;
+
+    delete []this->planeGrid;
 }
 
 

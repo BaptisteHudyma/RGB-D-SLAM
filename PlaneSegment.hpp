@@ -5,11 +5,11 @@
 #include <memory>
 
 //depth estimated std uncertainty in a depth segment (depends on depth)
-const double DEPTH_SIGMA_COEFF = 2.76e-6;        //1.425e-6
+const double DEPTH_SIGMA_COEFF = 2.76e-6;  //1.425e-6; 
 //depth discontinuity tolerance coefficient
-const double DEPTH_SIGMA_MARGIN = 10;           //[3, 8]
+const double DEPTH_SIGMA_MARGIN = 8;           //[3, 8]
 const double DEPTH_ALPHA = 0.04;                //[0.02, 0.04]
-const double DEPTH_DISCONTINUITY_LIMIT = 5;     //max number of discontinuities in cell before rejection
+const double DEPTH_DISCONTINUITY_LIMIT = 2;     //max number of discontinuities in cell before rejection
 
 namespace planeDetection {
 
@@ -54,8 +54,8 @@ namespace planeDetection {
             const int minZeroPointCount;  //min acceptable zero points in a node
             const int cellWidth;
             const int cellHeight;
-            int pointCount;         //point count
 
+            int pointCount;         //point count
             double score;    //plane fitting score
             double MSE;     //plane fitting mean square error
             bool isPlanar;  //true if node represent a correct node, false: ignore node while mapping

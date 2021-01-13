@@ -15,7 +15,7 @@ namespace planeDetection {
 
     class Cylinder_Segment {
         public:
-            Cylinder_Segment(std::vector<std::unique_ptr<Plane_Segment>>& planeGrid, const bool* activated_mask, const unsigned int cellActivatedCount);
+            Cylinder_Segment(std::unique_ptr<Plane_Segment>* planeGrid, const unsigned int planeCount, const bool* activated_mask, const unsigned int cellActivatedCount);
             Cylinder_Segment(const Cylinder_Segment& seg, int subRegionId);
             Cylinder_Segment(const Cylinder_Segment& seg);              //copy constructor
 
@@ -57,6 +57,7 @@ namespace planeDetection {
             //prevent dangerous backend copy
             Cylinder_Segment& operator=(const Cylinder_Segment& seg);   //copy operator
     };
+
 
 }
 

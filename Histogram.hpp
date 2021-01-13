@@ -13,19 +13,24 @@ namespace planeDetection {
             void init_histogram(Eigen::MatrixXd& points, bool* flags);
             void get_points_from_most_frequent_bin(std::vector<int>&);
 	        void remove_point(int pointId);
-
             void reset();
+
+            ~Histogram();
         
         protected:
-            
 
         private:
-            std::vector<int> H;
+            int* H;
             std::vector<int> B;
 
             const int binPerCoordCount;
-            int binCount;
+            const int binCount;
             int pointCount;
+
+            const double minX;
+            const double minY;
+            const double maxXminX;
+            const double maxYminY;
 
         private:
             //prevent backend copy

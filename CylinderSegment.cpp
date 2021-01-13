@@ -1,10 +1,12 @@
 #include "CylinderSegment.hpp"
 
+//for cerr
+#include <iostream>
+
 using namespace std;
 using namespace Eigen;
 using namespace planeDetection;
 
-#include <iostream>
 
 Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, int subRegionId) {
     //copy stored data
@@ -34,8 +36,8 @@ Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg) {
     this->cellActivatedCount = 0;
 }
 
-Cylinder_Segment::Cylinder_Segment(std::vector<std::unique_ptr<Plane_Segment>>& planeGrid, const bool* activatedMask, const unsigned int cellActivatedCount) {
-    unsigned int samplesCount = planeGrid.size();
+Cylinder_Segment::Cylinder_Segment(std::unique_ptr<Plane_Segment>* planeGrid, const unsigned int planeCount, const bool* activatedMask, const unsigned int cellActivatedCount) {
+    unsigned int samplesCount = planeCount;
     this->cellActivatedCount = cellActivatedCount;
 
     this->segmentCount = 0;
