@@ -76,16 +76,13 @@ void Depth_Operations::get_organized_cloud_array(cv::Mat& depthImage, Eigen::Mat
     //project cloud point by cells
     int mxn = this->width * this->height;
     int mxn2 = 2 * mxn;
-
-    int it = 0;
-    for(int r = 0; r < this->height; r++){
+    for(int r = 0, it = 0; r < this->height; r++){
         int* cellMapPtr = this->cellMap.ptr<int>(r);
-        for(int c = 0; c < width; c++){
+        for(int c = 0; c < width; c++, it++){
             int id = cellMapPtr[c];
-            *(organizedCloudArray.data() + id) = *(this->cloudArray.data() + it);
-            *(organizedCloudArray.data() + mxn + id) = *(this->cloudArray.data() + mxn + it);
-            *(organizedCloudArray.data() + mxn2 + id) = *(this->cloudArray.data() + mxn2 + it);
-            it++;
+            organizedCloudArray(id) = this->cloudArray(it);
+            organizedCloudArray(mxn + id) = this->cloudArray(mxn + it);
+            organizedCloudArray(mxn2 + id) = this->cloudArray(mxn2 + it);
         }
     }
 }

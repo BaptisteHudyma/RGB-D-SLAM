@@ -46,8 +46,8 @@ Plane_Detection::Plane_Detection(unsigned int height, unsigned int width, unsign
     this->maskDiff = cv::Mat(verticalCellsCount, horizontalCellsCount, CV_8U);
 
     //init kernels
-    this->maskSquareKernel = cv::Mat::ones(3,3,CV_8U);
-    this->maskCrossKernel = cv::Mat::ones(3,3,CV_8U);
+    this->maskSquareKernel = cv::Mat::ones(3, 3, CV_8U);
+    this->maskCrossKernel = cv::Mat::ones(3, 3, CV_8U);
 
     this->maskCrossKernel.at<uchar>(0,0) = 0;
     this->maskCrossKernel.at<uchar>(2,2) = 0;
@@ -239,7 +239,6 @@ void Plane_Detection::set_masked_display(cv::Mat& segOut) {
     //copy and rearranging
     // Copy inlier list to matrix form
     for (int cellR = 0; cellR < this->verticalCellsCount; cellR += 1){
-        uchar* rowPtr = segOut.ptr<uchar>(cellR);
         uchar* gridPlaneErodedRowPtr = this->gridPlaneSegMapEroded.ptr<uchar>(cellR);
         uchar* gridCylinderErodedRowPtr = this->gridCylinderSegMapEroded.ptr<uchar>(cellR);
         int rOffset = cellR * this->cellHeight;
@@ -260,13 +259,12 @@ void Plane_Detection::set_masked_display(cv::Mat& segOut) {
                 int cLimit = cOffset + this->cellWidth;
                 // Set cell pixels one by one
                 uchar* stackPtr = &this->segMapStacked[this->pointsPerCellCount * cellR * this->horizontalCellsCount + this->pointsPerCellCount * cellC];
-                for(int r = rOffset; r < rLimit; r++){
-                    rowPtr = segOut.ptr<uchar>(r);
-                    for(int c = cOffset; c < cLimit; c++){
-                        if(*stackPtr > 0){
-                            rowPtr[c] = *stackPtr;
+                for(int r = rOffset, i = 0; r < rLimit; r++){
+                    uchar* rowPtr = segOut.ptr<uchar>(r);
+                    for(int c = cOffset; c < cLimit; c++, i++){
+                        if(stackPtr[i] > 0){
+                            rowPtr[c] = stackPtr[i];
                         }
-                        stackPtr++;
                     }
                 }
             }

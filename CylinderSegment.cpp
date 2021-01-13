@@ -211,7 +211,8 @@ Cylinder_Segment::Cylinder_Segment(std::vector<std::unique_ptr<Plane_Segment>>& 
             if(IFinal(i)) {
                 idsLeftMask(i) = false;
                 mLeft--;
-            }else if(idsLeftMask(i)) {
+            }
+            else if(idsLeftMask(i)) {
                 idsLeft.push_back(i);
             }
         }

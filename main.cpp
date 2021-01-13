@@ -94,8 +94,10 @@ int main(int argc, char** argv) {
 
     int i = 1;
     double meanTreatmentTime = 0.0;
+    double meanMatTreatmentTime = 0.0;
     double maxTreatTime = 0.0;
     std::cout << "Starting extraction" << std::endl;
+    cv::namedWindow("Seg");
     while(1) {
         depthImagePath.str("");
         depthImagePath << dataPath.str() << "depth_" << i << ".png";
@@ -109,24 +111,26 @@ int main(int argc, char** argv) {
             break;
         std::cout << "Read frame " << i << std::endl;
 
+        //set variables
         depthImage.convertTo(depthImage, CV_32F);
-
-
-        //project depth image in an organized cloud
-        depthOps.get_organized_cloud_array(depthImage, cloudArrayOrganized);
-
-
-        double t1 = cv::getTickCount();
-
         vector<Plane_Segment> planeParams;
         vector<Cylinder_Segment> cylinderParams;
         cv::Mat_<uchar> seg_output = cv::Mat_<uchar>(height, width, uchar(0));
 
+        double t1 = cv::getTickCount();
+
+        //project depth image in an organized cloud
+        depthOps.get_organized_cloud_array(depthImage, cloudArrayOrganized);
+        double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+        meanMatTreatmentTime += time_elapsed;
+
+
+        t1 = cv::getTickCount();
         // Run plane and cylinder detection 
         detector.find_plane_regions(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
 
         //get elapsed time
-        double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+        time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
@@ -139,36 +143,23 @@ int main(int argc, char** argv) {
         }
         cv::Mat segRgb(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
         cv::Mat segDepth(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-        for(int r = 0; r < height; r++){
-            uchar* dColor = segRgb.ptr<uchar>(r);
-            uchar* dDepth = segDepth.ptr<uchar>(r);
-            uchar* sCode = seg_output.ptr<uchar>(r);
-            uchar* srgb = rgbImage.ptr<uchar>(r);
-            uchar* sdepth = depthImage.ptr<uchar>(r);
-            for(int c = 0; c < width; c++){
-                int code = seg_output(r, c);
-                if (code > 0){
-                    dColor[c*3] =   color_code[code-1][0]/2 + srgb[0]/2;
-                    dColor[c*3+1] = color_code[code-1][1]/2 + srgb[1]/2;
-                    dColor[c*3+2] = color_code[code-1][2]/2 + srgb[2]/2;
-                }else {
-                    dColor[c*3]  =  srgb[0]/2;
-                    dColor[c*3+1] = srgb[1]/2;
-                    dColor[c*3+2] = srgb[2]/2;
-                }
 
-                if(sdepth[0] == 0) {
-                    dDepth[c*3]  =  sdepth[0];
-                    dDepth[c*3+1] = sdepth[1];
-                    dDepth[c*3+2] = sdepth[2];
-                }
-                else {
-                    dDepth[c*3]  =  255 - sdepth[0];
-                    dDepth[c*3+1] = 255 - sdepth[1];
-                    dDepth[c*3+2] = 255 - sdepth[2];
-                }
-                sCode++; srgb += 3; sdepth += 1; 
+        //apply masks on image
+        for(int r = 0; r < height; r++){
+            cv::Vec3b* rgbPtr = rgbImage.ptr<cv::Vec3b>(r);
+            cv::Vec3b* outPtr = segRgb.ptr<cv::Vec3b>(r);
+            cv::Vec3b* dptPtr = segDepth.ptr<cv::Vec3b>(r);
+            for(int c = 0; c < width; c++){
+                int index = seg_output(r, c);   //get index of plane/cylinder at [r, c]
+                if(index > 0) 
+                    outPtr[c] = color_code[index - 1] / 2 + rgbPtr[c] / 2;
+                else 
+                    outPtr[c] = rgbPtr[c] / 2;
+                dptPtr[c][0] = depthImage.at<int>(r, c, 0); 
+                dptPtr[c][1] = depthImage.at<int>(r, c, 0); 
+                dptPtr[c][2] = depthImage.at<int>(r, c, 0); 
             }
+
         }
         cv::hconcat(segDepth, segRgb, segRgb);
 
@@ -203,7 +194,8 @@ int main(int argc, char** argv) {
         i++;
     }
     std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;
+    std::cout << "Mean image shape treatment time is " << meanMatTreatmentTime/i << std::endl;
     std::cout << "max treat time is " << maxTreatTime << std::endl;
-    //    cv::destroyAllWindows();
+    cv::destroyAllWindows();
     exit(0);
 }
