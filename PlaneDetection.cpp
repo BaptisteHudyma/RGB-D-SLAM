@@ -1,5 +1,6 @@
 #include <limits>
 #include "PlaneDetection.hpp"
+#include "Parameters.hpp"
 
 
 //lib simplification
@@ -209,19 +210,19 @@ void Plane_Detection::grow_planes_and_cylinders(std::vector<std::pair<int,int>>&
         vector<int> seedCandidates;
         this->histogram.get_points_from_most_frequent_bin(seedCandidates);
 
-        if (seedCandidates.size() < 5)
+        if (seedCandidates.size() < MIN_SEED_COUNT)
             break;
 
         //select seed cell with min MSE
         int seedId = -1;
         float minMSE = INT_MAX;
-        for(unsigned int i = 0; i < seedCandidates.size(); i+=1) {
+        for(unsigned int i = 0; i < seedCandidates.size(); i++) {
             int seedCandidate = seedCandidates[i];
             if(this->planeGrid[seedCandidate]->get_MSE() < minMSE) {
                 seedId = seedCandidate;
                 minMSE = this->planeGrid[seedCandidate]->get_MSE();
-                //from CAPE: wrong ?
-                //minMSE = this->planeGrid[i]->get_MSE();
+                //if(minMSE <= 0)
+                //    break;
             }
         }
         if (seedId < 0) {
@@ -255,7 +256,7 @@ void Plane_Detection::grow_planes_and_cylinders(std::vector<std::pair<int,int>>&
             }
         }
 
-        if(cellActivatedCount < 4) {
+        if(cellActivatedCount < MIN_CELL_ACTIVATED) {
             this->histogram.remove_point(seedId);
             continue;
         }
@@ -345,16 +346,9 @@ void Plane_Detection::merge_planes(vector<unsigned int>& planeMergeLabels) {
                 double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
 
                 const Vector3d& mergePlaneMean = mergePlane->get_mean();
-                /*double distance = pow(
-                  testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d()
-                  , 2);
-                 */
-                //from CAPE: wrong ?
                 double distance = pow(
-                        this->planeSegments[r]->get_normal()[0] * mergePlaneMean[0] 
-                        + testPlaneNormal[1] * mergePlaneMean[1]  
-                        + testPlaneNormal[2] * mergePlaneMean[2] 
-                        + testPlane->get_plane_d(), 2);
+                        testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d()
+                        , 2);
 
                 if(cosAngle > this->minCosAngleForMerge and distance < this->maxMergeDist) {
                     //merge plane segments
@@ -401,7 +395,6 @@ void Plane_Detection::refine_plane_boundaries(MatrixXf& depthCloudArray, vector<
         cv::dilate(this->mask, this->maskDilated, this->maskSquareKernel);
         this->maskDiff = this->maskDilated - this->maskEroded;
 
-        int stackedCellId = 0;
         uchar planeNr = (unsigned char)planeSegmentsFinal.size();
         const Vector3d& planeNormal = this->planeSegments[i]->get_normal();
         float nx = planeNormal[0];
@@ -414,10 +407,10 @@ void Plane_Detection::refine_plane_boundaries(MatrixXf& depthCloudArray, vector<
         this->gridPlaneSegMapEroded.setTo(planeNr, this->maskEroded > 0);
 
         //cell refinement
-        for (int cellR = 0; cellR < this->verticalCellsCount; cellR += 1) {
+        for (int cellR = 0, stackedCellId = 0; cellR < this->verticalCellsCount; cellR += 1) {
             unsigned char* rowPtr = this->maskDiff.ptr<uchar>(cellR);
 
-            for(int cellC = 0; cellC < this->horizontalCellsCount; cellC += 1) {
+            for(int cellC = 0; cellC < this->horizontalCellsCount; cellC++, stackedCellId++) {
                 int offset = stackedCellId * this->pointsPerCellCount;
                 int nextOffset = offset + this->pointsPerCellCount;
 
@@ -430,8 +423,7 @@ void Plane_Detection::refine_plane_boundaries(MatrixXf& depthCloudArray, vector<
                         d;
 
                     //Assign pixel
-                    int j = 0;
-                    for(int pt = offset; pt < nextOffset; j += 1, pt += 1) {
+                    for(int pt = offset, j = 0; pt < nextOffset; j += 1, pt += 1) {
                         float dist = pow(distancesCellStacked(j), 2);
                         if(dist < maxDist and dist < this->distancesStacked[pt]) {
                             this->distancesStacked[pt] = dist;
@@ -439,7 +431,6 @@ void Plane_Detection::refine_plane_boundaries(MatrixXf& depthCloudArray, vector<
                         }
                     }
                 }
-                stackedCellId += 1;
             }
         }
     }
@@ -466,17 +457,14 @@ void Plane_Detection::refine_cylinder_boundaries(MatrixXf& depthCloudArray, std:
         cv::minMaxLoc(this->maskEroded, &min, &max);
 
         // If completely eroded ignore cylinder
-        if (max == 0){
+        if (max == 0)
             continue;
-        }
 
         cylinderFinalCount += 1;
 
         // Dilate to obtain borders
         cv::dilate(this->mask, this->maskDilated, this->maskSquareKernel);
         this->maskDiff = this->maskDilated - this->maskEroded;
-
-        int stackedCellId = 0;
 
         this->gridCylinderSegMapEroded.setTo((unsigned char)CYLINDER_CODE_OFFSET + cylinderFinalCount, this->maskEroded > 0);
 
@@ -495,9 +483,9 @@ void Plane_Detection::refine_cylinder_boundaries(MatrixXf& depthCloudArray, std:
         double maxDist = 9 * cylinderSegRef->get_MSE_at(subRegId);
 
         // Cell refinement
-        for (int cellR = 0; cellR < this->verticalCellsCount; cellR += 1){
+        for (int cellR = 0, stackedCellId = 0; cellR < this->verticalCellsCount; cellR += 1){
             uchar* rowPtr = this->maskDiff.ptr<uchar>(cellR);
-            for (int cellC = 0; cellC < this->horizontalCellsCount; cellC += 1){
+            for (int cellC = 0; cellC < this->horizontalCellsCount; cellC++, stackedCellId++) {
                 int offset = stackedCellId * this->pointsPerCellCount;
                 int nextOffset = offset + this->pointsPerCellCount;
                 if(rowPtr[cellC] > 0){
@@ -513,7 +501,6 @@ void Plane_Detection::refine_cylinder_boundaries(MatrixXf& depthCloudArray, std:
                         }
                     }
                 }
-                stackedCellId += 1;
             }
         }
     }

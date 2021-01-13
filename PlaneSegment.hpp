@@ -3,13 +3,8 @@
 
 #include <Eigen/Dense>
 #include <memory>
+#include "PlaneSegment.hpp"
 
-//depth estimated std uncertainty in a depth segment (depends on depth)
-const double DEPTH_SIGMA_COEFF = 2.76e-6;  //1.425e-6; 
-//depth discontinuity tolerance coefficient
-const double DEPTH_SIGMA_MARGIN = 8;           //[3, 8]
-const double DEPTH_ALPHA = 0.04;                //[0.02, 0.04]
-const double DEPTH_DISCONTINUITY_LIMIT = 2;     //max number of discontinuities in cell before rejection
 
 namespace planeDetection {
 

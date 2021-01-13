@@ -1,18 +1,14 @@
 #include <iostream>
-#include <math.h>
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 
 #include "DepthOperations.hpp"
 #include "PlaneDetection.hpp"
 #include "PlaneSegment.hpp"
+#include "Parameters.hpp"
 
 using namespace planeDetection;
 using namespace std;
-
-const float COS_ANGLE_MAX = cos(M_PI/12.0);
-const float MAX_MERGE_DIST = 100;//50.0f;
-const unsigned int PATCH_SIZE = 20;   //depth grid cell size
 
 
 std::vector<cv::Vec3b> get_color_vector() {
@@ -154,13 +150,25 @@ int main(int argc, char** argv) {
             cv::Vec3b* dptPtr = segDepth.ptr<cv::Vec3b>(r);
             for(int c = 0; c < width; c++){
                 int index = seg_output(r, c);   //get index of plane/cylinder at [r, c]
-                if(index > 0)   //there is a mask to display 
-                    outPtr[c] = color_code[index - 1] / 2 + rgbPtr[c] / 2;
-                else 
+                if(index <= 0) {
                     outPtr[c] = rgbPtr[c] / 2;
-                dptPtr[c][0] = depthImage.at<int>(r, c, 0); 
-                dptPtr[c][1] = depthImage.at<int>(r, c, 0); 
-                dptPtr[c][2] = depthImage.at<int>(r, c, 0); 
+                    dptPtr[c] = rgbPtr[c] / 2;
+                    continue;
+                }
+
+                if(index <= planeParams.size()) {  //there is a mask to display 
+                    dptPtr[c] = color_code[index - 1] / 2 + rgbPtr[c] / 2;
+                    if(outPtr[c][0] == 0)
+                        outPtr[c] = rgbPtr[c] / 2;
+                }
+                else  {  //there is a mask to display 
+                    outPtr[c] = color_code[index - 1] / 2 + rgbPtr[c] / 2;
+                    if(dptPtr[c][0] == 0)
+                        dptPtr[c] = rgbPtr[c] / 2;
+                }
+                //dptPtr[c][0] = depthImage.at<int>(r, c, 0); 
+                //dptPtr[c][1] = depthImage.at<int>(r, c, 0); 
+                //dptPtr[c][2] = depthImage.at<int>(r, c, 0); 
             }
 
         }

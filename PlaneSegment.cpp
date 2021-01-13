@@ -1,5 +1,6 @@
 #include "PlaneSegment.hpp"
 #include "eig33sym.hpp"
+#include "Parameters.hpp"
 
 using namespace planeDetection;
 using namespace Eigen;

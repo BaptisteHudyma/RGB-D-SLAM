@@ -1,4 +1,5 @@
 #include "CylinderSegment.hpp"
+#include "Parameters.hpp"
 
 //for cerr
 #include <iostream>

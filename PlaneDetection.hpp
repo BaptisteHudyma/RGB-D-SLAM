@@ -15,8 +15,6 @@
 #include "CylinderSegment.hpp"
 #include "Histogram.hpp"
 
-//index offset of a cylinder to a plane: used for masks display purposes
-const unsigned int CYLINDER_CODE_OFFSET = 50;
 
 namespace planeDetection {
 

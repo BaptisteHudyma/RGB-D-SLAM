@@ -2,14 +2,13 @@
 #define CYLINDER_SEGMENT_H
 
 #include "PlaneSegment.hpp"
+#include "Parameters.hpp"
 #include <vector>
 #include <memory>
 #include <Eigen/Dense>
 
 
 namespace planeDetection {
-    const float CYLINDER_RANSAC_SQR_MAX_DIST = 0.0225;    //square of 15%
-    const float CYLINDER_SCORE_MIN = 100;
     typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>  MatrixXb;
 
 
