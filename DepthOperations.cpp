@@ -2,7 +2,7 @@
 
 using namespace planeDetection;
 
-Depth_Operations::Depth_Operations(const std::string& parameterFilePath, int width, int height, int cellSize) 
+Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const int width, const int height, const int cellSize) 
     : 
         width(width), height(height), cellSize(cellSize),
         cloudArray(width * height, 3),
@@ -53,6 +53,7 @@ void Depth_Operations::get_organized_cloud_array(cv::Mat& depthImage, Eigen::Mat
     // Reusing U as cloud index
     //U = V*width + U + 0.5;
 
+    cv::Mat outputDepth(height, width, CV_32F, 0.0);
     cloudArray.setZero();
     for(int r = 0; r < this->height; r++){
         float* sx = this->Xt.ptr<float>(r);
@@ -60,11 +61,14 @@ void Depth_Operations::get_organized_cloud_array(cv::Mat& depthImage, Eigen::Mat
         float* sz = depthImage.ptr<float>(r);
         float* u_ptr = this->U.ptr<float>(r);
         float* v_ptr = this->V.ptr<float>(r);
+
         for(int c = 0; c < this->width; c++){
             float z = sz[c];
             float u = u_ptr[c];
             float v = v_ptr[c];
             if(z > zMin and u > 0 and v > 0 and u < this->width and v < this->height){
+                float* odepth = outputDepth.ptr<float>(v);
+                odepth[c] = depthImage.at<float>(v, u);
                 int id = floor(v) * this->width + u;
                 this->cloudArray(id, 0) = sx[c];
                 this->cloudArray(id, 1) = sy[c];
@@ -85,6 +89,7 @@ void Depth_Operations::get_organized_cloud_array(cv::Mat& depthImage, Eigen::Mat
             organizedCloudArray(mxn2 + id) = this->cloudArray(mxn2 + it);
         }
     }
+    depthImage = outputDepth;
 }
 
 bool Depth_Operations::load_parameters(const std::string& parameterFilePath) {

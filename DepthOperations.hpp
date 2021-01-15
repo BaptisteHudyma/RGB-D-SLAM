@@ -9,8 +9,15 @@ namespace planeDetection {
 
     class Depth_Operations {
         public:
-            Depth_Operations(const std::string& paramFilePath, int width, int height, int cellSize);
+            Depth_Operations(const std::string& paramFilePath, const int width, const int height, const int cellSize);
 
+
+            /*
+             * Create an point cloud organized by cells of cellSize*cellSize pixels
+             *
+             * in/out depthImage input depth image representation, transformed to align to rgb image at output
+             * out organizedCloudArray 
+             */
             void get_organized_cloud_array(cv::Mat& depthImage, Eigen::MatrixXf& organizedCloudArray);
             bool is_ok() const {return isOk;};
 
@@ -23,7 +30,7 @@ namespace planeDetection {
             int height;
             int cellSize;
             bool isOk;
-            
+
             Eigen::MatrixXf cloudArray;
 
             //cam parameters
@@ -42,7 +49,7 @@ namespace planeDetection {
             cv::Mat Kir;
             cv::Mat Rstereo;
             cv::Mat Tstereo;
-        
+
             //pre computation matrix
             cv::Mat_<float> X;
             cv::Mat_<float> Y;

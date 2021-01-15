@@ -1,13 +1,16 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <opencv2/line_descriptor.hpp>
 #include <Eigen/Dense>
 
 #include "DepthOperations.hpp"
 #include "PlaneDetection.hpp"
 #include "PlaneSegment.hpp"
 #include "Parameters.hpp"
+#include "LineSegmentDetector.hpp"
 
 using namespace planeDetection;
+using namespace cv::line_descriptor;
 using namespace std;
 
 
@@ -35,31 +38,32 @@ std::vector<cv::Vec3b> get_color_vector() {
 }
 
 
-int main(int argc, char** argv) {
-    //std::string dataPath = "./data/yoga_mat/";
+int main(int argc, char* argv[]) {
+
+    const cv::String keys = 
+        "{help h usage ?  |      | print this message     }"
+        "{f folder   |<none>| folder to parse        }"
+        "{c cylinder |  1   | Use cylinder detection }"
+        "{i index    |  0   | First image to parse   }"
+        ;
+
+    cv::CommandLineParser parser(argc, argv, keys);
+    parser.about("Plane Detection v1");
+
+    if (parser.has("help")) {
+        parser.printMessage();
+        return 0;
+    }
+
     std::stringstream dataPath;
-    dataPath << "./data/";
-    bool useCylinderFitting = false;
-    int startIndex = 0;
-    if(argc > 1) {
-        if(strcmp(argv[1], "-h") == 0) {
-            std::cout << "Use of the prog:" << std::endl;
-            std::cout << "\tFirst argument is the name of the data folder to parse" << std::endl;
-            std::cout << "\t1: use cylinder fitting, 0 or nothing: do not use it" << std::endl; 
-        }
-        dataPath << argv[1] << "/";
+    dataPath << parser.get<cv::String>("f") << "/";
+    bool useCylinderFitting = parser.get<bool>("c");
+    int startIndex = parser.get<int>("i");
 
-        if (argc > 2) {
-            useCylinderFitting = atoi(argv[2]) > 0;
-        }
-        if (argc > 3) {
-            startIndex = atoi(argv[3]);
-        }
+    if (!parser.check()) {
+        parser.printErrors();
+        return 0;
     }
-    else {
-        dataPath << "tunnel/";
-    }
-
 
     std::stringstream depthImagePath, rgbImgPath;
     depthImagePath << dataPath.str() << "depth_0.png";
@@ -85,12 +89,14 @@ int main(int argc, char** argv) {
     }
 
     Plane_Detection detector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
+    cv::LSD lineDetector(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
     // Populate with random color codes
     std::vector<cv::Vec3b> color_code = get_color_vector();
 
     //organized 3D depth image
     Eigen::MatrixXf cloudArrayOrganized(width * height,3);
+    cv::Mat kernel = cv::Mat::ones(3, 3, CV_8U);
 
 
     int i = startIndex;
@@ -100,11 +106,12 @@ int main(int argc, char** argv) {
     std::cout << "Starting extraction" << std::endl;
     bool runLoop = true;
     while(runLoop) {
+
+        //read images
         rgbImgPath.str("");
         depthImagePath.str("");
         rgbImgPath << dataPath.str() << "rgb_"<< i <<".png";
         depthImagePath << dataPath.str() << "depth_" << i << ".png";
-
         cv::Mat rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
         cv::Mat depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
         if (!depthImage.data or !rgbImage.data)
@@ -138,79 +145,52 @@ int main(int argc, char** argv) {
         cv::minMaxLoc(depthImage, &min, &max);
         if (min != max){ 
             depthImage -= min;
-            depthImage.convertTo(depthImage, CV_8U, 255.0/(max-min));
+            depthImage.convertTo(depthImage, CV_8UC1, 255.0/(max-min));
         }
+
+        //display masks on image
         cv::Mat segRgb(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-        cv::Mat segDepth(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
+        detector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
 
-        //apply masks on image
-        for(int r = 0; r < height; r++){
-            cv::Vec3b* rgbPtr = rgbImage.ptr<cv::Vec3b>(r);
-            cv::Vec3b* outPtr = segRgb.ptr<cv::Vec3b>(r);
-            cv::Vec3b* dptPtr = segDepth.ptr<cv::Vec3b>(r);
-            for(int c = 0; c < width; c++){
-                int index = seg_output(r, c);   //get index of plane/cylinder at [r, c]
-                if(index <= 0) {
-                    outPtr[c] = rgbPtr[c] / 2;
-                    dptPtr[c] = rgbPtr[c] / 2;
-                    continue;
-                }
 
-                if(index <= planeParams.size()) {  //there is a mask to display 
-                    dptPtr[c] = color_code[index - 1] / 2 + rgbPtr[c] / 2;
-                    if(outPtr[c][0] == 0)
-                        outPtr[c] = rgbPtr[c] / 2;
-                }
-                else  {  //there is a mask to display 
-                    outPtr[c] = color_code[index - 1] / 2 + rgbPtr[c] / 2;
-                    if(dptPtr[c][0] == 0)
-                        dptPtr[c] = rgbPtr[c] / 2;
-                }
-                //dptPtr[c][0] = depthImage.at<int>(r, c, 0); 
-                //dptPtr[c][1] = depthImage.at<int>(r, c, 0); 
-                //dptPtr[c][2] = depthImage.at<int>(r, c, 0); 
-            }
+        /*
+        //get lines
+        std::vector<cv::Vec4f> lines;
+        cv::Mat mask = depthImage > 0;
 
-        }
-        cv::hconcat(segDepth, segRgb, segRgb);
+        cv::Mat grayImage;
+        cv::cvtColor(rgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
-        // Show frame rate and labels
-        cv::rectangle(segRgb,  cv::Point(0,0),cv::Point(width * 2, 20), cv::Scalar(0,0,0),-1);
-        std::stringstream fps;
-        fps << (int)(1/time_elapsed+0.5) << " fps";
-        cv::putText(segRgb, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,255,255,1));
+        lineDetector.detect(grayImage, lines);
+        cv::dilate(mask, mask, kernel);
+        cv::erode(mask, mask, kernel);
+        mask = mask != 0;
+        //cv::patchNaNs(mask, 0);
 
-        //show plane labels
-        if (planeParams.size() > 0){
-            std::stringstream text;
-            text << "Planes:";
-            cv::putText(segRgb, text.str(), cv::Point(width/4, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
-            for(unsigned int j = 0; j < planeParams.size(); j += 1){
-                cv::rectangle(segRgb,  cv::Point(width/4 + 80 + 15 * j, 6),
-                        cv::Point(width/4 + 90 + 15 * j, 16), 
-                        cv::Scalar(
-                            color_code[j][0],
-                            color_code[j][1],
-                            color_code[j][2]),
-                        -1);
+        cv::addWeighted(grayImage, 0.5, mask, 0.5, 0, grayImage);
+        cv::cvtColor(grayImage, grayImage, cv::COLOR_GRAY2BGR);
+
+        for(int i = 0; i < lines.size(); i++) {
+            cv::Vec4f& pts = lines.at(i);
+            cv::Point pt1(pts[0], pts[1]);
+            cv::Point pt2(pts[2], pts[3]);
+            if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
+                cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
+                cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
+
+                //cv::circle(grayImage, firstQuart, 10, cv::Scalar(0, 255, 0));
+
+                //at least a point with depth data
+                if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
+                    cv::line(grayImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
             }
         }
-        //show cylinder labels
-        if (cylinderParams.size() > 0){
-            std::stringstream text;
-            text << "Cylinders:";
-            cv::putText(segRgb, text.str(), cv::Point(width, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
-            for(unsigned int j = 0; j < cylinderParams.size(); j += 1){
-                cv::rectangle(segRgb,  cv::Point(width + 80 + 15 * j, 6),
-                        cv::Point(width + 90 + 15 * j, 16), 
-                        cv::Scalar(
-                            color_code[CYLINDER_CODE_OFFSET + j][0],
-                            color_code[CYLINDER_CODE_OFFSET + j][1],
-                            color_code[CYLINDER_CODE_OFFSET + j][2]),
-                        -1);
-            }
-        }
+        //cv::imshow("Seg", grayImage);
+*/
+
         cv::imshow("Seg", segRgb);
+
+
         switch(cv::waitKey(1)) {
             //check pressent key
             case 'p': //pause button

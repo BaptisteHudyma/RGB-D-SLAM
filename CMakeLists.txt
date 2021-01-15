@@ -15,6 +15,7 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 add_executable(planeExtraction
     main.cpp
     DepthOperations.cpp
+    LineSegmentDetector.cpp
     PlaneDetection.cpp
     dsyevh3.cpp
     PlaneSegment.cpp

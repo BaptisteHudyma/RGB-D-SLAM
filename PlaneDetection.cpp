@@ -69,6 +69,75 @@ Plane_Detection::Plane_Detection(unsigned int height, unsigned int width, unsign
     setMaskTime = 0;
 }
 
+
+/*
+ * in inputImage input RGB image on which to put the planes and cylinder masks
+ * in maskImage Output image of find_plane_regions
+ * out labeledImage Output RGB image, similar to input but with planes and cylinder masks
+ */
+void Plane_Detection::apply_masks(cv::Mat& inputImage, std::vector<cv::Vec3b>& colors, cv::Mat& maskImage, std::vector<Plane_Segment>& planeParams, std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, double timeElapsed) {
+    //apply masks on image
+    for(int r = 0; r < this->height; r++){
+        cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
+        cv::Vec3b* outPtr = labeledImage.ptr<cv::Vec3b>(r);
+        for(int c = 0; c < this->width; c++){
+            int index = maskImage.at<uchar>(r, c);   //get index of plane/cylinder at [r, c]
+            //int index = maskImage(r, c);   //get index of plane/cylinder at [r, c]
+            if(index <= 0) {
+                outPtr[c] = rgbPtr[c] / 2;
+            }
+            else {
+                //there is a mask to display 
+                outPtr[c] = colors[index - 1] / 2 + rgbPtr[c] / 2;
+            }
+        }
+    }
+    std::cout <<"end of mask" << std::endl;
+
+    // Show frame rate and labels
+    cv::rectangle(labeledImage, cv::Point(0,0), cv::Point(this->width, 20), cv::Scalar(0,0,0), -1);
+    if(timeElapsed > 0) {
+        std::stringstream fps;
+        fps << (int)(1 / timeElapsed + 0.5) << " fps";
+        cv::putText(labeledImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+    }
+
+    //show plane labels
+    if (planeParams.size() > 0){
+        std::stringstream text;
+        text << "Planes:";
+        double pos = this->width * 0.25;
+        cv::putText(labeledImage, text.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+        for(unsigned int j = 0; j < planeParams.size(); j += 1){
+            cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * j, 6),
+                    cv::Point(pos + 90 + 15 * j, 16), 
+                    cv::Scalar(
+                        colors[j][0],
+                        colors[j][1],
+                        colors[j][2]),
+                    -1);
+        }
+    }
+    //show cylinder labels
+    if (cylinderParams.size() > 0){
+        std::stringstream text;
+        text << "Cylinders:";
+        double pos = this->width * 0.60;
+        cv::putText(labeledImage, text.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+        for(unsigned int j = 0; j < cylinderParams.size(); j += 1){
+            cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * j, 6),
+                    cv::Point(pos + 90 + 15 * j, 16), 
+                    cv::Scalar(
+                        colors[CYLINDER_CODE_OFFSET + j][0],
+                        colors[CYLINDER_CODE_OFFSET + j][1],
+                        colors[CYLINDER_CODE_OFFSET + j][2]),
+                    -1);
+        }
+    }
+}
+
+
+
 /*
  * Find the planes in the organized depth matrix using region growing
  * Segout will contain a 2D representation of the planes

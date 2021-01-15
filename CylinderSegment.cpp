@@ -13,6 +13,9 @@ Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, int subRegionId)
     //copy stored data
     this->radius.push_back(seg.radius[subRegionId]);
     this->centers.push_back(seg.centers[subRegionId]);
+    //this->pointsAxis1 = seg.pointsAxis1; 
+    //this->pointsAxis2 = seg.pointsAxis2;
+    //this->normalsAxis1Axis2 = seg.normalsAxis1Axis2;
     this->axis[0] = seg.axis[0];
     this->axis[1] = seg.axis[1];
     this->axis[2] = seg.axis[2];
@@ -28,6 +31,9 @@ Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, int subRegionId)
 Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg) {
     this->radius = seg.radius;
     this->centers = seg.centers;
+    //this->pointsAxis1 = seg.pointsAxis1; 
+    //this->pointsAxis2 = seg.pointsAxis2;
+    //this->normalsAxis1Axis2 = seg.normalsAxis1Axis2;
     this->axis[0] = seg.axis[0];
     this->axis[1] = seg.axis[1];
     this->axis[2] = seg.axis[2];
@@ -280,6 +286,15 @@ Cylinder_Segment::Cylinder_Segment(std::unique_ptr<Plane_Segment>* planeGrid, co
     }
 }
 
+double Cylinder_Segment::distance(const Eigen::Vector3d& point) {
+    double minDist = distance(point, 0);
+    for(int i = 1; i < pointsAxis1.size(); i++) {
+        double nd = distance(point, i);
+        if (minDist > nd)
+            minDist = nd;
+    }
+    return minDist;
+}
 
 double Cylinder_Segment::distance(const Eigen::Vector3d& point, int id) {
     return ((pointsAxis2[id] - pointsAxis1[id]).cross(point - pointsAxis2[id])).norm() / normalsAxis1Axis2[id] - radius[id];

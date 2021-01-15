@@ -17,6 +17,8 @@ namespace planeDetection {
             Cylinder_Segment(std::unique_ptr<Plane_Segment>* planeGrid, const unsigned int planeCount, const bool* activated_mask, const unsigned int cellActivatedCount);
             Cylinder_Segment(const Cylinder_Segment& seg, int subRegionId);
             Cylinder_Segment(const Cylinder_Segment& seg);              //copy constructor
+            
+            double distance(const Eigen::Vector3d& point);
 
             ~Cylinder_Segment();
 

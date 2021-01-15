@@ -24,9 +24,11 @@ namespace planeDetection {
             Plane_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.9659, float maxMergeDist = 50, bool useCylinderDetection = false);
 
             void find_plane_regions(Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut);  //detect planes in depth image
-
+            
+            void apply_masks(cv::Mat& inputImage, std::vector<cv::Vec3b>& colors, cv::Mat& maskImage, std::vector<Plane_Segment>& planeParams, std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, double elapsedTime=0);
             ~Plane_Detection();
 
+            //perf measurments
             double resetTime;
             double initTime;
             double growTime;
