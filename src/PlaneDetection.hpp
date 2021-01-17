@@ -21,11 +21,11 @@ namespace planeDetection {
     class Plane_Detection {
         //check for planes in an organized depth points matrix 
         public:
-            Plane_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.9659, float maxMergeDist = 50, bool useCylinderDetection = false);
+            Plane_Detection(const unsigned int width, const unsigned int height, const unsigned int blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
 
-            void find_plane_regions(Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut);  //detect planes in depth image
+            void find_plane_regions(const Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut);  //detect planes in depth image
             
-            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double elapsedTime=0);
+            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double elapsedTime=0);
             ~Plane_Detection();
 
             //perf measurments
@@ -39,17 +39,17 @@ namespace planeDetection {
         protected:
             void reset_data();
 
-            void init_planar_cell_fitting(Eigen::MatrixXf& depthCloudArray);
+            void init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray);
             int init_histogram();
 
             void grow_planes_and_cylinders(std::vector<std::pair<int, int>>& cylinderToRegionMap, int remainingPlanarCells);
             void merge_planes(std::vector<unsigned int>& planeMergeLabels);
-            void refine_plane_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal);
-            void refine_cylinder_boundaries(Eigen::MatrixXf& depthCloudArray, std::vector<std::pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal); 
+            void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal);
+            void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, std::vector<std::pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal); 
             void set_masked_display(cv::Mat& segOut); 
 
             void region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
-            void get_connected_components(cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
+            void get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
 
         private:
             Histogram histogram;

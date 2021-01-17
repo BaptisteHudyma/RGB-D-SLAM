@@ -11,7 +11,7 @@ using namespace Eigen;
  * Initialize the plane segment with the points from the depth matrix
  * 
  */
-Plane_Segment::Plane_Segment(int cellWidth, int ptsPerCellCount)
+Plane_Segment::Plane_Segment(const int cellWidth, const int ptsPerCellCount)
     : ptsPerCellCount(ptsPerCellCount), minZeroPointCount(ptsPerCellCount/2.0), cellWidth(cellWidth), cellHeight(ptsPerCellCount / cellWidth)
 {
     clear_plane_parameters();
@@ -44,7 +44,7 @@ Plane_Segment::Plane_Segment(const Plane_Segment& seg)
     this->Szx = seg.Szx;
 }
 
-void Plane_Segment::init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cellId) {
+void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const int cellId) {
     clear_plane_parameters();
     this->isPlanar = true;
 

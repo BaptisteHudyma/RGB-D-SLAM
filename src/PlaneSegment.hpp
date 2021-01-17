@@ -17,10 +17,10 @@ namespace planeDetection {
      */
     class Plane_Segment {
         public:
-            Plane_Segment(int cellWidth, int ptsPerCellCount);
+            Plane_Segment(const int cellWidth, const int ptsPerCellCount);
             Plane_Segment(const Plane_Segment& seg);
 
-            void init_plane_segment(Eigen::MatrixXf& depthCloudArray, int cellId);
+            void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const int cellId);
 
             bool is_depth_discontinuous(const Plane_Segment& planeSegment);
             void expand_segment(const Plane_Segment& planeSegment);
