@@ -75,10 +75,10 @@ Plane_Detection::Plane_Detection(unsigned int height, unsigned int width, unsign
  * in maskImage Output image of find_plane_regions
  * out labeledImage Output RGB image, similar to input but with planes and cylinder masks
  */
-void Plane_Detection::apply_masks(cv::Mat& inputImage, std::vector<cv::Vec3b>& colors, cv::Mat& maskImage, std::vector<Plane_Segment>& planeParams, std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, double timeElapsed) {
+void Plane_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double timeElapsed) {
     //apply masks on image
     for(int r = 0; r < this->height; r++){
-        cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
+        const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
         cv::Vec3b* outPtr = labeledImage.ptr<cv::Vec3b>(r);
         for(int c = 0; c < this->width; c++){
             int index = maskImage.at<uchar>(r, c);   //get index of plane/cylinder at [r, c]
@@ -92,7 +92,6 @@ void Plane_Detection::apply_masks(cv::Mat& inputImage, std::vector<cv::Vec3b>& c
             }
         }
     }
-    std::cout <<"end of mask" << std::endl;
 
     // Show frame rate and labels
     cv::rectangle(labeledImage, cv::Point(0,0), cv::Point(this->width, 20), cv::Scalar(0,0,0), -1);

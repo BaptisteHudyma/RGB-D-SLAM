@@ -25,7 +25,7 @@ namespace planeDetection {
 
             void find_plane_regions(Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut);  //detect planes in depth image
             
-            void apply_masks(cv::Mat& inputImage, std::vector<cv::Vec3b>& colors, cv::Mat& maskImage, std::vector<Plane_Segment>& planeParams, std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, double elapsedTime=0);
+            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double elapsedTime=0);
             ~Plane_Detection();
 
             //perf measurments
