@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(PlaneExtr)
 
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 4 REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 
@@ -24,6 +24,7 @@ add_executable(planeExtraction
     ${SRC}/PlaneSegment.cpp
     ${SRC}/CylinderSegment.cpp
     ${SRC}/Histogram.cpp
+    ${SRC}/MonocularDepthMap.cpp
 
     ${THIRD_PARTY}/LineSegmentDetector.cpp
     ${THIRD_PARTY}/dsyevh3.cpp

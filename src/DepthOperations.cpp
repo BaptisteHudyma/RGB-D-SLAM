@@ -67,12 +67,13 @@ void Depth_Operations::get_organized_cloud_array(cv::Mat& depthImage, Eigen::Mat
             float u = u_ptr[c];
             float v = v_ptr[c];
             if(z > zMin and u > 0 and v > 0 and u < this->width and v < this->height){
-                float* odepth = outputDepth.ptr<float>(v);
-                odepth[c] = depthImage.at<float>(v, u);
+                //set transformed depth image
+                outputDepth.at<float>(v, c) = depthImage.at<float>(v, u);
                 int id = floor(v) * this->width + u;
                 this->cloudArray(id, 0) = sx[c];
                 this->cloudArray(id, 1) = sy[c];
                 this->cloudArray(id, 2) = z;
+
             }
         }
     }

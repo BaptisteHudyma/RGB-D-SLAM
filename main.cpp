@@ -1,16 +1,20 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/line_descriptor.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <Eigen/Dense>
 
 #include "DepthOperations.hpp"
 #include "PlaneDetection.hpp"
 #include "PlaneSegment.hpp"
 #include "Parameters.hpp"
+#include "MonocularDepthMap.hpp"
+
 #include "LineSegmentDetector.hpp"
 
 using namespace planeDetection;
 using namespace cv::line_descriptor;
+using namespace cv::xfeatures2d;
 using namespace std;
 
 
@@ -66,13 +70,15 @@ int main(int argc, char* argv[]) {
     }
 
     std::stringstream depthImagePath, rgbImgPath;
+    rgbImgPath << dataPath.str() << "rgb_0.png";
     depthImagePath << dataPath.str() << "depth_0.png";
 
     int width, height;
-    cv::Mat dImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
-    if(dImage.data) {
-        width = dImage.cols;
-        height = dImage.rows;
+    cv::Mat rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
+    cv::Mat depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_GRAYSCALE);//ANYDEPTH);
+    if(rgbImage.data and depthImage.data) {
+        width = rgbImage.cols;
+        height = rgbImage.rows;
     }
     else {
         std::cout << "Error loading first depth image at " << depthImagePath.str() << std::endl;
@@ -83,11 +89,14 @@ int main(int argc, char* argv[]) {
     std::stringstream calibPath;
     calibPath << dataPath.str() << "calib_params.xml";
 
+    Monocular_Depth_Map depthRGBImage(rgbImage);
+
     Depth_Operations depthOps(calibPath.str(), width, height, PATCH_SIZE);
     if (not depthOps.is_ok()) {
         exit(-1);
     }
 
+    //plane/cylinder finder
     Plane_Detection detector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
     cv::LSD lineDetector(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
@@ -112,11 +121,13 @@ int main(int argc, char* argv[]) {
         depthImagePath.str("");
         rgbImgPath << dataPath.str() << "rgb_"<< i <<".png";
         depthImagePath << dataPath.str() << "depth_" << i << ".png";
-        cv::Mat rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
-        cv::Mat depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
+        rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
+        depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
         if (!depthImage.data or !rgbImage.data)
             break;
         std::cout << "Read frame " << i << std::endl;
+        cv::Mat grayImage;
+        cv::cvtColor(rgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
         //set variables
         depthImage.convertTo(depthImage, CV_32F);
@@ -124,6 +135,9 @@ int main(int argc, char* argv[]) {
         vector<Plane_Segment> planeParams;
         vector<Cylinder_Segment> cylinderParams;
 
+        //get monocular depth map
+        cv::Mat depthMap;
+        depthRGBImage.get_monocular_depth(grayImage, depthMap); 
 
         //project depth image in an organized cloud
         double t1 = cv::getTickCount();
@@ -148,27 +162,16 @@ int main(int argc, char* argv[]) {
             depthImage.convertTo(depthImage, CV_8UC1, 255.0/(max-min));
         }
 
-        //display masks on image
-        cv::Mat segRgb(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-        detector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
 
-
-        /*
         //get lines
         std::vector<cv::Vec4f> lines;
         cv::Mat mask = depthImage > 0;
 
-        cv::Mat grayImage;
-        cv::cvtColor(rgbImage, grayImage, cv::COLOR_BGR2GRAY);
-
         lineDetector.detect(grayImage, lines);
+
+        //fill holes
         cv::dilate(mask, mask, kernel);
         cv::erode(mask, mask, kernel);
-        mask = mask != 0;
-        //cv::patchNaNs(mask, 0);
-
-        cv::addWeighted(grayImage, 0.5, mask, 0.5, 0, grayImage);
-        cv::cvtColor(grayImage, grayImage, cv::COLOR_GRAY2BGR);
 
         for(int i = 0; i < lines.size(); i++) {
             cv::Vec4f& pts = lines.at(i);
@@ -177,19 +180,22 @@ int main(int argc, char* argv[]) {
             if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
                 cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
                 cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
-
                 //cv::circle(grayImage, firstQuart, 10, cv::Scalar(0, 255, 0));
 
                 //at least a point with depth data
                 if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
-                    cv::line(grayImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
+                    cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
             }
         }
-        //cv::imshow("Seg", grayImage);
-*/
 
+        //display masks on image
+        cv::Mat segRgb(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
+        detector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
+
+        //display with mono mask
+        cv::applyColorMap(depthMap, depthMap, cv::COLORMAP_PLASMA);
+        hconcat(depthMap, segRgb, segRgb);
         cv::imshow("Seg", segRgb);
-
 
         switch(cv::waitKey(1)) {
             //check pressent key
