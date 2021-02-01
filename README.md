@@ -1,5 +1,9 @@
 # RGB-D-SLAM
 
+packages
+opencv
+Eigen
+g2o
 
 Build
 ```

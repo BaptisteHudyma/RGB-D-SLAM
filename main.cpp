@@ -12,6 +12,7 @@
 #include "MonocularDepthMap.hpp"
 
 #include "LineSegmentDetector.hpp"
+#include "RGB_Slam.hpp"
 
 using namespace primitiveDetection;
 using namespace cv::line_descriptor;
