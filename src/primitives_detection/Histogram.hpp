@@ -4,7 +4,7 @@
 #include <Eigen/Dense>
 #include <vector>
 
-namespace planeDetection {
+namespace primitiveDetection {
 
     class Histogram {
         public:

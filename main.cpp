@@ -4,15 +4,16 @@
 #include <opencv2/xfeatures2d.hpp>
 #include <Eigen/Dense>
 
+
 #include "DepthOperations.hpp"
-#include "PlaneDetection.hpp"
+#include "PrimitiveDetection.hpp"
 #include "PlaneSegment.hpp"
 #include "Parameters.hpp"
 #include "MonocularDepthMap.hpp"
 
 #include "LineSegmentDetector.hpp"
 
-using namespace planeDetection;
+using namespace primitiveDetection;
 using namespace cv::line_descriptor;
 using namespace cv::xfeatures2d;
 using namespace std;
@@ -89,7 +90,7 @@ int main(int argc, char* argv[]) {
     std::stringstream calibPath;
     calibPath << dataPath.str() << "calib_params.xml";
 
-    Monocular_Depth_Map depthRGBImage(rgbImage);
+    //Monocular_Depth_Map depthRGBImage(rgbImage);
 
     Depth_Operations depthOps(calibPath.str(), width, height, PATCH_SIZE);
     if (not depthOps.is_ok()) {
@@ -97,7 +98,7 @@ int main(int argc, char* argv[]) {
     }
 
     //plane/cylinder finder
-    Plane_Detection detector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
+    Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
     cv::LSD lineDetector(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
     // Populate with random color codes
@@ -136,8 +137,8 @@ int main(int argc, char* argv[]) {
         vector<Cylinder_Segment> cylinderParams;
 
         //get monocular depth map
-        cv::Mat depthMap;
-        depthRGBImage.get_monocular_depth(grayImage, depthMap); 
+        //cv::Mat depthMap;
+        //depthRGBImage.get_monocular_depth(grayImage, depthMap); 
 
         //project depth image in an organized cloud
         double t1 = cv::getTickCount();
@@ -148,7 +149,7 @@ int main(int argc, char* argv[]) {
 
         // Run plane and cylinder detection 
         t1 = cv::getTickCount();
-        detector.find_plane_regions(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
+        primDetector.find_primitives(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
         time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
@@ -190,11 +191,11 @@ int main(int argc, char* argv[]) {
 
         //display masks on image
         cv::Mat segRgb(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-        detector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
+        primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
 
         //display with mono mask
-        cv::applyColorMap(depthMap, depthMap, cv::COLORMAP_PLASMA);
-        hconcat(depthMap, segRgb, segRgb);
+        //cv::applyColorMap(depthMap, depthMap, cv::COLORMAP_PLASMA);
+        //hconcat(depthMap, segRgb, segRgb);
         cv::imshow("Seg", segRgb);
 
         switch(cv::waitKey(1)) {
@@ -213,12 +214,12 @@ int main(int argc, char* argv[]) {
     std::cout << "Mean image shape treatment time is " << meanMatTreatmentTime/i << std::endl;
     std::cout << "max treat time is " << maxTreatTime << std::endl;
 
-    std::cout << "init planes " << detector.resetTime/i << std::endl;
-    std::cout << "Init hist " << detector.initTime/i << std::endl;
-    std::cout << "grow " << detector.growTime/i << std::endl;
-    std::cout << "refine planes " << detector.mergeTime/i << std::endl;
-    std::cout << "refine cylinder " << detector.refineTime/i << std::endl;
-    std::cout << "setMask " << detector.setMaskTime/i << std::endl;
+    //std::cout << "init planes " << primDetector.resetTime/i << std::endl;
+    //std::cout << "Init hist " << primDetector.initTime/i << std::endl;
+    //std::cout << "grow " << primDetector.growTime/i << std::endl;
+    //std::cout << "refine planes " << primDetector.mergeTime/i << std::endl;
+    //std::cout << "refine cylinder " << primDetector.refineTime/i << std::endl;
+    //std::cout << "setMask " << primDetector.setMaskTime/i << std::endl;
 
     cv::destroyAllWindows();
     exit(0);

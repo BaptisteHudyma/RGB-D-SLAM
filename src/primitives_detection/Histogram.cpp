@@ -1,6 +1,6 @@
 #include "Histogram.hpp"
 
-using namespace planeDetection;
+using namespace primitiveDetection;
 
 Histogram::Histogram(int binPerCoordCount) 
     : binPerCoordCount(binPerCoordCount),

@@ -8,7 +8,8 @@
 #include <Eigen/Dense>
 
 
-namespace planeDetection {
+namespace primitiveDetection {
+
     typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>  MatrixXb;
 
 
@@ -21,6 +22,8 @@ namespace planeDetection {
             double distance(const Eigen::Vector3d& point);
 
             ~Cylinder_Segment();
+
+            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
         public:
             int get_segment_count() const;

@@ -1,6 +1,6 @@
 #include "DepthOperations.hpp"
 
-using namespace planeDetection;
+using namespace primitiveDetection;
 
 Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const int width, const int height, const int cellSize) 
     : 

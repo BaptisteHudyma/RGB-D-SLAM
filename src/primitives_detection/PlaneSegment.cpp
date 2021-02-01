@@ -2,7 +2,7 @@
 #include "eig33sym.hpp"
 #include "Parameters.hpp"
 
-using namespace planeDetection;
+using namespace primitiveDetection;
 using namespace Eigen;
 
 #include <iostream>

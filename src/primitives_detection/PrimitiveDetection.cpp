@@ -1,10 +1,10 @@
 #include <limits>
-#include "PlaneDetection.hpp"
+#include "PrimitiveDetection.hpp"
 #include "Parameters.hpp"
 
 
 //lib simplification
-using namespace planeDetection;
+using namespace primitiveDetection;
 using namespace Eigen;
 using namespace std;
 
@@ -15,7 +15,7 @@ using namespace std;
  * minCosAngleForMerge 
  * maxMergeDistance
  */
-Plane_Detection::Plane_Detection(const unsigned int height, const unsigned int width, const unsigned int blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
+Primitive_Detection::Primitive_Detection(const unsigned int height, const unsigned int width, const unsigned int blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
     :  histogram(20), 
     width(width), height(height),  blocSize(blocSize), 
     pointsPerCellCount(blocSize * blocSize), 
@@ -61,6 +61,7 @@ Plane_Detection::Plane_Detection(const unsigned int height, const unsigned int w
         this->planeGrid[i] = make_unique<Plane_Segment>(this->cellWidth, this->pointsPerCellCount);
     }
 
+    //perf measurments
     resetTime = 0;
     initTime = 0;
     growTime = 0;
@@ -75,7 +76,7 @@ Plane_Detection::Plane_Detection(const unsigned int height, const unsigned int w
  * in maskImage Output image of find_plane_regions
  * out labeledImage Output RGB image, similar to input but with planes and cylinder masks
  */
-void Plane_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double timeElapsed) {
+void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double timeElapsed) {
     //apply masks on image
     for(int r = 0; r < this->height; r++){
         const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
@@ -141,7 +142,7 @@ void Plane_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<c
  * Find the planes in the organized depth matrix using region growing
  * Segout will contain a 2D representation of the planes
  */
-void Plane_Detection::find_plane_regions(const Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut) {
+void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut) {
 
     //reset used data structures
     reset_data();
@@ -192,7 +193,7 @@ void Plane_Detection::find_plane_regions(const Eigen::MatrixXf& depthMatrix, std
  *  Reset the stored data in prevision of another analysis 
  *
  */
-void Plane_Detection::reset_data() {
+void Primitive_Detection::reset_data() {
     this->histogram.reset();
 
     //planeGrid SHOULD NOT be cleared
@@ -221,7 +222,7 @@ void Plane_Detection::reset_data() {
  *  Init planeGrid and cellDistanceTols
  *
  */
-void Plane_Detection::init_planar_cell_fitting(const MatrixXf& depthCloudArray) {
+void Primitive_Detection::init_planar_cell_fitting(const MatrixXf& depthCloudArray) {
     float sinCosAngleForMerge = sqrt(1 - pow(this->minCosAngleForMerge, 2));
 
     //for each planeGrid cell
@@ -246,7 +247,7 @@ void Plane_Detection::init_planar_cell_fitting(const MatrixXf& depthCloudArray) 
  *
  * returns the number of initial planar surfaces
  */
-int Plane_Detection::init_histogram() {
+int Primitive_Detection::init_histogram() {
     int remainingPlanarCells = 0;
 
     MatrixXd histBins(this->totalCellCount, 2);
@@ -270,7 +271,7 @@ int Plane_Detection::init_histogram() {
 /*
  *  grow planes and find cylinders from those planes
  */
-void Plane_Detection::grow_planes_and_cylinders(std::vector<std::pair<int,int>>& cylinder2regionMap, int remainingPlanarCells) {
+void Primitive_Detection::grow_planes_and_cylinders(std::vector<std::pair<int,int>>& cylinder2regionMap, int remainingPlanarCells) {
     int cylinderCount = 0;
     //find seed planes and make them grow
     while(remainingPlanarCells > 0) {
@@ -392,7 +393,7 @@ void Plane_Detection::grow_planes_and_cylinders(std::vector<std::pair<int,int>>&
 /*
  *  Merge close planes by comparing normals and MSE
  */
-void Plane_Detection::merge_planes(vector<unsigned int>& planeMergeLabels) {
+void Primitive_Detection::merge_planes(vector<unsigned int>& planeMergeLabels) {
     const unsigned int planeCount = this->planeSegments.size();
 
     MatrixXd planesAssocMat = MatrixXd::Zero(planeCount, planeCount);
@@ -437,7 +438,7 @@ void Plane_Detection::merge_planes(vector<unsigned int>& planeMergeLabels) {
 /*
  *  Refine the final plane edges in mask images
  */
-void Plane_Detection::refine_plane_boundaries(const MatrixXf& depthCloudArray, vector<unsigned int>& planeMergeLabels, vector<Plane_Segment>& planeSegmentsFinal) {
+void Primitive_Detection::refine_plane_boundaries(const MatrixXf& depthCloudArray, vector<unsigned int>& planeMergeLabels, vector<Plane_Segment>& planeSegmentsFinal) {
     //refine the coarse planes boundaries to smoother versions
     unsigned int planeCount = this->planeSegments.size();
     for(unsigned int i = 0; i < planeCount; i += 1) {
@@ -507,7 +508,7 @@ void Plane_Detection::refine_plane_boundaries(const MatrixXf& depthCloudArray, v
 /*
  *  Refine the cylinder edges in mask images
  */
-void Plane_Detection::refine_cylinder_boundaries(const MatrixXf& depthCloudArray, std::vector<pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal) {
+void Primitive_Detection::refine_cylinder_boundaries(const MatrixXf& depthCloudArray, std::vector<pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal) {
     if(not this->useCylinderDetection)
         return; //no cylinder detections
 
@@ -577,7 +578,7 @@ void Plane_Detection::refine_cylinder_boundaries(const MatrixXf& depthCloudArray
 /*
  *  Set output image pixel value with the index of the detected shape
  */
-void Plane_Detection::set_masked_display(cv::Mat& segOut) {
+void Primitive_Detection::set_masked_display(cv::Mat& segOut) {
     //copy and rearranging
     // Copy inlier list to matrix form
     for (int cellR = 0; cellR < this->verticalCellsCount; cellR += 1){
@@ -620,7 +621,7 @@ void Plane_Detection::set_masked_display(cv::Mat& segOut) {
 /*
  *  Fill an association matrix that links connected plane components
  */
-void Plane_Detection::get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix) {
+void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix) {
     int rows2scanCount = segmentMap.rows - 1;
     int cols2scanCount = segmentMap.cols - 1;
 
@@ -647,7 +648,7 @@ void Plane_Detection::get_connected_components(const cv::Mat& segmentMap, Eigen:
 /*
  *  Recursively Grow a plane seed and merge it with it's neighbors
  */
-void Plane_Detection::region_growing(const unsigned short x, const unsigned short y, const Vector3d& seedPlaneNormal, const double seedPlaneD) {
+void Primitive_Detection::region_growing(const unsigned short x, const unsigned short y, const Vector3d& seedPlaneNormal, const double seedPlaneD) {
     int index = x + horizontalCellsCount * y;
     if (index >= horizontalCellsCount * verticalCellsCount or 
             not this->unassignedMask[index] or this->activationMap[index]) {
@@ -680,7 +681,7 @@ void Plane_Detection::region_growing(const unsigned short x, const unsigned shor
 
 
 
-Plane_Detection::~Plane_Detection() {
+Primitive_Detection::~Primitive_Detection() {
     delete []this->unassignedMask;
     delete []this->activationMap;
     delete []this->segMapStacked;

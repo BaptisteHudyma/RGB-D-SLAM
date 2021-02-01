@@ -6,7 +6,7 @@
 #include "PlaneSegment.hpp"
 
 
-namespace planeDetection {
+namespace primitiveDetection {
 
     /*
      *  Node class representing a depth graph point
@@ -32,6 +32,8 @@ namespace planeDetection {
 
             void fit_plane();   //fit a plane to this node points
             void clear_plane_parameters();    //clear node plane parameters  
+
+            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
         public: //getters
             const double get_MSE() const { return MSE; };

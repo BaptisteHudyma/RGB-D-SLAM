@@ -6,7 +6,7 @@
 
 using namespace std;
 using namespace Eigen;
-using namespace planeDetection;
+using namespace primitiveDetection;
 
 
 Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, int subRegionId) {

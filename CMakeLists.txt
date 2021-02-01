@@ -10,26 +10,28 @@ set (CMAKE_CXX_FLAGS "-O2")
 
 set(CMAKE_BUILD_TYPE Release)
 set(SRC src)
+set(PRIM ${SRC}/primitives_detection)
 set(THIRD_PARTY third_party)
 
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 include_directories(${SRC})
+include_directories(${PRIM})
 include_directories(${THIRD_PARTY})
 
-add_executable(planeExtraction
+add_executable(rgbslam
     main.cpp
-    ${SRC}/DepthOperations.cpp
-    ${SRC}/PlaneDetection.cpp
-    ${SRC}/PlaneSegment.cpp
-    ${SRC}/CylinderSegment.cpp
-    ${SRC}/Histogram.cpp
+    ${PRIM}/DepthOperations.cpp
+    ${PRIM}/PrimitiveDetection.cpp
+    ${PRIM}/PlaneSegment.cpp
+    ${PRIM}/CylinderSegment.cpp
+    ${PRIM}/Histogram.cpp
     ${SRC}/MonocularDepthMap.cpp
 
     ${THIRD_PARTY}/LineSegmentDetector.cpp
     ${THIRD_PARTY}/dsyevh3.cpp
     )
 
-target_link_libraries(planeExtraction ${OpenCV_LIBS} ${Eigen_LIBRARIES})
+target_link_libraries(rgbslam ${OpenCV_LIBS} ${Eigen_LIBRARIES})
 
 

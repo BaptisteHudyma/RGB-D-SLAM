@@ -16,17 +16,17 @@
 #include "Histogram.hpp"
 
 
-namespace planeDetection {
+namespace primitiveDetection {
 
-    class Plane_Detection {
+    class Primitive_Detection {
         //check for planes in an organized depth points matrix 
         public:
-            Plane_Detection(const unsigned int width, const unsigned int height, const unsigned int blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
+            Primitive_Detection(const unsigned int width, const unsigned int height, const unsigned int blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
 
-            void find_plane_regions(const Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut);  //detect planes in depth image
+            void find_primitives(const Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut);  //detect 3D primitives in depth image
             
             void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double elapsedTime=0);
-            ~Plane_Detection();
+            ~Primitive_Detection();
 
             //perf measurments
             double resetTime;
@@ -100,8 +100,8 @@ namespace planeDetection {
 
         private:
             //prevent backend copy
-            Plane_Detection(const Plane_Detection&);
-            Plane_Detection& operator=(const Plane_Detection&);
+            Primitive_Detection(const Primitive_Detection&);
+            Primitive_Detection& operator=(const Primitive_Detection&);
     };
 
 }

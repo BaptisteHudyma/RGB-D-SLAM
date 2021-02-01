@@ -5,11 +5,13 @@
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 
-namespace planeDetection {
+namespace primitiveDetection {
 
     class Depth_Operations {
         public:
             Depth_Operations(const std::string& paramFilePath, const int width, const int height, const int cellSize);
+
+            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 
             /*
