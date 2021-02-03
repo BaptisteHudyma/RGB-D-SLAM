@@ -3,12 +3,8 @@
 
 #include "Pose.hpp"
 #include "Image_Features_Struct.hpp"
+#include <g2o/core/sparse_optimizer.h>
 
-
-namespace g2o
-{
-    class SparseOptimizer;
-}
 
 namespace poseEstimation {
 
@@ -26,7 +22,7 @@ namespace poseEstimation {
             double cy;
             double baseline;
 
-            g2o::SparseOptimizer *optimizer;
+            g2o::SparseOptimizer optimizer;
     };
 
 }

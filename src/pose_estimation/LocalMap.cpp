@@ -138,8 +138,8 @@ int Local_Map::find_matches(const Pose &camPose, Image_Features_Struct& features
         }
     }
 
-    if (matches_count < LVT_N_MATCHES_TH)
-    {
+    if (matches_count < LVT_N_MATCHES_TH) 
+    { //search at 2x the tracking radius
         matches_count = 0;
         features.reset_matched_marks();
         int original_tracking_radius = features.get_tracking_radius();
@@ -165,13 +165,11 @@ int Local_Map::find_matches(const Pose &camPose, Image_Features_Struct& features
     for (int i = 0; i < matches.size(); i++)
     {
         this->mapPoints[i].match_idx = matches[i];
-        if (matches[i] == -2)
-        {
+        if (matches[i] == -2) {
             continue;
         }
 
-        if (matches[i] == -1)
-        {
+        if (matches[i] == -1) {
             this->mapPoints[i].counter += 1;
             continue;
         }

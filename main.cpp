@@ -12,10 +12,10 @@
 #include "MonocularDepthMap.hpp"
 
 #include "LineSegmentDetector.hpp"
-//#include "RGB_Slam.hpp"
+#include "RGB_Slam.hpp"
 
 using namespace primitiveDetection;
-//using namespace poseEstimation;
+using namespace poseEstimation;
 using namespace std;
 
 
@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
     if (not depthOps.is_ok()) {
         return -1;
     }
-/*
+
     //visual odometry params
     Parameters params;
     if (not params.init_from_file(calibYAMLPath.str())) {
@@ -113,10 +113,9 @@ int main(int argc, char* argv[]) {
     params.set_height(height);
     params.set_width(width);
 
-
     //visual odom class
     RGB_SLAM vo(params);
-    */
+
 
     //plane/cylinder finder
     Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
@@ -174,6 +173,14 @@ int main(int argc, char* argv[]) {
         time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
+
+
+        //visual odometry tracking
+        vo.track(grayImage, depthImage);
+
+        if(vo.get_state() == vo.eState_LOST)
+            break;
+
 
 
         //display 

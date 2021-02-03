@@ -8,7 +8,6 @@
 #include <opencv2/opencv.hpp>
 
 #include <g2o/config.h>
-#include <g2o/core/sparse_optimizer.h>
 #include <g2o/core/block_solver.h>
 #include <g2o/core/solver.h>
 #include <g2o/core/robust_kernel_impl.h>
@@ -25,21 +24,18 @@ using namespace poseEstimation;
 PNP_Solver::PNP_Solver(double fx, double fy, double cx, double cy, double baseline) :
     fx(fx), fy(fy),
     cx(cx), cy(cy),
-    baseline(baseline),
-    optimizer(nullptr)
+    baseline(baseline)
 {
-    this->optimizer = new g2o::SparseOptimizer();
-    this->optimizer->setVerbose(false);
+    this->optimizer.setVerbose(false);
 
     auto linearSolver = std::make_unique<g2o::LinearSolverPCG<g2o::BlockSolver_6_3::PoseMatrixType>>();
-    g2o::OptimizationAlgorithmLevenberg solver{std::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver))};
 
-    //this->optimizer->setAlgorithm(std::move(solver));
-    this->optimizer->setAlgorithm(&solver);
+    //will be freed by the optimizer destructor
+    g2o::OptimizationAlgorithmLevenberg *solver = new g2o::OptimizationAlgorithmLevenberg(std::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
+    this->optimizer.setAlgorithm(solver);
 }
 
 PNP_Solver::~PNP_Solver() {
-    delete this->optimizer;
 }
 
 Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers) {
@@ -52,7 +48,7 @@ Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& featur
     camVertex->setId(0);
     camVertex->setEstimate(sbaCam);
     camVertex->setFixed(false);
-    this->optimizer->addVertex(camVertex);
+    this->optimizer.addVertex(camVertex);
 
     // add mono measurments
     static const double monoChi = sqrt(LVT_REPROJECTION_TH2);
@@ -65,7 +61,7 @@ Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& featur
         pointVertex->setMarginalized(false);
         pointVertex->setEstimate(matchedPoints[i]);
         pointVertex->setFixed(true);
-        this->optimizer->addVertex(pointVertex);
+        this->optimizer.addVertex(pointVertex);
 
         g2o::EdgeProjectP2MC *edge = new g2o::EdgeProjectP2MC();
         edge->setVertex(0, pointVertex);
@@ -78,16 +74,16 @@ Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& featur
         g2o::RobustKernel *rkh = new g2o::RobustKernelCauchy;
         edge->setRobustKernel(rkh);
         rkh->setDelta(monoChi);
-        this->optimizer->addEdge(edge);
+        this->optimizer.addEdge(edge);
         monoEdges[i] = edge;
     }
 
-    // perform optimzation
+    // perform optimization
     std::vector<int> monoInlierMarks(monoEdges.size(), 1);
     for (int i = 0; i < N_PASSES; i++)
     {
-        this->optimizer->initializeOptimization(0);
-        this->optimizer->optimize(5);
+        this->optimizer.initializeOptimization(0);
+        this->optimizer.optimize(5);
         for (int k = 0; k < monoEdges.size(); k++)
         {
             if (monoEdges[k]->chi2() > LVT_REPROJECTION_TH2)
@@ -103,6 +99,6 @@ Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& featur
     const Eigen::Quaterniond opOrientation = camVertex->estimate().rotation();
     Pose opPose = Pose(opPosition, opOrientation);
 
-    this->optimizer->clear();
+    this->optimizer.clear();
     return opPose;
 }

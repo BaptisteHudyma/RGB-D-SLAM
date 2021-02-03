@@ -10,6 +10,13 @@ namespace poseEstimation {
             Parameters();
             bool init_from_file(const std::string& config_file_name);
 
+            enum
+            {
+                etriangulation_policy_decreasing_matches = 1,
+                etriangulation_policy_always_triangulate,
+                etriangulation_policy_map_size
+            };
+
         public: //setters
             void set_fx(float _fx) { fx = _fx; }
             void set_fy(float _fy) { fy = _fy; }
@@ -52,6 +59,7 @@ namespace poseEstimation {
             int get_camera_size() const { return viewer_camera_size; }
             int get_point_size() const { return viewer_point_size; }
 
+            int get_triangulation_policy() const { return triangulation_policy; }
 
 
         private:
@@ -76,12 +84,6 @@ namespace poseEstimation {
             int staged_threshold;                          // newly triangulated map points are initially put into a staging phase, if they were successfully tracked for staged_threshold number of frames then they are declared good and added to the local map to be used for pose estimation. If staged_threshold is set to zero then this feature is effectively disabled.
             bool enable_logging;
             bool enable_visualization;
-            enum
-            {
-                etriangulation_policy_decreasing_matches = 1,
-                etriangulation_policy_always_triangulate,
-                etriangulation_policy_map_size
-            };
             int triangulation_policy;
             float viewer_camera_size;
             int viewer_point_size;

@@ -10,6 +10,12 @@ RGB_SLAM::RGB_SLAM(const Parameters &params) :
 
 {
     reset();
+
+    triangulationPolicy = &RGB_SLAM::triangulation_policy_decreasing_matches;
+    if(params.get_triangulation_policy() == Parameters::etriangulation_policy_always_triangulate)
+        triangulationPolicy = &RGB_SLAM::triangulation_policy_always_triangulate;
+    else if(params.get_triangulation_policy() == Parameters::etriangulation_policy_map_size)
+        triangulationPolicy = &RGB_SLAM::triangulation_policy_map_size;
 }
 
 void RGB_SLAM::reset() {
@@ -82,8 +88,10 @@ Pose RGB_SLAM::perform_tracking(const Pose& estimatedPose, Image_Features_Struct
     this->localMap.find_matches(estimatedPose, features, matchedPoints, matchOutliers);
     const int matchesCnt = matchedPoints.size();
 
+    std::cout << features.get_features_count() << " : " << matchesCnt << std::endl;
     if(matchesCnt < this->params.get_min_matches_for_tracking()) {
         //not enough matched features
+        std::cout << "Not enough features matched for tracking: only " << matchesCnt << " matches" << std::endl;
         isTracking = false;
         return this->lastPose;
     }
@@ -95,10 +103,50 @@ Pose RGB_SLAM::perform_tracking(const Pose& estimatedPose, Image_Features_Struct
 
     //remove untracked points
     this->localMap.clean_untracked_points(features);
+
+    if (params.get_staged_threshold() > 0)
+    {
+        localMap.update_staged_map_points(optimizedPose, features);
+    }
+
+    if (need_new_triangulation())
+    {
+        localMap.update_with_new_triangulation(optimizedPose, features);
+    }
     
     isTracking = true;
     return optimizedPose;
 }
+
+bool RGB_SLAM::need_new_triangulation()
+{
+    return ((this->*triangulationPolicy)());
+}
+
+bool RGB_SLAM::triangulation_policy_decreasing_matches()
+{
+    const float ratio = 0.99;
+    for (int i = N_MATCHES_WINDOWS - 1; i > 0; --i)
+    {
+        if (float(lastMatches[i]) > ratio * float(lastMatches[i - 1]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool RGB_SLAM::triangulation_policy_always_triangulate()
+{
+    return true;
+}
+
+bool RGB_SLAM::triangulation_policy_map_size()
+{
+    return (localMap.get_map_size() < 1000);
+}
+
+
 
 
 

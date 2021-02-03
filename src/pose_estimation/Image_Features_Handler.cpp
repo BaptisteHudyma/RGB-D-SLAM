@@ -175,7 +175,7 @@ void Image_Features_Handler::perform_compute_descriptors_only(compute_features_d
  * in img_depth
  * out out_struct
  */
-void Image_Features_Handler::compute_features(const cv::Mat &img_gray, const cv::Mat &in_img_depth, Image_Features_Struct& out_struct)
+void Image_Features_Handler::compute_features(const cv::Mat& img_gray, const cv::Mat& in_img_depth, Image_Features_Struct& out_struct)
 {
     // detect corners in the image as normal
     this->thData[0].img = img_gray;

@@ -28,6 +28,12 @@ namespace poseEstimation {
             };
             eState get_state() const { return this->state; }
 
+        protected:
+            bool need_new_triangulation();
+            bool triangulation_policy_decreasing_matches();
+            bool triangulation_policy_always_triangulate();
+            bool triangulation_policy_map_size();
+
         private:
             Pose perform_tracking(const Pose& estimatedPose, Image_Features_Struct& features, bool& isTracking);
 
@@ -41,6 +47,7 @@ namespace poseEstimation {
             unsigned int frameNumber;
             std::deque<int> lastMatches;
             eState state;
+            bool (RGB_SLAM::*triangulationPolicy)();
 
         private:
             //prevent backend copy

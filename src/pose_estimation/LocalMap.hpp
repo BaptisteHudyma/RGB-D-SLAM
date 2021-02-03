@@ -18,14 +18,12 @@ namespace poseEstimation {
             ~Local_Map();
             void reset();
 
-            int find_matched(const Pose& camPose, Image_Features_Struct features,
-                    vector3_array& matchedPoints, std::vector<int>& matchOutliers);
-
             void update_with_new_triangulation(const Pose& camPose,
                     Image_Features_Struct& features, bool dontStage = false);
             
 
             void clean_untracked_points(Image_Features_Struct& features);
+            void update_staged_map_points(const Pose& camPose, Image_Features_Struct& features);
 
 
         public: //getters
@@ -53,7 +51,6 @@ namespace poseEstimation {
             mapPointArray stagedPoints;
 
         protected:
-            void update_staged_map_points(const Pose& camPose, Image_Features_Struct& features);
 
             //void triangulate(const Pose &camPose, Image_Features_Struct& features, Image_Features_Struct& featuresRight, mapPointArray& outPoints);
 
