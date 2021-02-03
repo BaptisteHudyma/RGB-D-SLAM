@@ -2,19 +2,31 @@ cmake_minimum_required(VERSION 3.1)
 
 project(rgbSLAM)
 
-set (CMAKE_CXX_STANDARD 20)
-
-find_package(OpenCV 4 REQUIRED)
-list(APPEND LINK_LIBS ${OpenCV_LIBS})
-find_package(Eigen3 REQUIRED)
-list(APPEND LINK_LIBS ${Eigen_LIBRARIES})
-find_package(g2o)
-list(APPEND LINK_LIBS ${G2O_CORE_LIBRARY} ${G2O_STUFF_LIBRARY} ${G2O_TYPES_SBA} ${G2O_TYPES_SLAM3D} ${G2O_SOLVER_PCG})
-
-include_directories(${OpenCV_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR} ${G20_INCLUDE_DIR})
-
+set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_FLAGS "-O2")
 set(CMAKE_BUILD_TYPE Release)
+MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
+
+#add special cmakes (here for g2o)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
+#Find opencv
+find_package(OpenCV 4 REQUIRED)
+list(APPEND INC_DIRS ${OpenCV_INCLUDE_DIRS})
+list(APPEND LINK_LIBS ${OpenCV_LIBS})
+
+#Find eigen
+find_package(Eigen3 REQUIRED)
+list(APPEND INC_DIRS ${EIGEN3_INCLUDE_DIR} )
+list(APPEND LINK_LIBS ${Eigen_LIBRARIES})
+
+#Find g2o
+# Find the header files
+FIND_PATH(G2O_INCLUDE_DIR g2o/core/base_vertex.h)
+find_package(G2O REQUIRED)
+set(G2O_LIBRARIES ${G2O_CORE_LIBRARY} ${G2O_STUFF_LIBRARY} ${G2O_TYPES_SBA} ${G2O_TYPES_SLAM3D} ${G2O_SOLVER_PCG})
+list(APPEND INC_DIRS ${G2O_INCLUDE_DIR})
+list(APPEND LINK_LIBS ${G2O_LIBRARIES})
 
 
 set(SRC src)
@@ -22,9 +34,12 @@ set(THIRD_PARTY third_party)
 set(PRIM ${SRC}/primitives_detection)
 set(POSE ${SRC}/pose_estimation)
 
-include_directories(${SRC} ${PRIM} ${POSE})
-include_directories(${THIRD_PARTY})
-
+include_directories(
+    ${SRC}
+    ${PRIM}
+    ${POSE}  
+    ${THIRD_PARTY}
+    ${INC_DIRS})
 
 add_executable(rgbslam 
     main.cpp
@@ -38,13 +53,15 @@ add_library(primitivesDetection
     ${PRIM}/Histogram.cpp
     )
 add_library(poseEstimation
+    ${POSE}/PoseUtils.cpp
     ${POSE}/Image_Features_Handler.cpp
     ${POSE}/Image_Features_Struct.cpp
     ${POSE}/LocalMap.cpp
     ${POSE}/MotionModel.cpp
     ${POSE}/Parameters.cpp
     ${POSE}/PNPSolver.cpp
-    ${POSE}/PoseUtils.cpp
+
+    ${SRC}/RGB_Slam.cpp
     )
 add_library(thirdParty
     ${SRC}/MonocularDepthMap.cpp

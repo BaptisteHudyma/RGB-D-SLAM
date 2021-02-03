@@ -1,12 +1,22 @@
 #ifndef LOAD_PARAMETERS_HPP
 #define LOAD_PARAMETERS_HPP
 
+#include <string>
+
 namespace poseEstimation {
 
     class Parameters  {
         public:
             Parameters();
-            bool init_from_file(const char *config_file_name);
+            bool init_from_file(const std::string& config_file_name);
+
+        public: //setters
+            void set_fx(float _fx) { fx = _fx; }
+            void set_fy(float _fy) { fy = _fy; }
+            void set_cx(float _cx) { cx = _cx; }
+            void set_cy(float _cy) { cy = _cy; }
+            void set_width(float w) { img_width = w; }
+            void set_height(float h) { img_height = h; }
 
         public: //getters
             float get_fx() const { return fx; }
@@ -38,6 +48,9 @@ namespace poseEstimation {
             int get_untracked_threshold() const { return untracked_threshold; }
 
             unsigned get_min_matches_for_tracking() const { return min_num_matches_for_tracking; }
+
+            int get_camera_size() const { return viewer_camera_size; }
+            int get_point_size() const { return viewer_point_size; }
 
 
 

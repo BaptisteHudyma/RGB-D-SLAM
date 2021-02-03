@@ -28,7 +28,7 @@ Parameters::Parameters() {
 }
 
 
-bool Parameters::init_from_file(const char* configFileName) {
+bool Parameters::init_from_file(const std::string& configFileName) {
     cv::FileStorage config_file(configFileName, cv::FileStorage::READ);
     if (!config_file.isOpened()) {
         return false;

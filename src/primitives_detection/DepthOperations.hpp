@@ -23,6 +23,12 @@ namespace primitiveDetection {
             void get_organized_cloud_array(cv::Mat& depthImage, Eigen::MatrixXf& organizedCloudArray);
             bool is_ok() const {return isOk;};
 
+        public: //getters
+            float get_rgb_fx() const { return fxRgb; }
+            float get_rgb_fy() const { return fyRgb; }
+            float get_rgb_cx() const { return cxRgb; }
+            float get_rgb_cy() const { return cyRgb; }
+
         protected:
             bool load_parameters(const std::string& parameterFilePath);
             void init_matrices();

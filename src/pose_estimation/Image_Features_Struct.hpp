@@ -15,7 +15,7 @@ namespace poseEstimation {
                     int tracking_radius, int hashing_cell_size, int vertical_search_radius, float triangulation_ratio_th,
                     float tracking_ratio_th, float desc_dist_th, std::vector<float> *kps_depth = nullptr);
 
-            int find_match_index(const vector2 &pt, const cv::Mat &desc, float *d1, float *d2) const; // find the best feature in the struct that matches the passed one and return its index, or -1 otherwise. (ratio is the ratio to use for the ratio test).
+            int find_match_index(const vector2 &pt, const cv::Mat &desc, float *d1, float *d2) const; 
             int row_match(const cv::Point2f &pt, const cv::Mat &desc) const;
 
             void mark_as_matched(const int idx, const bool val) { m_matched_marks[idx] = val; }

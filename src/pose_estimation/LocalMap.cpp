@@ -113,7 +113,7 @@ void Local_Map::reset()
 int Local_Map::find_matches(const Pose &camPose, Image_Features_Struct& features,
         vector3_array& outMapPoints, std::vector<int>& outMatchesLeft)
 {
-    const matrix34 cml = poseUtils::Pose_Utils::compute_world_to_camera_transform(camPose);
+    const matrix34 cml = Pose_Utils::compute_world_to_camera_transform(camPose);
     int matches_count = 0;
     std::vector<int> matches(this->mapPoints.size(), -2); // mark each map point with its matching index from features, -2 if not visible
     vector2_array projections(this->mapPoints.size());
@@ -227,7 +227,7 @@ void Local_Map::triangulate_rgbd(const Pose &camPose, Image_Features_Struct& fea
  * in featuresRight Image features of other image
  * out outpoints Vector of map point
  */
-void Local_Map::triangulate(const Pose &camPose, Image_Features_Struct& features, Image_Features_Struct& featuresRight, mapPointArray& outPoints)  {
+/*void Local_Map::triangulate(const Pose &camPose, Image_Features_Struct& features, Image_Features_Struct& featuresRight, mapPointArray& outPoints)  {
     std::vector<cv::DMatch> matches;
     this->featuresHandler->row_match(features, featuresRight, matches);
     if (matches.empty())
@@ -236,9 +236,9 @@ void Local_Map::triangulate(const Pose &camPose, Image_Features_Struct& features
         return;
     }
 
-    const Pose camPose_right = poseUtils::Pose_Utils::compute_right_camera_pose(camPose, this->voParams.get_baseline());
-    const matrix34 cml = poseUtils::Pose_Utils::compute_world_to_camera_transform(camPose);
-    const matrix34 cmr = poseUtils::Pose_Utils::compute_world_to_camera_transform(camPose_right);
+    const Pose camPose_right = Pose_Utils::compute_right_camera_pose(camPose, this->voParams.get_baseline());
+    const matrix34 cml = Pose_Utils::compute_world_to_camera_transform(camPose);
+    const matrix34 cmr = Pose_Utils::compute_world_to_camera_transform(camPose_right);
     const double cx = this->voParams.get_cx(), cy = this->voParams.get_cy(); // , f_inv = 1.0 / this->voParams.get_focal_length();
     const double inv_fx = 1.0 / this->voParams.get_fx(), inv_fy = 1.0 / this->voParams.get_fy();
     outPoints.reserve(matches.size());
@@ -293,29 +293,24 @@ void Local_Map::triangulate(const Pose &camPose, Image_Features_Struct& features
         mp.age = 0;
         outPoints.push_back(mp);
     }
-}
+}*/
 
 /*
  *  Triangulate new map points from features that were not matched/tracked
  *
- * int camPose
+ * in camPose Position of camera
  * in features
- * in dontStage
+ * in dontStage Dont store staged points
  */
-void Local_Map::update_with_new_triangulation(const Pose &camPose, Image_Features_Struct& features, Image_Features_Struct& featuresRight, bool dont_stage)
+void Local_Map::update_with_new_triangulation(const Pose &camPose, Image_Features_Struct& features, bool dont_stage)
 {
-    // 
+    assert(features.is_depth_associated());
+    
+    //make sure we handle depth images
     mapPointArray new_triangulations;
-    if (features.is_depth_associated())
-    {
-        triangulate_rgbd(camPose, features, new_triangulations);
-    }
-    else
-    {
-        triangulate(camPose, features, featuresRight, new_triangulations);
-    }
+    triangulate_rgbd(camPose, features, new_triangulations);
 
-    assert(!new_triangulations.empty());    //nothing was triangulated
+    assert(not new_triangulations.empty());    //nothing was triangulated
 
     if (dont_stage or this->voParams.get_staged_threshold() == 0 or get_map_size() < LVT_N_MAP_POINTS)
     {
@@ -336,7 +331,7 @@ void Local_Map::update_with_new_triangulation(const Pose &camPose, Image_Feature
  */
 void Local_Map::update_staged_map_points(const Pose &camPose, Image_Features_Struct& features)
 {
-    const matrix34 cml = poseUtils::Pose_Utils::compute_world_to_camera_transform(camPose);
+    const matrix34 cml = Pose_Utils::compute_world_to_camera_transform(camPose);
 
     int n_erased_points = 0;
     int n_upgraded_points = 0;

@@ -12,11 +12,10 @@
 #include "MonocularDepthMap.hpp"
 
 #include "LineSegmentDetector.hpp"
-#include "RGB_Slam.hpp"
+//#include "RGB_Slam.hpp"
 
 using namespace primitiveDetection;
-using namespace cv::line_descriptor;
-using namespace cv::xfeatures2d;
+//using namespace poseEstimation;
 using namespace std;
 
 
@@ -88,15 +87,36 @@ int main(int argc, char* argv[]) {
     }
 
     // Get intrinsics parameters
-    std::stringstream calibPath;
+    std::stringstream calibPath, calibYAMLPath;
     calibPath << dataPath.str() << "calib_params.xml";
+    calibYAMLPath << dataPath.str() << "calib_params.yaml";
 
     //Monocular_Depth_Map depthRGBImage(rgbImage);
 
     Depth_Operations depthOps(calibPath.str(), width, height, PATCH_SIZE);
     if (not depthOps.is_ok()) {
-        exit(-1);
+        return -1;
     }
+/*
+    //visual odometry params
+    Parameters params;
+    if (not params.init_from_file(calibYAMLPath.str())) {
+        std::cout << "Failed to load YAML param file at: " << calibYAMLPath.str() << std::endl;
+        return -1;
+    }
+    
+    params.set_fx(depthOps.get_rgb_fx());
+    params.set_fy(depthOps.get_rgb_fy());
+    params.set_cx(depthOps.get_rgb_cx());
+    params.set_cy(depthOps.get_rgb_cy());
+
+    params.set_height(height);
+    params.set_width(width);
+
+
+    //visual odom class
+    RGB_SLAM vo(params);
+    */
 
     //plane/cylinder finder
     Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);

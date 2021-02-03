@@ -46,6 +46,13 @@ void Image_Features_Struct::init(const cv::Mat& in_image, std::vector<cv::KeyPoi
     }
 }
 
+/*
+ *  find the best feature in the struct that matches the passed one and return its index, or -1 otherwise. (ratio is the ratio to use for the ratio test).
+ *
+ *
+ *
+ *  return: best feature index or -1
+ */
 int Image_Features_Struct::find_match_index(const vector2& sl_pt, const cv::Mat& desc, float *d1, float *d2)const
 {
     const cv::Point2f pt(sl_pt.x(), sl_pt.y());

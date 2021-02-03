@@ -1,6 +1,7 @@
 #include "PNPSolver.hpp"
 
 #include "Constants.hpp"
+#include "LocalMap.hpp"
 
 #include <Eigen/StdVector>
 #include <numeric>
@@ -27,11 +28,13 @@ PNP_Solver::PNP_Solver(double fx, double fy, double cx, double cy, double baseli
     baseline(baseline),
     optimizer(nullptr)
 {
+    this->optimizer = new g2o::SparseOptimizer();
+    this->optimizer->setVerbose(false);
+
     auto linearSolver = std::make_unique<g2o::LinearSolverPCG<g2o::BlockSolver_6_3::PoseMatrixType>>();
     g2o::OptimizationAlgorithmLevenberg solver{std::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver))};
 
-    this->optimizer = new g2o::SparseOptimizer();
-    this->optimizer->setVerbose(false);
+    //this->optimizer->setAlgorithm(std::move(solver));
     this->optimizer->setAlgorithm(&solver);
 }
 

@@ -22,7 +22,8 @@ namespace poseEstimation {
                     vector3_array& matchedPoints, std::vector<int>& matchOutliers);
 
             void update_with_new_triangulation(const Pose& camPose,
-                    Image_Features_Struct& features, Image_Features_Struct& featuresRight, bool dontStage = false);
+                    Image_Features_Struct& features, bool dontStage = false);
+            
 
             void clean_untracked_points(Image_Features_Struct& features);
 
@@ -54,7 +55,7 @@ namespace poseEstimation {
         protected:
             void update_staged_map_points(const Pose& camPose, Image_Features_Struct& features);
 
-            void triangulate(const Pose &camPose, Image_Features_Struct& features, Image_Features_Struct& featuresRight, mapPointArray& outPoints);
+            //void triangulate(const Pose &camPose, Image_Features_Struct& features, Image_Features_Struct& featuresRight, mapPointArray& outPoints);
 
             void triangulate_rgbd(const Pose& camPose, Image_Features_Struct& features, mapPointArray& outPoints);
 

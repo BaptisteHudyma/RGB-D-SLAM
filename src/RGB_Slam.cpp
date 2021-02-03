@@ -1,12 +1,12 @@
-#include "RGB_SLAM.hpp"
+#include "RGB_Slam.hpp"
 
 using namespace poseEstimation;
 
 RGB_SLAM::RGB_SLAM(const Parameters &params) :
     params(params),
-    featuresHandler(params),
-    localMap(params.get_camera_size(), params.get_point_size()),
-    pnpSolver(params.get_fx(), params.get_fy(), params.get_cy(), params.get_baseline()),
+    featureHandler(params),
+    localMap(params, &featureHandler),
+    pnpSolver(params.get_fx(), params.get_fy(), params.get_cx(), params.get_cy(), params.get_baseline())
 
 {
     reset();
@@ -19,7 +19,7 @@ void RGB_SLAM::reset() {
     this->lastPose = Pose();
     this->frameNumber = 0;
     this->lastMatches = std::deque<int>(N_MATCHES_WINDOWS, std::numeric_limits<int>::max());
-    this->eState = eState_NOT_INITIALIZED;
+    this->state = eState_NOT_INITIALIZED;
 
 }
 
@@ -43,7 +43,7 @@ Pose RGB_SLAM::track(const cv::Mat& imgRGB, const cv::Mat& imgDepth) {
     assert(imgRGB.channels() == 1 and imgDepth.type() == CV_32F);
 
     Image_Features_Struct features;
-    featuresHandler.compute_features_rgbd(imgRGB, imgDepth, &features);
+    featureHandler.compute_features(imgRGB, imgDepth, features);
 
     if(this->state == eState_NOT_INITIALIZED) {
         Pose identityPose;

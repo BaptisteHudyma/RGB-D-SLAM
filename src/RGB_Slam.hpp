@@ -29,7 +29,7 @@ namespace poseEstimation {
             eState get_state() const { return this->state; }
 
         private:
-            Pose perform_tracking(const Pose& estimatedPose);
+            Pose perform_tracking(const Pose& estimatedPose, Image_Features_Struct& features, bool& isTracking);
 
             Local_Map localMap;
             PNP_Solver pnpSolver;
@@ -46,6 +46,10 @@ namespace poseEstimation {
             //prevent backend copy
             RGB_SLAM(const RGB_SLAM&) = delete;
             RGB_SLAM& operator=(const RGB_SLAM&) = delete;
+            enum
+            {
+                N_MATCHES_WINDOWS = 3
+            };
     };
 };
 
