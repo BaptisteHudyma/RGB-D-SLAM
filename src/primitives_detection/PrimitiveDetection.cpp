@@ -85,7 +85,7 @@ void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vect
             const int index = maskImage.at<uchar>(r, c);   //get index of plane/cylinder at [r, c]
             //int index = maskImage(r, c);   //get index of plane/cylinder at [r, c]
             if(index <= 0) {
-                outPtr[c] = rgbPtr[c] / 2;
+                outPtr[c] = rgbPtr[c];
             }
             else {
                 //there is a mask to display 

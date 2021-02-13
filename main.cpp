@@ -42,14 +42,51 @@ std::vector<cv::Vec3b> get_color_vector() {
     return color_code;
 }
 
+void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) {
+    switch(cv::waitKey(1)) {
+        //check pressed key
+        case 'l':
+            useLineDetection = not useLineDetection;
+            break;
+        case 's':
+            showPrimitiveMasks = not showPrimitiveMasks;
+            break;
+        case 'p': //pause button
+            cv::waitKey(-1); //wait until any key is pressed
+            break;
+        case 'q': //quit button
+            runLoop = false;
+        default:
+            break;
+    }
+}
 
-int main(int argc, char* argv[]) {
+/*
+ * Load rgb and depth images from the folder dataPath at index imageIndex
+ *
+ *  returns true is load is successful, else return false
+ */
+bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage, cv::Mat& depthImage) {
+    std::stringstream depthImagePath, rgbImgPath;
+    rgbImgPath << dataPath.str() << "rgb_"<< imageIndex <<".png";
+    depthImagePath << dataPath.str() << "depth_" << imageIndex << ".png";
 
+    rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
+    depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
+    depthImage.convertTo(depthImage, CV_32F);
+
+    //check if images exists
+    return depthImage.data and rgbImage.data;
+}
+
+bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& showPrimitiveMasks, bool& useLineDetection, bool& useFrameOdometry, int& startIndex) {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
-        "{f folder   |<none>| folder to parse        }"
-        "{c cylinder |  1   | Use cylinder detection }"
-        "{i index    |  0   | First image to parse   }"
+        "{f folder        |<none>| folder to parse        }"
+        "{p primitive     |  1   | display primitive masks }"
+        "{l lines         |  0   | Detect lines }"
+        "{o odometry      |  0   | Use frame odometry }"
+        "{i index         |  0   | First image to parse   }"
         ;
 
     cv::CommandLineParser parser(argc, argv, keys);
@@ -57,42 +94,46 @@ int main(int argc, char* argv[]) {
 
     if (parser.has("help")) {
         parser.printMessage();
-        return 0;
+        return false;
     }
 
-    std::stringstream dataPath;
     dataPath << parser.get<cv::String>("f") << "/";
-    bool useCylinderFitting = parser.get<bool>("c");
-    int startIndex = parser.get<int>("i");
+    showPrimitiveMasks = parser.get<bool>("p");
+    useLineDetection = parser.get<bool>("l");
+    useFrameOdometry = parser.get<bool>("o");
+    startIndex = parser.get<int>("i");
 
-    if (!parser.check()) {
+    if(not parser.check()) {
         parser.printErrors();
-        return 0;
     }
+    return parser.check();
+}
 
-    std::stringstream depthImagePath, rgbImgPath;
-    rgbImgPath << dataPath.str() << "rgb_0.png";
-    depthImagePath << dataPath.str() << "depth_0.png";
+int main(int argc, char* argv[]) {
+    std::stringstream dataPath;
+    bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
+    int startIndex;
+
+    if (not parse_parameters(argc, argv, dataPath, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex)) {
+        return 0;   //could not parse parameters correctly 
+    }
 
     int width, height;
-    cv::Mat rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
-    cv::Mat depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_GRAYSCALE);//ANYDEPTH);
-    if(rgbImage.data and depthImage.data) {
-        width = rgbImage.cols;
-        height = rgbImage.rows;
-    }
-    else {
-        std::cout << "Error loading first depth image at " << depthImagePath.str() << std::endl;
+    cv::Mat rgbImage, depthImage;
+    if(not load_images(dataPath, startIndex, rgbImage, depthImage) ) {
+        std::cout << "Error loading images at " << dataPath.str() << std::endl;
         return -1;
     }
+
+    width = rgbImage.cols;
+    height = rgbImage.rows;
 
     // Get intrinsics parameters
     std::stringstream calibPath, calibYAMLPath;
     calibPath << dataPath.str() << "calib_params.xml";
     calibYAMLPath << dataPath.str() << "calib_params.yaml";
 
-    //Monocular_Depth_Map depthRGBImage(rgbImage);
-
+    //primitive connected graph creator
     Depth_Operations depthOps(calibPath.str(), width, height, PATCH_SIZE);
     if (not depthOps.is_ok()) {
         return -1;
@@ -104,7 +145,7 @@ int main(int argc, char* argv[]) {
         std::cout << "Failed to load YAML param file at: " << calibYAMLPath.str() << std::endl;
         return -1;
     }
-    
+
     params.set_fx(depthOps.get_rgb_fx());
     params.set_fy(depthOps.get_rgb_fy());
     params.set_cx(depthOps.get_rgb_cx());
@@ -118,7 +159,7 @@ int main(int argc, char* argv[]) {
 
 
     //plane/cylinder finder
-    Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, useCylinderFitting);
+    Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
     cv::LSD lineDetector(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
     // Populate with random color codes
@@ -133,32 +174,20 @@ int main(int argc, char* argv[]) {
     double meanTreatmentTime = 0.0;
     double meanMatTreatmentTime = 0.0;
     double maxTreatTime = 0.0;
-    std::cout << "Starting extraction" << std::endl;
     bool runLoop = true;
     while(runLoop) {
 
         //read images
-        rgbImgPath.str("");
-        depthImagePath.str("");
-        rgbImgPath << dataPath.str() << "rgb_"<< i <<".png";
-        depthImagePath << dataPath.str() << "depth_" << i << ".png";
-        rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
-        depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
-        if (!depthImage.data or !rgbImage.data)
+        if(not load_images(dataPath, i, rgbImage, depthImage))
             break;
         std::cout << "Read frame " << i << std::endl;
         cv::Mat grayImage;
         cv::cvtColor(rgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
         //set variables
-        depthImage.convertTo(depthImage, CV_32F);
-        cv::Mat_<uchar> seg_output(height, width, uchar(0));
+        cv::Mat_<uchar> seg_output(height, width, uchar(0));    //primitive mask mat
         vector<Plane_Segment> planeParams;
         vector<Cylinder_Segment> cylinderParams;
-
-        //get monocular depth map
-        //cv::Mat depthMap;
-        //depthRGBImage.get_monocular_depth(grayImage, depthMap); 
 
         //project depth image in an organized cloud
         double t1 = cv::getTickCount();
@@ -166,8 +195,7 @@ int main(int argc, char* argv[]) {
         double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanMatTreatmentTime += time_elapsed;
 
-
-        // Run plane and cylinder detection 
+        // Run primitive detection 
         t1 = cv::getTickCount();
         primDetector.find_primitives(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
         time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
@@ -176,12 +204,12 @@ int main(int argc, char* argv[]) {
 
 
         //visual odometry tracking
-        vo.track(grayImage, depthImage);
+        if(useFrameOdometry) {
+            Pose estimatedPose = vo.track(grayImage, depthImage);
 
-        if(vo.get_state() == vo.eState_LOST)
-            break;
-
-
+            if(vo.get_state() == vo.eState_LOST)
+                break;
+        }
 
         //display 
         double min, max;
@@ -192,50 +220,44 @@ int main(int argc, char* argv[]) {
         }
 
 
-        //get lines
-        std::vector<cv::Vec4f> lines;
-        cv::Mat mask = depthImage > 0;
+        if(useLineDetection) { //detect lines in image
+            //get lines
+            std::vector<cv::Vec4f> lines;
+            cv::Mat mask = depthImage > 0;
 
-        lineDetector.detect(grayImage, lines);
+            lineDetector.detect(grayImage, lines);
 
-        //fill holes
-        cv::dilate(mask, mask, kernel);
-        cv::erode(mask, mask, kernel);
+            //fill holes
+            cv::dilate(mask, mask, kernel);
+            cv::erode(mask, mask, kernel);
 
-        for(int i = 0; i < lines.size(); i++) {
-            cv::Vec4f& pts = lines.at(i);
-            cv::Point pt1(pts[0], pts[1]);
-            cv::Point pt2(pts[2], pts[3]);
-            if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
-                cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
-                cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
-                //cv::circle(grayImage, firstQuart, 10, cv::Scalar(0, 255, 0));
+            for(int i = 0; i < lines.size(); i++) {
+                cv::Vec4f& pts = lines.at(i);
+                cv::Point pt1(pts[0], pts[1]);
+                cv::Point pt2(pts[2], pts[3]);
+                if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
+                    cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
+                    cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
 
-                //at least a point with depth data
-                if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
-                    cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
+                    //at least a point with depth data
+                    if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
+                        cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
+                }
             }
         }
 
         //display masks on image
-        cv::Mat segRgb(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-        primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
+        cv::Mat segRgb = rgbImage.clone();//(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
+
+        if(showPrimitiveMasks)
+            primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
 
         //display with mono mask
-        //cv::applyColorMap(depthMap, depthMap, cv::COLORMAP_PLASMA);
-        //hconcat(depthMap, segRgb, segRgb);
+        //cv::applyColorMap(depthImage, depthImage, cv::COLORMAP_PLASMA);
+        //hconcat(depthImage, segRgb, segRgb);
         cv::imshow("Seg", segRgb);
 
-        switch(cv::waitKey(1)) {
-            //check pressent key
-            case 'p': //pause button
-                cv::waitKey(-1); //wait until any key is pressed
-                break;
-            case 'q': //quit button
-                runLoop = false;
-            default:
-                break;
-        }
+        check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
         i++;
     }
     std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;
