@@ -10,6 +10,7 @@
 #include "PlaneSegment.hpp"
 #include "Parameters.hpp"
 #include "MonocularDepthMap.hpp"
+#include "DepthMapSegmentation.hpp"
 
 #include "LineSegmentDetector.hpp"
 #include "RGB_Slam.hpp"
@@ -109,9 +110,12 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
     return parser.check();
 }
 
+
+
 int main(int argc, char* argv[]) {
     std::stringstream dataPath;
     bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
+    bool useDepthSegmentation = false;
     int startIndex;
 
     if (not parse_parameters(argc, argv, dataPath, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex)) {
@@ -170,6 +174,13 @@ int main(int argc, char* argv[]) {
     cv::Mat kernel = cv::Mat::ones(3, 3, CV_8U);
 
 
+    std::vector<cv::Vec3b> colors(150);
+    colors[0] = cv::Vec3b(0, 0, 0);//background
+    for (int label = 1; label < 150; label++) {
+        colors[label] = cv::Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
+    }
+
+
     int i = startIndex;
     double meanTreatmentTime = 0.0;
     double meanMatTreatmentTime = 0.0;
@@ -195,12 +206,29 @@ int main(int argc, char* argv[]) {
         double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanMatTreatmentTime += time_elapsed;
 
+        //clean warp artefacts
+        cv::Mat newMat;
+        cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, kernel);
+        cv::medianBlur(newMat, newMat, 3);
+        cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
+
         // Run primitive detection 
         t1 = cv::getTickCount();
         primDetector.find_primitives(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
         time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
+
+
+        //depth map segmentation
+        if(useDepthSegmentation) {
+            double reducePourcent = 0.35;
+            cv::Mat finalSegmented;
+            get_segmented_depth_map(depthImage, finalSegmented, kernel, reducePourcent);
+            cv::Mat colored;
+            draw_segmented_labels(finalSegmented, colors, colored);
+            resize(colored, colored, depthImage.size());
+        }
 
 
         //visual odometry tracking
@@ -219,7 +247,6 @@ int main(int argc, char* argv[]) {
             depthImage.convertTo(depthImage, CV_8UC1, 255.0/(max-min));
         }
 
-
         if(useLineDetection) { //detect lines in image
             //get lines
             std::vector<cv::Vec4f> lines;
@@ -228,8 +255,7 @@ int main(int argc, char* argv[]) {
             lineDetector.detect(grayImage, lines);
 
             //fill holes
-            cv::dilate(mask, mask, kernel);
-            cv::erode(mask, mask, kernel);
+            cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
 
             for(int i = 0; i < lines.size(); i++) {
                 cv::Vec4f& pts = lines.at(i);
@@ -253,8 +279,8 @@ int main(int argc, char* argv[]) {
             primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
 
         //display with mono mask
-        //cv::applyColorMap(depthImage, depthImage, cv::COLORMAP_PLASMA);
-        //hconcat(depthImage, segRgb, segRgb);
+        cv::applyColorMap(depthImage, depthImage, cv::COLORMAP_PLASMA);
+        //prepare normal map for display
         cv::imshow("Seg", segRgb);
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);

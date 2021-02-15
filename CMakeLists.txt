@@ -51,6 +51,7 @@ add_library(primitivesDetection
     ${PRIM}/PlaneSegment.cpp
     ${PRIM}/CylinderSegment.cpp
     ${PRIM}/Histogram.cpp
+    ${PRIM}/DepthMapSegmentation.cpp
     )
 add_library(poseEstimation
     ${POSE}/PoseUtils.cpp
@@ -67,6 +68,7 @@ add_library(thirdParty
     ${SRC}/MonocularDepthMap.cpp
 
     ${THIRD_PARTY}/LineSegmentDetector.cpp
+    ${THIRD_PARTY}/GeodesicOperations.cpp
     ${THIRD_PARTY}/dsyevh3.cpp
     )
 

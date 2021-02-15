@@ -1,5 +1,8 @@
-#include <opencv2/opencv.hpp>
+#ifndef THIRDP_LINE_SEGMENT_DETECTOR
+#define THIRDP_LINE_SEGMENT_DETECTOR
+
 #include <vector>
+#include <opencv2/opencv.hpp>
 
 namespace cv {
 
@@ -252,3 +255,4 @@ namespace cv {
 }
 
 
+#endif
