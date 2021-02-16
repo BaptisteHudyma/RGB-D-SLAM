@@ -15,6 +15,9 @@
 #include "LineSegmentDetector.hpp"
 #include "RGB_Slam.hpp"
 
+
+#include "GeodesicOperations.hpp"
+
 using namespace primitiveDetection;
 using namespace poseEstimation;
 using namespace std;
@@ -115,7 +118,7 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
 int main(int argc, char* argv[]) {
     std::stringstream dataPath;
     bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
-    bool useDepthSegmentation = false;
+    bool useDepthSegmentation = true;
     int startIndex;
 
     if (not parse_parameters(argc, argv, dataPath, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex)) {
@@ -200,17 +203,17 @@ int main(int argc, char* argv[]) {
         vector<Plane_Segment> planeParams;
         vector<Cylinder_Segment> cylinderParams;
 
-        //project depth image in an organized cloud
-        double t1 = cv::getTickCount();
-        depthOps.get_organized_cloud_array(depthImage, cloudArrayOrganized);
-        double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
-        meanMatTreatmentTime += time_elapsed;
-
         //clean warp artefacts
         cv::Mat newMat;
         cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, kernel);
         cv::medianBlur(newMat, newMat, 3);
         cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
+
+        //project depth image in an organized cloud
+        double t1 = cv::getTickCount();
+        depthOps.get_organized_cloud_array(depthImage, cloudArrayOrganized);
+        double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+        meanMatTreatmentTime += time_elapsed;
 
         // Run primitive detection 
         t1 = cv::getTickCount();
@@ -219,17 +222,16 @@ int main(int argc, char* argv[]) {
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
-
         //depth map segmentation
+        cv::Mat colored;
         if(useDepthSegmentation) {
+            colored = rgbImage.clone();
             double reducePourcent = 0.35;
             cv::Mat finalSegmented;
             get_segmented_depth_map(depthImage, finalSegmented, kernel, reducePourcent);
-            cv::Mat colored;
+            resize(finalSegmented, finalSegmented, rgbImage.size());
             draw_segmented_labels(finalSegmented, colors, colored);
-            resize(colored, colored, depthImage.size());
         }
-
 
         //visual odometry tracking
         if(useFrameOdometry) {
@@ -279,8 +281,8 @@ int main(int argc, char* argv[]) {
             primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
 
         //display with mono mask
-        cv::applyColorMap(depthImage, depthImage, cv::COLORMAP_PLASMA);
-        //prepare normal map for display
+        //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
+        cv::hconcat(segRgb, colored, segRgb);
         cv::imshow("Seg", segRgb);
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);

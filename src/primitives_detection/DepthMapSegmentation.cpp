@@ -50,9 +50,7 @@ void primitiveDetection::get_normal_map(const cv::Mat& depthMap, cv::Mat& normal
                 continue;
             float dzdx = (rowAft[y] - rowLow[y]) / 2.0;
             float dzdy = (rowThis[y + 1] - rowThis[y - 1]) / 2.0;
-
-            float normalizer = 1.0 / sqrt( pow(-dzdx, 2.0) + pow(-dzdy, 2.0) + 1.0);
-            outRow[y] = cv::Vec3f(-dzdx * normalizer, -dzdy * normalizer, normalizer);
+            outRow[y] = cv::normalize(cv::Vec3f(-dzdx, -dzdy, -1.0));
         }
     }
     //smooth normal map
@@ -60,9 +58,7 @@ void primitiveDetection::get_normal_map(const cv::Mat& depthMap, cv::Mat& normal
 }
 
 void primitiveDetection::get_edge_masks(const cv::Mat& depthMap, const cv::Mat& normalMap, cv::Mat& edgeMap) {
-    assert(depthMap.type() == CV_32FC1);
-
-    assert(normalMap.type() == CV_32FC3 and normalMap.size() == depthMap.size());
+    assert(depthMap.type() == CV_32FC1 and normalMap.type() == CV_32FC3 and normalMap.size() == depthMap.size());
 
     edgeMap= cv::Mat::zeros(depthMap.size(), CV_8UC1);
     const int neighborsX[8] = {-1, -1, -1,  0,  0,  1,  1,  1};
@@ -73,11 +69,12 @@ void primitiveDetection::get_edge_masks(const cv::Mat& depthMap, const cv::Mat& 
         const float* rowDepth = depthMap.ptr<float>(x);
         const cv::Vec3f* rowNormal = normalMap.ptr<cv::Vec3f>(x);
         for(int y = distanceCheck; y < depthMap.cols - distanceCheck; y++) {
-            float vU = rowDepth[y];
-            if(vU <= 0)
+            const float centerDepth = rowDepth[y];
+            if(centerDepth<= 0)
                 continue;
 
             const cv::Vec3f& centerNormal = rowNormal[y];
+            const cv::Vec3f centerVertex = cv::Vec3f(x, y, centerDepth);
 
             float minConcavity = 1;
             double maxNorm = 0;
@@ -85,20 +82,18 @@ void primitiveDetection::get_edge_masks(const cv::Mat& depthMap, const cv::Mat& 
                 const float depthValue = depthMap.at<float>(x + neighborsX[i], y + neighborsY[i]);
                 if(depthValue <= 0)
                     continue;
-                const cv::Vec3f& normal = normalMap.at<cv::Vec3f>(x + neighborsX[i], y + neighborsY[i]);
+                double vertexDot = centerVertex.dot(cv::Vec3f(x + neighborsX[i], y + neighborsY[i] , depthValue) - centerVertex);
+                maxNorm = std::max(maxNorm, abs(vertexDot) );
 
-                float sub = depthValue - vU;
-                float phiOperator = 1;
-                if(sub <= 0) {
-                    phiOperator = 0;
+                if(vertexDot <= 0) {
+                    float phiOperator = 0;
                     for(int j = 1; j <= distanceCheck; j++)
-                        phiOperator += centerNormal.dot(normalMap.at<cv::Vec3f>(x + neighborsX[i] * j, y + neighborsY[i] * j)) / (distanceCheck);
+                        phiOperator += (double)centerNormal.dot(normalMap.at<cv::Vec3f>(x + neighborsX[i] * j, y + neighborsY[i] * j)) / (distanceCheck);
+                    minConcavity = std::min(minConcavity, phiOperator);
                 }
-                minConcavity = std::min(minConcavity, phiOperator);
-                maxNorm = std::max(maxNorm, cv::norm(sub * normal) );
             }
-            uchar thresConc = (minConcavity > 0.94);
-            uchar thresDist = maxNorm < (0.0012 + 0.0019 * pow(vU/10 - 0.4, 2.0));
+            uchar thresConc = (minConcavity > 0.93);
+            uchar thresDist = maxNorm < (0.12 + 0.19 * pow(centerDepth - 40, 2.0));
             edgeMap.at<uchar>(x, y) = (thresConc & thresDist) * 255;
         }
     }
@@ -113,12 +108,6 @@ void primitiveDetection::get_segmented_depth_map(const cv::Mat& depthMap, cv::Ma
     get_normal_map(smallDepth, normalMap);
     get_edge_masks(smallDepth, normalMap, edgeMap);
     get_segmented_components(edgeMap, kernel, finalSegmented);
-
-    /*
-    cv::resize(normalMap, normalMap, depthMap.size());
-    normalMap = (normalMap * 0.5 + 0.5) * 255;
-    normalMap.convertTo(normalMap, CV_8UC3);
-    */
 }
 
 
@@ -126,11 +115,17 @@ void primitiveDetection::get_segmented_depth_map(const cv::Mat& depthMap, cv::Ma
 void primitiveDetection::draw_segmented_labels(const cv::Mat& segmentedImage, const std::vector<cv::Vec3b>& colors, cv::Mat& outputImage) {
     assert(segmentedImage.data and segmentedImage.data != outputImage.data);
 
-    outputImage = cv::Mat::zeros(segmentedImage.size(), CV_8UC3);
+    if(not outputImage.data)
+        outputImage = cv::Mat::zeros(segmentedImage.size(), CV_8UC3);
+    else
+        assert(segmentedImage.size() == outputImage.size());
+
     for (int r = 0; r < segmentedImage.rows; ++r) {
         for (int c = 0; c < segmentedImage.cols; ++c) {
             uchar label = segmentedImage.at<uchar>(r, c);
-            outputImage.at<cv::Vec3b>(r, c) = colors[label];
+            if(label <= 0)
+                continue;
+            outputImage.at<cv::Vec3b>(r, c) = colors[label] * 0.5 + outputImage.at<cv::Vec3b>(r, c) * 0.5;
         }
     }
 }

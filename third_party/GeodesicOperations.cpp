@@ -112,7 +112,6 @@ int cv::GeodesicDilation(const InputArray masker,const InputArray mask, OutputAr
             dst.copyTo(temp1);
             cv::dilate(dst, dst, se);
             cv::min(dst, mask, dst);
-            cv::imshow("i", dst);
             cv::compare(temp1, dst, temp2, cv::CMP_NE);
         } while (cv::sum(temp2).val[0] != 0);
         temp1.release();
