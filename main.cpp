@@ -118,7 +118,7 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
 int main(int argc, char* argv[]) {
     std::stringstream dataPath;
     bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
-    bool useDepthSegmentation = true;
+    bool useDepthSegmentation = false;
     int startIndex;
 
     if (not parse_parameters(argc, argv, dataPath, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex)) {
@@ -282,7 +282,8 @@ int main(int argc, char* argv[]) {
 
         //display with mono mask
         //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
-        cv::hconcat(segRgb, colored, segRgb);
+        if(useDepthSegmentation)
+            cv::hconcat(segRgb, colored, segRgb);
         cv::imshow("Seg", segRgb);
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
