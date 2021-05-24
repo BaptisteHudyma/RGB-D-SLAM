@@ -16,13 +16,13 @@ namespace poseEstimation {
             Pose compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers);
 
         private:
-            double fx;
-            double fy;
-            double cx;
-            double cy;
-            double baseline;
+            double _fx;
+            double _fy;
+            double _cx;
+            double _cy;
+            double _baseline;
 
-            g2o::SparseOptimizer optimizer;
+            g2o::SparseOptimizer _optimizer;
     };
 
 }

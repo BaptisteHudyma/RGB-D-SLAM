@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 project(rgbSLAM)
 
 set (CMAKE_CXX_STANDARD 20)
-set (CMAKE_CXX_FLAGS "-O2")
+set (CMAKE_CXX_FLAGS "-O2 -Wall")
 set(CMAKE_BUILD_TYPE Release)
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 

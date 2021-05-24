@@ -23,6 +23,9 @@ using namespace poseEstimation;
 using namespace std;
 
 
+typedef std::vector<cv::Vec4f> line_vector;
+
+
 std::vector<cv::Vec3b> get_color_vector() {
     std::vector<cv::Vec3b> color_code;
     for(int i = 0; i < 100; i++){
@@ -251,7 +254,7 @@ int main(int argc, char* argv[]) {
 
         if(useLineDetection) { //detect lines in image
             //get lines
-            std::vector<cv::Vec4f> lines;
+            line_vector lines;
             cv::Mat mask = depthImage > 0;
 
             lineDetector.detect(grayImage, lines);
@@ -259,7 +262,7 @@ int main(int argc, char* argv[]) {
             //fill holes
             cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
 
-            for(int i = 0; i < lines.size(); i++) {
+            for(line_vector::size_type i = 0; i < lines.size(); i++) {
                 cv::Vec4f& pts = lines.at(i);
                 cv::Point pt1(pts[0], pts[1]);
                 cv::Point pt2(pts[2], pts[3]);

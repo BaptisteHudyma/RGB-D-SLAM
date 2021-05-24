@@ -12,6 +12,7 @@ namespace poseEstimation {
     class Image_Features_Handler;
 
     class Local_Map {
+
         public:
             Local_Map(const Parameters& voparams,
                     Image_Features_Handler* featureHandler);
@@ -27,8 +28,8 @@ namespace poseEstimation {
 
 
         public: //getters
-            unsigned int get_map_size() const { return this->mapPoints.size(); }
-            unsigned int get_staged_points_count() const { return this->stagedPoints.size(); }
+            unsigned int get_map_size() const { return _mapPoints.size(); }
+            unsigned int get_staged_points_count() const { return _stagedPoints.size(); }
             int find_matches(const Pose &camPose, Image_Features_Struct& left_struct,
                      vector3_array& out_map_points, std::vector<int>& out_matches_left);
 
@@ -42,13 +43,15 @@ namespace poseEstimation {
                 int age;              // number of frames this map point was successfully tracked and thus used in pose estimation
                 int match_idx;
             };
-
             typedef std::vector<mapPoint, Eigen::aligned_allocator<mapPoint>> mapPointArray;
 
-            Parameters voParams;
-            Image_Features_Handler *featuresHandler;
-            mapPointArray mapPoints;
-            mapPointArray stagedPoints;
+
+            Parameters _voParams;
+            Image_Features_Handler *_featuresHandler;
+
+            mapPointArray _mapPoints;
+            mapPointArray _stagedPoints;
+
 
         protected:
 

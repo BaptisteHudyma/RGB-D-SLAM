@@ -10,9 +10,6 @@
 
 namespace primitiveDetection {
 
-    typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>  MatrixXb;
-
-
     class Cylinder_Segment {
         public:
             Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const unsigned int planeCount, const bool* activated_mask, const unsigned int cellActivatedCount);
@@ -41,21 +38,23 @@ namespace primitiveDetection {
             double distance(const Eigen::Vector3d& point, const int segmentId);
 
         private:
+            typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>  MatrixXb;
+            typedef std::vector<Eigen::Vector3d> vec3d_vector;
 
-            double axis[3];
+            double _axis[3];
 
-            std::vector<Eigen::MatrixXd> centers;
-            std::vector<Eigen::Vector3d> pointsAxis1;
-            std::vector<Eigen::Vector3d> pointsAxis2;
-            std::vector<double> normalsAxis1Axis2;
-            std::vector<MatrixXb> inliers;
+            std::vector<Eigen::MatrixXd> _centers;
+            vec3d_vector _pointsAxis1;
+            vec3d_vector _pointsAxis2;
+            std::vector<double> _normalsAxis1Axis2;
+            std::vector<MatrixXb> _inliers;
 
-            std::vector<double> MSE;
-            std::vector<double> radius;
+            std::vector<double> _MSE;
+            std::vector<double> _radius;
 
-            unsigned int cellActivatedCount;
-            unsigned int segmentCount;
-            unsigned int* local2globalMap;
+            unsigned int _cellActivatedCount;
+            unsigned int _segmentCount;
+            unsigned int* _local2globalMap;
 
         private:
             //prevent dangerous backend copy

@@ -9,15 +9,19 @@
 
 namespace poseEstimation {
 
+    typedef std::vector<cv::Rect> rect_vector;
+    typedef std::vector<cv::KeyPoint> keypoint_vector;
+    typedef std::vector<cv::Point2f> point_vector;
+
     struct compute_features_data
     {
         cv::Mat img;
-        cv::Ptr<cv::AgastFeatureDetector> detector;
-        cv::Ptr<cv::DescriptorExtractor> extractor;
-        std::vector<cv::Rect> subImgsRects;
-        std::vector<cv::Point2f> *ext_kp;
-        Image_Features_Struct *features_struct;
-        Parameters *voParams;
+        cv::Ptr<cv::AgastFeatureDetector> _detector;
+        cv::Ptr<cv::DescriptorExtractor> _extractor;
+        rect_vector _subImgsRects;
+        point_vector *_ext_kp;
+        Image_Features_Struct *_features_struct;
+        Parameters *_voParams;
     };
 
     class Image_Features_Handler {
@@ -33,9 +37,9 @@ namespace poseEstimation {
             void perform_compute_descriptors_only(compute_features_data *);
 
         private:
-            Parameters voParams;
-            std::vector<cv::Rect> subImgsRects;
-            compute_features_data thData[2];
+            Parameters _voParams;
+            rect_vector _subImgsRects;
+            compute_features_data _thData[2];
     };
 
 };

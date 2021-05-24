@@ -20,17 +20,17 @@ namespace primitiveDetection {
         protected:
 
         private:
-            int* H;
-            std::vector<int> B;
+            int* _H;
+            std::vector<int> _B;
 
-            const int binPerCoordCount;
-            const int binCount;
-            int pointCount;
+            const int _binPerCoordCount;
+            const int _binCount;
+            unsigned int _pointCount;
 
-            const double minX;
-            const double minY;
-            const double maxXminX;
-            const double maxYminY;
+            const double _minX;
+            const double _minY;
+            const double _maxXminX;
+            const double _maxYminY;
 
         private:
             //prevent backend copy

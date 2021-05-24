@@ -26,7 +26,7 @@ namespace poseEstimation {
                 eState_TRACKING,
                 eState_LOST
             };
-            eState get_state() const { return this->state; }
+            eState get_state() const { return _state; }
 
         protected:
             bool need_new_triangulation();
@@ -37,17 +37,20 @@ namespace poseEstimation {
         private:
             Pose perform_tracking(const Pose& estimatedPose, Image_Features_Struct& features, bool& isTracking);
 
-            Local_Map localMap;
-            PNP_Solver pnpSolver;
-            Image_Features_Handler featureHandler;
-            Motion_Model motionModel;
+            Parameters _params;
+            Image_Features_Handler _featureHandler;
+            Local_Map _localMap;
+            PNP_Solver _pnpSolver;
 
-            Parameters params;
-            Pose lastPose;
-            unsigned int frameNumber;
-            std::deque<int> lastMatches;
-            eState state;
+            Pose _lastPose;
+            unsigned int _frameNumber;
+            std::deque<long unsigned int> _lastMatches;
+            eState _state;
+
             bool (RGB_SLAM::*triangulationPolicy)();
+
+            Motion_Model _motionModel;
+
 
         private:
             //prevent backend copy

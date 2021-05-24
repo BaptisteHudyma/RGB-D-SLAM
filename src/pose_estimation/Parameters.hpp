@@ -32,8 +32,8 @@ namespace poseEstimation {
             float get_cy() const { return cy; }
             float get_baseline() const { return baseline; }
 
-            int get_height() const { return img_height; }
-            int get_width() const { return img_width; }
+            long unsigned int get_height() const { return img_height; }
+            long unsigned int get_width() const { return img_width; }
 
             float get_k1() const { return k1; }
             float get_k2() const { return k2; }
@@ -49,7 +49,7 @@ namespace poseEstimation {
 
             int get_detection_cell_size() const { return detection_cell_size; }
             int get_agast_threshold() const { return agast_threshold; }
-            int get_max_keypoints_per_cell() const { return max_keypoints_per_cell; }
+            long unsigned int get_max_keypoints_per_cell() const { return max_keypoints_per_cell; }
             int get_tracking_radius() const { return tracking_radius; }
             int get_staged_threshold() const { return staged_threshold; }
             int get_untracked_threshold() const { return untracked_threshold; }

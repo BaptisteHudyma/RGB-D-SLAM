@@ -23,7 +23,6 @@ int cv::fillHole(const cv::Mat& src, cv::Mat& dst)
     for (int i = 1; i < m.rows - 1; i++)
     {
         uchar* pxvec3 = m.ptr<uchar>(i);
-        const uchar* pxvecSrc3 = src.ptr<uchar>(i);
         pxvec3[0] = 255 - pxvecSrc2[0];
         pxvec3[m.cols-1] = 255 - pxvecSrc2[m.cols - 1];
     }

@@ -92,7 +92,7 @@ void primitiveDetection::get_edge_masks(const cv::Mat& depthMap, const cv::Mat& 
                     minConcavity = std::min(minConcavity, phiOperator);
                 }
             }
-            uchar thresConc = (minConcavity > 0.93);
+            uchar thresConc = (minConcavity > 0.94);
             uchar thresDist = maxNorm < (0.12 + 0.19 * pow(centerDepth - 40, 2.0));
             edgeMap.at<uchar>(x, y) = (thresConc & thresDist) * 255;
         }
