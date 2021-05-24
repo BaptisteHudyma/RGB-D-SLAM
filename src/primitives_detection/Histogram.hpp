@@ -8,11 +8,11 @@ namespace primitiveDetection {
 
     class Histogram {
         public:
-            Histogram(int binPerCoordCount);
+            Histogram(unsigned int binPerCoordCount);
 
             void init_histogram(Eigen::MatrixXd& points, bool* flags);
-            void get_points_from_most_frequent_bin(std::vector<int>&);
-	        void remove_point(int pointId);
+            void get_points_from_most_frequent_bin(std::vector<unsigned int>&);
+	        void remove_point(unsigned int pointId);
             void reset();
 
             ~Histogram();
@@ -20,11 +20,11 @@ namespace primitiveDetection {
         protected:
 
         private:
-            int* _H;
+            unsigned int* _H;
             std::vector<int> _B;
 
-            const int _binPerCoordCount;
-            const int _binCount;
+            const unsigned int _binPerCoordCount;
+            const unsigned int _binCount;
             unsigned int _pointCount;
 
             const double _minX;

@@ -9,7 +9,7 @@ namespace primitiveDetection {
 
     class Depth_Operations {
         public:
-            Depth_Operations(const std::string& paramFilePath, const int width, const int height, const int cellSize);
+            Depth_Operations(const std::string& paramFilePath, unsigned int width, unsigned int height, unsigned int cellSize);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -34,9 +34,9 @@ namespace primitiveDetection {
             void init_matrices();
 
         private:
-            int _width;
-            int _height;
-            int _cellSize;
+            unsigned int _width;
+            unsigned int _height;
+            unsigned int _cellSize;
             bool _isOk;
 
             Eigen::MatrixXf _cloudArray;

@@ -110,15 +110,15 @@ namespace poseEstimation {
      *
      *  return matched point count;
      */
-    int Local_Map::find_matches(const Pose &camPose, Image_Features_Struct& features,
+    unsigned int Local_Map::find_matches(const Pose &camPose, Image_Features_Struct& features,
             vector3_array& outMapPoints, std::vector<int>& outMatchesLeft)
     {
         const matrix34 cml = Pose_Utils::compute_world_to_camera_transform(camPose);
-        int matches_count = 0;
+        unsigned int matches_count = 0;
         std::vector<int> matches(_mapPoints.size(), -2); // mark each map point with its matching index from features, -2 if not visible
         vector2_array projections(_mapPoints.size());
 
-        for (mapPointArray::size_type i = 0; i < _mapPoints.size(); i++)
+        for (mapPointArray::size_type i = 0; i < _mapPoints.size(); ++i)
         {
             vector2 proj_pt_left;
             if (!is_point_visible(_mapPoints[i].position, cml, _voParams, proj_pt_left))
@@ -133,7 +133,7 @@ namespace poseEstimation {
             matches[i] = match_idx_left;
             if (match_idx_left != -1)
             {
-                matches_count++;
+                matches_count += 1;
                 features.mark_as_matched(match_idx_left, true);
             }
         }
@@ -144,7 +144,7 @@ namespace poseEstimation {
             features.reset_matched_marks();
             int original_tracking_radius = features.get_tracking_radius();
             features.set_tracking_radius(2 * original_tracking_radius);
-            for (mapPointArray::size_type i = 0; i < _mapPoints.size(); i++)
+            for (mapPointArray::size_type i = 0; i < _mapPoints.size(); ++i)
             {
                 if (matches[i] == -2)
                 {
@@ -155,14 +155,14 @@ namespace poseEstimation {
                 matches[i] = match_idx_left;
                 if (match_idx_left != -1)
                 {
-                    matches_count++;
+                    matches_count += 1;
                     features.mark_as_matched(match_idx_left, true);
                 }
             }
             features.set_tracking_radius(original_tracking_radius);
         }
 
-        for (mapPointArray::size_type i = 0; i < matches.size(); i++)
+        for (mapPointArray::size_type i = 0; i < matches.size(); ++i)
         {
             _mapPoints[i].match_idx = matches[i];
             if (matches[i] == -2) {
@@ -195,7 +195,7 @@ namespace poseEstimation {
         const float inv_fy = 1.0f / _voParams.get_fy();
         matrix34 cam_to_world_mtrx;
         cam_to_world_mtrx << camPose.get_orientation_matrix(), camPose.get_position();
-        for (int i = 0, count = features.get_features_count(); i < count; i++)
+        for (unsigned int i = 0, count = features.get_features_count(); i < count; ++i)
         {
             const cv::Point2f pt = features.get_keypoint(i).pt;
             const float u = pt.x;
@@ -241,7 +241,7 @@ namespace poseEstimation {
       const double inv_fx = 1.0 / _voParams.get_fx(), inv_fy = 1.0 / _voParams.get_fy();
       outPoints.reserve(matches.size());
 
-      for (size_t i = 0, count = matches.size(); i < count; i++)
+      for (size_t i = 0, count = matches.size(); i < count; ++i)
       {
       const cv::Point2f u1 = features.get_keypoint(matches[i].queryIdx).pt;
       const cv::Point2f u2 = featuresRight.get_keypoint(matches[i].trainIdx).pt;
@@ -331,10 +331,10 @@ namespace poseEstimation {
     {
         const matrix34 cml = Pose_Utils::compute_world_to_camera_transform(camPose);
 
-        int n_erased_points = 0;
-        int n_upgraded_points = 0;
+        unsigned int n_erased_points = 0;
+        unsigned int n_upgraded_points = 0;
         std::set<mapPoint *> points_to_be_deleted;
-        for (int i = 0, count = _stagedPoints.size(); i < count; i++)
+        for (int i = 0, count = _stagedPoints.size(); i < count; ++i)
         {
             mapPoint *mp = &(_stagedPoints[i]);
             const vector3 world_pt = mp->position;
@@ -345,7 +345,7 @@ namespace poseEstimation {
             if (not is_point_visible(world_pt, cml, _voParams, proj_pt_left) or
                     (match_idx_left = features.find_match_index(proj_pt_left, mp->descriptor, &d1, &d2)) == -1) {
                 points_to_be_deleted.insert(mp);
-                n_erased_points++;
+                n_erased_points += 1;
                 continue;
             }
             features.mark_as_matched(match_idx_left, true);
@@ -355,7 +355,7 @@ namespace poseEstimation {
                     get_map_size() < LVT_N_MAP_POINTS) {
                 _mapPoints.push_back(_stagedPoints[i]);
                 points_to_be_deleted.insert(mp);
-                n_upgraded_points++;
+                n_upgraded_points += 1;
             }
         }
 
@@ -372,10 +372,10 @@ namespace poseEstimation {
      */
     void Local_Map::clean_untracked_points(Image_Features_Struct& features)
     {
-        const int th = _voParams.get_untracked_threshold();
+        const unsigned int th = _voParams.get_untracked_threshold();
         mapPointArray cleaned_map_points;
         cleaned_map_points.reserve(_mapPoints.size());
-        for (mapPointArray::size_type i = 0; i < _mapPoints.size(); i++)
+        for (mapPointArray::size_type i = 0; i < _mapPoints.size(); ++i)
         {
             if (_mapPoints[i].counter >= th)
             {

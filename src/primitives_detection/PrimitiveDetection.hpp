@@ -32,11 +32,11 @@ namespace primitiveDetection {
             typedef std::vector<unsigned int> uint_vector;
 
         public:
-            Primitive_Detection(const unsigned int width, const unsigned int height, const unsigned int blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
+            Primitive_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.9659, float maxMergeDist = 50, bool useCylinderDetection = false);
 
             void find_primitives(const Eigen::MatrixXf& depthMatrix, planes_vector& planeSegmentsFinal, cylinders_vector& cylinderSegmentsFinal, cv::Mat& segOut);  //detect 3D primitives in depth image
             
-            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const planes_vector& planeParams, const cylinders_vector& cylinderParams, cv::Mat& labeledImage, const double elapsedTime=0);
+            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const planes_vector& planeParams, const cylinders_vector& cylinderParams, cv::Mat& labeledImage, double elapsedTime=0);
             ~Primitive_Detection();
 
             //perf measurments
@@ -53,33 +53,33 @@ namespace primitiveDetection {
             void init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray);
             int init_histogram();
 
-            void grow_planes_and_cylinders(intpair_vector& cylinderToRegionMap, int remainingPlanarCells);
+            void grow_planes_and_cylinders(intpair_vector& cylinderToRegionMap, unsigned int remainingPlanarCells);
             void merge_planes(uint_vector& planeMergeLabels);
             void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, planes_vector& planeSegmentsFinal);
             void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, cylinders_vector& cylinderSegmentsFinal); 
             void set_masked_display(cv::Mat& segOut); 
 
-            void region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
+            void region_growing(unsigned short x, unsigned short y, const Eigen::Vector3d& seedPlaneNormal, double seedPlaneD);
             void get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
 
         private:
             Histogram _histogram;
 
-            const int _width;
-            const int _height;
-            const int _blocSize;
-            const int _pointsPerCellCount;
+            const unsigned int _width;
+            const unsigned int _height;
+            const unsigned int _blocSize;
+            const unsigned int _pointsPerCellCount;
             const float _minCosAngleForMerge;
             const float _maxMergeDist;
 
             const bool _useCylinderDetection;
 
-            const int _cellWidth;
-            const int _cellHeight;
+            const unsigned int _cellWidth;
+            const unsigned int _cellHeight;
 
-            const int _horizontalCellsCount;
-            const int _verticalCellsCount;
-            const int _totalCellCount;
+            const unsigned int _horizontalCellsCount;
+            const unsigned int _verticalCellsCount;
+            const unsigned int _totalCellCount;
 
             plane_segment_unique_ptr *_planeGrid;
             planes_ptr_vector _planeSegments;

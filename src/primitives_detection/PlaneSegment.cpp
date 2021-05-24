@@ -11,7 +11,7 @@ namespace primitiveDetection {
      * Initialize the plane segment with the points from the depth matrix
      * 
      */
-    Plane_Segment::Plane_Segment(const int cellWidth, const int ptsPerCellCount) : 
+    Plane_Segment::Plane_Segment(unsigned int cellWidth, unsigned int ptsPerCellCount) : 
         _ptsPerCellCount(ptsPerCellCount), 
         _minZeroPointCount(_ptsPerCellCount/2.0), 
         _cellWidth(cellWidth), 
@@ -50,11 +50,11 @@ namespace primitiveDetection {
         _Szx = seg._Szx;
     }
 
-    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const int cellId) {
+    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, unsigned int cellId) {
         clear_plane_parameters();
         _isPlanar = true;
 
-        int offset = cellId * _ptsPerCellCount;
+        unsigned int offset = cellId * _ptsPerCellCount;
 
         //get z of depth points
         const Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
@@ -72,9 +72,9 @@ namespace primitiveDetection {
 
         // Check for discontinuities using cross search
         //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
-        int discontinuityCounter = 0;
-        int i = _cellWidth * (_cellHeight / 2);
-        int j = i + _cellWidth;
+        unsigned int discontinuityCounter = 0;
+        unsigned int i = _cellWidth * (_cellHeight / 2);
+        unsigned int j = i + _cellWidth;
         float zLast = std::max(Z_matrix(i), Z_matrix(i + 1)); /* handles missing pixels on the borders*/
         i++;
         // Scan horizontally through the middle

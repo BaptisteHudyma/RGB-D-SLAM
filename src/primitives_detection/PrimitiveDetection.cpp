@@ -14,7 +14,7 @@ namespace primitiveDetection {
      * minCosAngleForMerge 
      * maxMergeDistance
      */
-    Primitive_Detection::Primitive_Detection(const unsigned int height, const unsigned int width, const unsigned int blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
+    Primitive_Detection::Primitive_Detection(unsigned int height, unsigned int width, unsigned int blocSize, float minCosAngleForMerge, float maxMergeDistance, bool useCylinderDetection)
         :  
             _histogram(20), 
             _width(width), _height(height),  _blocSize(blocSize), 
@@ -56,7 +56,7 @@ namespace primitiveDetection {
 
         //array of unique_ptr<Plane_Segment>
         _planeGrid = new plane_segment_unique_ptr[_totalCellCount];
-        for(int i = 0; i < _totalCellCount; i += 1) {
+        for(unsigned int i = 0; i < _totalCellCount; ++i) {
             //fill with empty nodes
             _planeGrid[i] = std::make_unique<Plane_Segment>(_cellWidth, _pointsPerCellCount);
         }
@@ -76,12 +76,12 @@ namespace primitiveDetection {
      * in maskImage Output image of find_plane_regions
      * out labeledImage Output RGB image, similar to input but with planes and cylinder masks
      */
-    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const planes_vector& planeParams, const cylinders_vector& cylinderParams, cv::Mat& labeledImage, const double timeElapsed) {
+    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const planes_vector& planeParams, const cylinders_vector& cylinderParams, cv::Mat& labeledImage, double timeElapsed) {
         //apply masks on image
-        for(int r = 0; r < _height; r++){
+        for(unsigned int r = 0; r < _height; ++r){
             const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
             cv::Vec3b* outPtr = labeledImage.ptr<cv::Vec3b>(r);
-            for(int c = 0; c < _width; c++){
+            for(unsigned int c = 0; c < _width; ++c){
                 const int index = maskImage.at<uchar>(r, c);   //get index of plane/cylinder at [r, c]
                 if(index <= 0) {
                     outPtr[c] = rgbPtr[c];
@@ -97,7 +97,7 @@ namespace primitiveDetection {
         cv::rectangle(labeledImage, cv::Point(0,0), cv::Point(_width, 20), cv::Scalar(0,0,0), -1);
         if(timeElapsed > 0) {
             std::stringstream fps;
-            fps << (int)(1 / timeElapsed + 0.5) << " fps";
+            fps << static_cast<int>((1 / timeElapsed + 0.5)) << " fps";
             cv::putText(labeledImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
         }
 
@@ -107,7 +107,7 @@ namespace primitiveDetection {
             text << "Planes:";
             double pos = _width * 0.25;
             cv::putText(labeledImage, text.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
-            for(unsigned int j = 0; j < planeParams.size(); j += 1){
+            for(unsigned int j = 0; j < planeParams.size(); ++j){
                 cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * j, 6),
                         cv::Point(pos + 90 + 15 * j, 16), 
                         cv::Scalar(
@@ -123,7 +123,7 @@ namespace primitiveDetection {
             text << "Cylinders:";
             double pos = _width * 0.60;
             cv::putText(labeledImage, text.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
-            for(unsigned int j = 0; j < cylinderParams.size(); j += 1){
+            for(unsigned int j = 0; j < cylinderParams.size(); ++j){
                 cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * j, 6),
                         cv::Point(pos + 90 + 15 * j, 16), 
                         cv::Scalar(
@@ -227,7 +227,7 @@ namespace primitiveDetection {
         float sinCosAngleForMerge = sqrt(1 - pow(_minCosAngleForMerge, 2));
 
         //for each planeGrid cell
-        for(int stackedCellId = 0; stackedCellId < _totalCellCount; stackedCellId += 1) {
+        for(unsigned int stackedCellId = 0; stackedCellId < _totalCellCount; ++stackedCellId) {
             //init the plane grid cell
             _planeGrid[stackedCellId]->init_plane_segment(depthCloudArray, stackedCellId);
 
@@ -252,7 +252,7 @@ namespace primitiveDetection {
         int remainingPlanarCells = 0;
 
         Eigen::MatrixXd histBins(_totalCellCount, 2);
-        for(int cellId = 0; cellId < _totalCellCount; cellId += 1) {  
+        for(unsigned int cellId = 0; cellId < _totalCellCount; ++cellId) {  
             if(_planeGrid[cellId]->is_planar()) {
                 const Eigen::Vector3d& planeNormal = _planeGrid[cellId]->get_normal();
                 const double nx = planeNormal[0];
@@ -272,9 +272,9 @@ namespace primitiveDetection {
     /*
      *  grow planes and find cylinders from those planes
      */
-    void Primitive_Detection::grow_planes_and_cylinders(intpair_vector& cylinder2regionMap, int remainingPlanarCells) {
-        int cylinderCount = 0;
-        std::vector<int> seedCandidates;
+    void Primitive_Detection::grow_planes_and_cylinders(intpair_vector& cylinder2regionMap, unsigned int remainingPlanarCells) {
+        unsigned int cylinderCount = 0;
+        std::vector<unsigned int> seedCandidates;
         //find seed planes and make them grow
         while(remainingPlanarCells > 0) {
             //get seed candidates
@@ -285,29 +285,24 @@ namespace primitiveDetection {
                 break;
 
             //select seed cell with min MSE
-            int seedId = -1;
+            unsigned int seedId = 0;    //should not necessarily stay to 0 after the loop
             float minMSE = INT_MAX;
-            for(unsigned int i = 0; i < seedCandidates.size(); i++) {
-                int seedCandidate = seedCandidates[i];
+            for(unsigned int i = 0; i < seedCandidates.size(); ++i) {
+                unsigned int seedCandidate = seedCandidates[i];
                 if(_planeGrid[seedCandidate]->get_MSE() < minMSE) {
-                    seedId = seedCandidate;
+                    seedId = static_cast<int>(seedCandidate);
                     minMSE = _planeGrid[seedCandidate]->get_MSE();
                     //if(minMSE <= 0)
                     //    break;
                 }
-            }
-            if (seedId < 0) {
-                //error
-                std::cerr << "Error : no min MSE in graph" << std::endl;
-                exit(-1);
             }
 
             //copy plane segment in new object
             Plane_Segment newPlaneSegment(*_planeGrid[seedId]);
 
             //Seed cell growing
-            int y = seedId / _horizontalCellsCount;
-            int x = seedId % _horizontalCellsCount;
+            unsigned int y = static_cast<unsigned int>(seedId / _horizontalCellsCount);
+            unsigned int x = static_cast<unsigned int>(seedId % _horizontalCellsCount);
 
             //activationMap set to false
             std::fill_n(_activationMap, _totalCellCount, false);
@@ -317,7 +312,7 @@ namespace primitiveDetection {
 
             //merge activated cells & remove them from histogram
             unsigned int cellActivatedCount = 0;
-            for(int i = 0; i < _totalCellCount; i+=1) {
+            for(unsigned int i = 0; i < _totalCellCount; ++i) {
                 if(_activationMap[i]) {
                     newPlaneSegment.expand_segment(_planeGrid[i]);
                     cellActivatedCount += 1;
@@ -341,9 +336,9 @@ namespace primitiveDetection {
                 int currentPlaneCount = _planeSegments.size();
                 //mark cells
                 int i = 0;
-                for(int r = 0; r < _verticalCellsCount; r += 1) {
+                for(unsigned int r = 0; r < _verticalCellsCount; ++r) {
                     int* row = _gridPlaneSegmentMap.ptr<int>(r);
-                    for(int c = 0; c < _horizontalCellsCount; c += 1) {
+                    for(unsigned int c = 0; c < _horizontalCellsCount; ++c) {
                         if(_activationMap[i])
                             row[c] = currentPlaneCount;
                         i += 1;
@@ -358,9 +353,9 @@ namespace primitiveDetection {
                 const cylinder_segment_unique_ptr& cy = _cylinderSegments.back();
 
                 // Fit planes to subsegments
-                for(int segId = 0; segId < cy->get_segment_count(); segId++){
+                for(unsigned int segId = 0; segId < cy->get_segment_count(); ++segId){
                     newPlaneSegment.clear_plane_parameters();
-                    for(unsigned int c = 0; c < cellActivatedCount; c++){
+                    for(unsigned int c = 0; c < cellActivatedCount; ++c){
                         if (cy->get_inlier_at(segId, c)){
                             int localMap = cy->get_local_to_global_mapping(c);
                             newPlaneSegment.expand_segment(_planeGrid[localMap]);
@@ -371,16 +366,17 @@ namespace primitiveDetection {
                     if(newPlaneSegment.get_MSE() < cy->get_MSE_at(segId)){
                         _planeSegments.push_back(std::make_unique<Plane_Segment>(newPlaneSegment));
                         int currentPlaneCount = _planeSegments.size();
-                        for(unsigned int c = 0; c < cellActivatedCount; c++){
+                        for(unsigned int c = 0; c < cellActivatedCount; ++c){
                             if (cy->get_inlier_at(segId, c)){
                                 int cellId = cy->get_local_to_global_mapping(c);
                                 _gridPlaneSegmentMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = currentPlaneCount;
                             }
                         }
-                    }else{
+                    }
+                    else {
                         cylinderCount += 1;
                         cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
-                        for(unsigned int c = 0; c < cellActivatedCount; c++){
+                        for(unsigned int c = 0; c < cellActivatedCount; ++c){
                             if (cy->get_inlier_at(segId, c)){
                                 int cellId = cy->get_local_to_global_mapping(c);
                                 _gridCylinderSegMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = cylinderCount;
@@ -401,16 +397,16 @@ namespace primitiveDetection {
         Eigen::MatrixXd planesAssocMat = Eigen::MatrixXd::Zero(planeCount, planeCount);
         get_connected_components(_gridPlaneSegmentMap, planesAssocMat);
 
-        for(unsigned int i = 0; i < planeCount; i += 1)
+        for(unsigned int i = 0; i < planeCount; ++i)
             planeMergeLabels.push_back(i);
 
-        for(unsigned int r = 0; r < planesAssocMat.rows(); r += 1) {
+        for(unsigned int r = 0; r < planesAssocMat.rows(); ++r) {
             unsigned int planeId = planeMergeLabels[r];
             bool planeWasExpanded = false;
             const plane_segment_unique_ptr& testPlane = _planeSegments[planeId];
             const Eigen::Vector3d& testPlaneNormal = testPlane->get_normal();
 
-            for(unsigned int c = r+1; c < planesAssocMat.cols(); c += 1) {
+            for(unsigned int c = r+1; c < planesAssocMat.cols(); ++c) {
                 if(planesAssocMat(r, c)) {
                     const plane_segment_unique_ptr& mergePlane = _planeSegments[c];
                     const Eigen::Vector3d& mergePlaneNormal = mergePlane->get_normal();
@@ -443,12 +439,12 @@ namespace primitiveDetection {
     void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, planes_vector& planeSegmentsFinal) {
         //refine the coarse planes boundaries to smoother versions
         unsigned int planeCount = _planeSegments.size();
-        for(unsigned int i = 0; i < planeCount; i += 1) {
+        for(unsigned int i = 0; i < planeCount; ++i) {
             if (i != planeMergeLabels[i])
                 continue;
 
             _mask = cv::Scalar(0);
-            for(unsigned int j = i; j < planeCount; j += 1) {
+            for(unsigned int j = i; j < planeCount; ++j) {
                 if(planeMergeLabels[j] == planeMergeLabels[i])
                     _mask.setTo(1, _gridPlaneSegmentMap == j + 1);
             }
@@ -478,12 +474,12 @@ namespace primitiveDetection {
             _gridPlaneSegMapEroded.setTo(planeNr, _maskEroded > 0);
 
             //cell refinement
-            for (int cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; cellR += 1) {
+            for(unsigned int cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; ++cellR) {
                 unsigned char* rowPtr = _maskDiff.ptr<uchar>(cellR);
 
-                for(int cellC = 0; cellC < _horizontalCellsCount; cellC++, stackedCellId++) {
-                    int offset = stackedCellId * _pointsPerCellCount;
-                    int nextOffset = offset + _pointsPerCellCount;
+                for(unsigned int cellC = 0; cellC < _horizontalCellsCount; ++cellC, ++stackedCellId) {
+                    unsigned int offset = stackedCellId * _pointsPerCellCount;
+                    unsigned int nextOffset = offset + _pointsPerCellCount;
 
                     if(rowPtr[cellC] > 0) {
                         //compute distance block
@@ -494,7 +490,7 @@ namespace primitiveDetection {
                             d;
 
                         //Assign pixel
-                        for(int pt = offset, j = 0; pt < nextOffset; j += 1, pt += 1) {
+                        for(unsigned int pt = offset, j = 0; pt < nextOffset; ++j, ++pt) {
                             float dist = pow(_distancesCellStacked(j), 2);
                             if(dist < maxDist and dist < _distancesStacked[pt]) {
                                 _distancesStacked[pt] = dist;
@@ -514,10 +510,8 @@ namespace primitiveDetection {
         if(not _useCylinderDetection)
             return; //no cylinder detections
 
-        int cylinderCount = cylinderToRegionMap.size();
-
         int cylinderFinalCount = 0;
-        for(int i = 0; i < cylinderCount; i++){
+        for(unsigned int i = 0; i < cylinderToRegionMap.size(); i++){
             // Build mask
             _mask = cv::Scalar(0);
             _mask.setTo(1, _gridCylinderSegMap == (i + 1));
@@ -554,14 +548,14 @@ namespace primitiveDetection {
             double maxDist = 9 * cylinderSegRef->get_MSE_at(subRegId);
 
             // Cell refinement
-            for (int cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; cellR += 1){
+            for(unsigned int cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; cellR += 1){
                 uchar* rowPtr = _maskDiff.ptr<uchar>(cellR);
-                for (int cellC = 0; cellC < _horizontalCellsCount; cellC++, stackedCellId++) {
-                    int offset = stackedCellId * _pointsPerCellCount;
-                    int nextOffset = offset + _pointsPerCellCount;
+                for(unsigned int cellC = 0; cellC < _horizontalCellsCount; cellC++, stackedCellId++) {
+                    unsigned int offset = stackedCellId * _pointsPerCellCount;
+                    unsigned int nextOffset = offset + _pointsPerCellCount;
                     if(rowPtr[cellC] > 0){
                         // Update cells
-                        for(int pt = offset, j = 0; pt < nextOffset; pt++, j++) {
+                        for(unsigned int pt = offset, j = 0; pt < nextOffset; pt++, j++) {
                             Eigen::Vector3d point = depthCloudArray.row(pt).cast<double>();
                             if(point(2) > 0){
                                 double dist = pow(P1P2.cross(point - P2).norm() / P1P2Normal - radius, 2);
@@ -583,14 +577,14 @@ namespace primitiveDetection {
     void Primitive_Detection::set_masked_display(cv::Mat& segOut) {
         //copy and rearranging
         // Copy inlier list to matrix form
-        for (int cellR = 0; cellR < _verticalCellsCount; cellR += 1){
+        for(unsigned int cellR = 0; cellR < _verticalCellsCount; cellR += 1){
             uchar* gridPlaneErodedRowPtr = _gridPlaneSegMapEroded.ptr<uchar>(cellR);
             uchar* gridCylinderErodedRowPtr = _gridCylinderSegMapEroded.ptr<uchar>(cellR);
-            int rOffset = cellR * _cellHeight;
-            int rLimit = rOffset + _cellHeight;
+            unsigned int rOffset = cellR * _cellHeight;
+            unsigned int rLimit = rOffset + _cellHeight;
 
-            for (int cellC = 0; cellC < _horizontalCellsCount; cellC += 1){
-                int cOffset = cellC * _cellWidth;
+            for(unsigned int cellC = 0; cellC < _horizontalCellsCount; cellC += 1){
+                unsigned int cOffset = cellC * _cellWidth;
 
                 if (gridPlaneErodedRowPtr[cellC] > 0){
                     // Set rectangle equal to assigned cell
@@ -601,12 +595,12 @@ namespace primitiveDetection {
                     segOut(cv::Rect(cOffset, rOffset, _cellWidth, _cellHeight)).setTo(gridCylinderErodedRowPtr[cellC]);
                 }
                 else {
-                    int cLimit = cOffset + _cellWidth;
+                    unsigned int cLimit = cOffset + _cellWidth;
                     // Set cell pixels one by one
                     uchar* stackPtr = &_segMapStacked[_pointsPerCellCount * cellR * _horizontalCellsCount + _pointsPerCellCount * cellC];
-                    for(int r = rOffset, i = 0; r < rLimit; r++){
+                    for(unsigned int r = rOffset, i = 0; r < rLimit; r++){
                         uchar* rowPtr = segOut.ptr<uchar>(r);
-                        for(int c = cOffset; c < cLimit; c++, i++){
+                        for(unsigned int c = cOffset; c < cLimit; c++, i++){
                             if(stackPtr[i] > 0){
                                 rowPtr[c] = stackPtr[i];
                             }
@@ -624,13 +618,13 @@ namespace primitiveDetection {
      *  Fill an association matrix that links connected plane components
      */
     void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix) {
-        int rows2scanCount = segmentMap.rows - 1;
-        int cols2scanCount = segmentMap.cols - 1;
+        unsigned int rows2scanCount = segmentMap.rows - 1;
+        unsigned int cols2scanCount = segmentMap.cols - 1;
 
-        for(int r = 0; r < rows2scanCount; r += 1) {
+        for(unsigned int r = 0; r < rows2scanCount; r += 1) {
             const int *row = segmentMap.ptr<int>(r);
             const int *rowBelow = segmentMap.ptr<int>(r + 1);
-            for(int c = 0; c < cols2scanCount; c += 1) {
+            for(unsigned int c = 0; c < cols2scanCount; c += 1) {
                 int pixelValue = row[c];
                 if(pixelValue > 0) {
                     if(row[c + 1] > 0 and pixelValue != row[c + 1]) {
@@ -650,8 +644,8 @@ namespace primitiveDetection {
     /*
      *  Recursively Grow a plane seed and merge it with it's neighbors
      */
-    void Primitive_Detection::region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD) {
-        int index = x + _horizontalCellsCount * y;
+    void Primitive_Detection::region_growing(unsigned short x, unsigned short y, const Eigen::Vector3d& seedPlaneNormal, double seedPlaneD) {
+        unsigned int index = x + _horizontalCellsCount * y;
         if (index >= _totalCellCount or 
                 not _unassignedMask[index] or _activationMap[index]) {
             //pixel is not part of a component or already labelled

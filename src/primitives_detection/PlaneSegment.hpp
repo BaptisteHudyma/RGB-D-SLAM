@@ -17,10 +17,10 @@ namespace primitiveDetection {
      */
     class Plane_Segment {
         public:
-            Plane_Segment(const int cellWidth, const int ptsPerCellCount);
+            Plane_Segment(unsigned int cellWidth, unsigned int ptsPerCellCount);
             Plane_Segment(const Plane_Segment& seg);
 
-            void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const int cellId);
+            void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, unsigned int cellId);
 
             bool is_depth_discontinuous(const Plane_Segment& planeSegment);
             void expand_segment(const Plane_Segment& planeSegment);
@@ -47,12 +47,12 @@ namespace primitiveDetection {
         protected:
 
         private:
-            const int _ptsPerCellCount;  //max nb of points per initial cell
-            const int _minZeroPointCount;  //min acceptable zero points in a node
-            const int _cellWidth;
-            const int _cellHeight;
+            const unsigned int _ptsPerCellCount;  //max nb of points per initial cell
+            const unsigned int _minZeroPointCount;  //min acceptable zero points in a node
+            const unsigned int _cellWidth;
+            const unsigned int _cellHeight;
 
-            int _pointCount;         //point count
+            unsigned int _pointCount;         //point count
             double _score;    //plane fitting score
             double _MSE;     //plane fitting mean square error
             bool _isPlanar;  //true if node represent a correct node, false: ignore node while mapping

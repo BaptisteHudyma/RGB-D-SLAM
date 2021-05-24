@@ -2,7 +2,7 @@
 
 namespace primitiveDetection {
 
-    Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const int width, const int height, const int cellSize) 
+    Depth_Operations::Depth_Operations(const std::string& parameterFilePath, unsigned int width, unsigned int height, unsigned int cellSize) 
         : 
             _width(width), _height(height), _cellSize(cellSize),
             _cloudArray(width * height, 3),
@@ -28,20 +28,20 @@ namespace primitiveDetection {
         // The following transformation+projection is only necessary to visualize RGB with overlapped segments
         // Transform point cloud to color reference frame
         _Xt = 
-            ((float)_Rstereo.at<double>(0,0)) * _X + 
-            ((float)_Rstereo.at<double>(0,1)) * _Y +
-            ((float)_Rstereo.at<double>(0,2)) * depthImage + 
-            (float)_Tstereo.at<double>(0);
+            static_cast<float>(_Rstereo.at<double>(0,0)) * _X + 
+            static_cast<float>(_Rstereo.at<double>(0,1)) * _Y +
+            static_cast<float>(_Rstereo.at<double>(0,2)) * depthImage + 
+            static_cast<float>(_Tstereo.at<double>(0));
         _Yt = 
-            ((float)_Rstereo.at<double>(1,0)) * _X +
-            ((float)_Rstereo.at<double>(1,1)) * _Y +
-            ((float)_Rstereo.at<double>(1,2)) * depthImage +
-            (float)_Tstereo.at<double>(1);
+            static_cast<float>(_Rstereo.at<double>(1,0)) * _X +
+            static_cast<float>(_Rstereo.at<double>(1,1)) * _Y +
+            static_cast<float>(_Rstereo.at<double>(1,2)) * depthImage +
+            static_cast<float>(_Tstereo.at<double>(1));
         depthImage = 
-            ((float)_Rstereo.at<double>(2,0)) * _X +
-            ((float)_Rstereo.at<double>(2,1)) * _Y + 
-            ((float)_Rstereo.at<double>(2,2)) * depthImage + 
-            (float)_Tstereo.at<double>(2);
+            static_cast<float>(_Rstereo.at<double>(2,0)) * _X +
+            static_cast<float>(_Rstereo.at<double>(2,1)) * _Y + 
+            static_cast<float>(_Rstereo.at<double>(2,2)) * depthImage + 
+            static_cast<float>(_Tstereo.at<double>(2));
 
         double zMin = _Tstereo.at<double>(2);
 
@@ -55,14 +55,14 @@ namespace primitiveDetection {
 
         cv::Mat outputDepth = cv::Mat::zeros(_height, _width, CV_32F);
         _cloudArray.setZero();
-        for(int r = 0; r < _height; r++){
+        for(unsigned int r = 0; r < _height; r++){
             float* sx = _Xt.ptr<float>(r);
             float* sy = _Yt.ptr<float>(r);
             float* sz = depthImage.ptr<float>(r);
             float* u_ptr = _U.ptr<float>(r);
             float* v_ptr = _V.ptr<float>(r);
 
-            for(int c = 0; c < _width; c++){
+            for(unsigned int c = 0; c < _width; c++){
                 float z = sz[c];
                 float u = u_ptr[c];
                 float v = v_ptr[c];
@@ -79,11 +79,11 @@ namespace primitiveDetection {
         }
 
         //project cloud point by cells
-        int mxn = _width * _height;
-        int mxn2 = 2 * mxn;
-        for(int r = 0, it = 0; r < _height; r++){
+        unsigned int mxn = _width * _height;
+        unsigned int mxn2 = 2 * mxn;
+        for(unsigned int r = 0, it = 0; r < _height; r++){
             int* cellMapPtr = _cellMap.ptr<int>(r);
-            for(int c = 0; c < _width; c++, it++){
+            for(unsigned int c = 0; c < _width; c++, it++){
                 int id = cellMapPtr[c];
                 organizedCloudArray(id) = _cloudArray(it);
                 organizedCloudArray(mxn + id) = _cloudArray(mxn + it);
@@ -115,7 +115,7 @@ namespace primitiveDetection {
      *  Called after loading parameters to init matrices
      */
     void Depth_Operations::init_matrices() {
-        int horizontalCellsCount = _width / _cellSize;
+        unsigned int horizontalCellsCount = static_cast<unsigned int>(_width / _cellSize);
 
         _fxIr = _Kir.at<double>(0,0);
         _fyIr = _Kir.at<double>(1,1);
@@ -127,22 +127,22 @@ namespace primitiveDetection {
         _cyRgb = _Krgb.at<double>(1,2);
 
         // Pre-computations for backprojection
-        for (int r = 0; r < _height; r++){
-            for (int c = 0; c < _width; c++){
+        for (unsigned int r = 0; r < _height; r++){
+            for (unsigned int c = 0; c < _width; c++){
                 // Not efficient but at this stage doesn t matter
-                _Xpre.at<float>(r, c) = (c - _cxIr) / _fxIr; 
-                _Ypre.at<float>(r, c) = (r - _cyIr) / _fyIr;
+                _Xpre.at<float>(r, c) = static_cast<float>((c - _cxIr) / _fxIr); 
+                _Ypre.at<float>(r, c) = static_cast<float>((r - _cyIr) / _fyIr);
             }
         }
 
         // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point clouds are contiguous
-        for (int r = 0; r < _height; r++){
-            int cellR = r / _cellSize;
-            int localR = r % _cellSize;
+        for (unsigned int r = 0; r < _height; r++){
+            unsigned int cellR = static_cast<unsigned int>(r / _cellSize);
+            unsigned int localR = static_cast<unsigned int>(r % _cellSize);
 
-            for (int c = 0; c < _width; c++){
-                int cellC = c / _cellSize;
-                int localC = c % _cellSize;
+            for (unsigned int c = 0; c < _width; c++){
+                unsigned int cellC =  static_cast<unsigned int>(c / _cellSize);
+                unsigned int localC = static_cast<unsigned int>(c % _cellSize);
                 _cellMap.at<int>(r, c) = (cellR * horizontalCellsCount + cellC) * _cellSize * _cellSize + localR * _cellSize + localC;
             }
         }

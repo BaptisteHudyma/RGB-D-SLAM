@@ -207,10 +207,10 @@ int main(int argc, char* argv[]) {
         vector<Cylinder_Segment> cylinderParams;
 
         //clean warp artefacts
-        cv::Mat newMat;
-        cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, kernel);
-        cv::medianBlur(newMat, newMat, 3);
-        cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
+        //cv::Mat newMat;
+        //cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, kernel);
+        //cv::medianBlur(newMat, newMat, 3);
+        //cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
 
         //project depth image in an organized cloud
         double t1 = cv::getTickCount();
@@ -293,7 +293,7 @@ int main(int argc, char* argv[]) {
         i++;
     }
     std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;
-    std::cout << "Mean image shape treatment time is " << meanMatTreatmentTime/i << std::endl;
+    std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime/i << std::endl;
     std::cout << "max treat time is " << maxTreatTime << std::endl;
 
     //std::cout << "init planes " << primDetector.resetTime/i << std::endl;
