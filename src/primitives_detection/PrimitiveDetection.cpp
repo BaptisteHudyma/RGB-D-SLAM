@@ -16,14 +16,14 @@ namespace primitiveDetection {
      */
     Primitive_Detection::Primitive_Detection(const unsigned int height, const unsigned int width, const unsigned int blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
         :  
-        _histogram(20), 
-        _width(width), _height(height),  _blocSize(blocSize), 
-        _pointsPerCellCount(_blocSize * _blocSize), 
-        _minCosAngleForMerge(minCosAngleForMerge), _maxMergeDist(maxMergeDistance),
-        _useCylinderDetection(useCylinderDetection),
-        _cellWidth(blocSize), _cellHeight(blocSize),
-        _horizontalCellsCount(_width / _cellWidth), _verticalCellsCount(_height / _cellHeight),
-        _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
+            _histogram(20), 
+            _width(width), _height(height),  _blocSize(blocSize), 
+            _pointsPerCellCount(_blocSize * _blocSize), 
+            _minCosAngleForMerge(minCosAngleForMerge), _maxMergeDist(maxMergeDistance),
+            _useCylinderDetection(useCylinderDetection),
+            _cellWidth(blocSize), _cellHeight(blocSize),
+            _horizontalCellsCount(_width / _cellWidth), _verticalCellsCount(_height / _cellHeight),
+            _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
 
     {
         //Init variables
@@ -55,7 +55,7 @@ namespace primitiveDetection {
         _maskCrossKernel.at<uchar>(2,0) = 0;
 
         //array of unique_ptr<Plane_Segment>
-        _planeGrid = new std::unique_ptr<Plane_Segment>[_totalCellCount];
+        _planeGrid = new plane_segment_unique_ptr[_totalCellCount];
         for(int i = 0; i < _totalCellCount; i += 1) {
             //fill with empty nodes
             _planeGrid[i] = std::make_unique<Plane_Segment>(_cellWidth, _pointsPerCellCount);
@@ -76,7 +76,7 @@ namespace primitiveDetection {
      * in maskImage Output image of find_plane_regions
      * out labeledImage Output RGB image, similar to input but with planes and cylinder masks
      */
-    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const std::vector<Plane_Segment>& planeParams, const std::vector<Cylinder_Segment>& cylinderParams, cv::Mat& labeledImage, const double timeElapsed) {
+    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const planes_vector& planeParams, const cylinders_vector& cylinderParams, cv::Mat& labeledImage, const double timeElapsed) {
         //apply masks on image
         for(int r = 0; r < _height; r++){
             const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
@@ -141,7 +141,7 @@ namespace primitiveDetection {
      * Find the planes in the organized depth matrix using region growing
      * Segout will contain a 2D representation of the planes
      */
-    void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, std::vector<Plane_Segment>& planeSegmentsFinal, std::vector<Cylinder_Segment>& cylinderSegmentsFinal, cv::Mat& segOut) {
+    void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, planes_vector& planeSegmentsFinal, cylinders_vector& cylinderSegmentsFinal, cv::Mat& segOut) {
 
         //reset used data structures
         reset_data();
@@ -166,7 +166,7 @@ namespace primitiveDetection {
         growTime += td;
 
         //merge sparse planes
-        std::vector<unsigned int> planeMergeLabels;
+        uint_vector planeMergeLabels;
         merge_planes(planeMergeLabels);
 
         t1 = cv::getTickCount();
@@ -175,11 +175,13 @@ namespace primitiveDetection {
         td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         mergeTime += td;
 
-        t1 = cv::getTickCount();
-        //refine cylinders boundaries and fill the final cylinders vector
-        refine_cylinder_boundaries(depthMatrix, cylinder2regionMap, cylinderSegmentsFinal); 
-        td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
-        refineTime += td;
+        if(_useCylinderDetection) {
+            t1 = cv::getTickCount();
+            //refine cylinders boundaries and fill the final cylinders vector
+            refine_cylinder_boundaries(depthMatrix, cylinder2regionMap, cylinderSegmentsFinal); 
+            td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+            refineTime += td;
+        }
 
         t1 = cv::getTickCount();
         //set mask image
@@ -353,7 +355,7 @@ namespace primitiveDetection {
                 //cylinder fitting
                 // It is an extrusion
                 _cylinderSegments.push_back(std::make_unique<Cylinder_Segment>(_planeGrid,_totalCellCount, _activationMap, cellActivatedCount));
-                const std::unique_ptr<Cylinder_Segment>& cy = _cylinderSegments.back();
+                const cylinder_segment_unique_ptr& cy = _cylinderSegments.back();
 
                 // Fit planes to subsegments
                 for(int segId = 0; segId < cy->get_segment_count(); segId++){
@@ -393,7 +395,7 @@ namespace primitiveDetection {
     /*
      *  Merge close planes by comparing normals and MSE
      */
-    void Primitive_Detection::merge_planes(std::vector<unsigned int>& planeMergeLabels) {
+    void Primitive_Detection::merge_planes(uint_vector& planeMergeLabels) {
         const unsigned int planeCount = _planeSegments.size();
 
         Eigen::MatrixXd planesAssocMat = Eigen::MatrixXd::Zero(planeCount, planeCount);
@@ -405,12 +407,12 @@ namespace primitiveDetection {
         for(unsigned int r = 0; r < planesAssocMat.rows(); r += 1) {
             unsigned int planeId = planeMergeLabels[r];
             bool planeWasExpanded = false;
-            const std::unique_ptr<Plane_Segment>& testPlane = _planeSegments[planeId];
+            const plane_segment_unique_ptr& testPlane = _planeSegments[planeId];
             const Eigen::Vector3d& testPlaneNormal = testPlane->get_normal();
 
             for(unsigned int c = r+1; c < planesAssocMat.cols(); c += 1) {
                 if(planesAssocMat(r, c)) {
-                    const std::unique_ptr<Plane_Segment>& mergePlane = _planeSegments[c];
+                    const plane_segment_unique_ptr& mergePlane = _planeSegments[c];
                     const Eigen::Vector3d& mergePlaneNormal = mergePlane->get_normal();
                     double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
 
@@ -438,7 +440,7 @@ namespace primitiveDetection {
     /*
      *  Refine the final plane edges in mask images
      */
-    void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal) {
+    void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, planes_vector& planeSegmentsFinal) {
         //refine the coarse planes boundaries to smoother versions
         unsigned int planeCount = _planeSegments.size();
         for(unsigned int i = 0; i < planeCount; i += 1) {
@@ -508,7 +510,7 @@ namespace primitiveDetection {
     /*
      *  Refine the cylinder edges in mask images
      */
-    void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal) {
+    void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, cylinders_vector& cylinderSegmentsFinal) {
         if(not _useCylinderDetection)
             return; //no cylinder detections
 
@@ -539,7 +541,7 @@ namespace primitiveDetection {
 
             int regId = cylinderToRegionMap[i].first;
             int subRegId = cylinderToRegionMap[i].second;
-            const std::unique_ptr<Cylinder_Segment>& cylinderSegRef = _cylinderSegments[regId];
+            const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
             cylinderSegmentsFinal.push_back(Cylinder_Segment(*cylinderSegRef, subRegId));
 
