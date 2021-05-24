@@ -67,6 +67,6 @@ namespace poseEstimation {
             }
     };
 
-};
+}
 
 #endif

@@ -36,43 +36,43 @@ namespace primitiveDetection {
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
         public: //getters
-            const double get_MSE() const { return MSE; };
-            const Eigen::Vector3d& get_normal() const { return normal; };
-            const Eigen::Vector3d& get_mean() const { return mean; };
-            const double get_plane_d() const { return d; };
-            const bool is_planar() const { return isPlanar; };
-            const double get_score() const { return score; };
+            double get_MSE() const { return _MSE; };
+            const Eigen::Vector3d& get_normal() const { return _normal; };
+            const Eigen::Vector3d& get_mean() const { return _mean; };
+            double get_plane_d() const { return _d; };
+            bool is_planar() const { return _isPlanar; };
+            double get_score() const { return _score; };
 
 
         protected:
 
         private:
-            const int ptsPerCellCount;  //max nb of points per initial cell
-            const int minZeroPointCount;  //min acceptable zero points in a node
-            const int cellWidth;
-            const int cellHeight;
+            const int _ptsPerCellCount;  //max nb of points per initial cell
+            const int _minZeroPointCount;  //min acceptable zero points in a node
+            const int _cellWidth;
+            const int _cellHeight;
 
-            int pointCount;         //point count
-            double score;    //plane fitting score
-            double MSE;     //plane fitting mean square error
-            bool isPlanar;  //true if node represent a correct node, false: ignore node while mapping
+            int _pointCount;         //point count
+            double _score;    //plane fitting score
+            double _MSE;     //plane fitting mean square error
+            bool _isPlanar;  //true if node represent a correct node, false: ignore node while mapping
 
-            Eigen::Vector3d mean;     //mean point of all points in node
-            Eigen::Vector3d normal;   //fitted plane normal
-            double d;           //fitted plane d param (ax + by + xz + d)
+            Eigen::Vector3d _mean;     //mean point of all points in node
+            Eigen::Vector3d _normal;   //fitted plane normal
+            double _d;           //fitted plane d param (ax + by + xz + d)
 
         private:
 
             //PCA stored coeffs: efficient calculations of point cloud characteristics
-            double Sx;      //sum of x
-            double Sy;      //sum of y
-            double Sz;      //sum of z
-            double Sxs;     //sum of x squared
-            double Sys;     //sum of y squared
-            double Szs;     //sum of z squared
-            double Sxy;     //sum of x*y
-            double Syz;     //sum of y*z
-            double Szx;     //sum of z*x
+            double _Sx;      //sum of x
+            double _Sy;      //sum of y
+            double _Sz;      //sum of z
+            double _Sxs;     //sum of x squared
+            double _Sys;     //sum of y squared
+            double _Szs;     //sum of z squared
+            double _Sxy;     //sum of x*y
+            double _Syz;     //sum of y*z
+            double _Szx;     //sum of z*x
 
         private:
             //prevent backend copy

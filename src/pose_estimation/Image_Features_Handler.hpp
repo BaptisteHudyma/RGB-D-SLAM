@@ -42,6 +42,6 @@ namespace poseEstimation {
             compute_features_data _thData[2];
     };
 
-};
+}
 
 #endif

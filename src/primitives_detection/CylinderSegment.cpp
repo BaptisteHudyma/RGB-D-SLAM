@@ -305,7 +305,7 @@ namespace primitiveDetection {
      */
     int Cylinder_Segment::get_segment_count() const { 
         return _segmentCount; 
-    };
+    }
 
     double Cylinder_Segment::get_MSE_at(const unsigned int index) const { 
         if(index >= _MSE.size()) {
@@ -313,7 +313,7 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _MSE[index]; 
-    };
+    }
 
     bool Cylinder_Segment::get_inlier_at (const unsigned int indexA, const unsigned int indexB) const { 
         if(indexA >= _inliers.size() or indexB >= _inliers[indexA].size()) {
@@ -321,9 +321,9 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _inliers[indexA](indexB); 
-    };
+    }
 
-    const unsigned int Cylinder_Segment::get_local_to_global_mapping(const unsigned int index) const {
+    unsigned int Cylinder_Segment::get_local_to_global_mapping(const unsigned int index) const {
         if (index >= _cellActivatedCount) {
             std::cerr << "get_local_to_global required index over array size" << std::endl;
             exit(-1);
@@ -333,7 +333,7 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _local2globalMap[index]; 
-    };
+    }
 
     const Eigen::Vector3d& Cylinder_Segment::get_axis1_point(const unsigned int index) const { 
         if(index >= _pointsAxis1.size()) {
@@ -341,7 +341,7 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _pointsAxis1[index];
-    };
+    }
 
     const Eigen::Vector3d& Cylinder_Segment::get_axis2_point(const unsigned int index) const {
         if(index >= _pointsAxis2.size()) {
@@ -349,7 +349,7 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _pointsAxis2[index];
-    };
+    }
 
     double Cylinder_Segment::get_axis_normal(const unsigned int index) const { 
         if(index >= _normalsAxis1Axis2.size()) {
@@ -357,7 +357,7 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _normalsAxis1Axis2[index]; 
-    };
+    }
 
     double Cylinder_Segment::get_radius(const unsigned int index) const {
         if(index >= _radius.size()) {
@@ -365,7 +365,7 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _radius[index]; 
-    };
+    }
 
 
 

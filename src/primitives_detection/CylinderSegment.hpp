@@ -26,7 +26,7 @@ namespace primitiveDetection {
             int get_segment_count() const;
             double get_MSE_at(const unsigned int index) const;
             bool get_inlier_at (const unsigned int indexA, const unsigned int indexB) const;
-            const unsigned int get_local_to_global_mapping(const unsigned int index) const;
+            unsigned int get_local_to_global_mapping(const unsigned int index) const;
             const Eigen::Vector3d& get_axis1_point(const unsigned int index) const;
             const Eigen::Vector3d& get_axis2_point(const unsigned int index) const;
             double get_axis_normal(const unsigned int index) const;

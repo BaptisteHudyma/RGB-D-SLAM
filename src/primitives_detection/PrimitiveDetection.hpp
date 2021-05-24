@@ -37,66 +37,69 @@ namespace primitiveDetection {
             double setMaskTime;
 
         protected:
+            typedef std::vector<std::pair<int, int>> intpair_vector;
+
+
             void reset_data();
 
             void init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray);
             int init_histogram();
 
-            void grow_planes_and_cylinders(std::vector<std::pair<int, int>>& cylinderToRegionMap, int remainingPlanarCells);
+            void grow_planes_and_cylinders(intpair_vector& cylinderToRegionMap, int remainingPlanarCells);
             void merge_planes(std::vector<unsigned int>& planeMergeLabels);
             void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, std::vector<unsigned int>& planeMergeLabels, std::vector<Plane_Segment>& planeSegmentsFinal);
-            void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, std::vector<std::pair<int, int>>& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal); 
+            void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, std::vector<Cylinder_Segment>& cylinderSegmentsFinal); 
             void set_masked_display(cv::Mat& segOut); 
 
             void region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
             void get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
 
         private:
-            Histogram histogram;
+            Histogram _histogram;
 
-            const int width;
-            const int height;
-            const int blocSize;
-            const int pointsPerCellCount;
-            const float minCosAngleForMerge;
-            const float maxMergeDist;
+            const int _width;
+            const int _height;
+            const int _blocSize;
+            const int _pointsPerCellCount;
+            const float _minCosAngleForMerge;
+            const float _maxMergeDist;
 
-            const bool useCylinderDetection;
+            const bool _useCylinderDetection;
 
-            const int cellWidth;
-            const int cellHeight;
+            const int _cellWidth;
+            const int _cellHeight;
 
-            const int horizontalCellsCount;
-            const int verticalCellsCount;
-            const int totalCellCount;
+            const int _horizontalCellsCount;
+            const int _verticalCellsCount;
+            const int _totalCellCount;
 
-            std::unique_ptr<Plane_Segment> *planeGrid;
-            std::vector<std::unique_ptr<Plane_Segment>> planeSegments;
-            std::vector<std::unique_ptr<Cylinder_Segment>> cylinderSegments;
+            std::unique_ptr<Plane_Segment> *_planeGrid;
+            std::vector<std::unique_ptr<Plane_Segment>> _planeSegments;
+            std::vector<std::unique_ptr<Cylinder_Segment>> _cylinderSegments;
 
-            cv::Mat_<int> gridPlaneSegmentMap;
-            cv::Mat_<uchar> gridPlaneSegMapEroded;
-            cv::Mat_<int> gridCylinderSegMap;
-            cv::Mat_<uchar> gridCylinderSegMapEroded;
+            cv::Mat_<int> _gridPlaneSegmentMap;
+            cv::Mat_<uchar> _gridPlaneSegMapEroded;
+            cv::Mat_<int> _gridCylinderSegMap;
+            cv::Mat_<uchar> _gridCylinderSegMapEroded;
 
-            Eigen::ArrayXf distancesCellStacked;
+            Eigen::ArrayXf _distancesCellStacked;
 
             //arrays
-            bool* activationMap;
-            bool* unassignedMask;
-            float* distancesStacked;
-            unsigned char* segMapStacked;
-            float* cellDistanceTols;
+            bool* _activationMap;
+            bool* _unassignedMask;
+            float* _distancesStacked;
+            unsigned char* _segMapStacked;
+            float* _cellDistanceTols;
 
             //mat
-            cv::Mat mask;
-            cv::Mat maskEroded;
-            cv::Mat maskDilated;
-            cv::Mat maskDiff;
+            cv::Mat _mask;
+            cv::Mat _maskEroded;
+            cv::Mat _maskDilated;
+            cv::Mat _maskDiff;
 
             //kernels
-            cv::Mat maskSquareKernel;
-            cv::Mat maskCrossKernel;
+            cv::Mat _maskSquareKernel;
+            cv::Mat _maskCrossKernel;
 
         private:
             //prevent backend copy

@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(rgbSLAM)
+set(CMAKE_BUILD_TYPE Release)
 
 set (CMAKE_CXX_STANDARD 20)
-set (CMAKE_CXX_FLAGS "-O2 -Wall")
-set(CMAKE_BUILD_TYPE Release)
+set (CMAKE_CXX_FLAGS "-O2 -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
+
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
 #add special cmakes (here for g2o)
@@ -27,6 +28,8 @@ find_package(G2O REQUIRED)
 set(G2O_LIBRARIES ${G2O_CORE_LIBRARY} ${G2O_STUFF_LIBRARY} ${G2O_TYPES_SBA} ${G2O_TYPES_SLAM3D} ${G2O_SOLVER_PCG})
 list(APPEND INC_DIRS ${G2O_INCLUDE_DIR})
 list(APPEND LINK_LIBS ${G2O_LIBRARIES})
+
+MESSAGE(${LINK_LIBS})
 
 
 set(SRC src)

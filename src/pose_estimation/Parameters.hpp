@@ -89,7 +89,7 @@ namespace poseEstimation {
             int viewer_point_size;
     };
 
-};
+}
 
 #endif
 

@@ -61,6 +61,6 @@ namespace poseEstimation {
                 N_MATCHES_WINDOWS = 3
             };
     };
-};
+}
 
 #endif
