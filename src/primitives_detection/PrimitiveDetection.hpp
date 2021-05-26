@@ -27,16 +27,32 @@ namespace primitiveDetection {
             typedef std::unique_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
             typedef std::vector<plane_segment_unique_ptr> planes_ptr_vector; 
             typedef std::vector<cylinder_segment_unique_ptr> cylinders_ptr_vector; 
-            typedef std::vector<Plane_Segment> planes_vector; 
-            typedef std::vector<Cylinder_Segment> cylinders_vector; 
+            typedef std::list<Plane_Segment> plane_container; 
+            typedef std::list<Cylinder_Segment> cylinder_container; 
             typedef std::vector<unsigned int> uint_vector;
 
         public:
             Primitive_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.9659, float maxMergeDist = 50, bool useCylinderDetection = false);
 
-            void find_primitives(const Eigen::MatrixXf& depthMatrix, planes_vector& planeSegmentsFinal, cylinders_vector& cylinderSegmentsFinal, cv::Mat& segOut);  //detect 3D primitives in depth image
-            
-            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const planes_vector& planeParams, const cylinders_vector& cylinderParams, cv::Mat& labeledImage, double elapsedTime=0);
+            void find_primitives(const Eigen::MatrixXf& depthMatrix, plane_container& planeSegmentsFinal, cylinder_container& cylinderSegmentsFinal, cv::Mat& segOut);  //detect 3D primitives in depth image
+
+
+
+            /**
+             * \brief Apply each plane and cylinder mask on the maskImage, with colors corresponding to the ids of colors vector
+             *
+             * \param[in] inputImage input RGB image on which to put the planes and cylinder masks
+             * \param[in] colors A vector of colors, that must remain consistant at each call
+             * \param[in] maskImage An image where each pixel is the index of a plane or cylinder
+             * \param[in] planeParams A container of the planes detected in inputImage
+             * \param[in] cylinderParams A container of the cylinders detected in inputImage
+             * \param[in/out] labeledImage The final result: an image with colored masks applied for each plane and cylinder, as well as a bar displaying informations on the top. Must be passed as an empty image of the same dimensions as labeledImage.
+             * \param[in] timeElapsed the time elapsed since last frame. Used to display fps
+             * \param[in] mastched A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders
+             */
+            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const plane_container& planeParams, const cylinder_container& cylinderParams, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, double elapsedTime=0);
+
+
             ~Primitive_Detection();
 
             //perf measurments
@@ -55,8 +71,8 @@ namespace primitiveDetection {
 
             void grow_planes_and_cylinders(intpair_vector& cylinderToRegionMap, unsigned int remainingPlanarCells);
             void merge_planes(uint_vector& planeMergeLabels);
-            void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, planes_vector& planeSegmentsFinal);
-            void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, cylinders_vector& cylinderSegmentsFinal); 
+            void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, plane_container& planeSegmentsFinal);
+            void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, cylinder_container& cylinderSegmentsFinal); 
             void set_masked_display(cv::Mat& segOut); 
 
             void region_growing(unsigned short x, unsigned short y, const Eigen::Vector3d& seedPlaneNormal, double seedPlaneD);

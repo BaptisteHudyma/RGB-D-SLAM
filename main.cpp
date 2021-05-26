@@ -18,13 +18,14 @@
 
 #include "GeodesicOperations.hpp"
 
+
+typedef std::vector<cv::Vec4f> line_vector;
+typedef std::list<primitiveDetection::Plane_Segment> plane_container;
+typedef std::list<primitiveDetection::Cylinder_Segment> cylinder_container;
+
 using namespace primitiveDetection;
 using namespace poseEstimation;
 using namespace std;
-
-
-typedef std::vector<cv::Vec4f> line_vector;
-
 
 std::vector<cv::Vec3b> get_color_vector() {
     std::vector<cv::Vec3b> color_code;
@@ -187,6 +188,11 @@ int main(int argc, char* argv[]) {
     }
 
 
+    //keep track of the primitives tracked last frame
+    plane_container previousPlaneParams;
+    cylinder_container previousCylinderParams;
+
+
     int i = startIndex;
     double meanTreatmentTime = 0.0;
     double meanMatTreatmentTime = 0.0;
@@ -203,8 +209,8 @@ int main(int argc, char* argv[]) {
 
         //set variables
         cv::Mat_<uchar> seg_output(height, width, uchar(0));    //primitive mask mat
-        vector<Plane_Segment> planeParams;
-        vector<Cylinder_Segment> cylinderParams;
+        plane_container planeParams;
+        cylinder_container cylinderParams;
 
         //clean warp artefacts
         //cv::Mat newMat;
@@ -225,6 +231,37 @@ int main(int argc, char* argv[]) {
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
+
+        std::map<int, int> associatedIds;
+        if(not previousPlaneParams.empty() or not previousCylinderParams.empty()) {
+            //TODO:
+            //find matches between consecutive images
+            //compare normals, superposed area (and colors ?)
+            //-> planes can be transformed into cylinders
+            int ids = 0;
+            for(auto plane : planeParams) {
+                int ids2 = 0;
+                for(auto prevPlane : previousPlaneParams) {
+                    if(plane.get_normal_similarity(prevPlane) > 0.95) {
+                        associatedIds.insert(std::make_pair(ids, ids2));
+                        break;
+                    }
+                    ++ids2;
+                }
+                ++ids;
+            }
+
+            //compute pose from matches 
+            //min square minimisation of position from matched features
+
+            //map reconstruction
+
+
+            //position improvement from map ?
+
+
+        }
+
         //depth map segmentation
         cv::Mat colored;
         if(useDepthSegmentation) {
@@ -234,6 +271,14 @@ int main(int argc, char* argv[]) {
             get_segmented_depth_map(depthImage, finalSegmented, kernel, reducePourcent);
             resize(finalSegmented, finalSegmented, rgbImage.size());
             draw_segmented_labels(finalSegmented, colors, colored);
+
+            //display 
+            double min, max;
+            cv::minMaxLoc(depthImage, &min, &max);
+            if (min != max){ 
+                depthImage -= min;
+                depthImage.convertTo(depthImage, CV_8UC1, 255.0/(max-min));
+            }
         }
 
         //visual odometry tracking
@@ -242,14 +287,6 @@ int main(int argc, char* argv[]) {
 
             if(vo.get_state() == vo.eState_LOST)
                 break;
-        }
-
-        //display 
-        double min, max;
-        cv::minMaxLoc(depthImage, &min, &max);
-        if (min != max){ 
-            depthImage -= min;
-            depthImage.convertTo(depthImage, CV_8UC1, 255.0/(max-min));
         }
 
         if(useLineDetection) { //detect lines in image
@@ -281,7 +318,7 @@ int main(int argc, char* argv[]) {
         cv::Mat segRgb = rgbImage.clone();//(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
 
         if(showPrimitiveMasks)
-            primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, time_elapsed);
+            primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, associatedIds, time_elapsed);
 
         //display with mono mask
         //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
@@ -290,7 +327,11 @@ int main(int argc, char* argv[]) {
         cv::imshow("Seg", segRgb);
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
-        i++;
+        ++i;
+
+
+        previousPlaneParams.swap(planeParams);
+        previousCylinderParams.swap(cylinderParams);
     }
     std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;
     std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime/i << std::endl;

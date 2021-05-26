@@ -253,10 +253,10 @@ namespace primitiveDetection {
     /*
      *   Check similarity of two planes. 
      * Return value of 1 indicates similar normals.
-     * Return Value of 0 indicates perpendicular normals
+     * Return Value of -1 indicates inversed normals
      */
     double Plane_Segment::get_normal_similarity(const Plane_Segment& p) {
-        return abs(_normal.dot(p._normal));
+        return (_normal.dot(p._normal));
     }
 
     /*

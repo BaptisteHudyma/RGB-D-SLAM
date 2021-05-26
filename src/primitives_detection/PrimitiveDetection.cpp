@@ -70,25 +70,21 @@ namespace primitiveDetection {
         setMaskTime = 0;
     }
 
-
-    /*
-     * in inputImage input RGB image on which to put the planes and cylinder masks
-     * in maskImage Output image of find_plane_regions
-     * out labeledImage Output RGB image, similar to input but with planes and cylinder masks
-     */
-    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const planes_vector& planeParams, const cylinders_vector& cylinderParams, cv::Mat& labeledImage, double timeElapsed) {
+    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const plane_container& planeParams, const cylinder_container& cylinderParams, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, double timeElapsed) {
         //apply masks on image
         for(unsigned int r = 0; r < _height; ++r){
             const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
             cv::Vec3b* outPtr = labeledImage.ptr<cv::Vec3b>(r);
+
             for(unsigned int c = 0; c < _width; ++c){
                 const int index = maskImage.at<uchar>(r, c);   //get index of plane/cylinder at [r, c]
-                if(index <= 0) {
+
+                if(index <= 0 or not associatedIds.contains(index - 1)) {
                     outPtr[c] = rgbPtr[c];
                 }
                 else {
                     //there is a mask to display 
-                    outPtr[c] = colors[index - 1] * 0.5 + rgbPtr[c] * 0.5;
+                    outPtr[c] = colors[associatedIds.at(index - 1)] * 0.5 + rgbPtr[c] * 0.5;
                 }
             }
         }
@@ -141,7 +137,7 @@ namespace primitiveDetection {
      * Find the planes in the organized depth matrix using region growing
      * Segout will contain a 2D representation of the planes
      */
-    void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, planes_vector& planeSegmentsFinal, cylinders_vector& cylinderSegmentsFinal, cv::Mat& segOut) {
+    void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, plane_container& planeSegmentsFinal, cylinder_container& cylinderSegmentsFinal, cv::Mat& segOut) {
 
         //reset used data structures
         reset_data();
@@ -436,7 +432,7 @@ namespace primitiveDetection {
     /*
      *  Refine the final plane edges in mask images
      */
-    void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, planes_vector& planeSegmentsFinal) {
+    void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, plane_container& planeSegmentsFinal) {
         //refine the coarse planes boundaries to smoother versions
         unsigned int planeCount = _planeSegments.size();
         for(unsigned int i = 0; i < planeCount; ++i) {
@@ -506,7 +502,7 @@ namespace primitiveDetection {
     /*
      *  Refine the cylinder edges in mask images
      */
-    void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, cylinders_vector& cylinderSegmentsFinal) {
+    void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, cylinder_container& cylinderSegmentsFinal) {
         if(not _useCylinderDetection)
             return; //no cylinder detections
 
