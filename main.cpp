@@ -251,6 +251,19 @@ int main(int argc, char* argv[]) {
                 ++ids;
             }
 
+            ids = CYLINDER_CODE_OFFSET;
+            for(auto cylinder: cylinderParams) {
+                int ids2 = CYLINDER_CODE_OFFSET;
+                for(auto prevCylinder : previousCylinderParams) {
+                    if(cylinder.get_normal_similarity(prevCylinder) > 0.95) {
+                        associatedIds.insert(std::make_pair(ids, ids2));
+                        break;
+                    }
+                    ++ids2;
+                }
+                ++ids;
+            }
+
             //compute pose from matches 
             //min square minimisation of position from matched features
 

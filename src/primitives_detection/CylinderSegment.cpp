@@ -315,7 +315,7 @@ namespace primitiveDetection {
         return _MSE[index]; 
     }
 
-    bool Cylinder_Segment::get_inlier_at (unsigned int indexA, unsigned int indexB) const { 
+    bool Cylinder_Segment::is_inlier_at (unsigned int indexA, unsigned int indexB) const { 
         if(indexA >= _inliers.size() or indexB >= _inliers[indexA].size()) {
             std::cerr << "get_inlier required index over inlier vector size" << std::endl;
             exit(-1);
@@ -365,6 +365,10 @@ namespace primitiveDetection {
             exit(-1);
         }
         return _radius[index]; 
+    }
+
+    double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other) {
+        return std::abs( _axis[0] * other._axis[0] + _axis[1] * other._axis[1] + _axis[2] * other._axis[2]  );
     }
 
 

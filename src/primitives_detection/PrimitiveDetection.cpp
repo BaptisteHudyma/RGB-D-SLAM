@@ -79,12 +79,16 @@ namespace primitiveDetection {
             for(unsigned int c = 0; c < _width; ++c){
                 const int index = maskImage.at<uchar>(r, c);   //get index of plane/cylinder at [r, c]
 
-                if(index <= 0 or not associatedIds.contains(index - 1)) {
+                if(index <= 0) {
                     outPtr[c] = rgbPtr[c];
                 }
-                else {
+                else if(associatedIds.contains(index - 1)) {    //shape associated with last frame shape
                     //there is a mask to display 
                     outPtr[c] = colors[associatedIds.at(index - 1)] * 0.5 + rgbPtr[c] * 0.5;
+                }
+                else {
+                    //shape associated with nothing
+                    outPtr[c] = colors[index - 1] * 0.2 + rgbPtr[c] * 0.8;
                 }
             }
         }
@@ -352,7 +356,7 @@ namespace primitiveDetection {
                 for(unsigned int segId = 0; segId < cy->get_segment_count(); ++segId){
                     newPlaneSegment.clear_plane_parameters();
                     for(unsigned int c = 0; c < cellActivatedCount; ++c){
-                        if (cy->get_inlier_at(segId, c)){
+                        if (cy->is_inlier_at(segId, c)){
                             int localMap = cy->get_local_to_global_mapping(c);
                             newPlaneSegment.expand_segment(_planeGrid[localMap]);
                         }
@@ -363,7 +367,7 @@ namespace primitiveDetection {
                         _planeSegments.push_back(std::make_unique<Plane_Segment>(newPlaneSegment));
                         int currentPlaneCount = _planeSegments.size();
                         for(unsigned int c = 0; c < cellActivatedCount; ++c){
-                            if (cy->get_inlier_at(segId, c)){
+                            if (cy->is_inlier_at(segId, c)){
                                 int cellId = cy->get_local_to_global_mapping(c);
                                 _gridPlaneSegmentMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = currentPlaneCount;
                             }
@@ -373,7 +377,7 @@ namespace primitiveDetection {
                         cylinderCount += 1;
                         cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
                         for(unsigned int c = 0; c < cellActivatedCount; ++c){
-                            if (cy->get_inlier_at(segId, c)){
+                            if (cy->is_inlier_at(segId, c)){
                                 int cellId = cy->get_local_to_global_mapping(c);
                                 _gridCylinderSegMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = cylinderCount;
                             }
