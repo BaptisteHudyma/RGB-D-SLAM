@@ -63,12 +63,18 @@ namespace primitiveDetection {
                 double get_MSE_at(unsigned int index) const;
 
                 /**
-                 * \brief 
+                 * \brief
                  *
                  *
                  */
                 bool is_inlier_at (unsigned int indexA, unsigned int indexB) const;
 
+                /**
+                 * \brief 
+                 *
+                 * \param[in] index The index of the cylinder part to search
+                 *
+                 */
                 unsigned int get_local_to_global_mapping(unsigned int index) const;
 
                 /**

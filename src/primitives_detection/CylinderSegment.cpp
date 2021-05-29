@@ -287,9 +287,9 @@ namespace primitiveDetection {
     }
 
     double Cylinder_Segment::distance(const Eigen::Vector3d& point) {
-        double minDist = distance(point, 0);
+        double minDist = this->distance(point, 0);
         for(vec3d_vector::size_type i = 1; i < _pointsAxis1.size(); i++) {
-            double nd = distance(point, i);
+            double nd = this->distance(point, i);
             if (minDist > nd)
                 minDist = nd;
         }
@@ -297,7 +297,11 @@ namespace primitiveDetection {
     }
 
     double Cylinder_Segment::distance(const Eigen::Vector3d& point, unsigned int id) {
-        return ((_pointsAxis2[id] - _pointsAxis1[id]).cross(point - _pointsAxis2[id])).norm() / _normalsAxis1Axis2[id] - _radius[id];
+        return (
+                (_pointsAxis2[id] - _pointsAxis1[id]).cross(
+                    point - _pointsAxis2[id]
+                    )
+               ).norm() / _normalsAxis1Axis2[id] - _radius[id];
     }
 
     /*

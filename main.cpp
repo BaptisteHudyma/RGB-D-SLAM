@@ -237,7 +237,7 @@ int main(int argc, char* argv[]) {
             //TODO:
             //find matches between consecutive images
             //compare normals, superposed area (and colors ?)
-            //-> planes can be transformed into cylinders
+            //-> should planes transform into cylinders segments ?
             int ids = 0;
             for(auto plane : planeParams) {
                 int ids2 = 0;
@@ -251,11 +251,13 @@ int main(int argc, char* argv[]) {
                 ++ids;
             }
 
+            //cylinder frame by frame tracking, using normal, radius and superposed area
             ids = CYLINDER_CODE_OFFSET;
             for(auto cylinder: cylinderParams) {
                 int ids2 = CYLINDER_CODE_OFFSET;
                 for(auto prevCylinder : previousCylinderParams) {
                     if(cylinder.get_normal_similarity(prevCylinder) > 0.95) {
+                        std::cout << "radius diff is: " <<  std::abs(cylinder.get_radius(0) - prevCylinder.get_radius(0)) << std::endl;
                         associatedIds.insert(std::make_pair(ids, ids2));
                         break;
                     }
@@ -265,14 +267,19 @@ int main(int argc, char* argv[]) {
             }
 
             //compute pose from matches 
-            //min square minimisation of position from matched features
+            //-> rotation assuming Manhattan world
+            //-> translation with min square minimisation
 
-            //map reconstruction
+            //local map reconstruction
+
+            //position refinement from local map
+
+            //global map update from local one
 
 
-            //position improvement from map ?
-
-
+        }
+        else {
+            //first frame, or no features detected last frame
         }
 
         //depth map segmentation

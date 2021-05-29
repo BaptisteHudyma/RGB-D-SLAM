@@ -364,6 +364,7 @@ namespace primitiveDetection {
                     newPlaneSegment.fit_plane();
                     // Model selection based on MSE
                     if(newPlaneSegment.get_MSE() < cy->get_MSE_at(segId)){
+                        //MSE of the plane is less than MSE of the cylinder + this plane 
                         _planeSegments.push_back(std::make_unique<Plane_Segment>(newPlaneSegment));
                         int currentPlaneCount = _planeSegments.size();
                         for(unsigned int c = 0; c < cellActivatedCount; ++c){
