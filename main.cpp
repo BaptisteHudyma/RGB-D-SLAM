@@ -20,8 +20,7 @@
 
 
 typedef std::vector<cv::Vec4f> line_vector;
-typedef std::list<primitiveDetection::Plane_Segment> plane_container;
-typedef std::list<primitiveDetection::Cylinder_Segment> cylinder_container;
+typedef std::list<std::unique_ptr<primitiveDetection::IPrimitive>> primitive_container; 
 
 using namespace primitiveDetection;
 using namespace poseEstimation;
@@ -189,8 +188,7 @@ int main(int argc, char* argv[]) {
 
 
     //keep track of the primitives tracked last frame
-    plane_container previousPlaneParams;
-    cylinder_container previousCylinderParams;
+    primitive_container previousFramePrimitives;
 
 
     int i = startIndex;
@@ -209,8 +207,7 @@ int main(int argc, char* argv[]) {
 
         //set variables
         cv::Mat_<uchar> seg_output(height, width, uchar(0));    //primitive mask mat
-        plane_container planeParams;
-        cylinder_container cylinderParams;
+        primitive_container primitives;
 
         //clean warp artefacts
         //cv::Mat newMat;
@@ -226,44 +223,25 @@ int main(int argc, char* argv[]) {
 
         // Run primitive detection 
         t1 = cv::getTickCount();
-        primDetector.find_primitives(cloudArrayOrganized, planeParams, cylinderParams, seg_output);
+        primDetector.find_primitives(cloudArrayOrganized, primitives, seg_output);
         time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
 
         std::map<int, int> associatedIds;
-        if(not previousPlaneParams.empty() or not previousCylinderParams.empty()) {
+        if(not previousFramePrimitives.empty()) {
             //TODO:
             //find matches between consecutive images
             //compare normals, superposed area (and colors ?)
             //-> should planes transform into cylinders segments ?
-            int ids = 0;
-            for(auto plane : planeParams) {
-                int ids2 = 0;
-                for(auto prevPlane : previousPlaneParams) {
-                    if(plane.get_normal_similarity(prevPlane) > 0.95) {
-                        associatedIds.insert(std::make_pair(ids, ids2));
+            for(const std::unique_ptr<IPrimitive>& prim : primitives) {
+                for(const std::unique_ptr<IPrimitive>& prevPrim : previousFramePrimitives) {
+                    if(prim->get_similarity(prevPrim) > 0.95) {
+                        associatedIds.insert(std::make_pair(prim->get_id(), prevPrim->get_id()));
                         break;
                     }
-                    ++ids2;
                 }
-                ++ids;
-            }
-
-            //cylinder frame by frame tracking, using normal, radius and superposed area
-            ids = CYLINDER_CODE_OFFSET;
-            for(auto cylinder: cylinderParams) {
-                int ids2 = CYLINDER_CODE_OFFSET;
-                for(auto prevCylinder : previousCylinderParams) {
-                    if(cylinder.get_normal_similarity(prevCylinder) > 0.95) {
-                        std::cout << "radius diff is: " <<  std::abs(cylinder.get_radius(0) - prevCylinder.get_radius(0)) << std::endl;
-                        associatedIds.insert(std::make_pair(ids, ids2));
-                        break;
-                    }
-                    ++ids2;
-                }
-                ++ids;
             }
 
             //compute pose from matches 
@@ -338,7 +316,7 @@ int main(int argc, char* argv[]) {
         cv::Mat segRgb = rgbImage.clone();//(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
 
         if(showPrimitiveMasks)
-            primDetector.apply_masks(rgbImage, color_code, seg_output, planeParams, cylinderParams, segRgb, associatedIds, time_elapsed);
+            primDetector.apply_masks(rgbImage, color_code, seg_output, primitives, segRgb, associatedIds, time_elapsed);
 
         //display with mono mask
         //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
@@ -350,8 +328,7 @@ int main(int argc, char* argv[]) {
         ++i;
 
 
-        previousPlaneParams.swap(planeParams);
-        previousCylinderParams.swap(cylinderParams);
+        previousFramePrimitives.swap(primitives);
     }
     std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;
     std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime/i << std::endl;

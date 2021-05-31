@@ -70,7 +70,7 @@ namespace primitiveDetection {
         setMaskTime = 0;
     }
 
-    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const plane_container& planeParams, const cylinder_container& cylinderParams, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, double timeElapsed) {
+    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, double timeElapsed) {
         //apply masks on image
         for(unsigned int r = 0; r < _height; ++r){
             const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
@@ -102,35 +102,35 @@ namespace primitiveDetection {
         }
 
         //show plane labels
-        if (planeParams.size() > 0){
-            std::stringstream text;
-            text << "Planes:";
+        if (primitiveSegments.size() > 0){
+            std::stringstream text1;
+            text1 << "Planes:";
             double pos = _width * 0.25;
-            cv::putText(labeledImage, text.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
-            for(unsigned int j = 0; j < planeParams.size(); ++j){
-                cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * j, 6),
-                        cv::Point(pos + 90 + 15 * j, 16), 
+            cv::putText(labeledImage, text1.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+
+
+            std::stringstream text2;
+            text2 << "Cylinders:";
+            pos = _width * 0.60;
+            cv::putText(labeledImage, text2.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+
+
+            unsigned int count = 0;
+            for(const std::unique_ptr<IPrimitive>& prim : primitiveSegments){
+                unsigned int id = prim->get_id();
+                if(id >= CYLINDER_CODE_OFFSET)
+                    pos = _width * 0.60;
+                else
+                    pos = _width * 0.25;
+            
+                cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * count, 6),
+                        cv::Point(pos + 90 + 15 * count, 16), 
                         cv::Scalar(
-                            colors[j][0],
-                            colors[j][1],
-                            colors[j][2]),
+                            colors[id][0],
+                            colors[id][1],
+                            colors[id][2]),
                         -1);
-            }
-        }
-        //show cylinder labels
-        if (cylinderParams.size() > 0){
-            std::stringstream text;
-            text << "Cylinders:";
-            double pos = _width * 0.60;
-            cv::putText(labeledImage, text.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
-            for(unsigned int j = 0; j < cylinderParams.size(); ++j){
-                cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * j, 6),
-                        cv::Point(pos + 90 + 15 * j, 16), 
-                        cv::Scalar(
-                            colors[CYLINDER_CODE_OFFSET + j][0],
-                            colors[CYLINDER_CODE_OFFSET + j][1],
-                            colors[CYLINDER_CODE_OFFSET + j][2]),
-                        -1);
+                ++count;
             }
         }
     }
@@ -141,7 +141,7 @@ namespace primitiveDetection {
      * Find the planes in the organized depth matrix using region growing
      * Segout will contain a 2D representation of the planes
      */
-    void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, plane_container& planeSegmentsFinal, cylinder_container& cylinderSegmentsFinal, cv::Mat& segOut) {
+    void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments, cv::Mat& segOut) {
 
         //reset used data structures
         reset_data();
@@ -171,14 +171,14 @@ namespace primitiveDetection {
 
         t1 = cv::getTickCount();
         //refine planes boundaries and fill the final planes vector
-        refine_plane_boundaries(depthMatrix, planeMergeLabels, planeSegmentsFinal);
+        refine_plane_boundaries(depthMatrix, planeMergeLabels, primitiveSegments);
         td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         mergeTime += td;
 
         if(_useCylinderDetection) {
             t1 = cv::getTickCount();
             //refine cylinders boundaries and fill the final cylinders vector
-            refine_cylinder_boundaries(depthMatrix, cylinder2regionMap, cylinderSegmentsFinal); 
+            refine_cylinder_boundaries(depthMatrix, cylinder2regionMap, primitiveSegments); 
             td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
             refineTime += td;
         }
@@ -437,7 +437,7 @@ namespace primitiveDetection {
     /*
      *  Refine the final plane edges in mask images
      */
-    void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, plane_container& planeSegmentsFinal) {
+    void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, primitive_container& primitiveSegments) {
         //refine the coarse planes boundaries to smoother versions
         unsigned int planeCount = _planeSegments.size();
         for(unsigned int i = 0; i < planeCount; ++i) {
@@ -457,13 +457,13 @@ namespace primitiveDetection {
             if(max == 0)    //completely eroded
                 continue;
 
-            //copy in new object
-            planeSegmentsFinal.push_back(*_planeSegments[i]);
+            //add new plane to final shapes
+            primitiveSegments.push_back(std::move(std::make_unique<Plane>(_planeSegments[i], planeMergeLabels[i])));
 
             cv::dilate(_mask, _maskDilated, _maskSquareKernel);
             _maskDiff = _maskDilated - _maskEroded;
 
-            uchar planeNr = (unsigned char)planeSegmentsFinal.size();
+            uchar planeNr = (unsigned char)primitiveSegments.size();
             const Eigen::Vector3d& planeNormal = _planeSegments[i]->get_normal();
             float nx = planeNormal[0];
             float ny = planeNormal[1];
@@ -507,7 +507,7 @@ namespace primitiveDetection {
     /*
      *  Refine the cylinder edges in mask images
      */
-    void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, cylinder_container& cylinderSegmentsFinal) {
+    void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments) {
         if(not _useCylinderDetection)
             return; //no cylinder detections
 
@@ -538,7 +538,8 @@ namespace primitiveDetection {
             int subRegId = cylinderToRegionMap[i].second;
             const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
-            cylinderSegmentsFinal.push_back(Cylinder_Segment(*cylinderSegRef, subRegId));
+            //add new cylinder to final shapes
+            primitiveSegments.push_back(std::move(std::make_unique<Cylinder>(cylinderSegRef, CYLINDER_CODE_OFFSET + cylinderFinalCount -  1)));
 
 
             // Get variables needed for point-surface distance computation

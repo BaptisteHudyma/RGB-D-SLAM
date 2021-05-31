@@ -375,6 +375,9 @@ namespace primitiveDetection {
         return std::abs( _axis[0] * other._axis[0] + _axis[1] * other._axis[1] + _axis[2] * other._axis[2]  );
     }
 
+    const Eigen::Vector3d Cylinder_Segment::get_normal() const {
+        return _axis;
+    }
 
 
 

@@ -10,6 +10,7 @@
 
 namespace primitiveDetection {
 
+
     class Cylinder_Segment {
         public:
             /**
@@ -117,6 +118,12 @@ namespace primitiveDetection {
                  */
                 double get_normal_similarity(const Cylinder_Segment& other);
 
+                /**
+                  *
+                  *
+                  */
+                const Eigen::Vector3d get_normal() const;
+
 
 
         protected:
@@ -126,7 +133,7 @@ namespace primitiveDetection {
                 typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>  MatrixXb;
                 typedef std::vector<Eigen::Vector3d> vec3d_vector;
 
-                double _axis[3];
+                Eigen::Vector3d _axis;
 
                 std::vector<Eigen::MatrixXd> _centers;
                 vec3d_vector _pointsAxis1;

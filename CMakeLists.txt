@@ -55,6 +55,7 @@ add_library(primitivesDetection
     ${PRIM}/CylinderSegment.cpp
     ${PRIM}/Histogram.cpp
     ${PRIM}/DepthMapSegmentation.cpp
+    ${PRIM}/ShapePrimitives.cpp
     )
 add_library(poseEstimation
     ${POSE}/PoseUtils.cpp
