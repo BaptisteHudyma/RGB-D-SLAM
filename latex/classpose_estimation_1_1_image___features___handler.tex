@@ -1,0 +1,64 @@
+\hypertarget{classpose_estimation_1_1_image___features___handler}{}\doxysection{pose\+Estimation\+::Image\+\_\+\+Features\+\_\+\+Handler Class Reference}
+\label{classpose_estimation_1_1_image___features___handler}\index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
+
+
+{\ttfamily \#include $<$Image\+\_\+\+Features\+\_\+\+Handler.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a925a46e1f888863ed0e3a5adfcbf21ab}{Image\+\_\+\+Features\+\_\+\+Handler}} (const \mbox{\hyperlink{classpose_estimation_1_1_parameters}{Parameters}} \&vo\+\_\+params)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_ad46fa78654927349f1984b51fcdb2527}{compute\+\_\+features}} (const cv\+::\+Mat \&img\+Gray, const cv\+::\+Mat \&img\+Depth, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&out\+Struct)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_aece9381dd976113ea9f62325a37386ef}{row\+\_\+match}} (\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features\+\_\+right, std\+::vector$<$ cv\+::\+DMatch $>$ \&out\+Matches)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a1c5f76f32900ffa5e8b3b0696c8c1813}{perform\+\_\+compute\+\_\+features}} (\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a2378108a1f935ad830a9b1b3c5de6c0d}{perform\+\_\+compute\+\_\+descriptors\+\_\+only}} (\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a925a46e1f888863ed0e3a5adfcbf21ab}\label{classpose_estimation_1_1_image___features___handler_a925a46e1f888863ed0e3a5adfcbf21ab}} 
+\index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!Image\_Features\_Handler@{Image\_Features\_Handler}}
+\index{Image\_Features\_Handler@{Image\_Features\_Handler}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{Image\_Features\_Handler()}{Image\_Features\_Handler()}}
+{\footnotesize\ttfamily pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::\+Image\+\_\+\+Features\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_parameters}{Parameters}} \&}]{vo\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_ad46fa78654927349f1984b51fcdb2527}\label{classpose_estimation_1_1_image___features___handler_ad46fa78654927349f1984b51fcdb2527}} 
+\index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!compute\_features@{compute\_features}}
+\index{compute\_features@{compute\_features}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{compute\_features()}{compute\_features()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::compute\+\_\+features (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{img\+Gray,  }\item[{const cv\+::\+Mat \&}]{img\+Depth,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{out\+Struct }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a2378108a1f935ad830a9b1b3c5de6c0d}\label{classpose_estimation_1_1_image___features___handler_a2378108a1f935ad830a9b1b3c5de6c0d}} 
+\index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!perform\_compute\_descriptors\_only@{perform\_compute\_descriptors\_only}}
+\index{perform\_compute\_descriptors\_only@{perform\_compute\_descriptors\_only}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{perform\_compute\_descriptors\_only()}{perform\_compute\_descriptors\_only()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::perform\+\_\+compute\+\_\+descriptors\+\_\+only (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a1c5f76f32900ffa5e8b3b0696c8c1813}\label{classpose_estimation_1_1_image___features___handler_a1c5f76f32900ffa5e8b3b0696c8c1813}} 
+\index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!perform\_compute\_features@{perform\_compute\_features}}
+\index{perform\_compute\_features@{perform\_compute\_features}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{perform\_compute\_features()}{perform\_compute\_features()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::perform\+\_\+compute\+\_\+features (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_aece9381dd976113ea9f62325a37386ef}\label{classpose_estimation_1_1_image___features___handler_aece9381dd976113ea9f62325a37386ef}} 
+\index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!row\_match@{row\_match}}
+\index{row\_match@{row\_match}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{row\_match()}{row\_match()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::row\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features\+\_\+right,  }\item[{std\+::vector$<$ cv\+::\+DMatch $>$ \&}]{out\+Matches }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8hpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+hpp}}\item 
+src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8cpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+cpp}}\end{DoxyCompactItemize}

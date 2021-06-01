@@ -1,0 +1,43 @@
+My take on a SLAM, based on shape primitive recognition with a RGB-\/D camera. The system uses depth informations as a connected 2D graph to extract primitive shapes, and use them with 3D points and lines to estimate it\textquotesingle{}s position in space. A map is created with those points, lines and primitive shapes.
+
+The primitive detection is based on \href{https://arxiv.org/pdf/1803.02380.pdf}{\texttt{ Fast Cylinder and Plane Extraction from Depth Cameras for Visua Odometry}}. The pose estimation is based on \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6165120/}{\texttt{ Lightweight Visual Odometry for Autonomous Mobile Robots}}.
+
+packages 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{opencv}
+\DoxyCodeLine{Eigen}
+\DoxyCodeLine{g2o}
+
+\end{DoxyCode}
+
+
+How to build Build 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mkdir build \&\& cd build}
+\DoxyCodeLine{cmake ..}
+\DoxyCodeLine{make}
+
+\end{DoxyCode}
+
+
+How to use 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./rgbdslam}
+
+\end{DoxyCode}
+ Parameters 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/h Display the help}
+\DoxyCodeLine{-\/f path to the file containing the data (depth, rgb, cam parameters)}
+\DoxyCodeLine{-\/c use cylinder detection }
+\DoxyCodeLine{-\/i index of starting frame (> 0)}
+
+\end{DoxyCode}
+
+
+Check mem errors 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{valgrind -\/-\/suppressions=/usr/share/opencv4/valgrind.supp -\/-\/suppressions=/usr/share/opencv4/valgrind\_3rdparty.supp ./rgbdslam}
+
+\end{DoxyCode}
+ 
