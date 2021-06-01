@@ -153,23 +153,24 @@ int main(int argc, char* argv[]) {
     }
 
     //visual odometry params
-    Parameters params;
-    if (not params.init_from_file(calibYAMLPath.str())) {
-        std::cout << "Failed to load YAML param file at: " << calibYAMLPath.str() << std::endl;
-        return -1;
-    }
+    /*
+       Parameters params;
+       if (not params.init_from_file(calibYAMLPath.str())) {
+       std::cout << "Failed to load YAML param file at: " << calibYAMLPath.str() << std::endl;
+       return -1;
+       }
 
-    params.set_fx(depthOps.get_rgb_fx());
-    params.set_fy(depthOps.get_rgb_fy());
-    params.set_cx(depthOps.get_rgb_cx());
-    params.set_cy(depthOps.get_rgb_cy());
+       params.set_fx(depthOps.get_rgb_fx());
+       params.set_fy(depthOps.get_rgb_fy());
+       params.set_cx(depthOps.get_rgb_cx());
+       params.set_cy(depthOps.get_rgb_cy());
 
-    params.set_height(height);
-    params.set_width(width);
+       params.set_height(height);
+       params.set_width(width);
 
     //visual odom class
     RGB_SLAM vo(params);
-
+     */
 
     //plane/cylinder finder
     Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
@@ -287,12 +288,14 @@ int main(int argc, char* argv[]) {
         }
 
         //visual odometry tracking
+        /*
         if(useFrameOdometry) {
             Pose estimatedPose = vo.track(grayImage, depthImage);
 
             if(vo.get_state() == vo.eState_LOST)
                 break;
         }
+        */
 
         if(useLineDetection) { //detect lines in image
             //get lines
