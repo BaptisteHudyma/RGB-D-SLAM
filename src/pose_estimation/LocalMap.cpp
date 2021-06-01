@@ -13,15 +13,15 @@ namespace poseEstimation {
 
     static float min_x, max_x, min_y, max_y;
 
-    /*
-     *  Check if the point pt is visible from observer at position w2c 
+    /**
+     * \brief Check if the point pt is visible from observer at position w2c 
      *
-     * in pt Point to check 
-     * in w2c Position of the observer
-     * in params
-     * out outProjectedPt pt projected to world coordinates
+     * \param[in] pt Point to check 
+     * \param[in] w2c Position of the observer
+     * \param[in] params Parameter container
+     * \param[out] outProjectedPt pt projected to world coordinates
      *
-     * return bool: point pt is visible from w2c
+     * \return True if point pt is visible from w2c
      */
     static inline bool is_point_visible(const vector3& pt, const matrix34& w2c, const Parameters& params, vector2& outProjectedPt)
     {
@@ -42,11 +42,6 @@ namespace poseEstimation {
         return true;
     }
 
-    /*
-     *    Constructor 
-     *
-     * Keeps a reference to the featuresHandler object
-     */
     Local_Map::Local_Map(const Parameters& voParams, Image_Features_Handler* featuresHandler) 
         : _voParams(voParams), _featuresHandler(featuresHandler)
     {
@@ -100,16 +95,6 @@ namespace poseEstimation {
     }
 
 
-    /*
-     *  Compute point matches from current pose in the local map
-     *
-     * in camPose
-     * in/out features Current image features
-     * out outMapPoints Matched points
-     * out outMatchesLeft Unmatched points (outliers)
-     *
-     *  return matched point count;
-     */
     unsigned int Local_Map::find_matches(const Pose &camPose, Image_Features_Struct& features,
             vector3_array& outMapPoints, std::vector<int>& outMatchesLeft)
     {
@@ -183,12 +168,6 @@ namespace poseEstimation {
     }
 
 
-    /*
-     *
-     * in camPose
-     * in features Detected features in RGB image
-     * out outPoints 
-     */
     void Local_Map::triangulate_rgbd(const Pose &camPose, Image_Features_Struct& features, mapPointArray& outPoints)
     {
         const float inv_fx = 1.0f / _voParams.get_fx();
@@ -293,13 +272,6 @@ namespace poseEstimation {
     }
     }*/
 
-    /*
-     *  Triangulate new map points from features that were not matched/tracked
-     *
-     * in camPose Position of camera
-     * in features
-     * in dontStage Dont store staged points
-     */
     void Local_Map::update_with_new_triangulation(const Pose &camPose, Image_Features_Struct& features, bool dont_stage)
     {
         assert(features.is_depth_associated());
@@ -321,12 +293,6 @@ namespace poseEstimation {
     }
 
 
-    /*
-     *  Update the stagePoints vector 
-     *
-     * in camPose
-     * in/out features Features to treat, can be marked as matched
-     */
     void Local_Map::update_staged_map_points(const Pose &camPose, Image_Features_Struct& features)
     {
         const matrix34 cml = Pose_Utils::compute_world_to_camera_transform(camPose);
@@ -365,11 +331,6 @@ namespace poseEstimation {
     }
 
 
-    /*
-     *  Mark untracked points as untracked in map
-     *
-     * in/out features
-     */
     void Local_Map::clean_untracked_points(Image_Features_Struct& features)
     {
         const unsigned int th = _voParams.get_untracked_threshold();

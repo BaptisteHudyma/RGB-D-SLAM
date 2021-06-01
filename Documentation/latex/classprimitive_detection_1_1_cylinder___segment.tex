@@ -13,7 +13,7 @@ Stored a cylinder segment. Computes the parameters (radius, normal of the main a
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_a93d9c02374486cd0f75d51a50d911186}{Cylinder\+\_\+\+Segment}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ $\ast$plane\+Grid, unsigned int plane\+Count, const bool $\ast$activated\+\_\+mask, unsigned int cell\+Activated\+Count)
-\item 
+\begin{DoxyCompactList}\small\item\em Main constructor\+: fits a cylinder using the plane segments in plane\+Grid, using RANSAC. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_ad6f15e7fb58dac42a069fbeff12bf6c5}{Cylinder\+\_\+\+Segment}} (const \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&seg, unsigned int sub\+Region\+Id)
 \begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_afbebd94e436bc85c11f99dee4c867884}{Cylinder\+\_\+\+Segment}} (const \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&seg)
@@ -35,11 +35,11 @@ const Eigen\+::\+Vector3d \& \mbox{\hyperlink{classprimitive_detection_1_1_cylin
 const Eigen\+::\+Vector3d \& \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_aa73c5bd95a512987c57cdc18a96c4600}{get\+\_\+axis2\+\_\+point}} (unsigned int index) const
 \item 
 double \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_a1bb5ad554441715c5ea93c2b099c312b}{get\+\_\+axis\+\_\+normal}} (unsigned int index) const
-\item 
+\begin{DoxyCompactList}\small\item\em Return the normal of a portion of this cylinder segement. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_ac6662c2bbf568e27260306763ddf2777}{get\+\_\+radius}} (unsigned int index) const
-\item 
+\begin{DoxyCompactList}\small\item\em Return the radius of this cylinder segment. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_afa6237d716a9486250518175b0949dce}{get\+\_\+normal\+\_\+similarity}} (const \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&other)
-\item 
+\begin{DoxyCompactList}\small\item\em Return the absolute result of the dot product of the two normals. \end{DoxyCompactList}\item 
 const Eigen\+::\+Vector3d \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment_a3551355a304444d6acd84a2369e633b9}{get\+\_\+normal}} () const
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
@@ -59,6 +59,21 @@ Stored a cylinder segment. Computes the parameters (radius, normal of the main a
 \doxysubsubsection{\texorpdfstring{Cylinder\_Segment()}{Cylinder\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily primitive\+Detection\+::\+Cylinder\+\_\+\+Segment\+::\+Cylinder\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ $\ast$}]{plane\+Grid,  }\item[{unsigned int}]{plane\+Count,  }\item[{const bool $\ast$}]{activated\+\_\+mask,  }\item[{unsigned int}]{cell\+Activated\+Count }\end{DoxyParamCaption})}
 
+
+
+Main constructor\+: fits a cylinder using the plane segments in plane\+Grid, using RANSAC. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em plane\+Grid} & The plane segment container \\
+\hline
+\mbox{\texttt{ in}}  & {\em plane\+Count} & \\
+\hline
+\mbox{\texttt{ in}}  & {\em activated\+\_\+mask} & An array of size plane\+Count, referencing activated plane segments \\
+\hline
+\mbox{\texttt{ in}}  & {\em cell\+Activated\+Count} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classprimitive_detection_1_1_cylinder___segment_ad6f15e7fb58dac42a069fbeff12bf6c5}\label{classprimitive_detection_1_1_cylinder___segment_ad6f15e7fb58dac42a069fbeff12bf6c5}} 
 \index{primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}!Cylinder\_Segment@{Cylinder\_Segment}}
 \index{Cylinder\_Segment@{Cylinder\_Segment}!primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}}
@@ -152,6 +167,15 @@ The signed distance between the point and cylinder surface
 \doxysubsubsection{\texorpdfstring{get\_axis\_normal()}{get\_axis\_normal()}}
 {\footnotesize\ttfamily double primitive\+Detection\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+axis\+\_\+normal (\begin{DoxyParamCaption}\item[{unsigned int}]{index }\end{DoxyParamCaption}) const}
 
+
+
+Return the normal of a portion of this cylinder segement. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & The index of the portion to return, between 0 and \+\_\+normals\+Axis1\+Axis2.\+size() \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classprimitive_detection_1_1_cylinder___segment_a71ba9a95f7ad9f0a5957c53b35e232d4}\label{classprimitive_detection_1_1_cylinder___segment_a71ba9a95f7ad9f0a5957c53b35e232d4}} 
 \index{primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}!get\_local\_to\_global\_mapping@{get\_local\_to\_global\_mapping}}
 \index{get\_local\_to\_global\_mapping@{get\_local\_to\_global\_mapping}!primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}}
@@ -189,12 +213,31 @@ the Mean Sqared Error of the fitting process
 \doxysubsubsection{\texorpdfstring{get\_normal\_similarity()}{get\_normal\_similarity()}}
 {\footnotesize\ttfamily double primitive\+Detection\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+normal\+\_\+similarity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&}]{other }\end{DoxyParamCaption})}
 
+
+
+Return the absolute result of the dot product of the two normals. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other} & The cyclinder segment to compare normal with\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A double between 0 and 1, 0 when the normals are orthogonal, 1 il they are parallels. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classprimitive_detection_1_1_cylinder___segment_ac6662c2bbf568e27260306763ddf2777}\label{classprimitive_detection_1_1_cylinder___segment_ac6662c2bbf568e27260306763ddf2777}} 
 \index{primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}!get\_radius@{get\_radius}}
 \index{get\_radius@{get\_radius}!primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_radius()}{get\_radius()}}
 {\footnotesize\ttfamily double primitive\+Detection\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+radius (\begin{DoxyParamCaption}\item[{unsigned int}]{index }\end{DoxyParamCaption}) const}
 
+
+
+Return the radius of this cylinder segment. 
+
+\begin{DoxyReturn}{Returns}
+The radius of the cylinder segment, in frame units 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classprimitive_detection_1_1_cylinder___segment_a5316b2e1f3dd62a2976e6e59a7211ff0}\label{classprimitive_detection_1_1_cylinder___segment_a5316b2e1f3dd62a2976e6e59a7211ff0}} 
 \index{primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}!get\_segment\_count@{get\_segment\_count}}
 \index{get\_segment\_count@{get\_segment\_count}!primitiveDetection::Cylinder\_Segment@{primitiveDetection::Cylinder\_Segment}}

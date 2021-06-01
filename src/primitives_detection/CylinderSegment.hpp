@@ -17,7 +17,7 @@ namespace primitiveDetection {
     class Cylinder_Segment {
         public:
             /**
-             * \def Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
+             * \brief Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
              *
              * \param[in] planeGrid The plane segment container
              * \param[in] planeCount
@@ -95,7 +95,6 @@ namespace primitiveDetection {
                 const Eigen::Vector3d& get_axis1_point(unsigned int index) const;
 
                 /**
-                 * \brief 
                  *
                  * \param[in] index The index of the cylinder part to search
                  *
@@ -103,7 +102,7 @@ namespace primitiveDetection {
                 const Eigen::Vector3d& get_axis2_point(unsigned int index) const;
 
                 /**
-                 * \def Return the normal of a portion of this cylinder segement
+                 * \brief Return the normal of a portion of this cylinder segement
                  *
                  * \param[in] index The index of the portion to return, between 0 and _normalsAxis1Axis2.size()
                  */
@@ -111,14 +110,14 @@ namespace primitiveDetection {
 
 
                 /**
-                 * \def Return the radius of this cylinder segment
+                 * \brief Return the radius of this cylinder segment
                  *
                  * \return The radius of the cylinder segment, in frame units
                  */
                 double get_radius(unsigned int index) const;
 
                 /**
-                 * \def Return the absolute result of the dot product of the two normals
+                 * \brief Return the absolute result of the dot product of the two normals
                  *
                  * \param[in] other The cyclinder segment to compare normal with
                  *

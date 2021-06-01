@@ -48,7 +48,7 @@ namespace primitiveDetection {
             /**
               * \brief Compute the Inter over Union factor of two masks
               *
-              * \pram[in] prim Another primitive object
+              * \param[in] prim Another primitive object
               *
               * \return A number between 0 and 1, indicating the IoU
               */

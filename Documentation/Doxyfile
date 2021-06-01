@@ -865,6 +865,8 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = /home/baptou/Documents/code/robots/RGB-D-SLAM/src
+INPUT                 += /home/baptou/Documents/code/robots/RGB-D-SLAM/README.md
+INPUT                 += /home/baptou/Documents/code/robots/RGB-D-SLAM/Documentation/mainpage.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

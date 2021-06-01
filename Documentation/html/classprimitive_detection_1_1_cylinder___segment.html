@@ -83,6 +83,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a93d9c02374486cd0f75d51a50d911186"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprimitive_detection_1_1_cylinder___segment.html#a93d9c02374486cd0f75d51a50d911186">Cylinder_Segment</a> (const std::unique_ptr&lt; <a class="el" href="classprimitive_detection_1_1_plane___segment.html">Plane_Segment</a> &gt; *planeGrid, unsigned int planeCount, const bool *activated_mask, unsigned int cellActivatedCount)</td></tr>
+<tr class="memdesc:a93d9c02374486cd0f75d51a50d911186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC.  <a href="classprimitive_detection_1_1_cylinder___segment.html#a93d9c02374486cd0f75d51a50d911186">More...</a><br /></td></tr>
 <tr class="separator:a93d9c02374486cd0f75d51a50d911186"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6f15e7fb58dac42a069fbeff12bf6c5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprimitive_detection_1_1_cylinder___segment.html#ad6f15e7fb58dac42a069fbeff12bf6c5">Cylinder_Segment</a> (const <a class="el" href="classprimitive_detection_1_1_cylinder___segment.html">Cylinder_Segment</a> &amp;seg, unsigned int subRegionId)</td></tr>
 <tr class="memdesc:ad6f15e7fb58dac42a069fbeff12bf6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classprimitive_detection_1_1_cylinder___segment.html#ad6f15e7fb58dac42a069fbeff12bf6c5">More...</a><br /></td></tr>
@@ -108,10 +109,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa73c5bd95a512987c57cdc18a96c4600"><td class="memItemLeft" align="right" valign="top">const Eigen::Vector3d &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprimitive_detection_1_1_cylinder___segment.html#aa73c5bd95a512987c57cdc18a96c4600">get_axis2_point</a> (unsigned int index) const</td></tr>
 <tr class="separator:aa73c5bd95a512987c57cdc18a96c4600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bb5ad554441715c5ea93c2b099c312b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprimitive_detection_1_1_cylinder___segment.html#a1bb5ad554441715c5ea93c2b099c312b">get_axis_normal</a> (unsigned int index) const</td></tr>
+<tr class="memdesc:a1bb5ad554441715c5ea93c2b099c312b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the normal of a portion of this cylinder segement.  <a href="classprimitive_detection_1_1_cylinder___segment.html#a1bb5ad554441715c5ea93c2b099c312b">More...</a><br /></td></tr>
 <tr class="separator:a1bb5ad554441715c5ea93c2b099c312b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6662c2bbf568e27260306763ddf2777"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprimitive_detection_1_1_cylinder___segment.html#ac6662c2bbf568e27260306763ddf2777">get_radius</a> (unsigned int index) const</td></tr>
+<tr class="memdesc:ac6662c2bbf568e27260306763ddf2777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the radius of this cylinder segment.  <a href="classprimitive_detection_1_1_cylinder___segment.html#ac6662c2bbf568e27260306763ddf2777">More...</a><br /></td></tr>
 <tr class="separator:ac6662c2bbf568e27260306763ddf2777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa6237d716a9486250518175b0949dce"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprimitive_detection_1_1_cylinder___segment.html#afa6237d716a9486250518175b0949dce">get_normal_similarity</a> (const <a class="el" href="classprimitive_detection_1_1_cylinder___segment.html">Cylinder_Segment</a> &amp;other)</td></tr>
+<tr class="memdesc:afa6237d716a9486250518175b0949dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the absolute result of the dot product of the two normals.  <a href="classprimitive_detection_1_1_cylinder___segment.html#afa6237d716a9486250518175b0949dce">More...</a><br /></td></tr>
 <tr class="separator:afa6237d716a9486250518175b0949dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3551355a304444d6acd84a2369e633b9"><td class="memItemLeft" align="right" valign="top">const Eigen::Vector3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprimitive_detection_1_1_cylinder___segment.html#a3551355a304444d6acd84a2369e633b9">get_normal</a> () const</td></tr>
 <tr class="separator:a3551355a304444d6acd84a2369e633b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +165,17 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">planeGrid</td><td>The plane segment container </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">planeCount</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">activated_mask</td><td>An array of size planeCount, referencing activated plane segments </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cellActivatedCount</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -372,6 +387,14 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Return the normal of a portion of this cylinder segement. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The index of the portion to return, between 0 and _normalsAxis1Axis2.size() </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a71ba9a95f7ad9f0a5957c53b35e232d4"></a>
@@ -456,6 +479,15 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Return the absolute result of the dot product of the two normals. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The cyclinder segment to compare normal with</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A double between 0 and 1, 0 when the normals are orthogonal, 1 il they are parallels. </dd></dl>
+
 </div>
 </div>
 <a id="ac6662c2bbf568e27260306763ddf2777"></a>
@@ -473,6 +505,9 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Return the radius of this cylinder segment. </p>
+<dl class="section return"><dt>Returns</dt><dd>The radius of the cylinder segment, in frame units </dd></dl>
 
 </div>
 </div>

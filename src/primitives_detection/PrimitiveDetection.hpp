@@ -65,8 +65,8 @@ namespace primitiveDetection {
              * \param[in] maskImage An image where each pixel is the index of a plane or cylinder
              * \param[in] primitiveSegments A container of the planes and cylinders detected in inputImage
              * \param[in, out] labeledImage The final result: an image with colored masks applied for each plane and cylinder, as well as a bar displaying informations on the top. Must be passed as an empty image of the same dimensions as labeledImage.
-             * \param[in] timeElapsed the time elapsed since last frame. Used to display fps
-             * \param[in] mastched A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders
+             * \param[in] elapsedTime The time elapsed since last frame. Used to display fps
+             * \param[in] associatedIds A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders
              */
             void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, double elapsedTime=0);
 
