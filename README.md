@@ -7,6 +7,8 @@ A map is created with those points, lines and primitive shapes.
 The primitive detection is based on [Fast Cylinder and Plane Extraction from Depth Cameras for Visua Odometry](https://arxiv.org/pdf/1803.02380.pdf).
 The pose estimation is based on [Lightweight Visual Odometry for Autonomous Mobile Robots](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6165120/).
 
+See the Doxygen documentation on [GitHub Pages](https://baptistehudyma.github.io/RGB-D-SLAM/html/index.html).
+
 
 packages
 ```
