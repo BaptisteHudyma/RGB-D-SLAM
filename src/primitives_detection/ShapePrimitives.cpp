@@ -3,14 +3,38 @@
 
 namespace primitiveDetection {
 
+
+    /*
+     *
+     *      PRIMITIVE
+     *
+     */
+    Primitive::Primitive(unsigned int id, const cv::Mat& shapeMask) :
+        _id(id)
+    {
+        _shapeMask = shapeMask.clone();
+    }
+
+    double Primitive::get_IOU(const std::unique_ptr<Primitive>& prim) const {
+        //get union of masks
+        cv::Mat unionMat = (_shapeMask | prim->_shapeMask);
+
+        double IOU = cv::countNonZero(unionMat);
+        if(IOU == 0)
+            return 0.0;
+        //get inter of masks
+        cv::Mat interMat = (_shapeMask & prim->_shapeMask);
+        return cv::countNonZero(interMat) / IOU;
+    }
+
     /*
      *
      *      CYLINDER
      *
      */
-    Cylinder::Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, unsigned int id) {
-        _id = id;
-
+    Cylinder::Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, unsigned int id, const cv::Mat& shapeMask) :
+        Primitive(id, shapeMask)
+    {
         _radius = 0;
         for(unsigned int i = 0; i < cylinderSeg->get_segment_count(); ++i) {
             _radius += cylinderSeg->get_radius(i);
@@ -19,14 +43,21 @@ namespace primitiveDetection {
         _normal = cylinderSeg->get_normal();
     }
 
-    double Cylinder::get_similarity(const std::unique_ptr<IPrimitive>& prim) {
+    bool Cylinder::is_similar(const std::unique_ptr<Primitive>& prim) {
+        if(get_IOU(prim) < 0.2)
+            return false;
+
         const Cylinder* cylinder = dynamic_cast<const Cylinder*>(prim.get());
-        if(cylinder == nullptr)
-            return 0.0;
-        return std::abs( _normal.dot( cylinder->_normal ) );
+        if(cylinder != nullptr) {
+            return std::abs( _normal.dot( cylinder->_normal ) ) > 0.95;
+        }
+        else    //plane overlaps cylinder
+            return true;
+        return false;
     }
 
     double Cylinder::get_distance(const Eigen::Vector3d& point) {
+        //TODO implement
         return 0;
     }
 
@@ -35,19 +66,23 @@ namespace primitiveDetection {
      *        PLANE
      *
      */
-    Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, unsigned int id) {
-        _id = id;
-
+    Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, unsigned int id, const cv::Mat& shapeMask) :
+        Primitive(id, shapeMask)
+    {
         _mean = planeSeg->get_mean();
         _normal = planeSeg->get_normal();
         _d = planeSeg->get_plane_d();
     }
 
-    double Plane::get_similarity(const std::unique_ptr<IPrimitive>& prim) {
+    bool Plane::is_similar(const std::unique_ptr<Primitive>& prim) {
+        if(get_IOU(prim) < 0.2)
+            return false;
+
         const Plane* plane = dynamic_cast<const Plane*>(prim.get());
-        if(plane == nullptr)
-            return 0.0;
-        return (_normal.dot(plane->_normal) + 1.0) / 2.0;
+        if(plane != nullptr) {
+            return (_normal.dot(plane->_normal) + 1.0) / 2.0 > 0.95;
+        }
+        return false;
     }
 
     double Plane::get_distance(const Eigen::Vector3d& point) {

@@ -77,18 +77,18 @@ namespace primitiveDetection {
             cv::Vec3b* outPtr = labeledImage.ptr<cv::Vec3b>(r);
 
             for(unsigned int c = 0; c < _width; ++c){
-                const int index = maskImage.at<uchar>(r, c);   //get index of plane/cylinder at [r, c]
+                const int index = static_cast<int>(maskImage.at<uchar>(r, c)) - 1;   //get index of plane/cylinder at [r, c]
 
-                if(index <= 0) {
+                if(index < 0) {
                     outPtr[c] = rgbPtr[c];
                 }
-                else if(associatedIds.contains(index - 1)) {    //shape associated with last frame shape
+                else if(associatedIds.contains(index)) {    //shape associated with last frame shape
                     //there is a mask to display 
-                    outPtr[c] = colors[associatedIds.at(index - 1)] * 0.5 + rgbPtr[c] * 0.5;
+                    outPtr[c] = colors[associatedIds.at(index)] * 0.5 + rgbPtr[c] * 0.5;
                 }
                 else {
                     //shape associated with nothing
-                    outPtr[c] = colors[index - 1] * 0.2 + rgbPtr[c] * 0.8;
+                    outPtr[c] = colors[index] * 0.2 + rgbPtr[c] * 0.8;
                 }
             }
         }
@@ -116,8 +116,12 @@ namespace primitiveDetection {
 
 
             unsigned int count = 0;
-            for(const std::unique_ptr<IPrimitive>& prim : primitiveSegments){
+            for(const std::unique_ptr<Primitive>& prim : primitiveSegments){
                 unsigned int id = prim->get_id();
+                
+                if(associatedIds.contains(id))
+                    id = associatedIds.at(id);
+
                 if(id >= CYLINDER_CODE_OFFSET)
                     pos = _width * 0.60;
                 else
@@ -457,11 +461,12 @@ namespace primitiveDetection {
             if(max == 0)    //completely eroded
                 continue;
 
-            //add new plane to final shapes
-            primitiveSegments.push_back(std::move(std::make_unique<Plane>(_planeSegments[i], planeMergeLabels[i])));
-
             cv::dilate(_mask, _maskDilated, _maskSquareKernel);
             _maskDiff = _maskDilated - _maskEroded;
+
+            //add new plane to final shapes
+            primitiveSegments.push_back(std::move(std::make_unique<Plane>(_planeSegments[i], planeMergeLabels[i], _maskDilated)));
+
 
             uchar planeNr = (unsigned char)primitiveSegments.size();
             const Eigen::Vector3d& planeNormal = _planeSegments[i]->get_normal();
@@ -539,7 +544,7 @@ namespace primitiveDetection {
             const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
             //add new cylinder to final shapes
-            primitiveSegments.push_back(std::move(std::make_unique<Cylinder>(cylinderSegRef, CYLINDER_CODE_OFFSET + cylinderFinalCount -  1)));
+            primitiveSegments.push_back(std::move(std::make_unique<Cylinder>(cylinderSegRef, CYLINDER_CODE_OFFSET + cylinderFinalCount -  1, _maskDilated)));
 
 
             // Get variables needed for point-surface distance computation
@@ -603,8 +608,9 @@ namespace primitiveDetection {
                     for(unsigned int r = rOffset, i = 0; r < rLimit; r++){
                         uchar* rowPtr = segOut.ptr<uchar>(r);
                         for(unsigned int c = cOffset; c < cLimit; c++, i++){
-                            if(stackPtr[i] > 0){
-                                rowPtr[c] = stackPtr[i];
+                            uchar id = stackPtr[i];
+                            if(id > 0){
+                                rowPtr[c] = id;
                             }
                         }
                     }

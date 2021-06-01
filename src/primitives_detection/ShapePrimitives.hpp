@@ -4,52 +4,84 @@
 #include "PlaneSegment.hpp"
 #include "CylinderSegment.hpp"
 
+#include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 
 
 namespace primitiveDetection {
 
-    class IPrimitive {
+    class Primitive {
         public:
             /**
              * \brief Get the similarity of two primitives
              * 
              * \return A double between 0 and 1, with 1 indicating identical primitives 
              */
-            virtual double get_similarity(const std::unique_ptr<IPrimitive>& prim) = 0;
+            virtual bool is_similar(const std::unique_ptr<Primitive>& prim) = 0; 
 
             /**
              * \brief Get the distance of a point to the primitive
+             *
+             * \param[in] point 3D Point to compute distance to
+
+             * \return The signed distance of the point to the shape, 0 if the point is on the shape
              */
             virtual double get_distance(const Eigen::Vector3d& point) = 0;
 
-            virtual unsigned int get_id() const = 0;
+            virtual ~Primitive() {};
 
-            virtual ~IPrimitive() {};
-            IPrimitive() {};
+            /**
+              * \brief Return this shape assigned id
+              */
+            unsigned int get_id() const { return _id; };
+
+
+        protected:
+            /**
+              * \brief Hidden constructor, to set _id and shape
+              */
+            Primitive(unsigned int id, const cv::Mat& shapeMask);
+
+            /**
+              * \brief Compute the Inter over Union factor of two masks
+              *
+              * \pram[in] prim Another primitive object
+              *
+              * \return A number between 0 and 1, indicating the IoU
+              */
+            double get_IOU(const std::unique_ptr<Primitive>& prim) const;
+
+            //members
+            const unsigned int _id;
+            cv::Mat _shapeMask;
 
         private:
-            IPrimitive(const IPrimitive&) = delete;
-            IPrimitive& operator=(const IPrimitive&) = delete;
+            //remove copy functions
+            Primitive(const Primitive&) = delete;
+            Primitive& operator=(const Primitive&) = delete;
     };
 
     class Cylinder :
-        public IPrimitive
+        public Primitive
     {
         public:
             /**
              * \brief Construct a cylinder object
              *
              * \param[in] cylinderSeg Cylinder segment to copy
+             * \param[in] id ID assigned to this shape (for tracking and debug)
+             * \param[in] shapeMask Mask of the shape in the reference image
              */
-            Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, unsigned int id);
+            Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, unsigned int id, const cv::Mat& shapeMask);
 
             /**
              * \brief Get the similarity of two cylinders, based on normal direction and radius
              * 
+             * \param[in] prim Another primitive to compare to
+             * 
              * \return A double between 0 and 1, with 1 indicating identical cylinders
              */
-            virtual double get_similarity(const std::unique_ptr<IPrimitive>& cylinder);
+            virtual bool is_similar(const std::unique_ptr<Primitive>& prim);
 
             /**
              * \brief Get the distance of a point to the surface of the cylinder
@@ -58,43 +90,39 @@ namespace primitiveDetection {
              */
             virtual double get_distance(const Eigen::Vector3d& point);
 
-            virtual unsigned int get_id() const { return _id; };
-
         protected:
 
         private:
-            unsigned int _id;
             double _radius;
             Eigen::Vector3d _normal;
     };
 
     class Plane :
-        public IPrimitive 
+        public Primitive 
     {
         public:
-            Plane(const std::unique_ptr<Plane_Segment>& planeSeg, unsigned int id);
+
+            /**
+             * \brief Construct a plane object
+             *
+             * \param[in] planeSeg Plane to copy
+             * \param[in] id ID assigned to this shape (for tracking and debug)
+             * \param[in] shapeMask Mask of the shape in the reference image
+             */
+            Plane(const std::unique_ptr<Plane_Segment>& planeSeg, unsigned int id, const cv::Mat& shapeMask);
 
             /**
              * \brief Get the similarity of two planes, based on normal direction
+             *
+             * \param[in] prim Another primitive to compare to
              * 
              * \return A double between 0 and 1, with 1 indicating identical planes
              */
-            virtual double get_similarity(const std::unique_ptr<IPrimitive>& plane);
+            virtual bool is_similar(const std::unique_ptr<Primitive>& prim);
 
-            /**
-             * \brief Get the distance of a point to the plane 
-             *
-             * \return The signed distance of the point to the surface, 0 if the point is on the surface, and < 0 if the point is behind
-             */
             virtual double get_distance(const Eigen::Vector3d& point);
 
-            virtual unsigned int get_id() const { return _id; };
-
-        protected:
-
-
         private:
-            unsigned int _id;           //in frame unique ID
             Eigen::Vector3d _mean;      //mean center point
             Eigen::Vector3d _normal;    //normal of the plane
             double _d;     //fourth component of the plane parameters

@@ -28,7 +28,7 @@ namespace primitiveDetection {
             typedef std::unique_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
             typedef std::vector<plane_segment_unique_ptr> planes_ptr_vector; 
             typedef std::vector<cylinder_segment_unique_ptr> cylinders_ptr_vector; 
-            typedef std::list<std::unique_ptr<IPrimitive>> primitive_container; 
+            typedef std::list<std::unique_ptr<Primitive>> primitive_container; 
             typedef std::vector<unsigned int> uint_vector;
 
         public:

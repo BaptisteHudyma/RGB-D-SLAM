@@ -20,7 +20,7 @@
 
 
 typedef std::vector<cv::Vec4f> line_vector;
-typedef std::list<std::unique_ptr<primitiveDetection::IPrimitive>> primitive_container; 
+typedef std::list<std::unique_ptr<primitiveDetection::Primitive>> primitive_container; 
 
 using namespace primitiveDetection;
 using namespace poseEstimation;
@@ -198,6 +198,11 @@ int main(int argc, char* argv[]) {
     bool runLoop = true;
     while(runLoop) {
 
+        /*if(i % 2 != 0) {
+            ++i;
+            continue;
+        }*/
+
         //read images
         if(not load_images(dataPath, i, rgbImage, depthImage))
             break;
@@ -231,14 +236,12 @@ int main(int argc, char* argv[]) {
 
         std::map<int, int> associatedIds;
         if(not previousFramePrimitives.empty()) {
-            //TODO:
             //find matches between consecutive images
             //compare normals, superposed area (and colors ?)
-            //-> should planes transform into cylinders segments ?
-            for(const std::unique_ptr<IPrimitive>& prim : primitives) {
-                for(const std::unique_ptr<IPrimitive>& prevPrim : previousFramePrimitives) {
-                    if(prim->get_similarity(prevPrim) > 0.95) {
-                        associatedIds.insert(std::make_pair(prim->get_id(), prevPrim->get_id()));
+            for(const std::unique_ptr<Primitive>& prim : primitives) {
+                for(const std::unique_ptr<Primitive>& prevPrim : previousFramePrimitives) {
+                    if(prim->is_similar(prevPrim)) {
+                        associatedIds[prim->get_id()] = prevPrim->get_id();
                         break;
                     }
                 }
@@ -322,7 +325,7 @@ int main(int argc, char* argv[]) {
         //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
         if(useDepthSegmentation)
             cv::hconcat(segRgb, colored, segRgb);
-        cv::imshow("Seg", segRgb);
+        cv::imshow("RGBD-SLAM", segRgb);
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
         ++i;
