@@ -1,0 +1,133 @@
+\hypertarget{classpose_estimation_1_1_image___features___struct}{}\doxysection{pose\+Estimation\+::Image\+\_\+\+Features\+\_\+\+Struct Class Reference}
+\label{classpose_estimation_1_1_image___features___struct}\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+
+
+{\ttfamily \#include $<$Image\+\_\+\+Features\+\_\+\+Struct.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a79ff491e281f54525ca4b59e2a196a0c}{Image\+\_\+\+Features\+\_\+\+Struct}} ()
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a9152b92f00719f19741b869740f5e440}{init}} (const cv\+::\+Mat \&image, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&keypoints, const cv\+::\+Mat \&descs, int tracking\+\_\+radius, int hashing\+\_\+cell\+\_\+size, int vertical\+\_\+search\+\_\+radius, float triangulation\+\_\+ratio\+\_\+th, float tracking\+\_\+ratio\+\_\+th, float desc\+\_\+dist\+\_\+th, std\+::vector$<$ float $>$ $\ast$kps\+\_\+depth=nullptr)
+\item 
+int \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_aca5f8c9ed386c4f00e7d17d52bd18d60}{find\+\_\+match\+\_\+index}} (const \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}} \&pt, const cv\+::\+Mat \&desc, float $\ast$d1, float $\ast$d2) const
+\item 
+int \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_aff0cdb90bc04377493be7fa96e0edb40}{row\+\_\+match}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&desc) const
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a808845d4d4c36d955b13657aef9ec215}{mark\+\_\+as\+\_\+matched}} (const int idx, const bool val)
+\item 
+bool \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_ad4846da774bfa52264d26e6aff970851}{is\+\_\+matched}} (const int idx) const
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a330357a686b05128d90ca5cbf059911c}{reset\+\_\+matched\+\_\+marks}} ()
+\item 
+bool \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a22132eb0214b07b4d1a12055d7a347f7}{is\+\_\+depth\+\_\+associated}} () const
+\item 
+int \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_ab247802065c1345105ffd14087172476}{get\+\_\+tracking\+\_\+radius}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_aa0e13a2be4737cc53c279ba3e93ff77a}{get\+\_\+features\+\_\+count}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a637f55de8d9bf8be9b297c09aba9c54a}{get\+\_\+keypoint\+\_\+depth}} (const int idx) const
+\item 
+cv\+::\+Mat \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a4b58c564d5c31299e8b6efe52c4a8737}{get\+\_\+descriptor}} (const int index) const
+\item 
+const cv\+::\+Key\+Point \& \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a4219115e417d24be039eb0c724cedf4e}{get\+\_\+keypoint}} (const int index) const
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a927e02aaea46edc9d73c3007decdf9b3}{set\+\_\+tracking\+\_\+radius}} (unsigned int tracking\+\_\+radius)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a79ff491e281f54525ca4b59e2a196a0c}\label{classpose_estimation_1_1_image___features___struct_a79ff491e281f54525ca4b59e2a196a0c}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!Image\_Features\_Struct@{Image\_Features\_Struct}}
+\index{Image\_Features\_Struct@{Image\_Features\_Struct}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{Image\_Features\_Struct()}{Image\_Features\_Struct()}}
+{\footnotesize\ttfamily pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::\+Image\+\_\+\+Features\+\_\+\+Struct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_aca5f8c9ed386c4f00e7d17d52bd18d60}\label{classpose_estimation_1_1_image___features___struct_aca5f8c9ed386c4f00e7d17d52bd18d60}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!find\_match\_index@{find\_match\_index}}
+\index{find\_match\_index@{find\_match\_index}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{find\_match\_index()}{find\_match\_index()}}
+{\footnotesize\ttfamily int pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::find\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}} \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{desc,  }\item[{float $\ast$}]{d1,  }\item[{float $\ast$}]{d2 }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a4b58c564d5c31299e8b6efe52c4a8737}\label{classpose_estimation_1_1_image___features___struct_a4b58c564d5c31299e8b6efe52c4a8737}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!get\_descriptor@{get\_descriptor}}
+\index{get\_descriptor@{get\_descriptor}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_descriptor()}{get\_descriptor()}}
+{\footnotesize\ttfamily cv\+::\+Mat pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+descriptor (\begin{DoxyParamCaption}\item[{const int}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_aa0e13a2be4737cc53c279ba3e93ff77a}\label{classpose_estimation_1_1_image___features___struct_aa0e13a2be4737cc53c279ba3e93ff77a}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!get\_features\_count@{get\_features\_count}}
+\index{get\_features\_count@{get\_features\_count}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_features\_count()}{get\_features\_count()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+features\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a4219115e417d24be039eb0c724cedf4e}\label{classpose_estimation_1_1_image___features___struct_a4219115e417d24be039eb0c724cedf4e}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!get\_keypoint@{get\_keypoint}}
+\index{get\_keypoint@{get\_keypoint}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_keypoint()}{get\_keypoint()}}
+{\footnotesize\ttfamily const cv\+::\+Key\+Point\& pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+keypoint (\begin{DoxyParamCaption}\item[{const int}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a637f55de8d9bf8be9b297c09aba9c54a}\label{classpose_estimation_1_1_image___features___struct_a637f55de8d9bf8be9b297c09aba9c54a}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!get\_keypoint\_depth@{get\_keypoint\_depth}}
+\index{get\_keypoint\_depth@{get\_keypoint\_depth}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_keypoint\_depth()}{get\_keypoint\_depth()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+keypoint\+\_\+depth (\begin{DoxyParamCaption}\item[{const int}]{idx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_ab247802065c1345105ffd14087172476}\label{classpose_estimation_1_1_image___features___struct_ab247802065c1345105ffd14087172476}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!get\_tracking\_radius@{get\_tracking\_radius}}
+\index{get\_tracking\_radius@{get\_tracking\_radius}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_tracking\_radius()}{get\_tracking\_radius()}}
+{\footnotesize\ttfamily int pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+tracking\+\_\+radius (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a9152b92f00719f19741b869740f5e440}\label{classpose_estimation_1_1_image___features___struct_a9152b92f00719f19741b869740f5e440}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!init@{init}}
+\index{init@{init}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::init (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{image,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{keypoints,  }\item[{const cv\+::\+Mat \&}]{descs,  }\item[{int}]{tracking\+\_\+radius,  }\item[{int}]{hashing\+\_\+cell\+\_\+size,  }\item[{int}]{vertical\+\_\+search\+\_\+radius,  }\item[{float}]{triangulation\+\_\+ratio\+\_\+th,  }\item[{float}]{tracking\+\_\+ratio\+\_\+th,  }\item[{float}]{desc\+\_\+dist\+\_\+th,  }\item[{std\+::vector$<$ float $>$ $\ast$}]{kps\+\_\+depth = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a22132eb0214b07b4d1a12055d7a347f7}\label{classpose_estimation_1_1_image___features___struct_a22132eb0214b07b4d1a12055d7a347f7}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!is\_depth\_associated@{is\_depth\_associated}}
+\index{is\_depth\_associated@{is\_depth\_associated}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{is\_depth\_associated()}{is\_depth\_associated()}}
+{\footnotesize\ttfamily bool pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::is\+\_\+depth\+\_\+associated (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_ad4846da774bfa52264d26e6aff970851}\label{classpose_estimation_1_1_image___features___struct_ad4846da774bfa52264d26e6aff970851}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!is\_matched@{is\_matched}}
+\index{is\_matched@{is\_matched}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{is\_matched()}{is\_matched()}}
+{\footnotesize\ttfamily bool pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::is\+\_\+matched (\begin{DoxyParamCaption}\item[{const int}]{idx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a808845d4d4c36d955b13657aef9ec215}\label{classpose_estimation_1_1_image___features___struct_a808845d4d4c36d955b13657aef9ec215}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!mark\_as\_matched@{mark\_as\_matched}}
+\index{mark\_as\_matched@{mark\_as\_matched}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{mark\_as\_matched()}{mark\_as\_matched()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::mark\+\_\+as\+\_\+matched (\begin{DoxyParamCaption}\item[{const int}]{idx,  }\item[{const bool}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a330357a686b05128d90ca5cbf059911c}\label{classpose_estimation_1_1_image___features___struct_a330357a686b05128d90ca5cbf059911c}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!reset\_matched\_marks@{reset\_matched\_marks}}
+\index{reset\_matched\_marks@{reset\_matched\_marks}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{reset\_matched\_marks()}{reset\_matched\_marks()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::reset\+\_\+matched\+\_\+marks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_aff0cdb90bc04377493be7fa96e0edb40}\label{classpose_estimation_1_1_image___features___struct_aff0cdb90bc04377493be7fa96e0edb40}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!row\_match@{row\_match}}
+\index{row\_match@{row\_match}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{row\_match()}{row\_match()}}
+{\footnotesize\ttfamily int pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::row\+\_\+match (\begin{DoxyParamCaption}\item[{const cv\+::\+Point2f \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{desc }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___struct_a927e02aaea46edc9d73c3007decdf9b3}\label{classpose_estimation_1_1_image___features___struct_a927e02aaea46edc9d73c3007decdf9b3}} 
+\index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!set\_tracking\_radius@{set\_tracking\_radius}}
+\index{set\_tracking\_radius@{set\_tracking\_radius}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{set\_tracking\_radius()}{set\_tracking\_radius()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::set\+\_\+tracking\+\_\+radius (\begin{DoxyParamCaption}\item[{unsigned int}]{tracking\+\_\+radius }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___struct_8hpp}{Image\+\_\+\+Features\+\_\+\+Struct.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___struct_8cpp}{Image\+\_\+\+Features\+\_\+\+Struct.\+cpp}}\end{DoxyCompactItemize}

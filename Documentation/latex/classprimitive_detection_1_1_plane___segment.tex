@@ -1,0 +1,220 @@
+\hypertarget{classprimitive_detection_1_1_plane___segment}{}\doxysection{primitive\+Detection\+::Plane\+\_\+\+Segment Class Reference}
+\label{classprimitive_detection_1_1_plane___segment}\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+
+
+Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program.  
+
+
+
+
+{\ttfamily \#include $<$Plane\+Segment.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a9d3af7bb9d39bc2084e89630402c9e7f}{Plane\+\_\+\+Segment}} (unsigned int cell\+Width, unsigned int pts\+Per\+Cell\+Count)
+\begin{DoxyCompactList}\small\item\em Initialize the plane segment with the points from the depth matrix. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_af5175e74d4bf13be369091636293e98f}{Plane\+\_\+\+Segment}} (const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&seg)
+\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a8858fd904151ef039946da00db61fd2c}{init\+\_\+plane\+\_\+segment}} (const Eigen\+::\+Matrix\+Xf \&depth\+Cloud\+Array, unsigned int cell\+Id)
+\item 
+bool \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_ad521743b8e08256cb1f4a4ea16e1065e}{is\+\_\+depth\+\_\+discontinuous}} (const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+Segment)
+\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_ad9655ccd613d9f2def5338b55200329d}{expand\+\_\+segment}} (const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+Segment)
+\begin{DoxyCompactList}\small\item\em Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_ab8d0e3f4bf93e5971b8e29a434c6a725}{expand\+\_\+segment}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \&plane\+Segment)
+\begin{DoxyCompactList}\small\item\em Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_ab6b4179ac22153c242a221b73e098906}{get\+\_\+normal\+\_\+similarity}} (const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&p)
+\begin{DoxyCompactList}\small\item\em Compute the dot product of two plane normals. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a18e8694ada3d5b7a75dc604c7c31353e}{get\+\_\+signed\+\_\+distance}} (const double point\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Compute the signed distance from a plane to a point. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a203c6638f2f49e595854bfaeed167423}{get\+\_\+signed\+\_\+distance}} (const Eigen\+::\+Vector3d \&point)
+\begin{DoxyCompactList}\small\item\em Compute the signed distance from a plane to a point. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_ab250df14879e39c49178ed736e0960ce}{fit\+\_\+plane}} ()
+\begin{DoxyCompactList}\small\item\em Fit a plane to the contained points using PCA. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a326becfc0d5e40b4835bef65169b053e}{clear\+\_\+plane\+\_\+parameters}} ()
+\begin{DoxyCompactList}\small\item\em Clears this segment parameters to restart analysis. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_ad35ceaf0d4d016214c1db08d8e790c89}{get\+\_\+\+MSE}} () const
+\item 
+const Eigen\+::\+Vector3d \& \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a1d2cd1b23c63ef1ff21f340fe82d2b30}{get\+\_\+normal}} () const
+\item 
+const Eigen\+::\+Vector3d \& \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_aca035b1b355c9cdc0893b7906d87f397}{get\+\_\+mean}} () const
+\item 
+double \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a3b0c20c0ffb4761ab40d2a1931ae3355}{get\+\_\+plane\+\_\+d}} () const
+\item 
+bool \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a5b11a8505ae29a0972a25ada12ae1474}{is\+\_\+planar}} () const
+\item 
+double \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment_a48637b3b349916516c65003544a0a7ca}{get\+\_\+score}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a9d3af7bb9d39bc2084e89630402c9e7f}\label{classprimitive_detection_1_1_plane___segment_a9d3af7bb9d39bc2084e89630402c9e7f}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!Plane\_Segment@{Plane\_Segment}}
+\index{Plane\_Segment@{Plane\_Segment}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{Plane\_Segment()}{Plane\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::\+Plane\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{unsigned int}]{cell\+Width,  }\item[{unsigned int}]{pts\+Per\+Cell\+Count }\end{DoxyParamCaption})}
+
+
+
+Initialize the plane segment with the points from the depth matrix. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cell\+Width} & Width and height of the depth image divisions \\
+\hline
+\mbox{\texttt{ in}}  & {\em pts\+Per\+Cell\+Count} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_af5175e74d4bf13be369091636293e98f}\label{classprimitive_detection_1_1_plane___segment_af5175e74d4bf13be369091636293e98f}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!Plane\_Segment@{Plane\_Segment}}
+\index{Plane\_Segment@{Plane\_Segment}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{Plane\_Segment()}{Plane\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::\+Plane\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{seg }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a326becfc0d5e40b4835bef65169b053e}\label{classprimitive_detection_1_1_plane___segment_a326becfc0d5e40b4835bef65169b053e}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!clear\_plane\_parameters@{clear\_plane\_parameters}}
+\index{clear\_plane\_parameters@{clear\_plane\_parameters}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{clear\_plane\_parameters()}{clear\_plane\_parameters()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::clear\+\_\+plane\+\_\+parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Clears this segment parameters to restart analysis. 
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_ad9655ccd613d9f2def5338b55200329d}\label{classprimitive_detection_1_1_plane___segment_ad9655ccd613d9f2def5338b55200329d}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!expand\_segment@{expand\_segment}}
+\index{expand\_segment@{expand\_segment}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{expand\_segment()}{expand\_segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::expand\+\_\+segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+Segment }\end{DoxyParamCaption})}
+
+
+
+Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em plane\+Segment} & Another plane segment \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_ab8d0e3f4bf93e5971b8e29a434c6a725}\label{classprimitive_detection_1_1_plane___segment_ab8d0e3f4bf93e5971b8e29a434c6a725}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!expand\_segment@{expand\_segment}}
+\index{expand\_segment@{expand\_segment}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{expand\_segment()}{expand\_segment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::expand\+\_\+segment (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \&}]{plane\+Segment }\end{DoxyParamCaption})}
+
+
+
+Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em plane\+Segment} & Another plane segment \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_ab250df14879e39c49178ed736e0960ce}\label{classprimitive_detection_1_1_plane___segment_ab250df14879e39c49178ed736e0960ce}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!fit\_plane@{fit\_plane}}
+\index{fit\_plane@{fit\_plane}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{fit\_plane()}{fit\_plane()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::fit\+\_\+plane (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Fit a plane to the contained points using PCA. 
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_aca035b1b355c9cdc0893b7906d87f397}\label{classprimitive_detection_1_1_plane___segment_aca035b1b355c9cdc0893b7906d87f397}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_mean@{get\_mean}}
+\index{get\_mean@{get\_mean}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_mean()}{get\_mean()}}
+{\footnotesize\ttfamily const Eigen\+::\+Vector3d\& primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+mean (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_ad35ceaf0d4d016214c1db08d8e790c89}\label{classprimitive_detection_1_1_plane___segment_ad35ceaf0d4d016214c1db08d8e790c89}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_MSE@{get\_MSE}}
+\index{get\_MSE@{get\_MSE}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_MSE()}{get\_MSE()}}
+{\footnotesize\ttfamily double primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+\+MSE (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a1d2cd1b23c63ef1ff21f340fe82d2b30}\label{classprimitive_detection_1_1_plane___segment_a1d2cd1b23c63ef1ff21f340fe82d2b30}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_normal@{get\_normal}}
+\index{get\_normal@{get\_normal}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_normal()}{get\_normal()}}
+{\footnotesize\ttfamily const Eigen\+::\+Vector3d\& primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_ab6b4179ac22153c242a221b73e098906}\label{classprimitive_detection_1_1_plane___segment_ab6b4179ac22153c242a221b73e098906}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_normal\_similarity@{get\_normal\_similarity}}
+\index{get\_normal\_similarity@{get\_normal\_similarity}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_normal\_similarity()}{get\_normal\_similarity()}}
+{\footnotesize\ttfamily double primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+normal\+\_\+similarity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{p }\end{DoxyParamCaption})}
+
+
+
+Compute the dot product of two plane normals. 
+
+\begin{DoxyReturn}{Returns}
+A number between -\/1 and 1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a3b0c20c0ffb4761ab40d2a1931ae3355}\label{classprimitive_detection_1_1_plane___segment_a3b0c20c0ffb4761ab40d2a1931ae3355}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_plane\_d@{get\_plane\_d}}
+\index{get\_plane\_d@{get\_plane\_d}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_plane\_d()}{get\_plane\_d()}}
+{\footnotesize\ttfamily double primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+plane\+\_\+d (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a48637b3b349916516c65003544a0a7ca}\label{classprimitive_detection_1_1_plane___segment_a48637b3b349916516c65003544a0a7ca}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_score@{get\_score}}
+\index{get\_score@{get\_score}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_score()}{get\_score()}}
+{\footnotesize\ttfamily double primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a18e8694ada3d5b7a75dc604c7c31353e}\label{classprimitive_detection_1_1_plane___segment_a18e8694ada3d5b7a75dc604c7c31353e}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_signed\_distance@{get\_signed\_distance}}
+\index{get\_signed\_distance@{get\_signed\_distance}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_signed\_distance()}{get\_signed\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+signed\+\_\+distance (\begin{DoxyParamCaption}\item[{const double}]{point\mbox{[}3\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Compute the signed distance from a plane to a point. 
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a203c6638f2f49e595854bfaeed167423}\label{classprimitive_detection_1_1_plane___segment_a203c6638f2f49e595854bfaeed167423}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!get\_signed\_distance@{get\_signed\_distance}}
+\index{get\_signed\_distance@{get\_signed\_distance}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_signed\_distance()}{get\_signed\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::get\+\_\+signed\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point }\end{DoxyParamCaption})}
+
+
+
+Compute the signed distance from a plane to a point. 
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a8858fd904151ef039946da00db61fd2c}\label{classprimitive_detection_1_1_plane___segment_a8858fd904151ef039946da00db61fd2c}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!init\_plane\_segment@{init\_plane\_segment}}
+\index{init\_plane\_segment@{init\_plane\_segment}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{init\_plane\_segment()}{init\_plane\_segment()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::init\+\_\+plane\+\_\+segment (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xf \&}]{depth\+Cloud\+Array,  }\item[{unsigned int}]{cell\+Id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_ad521743b8e08256cb1f4a4ea16e1065e}\label{classprimitive_detection_1_1_plane___segment_ad521743b8e08256cb1f4a4ea16e1065e}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!is\_depth\_discontinuous@{is\_depth\_discontinuous}}
+\index{is\_depth\_discontinuous@{is\_depth\_discontinuous}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{is\_depth\_discontinuous()}{is\_depth\_discontinuous()}}
+{\footnotesize\ttfamily bool primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::is\+\_\+depth\+\_\+discontinuous (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+Segment }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+True if this plane segment presents a depth discontinuity with another one. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classprimitive_detection_1_1_plane___segment_a5b11a8505ae29a0972a25ada12ae1474}\label{classprimitive_detection_1_1_plane___segment_a5b11a8505ae29a0972a25ada12ae1474}} 
+\index{primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}!is\_planar@{is\_planar}}
+\index{is\_planar@{is\_planar}!primitiveDetection::Plane\_Segment@{primitiveDetection::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{is\_planar()}{is\_planar()}}
+{\footnotesize\ttfamily bool primitive\+Detection\+::\+Plane\+\_\+\+Segment\+::is\+\_\+planar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/primitives\+\_\+detection/\mbox{\hyperlink{_plane_segment_8hpp}{Plane\+Segment.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/primitives\+\_\+detection/\mbox{\hyperlink{_plane_segment_8cpp}{Plane\+Segment.\+cpp}}\end{DoxyCompactItemize}

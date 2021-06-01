@@ -19,6 +19,9 @@
 
 namespace primitiveDetection {
 
+    /**
+      * \brief Main extraction class. Extracts shape primitives from an organized cloud of points
+      */
     class Primitive_Detection {
         //check for planes in an organized depth points matrix 
         protected:
@@ -32,8 +35,24 @@ namespace primitiveDetection {
             typedef std::vector<unsigned int> uint_vector;
 
         public:
+
+            /**
+              * \param[in] width The fixed depth image width
+              * \param[in] height The fixed depth image height
+              * \param[in] blocSize Size of an image division, in pixels.
+              * \param[in] minCosAngeForMerge Minimum cosinus of the angle of two planes to merge those planes
+              * \param[in] maxMergeDist Maximum distance between the center of two planes to merge those planes
+              * \param[in] useCylinderDetection Transform some planes in cylinders, when they show an obvious cylinder shape
+              */
             Primitive_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.9659, float maxMergeDist = 50, bool useCylinderDetection = false);
 
+            /**
+              * \brief Main compute function: computes the primitives in the depth imahe
+              *
+              * \param[in] depthMatrix Organized cloud of points, constructed from depth map
+              * \param[out] primitiveSegments Container of detected segments in depth image
+              * \param[out] segOut Output image, where each pixel is associated with a shape ID
+              */
             void find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments, cv::Mat& segOut);  //detect 3D primitives in depth image
 
 
@@ -45,7 +64,7 @@ namespace primitiveDetection {
              * \param[in] colors A vector of colors, that must remain consistant at each call
              * \param[in] maskImage An image where each pixel is the index of a plane or cylinder
              * \param[in] primitiveSegments A container of the planes and cylinders detected in inputImage
-             * \param[in/out] labeledImage The final result: an image with colored masks applied for each plane and cylinder, as well as a bar displaying informations on the top. Must be passed as an empty image of the same dimensions as labeledImage.
+             * \param[in, out] labeledImage The final result: an image with colored masks applied for each plane and cylinder, as well as a bar displaying informations on the top. Must be passed as an empty image of the same dimensions as labeledImage.
              * \param[in] timeElapsed the time elapsed since last frame. Used to display fps
              * \param[in] mastched A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders
              */
@@ -63,18 +82,82 @@ namespace primitiveDetection {
             double setMaskTime;
 
         protected:
+
+            /**
+             * \brief Reset the stored data in prevision of another analysis 
+             */
             void reset_data();
 
+            /**
+             * \brief Init planeGrid and cellDistanceTols
+             *
+             * \param[in] depthCloudArray Organized point cloud extracted from depth images
+             */
             void init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray);
+
+            /**
+             * \brief Initialize and fill the histogram bins
+             *
+             * \return  Number of initial planar surfaces
+             */
             int init_histogram();
 
-            void grow_planes_and_cylinders(intpair_vector& cylinderToRegionMap, unsigned int remainingPlanarCells);
+            /**
+             * \brief grow planes and find cylinders from those planes
+             *
+             * \param[out] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
+             * \param[in] remainingPlanarCells Unmatched plane count 
+             */
+            void grow_planes_and_cylinders(unsigned int remainingPlanarCells, intpair_vector& cylinderToRegionMap);
+
+            /**
+             * \brief Merge close planes by comparing normals and MSE
+             *
+             * \param[out] planeMergeLabels Container of merged indexes: associates plane index to other plane index
+             */
             void merge_planes(uint_vector& planeMergeLabels);
+
+            /**
+             * \brief Refine the final plane edges in mask images
+             *
+             * \param[in] depthCloudArray Organized cloud point
+             * \param[out] planeMergeLabels Container associating plane ID to global plane IDs
+             * \param[in, out] primitiveSegments Container of shapes detected in this depth image
+             */
             void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, primitive_container& primitiveSegments);
+
+            /**
+             * \brief Refine the cylinder edges in mask images
+             *
+             * \param[in] depthCloudArray Organized cloud point
+             * \param[out] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
+             * \param[in, out] primitiveSegments Container of shapes detected in this depth image
+             */
             void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments); 
+
+            /**
+             * \brief Set output image pixel value with the index of the detected shape
+             *
+             * \param[out] segOut Image segmented by shapes ids: Associates an image coordinate to a shape ID
+             */
             void set_masked_display(cv::Mat& segOut); 
 
+            /**
+             * \brief Recursively Grow a plane seed and merge it with it's neighbors
+             *
+             * \param[in] x Start X coordinates
+             * \param[in] y Start Y coordinates
+             * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
+             * \param[in] seedPlaneD D component of the plane to grow from
+             */
             void region_growing(unsigned short x, unsigned short y, const Eigen::Vector3d& seedPlaneNormal, double seedPlaneD);
+
+            /**
+             * \brief Fill an association matrix that links connected plane components
+             *
+             * \param[in] segmentMap
+             * \param[out] planesAssociationMatrix
+             */
             void get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
 
         private:

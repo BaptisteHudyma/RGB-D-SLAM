@@ -1,0 +1,332 @@
+\hypertarget{classpose_estimation_1_1_parameters}{}\doxysection{pose\+Estimation\+::Parameters Class Reference}
+\label{classpose_estimation_1_1_parameters}\index{poseEstimation::Parameters@{poseEstimation::Parameters}}
+
+
+{\ttfamily \#include $<$Parameters.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadc}{Triangulation\+Policies}} \{ \mbox{\hyperlink{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadcaa31641b3b69683f1a95a756dbde3cd28}{etriangulation\+\_\+policy\+\_\+decreasing\+\_\+matches}} = 1
+, \mbox{\hyperlink{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadca64aa2dc390dfd77723db0f312abb320f}{etriangulation\+\_\+policy\+\_\+always\+\_\+triangulate}}
+, \mbox{\hyperlink{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadcab9f868d2760c77115451aec94f1dcb7b}{etriangulation\+\_\+policy\+\_\+map\+\_\+size}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classpose_estimation_1_1_parameters_af4d94ee360ac0157d9065f78797fe9a1}{Parameters}} ()
+\item 
+bool \mbox{\hyperlink{classpose_estimation_1_1_parameters_a5c01c7d7fc05d723046693bc67a181f3}{init\+\_\+from\+\_\+file}} (const std\+::string \&config\+\_\+file\+\_\+name)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_parameters_ad836eefab73ae98a6a6a5391a4918327}{set\+\_\+fx}} (float fx)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_parameters_a09557109a48e3bc1137bfb539c79533f}{set\+\_\+fy}} (float fy)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_parameters_a3f9109508c561ee170d6ade7acb3588e}{set\+\_\+cx}} (float cx)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_parameters_a67b74166d14ec6de4f480d508794a614}{set\+\_\+cy}} (float cy)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_parameters_ac3f8ea6fe9ca0f568d7916b2d34f58c3}{set\+\_\+width}} (float w)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_parameters_a33c71f53e07e50645c90a8998fb37d73}{set\+\_\+height}} (float h)
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_af16845aaca002821fe3ee45a97e6ef5e}{get\+\_\+fx}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a0a5c1d95e961f4f15a81e95fa671affa}{get\+\_\+fy}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_acef81950b372807a9133cdb7c8428c11}{get\+\_\+cx}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a8ffe3d9a081d9dfb05644159739ef18b}{get\+\_\+cy}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_ac2b0ca160a92d983cb942c5083b9c230}{get\+\_\+baseline}} () const
+\item 
+long unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_ad5208cd96bb3af62b36b546291346d28}{get\+\_\+height}} () const
+\item 
+long unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_a4406930786f6abea4a38c21ce7520229}{get\+\_\+width}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a8a13e733ab4ad9e9a1c561ff07df583a}{get\+\_\+k1}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a91c0b67ff2acc6693378a824d5ac7045}{get\+\_\+k2}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a9a94c36e79eed0fa4e7eb44564c2a0f0}{get\+\_\+k3}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a1190101bc1d45d8302ac6b59137dce0d}{get\+\_\+p1}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a7698bf4ae237e96f1c8e540e74a17306}{get\+\_\+p2}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a8696ea0548f8719bdc84ca409023fc04}{get\+\_\+triangulation\+\_\+ratio\+\_\+test\+\_\+threshold}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_acea83906148621acffcc0d3b5b0bedb3}{get\+\_\+descriptor\+\_\+matching\+\_\+threshold}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a476745483c763efc41f1589f740bfdb5}{get\+\_\+far\+\_\+plane\+\_\+distance}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_aa21b6f39e4f633f11cb5f3cf30d84a4c}{get\+\_\+near\+\_\+plane\+\_\+distance}} () const
+\item 
+float \mbox{\hyperlink{classpose_estimation_1_1_parameters_a8a5d6c040b8406a1a1a8e28aff72c94e}{get\+\_\+tracking\+\_\+ratio\+\_\+test\+\_\+threshold}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_a7997c9f44712209fa656b34cdf1a9f0a}{get\+\_\+detection\+\_\+cell\+\_\+size}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_a042598a781f3952000a633b166fcea3a}{get\+\_\+agast\+\_\+threshold}} () const
+\item 
+long unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_a2923b7da063e46997605dd83082aceb0}{get\+\_\+max\+\_\+keypoints\+\_\+per\+\_\+cell}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_a164d07f6d6347bb1c4024ecf583d279b}{get\+\_\+tracking\+\_\+radius}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_a0b8683c4d49f6c2e08ca103d6465102a}{get\+\_\+staged\+\_\+threshold}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_aab725ad5185838ca4d047433e0ce84d0}{get\+\_\+untracked\+\_\+threshold}} () const
+\item 
+unsigned \mbox{\hyperlink{classpose_estimation_1_1_parameters_a9464dd2cbd81141f247b587598bc8ee0}{get\+\_\+min\+\_\+matches\+\_\+for\+\_\+tracking}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_af4476aaf383ae5b0bef8a03aba19c3fb}{get\+\_\+camera\+\_\+size}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_a2468c64bf8c33882112decc9ecccfffb}{get\+\_\+point\+\_\+size}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_parameters_ae779dd96b92c422b5e78b4cb9b5a6507}{get\+\_\+triangulation\+\_\+policy}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadc}\label{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadc}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!TriangulationPolicies@{TriangulationPolicies}}
+\index{TriangulationPolicies@{TriangulationPolicies}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{TriangulationPolicies}{TriangulationPolicies}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadc}{pose\+Estimation\+::\+Parameters\+::\+Triangulation\+Policies}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{etriangulation\_policy\_decreasing\_matches@{etriangulation\_policy\_decreasing\_matches}!poseEstimation::Parameters@{poseEstimation::Parameters}}\index{poseEstimation::Parameters@{poseEstimation::Parameters}!etriangulation\_policy\_decreasing\_matches@{etriangulation\_policy\_decreasing\_matches}}}\mbox{\Hypertarget{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadcaa31641b3b69683f1a95a756dbde3cd28}\label{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadcaa31641b3b69683f1a95a756dbde3cd28}} 
+etriangulation\+\_\+policy\+\_\+decreasing\+\_\+matches&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{etriangulation\_policy\_always\_triangulate@{etriangulation\_policy\_always\_triangulate}!poseEstimation::Parameters@{poseEstimation::Parameters}}\index{poseEstimation::Parameters@{poseEstimation::Parameters}!etriangulation\_policy\_always\_triangulate@{etriangulation\_policy\_always\_triangulate}}}\mbox{\Hypertarget{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadca64aa2dc390dfd77723db0f312abb320f}\label{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadca64aa2dc390dfd77723db0f312abb320f}} 
+etriangulation\+\_\+policy\+\_\+always\+\_\+triangulate&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{etriangulation\_policy\_map\_size@{etriangulation\_policy\_map\_size}!poseEstimation::Parameters@{poseEstimation::Parameters}}\index{poseEstimation::Parameters@{poseEstimation::Parameters}!etriangulation\_policy\_map\_size@{etriangulation\_policy\_map\_size}}}\mbox{\Hypertarget{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadcab9f868d2760c77115451aec94f1dcb7b}\label{classpose_estimation_1_1_parameters_abfd528e902df5af1ea598007e514fadcab9f868d2760c77115451aec94f1dcb7b}} 
+etriangulation\+\_\+policy\+\_\+map\+\_\+size&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_af4d94ee360ac0157d9065f78797fe9a1}\label{classpose_estimation_1_1_parameters_af4d94ee360ac0157d9065f78797fe9a1}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!Parameters@{Parameters}}
+\index{Parameters@{Parameters}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{Parameters()}{Parameters()}}
+{\footnotesize\ttfamily Parameters\+::\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a042598a781f3952000a633b166fcea3a}\label{classpose_estimation_1_1_parameters_a042598a781f3952000a633b166fcea3a}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_agast\_threshold@{get\_agast\_threshold}}
+\index{get\_agast\_threshold@{get\_agast\_threshold}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_agast\_threshold()}{get\_agast\_threshold()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+agast\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_ac2b0ca160a92d983cb942c5083b9c230}\label{classpose_estimation_1_1_parameters_ac2b0ca160a92d983cb942c5083b9c230}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_baseline@{get\_baseline}}
+\index{get\_baseline@{get\_baseline}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_baseline()}{get\_baseline()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+baseline (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_af4476aaf383ae5b0bef8a03aba19c3fb}\label{classpose_estimation_1_1_parameters_af4476aaf383ae5b0bef8a03aba19c3fb}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_camera\_size@{get\_camera\_size}}
+\index{get\_camera\_size@{get\_camera\_size}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_camera\_size()}{get\_camera\_size()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+camera\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_acef81950b372807a9133cdb7c8428c11}\label{classpose_estimation_1_1_parameters_acef81950b372807a9133cdb7c8428c11}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_cx@{get\_cx}}
+\index{get\_cx@{get\_cx}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_cx()}{get\_cx()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+cx (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a8ffe3d9a081d9dfb05644159739ef18b}\label{classpose_estimation_1_1_parameters_a8ffe3d9a081d9dfb05644159739ef18b}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_cy@{get\_cy}}
+\index{get\_cy@{get\_cy}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_cy()}{get\_cy()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+cy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_acea83906148621acffcc0d3b5b0bedb3}\label{classpose_estimation_1_1_parameters_acea83906148621acffcc0d3b5b0bedb3}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_descriptor\_matching\_threshold@{get\_descriptor\_matching\_threshold}}
+\index{get\_descriptor\_matching\_threshold@{get\_descriptor\_matching\_threshold}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_descriptor\_matching\_threshold()}{get\_descriptor\_matching\_threshold()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+descriptor\+\_\+matching\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a7997c9f44712209fa656b34cdf1a9f0a}\label{classpose_estimation_1_1_parameters_a7997c9f44712209fa656b34cdf1a9f0a}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_detection\_cell\_size@{get\_detection\_cell\_size}}
+\index{get\_detection\_cell\_size@{get\_detection\_cell\_size}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_detection\_cell\_size()}{get\_detection\_cell\_size()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+detection\+\_\+cell\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a476745483c763efc41f1589f740bfdb5}\label{classpose_estimation_1_1_parameters_a476745483c763efc41f1589f740bfdb5}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_far\_plane\_distance@{get\_far\_plane\_distance}}
+\index{get\_far\_plane\_distance@{get\_far\_plane\_distance}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_far\_plane\_distance()}{get\_far\_plane\_distance()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+far\+\_\+plane\+\_\+distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_af16845aaca002821fe3ee45a97e6ef5e}\label{classpose_estimation_1_1_parameters_af16845aaca002821fe3ee45a97e6ef5e}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_fx@{get\_fx}}
+\index{get\_fx@{get\_fx}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_fx()}{get\_fx()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+fx (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a0a5c1d95e961f4f15a81e95fa671affa}\label{classpose_estimation_1_1_parameters_a0a5c1d95e961f4f15a81e95fa671affa}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_fy@{get\_fy}}
+\index{get\_fy@{get\_fy}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_fy()}{get\_fy()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+fy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_ad5208cd96bb3af62b36b546291346d28}\label{classpose_estimation_1_1_parameters_ad5208cd96bb3af62b36b546291346d28}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_height@{get\_height}}
+\index{get\_height@{get\_height}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_height()}{get\_height()}}
+{\footnotesize\ttfamily long unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a8a13e733ab4ad9e9a1c561ff07df583a}\label{classpose_estimation_1_1_parameters_a8a13e733ab4ad9e9a1c561ff07df583a}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_k1@{get\_k1}}
+\index{get\_k1@{get\_k1}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_k1()}{get\_k1()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+k1 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a91c0b67ff2acc6693378a824d5ac7045}\label{classpose_estimation_1_1_parameters_a91c0b67ff2acc6693378a824d5ac7045}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_k2@{get\_k2}}
+\index{get\_k2@{get\_k2}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_k2()}{get\_k2()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+k2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a9a94c36e79eed0fa4e7eb44564c2a0f0}\label{classpose_estimation_1_1_parameters_a9a94c36e79eed0fa4e7eb44564c2a0f0}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_k3@{get\_k3}}
+\index{get\_k3@{get\_k3}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_k3()}{get\_k3()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+k3 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a2923b7da063e46997605dd83082aceb0}\label{classpose_estimation_1_1_parameters_a2923b7da063e46997605dd83082aceb0}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_max\_keypoints\_per\_cell@{get\_max\_keypoints\_per\_cell}}
+\index{get\_max\_keypoints\_per\_cell@{get\_max\_keypoints\_per\_cell}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_max\_keypoints\_per\_cell()}{get\_max\_keypoints\_per\_cell()}}
+{\footnotesize\ttfamily long unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+max\+\_\+keypoints\+\_\+per\+\_\+cell (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a9464dd2cbd81141f247b587598bc8ee0}\label{classpose_estimation_1_1_parameters_a9464dd2cbd81141f247b587598bc8ee0}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_min\_matches\_for\_tracking@{get\_min\_matches\_for\_tracking}}
+\index{get\_min\_matches\_for\_tracking@{get\_min\_matches\_for\_tracking}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_min\_matches\_for\_tracking()}{get\_min\_matches\_for\_tracking()}}
+{\footnotesize\ttfamily unsigned pose\+Estimation\+::\+Parameters\+::get\+\_\+min\+\_\+matches\+\_\+for\+\_\+tracking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_aa21b6f39e4f633f11cb5f3cf30d84a4c}\label{classpose_estimation_1_1_parameters_aa21b6f39e4f633f11cb5f3cf30d84a4c}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_near\_plane\_distance@{get\_near\_plane\_distance}}
+\index{get\_near\_plane\_distance@{get\_near\_plane\_distance}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_near\_plane\_distance()}{get\_near\_plane\_distance()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+near\+\_\+plane\+\_\+distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a1190101bc1d45d8302ac6b59137dce0d}\label{classpose_estimation_1_1_parameters_a1190101bc1d45d8302ac6b59137dce0d}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_p1@{get\_p1}}
+\index{get\_p1@{get\_p1}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_p1()}{get\_p1()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+p1 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a7698bf4ae237e96f1c8e540e74a17306}\label{classpose_estimation_1_1_parameters_a7698bf4ae237e96f1c8e540e74a17306}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_p2@{get\_p2}}
+\index{get\_p2@{get\_p2}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_p2()}{get\_p2()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+p2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a2468c64bf8c33882112decc9ecccfffb}\label{classpose_estimation_1_1_parameters_a2468c64bf8c33882112decc9ecccfffb}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_point\_size@{get\_point\_size}}
+\index{get\_point\_size@{get\_point\_size}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_point\_size()}{get\_point\_size()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+point\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a0b8683c4d49f6c2e08ca103d6465102a}\label{classpose_estimation_1_1_parameters_a0b8683c4d49f6c2e08ca103d6465102a}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_staged\_threshold@{get\_staged\_threshold}}
+\index{get\_staged\_threshold@{get\_staged\_threshold}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_staged\_threshold()}{get\_staged\_threshold()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+staged\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a164d07f6d6347bb1c4024ecf583d279b}\label{classpose_estimation_1_1_parameters_a164d07f6d6347bb1c4024ecf583d279b}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_tracking\_radius@{get\_tracking\_radius}}
+\index{get\_tracking\_radius@{get\_tracking\_radius}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_tracking\_radius()}{get\_tracking\_radius()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+tracking\+\_\+radius (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a8a5d6c040b8406a1a1a8e28aff72c94e}\label{classpose_estimation_1_1_parameters_a8a5d6c040b8406a1a1a8e28aff72c94e}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_tracking\_ratio\_test\_threshold@{get\_tracking\_ratio\_test\_threshold}}
+\index{get\_tracking\_ratio\_test\_threshold@{get\_tracking\_ratio\_test\_threshold}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_tracking\_ratio\_test\_threshold()}{get\_tracking\_ratio\_test\_threshold()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+tracking\+\_\+ratio\+\_\+test\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_ae779dd96b92c422b5e78b4cb9b5a6507}\label{classpose_estimation_1_1_parameters_ae779dd96b92c422b5e78b4cb9b5a6507}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_triangulation\_policy@{get\_triangulation\_policy}}
+\index{get\_triangulation\_policy@{get\_triangulation\_policy}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_triangulation\_policy()}{get\_triangulation\_policy()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+triangulation\+\_\+policy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a8696ea0548f8719bdc84ca409023fc04}\label{classpose_estimation_1_1_parameters_a8696ea0548f8719bdc84ca409023fc04}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_triangulation\_ratio\_test\_threshold@{get\_triangulation\_ratio\_test\_threshold}}
+\index{get\_triangulation\_ratio\_test\_threshold@{get\_triangulation\_ratio\_test\_threshold}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_triangulation\_ratio\_test\_threshold()}{get\_triangulation\_ratio\_test\_threshold()}}
+{\footnotesize\ttfamily float pose\+Estimation\+::\+Parameters\+::get\+\_\+triangulation\+\_\+ratio\+\_\+test\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_aab725ad5185838ca4d047433e0ce84d0}\label{classpose_estimation_1_1_parameters_aab725ad5185838ca4d047433e0ce84d0}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_untracked\_threshold@{get\_untracked\_threshold}}
+\index{get\_untracked\_threshold@{get\_untracked\_threshold}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_untracked\_threshold()}{get\_untracked\_threshold()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+untracked\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a4406930786f6abea4a38c21ce7520229}\label{classpose_estimation_1_1_parameters_a4406930786f6abea4a38c21ce7520229}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!get\_width@{get\_width}}
+\index{get\_width@{get\_width}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_width()}{get\_width()}}
+{\footnotesize\ttfamily long unsigned int pose\+Estimation\+::\+Parameters\+::get\+\_\+width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a5c01c7d7fc05d723046693bc67a181f3}\label{classpose_estimation_1_1_parameters_a5c01c7d7fc05d723046693bc67a181f3}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!init\_from\_file@{init\_from\_file}}
+\index{init\_from\_file@{init\_from\_file}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{init\_from\_file()}{init\_from\_file()}}
+{\footnotesize\ttfamily bool Parameters\+::init\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{config\+\_\+file\+\_\+name }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a3f9109508c561ee170d6ade7acb3588e}\label{classpose_estimation_1_1_parameters_a3f9109508c561ee170d6ade7acb3588e}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!set\_cx@{set\_cx}}
+\index{set\_cx@{set\_cx}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{set\_cx()}{set\_cx()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Parameters\+::set\+\_\+cx (\begin{DoxyParamCaption}\item[{float}]{cx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a67b74166d14ec6de4f480d508794a614}\label{classpose_estimation_1_1_parameters_a67b74166d14ec6de4f480d508794a614}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!set\_cy@{set\_cy}}
+\index{set\_cy@{set\_cy}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{set\_cy()}{set\_cy()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Parameters\+::set\+\_\+cy (\begin{DoxyParamCaption}\item[{float}]{cy }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_ad836eefab73ae98a6a6a5391a4918327}\label{classpose_estimation_1_1_parameters_ad836eefab73ae98a6a6a5391a4918327}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!set\_fx@{set\_fx}}
+\index{set\_fx@{set\_fx}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{set\_fx()}{set\_fx()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Parameters\+::set\+\_\+fx (\begin{DoxyParamCaption}\item[{float}]{fx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a09557109a48e3bc1137bfb539c79533f}\label{classpose_estimation_1_1_parameters_a09557109a48e3bc1137bfb539c79533f}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!set\_fy@{set\_fy}}
+\index{set\_fy@{set\_fy}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{set\_fy()}{set\_fy()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Parameters\+::set\+\_\+fy (\begin{DoxyParamCaption}\item[{float}]{fy }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_a33c71f53e07e50645c90a8998fb37d73}\label{classpose_estimation_1_1_parameters_a33c71f53e07e50645c90a8998fb37d73}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!set\_height@{set\_height}}
+\index{set\_height@{set\_height}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{set\_height()}{set\_height()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Parameters\+::set\+\_\+height (\begin{DoxyParamCaption}\item[{float}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_parameters_ac3f8ea6fe9ca0f568d7916b2d34f58c3}\label{classpose_estimation_1_1_parameters_ac3f8ea6fe9ca0f568d7916b2d34f58c3}} 
+\index{poseEstimation::Parameters@{poseEstimation::Parameters}!set\_width@{set\_width}}
+\index{set\_width@{set\_width}!poseEstimation::Parameters@{poseEstimation::Parameters}}
+\doxysubsubsection{\texorpdfstring{set\_width()}{set\_width()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Parameters\+::set\+\_\+width (\begin{DoxyParamCaption}\item[{float}]{w }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{pose__estimation_2_parameters_8hpp}{Parameters.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_parameters_8cpp}{Parameters.\+cpp}}\end{DoxyCompactItemize}

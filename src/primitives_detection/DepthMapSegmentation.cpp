@@ -5,6 +5,14 @@
 namespace primitiveDetection {
 
 
+    /**
+      * \brief Compute the computed components in a depth image
+      *
+      * \param[in] edgeMap Edge map computed from depthMap
+      * \param[in] kernel The kernel to use in morphological operations
+      * \param[out] labeledComponents Image of connected components, where every pixel is associated with an ID
+      * \param[in] minArea Minimum acceptable area for a component
+      */
     void get_segmented_components(const cv::Mat& edgeMap, const cv::Mat& kernel, cv::Mat& labeledComponents, int minArea=300) {
         cv::Mat edgeMapCleaned = edgeMap.clone();
         cv::fillHole(edgeMapCleaned, edgeMapCleaned);

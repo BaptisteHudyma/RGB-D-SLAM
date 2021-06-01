@@ -6,13 +6,39 @@
 
 namespace primitiveDetection {
 
+    /**
+      * \brief Basic 2D Histogram class, handling an histogram of N x N
+      */
     class Histogram {
         public:
+            /**
+              * \param[in] binPerCoordCount Size of a bin, in pixels
+              */
             Histogram(unsigned int binPerCoordCount);
 
+            /**
+              * \brief Initialise the histogram 
+              *
+              * \param[in] points Points to put directly in the histogram bins
+              * \param[in] flags Array of size points.rows(), indicating which point is in a planar segment
+              */
             void init_histogram(Eigen::MatrixXd& points, bool* flags);
-            void get_points_from_most_frequent_bin(std::vector<unsigned int>&);
+
+            /**
+              * \brief Return the points in the bin containing the most points
+              *
+              * \param[out] pointsIDs Container storing the points in the biggest bin
+              */
+            void get_points_from_most_frequent_bin(std::vector<unsigned int>& pointsIDs);
+
+            /**
+              * \brief Remove all points from a bin
+              */
 	        void remove_point(unsigned int pointId);
+
+            /**
+              * \brief Empty bins and clear content
+              */
             void reset();
 
             ~Histogram();

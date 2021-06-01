@@ -51,7 +51,7 @@ namespace primitiveDetection {
             }
         }
 
-        if(maxOccurencesCount != 0) {
+        if(mostFrequentBin >= 0) {
             //most frequent bin is not empty
             for(unsigned int i = 0; i < _pointCount; i += 1) {
                 if(_B[i] == mostFrequentBin) {

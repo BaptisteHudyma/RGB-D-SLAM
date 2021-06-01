@@ -11,6 +11,9 @@
 namespace primitiveDetection {
 
 
+    /**
+     * \brief Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting
+     */
     class Cylinder_Segment {
         public:
             /**
@@ -25,11 +28,16 @@ namespace primitiveDetection {
 
             /**
              * \brief Copy constructor
+             *
+             * \param[in] seg Cylinder_Segment to copy
+             * \param[in] subRegionId Cylinder element ID to copy
              */
             Cylinder_Segment(const Cylinder_Segment& seg, unsigned int subRegionId);
 
             /**
              * \brief Copy constructor
+             *
+             * \param[in] seg Cylinder_Segment to copy
              */
             Cylinder_Segment(const Cylinder_Segment& seg);
 
@@ -119,9 +127,9 @@ namespace primitiveDetection {
                 double get_normal_similarity(const Cylinder_Segment& other);
 
                 /**
-                  *
-                  *
-                  */
+                 *
+                 *
+                 */
                 const Eigen::Vector3d get_normal() const;
 
 

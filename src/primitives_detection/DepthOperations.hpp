@@ -7,20 +7,35 @@
 
 namespace primitiveDetection {
 
+    /**
+      * \brief Handles operations on the initial depth image, to transform it on a connected cloud points. It also handles the loading of the camera parameters from the configuration file
+      */
     class Depth_Operations {
         public:
+            /**
+              * \param[in] paramFilePath Path of the file containing the camera parameters
+              * \param[in] width Depth image width (constant)
+              * \param[in] height Depth image height (constant)
+              * \param[in] cellSize Size of the cloud point division (> 0)
+              */
             Depth_Operations(const std::string& paramFilePath, unsigned int width, unsigned int height, unsigned int cellSize);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 
-            /*
-             * Create an point cloud organized by cells of cellSize*cellSize pixels
+            /**
+             * \brief Create an point cloud organized by cells of cellSize*cellSize pixels
              *
-             * in/out depthImage input depth image representation, transformed to align to rgb image at output
-             * out organizedCloudArray 
+             * \param[in, out] depthImage Input depth image representation, transformed to align to rgb image at output
+             * \param[out] organizedCloudArray A cloud point divided in blocs of cellSize * cellSize
              */
             void get_organized_cloud_array(cv::Mat& depthImage, Eigen::MatrixXf& organizedCloudArray);
+
+            /**
+              * \brief Controls the state of this class.
+              *
+              * \return False if the camera parameters could not be loaded
+              */
             bool is_ok() const {return _isOk;};
 
         public: //getters
@@ -30,7 +45,14 @@ namespace primitiveDetection {
             float get_rgb_cy() const { return _cyRgb; }
 
         protected:
+            /**
+              * \brief Loads the camera intrinsic parameters
+              */
             bool load_parameters(const std::string& parameterFilePath);
+
+            /**
+              * \brief Must be called after load_parameters. Fills the computation matrices
+              */
             void init_matrices();
 
         private:

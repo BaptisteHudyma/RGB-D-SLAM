@@ -1,0 +1,134 @@
+\hypertarget{namespaceprimitive_detection}{}\doxysection{primitive\+Detection Namespace Reference}
+\label{namespaceprimitive_detection}\index{primitiveDetection@{primitiveDetection}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}}
+\begin{DoxyCompactList}\small\item\em Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_depth___operations}{Depth\+\_\+\+Operations}}
+\begin{DoxyCompactList}\small\item\em Handles operations on the initial depth image, to transform it on a connected cloud points. It also handles the loading of the camera parameters from the configuration file. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_histogram}{Histogram}}
+\begin{DoxyCompactList}\small\item\em Basic 2D \mbox{\hyperlink{classprimitive_detection_1_1_histogram}{Histogram}} class, handling an histogram of N x N. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_plane___segment}{Plane\+\_\+\+Segment}}
+\begin{DoxyCompactList}\small\item\em Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_primitive___detection}{Primitive\+\_\+\+Detection}}
+\begin{DoxyCompactList}\small\item\em Main extraction class. Extracts shape primitives from an organized cloud of points. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{Primitive}}
+\begin{DoxyCompactList}\small\item\em A base class used to compute the tracking analysis. It is a pure virtual class. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_cylinder}{Cylinder}}
+\begin{DoxyCompactList}\small\item\em Specification of the \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{Primitive}} class. Handles cylinder primitives. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classprimitive_detection_1_1_plane}{Plane}}
+\begin{DoxyCompactList}\small\item\em Specification of the \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{Primitive}} class. Handles planes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceprimitive_detection_a6294f8d24d7536009dfdef6767647aa8}{get\+\_\+segmented\+\_\+components}} (const cv\+::\+Mat \&edge\+Map, const cv\+::\+Mat \&kernel, cv\+::\+Mat \&labeled\+Components, int min\+Area=300)
+\begin{DoxyCompactList}\small\item\em Compute the computed components in a depth image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceprimitive_detection_a61c35a0576ed905b983eb055a5f2c57b}{get\+\_\+normal\+\_\+map}} (const cv\+::\+Mat \&depth\+Map, cv\+::\+Mat \&normal\+Map)
+\begin{DoxyCompactList}\small\item\em Compute the normal map associated with a depth image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceprimitive_detection_a7e0c21b83190be73133d142cf9eb122f}{get\+\_\+edge\+\_\+masks}} (const cv\+::\+Mat \&depth\+Map, const cv\+::\+Mat \&normal\+Map, cv\+::\+Mat \&edge\+Map)
+\begin{DoxyCompactList}\small\item\em Compute an edge map from a normal map. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceprimitive_detection_af23799aa58e5dd75c055e39baaa99710}{get\+\_\+segmented\+\_\+depth\+\_\+map}} (const cv\+::\+Mat \&depth\+Map, cv\+::\+Mat \&final\+Segmented, const cv\+::\+Mat \&kernel, double reduce\+Pourcent=0.\+5)
+\begin{DoxyCompactList}\small\item\em Return the depth map segmented as individual objects. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceprimitive_detection_a222777fb3c0178e8feb8e2bd12595d59}{draw\+\_\+segmented\+\_\+labels}} (const cv\+::\+Mat \&segmented\+Image, const std\+::vector$<$ cv\+::\+Vec3b $>$ \&colors, cv\+::\+Mat \&output\+Image)
+\begin{DoxyCompactList}\small\item\em Draw individual segmented labels on an image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceprimitive_detection_a222777fb3c0178e8feb8e2bd12595d59}\label{namespaceprimitive_detection_a222777fb3c0178e8feb8e2bd12595d59}} 
+\index{primitiveDetection@{primitiveDetection}!draw\_segmented\_labels@{draw\_segmented\_labels}}
+\index{draw\_segmented\_labels@{draw\_segmented\_labels}!primitiveDetection@{primitiveDetection}}
+\doxysubsubsection{\texorpdfstring{draw\_segmented\_labels()}{draw\_segmented\_labels()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::draw\+\_\+segmented\+\_\+labels (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{segmented\+Image,  }\item[{const std\+::vector$<$ cv\+::\+Vec3b $>$ \&}]{colors,  }\item[{cv\+::\+Mat \&}]{output\+Image }\end{DoxyParamCaption})}
+
+
+
+Draw individual segmented labels on an image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em segmented\+Image} & Segmented image, where each pixel is associated with a shape ID \\
+\hline
+\mbox{\texttt{ in}}  & {\em colors} & Vector containing a set of colors \\
+\hline
+\mbox{\texttt{ out}}  & {\em output\+Image} & Final segmented image \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespaceprimitive_detection_a7e0c21b83190be73133d142cf9eb122f}\label{namespaceprimitive_detection_a7e0c21b83190be73133d142cf9eb122f}} 
+\index{primitiveDetection@{primitiveDetection}!get\_edge\_masks@{get\_edge\_masks}}
+\index{get\_edge\_masks@{get\_edge\_masks}!primitiveDetection@{primitiveDetection}}
+\doxysubsubsection{\texorpdfstring{get\_edge\_masks()}{get\_edge\_masks()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::get\+\_\+edge\+\_\+masks (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{depth\+Map,  }\item[{const cv\+::\+Mat \&}]{normal\+Map,  }\item[{cv\+::\+Mat \&}]{edge\+Map }\end{DoxyParamCaption})}
+
+
+
+Compute an edge map from a normal map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em depth\+Map} & Depth map with format CV\+\_\+32\+FC1 \\
+\hline
+\mbox{\texttt{ in}}  & {\em normal\+Map} & Normal map extracted from depth\+Map \\
+\hline
+\mbox{\texttt{ out}}  & {\em edge\+Map} & Edge map, computed from a combinaison of a convex and a discontinuity operator \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespaceprimitive_detection_a61c35a0576ed905b983eb055a5f2c57b}\label{namespaceprimitive_detection_a61c35a0576ed905b983eb055a5f2c57b}} 
+\index{primitiveDetection@{primitiveDetection}!get\_normal\_map@{get\_normal\_map}}
+\index{get\_normal\_map@{get\_normal\_map}!primitiveDetection@{primitiveDetection}}
+\doxysubsubsection{\texorpdfstring{get\_normal\_map()}{get\_normal\_map()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::get\+\_\+normal\+\_\+map (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{depth\+Map,  }\item[{cv\+::\+Mat \&}]{normal\+Map }\end{DoxyParamCaption})}
+
+
+
+Compute the normal map associated with a depth image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em depth\+Map} & Depth map with format CV\+\_\+32\+FC1 \\
+\hline
+\mbox{\texttt{ out}}  & {\em normal\+Map} & The computed normal map \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespaceprimitive_detection_a6294f8d24d7536009dfdef6767647aa8}\label{namespaceprimitive_detection_a6294f8d24d7536009dfdef6767647aa8}} 
+\index{primitiveDetection@{primitiveDetection}!get\_segmented\_components@{get\_segmented\_components}}
+\index{get\_segmented\_components@{get\_segmented\_components}!primitiveDetection@{primitiveDetection}}
+\doxysubsubsection{\texorpdfstring{get\_segmented\_components()}{get\_segmented\_components()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::get\+\_\+segmented\+\_\+components (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{edge\+Map,  }\item[{const cv\+::\+Mat \&}]{kernel,  }\item[{cv\+::\+Mat \&}]{labeled\+Components,  }\item[{int}]{min\+Area = {\ttfamily 300} }\end{DoxyParamCaption})}
+
+
+
+Compute the computed components in a depth image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em edge\+Map} & Edge map computed from depth\+Map \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel} & The kernel to use in morphological operations \\
+\hline
+\mbox{\texttt{ out}}  & {\em labeled\+Components} & Image of connected components, where every pixel is associated with an ID \\
+\hline
+\mbox{\texttt{ in}}  & {\em min\+Area} & Minimum acceptable area for a component \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespaceprimitive_detection_af23799aa58e5dd75c055e39baaa99710}\label{namespaceprimitive_detection_af23799aa58e5dd75c055e39baaa99710}} 
+\index{primitiveDetection@{primitiveDetection}!get\_segmented\_depth\_map@{get\_segmented\_depth\_map}}
+\index{get\_segmented\_depth\_map@{get\_segmented\_depth\_map}!primitiveDetection@{primitiveDetection}}
+\doxysubsubsection{\texorpdfstring{get\_segmented\_depth\_map()}{get\_segmented\_depth\_map()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::get\+\_\+segmented\+\_\+depth\+\_\+map (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{depth\+Map,  }\item[{cv\+::\+Mat \&}]{final\+Segmented,  }\item[{const cv\+::\+Mat \&}]{kernel,  }\item[{double}]{reduce\+Pourcent = {\ttfamily 0.5} }\end{DoxyParamCaption})}
+
+
+
+Return the depth map segmented as individual objects. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em depth\+Map} & Depth map with normal format CV\+\_\+32\+FC1 \\
+\hline
+\mbox{\texttt{ out}}  & {\em final\+Segmented} & Final segmented image, where each pixel is associated with an ID \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel} & The kernel to use for morphological operations \\
+\hline
+\mbox{\texttt{ in}}  & {\em reduce\+Pourcent} & Between 0 and 1, coefficient of reduction of the initial depth image. Lower the resolution but improves performances \\
+\hline
+\end{DoxyParams}

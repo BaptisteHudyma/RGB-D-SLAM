@@ -4,6 +4,9 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/ximgproc/disparity_filter.hpp>
 
+/**
+  * \brief Depth map estimation based on monocular RGB image tracking
+  */
 class Monocular_Depth_Map {
     public:
         Monocular_Depth_Map(cv::Mat& firstImage);

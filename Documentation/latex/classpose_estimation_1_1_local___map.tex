@@ -1,0 +1,104 @@
+\hypertarget{classpose_estimation_1_1_local___map}{}\doxysection{pose\+Estimation\+::Local\+\_\+\+Map Class Reference}
+\label{classpose_estimation_1_1_local___map}\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+
+
+{\ttfamily \#include $<$Local\+Map.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classpose_estimation_1_1_local___map_a21ab663584d1ea71f41fffd4ed3d37e5}{Local\+\_\+\+Map}} (const \mbox{\hyperlink{classpose_estimation_1_1_parameters}{Parameters}} \&voparams, \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler}{Image\+\_\+\+Features\+\_\+\+Handler}} $\ast$feature\+Handler)
+\item 
+\mbox{\hyperlink{classpose_estimation_1_1_local___map_a909b4a795f790ac573b996e33915d592}{$\sim$\+Local\+\_\+\+Map}} ()
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_local___map_add0beb7387feab8cae3a8d0409b5e3a8}{reset}} ()
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a7d85d0ea9317c6271f5121698e7e5ae3}{update\+\_\+with\+\_\+new\+\_\+triangulation}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, bool dont\+Stage=false)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a448582996874728cf78c3116eb0a6ea6}{clean\+\_\+untracked\+\_\+points}} (\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features)
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a43608e6e271b69bf6ffa681883231878}{update\+\_\+staged\+\_\+map\+\_\+points}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features)
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_local___map_a58a2b9aa46608bc7702cf399c9728638}{get\+\_\+map\+\_\+size}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_local___map_aaae772d0e5fba904e83f575d2c612796}{get\+\_\+staged\+\_\+points\+\_\+count}} () const
+\item 
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_local___map_aae51c61f3fa1fa12949bfce5d8899efc}{find\+\_\+matches}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&left\+\_\+struct, \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&out\+\_\+map\+\_\+points, std\+::vector$<$ int $>$ \&out\+\_\+matches\+\_\+left)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a46adc4107af1e0a7092db555aa744b30}{triangulate\+\_\+rgbd}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, map\+Point\+Array \&out\+Points)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_a21ab663584d1ea71f41fffd4ed3d37e5}\label{classpose_estimation_1_1_local___map_a21ab663584d1ea71f41fffd4ed3d37e5}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!Local\_Map@{Local\_Map}}
+\index{Local\_Map@{Local\_Map}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{Local\_Map()}{Local\_Map()}}
+{\footnotesize\ttfamily pose\+Estimation\+::\+Local\+\_\+\+Map\+::\+Local\+\_\+\+Map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_parameters}{Parameters}} \&}]{voparams,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___handler}{Image\+\_\+\+Features\+\_\+\+Handler}} $\ast$}]{feature\+Handler }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_a909b4a795f790ac573b996e33915d592}\label{classpose_estimation_1_1_local___map_a909b4a795f790ac573b996e33915d592}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!````~Local\_Map@{$\sim$Local\_Map}}
+\index{````~Local\_Map@{$\sim$Local\_Map}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{$\sim$Local\_Map()}{~Local\_Map()}}
+{\footnotesize\ttfamily pose\+Estimation\+::\+Local\+\_\+\+Map\+::$\sim$\+Local\+\_\+\+Map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_a448582996874728cf78c3116eb0a6ea6}\label{classpose_estimation_1_1_local___map_a448582996874728cf78c3116eb0a6ea6}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!clean\_untracked\_points@{clean\_untracked\_points}}
+\index{clean\_untracked\_points@{clean\_untracked\_points}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{clean\_untracked\_points()}{clean\_untracked\_points()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Local\+\_\+\+Map\+::clean\+\_\+untracked\+\_\+points (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_aae51c61f3fa1fa12949bfce5d8899efc}\label{classpose_estimation_1_1_local___map_aae51c61f3fa1fa12949bfce5d8899efc}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!find\_matches@{find\_matches}}
+\index{find\_matches@{find\_matches}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{find\_matches()}{find\_matches()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Local\+\_\+\+Map\+::find\+\_\+matches (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{left\+\_\+struct,  }\item[{\mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&}]{out\+\_\+map\+\_\+points,  }\item[{std\+::vector$<$ int $>$ \&}]{out\+\_\+matches\+\_\+left }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_a58a2b9aa46608bc7702cf399c9728638}\label{classpose_estimation_1_1_local___map_a58a2b9aa46608bc7702cf399c9728638}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!get\_map\_size@{get\_map\_size}}
+\index{get\_map\_size@{get\_map\_size}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{get\_map\_size()}{get\_map\_size()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Local\+\_\+\+Map\+::get\+\_\+map\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_aaae772d0e5fba904e83f575d2c612796}\label{classpose_estimation_1_1_local___map_aaae772d0e5fba904e83f575d2c612796}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!get\_staged\_points\_count@{get\_staged\_points\_count}}
+\index{get\_staged\_points\_count@{get\_staged\_points\_count}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{get\_staged\_points\_count()}{get\_staged\_points\_count()}}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Local\+\_\+\+Map\+::get\+\_\+staged\+\_\+points\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_add0beb7387feab8cae3a8d0409b5e3a8}\label{classpose_estimation_1_1_local___map_add0beb7387feab8cae3a8d0409b5e3a8}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!reset@{reset}}
+\index{reset@{reset}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Local\+\_\+\+Map\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_a46adc4107af1e0a7092db555aa744b30}\label{classpose_estimation_1_1_local___map_a46adc4107af1e0a7092db555aa744b30}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!triangulate\_rgbd@{triangulate\_rgbd}}
+\index{triangulate\_rgbd@{triangulate\_rgbd}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{triangulate\_rgbd()}{triangulate\_rgbd()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Local\+\_\+\+Map\+::triangulate\+\_\+rgbd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{map\+Point\+Array \&}]{out\+Points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_a43608e6e271b69bf6ffa681883231878}\label{classpose_estimation_1_1_local___map_a43608e6e271b69bf6ffa681883231878}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!update\_staged\_map\_points@{update\_staged\_map\_points}}
+\index{update\_staged\_map\_points@{update\_staged\_map\_points}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{update\_staged\_map\_points()}{update\_staged\_map\_points()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Local\+\_\+\+Map\+::update\+\_\+staged\+\_\+map\+\_\+points (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_a7d85d0ea9317c6271f5121698e7e5ae3}\label{classpose_estimation_1_1_local___map_a7d85d0ea9317c6271f5121698e7e5ae3}} 
+\index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!update\_with\_new\_triangulation@{update\_with\_new\_triangulation}}
+\index{update\_with\_new\_triangulation@{update\_with\_new\_triangulation}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{update\_with\_new\_triangulation()}{update\_with\_new\_triangulation()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Local\+\_\+\+Map\+::update\+\_\+with\+\_\+new\+\_\+triangulation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{bool}]{dont\+Stage = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_local_map_8hpp}{Local\+Map.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_local_map_8cpp}{Local\+Map.\+cpp}}\end{DoxyCompactItemize}

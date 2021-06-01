@@ -7,16 +7,9 @@
 
 namespace primitiveDetection {
 
-    /*
-     * Default constructor
-     * Given the depth image height and width and an organized matrix of 3D points, sets the plane detection algorithm
-     * blocSize is the height and width of a plane grid cell
-     * minCosAngleForMerge 
-     * maxMergeDistance
-     */
     Primitive_Detection::Primitive_Detection(unsigned int height, unsigned int width, unsigned int blocSize, float minCosAngleForMerge, float maxMergeDistance, bool useCylinderDetection)
         :  
-            _histogram(20), 
+            _histogram(blocSize), 
             _width(width), _height(height),  _blocSize(blocSize), 
             _pointsPerCellCount(_blocSize * _blocSize), 
             _minCosAngleForMerge(minCosAngleForMerge), _maxMergeDist(maxMergeDistance),
@@ -165,7 +158,7 @@ namespace primitiveDetection {
 
         t1 = cv::getTickCount();
         intpair_vector cylinder2regionMap;
-        grow_planes_and_cylinders(cylinder2regionMap, remainingPlanarCells);
+        grow_planes_and_cylinders(remainingPlanarCells, cylinder2regionMap);
         td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         growTime += td;
 
@@ -194,10 +187,6 @@ namespace primitiveDetection {
         setMaskTime += td;
     }
 
-    /*
-     *  Reset the stored data in prevision of another analysis 
-     *
-     */
     void Primitive_Detection::reset_data() {
         _histogram.reset();
 
@@ -223,10 +212,6 @@ namespace primitiveDetection {
         //kernels should not be cleared
     }
 
-    /*
-     *  Init planeGrid and cellDistanceTols
-     *
-     */
     void Primitive_Detection::init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray) {
         float sinCosAngleForMerge = sqrt(1 - pow(_minCosAngleForMerge, 2));
 
@@ -247,11 +232,6 @@ namespace primitiveDetection {
         }
     }
 
-    /*
-     *  Initialize and fill the histogram
-     *
-     * returns the number of initial planar surfaces
-     */
     int Primitive_Detection::init_histogram() {
         int remainingPlanarCells = 0;
 
@@ -273,10 +253,7 @@ namespace primitiveDetection {
         return remainingPlanarCells;
     }
 
-    /*
-     *  grow planes and find cylinders from those planes
-     */
-    void Primitive_Detection::grow_planes_and_cylinders(intpair_vector& cylinder2regionMap, unsigned int remainingPlanarCells) {
+    void Primitive_Detection::grow_planes_and_cylinders(unsigned int remainingPlanarCells, intpair_vector& cylinder2regionMap) {
         unsigned int cylinderCount = 0;
         std::vector<unsigned int> seedCandidates;
         //find seed planes and make them grow
@@ -393,9 +370,6 @@ namespace primitiveDetection {
         }//\while
     }
 
-    /*
-     *  Merge close planes by comparing normals and MSE
-     */
     void Primitive_Detection::merge_planes(uint_vector& planeMergeLabels) {
         const unsigned int planeCount = _planeSegments.size();
 
@@ -438,9 +412,6 @@ namespace primitiveDetection {
         }
     }
 
-    /*
-     *  Refine the final plane edges in mask images
-     */
     void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, primitive_container& primitiveSegments) {
         //refine the coarse planes boundaries to smoother versions
         unsigned int planeCount = _planeSegments.size();
@@ -509,9 +480,6 @@ namespace primitiveDetection {
         }
     }
 
-    /*
-     *  Refine the cylinder edges in mask images
-     */
     void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments) {
         if(not _useCylinderDetection)
             return; //no cylinder detections
@@ -578,9 +546,6 @@ namespace primitiveDetection {
         }
     }
 
-    /*
-     *  Set output image pixel value with the index of the detected shape
-     */
     void Primitive_Detection::set_masked_display(cv::Mat& segOut) {
         //copy and rearranging
         // Copy inlier list to matrix form
@@ -609,7 +574,7 @@ namespace primitiveDetection {
                         uchar* rowPtr = segOut.ptr<uchar>(r);
                         for(unsigned int c = cOffset; c < cLimit; c++, i++){
                             uchar id = stackPtr[i];
-                            if(id > 0){
+                            if(id > 0) {
                                 rowPtr[c] = id;
                             }
                         }
@@ -620,11 +585,6 @@ namespace primitiveDetection {
     }
 
 
-
-
-    /*
-     *  Fill an association matrix that links connected plane components
-     */
     void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix) {
         unsigned int rows2scanCount = segmentMap.rows - 1;
         unsigned int cols2scanCount = segmentMap.cols - 1;
@@ -649,9 +609,6 @@ namespace primitiveDetection {
     }
 
 
-    /*
-     *  Recursively Grow a plane seed and merge it with it's neighbors
-     */
     void Primitive_Detection::region_growing(unsigned short x, unsigned short y, const Eigen::Vector3d& seedPlaneNormal, double seedPlaneD) {
         unsigned int index = x + _horizontalCellsCount * y;
         if (index >= _totalCellCount or 

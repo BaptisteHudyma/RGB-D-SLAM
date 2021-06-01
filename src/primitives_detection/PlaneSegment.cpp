@@ -7,10 +7,6 @@
 namespace primitiveDetection {
 
 
-    /*
-     * Initialize the plane segment with the points from the depth matrix
-     * 
-     */
     Plane_Segment::Plane_Segment(unsigned int cellWidth, unsigned int ptsPerCellCount) : 
         _ptsPerCellCount(ptsPerCellCount), 
         _minZeroPointCount(_ptsPerCellCount/2.0), 
@@ -21,9 +17,6 @@ namespace primitiveDetection {
         _isPlanar = true;
     }
 
-    /*
-     *  Copy constructor
-     */
     Plane_Segment::Plane_Segment(const Plane_Segment& seg) :
         _ptsPerCellCount(seg._ptsPerCellCount), 
         _minZeroPointCount(seg._minZeroPointCount), 
@@ -138,19 +131,11 @@ namespace primitiveDetection {
 
     }
 
-    /*
-     * True if this plane segment presents a depth discontinuity with another one.
-     * False if there is no depth discontinuity
-     */
     bool Plane_Segment::is_depth_discontinuous(const Plane_Segment& planeSegment) {
         return abs(_mean[2] - planeSegment._mean[2]) < 2 * DEPTH_ALPHA * (abs(_mean[2]) + 0.5);
     }
 
 
-    /*
-     * Merge the PCA saved values in prevision of a plane fitting
-     * This function do not make any plane calculations
-     */
     void Plane_Segment::expand_segment(const Plane_Segment& ps) {
         _Sx += ps._Sx;
         _Sy += ps._Sy;
@@ -175,9 +160,6 @@ namespace primitiveDetection {
         expand_segment(*ps);
     }
 
-    /*
-     * Fit a plane to the contained points using PCA
-     */
     void Plane_Segment::fit_plane() {
         const double oneOverCount = 1.0 / (double)_pointCount;
         //fit a plane to the stored points
@@ -250,27 +232,17 @@ namespace primitiveDetection {
     }
 
 
-    /*
-     *   Check similarity of two planes. 
-     * Return value of 1 indicates similar normals.
-     * Return Value of -1 indicates inversed normals
-     */
     double Plane_Segment::get_normal_similarity(const Plane_Segment& p) {
         return (_normal.dot(p._normal));
     }
 
-    /*
-     *  Return the signed distance form a point to this plane
-     */
     double Plane_Segment::get_signed_distance(const double point[3]) {
         return 
             _normal[0] * (point[0] - _mean[0]) + 
             _normal[1] * (point[1] - _mean[1]) + 
             _normal[2] * (point[2] - _mean[2]); 
     }
-    /*
-     *  Return the signed distance form a point to this plane
-     */
+
     double Plane_Segment::get_signed_distance(const Eigen::Vector3d& point) {
         return _normal.dot(point - _mean);
     }

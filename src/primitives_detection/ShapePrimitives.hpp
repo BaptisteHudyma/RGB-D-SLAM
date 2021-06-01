@@ -10,6 +10,9 @@
 
 namespace primitiveDetection {
 
+    /**
+      * \brief A base class used to compute the tracking analysis. It is a pure virtual class.
+      */
     class Primitive {
         public:
             /**
@@ -61,6 +64,9 @@ namespace primitiveDetection {
             Primitive& operator=(const Primitive&) = delete;
     };
 
+    /**
+      * \brief Specification of the Primitive class. Handles cylinder primitives.
+      */
     class Cylinder :
         public Primitive
     {
@@ -97,6 +103,9 @@ namespace primitiveDetection {
             Eigen::Vector3d _normal;
     };
 
+    /**
+      * \brief Specification of the Primitive class. Handles planes.
+      */
     class Plane :
         public Primitive 
     {

@@ -1,0 +1,152 @@
+\hypertarget{classprimitive_detection_1_1_primitive}{}\doxysection{primitive\+Detection\+::Primitive Class Reference}
+\label{classprimitive_detection_1_1_primitive}\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+
+
+A base class used to compute the tracking analysis. It is a pure virtual class.  
+
+
+
+
+{\ttfamily \#include $<$Shape\+Primitives.\+hpp$>$}
+
+Inheritance diagram for primitive\+Detection\+::Primitive\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classprimitive_detection_1_1_primitive}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classprimitive_detection_1_1_primitive_ad118c2e571215588899fb5eaddb55b40}{is\+\_\+similar}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{Primitive}} $>$ \&prim)=0
+\begin{DoxyCompactList}\small\item\em Get the similarity of two primitives. \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{classprimitive_detection_1_1_primitive_a4ce8b6742872dbbb0223b76fc6437d9a}{get\+\_\+distance}} (const Eigen\+::\+Vector3d \&point)=0
+\begin{DoxyCompactList}\small\item\em Get the distance of a point to the primitive. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{classprimitive_detection_1_1_primitive_a68af8e05da5ec17a2c888088ef4bf330}{$\sim$\+Primitive}} ()
+\item 
+unsigned int \mbox{\hyperlink{classprimitive_detection_1_1_primitive_abe29cac9f6189e3558a5064a17933637}{get\+\_\+id}} () const
+\begin{DoxyCompactList}\small\item\em Return this shape assigned id. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classprimitive_detection_1_1_primitive_a7b01705e1a4fd733de92992927a93d2a}{Primitive}} (unsigned int id, const cv\+::\+Mat \&shape\+Mask)
+\begin{DoxyCompactList}\small\item\em Hidden constructor, to set \+\_\+id and shape. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classprimitive_detection_1_1_primitive_ae30bc329ae3978b32ff67d11883d9ac3}{get\+\_\+\+IOU}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{Primitive}} $>$ \&prim) const
+\begin{DoxyCompactList}\small\item\em Compute the Inter over Union factor of two masks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const unsigned int \mbox{\hyperlink{classprimitive_detection_1_1_primitive_a424da0c883f25fd39a47ff91ced238b3}{\+\_\+id}}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{classprimitive_detection_1_1_primitive_aaa52c200274557357012b40401c74998}{\+\_\+shape\+Mask}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A base class used to compute the tracking analysis. It is a pure virtual class. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_a68af8e05da5ec17a2c888088ef4bf330}\label{classprimitive_detection_1_1_primitive_a68af8e05da5ec17a2c888088ef4bf330}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!````~Primitive@{$\sim$Primitive}}
+\index{````~Primitive@{$\sim$Primitive}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{$\sim$Primitive()}{~Primitive()}}
+{\footnotesize\ttfamily virtual primitive\+Detection\+::\+Primitive\+::$\sim$\+Primitive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_a7b01705e1a4fd733de92992927a93d2a}\label{classprimitive_detection_1_1_primitive_a7b01705e1a4fd733de92992927a93d2a}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!Primitive@{Primitive}}
+\index{Primitive@{Primitive}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{Primitive()}{Primitive()}}
+{\footnotesize\ttfamily primitive\+Detection\+::\+Primitive\+::\+Primitive (\begin{DoxyParamCaption}\item[{unsigned int}]{id,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Hidden constructor, to set \+\_\+id and shape. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_a4ce8b6742872dbbb0223b76fc6437d9a}\label{classprimitive_detection_1_1_primitive_a4ce8b6742872dbbb0223b76fc6437d9a}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!get\_distance@{get\_distance}}
+\index{get\_distance@{get\_distance}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
+{\footnotesize\ttfamily virtual double primitive\+Detection\+::\+Primitive\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Get the distance of a point to the primitive. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em point} & 3D Point to compute distance to\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The signed distance of the point to the shape, 0 if the point is on the shape 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classprimitive_detection_1_1_plane_affe2fdc669632507bbc1590e1f713901}{primitive\+Detection\+::\+Plane}}, and \mbox{\hyperlink{classprimitive_detection_1_1_cylinder_a7d8fb2ff9111591e79da623a65a2d9b7}{primitive\+Detection\+::\+Cylinder}}.
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_abe29cac9f6189e3558a5064a17933637}\label{classprimitive_detection_1_1_primitive_abe29cac9f6189e3558a5064a17933637}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!get\_id@{get\_id}}
+\index{get\_id@{get\_id}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{get\_id()}{get\_id()}}
+{\footnotesize\ttfamily unsigned int primitive\+Detection\+::\+Primitive\+::get\+\_\+id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return this shape assigned id. 
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_ae30bc329ae3978b32ff67d11883d9ac3}\label{classprimitive_detection_1_1_primitive_ae30bc329ae3978b32ff67d11883d9ac3}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!get\_IOU@{get\_IOU}}
+\index{get\_IOU@{get\_IOU}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{get\_IOU()}{get\_IOU()}}
+{\footnotesize\ttfamily double primitive\+Detection\+::\+Primitive\+::get\+\_\+\+IOU (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{Primitive}} $>$ \&}]{prim }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Compute the Inter over Union factor of two masks. 
+
+\textbackslash{}pram\mbox{[}in\mbox{]} prim Another primitive object
+
+\begin{DoxyReturn}{Returns}
+A number between 0 and 1, indicating the IoU 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_ad118c2e571215588899fb5eaddb55b40}\label{classprimitive_detection_1_1_primitive_ad118c2e571215588899fb5eaddb55b40}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!is\_similar@{is\_similar}}
+\index{is\_similar@{is\_similar}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}}
+{\footnotesize\ttfamily virtual bool primitive\+Detection\+::\+Primitive\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{Primitive}} $>$ \&}]{prim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Get the similarity of two primitives. 
+
+\begin{DoxyReturn}{Returns}
+A double between 0 and 1, with 1 indicating identical primitives 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classprimitive_detection_1_1_plane_a57abb39ab1d4a08403abb57cc786a032}{primitive\+Detection\+::\+Plane}}, and \mbox{\hyperlink{classprimitive_detection_1_1_cylinder_a3a2789c68de6264a82ebb8f78f463e93}{primitive\+Detection\+::\+Cylinder}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_a424da0c883f25fd39a47ff91ced238b3}\label{classprimitive_detection_1_1_primitive_a424da0c883f25fd39a47ff91ced238b3}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!\_id@{\_id}}
+\index{\_id@{\_id}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{\_id}{\_id}}
+{\footnotesize\ttfamily const unsigned int primitive\+Detection\+::\+Primitive\+::\+\_\+id\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_primitive_aaa52c200274557357012b40401c74998}\label{classprimitive_detection_1_1_primitive_aaa52c200274557357012b40401c74998}} 
+\index{primitiveDetection::Primitive@{primitiveDetection::Primitive}!\_shapeMask@{\_shapeMask}}
+\index{\_shapeMask@{\_shapeMask}!primitiveDetection::Primitive@{primitiveDetection::Primitive}}
+\doxysubsubsection{\texorpdfstring{\_shapeMask}{\_shapeMask}}
+{\footnotesize\ttfamily cv\+::\+Mat primitive\+Detection\+::\+Primitive\+::\+\_\+shape\+Mask\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/primitives\+\_\+detection/\mbox{\hyperlink{_shape_primitives_8hpp}{Shape\+Primitives.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/primitives\+\_\+detection/\mbox{\hyperlink{_shape_primitives_8cpp}{Shape\+Primitives.\+cpp}}\end{DoxyCompactItemize}

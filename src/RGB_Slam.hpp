@@ -13,6 +13,9 @@
 
 namespace poseEstimation {
 
+    /**
+     * \brief SLAM algorithm based on special points tracking in a local map
+     */
     class RGB_SLAM {
         public:
             RGB_SLAM(const Parameters &param);
