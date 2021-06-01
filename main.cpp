@@ -86,7 +86,7 @@ bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage,
     return depthImage.data and rgbImage.data;
 }
 
-bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& showPrimitiveMasks, bool& useLineDetection, bool& useFrameOdometry, int& startIndex) {
+bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& showPrimitiveMasks, bool& useLineDetection, bool& useFrameOdometry, int& startIndex, unsigned int& jumpImages) {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
         "{f folder        |<none>| folder to parse        }"
@@ -94,6 +94,7 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
         "{l lines         |  0   | Detect lines }"
         "{o odometry      |  0   | Use frame odometry }"
         "{i index         |  0   | First image to parse   }"
+        "{j jump          |  0   | Only take every j image into consideration   }"
         ;
 
     cv::CommandLineParser parser(argc, argv, keys);
@@ -109,6 +110,7 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
     useLineDetection = parser.get<bool>("l");
     useFrameOdometry = parser.get<bool>("o");
     startIndex = parser.get<int>("i");
+    jumpImages = parser.get<unsigned int>("j");
 
     if(not parser.check()) {
         parser.printErrors();
@@ -123,8 +125,9 @@ int main(int argc, char* argv[]) {
     bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
     bool useDepthSegmentation = false;
     int startIndex;
+    unsigned int jumpFrames = 0;
 
-    if (not parse_parameters(argc, argv, dataPath, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex)) {
+    if (not parse_parameters(argc, argv, dataPath, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex, jumpFrames)) {
         return 0;   //could not parse parameters correctly 
     }
 
@@ -191,6 +194,7 @@ int main(int argc, char* argv[]) {
     primitive_container previousFramePrimitives;
 
 
+    unsigned int totalFrameTreated = 0;
     int i = startIndex;
     double meanTreatmentTime = 0.0;
     double meanMatTreatmentTime = 0.0;
@@ -198,10 +202,10 @@ int main(int argc, char* argv[]) {
     bool runLoop = true;
     while(runLoop) {
 
-        /*if(i % 2 != 0) {
+        if(jumpFrames > 0 and i % jumpFrames != 0) {
             ++i;
             continue;
-        }*/
+        }
 
         //read images
         if(not load_images(dataPath, i, rgbImage, depthImage))
@@ -321,6 +325,8 @@ int main(int argc, char* argv[]) {
         if(showPrimitiveMasks)
             primDetector.apply_masks(rgbImage, color_code, seg_output, primitives, segRgb, associatedIds, time_elapsed);
 
+        previousFramePrimitives.swap(primitives);
+
         //display with mono mask
         //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
         if(useDepthSegmentation)
@@ -328,13 +334,12 @@ int main(int argc, char* argv[]) {
         cv::imshow("RGBD-SLAM", segRgb);
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
+
         ++i;
-
-
-        previousFramePrimitives.swap(primitives);
+        ++totalFrameTreated;
     }
-    std::cout << "Mean plane treatment time is " << meanTreatmentTime/i << std::endl;
-    std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime/i << std::endl;
+    std::cout << "Mean plane treatment time is " << meanTreatmentTime/totalFrameTreated << std::endl;
+    std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime/totalFrameTreated << std::endl;
     std::cout << "max treat time is " << maxTreatTime << std::endl;
 
     //std::cout << "init planes " << primDetector.resetTime/i << std::endl;
