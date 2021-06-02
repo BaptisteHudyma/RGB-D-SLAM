@@ -5,6 +5,9 @@
 
 namespace poseEstimation {
 
+    /**
+     * \brief Load camera parameters from configuration file 
+     */
     class Parameters  {
         public:
             Parameters();

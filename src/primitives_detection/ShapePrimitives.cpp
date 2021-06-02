@@ -22,6 +22,7 @@ namespace primitiveDetection {
         double IOU = cv::countNonZero(unionMat);
         if(IOU == 0)
             return 0.0;
+
         //get inter of masks
         cv::Mat interMat = (_shapeMask & prim->_shapeMask);
         return cv::countNonZero(interMat) / IOU;

@@ -22,10 +22,9 @@ namespace poseEstimation {
     typedef std::vector<matrix44, Eigen::aligned_allocator<matrix44>> matrix44_array;
     typedef std::vector<quaternion, Eigen::aligned_allocator<quaternion>> quaternion_array;
 
-
-
-
-
+    /**
+     * \brief Store a position
+     */
     class Pose {
         public:
             Pose() {

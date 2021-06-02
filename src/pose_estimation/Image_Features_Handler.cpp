@@ -8,7 +8,9 @@
 
 namespace poseEstimation {
 
-    // This function is from code in this answer: http://answers.opencv.org/question/93317/orb-keypoints-distribution-over-an-image/
+    /**
+     * \brief This function is from code in this answer: http://answers.opencv.org/question/93317/orb-keypoints-distribution-over-an-image/
+     */
     static void _adaptive_non_maximal_suppresion(keypoint_vector &keypoints, const int num_to_keep,
             const float tx, const float ty)
     {
@@ -60,6 +62,38 @@ namespace poseEstimation {
         anmsPts.swap(keypoints);
     }
 
+    /**
+     * \brief Perform a feature detection on structure p
+     *
+     * \param[in] p Structure containing an image, feature extractors, divisions...
+     * \param[out] allKeapoints The features found in p
+     */
+    static void perform_detect_corners(compute_features_data *p, keypoint_vector *allKeypoints)
+    {
+        for (rect_vector::size_type r = 0; r < p->_subImgsRects.size(); r++)
+        {
+            cv::Rect rect = p->_subImgsRects[r];
+            cv::Mat sub_img = p->img(rect);
+            keypoint_vector keypoints;
+            keypoints.reserve(p->_voParams->get_max_keypoints_per_cell());
+            p->_detector->detect(sub_img, keypoints);
+            if (keypoints.size() > p->_voParams->get_max_keypoints_per_cell())
+            {
+                _adaptive_non_maximal_suppresion(keypoints, p->_voParams->get_max_keypoints_per_cell(), (float)rect.x, (float)rect.y);
+            }
+            else
+            {
+                for (keypoint_vector::size_type i = 0; i < keypoints.size(); i++)
+                {
+                    keypoints[i].pt.x += (float)rect.x;
+                    keypoints[i].pt.y += (float)rect.y;
+                }
+            }
+            allKeypoints->insert(allKeypoints->end(), keypoints.begin(), keypoints.end());
+        }
+    }
+
+
     Image_Features_Handler::Image_Features_Handler(const Parameters &voParams)
         : _voParams(voParams)
     {
@@ -102,31 +136,6 @@ namespace poseEstimation {
         _thData[1]._voParams = &_voParams;
     }
 
-    static void perform_detect_corners(compute_features_data *p, keypoint_vector *all_keypoints)
-    {
-        for (rect_vector::size_type r = 0; r < p->_subImgsRects.size(); r++)
-        {
-            cv::Rect rect = p->_subImgsRects[r];
-            cv::Mat sub_img = p->img(rect);
-            keypoint_vector keypoints;
-            keypoints.reserve(p->_voParams->get_max_keypoints_per_cell());
-            p->_detector->detect(sub_img, keypoints);
-            if (keypoints.size() > p->_voParams->get_max_keypoints_per_cell())
-            {
-                _adaptive_non_maximal_suppresion(keypoints, p->_voParams->get_max_keypoints_per_cell(), (float)rect.x, (float)rect.y);
-            }
-            else
-            {
-                for (keypoint_vector::size_type i = 0; i < keypoints.size(); i++)
-                {
-                    keypoints[i].pt.x += (float)rect.x;
-                    keypoints[i].pt.y += (float)rect.y;
-                }
-            }
-            all_keypoints->insert(all_keypoints->end(), keypoints.begin(), keypoints.end());
-        }
-    }
-
     void Image_Features_Handler::perform_compute_features(compute_features_data *p)
     {
         keypoint_vector all_keypoints;
@@ -152,13 +161,13 @@ namespace poseEstimation {
     void Image_Features_Handler::perform_compute_descriptors_only(compute_features_data *p)
     {
         cv::Mat desc;
-        const point_vector &_ext_kp = *(p->_ext_kp);
+        const point_vector* ext_kp = p->_ext_kp;
         keypoint_vector keypoints;
-        keypoints.reserve(_ext_kp.size());
-        for (unsigned int i = 0, count = _ext_kp.size(); i < count; i++)
+        keypoints.reserve(ext_kp->size());
+        for (unsigned int i = 0, count = ext_kp->size(); i < count; i++)
         {
             cv::KeyPoint kp;
-            kp.pt = _ext_kp[i];
+            kp.pt = ext_kp->at(i);
             keypoints.push_back(kp);
         }
         p->_extractor->compute(p->img, keypoints, desc);
@@ -168,13 +177,6 @@ namespace poseEstimation {
     }
 
 
-    /*
-     *  Compute 3D features from gray and depth image
-     *
-     * in img_gray
-     * in img_depth
-     * out out_struct
-     */
     void Image_Features_Handler::compute_features(const cv::Mat& img_gray, const cv::Mat& in_img_depth, Image_Features_Struct& out_struct)
     {
         // detect corners in the image as normal
@@ -251,16 +253,10 @@ namespace poseEstimation {
     }
 
 
-    /*
-     *
-     *
-     * in features_left
-     * in features_right
-     * out out_matches
-     */
     void Image_Features_Handler::row_match(Image_Features_Struct& features_left, Image_Features_Struct& features_right,
             std::vector<cv::DMatch>& out_matches)
     {
+        //match each feature in left image with feature in righ image
         for (unsigned int i = 0, count = features_left.get_features_count(); i < count; i++)
         {
             if (features_left.is_matched(i))

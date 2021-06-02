@@ -47,17 +47,11 @@ namespace poseEstimation {
         }
     }
 
-    /*
-     *  find the best feature in the struct that matches the passed one and return its index, or -1 otherwise. (ratio is the ratio to use for the ratio test).
-     *
-     *
-     *
-     *  return: best feature index or -1
-     */
     int Image_Features_Struct::find_match_index(const vector2& sl_pt, const cv::Mat& desc, float *d1, float *d2)const
     {
         const cv::Point2f pt(sl_pt.x(), sl_pt.y());
         const index_pair_t hash_idx = compute_hashed_index(pt, (float)_cell_size);
+        //compute reduced searching box for more efficient knn search
         int start_y = hash_idx.first - _cell_search_radius;
         if (start_y < 0)
             start_y = 0;
@@ -71,6 +65,7 @@ namespace poseEstimation {
         if (end_x > _cell_count_x)
             end_x = _cell_count_x;
 
+        //Compute a search mask ?
         const float r2 = static_cast<float>(_tracking_radius*_tracking_radius);
         cv::Mat mask(cv::Mat::zeros(1, _keypoints.size(), CV_8UC1));
         for (int i = start_y; i < end_y; i++) {
@@ -89,16 +84,19 @@ namespace poseEstimation {
             }
         }
 
+        //find matches in masked area
         std::vector< std::vector<cv::DMatch> > matches;
         _matcher->knnMatch(desc, _descriptors, matches, 2, mask);
         if (matches[0].size() > 1) {
+            //More than one match
             float d_ratio = matches[0][0].distance / matches[0][1].distance;
             if (d_ratio < _tracking_ratio_th) {
                 *d1 = matches[0][0].distance;
                 *d2 = matches[0][1].distance;
                 return matches[0][0].trainIdx;
             }
-        } else if ((matches[0].size() == 1) && (matches[0][0].distance <= _desc_dist_th)) {
+        } else if ((matches[0].size() == 1) and (matches[0][0].distance <= _desc_dist_th)) {
+            //only one match, below distance threshold
             *d1 = matches[0][0].distance;
             *d2 = -1.0;
             return matches[0][0].trainIdx;

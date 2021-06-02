@@ -8,11 +8,24 @@
 
 namespace poseEstimation {
 
+    /**
+     * \brief Compute a pose estimation
+     */
     class PNP_Solver {
         public:
             PNP_Solver(double fx, double fy, double cx, double cy, double baseline);
             ~PNP_Solver();
 
+            /**
+             * \brief Refine a pose estimation using the matched points in this frame and local map
+             *
+             * \param[in] camPose Current camera pose
+             * \param[in] features Features detected in frame
+             * \param[in] matchedPoints Macthed features with previous frame
+             * \param[in] matchOutliers Unmatched features 
+             *
+             * \return The pose estimated from the previous pose using the motion model as well as matched features
+             */
             Pose compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers);
 
         private:

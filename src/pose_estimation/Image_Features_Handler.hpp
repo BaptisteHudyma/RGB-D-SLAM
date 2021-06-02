@@ -13,6 +13,9 @@ namespace poseEstimation {
     typedef std::vector<cv::KeyPoint> keypoint_vector;
     typedef std::vector<cv::Point2f> point_vector;
 
+    /**
+     * \brief Container storing an image, feature detectors, camera parameters, image division in search regions, ...
+     */
     struct compute_features_data
     {
         cv::Mat img;
@@ -24,17 +27,41 @@ namespace poseEstimation {
         Parameters *_voParams;
     };
 
+    /**
+     * \brief Main image feature detection class. Computes image features and provide methods for feature matching
+     */
     class Image_Features_Handler {
         public:
             Image_Features_Handler(const Parameters &vo_params);
 
+            /**
+             * \brief Compute 3D features from gray and depth image
+             *
+             * \param[in] imgGray Input image, as greyscale
+             * \param[in] imgDepth Input depth image
+             * \param[out] outStruct Structure of map features
+             */
             void compute_features(const cv::Mat& imgGray, const cv::Mat& imgDepth, Image_Features_Struct& outStruct);
 
-            void row_match(Image_Features_Struct& features, Image_Features_Struct& features_right, std::vector<cv::DMatch>& outMatches);
+            /**
+             * \brief Searches for a matches between features and our map features. Reduces search space to rows. 
+             *
+             * \param[in] featuresLeft Container of all features in the left camera image (or previous image)
+             * \param[in] featuresRight Container of all features in the right camera image (or current frame)
+             * \param[out] outMatches Container of all matches
+             */
+            void row_match(Image_Features_Struct& featuresLeft, Image_Features_Struct& featuresRight, std::vector<cv::DMatch>& outMatches);
 
         protected:
-            void perform_compute_features(compute_features_data *);
-            void perform_compute_descriptors_only(compute_features_data *);
+            /**
+             * \brief Detect features and compute all features descriptors in an image
+             */
+            void perform_compute_features(compute_features_data *p);
+
+            /**
+             * \brief Compute the descriptors of a given feature set
+             */
+            void perform_compute_descriptors_only(compute_features_data *p);
 
         private:
             Parameters _voParams;
