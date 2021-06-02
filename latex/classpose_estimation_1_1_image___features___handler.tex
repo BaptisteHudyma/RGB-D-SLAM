@@ -2,6 +2,11 @@
 \label{classpose_estimation_1_1_image___features___handler}\index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
 
 
+Main image feature detection class. Computes image features and provide methods for feature matching.  
+
+
+
+
 {\ttfamily \#include $<$Image\+\_\+\+Features\+\_\+\+Handler.\+hpp$>$}
 
 \doxysubsection*{Public Member Functions}
@@ -10,17 +15,20 @@
 \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a925a46e1f888863ed0e3a5adfcbf21ab}{Image\+\_\+\+Features\+\_\+\+Handler}} (const \mbox{\hyperlink{classpose_estimation_1_1_parameters}{Parameters}} \&vo\+\_\+params)
 \item 
 void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_ad46fa78654927349f1984b51fcdb2527}{compute\+\_\+features}} (const cv\+::\+Mat \&img\+Gray, const cv\+::\+Mat \&img\+Depth, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&out\+Struct)
-\item 
-void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_aece9381dd976113ea9f62325a37386ef}{row\+\_\+match}} (\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features\+\_\+right, std\+::vector$<$ cv\+::\+DMatch $>$ \&out\+Matches)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Compute 3D features from gray and depth image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a1307e7489e3ce110d8dcd23972776c53}{row\+\_\+match}} (\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features\+Left, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features\+Right, std\+::vector$<$ cv\+::\+DMatch $>$ \&out\+Matches)
+\begin{DoxyCompactList}\small\item\em Searches for a matches between features and our map features. Reduces search space to rows. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a1c5f76f32900ffa5e8b3b0696c8c1813}{perform\+\_\+compute\+\_\+features}} (\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$)
-\item 
-void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a2378108a1f935ad830a9b1b3c5de6c0d}{perform\+\_\+compute\+\_\+descriptors\+\_\+only}} (\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$)
-\end{DoxyCompactItemize}
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a3ea7d6e44a75c33ec01c8e57daf389b3}{perform\+\_\+compute\+\_\+features}} (\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Detect features and compute all features descriptors in an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a350c1d37e50b5f4cd7cbd46498dca48e}{perform\+\_\+compute\+\_\+descriptors\+\_\+only}} (\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Compute the descriptors of a given feature set. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Main image feature detection class. Computes image features and provide methods for feature matching. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a925a46e1f888863ed0e3a5adfcbf21ab}\label{classpose_estimation_1_1_image___features___handler_a925a46e1f888863ed0e3a5adfcbf21ab}} 
@@ -38,27 +46,61 @@ void \mbox{\hyperlink{classpose_estimation_1_1_image___features___handler_a23781
 \doxysubsubsection{\texorpdfstring{compute\_features()}{compute\_features()}}
 {\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::compute\+\_\+features (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{img\+Gray,  }\item[{const cv\+::\+Mat \&}]{img\+Depth,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{out\+Struct }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a2378108a1f935ad830a9b1b3c5de6c0d}\label{classpose_estimation_1_1_image___features___handler_a2378108a1f935ad830a9b1b3c5de6c0d}} 
+
+
+Compute 3D features from gray and depth image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em img\+Gray} & Input image, as greyscale \\
+\hline
+\mbox{\texttt{ in}}  & {\em img\+Depth} & Input depth image \\
+\hline
+\mbox{\texttt{ out}}  & {\em out\+Struct} & Structure of map features \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a350c1d37e50b5f4cd7cbd46498dca48e}\label{classpose_estimation_1_1_image___features___handler_a350c1d37e50b5f4cd7cbd46498dca48e}} 
 \index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!perform\_compute\_descriptors\_only@{perform\_compute\_descriptors\_only}}
 \index{perform\_compute\_descriptors\_only@{perform\_compute\_descriptors\_only}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
 \doxysubsubsection{\texorpdfstring{perform\_compute\_descriptors\_only()}{perform\_compute\_descriptors\_only()}}
 {\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::perform\+\_\+compute\+\_\+descriptors\+\_\+only (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a1c5f76f32900ffa5e8b3b0696c8c1813}\label{classpose_estimation_1_1_image___features___handler_a1c5f76f32900ffa5e8b3b0696c8c1813}} 
+
+
+Compute the descriptors of a given feature set. 
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a3ea7d6e44a75c33ec01c8e57daf389b3}\label{classpose_estimation_1_1_image___features___handler_a3ea7d6e44a75c33ec01c8e57daf389b3}} 
 \index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!perform\_compute\_features@{perform\_compute\_features}}
 \index{perform\_compute\_features@{perform\_compute\_features}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
 \doxysubsubsection{\texorpdfstring{perform\_compute\_features()}{perform\_compute\_features()}}
 {\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::perform\+\_\+compute\+\_\+features (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_aece9381dd976113ea9f62325a37386ef}\label{classpose_estimation_1_1_image___features___handler_aece9381dd976113ea9f62325a37386ef}} 
+
+
+Detect features and compute all features descriptors in an image. 
+
+\mbox{\Hypertarget{classpose_estimation_1_1_image___features___handler_a1307e7489e3ce110d8dcd23972776c53}\label{classpose_estimation_1_1_image___features___handler_a1307e7489e3ce110d8dcd23972776c53}} 
 \index{poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}!row\_match@{row\_match}}
 \index{row\_match@{row\_match}!poseEstimation::Image\_Features\_Handler@{poseEstimation::Image\_Features\_Handler}}
 \doxysubsubsection{\texorpdfstring{row\_match()}{row\_match()}}
-{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::row\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features\+\_\+right,  }\item[{std\+::vector$<$ cv\+::\+DMatch $>$ \&}]{out\+Matches }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::row\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features\+Left,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features\+Right,  }\item[{std\+::vector$<$ cv\+::\+DMatch $>$ \&}]{out\+Matches }\end{DoxyParamCaption})}
 
+
+
+Searches for a matches between features and our map features. Reduces search space to rows. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em features\+Left} & Container of all features in the left camera image (or previous image) \\
+\hline
+\mbox{\texttt{ in}}  & {\em features\+Right} & Container of all features in the right camera image (or current frame) \\
+\hline
+\mbox{\texttt{ out}}  & {\em out\+Matches} & Container of all matches \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8hpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8cpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8hpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8cpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+cpp}}\end{DoxyCompactItemize}

@@ -74,40 +74,55 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Stores a list of keypoints (features) and provide methods to find a match of a point in those features.  
+ <a href="classpose_estimation_1_1_image___features___struct.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_image___features___struct_8hpp_source.html">Image_Features_Struct.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a79ff491e281f54525ca4b59e2a196a0c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a79ff491e281f54525ca4b59e2a196a0c">Image_Features_Struct</a> ()</td></tr>
 <tr class="separator:a79ff491e281f54525ca4b59e2a196a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9152b92f00719f19741b869740f5e440"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a9152b92f00719f19741b869740f5e440">init</a> (const cv::Mat &amp;image, std::vector&lt; cv::KeyPoint &gt; &amp;keypoints, const cv::Mat &amp;descs, int tracking_radius, int hashing_cell_size, int vertical_search_radius, float triangulation_ratio_th, float tracking_ratio_th, float desc_dist_th, std::vector&lt; float &gt; *kps_depth=nullptr)</td></tr>
-<tr class="separator:a9152b92f00719f19741b869740f5e440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e7f239185ebb4d35204f2ceaa5478a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a0e7f239185ebb4d35204f2ceaa5478a9">init</a> (const cv::Mat &amp;image, std::vector&lt; cv::KeyPoint &gt; &amp;keypoints, const cv::Mat &amp;descs, int trackingRadius, int hashingCellSize, int verticalSearchRadius, float triangulationRatioTh, float trackingRatioTh, float descDistTh, std::vector&lt; float &gt; *kpsDepth=nullptr)</td></tr>
+<tr class="separator:a0e7f239185ebb4d35204f2ceaa5478a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca5f8c9ed386c4f00e7d17d52bd18d60"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#aca5f8c9ed386c4f00e7d17d52bd18d60">find_match_index</a> (const <a class="el" href="namespacepose_estimation.html#a5edc85f5ea8a74e8661d5732d8ec92d4">vector2</a> &amp;pt, const cv::Mat &amp;desc, float *d1, float *d2) const</td></tr>
+<tr class="memdesc:aca5f8c9ed386c4f00e7d17d52bd18d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches or a match between the given point and our map features. It uses a k nearest neighbors method.  <a href="classpose_estimation_1_1_image___features___struct.html#aca5f8c9ed386c4f00e7d17d52bd18d60">More...</a><br /></td></tr>
 <tr class="separator:aca5f8c9ed386c4f00e7d17d52bd18d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff0cdb90bc04377493be7fa96e0edb40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#aff0cdb90bc04377493be7fa96e0edb40">row_match</a> (const cv::Point2f &amp;pt, const cv::Mat &amp;desc) const</td></tr>
+<tr class="memdesc:aff0cdb90bc04377493be7fa96e0edb40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for a match between a point and our map features. Reduces search space to rows. It uses a k nearest neighbors method.  <a href="classpose_estimation_1_1_image___features___struct.html#aff0cdb90bc04377493be7fa96e0edb40">More...</a><br /></td></tr>
 <tr class="separator:aff0cdb90bc04377493be7fa96e0edb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a808845d4d4c36d955b13657aef9ec215"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a808845d4d4c36d955b13657aef9ec215">mark_as_matched</a> (const int idx, const bool val)</td></tr>
-<tr class="separator:a808845d4d4c36d955b13657aef9ec215"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4846da774bfa52264d26e6aff970851"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#ad4846da774bfa52264d26e6aff970851">is_matched</a> (const int idx) const</td></tr>
-<tr class="separator:ad4846da774bfa52264d26e6aff970851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfdba6a17e6877d567c5210e30b5025c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#abfdba6a17e6877d567c5210e30b5025c">mark_as_matched</a> (unsigned int idx, bool val)</td></tr>
+<tr class="memdesc:abfdba6a17e6877d567c5210e30b5025c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks a feature id as been matched to a point.  <a href="classpose_estimation_1_1_image___features___struct.html#abfdba6a17e6877d567c5210e30b5025c">More...</a><br /></td></tr>
+<tr class="separator:abfdba6a17e6877d567c5210e30b5025c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa475e4b71a7311da88757d4e219d74e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#aa475e4b71a7311da88757d4e219d74e5">is_matched</a> (unsigned int idx) const</td></tr>
+<tr class="memdesc:aa475e4b71a7311da88757d4e219d74e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a feature as already been matched to a point.  <a href="classpose_estimation_1_1_image___features___struct.html#aa475e4b71a7311da88757d4e219d74e5">More...</a><br /></td></tr>
+<tr class="separator:aa475e4b71a7311da88757d4e219d74e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a330357a686b05128d90ca5cbf059911c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a330357a686b05128d90ca5cbf059911c">reset_matched_marks</a> ()</td></tr>
+<tr class="memdesc:a330357a686b05128d90ca5cbf059911c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the matched feature container.  <a href="classpose_estimation_1_1_image___features___struct.html#a330357a686b05128d90ca5cbf059911c">More...</a><br /></td></tr>
 <tr class="separator:a330357a686b05128d90ca5cbf059911c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22132eb0214b07b4d1a12055d7a347f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a22132eb0214b07b4d1a12055d7a347f7">is_depth_associated</a> () const</td></tr>
+<tr class="memdesc:a22132eb0214b07b4d1a12055d7a347f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the features are associated with depth values.  <a href="classpose_estimation_1_1_image___features___struct.html#a22132eb0214b07b4d1a12055d7a347f7">More...</a><br /></td></tr>
 <tr class="separator:a22132eb0214b07b4d1a12055d7a347f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab247802065c1345105ffd14087172476"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#ab247802065c1345105ffd14087172476">get_tracking_radius</a> () const</td></tr>
+<tr class="memdesc:ab247802065c1345105ffd14087172476"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the knn search radius for matches.  <a href="classpose_estimation_1_1_image___features___struct.html#ab247802065c1345105ffd14087172476">More...</a><br /></td></tr>
 <tr class="separator:ab247802065c1345105ffd14087172476"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0e13a2be4737cc53c279ba3e93ff77a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#aa0e13a2be4737cc53c279ba3e93ff77a">get_features_count</a> () const</td></tr>
+<tr class="memdesc:aa0e13a2be4737cc53c279ba3e93ff77a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the feature count in the local map.  <a href="classpose_estimation_1_1_image___features___struct.html#aa0e13a2be4737cc53c279ba3e93ff77a">More...</a><br /></td></tr>
 <tr class="separator:aa0e13a2be4737cc53c279ba3e93ff77a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a637f55de8d9bf8be9b297c09aba9c54a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a637f55de8d9bf8be9b297c09aba9c54a">get_keypoint_depth</a> (const int idx) const</td></tr>
-<tr class="separator:a637f55de8d9bf8be9b297c09aba9c54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b58c564d5c31299e8b6efe52c4a8737"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a4b58c564d5c31299e8b6efe52c4a8737">get_descriptor</a> (const int index) const</td></tr>
-<tr class="separator:a4b58c564d5c31299e8b6efe52c4a8737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4219115e417d24be039eb0c724cedf4e"><td class="memItemLeft" align="right" valign="top">const cv::KeyPoint &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a4219115e417d24be039eb0c724cedf4e">get_keypoint</a> (const int index) const</td></tr>
-<tr class="separator:a4219115e417d24be039eb0c724cedf4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0220bdfd4fabc08160e56d0ec3a4029"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#aa0220bdfd4fabc08160e56d0ec3a4029">get_keypoint_depth</a> (unsigned int idx) const</td></tr>
+<tr class="memdesc:aa0220bdfd4fabc08160e56d0ec3a4029"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the depth the feature with index idx.  <a href="classpose_estimation_1_1_image___features___struct.html#aa0220bdfd4fabc08160e56d0ec3a4029">More...</a><br /></td></tr>
+<tr class="separator:aa0220bdfd4fabc08160e56d0ec3a4029"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b2677d303ae66ac837ea2df5043c720"><td class="memItemLeft" align="right" valign="top">const cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a8b2677d303ae66ac837ea2df5043c720">get_descriptor</a> (unsigned int index) const</td></tr>
+<tr class="memdesc:a8b2677d303ae66ac837ea2df5043c720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the descriptor of a feature.  <a href="classpose_estimation_1_1_image___features___struct.html#a8b2677d303ae66ac837ea2df5043c720">More...</a><br /></td></tr>
+<tr class="separator:a8b2677d303ae66ac837ea2df5043c720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6903b6439afba41ddbbe98c98ace05d3"><td class="memItemLeft" align="right" valign="top">const cv::KeyPoint &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a6903b6439afba41ddbbe98c98ace05d3">get_keypoint</a> (unsigned int index) const</td></tr>
+<tr class="separator:a6903b6439afba41ddbbe98c98ace05d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a927e02aaea46edc9d73c3007decdf9b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___struct.html#a927e02aaea46edc9d73c3007decdf9b3">set_tracking_radius</a> (unsigned int tracking_radius)</td></tr>
 <tr class="separator:a927e02aaea46edc9d73c3007decdf9b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Stores a list of keypoints (features) and provide methods to find a match of a point in those features. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a79ff491e281f54525ca4b59e2a196a0c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79ff491e281f54525ca4b59e2a196a0c">&#9670;&nbsp;</a></span>Image_Features_Struct()</h2>
 
@@ -164,10 +179,22 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Searches or a match between the given point and our map features. It uses a k nearest neighbors method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pt</td><td>Point to match </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">desc</td><td>Descriptor of point pt </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">d1</td><td>Distance of pt to the closest matching point </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">d2</td><td>Distance of pt to the second closest matching point, or -1</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of the best feature or -1 if not matched </dd></dl>
+
 </div>
 </div>
-<a id="a4b58c564d5c31299e8b6efe52c4a8737"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b58c564d5c31299e8b6efe52c4a8737">&#9670;&nbsp;</a></span>get_descriptor()</h2>
+<a id="a8b2677d303ae66ac837ea2df5043c720"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b2677d303ae66ac837ea2df5043c720">&#9670;&nbsp;</a></span>get_descriptor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,9 +203,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">cv::Mat poseEstimation::Image_Features_Struct::get_descriptor </td>
+          <td class="memname">const cv::Mat poseEstimation::Image_Features_Struct::get_descriptor </td>
           <td>(</td>
-          <td class="paramtype">const int&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -189,6 +216,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Return the descriptor of a feature. </p>
 
 </div>
 </div>
@@ -215,10 +244,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Return the feature count in the local map. </p>
+
 </div>
 </div>
-<a id="a4219115e417d24be039eb0c724cedf4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4219115e417d24be039eb0c724cedf4e">&#9670;&nbsp;</a></span>get_keypoint()</h2>
+<a id="a6903b6439afba41ddbbe98c98ace05d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6903b6439afba41ddbbe98c98ace05d3">&#9670;&nbsp;</a></span>get_keypoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,7 +260,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const cv::KeyPoint&amp; poseEstimation::Image_Features_Struct::get_keypoint </td>
           <td>(</td>
-          <td class="paramtype">const int&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -243,8 +274,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a637f55de8d9bf8be9b297c09aba9c54a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a637f55de8d9bf8be9b297c09aba9c54a">&#9670;&nbsp;</a></span>get_keypoint_depth()</h2>
+<a id="aa0220bdfd4fabc08160e56d0ec3a4029"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0220bdfd4fabc08160e56d0ec3a4029">&#9670;&nbsp;</a></span>get_keypoint_depth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +286,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">float poseEstimation::Image_Features_Struct::get_keypoint_depth </td>
           <td>(</td>
-          <td class="paramtype">const int&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -266,6 +297,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Return the depth the feature with index idx. </p>
 
 </div>
 </div>
@@ -292,10 +325,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Return the knn search radius for matches. </p>
+
 </div>
 </div>
-<a id="a9152b92f00719f19741b869740f5e440"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9152b92f00719f19741b869740f5e440">&#9670;&nbsp;</a></span>init()</h2>
+<a id="a0e7f239185ebb4d35204f2ceaa5478a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e7f239185ebb4d35204f2ceaa5478a9">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,43 +357,43 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tracking_radius</em>, </td>
+          <td class="paramname"><em>trackingRadius</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>hashing_cell_size</em>, </td>
+          <td class="paramname"><em>hashingCellSize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>vertical_search_radius</em>, </td>
+          <td class="paramname"><em>verticalSearchRadius</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>triangulation_ratio_th</em>, </td>
+          <td class="paramname"><em>triangulationRatioTh</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>tracking_ratio_th</em>, </td>
+          <td class="paramname"><em>trackingRatioTh</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>desc_dist_th</em>, </td>
+          <td class="paramname"><em>descDistTh</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; float &gt; *&#160;</td>
-          <td class="paramname"><em>kps_depth</em> = <code>nullptr</code>&#160;</td>
+          <td class="paramname"><em>kpsDepth</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -367,6 +402,21 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>Image where features were found. Used only to get the number of rows/columns </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">keypoints</td><td>Keypoints in image </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">descs</td><td>Descriptors of map features </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">trackingRadius</td><td>Maximum distance between two features to consider a match </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">hashingCellSize</td><td>Size of the search match window in pixel. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">verticalSearchRadius</td><td>Maximum row distance between two features to consider a match </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">triangulationRatioTh</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">trackingRatioTh</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">descDistTh</td><td>Maximum distance of two descriptors to consider a match </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kpsDepth</td><td>(optional) Vector storing the depth of each feature </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -393,10 +443,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Checks if the features are associated with depth values. </p>
+
 </div>
 </div>
-<a id="ad4846da774bfa52264d26e6aff970851"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4846da774bfa52264d26e6aff970851">&#9670;&nbsp;</a></span>is_matched()</h2>
+<a id="aa475e4b71a7311da88757d4e219d74e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa475e4b71a7311da88757d4e219d74e5">&#9670;&nbsp;</a></span>is_matched()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -407,7 +459,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool poseEstimation::Image_Features_Struct::is_matched </td>
           <td>(</td>
-          <td class="paramtype">const int&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -419,10 +471,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Checks if a feature as already been matched to a point. </p>
+
 </div>
 </div>
-<a id="a808845d4d4c36d955b13657aef9ec215"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a808845d4d4c36d955b13657aef9ec215">&#9670;&nbsp;</a></span>mark_as_matched()</h2>
+<a id="abfdba6a17e6877d567c5210e30b5025c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfdba6a17e6877d567c5210e30b5025c">&#9670;&nbsp;</a></span>mark_as_matched()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -433,13 +487,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void poseEstimation::Image_Features_Struct::mark_as_matched </td>
           <td>(</td>
-          <td class="paramtype">const int&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>idx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const bool&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -454,6 +508,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Marks a feature id as been matched to a point. </p>
 
 </div>
 </div>
@@ -479,6 +535,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Reset the matched feature container. </p>
 
 </div>
 </div>
@@ -507,6 +565,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Searches for a match between a point and our map features. Reduces search space to rows. It uses a k nearest neighbors method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pt</td><td>The point to search a match for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">desc</td><td>Descriptor of pt</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of the matched feature, or -1 if no match </dd></dl>
 
 </div>
 </div>
@@ -537,8 +605,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___struct_8hpp_source.html">Image_Features_Struct.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___struct_8cpp.html">Image_Features_Struct.cpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___struct_8hpp_source.html">Image_Features_Struct.hpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___struct_8cpp.html">Image_Features_Struct.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

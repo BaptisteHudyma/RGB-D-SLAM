@@ -74,6 +74,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Compute a pose estimation.  
+ <a href="classpose_estimation_1_1_p_n_p___solver.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_p_n_p_solver_8hpp_source.html">PNPSolver.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -83,9 +86,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a899e65eaab33804783265aeca96a4ed8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_p_n_p___solver.html#a899e65eaab33804783265aeca96a4ed8">~PNP_Solver</a> ()</td></tr>
 <tr class="separator:a899e65eaab33804783265aeca96a4ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3a391be16ed821b7fec817d37edd00a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpose_estimation_1_1_pose.html">Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_p_n_p___solver.html#ae3a391be16ed821b7fec817d37edd00a">compute_pose</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, const <a class="el" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a> &amp;matchedPoints, const std::vector&lt; int &gt; &amp;matchOutliers)</td></tr>
+<tr class="memdesc:ae3a391be16ed821b7fec817d37edd00a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refine a pose estimation using the matched points in this frame and local map.  <a href="classpose_estimation_1_1_p_n_p___solver.html#ae3a391be16ed821b7fec817d37edd00a">More...</a><br /></td></tr>
 <tr class="separator:ae3a391be16ed821b7fec817d37edd00a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Compute a pose estimation. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a41890f0b8a5d50d7236c1a49900a3d2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41890f0b8a5d50d7236c1a49900a3d2e">&#9670;&nbsp;</a></span>PNP_Solver()</h2>
 
@@ -188,11 +194,23 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Refine a pose estimation using the matched points in this frame and local map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Current camera pose </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">features</td><td>Features detected in frame </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoints</td><td>Macthed features with previous frame </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matchOutliers</td><td>Unmatched features</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The pose estimated from the previous pose using the motion model as well as matched features </dd></dl>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_p_n_p_solver_8hpp_source.html">PNPSolver.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_p_n_p_solver_8cpp.html">PNPSolver.cpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_p_n_p_solver_8hpp_source.html">PNPSolver.hpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_p_n_p_solver_8cpp.html">PNPSolver.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

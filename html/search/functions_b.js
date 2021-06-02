@@ -1,8 +1,8 @@
 var searchData=
 [
   ['parameters_424',['Parameters',['../classpose_estimation_1_1_parameters.html#af4d94ee360ac0157d9065f78797fe9a1',1,'poseEstimation::Parameters']]],
-  ['perform_5fcompute_5fdescriptors_5fonly_425',['perform_compute_descriptors_only',['../classpose_estimation_1_1_image___features___handler.html#a2378108a1f935ad830a9b1b3c5de6c0d',1,'poseEstimation::Image_Features_Handler']]],
-  ['perform_5fcompute_5ffeatures_426',['perform_compute_features',['../classpose_estimation_1_1_image___features___handler.html#a1c5f76f32900ffa5e8b3b0696c8c1813',1,'poseEstimation::Image_Features_Handler']]],
+  ['perform_5fcompute_5fdescriptors_5fonly_425',['perform_compute_descriptors_only',['../classpose_estimation_1_1_image___features___handler.html#a350c1d37e50b5f4cd7cbd46498dca48e',1,'poseEstimation::Image_Features_Handler']]],
+  ['perform_5fcompute_5ffeatures_426',['perform_compute_features',['../classpose_estimation_1_1_image___features___handler.html#a3ea7d6e44a75c33ec01c8e57daf389b3',1,'poseEstimation::Image_Features_Handler']]],
   ['plane_427',['Plane',['../classprimitive_detection_1_1_plane.html#ab53f0cedb993c2182b5ccb0a3185fbd2',1,'primitiveDetection::Plane']]],
   ['plane_5fsegment_428',['Plane_Segment',['../classprimitive_detection_1_1_plane___segment.html#a9d3af7bb9d39bc2084e89630402c9e7f',1,'primitiveDetection::Plane_Segment::Plane_Segment(unsigned int cellWidth, unsigned int ptsPerCellCount)'],['../classprimitive_detection_1_1_plane___segment.html#af5175e74d4bf13be369091636293e98f',1,'primitiveDetection::Plane_Segment::Plane_Segment(const Plane_Segment &amp;seg)']]],
   ['pnp_5fsolver_429',['PNP_Solver',['../classpose_estimation_1_1_p_n_p___solver.html#a41890f0b8a5d50d7236c1a49900a3d2e',1,'poseEstimation::PNP_Solver']]],

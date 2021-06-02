@@ -2,6 +2,11 @@
 \label{classpose_estimation_1_1_p_n_p___solver}\index{poseEstimation::PNP\_Solver@{poseEstimation::PNP\_Solver}}
 
 
+Compute a pose estimation.  
+
+
+
+
 {\ttfamily \#include $<$PNPSolver.\+hpp$>$}
 
 \doxysubsection*{Public Member Functions}
@@ -12,8 +17,11 @@
 \mbox{\hyperlink{classpose_estimation_1_1_p_n_p___solver_a899e65eaab33804783265aeca96a4ed8}{$\sim$\+PNP\+\_\+\+Solver}} ()
 \item 
 \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classpose_estimation_1_1_p_n_p___solver_ae3a391be16ed821b7fec817d37edd00a}{compute\+\_\+pose}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, const \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&matched\+Points, const std\+::vector$<$ int $>$ \&match\+Outliers)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Refine a pose estimation using the matched points in this frame and local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Compute a pose estimation. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classpose_estimation_1_1_p_n_p___solver_a41890f0b8a5d50d7236c1a49900a3d2e}\label{classpose_estimation_1_1_p_n_p___solver_a41890f0b8a5d50d7236c1a49900a3d2e}} 
@@ -39,7 +47,25 @@
 
 
 
+Refine a pose estimation using the matched points in this frame and local map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Current camera pose \\
+\hline
+\mbox{\texttt{ in}}  & {\em features} & Features detected in frame \\
+\hline
+\mbox{\texttt{ in}}  & {\em matched\+Points} & Macthed features with previous frame \\
+\hline
+\mbox{\texttt{ in}}  & {\em match\+Outliers} & Unmatched features\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The pose estimated from the previous pose using the motion model as well as matched features 
+\end{DoxyReturn}
+
+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_p_n_p_solver_8hpp}{PNPSolver.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_p_n_p_solver_8cpp}{PNPSolver.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_p_n_p_solver_8hpp}{PNPSolver.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_p_n_p_solver_8cpp}{PNPSolver.\+cpp}}\end{DoxyCompactItemize}

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB-D-SLAM/src/pose_estimation/PNPSolver.hpp Source File</title>
+<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_estimation/PNPSolver.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -80,34 +80,34 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacepose_estimation.html">poseEstimation</a> {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classpose_estimation_1_1_p_n_p___solver.html">   11</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classpose_estimation_1_1_p_n_p___solver.html">PNP_Solver</a> {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            <a class="code" href="classpose_estimation_1_1_p_n_p___solver.html#a41890f0b8a5d50d7236c1a49900a3d2e">PNP_Solver</a>(<span class="keywordtype">double</span> fx, <span class="keywordtype">double</span> fy, <span class="keywordtype">double</span> cx, <span class="keywordtype">double</span> cy, <span class="keywordtype">double</span> baseline);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <a class="code" href="classpose_estimation_1_1_p_n_p___solver.html#a899e65eaab33804783265aeca96a4ed8">~PNP_Solver</a>();</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a> <a class="code" href="classpose_estimation_1_1_p_n_p___solver.html#ae3a391be16ed821b7fec817d37edd00a">compute_pose</a>(<span class="keyword">const</span> <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a>&amp; camPose, <a class="code" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a>&amp; features, <span class="keyword">const</span> <a class="code" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a>&amp; matchedPoints, <span class="keyword">const</span> std::vector&lt;int&gt;&amp; matchOutliers);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordtype">double</span> _fx;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordtype">double</span> _fy;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keywordtype">double</span> _cx;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keywordtype">double</span> _cy;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <span class="keywordtype">double</span> _baseline;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            g2o::SparseOptimizer _optimizer;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    };</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classpose_estimation_1_1_p_n_p___solver.html">   14</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classpose_estimation_1_1_p_n_p___solver.html">PNP_Solver</a> {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <a class="code" href="classpose_estimation_1_1_p_n_p___solver.html#a41890f0b8a5d50d7236c1a49900a3d2e">PNP_Solver</a>(<span class="keywordtype">double</span> fx, <span class="keywordtype">double</span> fy, <span class="keywordtype">double</span> cx, <span class="keywordtype">double</span> cy, <span class="keywordtype">double</span> baseline);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <a class="code" href="classpose_estimation_1_1_p_n_p___solver.html#a899e65eaab33804783265aeca96a4ed8">~PNP_Solver</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a> <a class="code" href="classpose_estimation_1_1_p_n_p___solver.html#ae3a391be16ed821b7fec817d37edd00a">compute_pose</a>(<span class="keyword">const</span> <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a>&amp; camPose, <a class="code" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a>&amp; features, <span class="keyword">const</span> <a class="code" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a>&amp; matchedPoints, <span class="keyword">const</span> std::vector&lt;int&gt;&amp; matchOutliers);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordtype">double</span> _fx;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordtype">double</span> _fy;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordtype">double</span> _cx;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordtype">double</span> _cy;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordtype">double</span> _baseline;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            g2o::SparseOptimizer _optimizer;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    };</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_image___features___struct_8hpp_html"><div class="ttname"><a href="_image___features___struct_8hpp.html">Image_Features_Struct.hpp</a></div></div>
 <div class="ttc" id="a_pose_8hpp_html"><div class="ttname"><a href="_pose_8hpp.html">Pose.hpp</a></div></div>
-<div class="ttc" id="aclasspose_estimation_1_1_image___features___struct_html"><div class="ttname"><a href="classpose_estimation_1_1_image___features___struct.html">poseEstimation::Image_Features_Struct</a></div><div class="ttdef"><b>Definition:</b> Image_Features_Struct.hpp:11</div></div>
-<div class="ttc" id="aclasspose_estimation_1_1_p_n_p___solver_html"><div class="ttname"><a href="classpose_estimation_1_1_p_n_p___solver.html">poseEstimation::PNP_Solver</a></div><div class="ttdef"><b>Definition:</b> PNPSolver.hpp:11</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_image___features___struct_html"><div class="ttname"><a href="classpose_estimation_1_1_image___features___struct.html">poseEstimation::Image_Features_Struct</a></div><div class="ttdoc">Stores a list of keypoints (features) and provide methods to find a match of a point in those feature...</div><div class="ttdef"><b>Definition:</b> Image_Features_Struct.hpp:14</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_p_n_p___solver_html"><div class="ttname"><a href="classpose_estimation_1_1_p_n_p___solver.html">poseEstimation::PNP_Solver</a></div><div class="ttdoc">Compute a pose estimation.</div><div class="ttdef"><b>Definition:</b> PNPSolver.hpp:14</div></div>
 <div class="ttc" id="aclasspose_estimation_1_1_p_n_p___solver_html_a41890f0b8a5d50d7236c1a49900a3d2e"><div class="ttname"><a href="classpose_estimation_1_1_p_n_p___solver.html#a41890f0b8a5d50d7236c1a49900a3d2e">poseEstimation::PNP_Solver::PNP_Solver</a></div><div class="ttdeci">PNP_Solver(double fx, double fy, double cx, double cy, double baseline)</div><div class="ttdef"><b>Definition:</b> PNPSolver.cpp:24</div></div>
 <div class="ttc" id="aclasspose_estimation_1_1_p_n_p___solver_html_a899e65eaab33804783265aeca96a4ed8"><div class="ttname"><a href="classpose_estimation_1_1_p_n_p___solver.html#a899e65eaab33804783265aeca96a4ed8">poseEstimation::PNP_Solver::~PNP_Solver</a></div><div class="ttdeci">~PNP_Solver()</div><div class="ttdef"><b>Definition:</b> PNPSolver.cpp:38</div></div>
-<div class="ttc" id="aclasspose_estimation_1_1_p_n_p___solver_html_ae3a391be16ed821b7fec817d37edd00a"><div class="ttname"><a href="classpose_estimation_1_1_p_n_p___solver.html#ae3a391be16ed821b7fec817d37edd00a">poseEstimation::PNP_Solver::compute_pose</a></div><div class="ttdeci">Pose compute_pose(const Pose &amp;camPose, Image_Features_Struct &amp;features, const vector3_array &amp;matchedPoints, const std::vector&lt; int &gt; &amp;matchOutliers)</div><div class="ttdef"><b>Definition:</b> PNPSolver.cpp:41</div></div>
-<div class="ttc" id="aclasspose_estimation_1_1_pose_html"><div class="ttname"><a href="classpose_estimation_1_1_pose.html">poseEstimation::Pose</a></div><div class="ttdef"><b>Definition:</b> Pose.hpp:29</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_p_n_p___solver_html_ae3a391be16ed821b7fec817d37edd00a"><div class="ttname"><a href="classpose_estimation_1_1_p_n_p___solver.html#ae3a391be16ed821b7fec817d37edd00a">poseEstimation::PNP_Solver::compute_pose</a></div><div class="ttdeci">Pose compute_pose(const Pose &amp;camPose, Image_Features_Struct &amp;features, const vector3_array &amp;matchedPoints, const std::vector&lt; int &gt; &amp;matchOutliers)</div><div class="ttdoc">Refine a pose estimation using the matched points in this frame and local map.</div><div class="ttdef"><b>Definition:</b> PNPSolver.cpp:41</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_pose_html"><div class="ttname"><a href="classpose_estimation_1_1_pose.html">poseEstimation::Pose</a></div><div class="ttdoc">Store a position.</div><div class="ttdef"><b>Definition:</b> Pose.hpp:28</div></div>
 <div class="ttc" id="anamespacepose_estimation_html"><div class="ttname"><a href="namespacepose_estimation.html">poseEstimation</a></div><div class="ttdef"><b>Definition:</b> Image_Features_Handler.cpp:9</div></div>
 <div class="ttc" id="anamespacepose_estimation_html_a2928c0fea359ecbbaab89f4a1eec287e"><div class="ttname"><a href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">poseEstimation::vector3_array</a></div><div class="ttdeci">std::vector&lt; vector3, Eigen::aligned_allocator&lt; vector3 &gt; &gt; vector3_array</div><div class="ttdef"><b>Definition:</b> Pose.hpp:18</div></div>
 </div><!-- fragment --></div><!-- contents -->

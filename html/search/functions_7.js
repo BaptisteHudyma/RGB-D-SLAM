@@ -2,7 +2,7 @@ var searchData=
 [
   ['image_5ffeatures_5fhandler_402',['Image_Features_Handler',['../classpose_estimation_1_1_image___features___handler.html#a925a46e1f888863ed0e3a5adfcbf21ab',1,'poseEstimation::Image_Features_Handler']]],
   ['image_5ffeatures_5fstruct_403',['Image_Features_Struct',['../classpose_estimation_1_1_image___features___struct.html#a79ff491e281f54525ca4b59e2a196a0c',1,'poseEstimation::Image_Features_Struct']]],
-  ['init_404',['init',['../classpose_estimation_1_1_image___features___struct.html#a9152b92f00719f19741b869740f5e440',1,'poseEstimation::Image_Features_Struct']]],
+  ['init_404',['init',['../classpose_estimation_1_1_image___features___struct.html#a0e7f239185ebb4d35204f2ceaa5478a9',1,'poseEstimation::Image_Features_Struct']]],
   ['init_5ffrom_5ffile_405',['init_from_file',['../classpose_estimation_1_1_parameters.html#a5c01c7d7fc05d723046693bc67a181f3',1,'poseEstimation::Parameters']]],
   ['init_5fhistogram_406',['init_histogram',['../classprimitive_detection_1_1_histogram.html#adefe2b21c0875ddaecd034c3d32b179c',1,'primitiveDetection::Histogram::init_histogram()'],['../classprimitive_detection_1_1_primitive___detection.html#a6945115630ad64ec273cc516f212e20d',1,'primitiveDetection::Primitive_Detection::init_histogram()']]],
   ['init_5fmatrices_407',['init_matrices',['../classprimitive_detection_1_1_depth___operations.html#a2698210e1eb4df92a39834eb21a293f6',1,'primitiveDetection::Depth_Operations']]],
@@ -11,7 +11,7 @@ var searchData=
   ['is_5fdepth_5fassociated_410',['is_depth_associated',['../classpose_estimation_1_1_image___features___struct.html#a22132eb0214b07b4d1a12055d7a347f7',1,'poseEstimation::Image_Features_Struct']]],
   ['is_5fdepth_5fdiscontinuous_411',['is_depth_discontinuous',['../classprimitive_detection_1_1_plane___segment.html#ad521743b8e08256cb1f4a4ea16e1065e',1,'primitiveDetection::Plane_Segment']]],
   ['is_5finlier_5fat_412',['is_inlier_at',['../classprimitive_detection_1_1_cylinder___segment.html#a56ce0bc66985a7e386e9fbc8e0e02c03',1,'primitiveDetection::Cylinder_Segment']]],
-  ['is_5fmatched_413',['is_matched',['../classpose_estimation_1_1_image___features___struct.html#ad4846da774bfa52264d26e6aff970851',1,'poseEstimation::Image_Features_Struct']]],
+  ['is_5fmatched_413',['is_matched',['../classpose_estimation_1_1_image___features___struct.html#aa475e4b71a7311da88757d4e219d74e5',1,'poseEstimation::Image_Features_Struct']]],
   ['is_5fok_414',['is_ok',['../classprimitive_detection_1_1_depth___operations.html#a4ea9f0112d384ae4d29efc12923c48f8',1,'primitiveDetection::Depth_Operations']]],
   ['is_5fplanar_415',['is_planar',['../classprimitive_detection_1_1_plane___segment.html#a5b11a8505ae29a0972a25ada12ae1474',1,'primitiveDetection::Plane_Segment']]],
   ['is_5fsimilar_416',['is_similar',['../classprimitive_detection_1_1_primitive.html#ad118c2e571215588899fb5eaddb55b40',1,'primitiveDetection::Primitive::is_similar()'],['../classprimitive_detection_1_1_cylinder.html#a3a2789c68de6264a82ebb8f78f463e93',1,'primitiveDetection::Cylinder::is_similar()'],['../classprimitive_detection_1_1_plane.html#a57abb39ab1d4a08403abb57cc786a032',1,'primitiveDetection::Plane::is_similar()']]]

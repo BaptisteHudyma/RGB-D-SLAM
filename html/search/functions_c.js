@@ -8,5 +8,5 @@ var searchData=
   ['reset_5fdata_440',['reset_data',['../classprimitive_detection_1_1_primitive___detection.html#a6b93f6e95732dc54fcc6faa09acbd5c3',1,'primitiveDetection::Primitive_Detection']]],
   ['reset_5fmatched_5fmarks_441',['reset_matched_marks',['../classpose_estimation_1_1_image___features___struct.html#a330357a686b05128d90ca5cbf059911c',1,'poseEstimation::Image_Features_Struct']]],
   ['rgb_5fslam_442',['RGB_SLAM',['../classpose_estimation_1_1_r_g_b___s_l_a_m.html#ae0bbbeead63c9069280010087b19e5c0',1,'poseEstimation::RGB_SLAM']]],
-  ['row_5fmatch_443',['row_match',['../classpose_estimation_1_1_image___features___handler.html#aece9381dd976113ea9f62325a37386ef',1,'poseEstimation::Image_Features_Handler::row_match()'],['../classpose_estimation_1_1_image___features___struct.html#aff0cdb90bc04377493be7fa96e0edb40',1,'poseEstimation::Image_Features_Struct::row_match()']]]
+  ['row_5fmatch_443',['row_match',['../classpose_estimation_1_1_image___features___handler.html#a1307e7489e3ce110d8dcd23972776c53',1,'poseEstimation::Image_Features_Handler::row_match()'],['../classpose_estimation_1_1_image___features___struct.html#aff0cdb90bc04377493be7fa96e0edb40',1,'poseEstimation::Image_Features_Struct::row_match()']]]
 ];

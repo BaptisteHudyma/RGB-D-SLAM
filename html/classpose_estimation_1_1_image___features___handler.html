@@ -75,6 +75,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Main image feature detection class. Computes image features and provide methods for feature matching.  
+ <a href="classpose_estimation_1_1_image___features___handler.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_image___features___handler_8hpp_source.html">Image_Features_Handler.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -82,18 +85,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a925a46e1f888863ed0e3a5adfcbf21ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#a925a46e1f888863ed0e3a5adfcbf21ab">Image_Features_Handler</a> (const <a class="el" href="classpose_estimation_1_1_parameters.html">Parameters</a> &amp;vo_params)</td></tr>
 <tr class="separator:a925a46e1f888863ed0e3a5adfcbf21ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad46fa78654927349f1984b51fcdb2527"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#ad46fa78654927349f1984b51fcdb2527">compute_features</a> (const cv::Mat &amp;imgGray, const cv::Mat &amp;imgDepth, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;outStruct)</td></tr>
+<tr class="memdesc:ad46fa78654927349f1984b51fcdb2527"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute 3D features from gray and depth image.  <a href="classpose_estimation_1_1_image___features___handler.html#ad46fa78654927349f1984b51fcdb2527">More...</a><br /></td></tr>
 <tr class="separator:ad46fa78654927349f1984b51fcdb2527"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aece9381dd976113ea9f62325a37386ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#aece9381dd976113ea9f62325a37386ef">row_match</a> (<a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features_right, std::vector&lt; cv::DMatch &gt; &amp;outMatches)</td></tr>
-<tr class="separator:aece9381dd976113ea9f62325a37386ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1307e7489e3ce110d8dcd23972776c53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#a1307e7489e3ce110d8dcd23972776c53">row_match</a> (<a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;featuresLeft, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;featuresRight, std::vector&lt; cv::DMatch &gt; &amp;outMatches)</td></tr>
+<tr class="memdesc:a1307e7489e3ce110d8dcd23972776c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for a matches between features and our map features. Reduces search space to rows.  <a href="classpose_estimation_1_1_image___features___handler.html#a1307e7489e3ce110d8dcd23972776c53">More...</a><br /></td></tr>
+<tr class="separator:a1307e7489e3ce110d8dcd23972776c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a1c5f76f32900ffa5e8b3b0696c8c1813"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#a1c5f76f32900ffa5e8b3b0696c8c1813">perform_compute_features</a> (<a class="el" href="structpose_estimation_1_1compute__features__data.html">compute_features_data</a> *)</td></tr>
-<tr class="separator:a1c5f76f32900ffa5e8b3b0696c8c1813"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2378108a1f935ad830a9b1b3c5de6c0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#a2378108a1f935ad830a9b1b3c5de6c0d">perform_compute_descriptors_only</a> (<a class="el" href="structpose_estimation_1_1compute__features__data.html">compute_features_data</a> *)</td></tr>
-<tr class="separator:a2378108a1f935ad830a9b1b3c5de6c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ea7d6e44a75c33ec01c8e57daf389b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#a3ea7d6e44a75c33ec01c8e57daf389b3">perform_compute_features</a> (<a class="el" href="structpose_estimation_1_1compute__features__data.html">compute_features_data</a> *p)</td></tr>
+<tr class="memdesc:a3ea7d6e44a75c33ec01c8e57daf389b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detect features and compute all features descriptors in an image.  <a href="classpose_estimation_1_1_image___features___handler.html#a3ea7d6e44a75c33ec01c8e57daf389b3">More...</a><br /></td></tr>
+<tr class="separator:a3ea7d6e44a75c33ec01c8e57daf389b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350c1d37e50b5f4cd7cbd46498dca48e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_image___features___handler.html#a350c1d37e50b5f4cd7cbd46498dca48e">perform_compute_descriptors_only</a> (<a class="el" href="structpose_estimation_1_1compute__features__data.html">compute_features_data</a> *p)</td></tr>
+<tr class="memdesc:a350c1d37e50b5f4cd7cbd46498dca48e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the descriptors of a given feature set.  <a href="classpose_estimation_1_1_image___features___handler.html#a350c1d37e50b5f4cd7cbd46498dca48e">More...</a><br /></td></tr>
+<tr class="separator:a350c1d37e50b5f4cd7cbd46498dca48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Main image feature detection class. Computes image features and provide methods for feature matching. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a925a46e1f888863ed0e3a5adfcbf21ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a925a46e1f888863ed0e3a5adfcbf21ab">&#9670;&nbsp;</a></span>Image_Features_Handler()</h2>
 
@@ -145,10 +154,20 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Compute 3D features from gray and depth image. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">imgGray</td><td>Input image, as greyscale </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imgDepth</td><td>Input depth image </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outStruct</td><td>Structure of map features </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a2378108a1f935ad830a9b1b3c5de6c0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2378108a1f935ad830a9b1b3c5de6c0d">&#9670;&nbsp;</a></span>perform_compute_descriptors_only()</h2>
+<a id="a350c1d37e50b5f4cd7cbd46498dca48e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a350c1d37e50b5f4cd7cbd46498dca48e">&#9670;&nbsp;</a></span>perform_compute_descriptors_only()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,10 +190,12 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Compute the descriptors of a given feature set. </p>
+
 </div>
 </div>
-<a id="a1c5f76f32900ffa5e8b3b0696c8c1813"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c5f76f32900ffa5e8b3b0696c8c1813">&#9670;&nbsp;</a></span>perform_compute_features()</h2>
+<a id="a3ea7d6e44a75c33ec01c8e57daf389b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ea7d6e44a75c33ec01c8e57daf389b3">&#9670;&nbsp;</a></span>perform_compute_features()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,10 +218,12 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Detect features and compute all features descriptors in an image. </p>
+
 </div>
 </div>
-<a id="aece9381dd976113ea9f62325a37386ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aece9381dd976113ea9f62325a37386ef">&#9670;&nbsp;</a></span>row_match()</h2>
+<a id="a1307e7489e3ce110d8dcd23972776c53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1307e7489e3ce110d8dcd23972776c53">&#9670;&nbsp;</a></span>row_match()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,13 +232,13 @@ Protected Member Functions</h2></td></tr>
           <td class="memname">void poseEstimation::Image_Features_Handler::row_match </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;&#160;</td>
-          <td class="paramname"><em>features</em>, </td>
+          <td class="paramname"><em>featuresLeft</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;&#160;</td>
-          <td class="paramname"><em>features_right</em>, </td>
+          <td class="paramname"><em>featuresRight</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -231,11 +254,21 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Searches for a matches between features and our map features. Reduces search space to rows. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">featuresLeft</td><td>Container of all features in the left camera image (or previous image) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">featuresRight</td><td>Container of all features in the right camera image (or current frame) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outMatches</td><td>Container of all matches </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___handler_8hpp_source.html">Image_Features_Handler.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___handler_8cpp.html">Image_Features_Handler.cpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___handler_8hpp_source.html">Image_Features_Handler.hpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_estimation/<a class="el" href="_image___features___handler_8cpp.html">Image_Features_Handler.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

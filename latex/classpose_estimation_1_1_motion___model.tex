@@ -2,6 +2,11 @@
 \label{classpose_estimation_1_1_motion___model}\index{poseEstimation::Motion\_Model@{poseEstimation::Motion\_Model}}
 
 
+Dead reckoning class\+: guess next pose using a motion model.  
+
+
+
+
 {\ttfamily \#include $<$Motion\+Model.\+hpp$>$}
 
 \doxysubsection*{Public Member Functions}
@@ -12,8 +17,11 @@
 void \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a0446de9f610ff31352b19280698355f6}{reset}} ()
 \item 
 \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a0ac01947cdf1d4337dee1cb62de45aed}{predict\+\_\+next\+\_\+pose}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&current\+Pose)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Predicts next pose with motion model (dead reckoning) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Dead reckoning class\+: guess next pose using a motion model. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classpose_estimation_1_1_motion___model_a8a1dbe75b304d3c4d444404eeb2fe123}\label{classpose_estimation_1_1_motion___model_a8a1dbe75b304d3c4d444404eeb2fe123}} 
@@ -31,6 +39,15 @@ void \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a0446de9f610ff3135
 \doxysubsubsection{\texorpdfstring{predict\_next\_pose()}{predict\_next\_pose()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} Motion\+\_\+\+Model\+::predict\+\_\+next\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{current\+Pose }\end{DoxyParamCaption})}
 
+
+
+Predicts next pose with motion model (dead reckoning) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em current\+Pose} & Last frame pose \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classpose_estimation_1_1_motion___model_a0446de9f610ff31352b19280698355f6}\label{classpose_estimation_1_1_motion___model_a0446de9f610ff31352b19280698355f6}} 
 \index{poseEstimation::Motion\_Model@{poseEstimation::Motion\_Model}!reset@{reset}}
 \index{reset@{reset}!poseEstimation::Motion\_Model@{poseEstimation::Motion\_Model}}
@@ -41,5 +58,5 @@ void \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a0446de9f610ff3135
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_motion_model_8hpp}{Motion\+Model.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_motion_model_8cpp}{Motion\+Model.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_motion_model_8hpp}{Motion\+Model.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_motion_model_8cpp}{Motion\+Model.\+cpp}}\end{DoxyCompactItemize}
