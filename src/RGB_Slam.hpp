@@ -21,6 +21,14 @@ namespace poseEstimation {
             RGB_SLAM(const Parameters &param);
             void reset();
 
+            /**
+             * \brief Update the current pose from features and motion model
+             *
+             * \param[in]: imgRGB
+             * \param[in] imgDepth
+             *
+             * \returns The new pose
+             */
             Pose track(const cv::Mat& imgRGB, const cv::Mat& imgDepth);
 
             enum eState
@@ -38,6 +46,15 @@ namespace poseEstimation {
             bool triangulation_policy_map_size();
 
         private:
+            /**
+             * \brief Refine the pose estimated from motion model and decide if tracking is lost
+             *
+             * \param[in] estimatedPose Pose estimated from motion model
+             * \param[in] features Detected features in the image
+             * \param[out] isTracking Pose estimator not lost
+             *
+             * \return Refined pose
+             */
             Pose perform_tracking(const Pose& estimatedPose, Image_Features_Struct& features, bool& isTracking);
 
             Parameters _params;

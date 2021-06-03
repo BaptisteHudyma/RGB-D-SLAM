@@ -31,14 +31,6 @@ namespace poseEstimation {
     }
 
 
-    /*
-     *  Update the current pose from features and motion model
-     *
-     *  in: imgRGB
-     *  in: imgDepth
-     *
-     * returns the new pose
-     */
     Pose RGB_SLAM::track(const cv::Mat& imgRGB, const cv::Mat& imgDepth) {
         _frameNumber += 1;
 
@@ -73,16 +65,7 @@ namespace poseEstimation {
         return computedPose;
     }
 
-    /*
-     *   Refine the pose estimated from motion model and decide if tracking is lost
-     *
-     * in estimatedPose Pose estimated from motion model
-     * in features Detected features in the image
-     * out isTracking Pose estimator not lost
-     *
-     */
     Pose RGB_SLAM::perform_tracking(const Pose& estimatedPose, Image_Features_Struct& features, bool& isTracking) {
-
         vector3_array matchedPoints;    //matched points
         std::vector<int> matchOutliers; //unmatched points
 

@@ -24,7 +24,7 @@ namespace poseEstimation {
              * \param[in] matchedPoints Macthed features with previous frame
              * \param[in] matchOutliers Unmatched features 
              *
-             * \return The pose estimated from the previous pose using the motion model as well as matched features
+             * \return The pose estimated from the previous pose using matched features
              */
             Pose compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers);
 

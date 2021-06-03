@@ -16,89 +16,90 @@
 #include <g2o/solvers/pcg/linear_solver_pcg.h>
 #include <g2o/types/sba/types_six_dof_expmap.h>
 
-
-using namespace poseEstimation;
-
 #define N_PASSES 2
 
-PNP_Solver::PNP_Solver(double fx, double fy, double cx, double cy, double baseline) :
-    _fx(fx), _fy(fy),
-    _cx(cx), _cy(cy),
-    _baseline(baseline)
-{
-    _optimizer.setVerbose(false);
+namespace poseEstimation {
 
-    auto linearSolver = std::make_unique<g2o::LinearSolverPCG<g2o::BlockSolver_6_3::PoseMatrixType>>();
-
-    //will be freed by the optimizer destructor
-    g2o::OptimizationAlgorithmLevenberg *solver = new g2o::OptimizationAlgorithmLevenberg(std::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
-    _optimizer.setAlgorithm(solver);
-}
-
-PNP_Solver::~PNP_Solver() {
-}
-
-Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers) {
-    quaternion orientation = camPose.get_orientation_quaternion();
-    vector3 position = camPose.get_position();
-
-    g2o::SBACam sbaCam(orientation, position);
-    sbaCam.setKcam(_fx, _fy, _cx, _cy, _baseline);
-    g2o::VertexCam *camVertex = new g2o::VertexCam();
-    camVertex->setId(0);
-    camVertex->setEstimate(sbaCam);
-    camVertex->setFixed(false);
-    _optimizer.addVertex(camVertex);
-
-    // add mono measurments
-    static const double monoChi = sqrt(LVT_REPROJECTION_TH2);
-    int vertexID = 1;
-    std::vector<g2o::EdgeProjectP2MC *> monoEdges(matchedPoints.size());
-    for (size_t i = 0, count = matchedPoints.size(); i < count; i++)
+    PNP_Solver::PNP_Solver(double fx, double fy, double cx, double cy, double baseline) :
+        _fx(fx), _fy(fy),
+        _cx(cx), _cy(cy),
+        _baseline(baseline)
     {
-        g2o::VertexPointXYZ *pointVertex = new g2o::VertexPointXYZ();
-        pointVertex->setId(vertexID++);
-        pointVertex->setMarginalized(false);
-        pointVertex->setEstimate(matchedPoints[i]);
-        pointVertex->setFixed(true);
-        _optimizer.addVertex(pointVertex);
+        _optimizer.setVerbose(false);
 
-        g2o::EdgeProjectP2MC *edge = new g2o::EdgeProjectP2MC();
-        edge->setVertex(0, pointVertex);
-        edge->setVertex(1, camVertex);
-        cv::Point2f mpCv = features.get_keypoint(matchOutliers[i]).pt;
-        vector2 imgPt;
-        imgPt << mpCv.x, mpCv.y;
-        edge->setMeasurement(imgPt);
-        edge->information() = Eigen::Matrix2d::Identity();
-        g2o::RobustKernel *rkh = new g2o::RobustKernelCauchy;
-        edge->setRobustKernel(rkh);
-        rkh->setDelta(monoChi);
-        _optimizer.addEdge(edge);
-        monoEdges[i] = edge;
+        auto linearSolver = std::make_unique<g2o::LinearSolverPCG<g2o::BlockSolver_6_3::PoseMatrixType>>();
+
+        //will be freed by the optimizer destructor
+        g2o::OptimizationAlgorithmLevenberg *solver = new g2o::OptimizationAlgorithmLevenberg(std::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
+        _optimizer.setAlgorithm(solver);
     }
 
-    // perform optimization
-    std::vector<int> monoInlierMarks(monoEdges.size(), 1);
-    for (int i = 0; i < N_PASSES; i++)
-    {
-        _optimizer.initializeOptimization(0);
-        _optimizer.optimize(5);
-        for (std::vector<g2o::EdgeProjectP2MC *>::size_type k = 0; k < monoEdges.size(); k++)
+    PNP_Solver::~PNP_Solver() {
+    }
+
+    Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers) {
+        quaternion orientation = camPose.get_orientation_quaternion();
+        vector3 position = camPose.get_position();
+
+        g2o::SBACam sbaCam(orientation, position);
+        sbaCam.setKcam(_fx, _fy, _cx, _cy, _baseline);
+        g2o::VertexCam *camVertex = new g2o::VertexCam();
+        camVertex->setId(0);
+        camVertex->setEstimate(sbaCam);
+        camVertex->setFixed(false);
+        _optimizer.addVertex(camVertex);
+
+        // add mono measurments
+        static const double monoChi = sqrt(LVT_REPROJECTION_TH2);
+        int vertexID = 1;
+        std::vector<g2o::EdgeProjectP2MC *> monoEdges(matchedPoints.size());
+        for (size_t i = 0, count = matchedPoints.size(); i < count; i++)
         {
-            if (monoEdges[k]->chi2() > LVT_REPROJECTION_TH2)
+            g2o::VertexPointXYZ *pointVertex = new g2o::VertexPointXYZ();
+            pointVertex->setId(vertexID++);
+            pointVertex->setMarginalized(false);
+            pointVertex->setEstimate(matchedPoints[i]);
+            pointVertex->setFixed(true);
+            _optimizer.addVertex(pointVertex);
+
+            g2o::EdgeProjectP2MC *edge = new g2o::EdgeProjectP2MC();
+            edge->setVertex(0, pointVertex);
+            edge->setVertex(1, camVertex);
+            cv::Point2f mpCv = features.get_keypoint(matchOutliers[i]).pt;
+            vector2 imgPt;
+            imgPt << mpCv.x, mpCv.y;
+            edge->setMeasurement(imgPt);
+            edge->information() = Eigen::Matrix2d::Identity();
+            g2o::RobustKernel *rkh = new g2o::RobustKernelCauchy;
+            edge->setRobustKernel(rkh);
+            rkh->setDelta(monoChi);
+            _optimizer.addEdge(edge);
+            monoEdges[i] = edge;
+        }
+
+        // perform optimization
+        std::vector<int> monoInlierMarks(monoEdges.size(), 1);
+        for (int i = 0; i < N_PASSES; i++)
+        {
+            _optimizer.initializeOptimization(0);
+            _optimizer.optimize(5);
+            for (std::vector<g2o::EdgeProjectP2MC *>::size_type k = 0; k < monoEdges.size(); k++)
             {
-                monoEdges[k]->setLevel(1);
-                monoInlierMarks[k] = 0;
+                if (monoEdges[k]->chi2() > LVT_REPROJECTION_TH2)
+                {
+                    monoEdges[k]->setLevel(1);
+                    monoInlierMarks[k] = 0;
+                }
             }
         }
+
+        // retrieve optimized pose
+        const Eigen::Vector3d opPosition = camVertex->estimate().translation();
+        const Eigen::Quaterniond opOrientation = camVertex->estimate().rotation();
+        Pose opPose = Pose(opPosition, opOrientation);
+
+        _optimizer.clear();
+        return opPose;
     }
 
-    // retrieve optimized pose
-    const Eigen::Vector3d opPosition = camVertex->estimate().translation();
-    const Eigen::Quaterniond opOrientation = camVertex->estimate().rotation();
-    Pose opPose = Pose(opPosition, opOrientation);
-
-    _optimizer.clear();
-    return opPose;
 }
