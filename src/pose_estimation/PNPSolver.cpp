@@ -37,10 +37,11 @@ namespace poseEstimation {
     PNP_Solver::~PNP_Solver() {
     }
 
-    Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers) {
+    Pose PNP_Solver::compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchLeft) {
         quaternion orientation = camPose.get_orientation_quaternion();
         vector3 position = camPose.get_position();
 
+        //add camera as a free point (it's position/orientation will be optimized)
         g2o::SBACam sbaCam(orientation, position);
         sbaCam.setKcam(_fx, _fy, _cx, _cy, _baseline);
         g2o::VertexCam *camVertex = new g2o::VertexCam();
@@ -55,6 +56,7 @@ namespace poseEstimation {
         std::vector<g2o::EdgeProjectP2MC *> monoEdges(matchedPoints.size());
         for (size_t i = 0, count = matchedPoints.size(); i < count; i++)
         {
+            //set the feature as a fixed point in graph
             g2o::VertexPointXYZ *pointVertex = new g2o::VertexPointXYZ();
             pointVertex->setId(vertexID++);
             pointVertex->setMarginalized(false);
@@ -62,17 +64,21 @@ namespace poseEstimation {
             pointVertex->setFixed(true);
             _optimizer.addVertex(pointVertex);
 
+            //set an edge between point and camera
             g2o::EdgeProjectP2MC *edge = new g2o::EdgeProjectP2MC();
             edge->setVertex(0, pointVertex);
             edge->setVertex(1, camVertex);
-            cv::Point2f mpCv = features.get_keypoint(matchOutliers[i]).pt;
+
+            //set an edge between this frame point and map point
+            cv::Point2f mpCv = features.get_keypoint(matchLeft[i]).pt;
             vector2 imgPt;
             imgPt << mpCv.x, mpCv.y;
             edge->setMeasurement(imgPt);
             edge->information() = Eigen::Matrix2d::Identity();
             g2o::RobustKernel *rkh = new g2o::RobustKernelCauchy;
-            edge->setRobustKernel(rkh);
             rkh->setDelta(monoChi);
+            edge->setRobustKernel(rkh);
+
             _optimizer.addEdge(edge);
             monoEdges[i] = edge;
         }

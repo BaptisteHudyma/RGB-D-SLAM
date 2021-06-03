@@ -27,30 +27,22 @@ namespace poseEstimation {
      */
     class Pose {
         public:
-            Pose() {
-                this->position.setZero();
-                this->orientation.setIdentity();
-            }
-            Pose(const vector3 &position, const quaternion &orientation) {
-                set_parameters(position, orientation);
-            }
+            Pose(); 
+            Pose(const vector3 &position, const quaternion &orientation);
 
             //setters
-            void set_parameters(const vector3 &position, const quaternion &orientation) {
-                this->orientation = orientation;
-                this->position = position;
-            }
-
+            void set_parameters(const vector3 &position, const quaternion &orientation);
+    
             //getters
-            vector3 get_position() const { return this->position; }
-            matrix33 get_orientation_matrix() const { return this->orientation.toRotationMatrix(); }
-            quaternion get_orientation_quaternion() const { return this->orientation; }
+            vector3 get_position() const { return _position; }
+            matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
+            quaternion get_orientation_quaternion() const { return _orientation; }
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
         private:
-                quaternion orientation;
-                vector3 position;
+                quaternion _orientation;
+                vector3 _position;
     };
 
     //array of poses

@@ -96,7 +96,7 @@ namespace poseEstimation {
 
 
     unsigned int Local_Map::find_matches(const Pose &camPose, Image_Features_Struct& features,
-            vector3_array& outMapPoints, std::vector<int>& outMatchesLeft)
+            vector3_array& mapPoints, std::vector<int>& matchesLeft)
     {
         const matrix34 cml = Pose_Utils::compute_world_to_camera_transform(camPose);
         unsigned int matches_count = 0;
@@ -160,8 +160,8 @@ namespace poseEstimation {
             }
 
             _mapPoints[i].age += 1;
-            outMapPoints.push_back(_mapPoints[i].position);
-            outMatchesLeft.push_back(matches[i]);
+            mapPoints.push_back(_mapPoints[i].position);
+            matchesLeft.push_back(matches[i]);
         }
 
         return matches_count;

@@ -18,7 +18,7 @@ namespace poseEstimation {
      */
     struct compute_features_data
     {
-        cv::Mat img;
+        cv::Mat _img;
         cv::Ptr<cv::AgastFeatureDetector> _detector;
         cv::Ptr<cv::DescriptorExtractor> _extractor;
         rect_vector _subImgsRects;

@@ -23,30 +23,28 @@ namespace poseEstimation {
             void reset();
 
             /**
-             * \brief Triangulate new map points from features that were not matched/tracked
+             * \brief Triangulate new map points from refined pose and add them to the local map 
              *
-             * \param[in] camPose Position of camera
+             * \param[in] camPose Position of camera, already refined
              * \param[in] features
              * \param[in] dontStage Dont store staged points
              */
             void update_with_new_triangulation(const Pose& camPose, Image_Features_Struct& features, bool dontStage = false);
 
-
             /**
-             * \brief Mark untracked points as untracked in map
+             * \brief Add/remove features from staged points container if they are not tracked, or not visible from current position. Add new points to local map.
              *
-             * \param[in, out] features
-             */
-            void clean_untracked_points(Image_Features_Struct& features);
-
-            /**
-             * \brief Update the stagePoints vector 
-             *
-             * \param[in] camPose
+             * \param[in] camPose Position of the camera, already refined
              * \param[in, out] features Features to treat, can be marked as matched
              */
             void update_staged_map_points(const Pose& camPose, Image_Features_Struct& features);
 
+            /**
+             * \brief Mark untracked points as untracked in map, and add tracked points to local map
+             *
+             * \param[in, out] features
+             */
+            void clean_untracked_points(Image_Features_Struct& features);
 
         public: //getters
             unsigned int get_map_size() const { return _mapPoints.size(); }
@@ -57,13 +55,13 @@ namespace poseEstimation {
              *
              * \param[in] camPose Position of the observer
              * \param[in, out] features Current image features
-             * \param[out] outMapPoints Matched points
-             * \param[out] outMatchesLeft Unmatched points (outliers)
+             * \param[out] mapPoints All points matched in map
+             * \param[out] matchesLeft ID of the last frame matched points
              *
              * \return matched point count
              */
             unsigned int find_matches(const Pose &camPose, Image_Features_Struct& features,
-                    vector3_array& outMapPoints, std::vector<int>& outMatchesLeft);
+                    vector3_array& mapPoints, std::vector<int>& matchesLeft);
 
         private:
             struct mapPoint
@@ -90,10 +88,11 @@ namespace poseEstimation {
             //void triangulate(const Pose &camPose, Image_Features_Struct& features, Image_Features_Struct& featuresRight, mapPointArray& outPoints);
 
             /**
+             * \brief Create a container of new map points, that can be added to the local map, or staged
              *
-             * \param[in] camPose Observer position
+             * \param[in] camPose Observer position, already refined
              * \param[in] features Detected features in RGB image
-             * \param[out] outPoints 
+             * \param[out] outPoints Container of new points, triangulated from true pose
              */
             void triangulate_rgbd(const Pose& camPose, Image_Features_Struct& features, mapPointArray& outPoints);
 

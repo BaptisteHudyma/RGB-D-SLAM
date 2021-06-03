@@ -73,7 +73,7 @@ namespace poseEstimation {
         for (rect_vector::size_type r = 0; r < p->_subImgsRects.size(); r++)
         {
             cv::Rect rect = p->_subImgsRects[r];
-            cv::Mat sub_img = p->img(rect);
+            cv::Mat sub_img = p->_img(rect);
             keypoint_vector keypoints;
             keypoints.reserve(p->_voParams->get_max_keypoints_per_cell());
             p->_detector->detect(sub_img, keypoints);
@@ -152,8 +152,8 @@ namespace poseEstimation {
         }
 
         cv::Mat desc;
-        p->_extractor->compute(p->img, all_keypoints, desc);
-        p->_features_struct->init(p->img, all_keypoints, desc, p->_voParams->get_tracking_radius(), LVT_HASHING_CELL_SIZE,
+        p->_extractor->compute(p->_img, all_keypoints, desc);
+        p->_features_struct->init(p->_img, all_keypoints, desc, p->_voParams->get_tracking_radius(), LVT_HASHING_CELL_SIZE,
                 LVT_ROW_MATCHING_VERTICAL_SEARCH_RADIUS, p->_voParams->get_triangulation_ratio_test_threshold(),
                 p->_voParams->get_tracking_ratio_test_threshold(), p->_voParams->get_descriptor_matching_threshold());
     }
@@ -170,8 +170,8 @@ namespace poseEstimation {
             kp.pt = ext_kp->at(i);
             keypoints.push_back(kp);
         }
-        p->_extractor->compute(p->img, keypoints, desc);
-        p->_features_struct->init(p->img, keypoints, desc, p->_voParams->get_tracking_radius(), LVT_HASHING_CELL_SIZE,
+        p->_extractor->compute(p->_img, keypoints, desc);
+        p->_features_struct->init(p->_img, keypoints, desc, p->_voParams->get_tracking_radius(), LVT_HASHING_CELL_SIZE,
                 LVT_ROW_MATCHING_VERTICAL_SEARCH_RADIUS, p->_voParams->get_triangulation_ratio_test_threshold(),
                 p->_voParams->get_tracking_ratio_test_threshold(), p->_voParams->get_descriptor_matching_threshold());
     }
@@ -180,7 +180,7 @@ namespace poseEstimation {
     void Image_Features_Handler::compute_features(const cv::Mat& img_gray, const cv::Mat& in_img_depth, Image_Features_Struct& out_struct)
     {
         // detect corners in the image as normal
-        _thData[0].img = img_gray;
+        _thData[0]._img = img_gray;
         compute_features_data *p = &_thData[0];
         keypoint_vector all_keypoints;
         all_keypoints.reserve(p->_subImgsRects.size() * p->_voParams->get_max_keypoints_per_cell());
@@ -197,7 +197,7 @@ namespace poseEstimation {
 
         // compute descriptors
         cv::Mat desc;
-        p->_extractor->compute(p->img, all_keypoints, desc);
+        p->_extractor->compute(p->_img, all_keypoints, desc);
 
         // retain corners with valid depth values
         std::vector<float> kps_depths;

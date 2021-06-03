@@ -27,10 +27,10 @@ namespace poseEstimation {
         protected:
 
         private:
-                quaternion lastQ;
-                quaternion angularVelocity;
-                vector3 lastPosition;
-                vector3 linearVelocity;
+                quaternion _lastQ;
+                quaternion _angularVelocity;
+                vector3 _lastPosition;
+                vector3 _linearVelocity;
     };
 
 }

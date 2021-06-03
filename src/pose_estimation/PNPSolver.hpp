@@ -22,11 +22,11 @@ namespace poseEstimation {
              * \param[in] camPose Current camera pose
              * \param[in] features Features detected in frame
              * \param[in] matchedPoints Macthed features with previous frame
-             * \param[in] matchOutliers Unmatched features 
+             * \param[in] matchLeft Container associating this frame feature ids to map ids
              *
              * \return The pose estimated from the previous pose using matched features
              */
-            Pose compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchOutliers);
+            Pose compute_pose(const Pose& camPose, Image_Features_Struct& features, const vector3_array& matchedPoints, const std::vector<int>& matchLeft);
 
         private:
             double _fx;
