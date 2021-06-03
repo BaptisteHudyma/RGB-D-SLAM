@@ -16,7 +16,7 @@ Compute a pose estimation.
 \item 
 \mbox{\hyperlink{classpose_estimation_1_1_p_n_p___solver_a2c644e717c47bca3b35dae1ce21baaae}{$\sim$\+PNP\+\_\+\+Solver}} ()
 \item 
-\mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classpose_estimation_1_1_p_n_p___solver_ab1857c295c0fa99b4c42ba1a0825e529}{compute\+\_\+pose}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, const \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&matched\+Points, const std\+::vector$<$ int $>$ \&match\+Outliers)
+\mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classpose_estimation_1_1_p_n_p___solver_a4d8f42ebe99a71d3fc77d1d0574474e8}{compute\+\_\+pose}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, const \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&matched\+Points, const std\+::vector$<$ int $>$ \&match\+Left)
 \begin{DoxyCompactList}\small\item\em Refine a pose estimation using the matched points in this frame and local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -39,11 +39,11 @@ Compute a pose estimation.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classpose_estimation_1_1_p_n_p___solver_ab1857c295c0fa99b4c42ba1a0825e529}\label{classpose_estimation_1_1_p_n_p___solver_ab1857c295c0fa99b4c42ba1a0825e529}} 
+\mbox{\Hypertarget{classpose_estimation_1_1_p_n_p___solver_a4d8f42ebe99a71d3fc77d1d0574474e8}\label{classpose_estimation_1_1_p_n_p___solver_a4d8f42ebe99a71d3fc77d1d0574474e8}} 
 \index{poseEstimation::PNP\_Solver@{poseEstimation::PNP\_Solver}!compute\_pose@{compute\_pose}}
 \index{compute\_pose@{compute\_pose}!poseEstimation::PNP\_Solver@{poseEstimation::PNP\_Solver}}
 \doxysubsubsection{\texorpdfstring{compute\_pose()}{compute\_pose()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} pose\+Estimation\+::\+PNP\+\_\+\+Solver\+::compute\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{const \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&}]{matched\+Points,  }\item[{const std\+::vector$<$ int $>$ \&}]{match\+Outliers }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} pose\+Estimation\+::\+PNP\+\_\+\+Solver\+::compute\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{const \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&}]{matched\+Points,  }\item[{const std\+::vector$<$ int $>$ \&}]{match\+Left }\end{DoxyParamCaption})}
 
 
 
@@ -57,7 +57,7 @@ Refine a pose estimation using the matched points in this frame and local map.
 \hline
 \mbox{\texttt{ in}}  & {\em matched\+Points} & Macthed features with previous frame \\
 \hline
-\mbox{\texttt{ in}}  & {\em match\+Outliers} & Unmatched features\\
+\mbox{\texttt{ in}}  & {\em match\+Left} & Container associating this frame feature ids to map ids\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

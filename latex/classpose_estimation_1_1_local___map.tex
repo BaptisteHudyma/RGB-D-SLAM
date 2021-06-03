@@ -14,22 +14,22 @@
 void \mbox{\hyperlink{classpose_estimation_1_1_local___map_add0beb7387feab8cae3a8d0409b5e3a8}{reset}} ()
 \item 
 void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a7d85d0ea9317c6271f5121698e7e5ae3}{update\+\_\+with\+\_\+new\+\_\+triangulation}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, bool dont\+Stage=false)
-\begin{DoxyCompactList}\small\item\em Triangulate new map points from features that were not matched/tracked. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a448582996874728cf78c3116eb0a6ea6}{clean\+\_\+untracked\+\_\+points}} (\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features)
-\begin{DoxyCompactList}\small\item\em Mark untracked points as untracked in map. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Triangulate new map points from refined pose and add them to the local map. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a43608e6e271b69bf6ffa681883231878}{update\+\_\+staged\+\_\+map\+\_\+points}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features)
-\begin{DoxyCompactList}\small\item\em Update the stage\+Points vector. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Add/remove features from staged points container if they are not tracked, or not visible from current position. Add new points to local map. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a448582996874728cf78c3116eb0a6ea6}{clean\+\_\+untracked\+\_\+points}} (\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features)
+\begin{DoxyCompactList}\small\item\em Mark untracked points as untracked in map, and add tracked points to local map. \end{DoxyCompactList}\item 
 unsigned int \mbox{\hyperlink{classpose_estimation_1_1_local___map_a58a2b9aa46608bc7702cf399c9728638}{get\+\_\+map\+\_\+size}} () const
 \item 
 unsigned int \mbox{\hyperlink{classpose_estimation_1_1_local___map_aaae772d0e5fba904e83f575d2c612796}{get\+\_\+staged\+\_\+points\+\_\+count}} () const
 \item 
-unsigned int \mbox{\hyperlink{classpose_estimation_1_1_local___map_abac85a90a7dd07753bd49b3589ca7f3c}{find\+\_\+matches}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&out\+Map\+Points, std\+::vector$<$ int $>$ \&out\+Matches\+Left)
+unsigned int \mbox{\hyperlink{classpose_estimation_1_1_local___map_ae36322e3880f13bf2fade02614bb3031}{find\+\_\+matches}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&map\+Points, std\+::vector$<$ int $>$ \&matches\+Left)
 \begin{DoxyCompactList}\small\item\em Compute point matches from current pose in the local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{classpose_estimation_1_1_local___map_a46adc4107af1e0a7092db555aa744b30}{triangulate\+\_\+rgbd}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, map\+Point\+Array \&out\+Points)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Create a container of new map points, that can be added to the local map, or staged. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -60,18 +60,18 @@ Keeps a reference to the features\+Handler object.
 
 
 
-Mark untracked points as untracked in map. 
+Mark untracked points as untracked in map, and add tracked points to local map. 
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in,out}}  & {\em features} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classpose_estimation_1_1_local___map_abac85a90a7dd07753bd49b3589ca7f3c}\label{classpose_estimation_1_1_local___map_abac85a90a7dd07753bd49b3589ca7f3c}} 
+\mbox{\Hypertarget{classpose_estimation_1_1_local___map_ae36322e3880f13bf2fade02614bb3031}\label{classpose_estimation_1_1_local___map_ae36322e3880f13bf2fade02614bb3031}} 
 \index{poseEstimation::Local\_Map@{poseEstimation::Local\_Map}!find\_matches@{find\_matches}}
 \index{find\_matches@{find\_matches}!poseEstimation::Local\_Map@{poseEstimation::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{find\_matches()}{find\_matches()}}
-{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Local\+\_\+\+Map\+::find\+\_\+matches (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{\mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&}]{out\+Map\+Points,  }\item[{std\+::vector$<$ int $>$ \&}]{out\+Matches\+Left }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily unsigned int pose\+Estimation\+::\+Local\+\_\+\+Map\+::find\+\_\+matches (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{\mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}} \&}]{map\+Points,  }\item[{std\+::vector$<$ int $>$ \&}]{matches\+Left }\end{DoxyParamCaption})}
 
 
 
@@ -83,9 +83,9 @@ Compute point matches from current pose in the local map.
 \hline
 \mbox{\texttt{ in,out}}  & {\em features} & Current image features \\
 \hline
-\mbox{\texttt{ out}}  & {\em out\+Map\+Points} & Matched points \\
+\mbox{\texttt{ out}}  & {\em map\+Points} & All points matched in map \\
 \hline
-\mbox{\texttt{ out}}  & {\em out\+Matches\+Left} & Unmatched points (outliers)\\
+\mbox{\texttt{ out}}  & {\em matches\+Left} & ID of the last frame matched points\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -116,12 +116,16 @@ matched point count
 {\footnotesize\ttfamily void pose\+Estimation\+::\+Local\+\_\+\+Map\+::triangulate\+\_\+rgbd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classpose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{map\+Point\+Array \&}]{out\+Points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
+
+Create a container of new map points, that can be added to the local map, or staged. 
+
+
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em cam\+Pose} & Observer position \\
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Observer position, already refined \\
 \hline
 \mbox{\texttt{ in}}  & {\em features} & Detected features in RGB image \\
 \hline
-\mbox{\texttt{ out}}  & {\em out\+Points} & \\
+\mbox{\texttt{ out}}  & {\em out\+Points} & Container of new points, triangulated from true pose \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classpose_estimation_1_1_local___map_a43608e6e271b69bf6ffa681883231878}\label{classpose_estimation_1_1_local___map_a43608e6e271b69bf6ffa681883231878}} 
@@ -132,11 +136,11 @@ matched point count
 
 
 
-Update the stage\+Points vector. 
+Add/remove features from staged points container if they are not tracked, or not visible from current position. Add new points to local map. 
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em cam\+Pose} & \\
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Position of the camera, already refined \\
 \hline
 \mbox{\texttt{ in,out}}  & {\em features} & Features to treat, can be marked as matched \\
 \hline
@@ -149,11 +153,11 @@ Update the stage\+Points vector.
 
 
 
-Triangulate new map points from features that were not matched/tracked. 
+Triangulate new map points from refined pose and add them to the local map. 
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em cam\+Pose} & Position of camera \\
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Position of camera, already refined \\
 \hline
 \mbox{\texttt{ in}}  & {\em features} & \\
 \hline

@@ -88,25 +88,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:add0beb7387feab8cae3a8d0409b5e3a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#add0beb7387feab8cae3a8d0409b5e3a8">reset</a> ()</td></tr>
 <tr class="separator:add0beb7387feab8cae3a8d0409b5e3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d85d0ea9317c6271f5121698e7e5ae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#a7d85d0ea9317c6271f5121698e7e5ae3">update_with_new_triangulation</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, bool dontStage=false)</td></tr>
-<tr class="memdesc:a7d85d0ea9317c6271f5121698e7e5ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulate new map points from features that were not matched/tracked.  <a href="classpose_estimation_1_1_local___map.html#a7d85d0ea9317c6271f5121698e7e5ae3">More...</a><br /></td></tr>
+<tr class="memdesc:a7d85d0ea9317c6271f5121698e7e5ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulate new map points from refined pose and add them to the local map.  <a href="classpose_estimation_1_1_local___map.html#a7d85d0ea9317c6271f5121698e7e5ae3">More...</a><br /></td></tr>
 <tr class="separator:a7d85d0ea9317c6271f5121698e7e5ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a448582996874728cf78c3116eb0a6ea6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#a448582996874728cf78c3116eb0a6ea6">clean_untracked_points</a> (<a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features)</td></tr>
-<tr class="memdesc:a448582996874728cf78c3116eb0a6ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark untracked points as untracked in map.  <a href="classpose_estimation_1_1_local___map.html#a448582996874728cf78c3116eb0a6ea6">More...</a><br /></td></tr>
-<tr class="separator:a448582996874728cf78c3116eb0a6ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43608e6e271b69bf6ffa681883231878"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#a43608e6e271b69bf6ffa681883231878">update_staged_map_points</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features)</td></tr>
-<tr class="memdesc:a43608e6e271b69bf6ffa681883231878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the stagePoints vector.  <a href="classpose_estimation_1_1_local___map.html#a43608e6e271b69bf6ffa681883231878">More...</a><br /></td></tr>
+<tr class="memdesc:a43608e6e271b69bf6ffa681883231878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add/remove features from staged points container if they are not tracked, or not visible from current position. Add new points to local map.  <a href="classpose_estimation_1_1_local___map.html#a43608e6e271b69bf6ffa681883231878">More...</a><br /></td></tr>
 <tr class="separator:a43608e6e271b69bf6ffa681883231878"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a448582996874728cf78c3116eb0a6ea6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#a448582996874728cf78c3116eb0a6ea6">clean_untracked_points</a> (<a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features)</td></tr>
+<tr class="memdesc:a448582996874728cf78c3116eb0a6ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark untracked points as untracked in map, and add tracked points to local map.  <a href="classpose_estimation_1_1_local___map.html#a448582996874728cf78c3116eb0a6ea6">More...</a><br /></td></tr>
+<tr class="separator:a448582996874728cf78c3116eb0a6ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58a2b9aa46608bc7702cf399c9728638"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#a58a2b9aa46608bc7702cf399c9728638">get_map_size</a> () const</td></tr>
 <tr class="separator:a58a2b9aa46608bc7702cf399c9728638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaae772d0e5fba904e83f575d2c612796"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#aaae772d0e5fba904e83f575d2c612796">get_staged_points_count</a> () const</td></tr>
 <tr class="separator:aaae772d0e5fba904e83f575d2c612796"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abac85a90a7dd07753bd49b3589ca7f3c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#abac85a90a7dd07753bd49b3589ca7f3c">find_matches</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, <a class="el" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a> &amp;outMapPoints, std::vector&lt; int &gt; &amp;outMatchesLeft)</td></tr>
-<tr class="memdesc:abac85a90a7dd07753bd49b3589ca7f3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute point matches from current pose in the local map.  <a href="classpose_estimation_1_1_local___map.html#abac85a90a7dd07753bd49b3589ca7f3c">More...</a><br /></td></tr>
-<tr class="separator:abac85a90a7dd07753bd49b3589ca7f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae36322e3880f13bf2fade02614bb3031"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#ae36322e3880f13bf2fade02614bb3031">find_matches</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, <a class="el" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a> &amp;mapPoints, std::vector&lt; int &gt; &amp;matchesLeft)</td></tr>
+<tr class="memdesc:ae36322e3880f13bf2fade02614bb3031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute point matches from current pose in the local map.  <a href="classpose_estimation_1_1_local___map.html#ae36322e3880f13bf2fade02614bb3031">More...</a><br /></td></tr>
+<tr class="separator:ae36322e3880f13bf2fade02614bb3031"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a46adc4107af1e0a7092db555aa744b30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_local___map.html#a46adc4107af1e0a7092db555aa744b30">triangulate_rgbd</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, mapPointArray &amp;outPoints)</td></tr>
+<tr class="memdesc:a46adc4107af1e0a7092db555aa744b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a container of new map points, that can be added to the local map, or staged.  <a href="classpose_estimation_1_1_local___map.html#a46adc4107af1e0a7092db555aa744b30">More...</a><br /></td></tr>
 <tr class="separator:a46adc4107af1e0a7092db555aa744b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -174,7 +175,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Mark untracked points as untracked in map. </p>
+<p>Mark untracked points as untracked in map, and add tracked points to local map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">features</td><td></td></tr>
@@ -184,8 +185,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abac85a90a7dd07753bd49b3589ca7f3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abac85a90a7dd07753bd49b3589ca7f3c">&#9670;&nbsp;</a></span>find_matches()</h2>
+<a id="ae36322e3880f13bf2fade02614bb3031"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae36322e3880f13bf2fade02614bb3031">&#9670;&nbsp;</a></span>find_matches()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,13 +207,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a> &amp;&#160;</td>
-          <td class="paramname"><em>outMapPoints</em>, </td>
+          <td class="paramname"><em>mapPoints</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>outMatchesLeft</em>&#160;</td>
+          <td class="paramname"><em>matchesLeft</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -227,8 +228,8 @@ Protected Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Position of the observer </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">features</td><td>Current image features </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outMapPoints</td><td>Matched points </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outMatchesLeft</td><td>Unmatched points (outliers)</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mapPoints</td><td>All points matched in map </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">matchesLeft</td><td>ID of the last frame matched points</td></tr>
   </table>
   </dd>
 </dl>
@@ -342,11 +343,13 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Create a container of new map points, that can be added to the local map, or staged. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Observer position </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Observer position, already refined </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">features</td><td>Detected features in RGB image </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">outPoints</td><td></td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outPoints</td><td>Container of new points, triangulated from true pose </td></tr>
   </table>
   </dd>
 </dl>
@@ -379,10 +382,10 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Update the stagePoints vector. </p>
+<p>Add/remove features from staged points container if they are not tracked, or not visible from current position. Add new points to local map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Position of the camera, already refined </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">features</td><td>Features to treat, can be marked as matched </td></tr>
   </table>
   </dd>
@@ -422,10 +425,10 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Triangulate new map points from features that were not matched/tracked. </p>
+<p>Triangulate new map points from refined pose and add them to the local map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Position of camera </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Position of camera, already refined </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">features</td><td></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">dontStage</td><td>Dont store staged points </td></tr>
   </table>

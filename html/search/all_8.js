@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['image_5ffeatures_5fhandler_122',['Image_Features_Handler',['../classpose_estimation_1_1_image___features___handler.html#a925a46e1f888863ed0e3a5adfcbf21ab',1,'poseEstimation::Image_Features_Handler::Image_Features_Handler()'],['../classpose_estimation_1_1_image___features___handler.html',1,'poseEstimation::Image_Features_Handler']]],
-  ['image_5ffeatures_5fhandler_2ecpp_123',['Image_Features_Handler.cpp',['../_image___features___handler_8cpp.html',1,'']]],
-  ['image_5ffeatures_5fhandler_2ehpp_124',['Image_Features_Handler.hpp',['../_image___features___handler_8hpp.html',1,'']]],
-  ['image_5ffeatures_5fstruct_125',['Image_Features_Struct',['../classpose_estimation_1_1_image___features___struct.html#a79ff491e281f54525ca4b59e2a196a0c',1,'poseEstimation::Image_Features_Struct::Image_Features_Struct()'],['../classpose_estimation_1_1_image___features___struct.html',1,'poseEstimation::Image_Features_Struct']]],
-  ['image_5ffeatures_5fstruct_2ecpp_126',['Image_Features_Struct.cpp',['../_image___features___struct_8cpp.html',1,'']]],
-  ['image_5ffeatures_5fstruct_2ehpp_127',['Image_Features_Struct.hpp',['../_image___features___struct_8hpp.html',1,'']]],
-  ['img_128',['img',['../structpose_estimation_1_1compute__features__data.html#acf35f957197e68bf9a692f5b586247b9',1,'poseEstimation::compute_features_data']]],
+  ['image_5ffeatures_5fhandler_123',['Image_Features_Handler',['../classpose_estimation_1_1_image___features___handler.html#a925a46e1f888863ed0e3a5adfcbf21ab',1,'poseEstimation::Image_Features_Handler::Image_Features_Handler()'],['../classpose_estimation_1_1_image___features___handler.html',1,'poseEstimation::Image_Features_Handler']]],
+  ['image_5ffeatures_5fhandler_2ecpp_124',['Image_Features_Handler.cpp',['../_image___features___handler_8cpp.html',1,'']]],
+  ['image_5ffeatures_5fhandler_2ehpp_125',['Image_Features_Handler.hpp',['../_image___features___handler_8hpp.html',1,'']]],
+  ['image_5ffeatures_5fstruct_126',['Image_Features_Struct',['../classpose_estimation_1_1_image___features___struct.html#a79ff491e281f54525ca4b59e2a196a0c',1,'poseEstimation::Image_Features_Struct::Image_Features_Struct()'],['../classpose_estimation_1_1_image___features___struct.html',1,'poseEstimation::Image_Features_Struct']]],
+  ['image_5ffeatures_5fstruct_2ecpp_127',['Image_Features_Struct.cpp',['../_image___features___struct_8cpp.html',1,'']]],
+  ['image_5ffeatures_5fstruct_2ehpp_128',['Image_Features_Struct.hpp',['../_image___features___struct_8hpp.html',1,'']]],
   ['init_129',['init',['../classpose_estimation_1_1_image___features___struct.html#a0e7f239185ebb4d35204f2ceaa5478a9',1,'poseEstimation::Image_Features_Struct']]],
   ['init_5ffrom_5ffile_130',['init_from_file',['../classpose_estimation_1_1_parameters.html#ac658e5dda2a89e7f652e3466d4bc44eb',1,'poseEstimation::Parameters']]],
   ['init_5fhistogram_131',['init_histogram',['../classprimitive_detection_1_1_histogram.html#adefe2b21c0875ddaecd034c3d32b179c',1,'primitiveDetection::Histogram::init_histogram()'],['../classprimitive_detection_1_1_primitive___detection.html#a6945115630ad64ec273cc516f212e20d',1,'primitiveDetection::Primitive_Detection::init_histogram()']]],

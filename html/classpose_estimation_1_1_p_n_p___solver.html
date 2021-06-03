@@ -85,9 +85,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aeccd7234cf0eda4c09fbde8a0fd43e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c644e717c47bca3b35dae1ce21baaae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_p_n_p___solver.html#a2c644e717c47bca3b35dae1ce21baaae">~PNP_Solver</a> ()</td></tr>
 <tr class="separator:a2c644e717c47bca3b35dae1ce21baaae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1857c295c0fa99b4c42ba1a0825e529"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpose_estimation_1_1_pose.html">Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_p_n_p___solver.html#ab1857c295c0fa99b4c42ba1a0825e529">compute_pose</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, const <a class="el" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a> &amp;matchedPoints, const std::vector&lt; int &gt; &amp;matchOutliers)</td></tr>
-<tr class="memdesc:ab1857c295c0fa99b4c42ba1a0825e529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refine a pose estimation using the matched points in this frame and local map.  <a href="classpose_estimation_1_1_p_n_p___solver.html#ab1857c295c0fa99b4c42ba1a0825e529">More...</a><br /></td></tr>
-<tr class="separator:ab1857c295c0fa99b4c42ba1a0825e529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d8f42ebe99a71d3fc77d1d0574474e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpose_estimation_1_1_pose.html">Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_p_n_p___solver.html#a4d8f42ebe99a71d3fc77d1d0574474e8">compute_pose</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;camPose, <a class="el" href="classpose_estimation_1_1_image___features___struct.html">Image_Features_Struct</a> &amp;features, const <a class="el" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a> &amp;matchedPoints, const std::vector&lt; int &gt; &amp;matchLeft)</td></tr>
+<tr class="memdesc:a4d8f42ebe99a71d3fc77d1d0574474e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refine a pose estimation using the matched points in this frame and local map.  <a href="classpose_estimation_1_1_p_n_p___solver.html#a4d8f42ebe99a71d3fc77d1d0574474e8">More...</a><br /></td></tr>
+<tr class="separator:a4d8f42ebe99a71d3fc77d1d0574474e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Compute a pose estimation. </p>
@@ -156,8 +156,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1857c295c0fa99b4c42ba1a0825e529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1857c295c0fa99b4c42ba1a0825e529">&#9670;&nbsp;</a></span>compute_pose()</h2>
+<a id="a4d8f42ebe99a71d3fc77d1d0574474e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d8f42ebe99a71d3fc77d1d0574474e8">&#9670;&nbsp;</a></span>compute_pose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -184,7 +184,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>matchOutliers</em>&#160;</td>
+          <td class="paramname"><em>matchLeft</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -200,7 +200,7 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Current camera pose </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">features</td><td>Features detected in frame </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoints</td><td>Macthed features with previous frame </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">matchOutliers</td><td>Unmatched features</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matchLeft</td><td>Container associating this frame feature ids to map ids</td></tr>
   </table>
   </dd>
 </dl>
