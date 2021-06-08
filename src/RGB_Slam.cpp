@@ -53,6 +53,7 @@ namespace poseEstimation {
         }
 
         bool isTracking = false;
+        //get next pose, deducted from motion model
         Pose predictedPose = _motionModel.predict_next_pose(_lastPose);
         Pose computedPose = perform_tracking(predictedPose, features, isTracking);
 
@@ -61,6 +62,8 @@ namespace poseEstimation {
             return _lastPose;
         }
 
+        //Update the motion model using the refined pose
+        _motionModel.update_model(computedPose);
         _lastPose = computedPose;
         return computedPose;
     }

@@ -22,6 +22,13 @@ namespace poseEstimation {
              */
             Pose predict_next_pose(const Pose& currentPose);
 
+            /**
+             * \brief Update the motion model using the refined pose
+             *
+             * \param[in] pose Refined pose estimation
+             */
+            void update_model(const Pose& pose);
+
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
         protected:
