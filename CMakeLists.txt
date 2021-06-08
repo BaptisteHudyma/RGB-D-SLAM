@@ -58,6 +58,7 @@ add_library(primitivesDetection
     ${PRIM}/ShapePrimitives.cpp
     )
 add_library(poseEstimation
+    ${POSE}/Pose.cpp
     ${POSE}/PoseUtils.cpp
     ${POSE}/Image_Features_Handler.cpp
     ${POSE}/Image_Features_Struct.cpp

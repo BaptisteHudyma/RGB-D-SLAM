@@ -15,6 +15,8 @@
 #include "LineSegmentDetector.hpp"
 #include "RGB_Slam.hpp"
 
+#include "MotionModel.hpp"
+#include "Pose.hpp"
 
 #include "GeodesicOperations.hpp"
 
@@ -189,7 +191,13 @@ int main(int argc, char* argv[]) {
     for (int label = 1; label < 150; label++) {
         colors[label] = cv::Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
     }
+    
+    //init motion model
+    Motion_Model motionModel;
+    motionModel.reset();
 
+    //start with identity pose
+    Pose pose;
 
     //keep track of the primitives tracked last frame
     primitive_container previousFramePrimitives;
@@ -238,6 +246,9 @@ int main(int argc, char* argv[]) {
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
+
+        Pose predictedPose = motionModel.predict_next_pose(pose);
+        Pose refinedPose;   //TODO: estimation of refined pose
 
         std::map<int, int> associatedIds;
         if(not previousFramePrimitives.empty()) {
@@ -338,6 +349,11 @@ int main(int argc, char* argv[]) {
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
 
+        //update motion model with refined pose
+        motionModel.update_model(refinedPose);
+        pose = refinedPose;
+
+        //counters
         ++i;
         ++totalFrameTreated;
     }
