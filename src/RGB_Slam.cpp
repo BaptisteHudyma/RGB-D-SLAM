@@ -55,29 +55,31 @@ namespace poseEstimation {
         bool isTracking = false;
         //get next pose, deducted from motion model
         Pose predictedPose = _motionModel.predict_next_pose(_lastPose);
-        Pose computedPose = perform_tracking(predictedPose, features, isTracking);
+        //refine pose using features
+        Pose refinedPose = perform_tracking(predictedPose, features, isTracking);
 
         if(not isTracking) {
+            //not enough feature matches to continue tracking
             _state = eState_LOST;
             return _lastPose;
         }
 
         //Update the motion model using the refined pose
-        _motionModel.update_model(computedPose);
-        _lastPose = computedPose;
-        return computedPose;
+        _motionModel.update_model(refinedPose);
+        _lastPose = refinedPose;
+        return refinedPose;
     }
 
     Pose RGB_SLAM::perform_tracking(const Pose& estimatedPose, Image_Features_Struct& features, bool& isTracking) {
         vector3_array matchedPoints;    //matched points
-        std::vector<int> matchOutliers; //unmatched points
+        std::vector<int> matchesLeft;   //points id association with last frame
 
-        _localMap.find_matches(estimatedPose, features, matchedPoints, matchOutliers);
+        _localMap.find_matches(estimatedPose, features, matchedPoints, matchesLeft);
         const long unsigned int matchesCnt = matchedPoints.size();
 
         std::cout << features.get_features_count() << " : " << matchesCnt << std::endl;
         if(matchesCnt < _params.get_min_matches_for_tracking()) {
-            //not enough matched features
+            //not enough matched features to continue tracking
             std::cout << "Not enough features matched for tracking: only " << matchesCnt << " matches" << std::endl;
             isTracking = false;
             return _lastPose;
@@ -86,16 +88,18 @@ namespace poseEstimation {
         _lastMatches.push_back(matchesCnt);
         _lastMatches.pop_front();
 
-        Pose optimizedPose = _pnpSolver.compute_pose(estimatedPose, features, matchedPoints, matchOutliers);
+        Pose optimizedPose = _pnpSolver.compute_pose(estimatedPose, features, matchedPoints, matchesLeft);
 
         //remove untracked points
         _localMap.clean_untracked_points(features);
 
+        //add new points to the local map, remove some
         if (_params.get_staged_threshold() > 0)
         {
             _localMap.update_staged_map_points(optimizedPose, features);
         }
 
+        //update map depending on triangulation policy
         if (need_new_triangulation())
         {
             _localMap.update_with_new_triangulation(optimizedPose, features);
