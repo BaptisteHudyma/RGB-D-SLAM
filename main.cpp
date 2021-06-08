@@ -176,6 +176,7 @@ int main(int argc, char* argv[]) {
 
     //plane/cylinder finder
     Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
+    //Should refine, scale, Gaussian filter sigma
     cv::LSD lineDetector(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
     // Populate with random color codes
@@ -203,23 +204,31 @@ int main(int argc, char* argv[]) {
     primitive_container previousFramePrimitives;
 
 
-    unsigned int totalFrameTreated = 0;
-    int i = startIndex;
+    //frame counters
+    unsigned int frameIndex = startIndex;   //current frame index count
+    unsigned int totalFrameTreated = 0; 
+
+    //time counters
     double meanTreatmentTime = 0.0;
     double meanMatTreatmentTime = 0.0;
+    double meanPoseTreatmentTime = 0.0;
     double maxTreatTime = 0.0;
+
+    double meanLineTreatment = 0.0;
+
+    //stop condition
     bool runLoop = true;
     while(runLoop) {
 
-        if(jumpFrames > 0 and i % jumpFrames != 0) {
-            ++i;
+        if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
+            //do not treat this frame
+            ++frameIndex;
             continue;
         }
 
         //read images
-        if(not load_images(dataPath, i, rgbImage, depthImage))
+        if(not load_images(dataPath, frameIndex, rgbImage, depthImage))
             break;
-        std::cout << "Read frame " << i << std::endl;
         cv::Mat grayImage;
         cv::cvtColor(rgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
@@ -246,10 +255,13 @@ int main(int argc, char* argv[]) {
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
-
+        //get and refine pose
+        t1 = cv::getTickCount();
         Pose predictedPose = motionModel.predict_next_pose(pose);
-        Pose refinedPose;   //TODO: estimation of refined pose
+        Pose refinedPose = predictedPose;   //TODO: estimation of refined pose
+        meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
+        //associate primitives
         std::map<int, int> associatedIds;
         if(not previousFramePrimitives.empty()) {
             //find matches between consecutive images
@@ -309,6 +321,8 @@ int main(int argc, char* argv[]) {
         */
 
         if(useLineDetection) { //detect lines in image
+            t1 = cv::getTickCount();
+
             //get lines
             line_vector lines;
             cv::Mat mask = depthImage > 0;
@@ -318,19 +332,28 @@ int main(int argc, char* argv[]) {
             //fill holes
             cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
 
+            //draw lines with associated depth data
             for(line_vector::size_type i = 0; i < lines.size(); i++) {
                 cv::Vec4f& pts = lines.at(i);
                 cv::Point pt1(pts[0], pts[1]);
                 cv::Point pt2(pts[2], pts[3]);
                 if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
+                    //no depth at extreme points, check first and second quarter
                     cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
                     cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
 
                     //at least a point with depth data
                     if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
                         cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
+                    else
+                        cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
                 }
+                else
+                    //line with associated depth
+                    cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 255, 255), 1);
+
             }
+            meanLineTreatment += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         }
 
         //display masks on image
@@ -354,12 +377,17 @@ int main(int argc, char* argv[]) {
         pose = refinedPose;
 
         //counters
-        ++i;
+        ++frameIndex;
         ++totalFrameTreated;
     }
-    std::cout << "Mean plane treatment time is " << meanTreatmentTime/totalFrameTreated << std::endl;
-    std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime/totalFrameTreated << std::endl;
+    std::cout << "Process terminated at frame " << frameIndex << std::endl;
+    std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime / totalFrameTreated << std::endl;
+    std::cout << "Mean plane treatment time is " << meanTreatmentTime / totalFrameTreated << std::endl;
     std::cout << "max treat time is " << maxTreatTime << std::endl;
+    std::cout << std::endl;
+    if(useLineDetection)
+        std::cout << "Mean line detection time is " << meanLineTreatment / totalFrameTreated << std::endl;
+    std::cout << "Mean pose estimation time is " << meanPoseTreatmentTime / totalFrameTreated << std::endl;
 
     //std::cout << "init planes " << primDetector.resetTime/i << std::endl;
     //std::cout << "Init hist " << primDetector.initTime/i << std::endl;

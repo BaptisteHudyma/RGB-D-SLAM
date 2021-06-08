@@ -1,5 +1,5 @@
-#ifndef POSE_HPP
-#define POSE_HPP
+#ifndef POSE_CONTAINER_HPP
+#define POSE_CONTAINER_HPP
 
 #include <Eigen/Dense>
 #include <Eigen/StdVector>
