@@ -9,12 +9,12 @@ namespace poseEstimation {
      *        Declare the most common types used in this program
      */
 
-    typedef Eigen::Matrix<double, 2, 1> vector2;
+    typedef Eigen::Vector2d vector2;
     typedef Eigen::Matrix<double, 3, 1> vector3;
-    typedef Eigen::Matrix<double, 4, 1> vector4;
-    typedef Eigen::Matrix<double, 3, 3> matrix33;
+    typedef Eigen::Vector4d vector4;
+    typedef Eigen::Matrix3d matrix33;
     typedef Eigen::Matrix<double, 3, 4> matrix34;
-    typedef Eigen::Matrix<double, 4, 4> matrix44;
+    typedef Eigen::Matrix4d matrix44;
     typedef Eigen::Quaternion<double> quaternion;
 
     typedef std::vector<vector2, Eigen::aligned_allocator<vector2>> vector2_array;

@@ -46,8 +46,8 @@ namespace poseEstimation {
             /**
              * \brief Searches for a matches between features and our map features. Reduces search space to rows. 
              *
-             * \param[in] featuresLeft Container of all features in the left camera image (or previous image)
-             * \param[in] featuresRight Container of all features in the right camera image (or current frame)
+             * \param[in, out] featuresLeft Container of all features in the left camera image (or previous image)
+             * \param[in, out] featuresRight Container of all features in the right camera image (or current frame)
              * \param[out] outMatches Container of all matches
              */
             void row_match(Image_Features_Struct& featuresLeft, Image_Features_Struct& featuresRight, std::vector<cv::DMatch>& outMatches);

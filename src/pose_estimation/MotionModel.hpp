@@ -22,7 +22,7 @@ namespace poseEstimation {
              *
              * \param[in] currentPose Last frame pose
              */
-            Pose predict_next_pose(const Pose& currentPose);
+            const Pose predict_next_pose(const Pose& currentPose);
 
             /**
              * \brief Update the motion model using the refined pose

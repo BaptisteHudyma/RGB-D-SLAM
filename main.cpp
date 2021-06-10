@@ -18,6 +18,8 @@
 #include "MotionModel.hpp"
 #include "Pose.hpp"
 
+#include "Pose_Optimisation.hpp"
+
 #include "GeodesicOperations.hpp"
 
 
@@ -27,6 +29,7 @@ typedef std::list<std::unique_ptr<primitiveDetection::Primitive>> primitive_cont
 using namespace primitiveDetection;
 using namespace poseEstimation;
 using namespace std;
+
 
 std::vector<cv::Vec3b> get_color_vector() {
     std::vector<cv::Vec3b> color_code;
@@ -115,6 +118,7 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
     jumpImages = parser.get<unsigned int>("j");
 
     if(not parser.check()) {
+        std::cout << "RGBD SLAM: Some paramers are missing: call with -h to get the list of parameters";
         parser.printErrors();
     }
     return parser.check();
@@ -154,6 +158,7 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+
     //visual odometry params
     /*
        Parameters params;
@@ -192,7 +197,7 @@ int main(int argc, char* argv[]) {
     for (int label = 1; label < 150; label++) {
         colors[label] = cv::Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
     }
-    
+
     //init motion model
     Motion_Model motionModel;
     motionModel.reset();
@@ -312,13 +317,13 @@ int main(int argc, char* argv[]) {
 
         //visual odometry tracking
         /*
-        if(useFrameOdometry) {
-            Pose estimatedPose = vo.track(grayImage, depthImage);
+           if(useFrameOdometry) {
+           Pose estimatedPose = vo.track(grayImage, depthImage);
 
-            if(vo.get_state() == vo.eState_LOST)
-                break;
-        }
-        */
+           if(vo.get_state() == vo.eState_LOST)
+           break;
+           }
+         */
 
         if(useLineDetection) { //detect lines in image
             t1 = cv::getTickCount();

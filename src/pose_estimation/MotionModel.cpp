@@ -18,7 +18,7 @@ namespace poseEstimation {
 
 
 
-    Pose Motion_Model::predict_next_pose(const Pose& currentPose) {
+    const Pose Motion_Model::predict_next_pose(const Pose& currentPose) {
         //compute next linear velocity
         vector3 newLinVelocity = currentPose.get_position() - _lastPosition;
         newLinVelocity = (newLinVelocity + _linearVelocity) * 0.5;
