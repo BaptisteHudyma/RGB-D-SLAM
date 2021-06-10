@@ -1,6 +1,8 @@
 #ifndef RGB_SLAM_HPP
 #define RGB_SLAM_HPP
 
+#include "types.hpp"
+
 #include "Pose.hpp"
 #include "Parameters.hpp"
 #include "LocalMap.hpp"

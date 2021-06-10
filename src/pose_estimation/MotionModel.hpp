@@ -1,8 +1,10 @@
 #ifndef MOTION_MODEL_HPP
 #define MOTION_MODEL_HPP
 
-#include <Eigen/Dense>
+#include "types.hpp"
 #include "Pose.hpp"
+
+#include <Eigen/Dense>
 
 namespace poseEstimation {
 
