@@ -4,7 +4,7 @@ project(rgbSLAM)
 set(CMAKE_BUILD_TYPE Release)
 
 set (CMAKE_CXX_STANDARD 20)
-set (CMAKE_CXX_FLAGS "-O2 -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
+set (CMAKE_CXX_FLAGS "-O2 -g -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
@@ -68,6 +68,7 @@ add_library(poseEstimation
     ${POSE}/PNPSolver.cpp
 
     ${SRC}/RGB_Slam.cpp
+    ${SRC}/Point_Tracking.cpp
     )
 add_library(thirdParty
     ${SRC}/MonocularDepthMap.cpp

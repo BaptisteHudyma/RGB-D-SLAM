@@ -1,8 +1,7 @@
 #include <iostream>
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/line_descriptor.hpp>
-#include <opencv2/xfeatures2d.hpp>
-#include <Eigen/Dense>
 
 
 #include "DepthOperations.hpp"
@@ -11,14 +10,13 @@
 #include "Parameters.hpp"
 #include "MonocularDepthMap.hpp"
 #include "DepthMapSegmentation.hpp"
+#include "Point_Tracking.hpp"
 
 #include "LineSegmentDetector.hpp"
 #include "RGB_Slam.hpp"
 
-#include "MotionModel.hpp"
 #include "Pose.hpp"
 
-#include "Pose_Optimisation.hpp"
 
 #include "GeodesicOperations.hpp"
 
@@ -198,9 +196,7 @@ int main(int argc, char* argv[]) {
         colors[label] = cv::Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
     }
 
-    //init motion model
-    Motion_Model motionModel;
-    motionModel.reset();
+    Points_Tracking RGB_Slam;
 
     //start with identity pose
     Pose pose;
@@ -260,10 +256,12 @@ int main(int argc, char* argv[]) {
         meanTreatmentTime += time_elapsed;
         maxTreatTime = max(maxTreatTime, time_elapsed);
 
-        //get and refine pose
+
+        // this frame points and  assoc
         t1 = cv::getTickCount();
-        Pose predictedPose = motionModel.predict_next_pose(pose);
-        Pose refinedPose = predictedPose;   //TODO: estimation of refined pose
+
+        pose = RGB_Slam.compute_new_pose(rgbImage, depthImage);
+
         meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
         //associate primitives
@@ -290,11 +288,13 @@ int main(int argc, char* argv[]) {
 
             //global map update from local one
 
-
         }
         else {
             //first frame, or no features detected last frame
+
         }
+
+
 
         //depth map segmentation
         cv::Mat colored;
@@ -350,8 +350,8 @@ int main(int argc, char* argv[]) {
                     //at least a point with depth data
                     if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
                         cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
-                    else
-                        cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
+                    else    //no depth data
+                        cv::line(rgbImage, pt1, pt2, cv::Scalar(255, 0, 255), 1);
                 }
                 else
                     //line with associated depth
@@ -367,7 +367,9 @@ int main(int argc, char* argv[]) {
         if(showPrimitiveMasks)
             primDetector.apply_masks(rgbImage, color_code, seg_output, primitives, segRgb, associatedIds, time_elapsed);
 
+        // exchange frames features
         previousFramePrimitives.swap(primitives);
+
 
         //display with mono mask
         //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
@@ -377,9 +379,6 @@ int main(int argc, char* argv[]) {
 
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
 
-        //update motion model with refined pose
-        motionModel.update_model(refinedPose);
-        pose = refinedPose;
 
         //counters
         ++frameIndex;

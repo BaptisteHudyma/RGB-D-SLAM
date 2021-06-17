@@ -6,7 +6,11 @@
 #include <Eigen/Eigen>
 #include <unsupported/Eigen/NonLinearOptimization>
 
+#include <iostream>
+
 namespace poseEstimation {
+
+        
 
     /**
      * \brief Structure given to the Levenberg-Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric.
@@ -27,9 +31,9 @@ namespace poseEstimation {
             typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
 
 
-            Levenberg_Marquard_Functor() :
-                _M(InputsAtCompileTime), _N(ValuesAtCompileTime)
-            {}
+            /*Levenberg_Marquard_Functor() :
+              _M(InputsAtCompileTime), _N(ValuesAtCompileTime)
+              {}*/
 
             Levenberg_Marquard_Functor(unsigned int inputCount, unsigned int outputCount) :
                 _M(inputCount), _N(outputCount)
@@ -37,10 +41,10 @@ namespace poseEstimation {
             }
 
             unsigned int values() const {
-                return _M;
+                return _N;
             }
             unsigned int inputs() const {
-                return _N;
+                return _M;
             }
 
             unsigned int _M;
@@ -48,31 +52,37 @@ namespace poseEstimation {
         };
 
     typedef std::pair<vector3, vector3> point_pair;
-    typedef std::vector<point_pair> matched_point_container;
+    typedef std::list<point_pair> matched_point_container;
 
     struct Pose_Estimator: Levenberg_Marquard_Functor<double> 
     {
         // Simple constructor
-        Pose_Estimator(unsigned int m, matched_point_container& points) 
+        Pose_Estimator(unsigned int n, const matched_point_container& points) :
+            Levenberg_Marquard_Functor<double>(n, points.size()) 
         {
-            Levenberg_Marquard_Functor<double>(m, 3); 
-
             //copy points
             _points = points;
         }
 
         // Implementation of the objective function
-        int operator()(const Eigen::VectorXd &z, Eigen::VectorXd &fvec) const {
+        int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
             vector3 translation(z(0), z(1), z(2));
             quaternion rotation(z(3), z(4), z(5), z(6));
 
+            unsigned int i = 0;
+            for(const point_pair& pointPair : _points) {
+                const vector3& p1 = pointPair.first;
+                const vector3& p2 = pointPair.second;
 
-            for(unsigned int i = 0; i < _points.size(); ++i) {
-                const vector3& p1 = _points[i].first;
-                const vector3& p2 = _points[i].second;
-                fvec += p2 - ( rotation * p1 + translation );
+                //pose error
+                const vector3 dist = p2 - ( rotation * p1 + translation );
+                //fvec(i) = dist.squaredNorm(); 
+                //fvec(i) = dist.norm(); 
+                fvec(i) = abs(dist[0]) + abs(dist[1]) + abs(dist[2]);
+
+                ++i;
             }
-
+            //std::cout << fvec.transpose() << std::endl;
             return 0;
         }
 

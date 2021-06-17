@@ -36,9 +36,13 @@ namespace poseEstimation {
         protected:
 
         private:
+                // Last known rotation quaternion estimated by the motion model (set by update_model)
                 quaternion _lastQ;
+                // Last computed angular velocity
                 quaternion _angularVelocity;
+                // Last known translation estimated by the motion model (set by update_model)
                 vector3 _lastPosition;
+                // Last computed linear velocity
                 vector3 _linearVelocity;
     };
 
