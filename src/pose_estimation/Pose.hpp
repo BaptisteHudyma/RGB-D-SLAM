@@ -18,6 +18,8 @@ namespace poseEstimation {
 
             //setters
             void set_parameters(const vector3 &position, const quaternion &orientation);
+
+            void update(const vector3& position, const quaternion& orientation);
     
             //getters
             vector3 get_position() const { return _position; }

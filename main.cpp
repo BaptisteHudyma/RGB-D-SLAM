@@ -196,7 +196,8 @@ int main(int argc, char* argv[]) {
         colors[label] = cv::Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
     }
 
-    Points_Tracking RGB_Slam;
+    int minHessian = 500;
+    Points_Tracking RGB_Slam (minHessian);
 
     //start with identity pose
     Pose pose;

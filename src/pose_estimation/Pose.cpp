@@ -16,5 +16,10 @@ namespace poseEstimation {
         _position = position;
     }
 
+    void Pose::update(const vector3& position, const quaternion& orientation) {
+        _orientation *= orientation;
+        _position += position;
+    }
+
 
 }

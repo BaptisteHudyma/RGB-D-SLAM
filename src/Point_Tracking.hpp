@@ -12,25 +12,28 @@
 
 namespace poseEstimation {
 
+    typedef std::map<unsigned int, vector3> keypoint_container;
+
     class Points_Tracking {
         public:
-            Points_Tracking();
+            Points_Tracking(int minHessian);
 
             const Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage);
 
         protected:
-            const matched_point_container get_good_matches(const cv::Mat& depthImage, std::vector<cv::KeyPoint>& thisFrameKeypoints, cv::Mat& thisFrameDescriptors); 
+            const matched_point_container get_good_matches(keypoint_container& thisFrameKeypoints, cv::Mat& thisFrameDescriptors); 
 
             const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status); 
 
-        private:
+            void get_cleaned_keypoint(const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints);
 
+        private:
+            
             cv::Ptr<cv::xfeatures2d::SURF> _featureDetector;
             cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
 
-            std::vector<cv::KeyPoint> _lastFrameKeypoints;
+            keypoint_container _lastFrameKeypoints;
             cv::Mat _lastFrameDescriptors;
-            cv::Mat _lastDepthImage;
 
             Pose _currentPose;
             Motion_Model _motionModel;

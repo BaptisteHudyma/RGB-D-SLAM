@@ -34,6 +34,13 @@ namespace poseEstimation {
         quaternion integralQ = currentQ * newAngVel;
         integralQ.normalize();
 
+        /*
+        _lastQ = currentQ;
+        _angularVelocity = newAngVel;
+        _lastPosition = currentPose.get_position();
+        _linearVelocity = newLinVelocity;
+        */
+
         return Pose(integralPos, integralQ);
     }
 

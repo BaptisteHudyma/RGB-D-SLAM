@@ -68,6 +68,8 @@ namespace poseEstimation {
         int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
             vector3 translation(z(0), z(1), z(2));
             quaternion rotation(z(3), z(4), z(5), z(6));
+            rotation.normalize();
+            matrix33 rotationMatrix = rotation.toRotationMatrix();
 
             unsigned int i = 0;
             for(const point_pair& pointPair : _points) {
@@ -75,9 +77,11 @@ namespace poseEstimation {
                 const vector3& p2 = pointPair.second;
 
                 //pose error
-                const vector3 dist = p2 - ( rotation * p1 + translation );
+                const vector3 dist = p1 - ( rotationMatrix *  p2 + translation );
                 //fvec(i) = dist.squaredNorm(); 
                 //fvec(i) = dist.norm(); 
+
+                //manhattan
                 fvec(i) = abs(dist[0]) + abs(dist[1]) + abs(dist[2]);
 
                 ++i;

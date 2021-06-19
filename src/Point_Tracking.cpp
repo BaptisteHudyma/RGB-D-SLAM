@@ -8,39 +8,59 @@
 namespace poseEstimation {
 
 
-    Points_Tracking::Points_Tracking() {
+    Points_Tracking::Points_Tracking(int minHessian) 
+    {
         //init motion model
         _motionModel.reset();
 
 
         // Create feature extractor and matcher
-        int minHessian = 400;
         _featureDetector = cv::xfeatures2d::SURF::create( minHessian );
         _featuresMatcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
     }
 
+    void Points_Tracking::get_cleaned_keypoint(const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints) 
+    {
+        cv::Rect lastRect(cv::Point(), depthImage.size());
+        unsigned int i = 0;
+        for (const cv::KeyPoint& keypoint : kp) {
+            const cv::Point2f& pt = keypoint.pt;
+            if (lastRect.contains(pt)) {
+                const float depth = depthImage.at<float>(pt.y, pt.x);
+                if (depth > 0) {
+                    cleanedPoints.emplace( i, vector3(pt.x, pt.y, depth) );
+                }
+            }
+            ++i;
+        }
+    }
 
 
-    const Pose Points_Tracking::compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage) {
-
+    const Pose Points_Tracking::compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage) 
+    {
         std::vector<cv::KeyPoint> frameKeypoints;
         cv::Mat frameDescriptors;
 
         _featureDetector->detectAndCompute(grayImage, cv:: noArray(), frameKeypoints, frameDescriptors); 
 
+        keypoint_container cleanedKp;
+        get_cleaned_keypoint(depthImage, frameKeypoints, cleanedKp);
 
         if (_lastFrameKeypoints.size() <= 0) {
             //first call, or tracking lost
-            _lastFrameKeypoints.swap(frameKeypoints);
+            _lastFrameKeypoints.swap(cleanedKp);
             _lastFrameDescriptors = frameDescriptors;
-            _lastDepthImage = depthImage.clone();
+            return _currentPose;
+        }
+        else if (frameKeypoints.size() <= 2) {
+            std::cout << "Not enough features detected for knn matching" << std::endl;
             return _currentPose;
         }
 
         //get and refine pose
         Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
-        const matched_point_container matchedPoints = this->get_good_matches(depthImage, frameKeypoints, frameDescriptors);
+        const matched_point_container matchedPoints = this->get_good_matches(cleanedKp, frameDescriptors);
 
         if (matchedPoints.size() > 5) {
 
@@ -48,26 +68,29 @@ namespace poseEstimation {
             quaternion orient = refinedPose.get_orientation_quaternion();
 
             Eigen::VectorXd input(7);
-            input[0] = pos.x(); 
-            input[1] = pos.y(); 
-            input[2] = pos.z();
-            input[3] = orient.x();
-            input[4] = orient.y();
-            input[5] = orient.z();
-            input[6] = orient.w();
+            input[0] = 0;
+            input[1] = 0;
+            input[2] = 0;
+            input[3] = 1;
+            input[4] = 0;
+            input[5] = 0;
+            input[6] = 0;
 
             Pose_Functor pf(Pose_Estimator(input.size(), matchedPoints));
             Eigen::LevenbergMarquardt<Pose_Functor, double> lm( pf );
-            lm.parameters.xtol = 1e-10;
-            lm.parameters.ftol = lm.parameters.xtol / 2.0;
-            lm.parameters.epsfcn = 0;
+            lm.parameters.epsfcn = 1e-5;
+            lm.parameters.maxfev= 1000;
 
             Eigen::LevenbergMarquardtSpace::Status endStatus = lm.minimize(input);
             const std::string message = get_human_readable_end_message(endStatus);
-            std::cout << matchedPoints.size() << " pts " << input.transpose() << " in " << lm.iter << " iters. Result " << endStatus << " (" << message << ")" << std::endl;
 
-            refinedPose.set_parameters(vector3(input[0], input[1], input[2]), quaternion(input[3], input[4], input[5], input[6]));
-            
+            quaternion endRotation(input[3], input[4], input[5], input[6]);
+            endRotation.normalize();
+            vector3 endTranslation(input[0], input[1], input[2]);
+
+            refinedPose.update(endTranslation, endRotation);
+
+            std::cout << matchedPoints.size() << " pts " << endTranslation.transpose() << " | " << endRotation.coeffs().transpose() << " in " << lm.iter << " iters. Result " << endStatus << " (" << message << ")" << std::endl;
 
         }
         else
@@ -84,51 +107,36 @@ namespace poseEstimation {
         _motionModel.update_model(refinedPose);
 
 
-        _lastFrameKeypoints.swap(frameKeypoints);
+        _lastFrameKeypoints.swap(cleanedKp);
         _lastFrameDescriptors = frameDescriptors;
-        _lastDepthImage = depthImage.clone();
 
         _currentPose = refinedPose;
 
         return refinedPose;
     }
 
-
-
-
     const matched_point_container
-        Points_Tracking::get_good_matches(const cv::Mat& depthImage, std::vector<cv::KeyPoint>& thisFrameKeypoints, cv::Mat& thisFrameDescriptors)
+        Points_Tracking::get_good_matches(keypoint_container& thisFrameKeypoints, cv::Mat& thisFrameDescriptors)
         {
             std::vector< std::vector<cv::DMatch> > knnMatches;
             _featuresMatcher->knnMatch(_lastFrameDescriptors, thisFrameDescriptors, knnMatches, 2);
-            cv::Rect rect(cv::Point(), depthImage.size());
 
             matched_point_container matchedPoints;
             for (size_t i = 0; i < knnMatches.size(); i++)
             {
                 const std::vector<cv::DMatch>& match = knnMatches[i];
-                //closest point closest by multiplicator than second closest
+                //closest point closest by multiplier than second closest
                 if (match[0].distance < 0.9f * match[1].distance)
                 {
                     int trainIdx = match[0].trainIdx;
                     int queryIdx = match[0].queryIdx;
 
-                    const cv::Point2f& thisPt = thisFrameKeypoints[queryIdx].pt;
-                    const cv::Point2f& lastPt = _lastFrameKeypoints[trainIdx].pt;
-
-                    if (rect.contains(thisPt) and rect.contains(lastPt)) {
-                        float depth = depthImage.at<float>(thisPt.x, thisPt.y);
-                        float prevDepth = _lastDepthImage.at<float>(lastPt.x, lastPt.y);
-                        if (depth > 0 and prevDepth > 0) {
-
-                             point_pair newMatch = std::make_pair(
-                                        //for now, do not add depth
-                                        vector3(lastPt.x, lastPt.y, prevDepth),
-                                        vector3(thisPt.x, thisPt.y, depth)
-                                        );
-                            matchedPoints.push_back(newMatch);
-
-                        }
+                    if (_lastFrameKeypoints.contains(trainIdx) and thisFrameKeypoints.contains(queryIdx)) {
+                        point_pair newMatch = std::make_pair(
+                                _lastFrameKeypoints[trainIdx],
+                                thisFrameKeypoints[queryIdx]
+                                );
+                        matchedPoints.push_back(newMatch);
                     }
                 }
             }
