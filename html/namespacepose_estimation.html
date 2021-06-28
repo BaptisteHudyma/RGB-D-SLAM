@@ -64,7 +64,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">poseEstimation Namespace Reference</div>  </div>
 </div><!--header-->
@@ -97,6 +98,13 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose___utils.html">Pose_Utils</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpose_estimation_1_1_levenberg___marquard___functor.html">Levenberg_Marquard_Functor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure given to the Levenberg-Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric.  <a href="structpose_estimation_1_1_levenberg___marquard___functor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpose_estimation_1_1_pose___estimator.html">Pose_Estimator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpose_estimation_1_1_pose___functor.html">Pose_Functor</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_r_g_b___s_l_a_m.html">RGB_SLAM</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SLAM algorithm based on special points tracking in a local map.  <a href="classpose_estimation_1_1_r_g_b___s_l_a_m.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,36 +117,45 @@ Typedefs</h2></td></tr>
 <tr class="separator:a42d00a52b1e7a10923991e31781aba5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79be94e3e8e766a7deb8c44824e949ce"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; cv::Point2f &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a79be94e3e8e766a7deb8c44824e949ce">point_vector</a></td></tr>
 <tr class="separator:a79be94e3e8e766a7deb8c44824e949ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5edc85f5ea8a74e8661d5732d8ec92d4"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 2, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a5edc85f5ea8a74e8661d5732d8ec92d4">vector2</a></td></tr>
-<tr class="separator:a5edc85f5ea8a74e8661d5732d8ec92d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10926bd62246c0d3323c0eceb6f3feca"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a>, Eigen::aligned_allocator&lt; <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a10926bd62246c0d3323c0eceb6f3feca">pose_array</a></td></tr>
+<tr class="separator:a10926bd62246c0d3323c0eceb6f3feca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea776e0c4210b6310c21420f12d9f91"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Vector2d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a6ea776e0c4210b6310c21420f12d9f91">vector2</a></td></tr>
+<tr class="separator:a6ea776e0c4210b6310c21420f12d9f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59510a1f41a5dfbec0dcfc2ba507bba6"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 3, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a></td></tr>
 <tr class="separator:a59510a1f41a5dfbec0dcfc2ba507bba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5706add6ee7dd98c7be4bc7984fbf2c3"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 4, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a5706add6ee7dd98c7be4bc7984fbf2c3">vector4</a></td></tr>
-<tr class="separator:a5706add6ee7dd98c7be4bc7984fbf2c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1bb6142ab64134c5984cc073971a100"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 3, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">matrix33</a></td></tr>
-<tr class="separator:ab1bb6142ab64134c5984cc073971a100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9a60bece7f36147084b259f753fa06c"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Vector4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#aa9a60bece7f36147084b259f753fa06c">vector4</a></td></tr>
+<tr class="separator:aa9a60bece7f36147084b259f753fa06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95032cd48afdfb073ebd2d1acdaf4990"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">matrix33</a></td></tr>
+<tr class="separator:a95032cd48afdfb073ebd2d1acdaf4990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28704bbec79d97d52555e258d604dd9b"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 3, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a28704bbec79d97d52555e258d604dd9b">matrix34</a></td></tr>
 <tr class="separator:a28704bbec79d97d52555e258d604dd9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2465e256684209b90f64669326d57c9e"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 4, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a2465e256684209b90f64669326d57c9e">matrix44</a></td></tr>
-<tr class="separator:a2465e256684209b90f64669326d57c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64115ca4a50cfbaefa78f2a6a6da6fc1"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a64115ca4a50cfbaefa78f2a6a6da6fc1">matrix44</a></td></tr>
+<tr class="separator:a64115ca4a50cfbaefa78f2a6a6da6fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7595409391720685f266b0af9f3bc8d9"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Quaternion&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a></td></tr>
 <tr class="separator:a7595409391720685f266b0af9f3bc8d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0a5a5fdef9171ab21611dd778aacb07"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a5edc85f5ea8a74e8661d5732d8ec92d4">vector2</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a5edc85f5ea8a74e8661d5732d8ec92d4">vector2</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#af0a5a5fdef9171ab21611dd778aacb07">vector2_array</a></td></tr>
+<tr class="memitem:af0a5a5fdef9171ab21611dd778aacb07"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a6ea776e0c4210b6310c21420f12d9f91">vector2</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a6ea776e0c4210b6310c21420f12d9f91">vector2</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#af0a5a5fdef9171ab21611dd778aacb07">vector2_array</a></td></tr>
 <tr class="separator:af0a5a5fdef9171ab21611dd778aacb07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2928c0fea359ecbbaab89f4a1eec287e"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a2928c0fea359ecbbaab89f4a1eec287e">vector3_array</a></td></tr>
 <tr class="separator:a2928c0fea359ecbbaab89f4a1eec287e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a475009da12414d54dc23aff7198292de"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a5706add6ee7dd98c7be4bc7984fbf2c3">vector4</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a5706add6ee7dd98c7be4bc7984fbf2c3">vector4</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a475009da12414d54dc23aff7198292de">vector4_array</a></td></tr>
+<tr class="memitem:a475009da12414d54dc23aff7198292de"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#aa9a60bece7f36147084b259f753fa06c">vector4</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#aa9a60bece7f36147084b259f753fa06c">vector4</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a475009da12414d54dc23aff7198292de">vector4_array</a></td></tr>
 <tr class="separator:a475009da12414d54dc23aff7198292de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a799768168e7710865249cb79f00fe9f1"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">matrix33</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">matrix33</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a799768168e7710865249cb79f00fe9f1">matrix33_array</a></td></tr>
+<tr class="memitem:a799768168e7710865249cb79f00fe9f1"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">matrix33</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">matrix33</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a799768168e7710865249cb79f00fe9f1">matrix33_array</a></td></tr>
 <tr class="separator:a799768168e7710865249cb79f00fe9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d08724ce1f4e322ef9d8b03f2d7ff11"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a28704bbec79d97d52555e258d604dd9b">matrix34</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a28704bbec79d97d52555e258d604dd9b">matrix34</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a8d08724ce1f4e322ef9d8b03f2d7ff11">matrix34_array</a></td></tr>
 <tr class="separator:a8d08724ce1f4e322ef9d8b03f2d7ff11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a309be6aacd92a7872d76c766139e6f12"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a2465e256684209b90f64669326d57c9e">matrix44</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a2465e256684209b90f64669326d57c9e">matrix44</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a309be6aacd92a7872d76c766139e6f12">matrix44_array</a></td></tr>
+<tr class="memitem:a309be6aacd92a7872d76c766139e6f12"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a64115ca4a50cfbaefa78f2a6a6da6fc1">matrix44</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a64115ca4a50cfbaefa78f2a6a6da6fc1">matrix44</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a309be6aacd92a7872d76c766139e6f12">matrix44_array</a></td></tr>
 <tr class="separator:a309be6aacd92a7872d76c766139e6f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48630d0d8ad1bf31bb4ccc2799214366"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a48630d0d8ad1bf31bb4ccc2799214366">quaternion_array</a></td></tr>
 <tr class="separator:a48630d0d8ad1bf31bb4ccc2799214366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10926bd62246c0d3323c0eceb6f3feca"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a>, Eigen::aligned_allocator&lt; <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a10926bd62246c0d3323c0eceb6f3feca">pose_array</a></td></tr>
-<tr class="separator:a10926bd62246c0d3323c0eceb6f3feca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31bde773961164941e654307ba56572e"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a>, <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a31bde773961164941e654307ba56572e">point_pair</a></td></tr>
+<tr class="separator:a31bde773961164941e654307ba56572e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4be9a207e24dc3740d9e1bcbafe46dd"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; <a class="el" href="namespacepose_estimation.html#a31bde773961164941e654307ba56572e">point_pair</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#ab4be9a207e24dc3740d9e1bcbafe46dd">matched_point_container</a></td></tr>
+<tr class="separator:ab4be9a207e24dc3740d9e1bcbafe46dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a0cb19bdf746ec6819a47a7aadd3f48a2"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepose_estimation.html#a0cb19bdf746ec6819a47a7aadd3f48a2">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;pose)</td></tr>
+<tr class="separator:a0cb19bdf746ec6819a47a7aadd3f48a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a42d00a52b1e7a10923991e31781aba5f"></a>
@@ -155,14 +172,28 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a id="ab1bb6142ab64134c5984cc073971a100"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1bb6142ab64134c5984cc073971a100">&#9670;&nbsp;</a></span>matrix33</h2>
+<a id="ab4be9a207e24dc3740d9e1bcbafe46dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4be9a207e24dc3740d9e1bcbafe46dd">&#9670;&nbsp;</a></span>matched_point_container</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt;double, 3, 3&gt; <a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">poseEstimation::matrix33</a></td>
+          <td class="memname">typedef std::list&lt;<a class="el" href="namespacepose_estimation.html#a31bde773961164941e654307ba56572e">point_pair</a>&gt; <a class="el" href="namespacepose_estimation.html#ab4be9a207e24dc3740d9e1bcbafe46dd">poseEstimation::matched_point_container</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a95032cd48afdfb073ebd2d1acdaf4990"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95032cd48afdfb073ebd2d1acdaf4990">&#9670;&nbsp;</a></span>matrix33</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Matrix3d <a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">poseEstimation::matrix33</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -176,7 +207,7 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">matrix33</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">matrix33</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#a799768168e7710865249cb79f00fe9f1">poseEstimation::matrix33_array</a></td>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">matrix33</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">matrix33</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#a799768168e7710865249cb79f00fe9f1">poseEstimation::matrix33_array</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -211,14 +242,14 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a id="a2465e256684209b90f64669326d57c9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2465e256684209b90f64669326d57c9e">&#9670;&nbsp;</a></span>matrix44</h2>
+<a id="a64115ca4a50cfbaefa78f2a6a6da6fc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64115ca4a50cfbaefa78f2a6a6da6fc1">&#9670;&nbsp;</a></span>matrix44</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt;double, 4, 4&gt; <a class="el" href="namespacepose_estimation.html#a2465e256684209b90f64669326d57c9e">poseEstimation::matrix44</a></td>
+          <td class="memname">typedef Eigen::Matrix4d <a class="el" href="namespacepose_estimation.html#a64115ca4a50cfbaefa78f2a6a6da6fc1">poseEstimation::matrix44</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -232,7 +263,21 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#a2465e256684209b90f64669326d57c9e">matrix44</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#a2465e256684209b90f64669326d57c9e">matrix44</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#a309be6aacd92a7872d76c766139e6f12">poseEstimation::matrix44_array</a></td>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#a64115ca4a50cfbaefa78f2a6a6da6fc1">matrix44</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#a64115ca4a50cfbaefa78f2a6a6da6fc1">matrix44</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#a309be6aacd92a7872d76c766139e6f12">poseEstimation::matrix44_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a31bde773961164941e654307ba56572e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31bde773961164941e654307ba56572e">&#9670;&nbsp;</a></span>point_pair</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::pair&lt;<a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a>, <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a>&gt; <a class="el" href="namespacepose_estimation.html#a31bde773961164941e654307ba56572e">poseEstimation::point_pair</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -309,14 +354,14 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a id="a5edc85f5ea8a74e8661d5732d8ec92d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5edc85f5ea8a74e8661d5732d8ec92d4">&#9670;&nbsp;</a></span>vector2</h2>
+<a id="a6ea776e0c4210b6310c21420f12d9f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ea776e0c4210b6310c21420f12d9f91">&#9670;&nbsp;</a></span>vector2</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt;double, 2, 1&gt; <a class="el" href="namespacepose_estimation.html#a5edc85f5ea8a74e8661d5732d8ec92d4">poseEstimation::vector2</a></td>
+          <td class="memname">typedef Eigen::Vector2d <a class="el" href="namespacepose_estimation.html#a6ea776e0c4210b6310c21420f12d9f91">poseEstimation::vector2</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -330,7 +375,7 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#a5edc85f5ea8a74e8661d5732d8ec92d4">vector2</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#a5edc85f5ea8a74e8661d5732d8ec92d4">vector2</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#af0a5a5fdef9171ab21611dd778aacb07">poseEstimation::vector2_array</a></td>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#a6ea776e0c4210b6310c21420f12d9f91">vector2</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#a6ea776e0c4210b6310c21420f12d9f91">vector2</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#af0a5a5fdef9171ab21611dd778aacb07">poseEstimation::vector2_array</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -365,14 +410,14 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a id="a5706add6ee7dd98c7be4bc7984fbf2c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5706add6ee7dd98c7be4bc7984fbf2c3">&#9670;&nbsp;</a></span>vector4</h2>
+<a id="aa9a60bece7f36147084b259f753fa06c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9a60bece7f36147084b259f753fa06c">&#9670;&nbsp;</a></span>vector4</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt;double, 4, 1&gt; <a class="el" href="namespacepose_estimation.html#a5706add6ee7dd98c7be4bc7984fbf2c3">poseEstimation::vector4</a></td>
+          <td class="memname">typedef Eigen::Vector4d <a class="el" href="namespacepose_estimation.html#aa9a60bece7f36147084b259f753fa06c">poseEstimation::vector4</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -386,7 +431,36 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#a5706add6ee7dd98c7be4bc7984fbf2c3">vector4</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#a5706add6ee7dd98c7be4bc7984fbf2c3">vector4</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#a475009da12414d54dc23aff7198292de">poseEstimation::vector4_array</a></td>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacepose_estimation.html#aa9a60bece7f36147084b259f753fa06c">vector4</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacepose_estimation.html#aa9a60bece7f36147084b259f753fa06c">vector4</a>&gt; &gt; <a class="el" href="namespacepose_estimation.html#a475009da12414d54dc23aff7198292de">poseEstimation::vector4_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a0cb19bdf746ec6819a47a7aadd3f48a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cb19bdf746ec6819a47a7aadd3f48a2">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; poseEstimation::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;&#160;</td>
+          <td class="paramname"><em>pose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

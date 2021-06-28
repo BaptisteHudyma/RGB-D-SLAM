@@ -1,0 +1,146 @@
+\hypertarget{structpose_estimation_1_1_levenberg___marquard___functor}{}\doxysection{pose\+Estimation\+::Levenberg\+\_\+\+Marquard\+\_\+\+Functor$<$ \+\_\+\+Scalar, NX, NY $>$ Struct Template Reference}
+\label{structpose_estimation_1_1_levenberg___marquard___functor}\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+
+
+Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric.  
+
+
+
+
+{\ttfamily \#include $<$Pose\+\_\+\+Optimisation.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a20f35bb02074addf88155a7725ee8a17}{Inputs\+At\+Compile\+Time}} = NX
+, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a5411dea74c29a846b0fe37af6b492d0a}{Values\+At\+Compile\+Time}} = NY
+ \}
+\item 
+typedef \+\_\+\+Scalar \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}
+\item 
+typedef Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a20f35bb02074addf88155a7725ee8a17}{Inputs\+At\+Compile\+Time}}, 1 $>$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a68026ff7323c83435994252e72539cd9}{Input\+Type}}
+\item 
+typedef Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a5411dea74c29a846b0fe37af6b492d0a}{Values\+At\+Compile\+Time}}, 1 $>$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a9f39eddb13d46acb30f91ad72ef826ff}{Value\+Type}}
+\item 
+typedef Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a5411dea74c29a846b0fe37af6b492d0a}{Values\+At\+Compile\+Time}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a20f35bb02074addf88155a7725ee8a17}{Inputs\+At\+Compile\+Time}} $>$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a3f3079bbcc7036db3b1f4c286c512e49}{Jacobian\+Type}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a505bed66a95ac4af999d22d5f534eed5}{Levenberg\+\_\+\+Marquard\+\_\+\+Functor}} (unsigned int input\+Count, unsigned int output\+Count)
+\item 
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae1a06ee6615c6898da013d828840bd24}{values}} () const
+\item 
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a50afc1519ef3ac0398ccec26404489cf}{inputs}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a10856c8769e1c446aa25afb4c49d6088}{\+\_\+M}}
+\item 
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a77da7000074d0bb2b24a54aaf5d28707}{\+\_\+N}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename \+\_\+\+Scalar, int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$\newline
+struct pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor$<$ \+\_\+\+Scalar, NX, NY $>$}
+
+Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric. 
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a68026ff7323c83435994252e72539cd9}\label{structpose_estimation_1_1_levenberg___marquard___functor_a68026ff7323c83435994252e72539cd9}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!InputType@{InputType}}
+\index{InputType@{InputType}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{InputType}{InputType}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a20f35bb02074addf88155a7725ee8a17}{Inputs\+At\+Compile\+Time}}, 1$>$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a68026ff7323c83435994252e72539cd9}{Input\+Type}}}
+
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a3f3079bbcc7036db3b1f4c286c512e49}\label{structpose_estimation_1_1_levenberg___marquard___functor_a3f3079bbcc7036db3b1f4c286c512e49}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!JacobianType@{JacobianType}}
+\index{JacobianType@{JacobianType}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{JacobianType}{JacobianType}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a5411dea74c29a846b0fe37af6b492d0a}{Values\+At\+Compile\+Time}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a20f35bb02074addf88155a7725ee8a17}{Inputs\+At\+Compile\+Time}}$>$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a3f3079bbcc7036db3b1f4c286c512e49}{Jacobian\+Type}}}
+
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}\label{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!Scalar@{Scalar}}
+\index{Scalar@{Scalar}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{Scalar}{Scalar}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+typedef \+\_\+\+Scalar \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}}
+
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a9f39eddb13d46acb30f91ad72ef826ff}\label{structpose_estimation_1_1_levenberg___marquard___functor_a9f39eddb13d46acb30f91ad72ef826ff}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!ValueType@{ValueType}}
+\index{ValueType@{ValueType}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{ValueType}{ValueType}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_ae460273018fdd3dc925f90594caf432d}{Scalar}}, \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a5411dea74c29a846b0fe37af6b492d0a}{Values\+At\+Compile\+Time}}, 1$>$ \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor_a9f39eddb13d46acb30f91ad72ef826ff}{Value\+Type}}}
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076}\label{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076}} 
+\doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+anonymous enum}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{InputsAtCompileTime@{InputsAtCompileTime}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!InputsAtCompileTime@{InputsAtCompileTime}}}\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a20f35bb02074addf88155a7725ee8a17}\label{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a20f35bb02074addf88155a7725ee8a17}} 
+Inputs\+At\+Compile\+Time&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ValuesAtCompileTime@{ValuesAtCompileTime}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!ValuesAtCompileTime@{ValuesAtCompileTime}}}\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a5411dea74c29a846b0fe37af6b492d0a}\label{structpose_estimation_1_1_levenberg___marquard___functor_a51efca24c5e3c6553543f5b16e5bb076a5411dea74c29a846b0fe37af6b492d0a}} 
+Values\+At\+Compile\+Time&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a505bed66a95ac4af999d22d5f534eed5}\label{structpose_estimation_1_1_levenberg___marquard___functor_a505bed66a95ac4af999d22d5f534eed5}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!Levenberg\_Marquard\_Functor@{Levenberg\_Marquard\_Functor}}
+\index{Levenberg\_Marquard\_Functor@{Levenberg\_Marquard\_Functor}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{Levenberg\_Marquard\_Functor()}{Levenberg\_Marquard\_Functor()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{Levenberg\+\_\+\+Marquard\+\_\+\+Functor}} (\begin{DoxyParamCaption}\item[{unsigned int}]{input\+Count,  }\item[{unsigned int}]{output\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a50afc1519ef3ac0398ccec26404489cf}\label{structpose_estimation_1_1_levenberg___marquard___functor_a50afc1519ef3ac0398ccec26404489cf}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!inputs@{inputs}}
+\index{inputs@{inputs}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{inputs()}{inputs()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::inputs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_ae1a06ee6615c6898da013d828840bd24}\label{structpose_estimation_1_1_levenberg___marquard___functor_ae1a06ee6615c6898da013d828840bd24}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!values@{values}}
+\index{values@{values}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{values()}{values()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a10856c8769e1c446aa25afb4c49d6088}\label{structpose_estimation_1_1_levenberg___marquard___functor_a10856c8769e1c446aa25afb4c49d6088}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!\_M@{\_M}}
+\index{\_M@{\_M}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{\_M}{\_M}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\+\_\+M}
+
+\mbox{\Hypertarget{structpose_estimation_1_1_levenberg___marquard___functor_a77da7000074d0bb2b24a54aaf5d28707}\label{structpose_estimation_1_1_levenberg___marquard___functor_a77da7000074d0bb2b24a54aaf5d28707}} 
+\index{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}!\_N@{\_N}}
+\index{\_N@{\_N}!poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$@{poseEstimation::Levenberg\_Marquard\_Functor$<$ \_Scalar, NX, NY $>$}}
+\doxysubsubsection{\texorpdfstring{\_N}{\_N}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
+unsigned int \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\+\_\+N}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/\mbox{\hyperlink{_pose___optimisation_8hpp}{Pose\+\_\+\+Optimisation.\+hpp}}\end{DoxyCompactItemize}

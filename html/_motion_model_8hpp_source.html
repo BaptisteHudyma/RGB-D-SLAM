@@ -73,42 +73,52 @@ $(function() {
 <a href="_motion_model_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef MOTION_MODEL_HPP</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define MOTION_MODEL_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;Eigen/Dense&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">types.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_pose_8hpp.html">Pose.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacepose_estimation.html">poseEstimation</a> {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;Eigen/Dense&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classpose_estimation_1_1_motion___model.html">   12</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classpose_estimation_1_1_motion___model.html">Motion_Model</a> {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <a class="code" href="classpose_estimation_1_1_motion___model.html#a7286f58ba5c215cecd6ac84569e40d95">Motion_Model</a>();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordtype">void</span> <a class="code" href="classpose_estimation_1_1_motion___model.html#a53a631d43fa74c3fa6ec3bf1ff8a657e">reset</a>();</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a> <a class="code" href="classpose_estimation_1_1_motion___model.html#a6584709d3c84b3f09457ba2cebe419bf">predict_next_pose</a>(<span class="keyword">const</span> <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a>&amp; currentPose);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            EIGEN_MAKE_ALIGNED_OPERATOR_NEW</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacepose_estimation.html">poseEstimation</a> {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classpose_estimation_1_1_motion___model.html">   14</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classpose_estimation_1_1_motion___model.html">Motion_Model</a> {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <a class="code" href="classpose_estimation_1_1_motion___model.html#a7286f58ba5c215cecd6ac84569e40d95">Motion_Model</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordtype">void</span> <a class="code" href="classpose_estimation_1_1_motion___model.html#a53a631d43fa74c3fa6ec3bf1ff8a657e">reset</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keyword">const</span> <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a> <a class="code" href="classpose_estimation_1_1_motion___model.html#a8489eef940f8f1b533f33e32a000436b">predict_next_pose</a>(<span class="keyword">const</span> <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a>&amp; currentPose);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <a class="code" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> _lastQ;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <a class="code" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> _angularVelocity;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <a class="code" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> _lastPosition;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <a class="code" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> _linearVelocity;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    };</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordtype">void</span> <a class="code" href="classpose_estimation_1_1_motion___model.html#a9711b42f42004c2718a22e18fd63663b">update_model</a>(<span class="keyword">const</span> <a class="code" href="classpose_estimation_1_1_pose.html">Pose</a>&amp; pose);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            EIGEN_MAKE_ALIGNED_OPERATOR_NEW</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="comment">// Last known rotation quaternion estimated by the motion model (set by update_model)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <a class="code" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> _lastQ;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="comment">// Last computed angular velocity</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <a class="code" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> _angularVelocity;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="comment">// Last known translation estimated by the motion model (set by update_model)</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <a class="code" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> _lastPosition;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="comment">// Last computed linear velocity</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <a class="code" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> _linearVelocity;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    };</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_pose_8hpp_html"><div class="ttname"><a href="_pose_8hpp.html">Pose.hpp</a></div></div>
-<div class="ttc" id="aclasspose_estimation_1_1_motion___model_html"><div class="ttname"><a href="classpose_estimation_1_1_motion___model.html">poseEstimation::Motion_Model</a></div><div class="ttdoc">Dead reckoning class: guess next pose using a motion model.</div><div class="ttdef"><b>Definition:</b> MotionModel.hpp:12</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_motion___model_html"><div class="ttname"><a href="classpose_estimation_1_1_motion___model.html">poseEstimation::Motion_Model</a></div><div class="ttdoc">Dead reckoning class: guess next pose using a motion model.</div><div class="ttdef"><b>Definition:</b> MotionModel.hpp:14</div></div>
 <div class="ttc" id="aclasspose_estimation_1_1_motion___model_html_a53a631d43fa74c3fa6ec3bf1ff8a657e"><div class="ttname"><a href="classpose_estimation_1_1_motion___model.html#a53a631d43fa74c3fa6ec3bf1ff8a657e">poseEstimation::Motion_Model::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> MotionModel.cpp:11</div></div>
-<div class="ttc" id="aclasspose_estimation_1_1_motion___model_html_a6584709d3c84b3f09457ba2cebe419bf"><div class="ttname"><a href="classpose_estimation_1_1_motion___model.html#a6584709d3c84b3f09457ba2cebe419bf">poseEstimation::Motion_Model::predict_next_pose</a></div><div class="ttdeci">Pose predict_next_pose(const Pose &amp;currentPose)</div><div class="ttdoc">Predicts next pose with motion model (dead reckoning)</div><div class="ttdef"><b>Definition:</b> MotionModel.cpp:21</div></div>
 <div class="ttc" id="aclasspose_estimation_1_1_motion___model_html_a7286f58ba5c215cecd6ac84569e40d95"><div class="ttname"><a href="classpose_estimation_1_1_motion___model.html#a7286f58ba5c215cecd6ac84569e40d95">poseEstimation::Motion_Model::Motion_Model</a></div><div class="ttdeci">Motion_Model()</div><div class="ttdef"><b>Definition:</b> MotionModel.cpp:6</div></div>
-<div class="ttc" id="aclasspose_estimation_1_1_pose_html"><div class="ttname"><a href="classpose_estimation_1_1_pose.html">poseEstimation::Pose</a></div><div class="ttdoc">Store a position.</div><div class="ttdef"><b>Definition:</b> Pose.hpp:28</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_motion___model_html_a8489eef940f8f1b533f33e32a000436b"><div class="ttname"><a href="classpose_estimation_1_1_motion___model.html#a8489eef940f8f1b533f33e32a000436b">poseEstimation::Motion_Model::predict_next_pose</a></div><div class="ttdeci">const Pose predict_next_pose(const Pose &amp;currentPose)</div><div class="ttdoc">Predicts next pose with motion model (dead reckoning)</div><div class="ttdef"><b>Definition:</b> MotionModel.cpp:21</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_motion___model_html_a9711b42f42004c2718a22e18fd63663b"><div class="ttname"><a href="classpose_estimation_1_1_motion___model.html#a9711b42f42004c2718a22e18fd63663b">poseEstimation::Motion_Model::update_model</a></div><div class="ttdeci">void update_model(const Pose &amp;pose)</div><div class="ttdoc">Update the motion model using the refined pose.</div><div class="ttdef"><b>Definition:</b> MotionModel.cpp:48</div></div>
+<div class="ttc" id="aclasspose_estimation_1_1_pose_html"><div class="ttname"><a href="classpose_estimation_1_1_pose.html">poseEstimation::Pose</a></div><div class="ttdoc">Store a position.</div><div class="ttdef"><b>Definition:</b> Pose.hpp:14</div></div>
 <div class="ttc" id="anamespacepose_estimation_html"><div class="ttname"><a href="namespacepose_estimation.html">poseEstimation</a></div><div class="ttdef"><b>Definition:</b> Image_Features_Handler.cpp:9</div></div>
-<div class="ttc" id="anamespacepose_estimation_html_a59510a1f41a5dfbec0dcfc2ba507bba6"><div class="ttname"><a href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">poseEstimation::vector3</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 3, 1 &gt; vector3</div><div class="ttdef"><b>Definition:</b> Pose.hpp:10</div></div>
-<div class="ttc" id="anamespacepose_estimation_html_a7595409391720685f266b0af9f3bc8d9"><div class="ttname"><a href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">poseEstimation::quaternion</a></div><div class="ttdeci">Eigen::Quaternion&lt; double &gt; quaternion</div><div class="ttdef"><b>Definition:</b> Pose.hpp:15</div></div>
+<div class="ttc" id="anamespacepose_estimation_html_a59510a1f41a5dfbec0dcfc2ba507bba6"><div class="ttname"><a href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">poseEstimation::vector3</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 3, 1 &gt; vector3</div><div class="ttdef"><b>Definition:</b> types.hpp:13</div></div>
+<div class="ttc" id="anamespacepose_estimation_html_a7595409391720685f266b0af9f3bc8d9"><div class="ttname"><a href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">poseEstimation::quaternion</a></div><div class="ttdeci">Eigen::Quaternion&lt; double &gt; quaternion</div><div class="ttdef"><b>Definition:</b> types.hpp:18</div></div>
+<div class="ttc" id="atypes_8hpp_html"><div class="ttname"><a href="types_8hpp.html">types.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,0 +1,222 @@
+\hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m}{}\doxysection{primitive\+Detection\+::RGBD\+\_\+\+SLAM Class Reference}
+\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m}\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+
+
+{\ttfamily \#include $<$RGBD\+\_\+\+SLAM.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::map$<$ unsigned int, \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{pose\+Estimation\+::vector3}} $>$ \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}{keypoint\+\_\+container}}
+\item 
+typedef std\+::vector$<$ cv\+::\+Vec4f $>$ \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a43e900ce3f3201ed50981954171d2de3}{line\+\_\+vector}}
+\item 
+typedef std\+::list$<$ std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classprimitive_detection_1_1_primitive}{primitive\+Detection\+::\+Primitive}} $>$ $>$ \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a91761ddb9de623807aafd37ea8816983}{primitive\+\_\+container}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_ad833f47c67a03651b276a42c152d2bd2}{RGBD\+\_\+\+SLAM}} (const std\+::stringstream \&data\+Path, unsigned int image\+Width=640, unsigned int image\+Height=480, unsigned int min\+Hessian=300, double max\+Match\+Distance=0.\+7)
+\item 
+\mbox{\hyperlink{classpose_estimation_1_1_pose}{pose\+Estimation\+::\+Pose}} \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a090736eb09eb32ea8a4849ed5c9d7d76}{track}} (const cv\+::\+Mat \&rgb\+Image, const cv\+::\+Mat \&depth\+Image, bool detect\+Lines=false)
+\begin{DoxyCompactList}\small\item\em Estimates a new pose from the given images. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a2c2c0dc2f282f0f44cc2d98981364fe4}{get\+\_\+debug\+\_\+image}} (const cv\+::\+Mat original\+RGB, cv\+::\+Mat \&debug\+Image, double elapsed\+Time, bool show\+Primitive\+Masks=true)
+\begin{DoxyCompactList}\small\item\em Compute a debug image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a8bc61385f8024c99562bdd28faebbea3}{show\+\_\+statistics}} ()
+\begin{DoxyCompactList}\small\item\em Shox the time statistics for certain parts of the program. Kind of a basic profiler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{classpose_estimation_1_1_pose}{pose\+Estimation\+::\+Pose}} \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a79e81f65cb20e1e789f346e16b87041a}{compute\+\_\+new\+\_\+pose}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&depth\+Image)
+\begin{DoxyCompactList}\small\item\em Compute a new pose from the keypoints points between two following images. It uses only the keypoints with an associated depth. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{namespacepose_estimation_ab4be9a207e24dc3740d9e1bcbafe46dd}{pose\+Estimation\+::matched\+\_\+point\+\_\+container}} \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_ad87138c9ea585a80483f2a08e8f079b8}{get\+\_\+good\+\_\+matches}} (\mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}{keypoint\+\_\+container}} \&this\+Frame\+Keypoints, cv\+::\+Mat \&this\+Frame\+Descriptors)
+\begin{DoxyCompactList}\small\item\em get a container with the filtered point matches. Uses \+\_\+max\+Match\+Distance to estimate good matches. \end{DoxyCompactList}\item 
+const std\+::string \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_aaa99380286f5d1952375dda715fb35c0}{get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
+\begin{DoxyCompactList}\small\item\em Use for debug. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_aeaf3602f6aba71e2bf6efd4ac51e1ce9}{get\+\_\+cleaned\+\_\+keypoint}} (const cv\+::\+Mat \&depth\+Image, const std\+::vector$<$ cv\+::\+Key\+Point $>$ \&kp, \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}{keypoint\+\_\+container}} \&cleaned\+Points)
+\begin{DoxyCompactList}\small\item\em Get the filtered keypoints. Remove keypoints without depth informations. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a9459334b4f3fa197d540233a045767b2}{set\+\_\+color\+\_\+vector}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!keypoint\_container@{keypoint\_container}}
+\index{keypoint\_container@{keypoint\_container}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{keypoint\_container}{keypoint\_container}}
+{\footnotesize\ttfamily typedef std\+::map$<$unsigned int, \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{pose\+Estimation\+::vector3}}$>$ \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}{primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::keypoint\+\_\+container}}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a43e900ce3f3201ed50981954171d2de3}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a43e900ce3f3201ed50981954171d2de3}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!line\_vector@{line\_vector}}
+\index{line\_vector@{line\_vector}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{line\_vector}{line\_vector}}
+{\footnotesize\ttfamily typedef std\+::vector$<$cv\+::\+Vec4f$>$ \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a43e900ce3f3201ed50981954171d2de3}{primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::line\+\_\+vector}}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a91761ddb9de623807aafd37ea8816983}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a91761ddb9de623807aafd37ea8816983}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!primitive\_container@{primitive\_container}}
+\index{primitive\_container@{primitive\_container}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{primitive\_container}{primitive\_container}}
+{\footnotesize\ttfamily typedef std\+::list$<$std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classprimitive_detection_1_1_primitive}{primitive\+Detection\+::\+Primitive}}$>$ $>$ \mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a91761ddb9de623807aafd37ea8816983}{primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::primitive\+\_\+container}}}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_ad833f47c67a03651b276a42c152d2bd2}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_ad833f47c67a03651b276a42c152d2bd2}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!RGBD\_SLAM@{RGBD\_SLAM}}
+\index{RGBD\_SLAM@{RGBD\_SLAM}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{RGBD\_SLAM()}{RGBD\_SLAM()}}
+{\footnotesize\ttfamily primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const std\+::stringstream \&}]{data\+Path,  }\item[{unsigned int}]{image\+Width = {\ttfamily 640},  }\item[{unsigned int}]{image\+Height = {\ttfamily 480},  }\item[{unsigned int}]{min\+Hessian = {\ttfamily 300},  }\item[{double}]{max\+Match\+Distance = {\ttfamily 0.7} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em data\+Path} & Path of the file that contains the camera intrinsics \\
+\hline
+\mbox{\texttt{ in}}  & {\em image\+Width} & The width of the depth images (fixed) \\
+\hline
+\mbox{\texttt{ in}}  & {\em image\+Height} & The height of the depth image (fixed) \\
+\hline
+\mbox{\texttt{ in}}  & {\em min\+Hessian} & Minimum Hessian parameter for point detection \\
+\hline
+\mbox{\texttt{ in}}  & {\em max\+Match\+Distance} & Maximum distance between the two closest point matches candidates (0 -\/ 1) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a79e81f65cb20e1e789f346e16b87041a}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a79e81f65cb20e1e789f346e16b87041a}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!compute\_new\_pose@{compute\_new\_pose}}
+\index{compute\_new\_pose@{compute\_new\_pose}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{compute\_new\_pose()}{compute\_new\_pose()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classpose_estimation_1_1_pose}{pose\+Estimation\+::\+Pose}} primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::compute\+\_\+new\+\_\+pose (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat \&}]{depth\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Compute a new pose from the keypoints points between two following images. It uses only the keypoints with an associated depth. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em gray\+Image} & The input image from the camera, as a gray image \\
+\hline
+\mbox{\texttt{ in}}  & {\em depth\+Image} & The associated depth image, already corrected with camera parameters\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new estimated pose from points positions 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_aeaf3602f6aba71e2bf6efd4ac51e1ce9}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_aeaf3602f6aba71e2bf6efd4ac51e1ce9}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!get\_cleaned\_keypoint@{get\_cleaned\_keypoint}}
+\index{get\_cleaned\_keypoint@{get\_cleaned\_keypoint}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{get\_cleaned\_keypoint()}{get\_cleaned\_keypoint()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::get\+\_\+cleaned\+\_\+keypoint (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{depth\+Image,  }\item[{const std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{kp,  }\item[{\mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}{keypoint\+\_\+container}} \&}]{cleaned\+Points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Get the filtered keypoints. Remove keypoints without depth informations. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em depth\+Image} & The associated depth image, already rectified \\
+\hline
+\mbox{\texttt{ in}}  & {\em kp} & Container for raw keypoints \\
+\hline
+\mbox{\texttt{ out}}  & {\em cleaned\+Points} & Container with the final clean keypoints \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a2c2c0dc2f282f0f44cc2d98981364fe4}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a2c2c0dc2f282f0f44cc2d98981364fe4}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!get\_debug\_image@{get\_debug\_image}}
+\index{get\_debug\_image@{get\_debug\_image}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{get\_debug\_image()}{get\_debug\_image()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::get\+\_\+debug\+\_\+image (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat}]{original\+RGB,  }\item[{cv\+::\+Mat \&}]{debug\+Image,  }\item[{double}]{elapsed\+Time,  }\item[{bool}]{show\+Primitive\+Masks = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+Compute a debug image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em original\+RGB} & Raw rgb image. Will be used as a base for the final image \\
+\hline
+\mbox{\texttt{ out}}  & {\em debug\+Image} & Output image \\
+\hline
+\mbox{\texttt{ in}}  & {\em elapsed\+Time} & Time since the last call (used for FPS count) \\
+\hline
+\mbox{\texttt{ in}}  & {\em show\+Primitive\+Masks} & Display the detected primitive masks \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_ad87138c9ea585a80483f2a08e8f079b8}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_ad87138c9ea585a80483f2a08e8f079b8}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!get\_good\_matches@{get\_good\_matches}}
+\index{get\_good\_matches@{get\_good\_matches}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{get\_good\_matches()}{get\_good\_matches()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacepose_estimation_ab4be9a207e24dc3740d9e1bcbafe46dd}{pose\+Estimation\+::matched\+\_\+point\+\_\+container}} primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::get\+\_\+good\+\_\+matches (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a3bae6b369328f3f33c18154937b62c65}{keypoint\+\_\+container}} \&}]{this\+Frame\+Keypoints,  }\item[{cv\+::\+Mat \&}]{this\+Frame\+Descriptors }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+get a container with the filtered point matches. Uses \+\_\+max\+Match\+Distance to estimate good matches. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em this\+Frame\+Keypoints} & This frame detected and filtered keypoints \\
+\hline
+\mbox{\texttt{ in}}  & {\em this\+Frame\+Descriptors} & The associated descriptors\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The matched points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_aaa99380286f5d1952375dda715fb35c0}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_aaa99380286f5d1952375dda715fb35c0}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}}
+\index{get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{get\_human\_readable\_end\_message()}{get\_human\_readable\_end\_message()}}
+{\footnotesize\ttfamily const std\+::string primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message (\begin{DoxyParamCaption}\item[{Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status}]{status }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Use for debug. 
+
+\begin{DoxyReturn}{Returns}
+Returns a string with the human readable version of Eigen Levenberg\+Marquardt output status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a9459334b4f3fa197d540233a045767b2}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a9459334b4f3fa197d540233a045767b2}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!set\_color\_vector@{set\_color\_vector}}
+\index{set\_color\_vector@{set\_color\_vector}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{set\_color\_vector()}{set\_color\_vector()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::set\+\_\+color\+\_\+vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a8bc61385f8024c99562bdd28faebbea3}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a8bc61385f8024c99562bdd28faebbea3}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!show\_statistics@{show\_statistics}}
+\index{show\_statistics@{show\_statistics}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
+{\footnotesize\ttfamily void primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::show\+\_\+statistics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Shox the time statistics for certain parts of the program. Kind of a basic profiler. 
+
+\mbox{\Hypertarget{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a090736eb09eb32ea8a4849ed5c9d7d76}\label{classprimitive_detection_1_1_r_g_b_d___s_l_a_m_a090736eb09eb32ea8a4849ed5c9d7d76}} 
+\index{primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}!track@{track}}
+\index{track@{track}!primitiveDetection::RGBD\_SLAM@{primitiveDetection::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classpose_estimation_1_1_pose}{pose\+Estimation\+::\+Pose}} primitive\+Detection\+::\+RGBD\+\_\+\+SLAM\+::track (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{rgb\+Image,  }\item[{const cv\+::\+Mat \&}]{depth\+Image,  }\item[{bool}]{detect\+Lines = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Estimates a new pose from the given images. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rgb\+Image} & Raw RGB image \\
+\hline
+\mbox{\texttt{ in}}  & {\em depth\+Image} & Raw depth Image \\
+\hline
+\mbox{\texttt{ in}}  & {\em detect\+Lines} & Should we use line detection on the RGB image ?\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new estimated pose 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/\mbox{\hyperlink{_r_g_b_d___s_l_a_m_8hpp}{RGBD\+\_\+\+SLAM.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/\mbox{\hyperlink{_r_g_b_d___s_l_a_m_8cpp}{RGBD\+\_\+\+SLAM.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,27 @@
+\hypertarget{_pose___optimisation_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/\+Pose\+\_\+\+Optimisation.hpp File Reference}
+\label{_pose___optimisation_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/Pose\_Optimisation.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/Pose\_Optimisation.hpp}}
+{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$Eigen/\+Eigen$>$}\newline
+{\ttfamily \#include $<$unsupported/\+Eigen/\+Non\+Linear\+Optimization$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{pose\+Estimation\+::\+Levenberg\+\_\+\+Marquard\+\_\+\+Functor$<$ \+\_\+\+Scalar, NX, NY $>$}}
+\begin{DoxyCompactList}\small\item\em Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structpose_estimation_1_1_pose___estimator}{pose\+Estimation\+::\+Pose\+\_\+\+Estimator}}
+\item 
+struct \mbox{\hyperlink{structpose_estimation_1_1_pose___functor}{pose\+Estimation\+::\+Pose\+\_\+\+Functor}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacepose_estimation}{pose\+Estimation}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::pair$<$ vector3, vector3 $>$ \mbox{\hyperlink{namespacepose_estimation_a31bde773961164941e654307ba56572e}{pose\+Estimation\+::point\+\_\+pair}}
+\item 
+typedef std\+::list$<$ point\+\_\+pair $>$ \mbox{\hyperlink{namespacepose_estimation_ab4be9a207e24dc3740d9e1bcbafe46dd}{pose\+Estimation\+::matched\+\_\+point\+\_\+container}}
+\end{DoxyCompactItemize}

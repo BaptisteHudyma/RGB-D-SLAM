@@ -18,12 +18,16 @@ Store a position.
 \item 
 void \mbox{\hyperlink{classpose_estimation_1_1_pose_a1ece52b37553fd49e5ebefc6789fa96c}{set\+\_\+parameters}} (const \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}} \&position, const \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}} \&orientation)
 \item 
+void \mbox{\hyperlink{classpose_estimation_1_1_pose_ac2bb55a31ba3b7ea2b00df10993b1b16}{update}} (const \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}} \&position, const \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}} \&orientation)
+\item 
 \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}} \mbox{\hyperlink{classpose_estimation_1_1_pose_a6c4e720ed45d0a408cd8c7b109629717}{get\+\_\+position}} () const
 \item 
-\mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{matrix33}} \mbox{\hyperlink{classpose_estimation_1_1_pose_a1855380b67f1a6e44595926012b8656f}{get\+\_\+orientation\+\_\+matrix}} () const
+\mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{matrix33}} \mbox{\hyperlink{classpose_estimation_1_1_pose_a1855380b67f1a6e44595926012b8656f}{get\+\_\+orientation\+\_\+matrix}} () const
 \item 
 \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}} \mbox{\hyperlink{classpose_estimation_1_1_pose_a9ee239763f377ae1e947493b6a36553f}{get\+\_\+orientation\+\_\+quaternion}} () const
-\end{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_pose_aabc8f94c3e8a9b833d3cf399573bc670}{display}} (std\+::ostream \&os) const
+\begin{DoxyCompactList}\small\item\em A display function, to avoid a friend operator function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -45,11 +49,21 @@ Store a position.
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classpose_estimation_1_1_pose_aabc8f94c3e8a9b833d3cf399573bc670}\label{classpose_estimation_1_1_pose_aabc8f94c3e8a9b833d3cf399573bc670}} 
+\index{poseEstimation::Pose@{poseEstimation::Pose}!display@{display}}
+\index{display@{display}!poseEstimation::Pose@{poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Pose\+::display (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os }\end{DoxyParamCaption}) const}
+
+
+
+A display function, to avoid a friend operator function. 
+
 \mbox{\Hypertarget{classpose_estimation_1_1_pose_a1855380b67f1a6e44595926012b8656f}\label{classpose_estimation_1_1_pose_a1855380b67f1a6e44595926012b8656f}} 
 \index{poseEstimation::Pose@{poseEstimation::Pose}!get\_orientation\_matrix@{get\_orientation\_matrix}}
 \index{get\_orientation\_matrix@{get\_orientation\_matrix}!poseEstimation::Pose@{poseEstimation::Pose}}
 \doxysubsubsection{\texorpdfstring{get\_orientation\_matrix()}{get\_orientation\_matrix()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{matrix33}} pose\+Estimation\+::\+Pose\+::get\+\_\+orientation\+\_\+matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{matrix33}} pose\+Estimation\+::\+Pose\+::get\+\_\+orientation\+\_\+matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{classpose_estimation_1_1_pose_a9ee239763f377ae1e947493b6a36553f}\label{classpose_estimation_1_1_pose_a9ee239763f377ae1e947493b6a36553f}} 
 \index{poseEstimation::Pose@{poseEstimation::Pose}!get\_orientation\_quaternion@{get\_orientation\_quaternion}}
@@ -68,6 +82,12 @@ Store a position.
 \index{set\_parameters@{set\_parameters}!poseEstimation::Pose@{poseEstimation::Pose}}
 \doxysubsubsection{\texorpdfstring{set\_parameters()}{set\_parameters()}}
 {\footnotesize\ttfamily void pose\+Estimation\+::\+Pose\+::set\+\_\+parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classpose_estimation_1_1_pose_ac2bb55a31ba3b7ea2b00df10993b1b16}\label{classpose_estimation_1_1_pose_ac2bb55a31ba3b7ea2b00df10993b1b16}} 
+\index{poseEstimation::Pose@{poseEstimation::Pose}!update@{update}}
+\index{update@{update}!poseEstimation::Pose@{poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Pose\+::update (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
 
 
 

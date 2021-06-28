@@ -87,12 +87,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af82f82cea8ccb23e383c734923f5873c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ece52b37553fd49e5ebefc6789fa96c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose.html#a1ece52b37553fd49e5ebefc6789fa96c">set_parameters</a> (const <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> &amp;position, const <a class="el" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> &amp;orientation)</td></tr>
 <tr class="separator:a1ece52b37553fd49e5ebefc6789fa96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2bb55a31ba3b7ea2b00df10993b1b16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose.html#ac2bb55a31ba3b7ea2b00df10993b1b16">update</a> (const <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> &amp;position, const <a class="el" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> &amp;orientation)</td></tr>
+<tr class="separator:ac2bb55a31ba3b7ea2b00df10993b1b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c4e720ed45d0a408cd8c7b109629717"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose.html#a6c4e720ed45d0a408cd8c7b109629717">get_position</a> () const</td></tr>
 <tr class="separator:a6c4e720ed45d0a408cd8c7b109629717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1855380b67f1a6e44595926012b8656f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose.html#a1855380b67f1a6e44595926012b8656f">get_orientation_matrix</a> () const</td></tr>
+<tr class="memitem:a1855380b67f1a6e44595926012b8656f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose.html#a1855380b67f1a6e44595926012b8656f">get_orientation_matrix</a> () const</td></tr>
 <tr class="separator:a1855380b67f1a6e44595926012b8656f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ee239763f377ae1e947493b6a36553f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose.html#a9ee239763f377ae1e947493b6a36553f">get_orientation_quaternion</a> () const</td></tr>
 <tr class="separator:a9ee239763f377ae1e947493b6a36553f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabc8f94c3e8a9b833d3cf399573bc670"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_pose.html#aabc8f94c3e8a9b833d3cf399573bc670">display</a> (std::ostream &amp;os) const</td></tr>
+<tr class="memdesc:aabc8f94c3e8a9b833d3cf399573bc670"><td class="mdescLeft">&#160;</td><td class="mdescRight">A display function, to avoid a friend operator function.  <a href="classpose_estimation_1_1_pose.html#aabc8f94c3e8a9b833d3cf399573bc670">More...</a><br /></td></tr>
+<tr class="separator:aabc8f94c3e8a9b833d3cf399573bc670"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Store a position. </p>
@@ -143,6 +148,26 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aabc8f94c3e8a9b833d3cf399573bc670"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabc8f94c3e8a9b833d3cf399573bc670">&#9670;&nbsp;</a></span>display()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void poseEstimation::Pose::display </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A display function, to avoid a friend operator function. </p>
+
+</div>
+</div>
 <a id="a1855380b67f1a6e44595926012b8656f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1855380b67f1a6e44595926012b8656f">&#9670;&nbsp;</a></span>get_orientation_matrix()</h2>
 
@@ -153,7 +178,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepose_estimation.html#ab1bb6142ab64134c5984cc073971a100">matrix33</a> poseEstimation::Pose::get_orientation_matrix </td>
+          <td class="memname"><a class="el" href="namespacepose_estimation.html#a95032cd48afdfb073ebd2d1acdaf4990">matrix33</a> poseEstimation::Pose::get_orientation_matrix </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -226,6 +251,34 @@ Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void poseEstimation::Pose::set_parameters </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9">quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>orientation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac2bb55a31ba3b7ea2b00df10993b1b16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2bb55a31ba3b7ea2b00df10993b1b16">&#9670;&nbsp;</a></span>update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void poseEstimation::Pose::update </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespacepose_estimation.html#a59510a1f41a5dfbec0dcfc2ba507bba6">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>position</em>, </td>

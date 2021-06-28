@@ -21,6 +21,12 @@ class \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}}
 \begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classpose_estimation_1_1_pose___utils}{Pose\+\_\+\+Utils}}
 \item 
+struct \mbox{\hyperlink{structpose_estimation_1_1_levenberg___marquard___functor}{Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}
+\begin{DoxyCompactList}\small\item\em Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structpose_estimation_1_1_pose___estimator}{Pose\+\_\+\+Estimator}}
+\item 
+struct \mbox{\hyperlink{structpose_estimation_1_1_pose___functor}{Pose\+\_\+\+Functor}}
+\item 
 class \mbox{\hyperlink{classpose_estimation_1_1_r_g_b___s_l_a_m}{RGB\+\_\+\+SLAM}}
 \begin{DoxyCompactList}\small\item\em SLAM algorithm based on special points tracking in a local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
@@ -32,35 +38,44 @@ typedef std\+::vector$<$ cv\+::\+Key\+Point $>$ \mbox{\hyperlink{namespacepose_e
 \item 
 typedef std\+::vector$<$ cv\+::\+Point2f $>$ \mbox{\hyperlink{namespacepose_estimation_a79be94e3e8e766a7deb8c44824e949ce}{point\+\_\+vector}}
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 2, 1 $>$ \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}}
+typedef std\+::vector$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a10926bd62246c0d3323c0eceb6f3feca}{pose\+\_\+array}}
+\item 
+typedef Eigen\+::\+Vector2d \mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{vector2}}
 \item 
 typedef Eigen\+::\+Matrix$<$ double, 3, 1 $>$ \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}}
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 4, 1 $>$ \mbox{\hyperlink{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}{vector4}}
+typedef Eigen\+::\+Vector4d \mbox{\hyperlink{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}{vector4}}
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 3, 3 $>$ \mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{matrix33}}
+typedef Eigen\+::\+Matrix3d \mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{matrix33}}
 \item 
 typedef Eigen\+::\+Matrix$<$ double, 3, 4 $>$ \mbox{\hyperlink{namespacepose_estimation_a28704bbec79d97d52555e258d604dd9b}{matrix34}}
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 4, 4 $>$ \mbox{\hyperlink{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}{matrix44}}
+typedef Eigen\+::\+Matrix4d \mbox{\hyperlink{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}{matrix44}}
 \item 
 typedef Eigen\+::\+Quaternion$<$ double $>$ \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_af0a5a5fdef9171ab21611dd778aacb07}{vector2\+\_\+array}}
+typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{vector2}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{vector2}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_af0a5a5fdef9171ab21611dd778aacb07}{vector2\+\_\+array}}
 \item 
 typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{vector3\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}{vector4}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}{vector4}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a475009da12414d54dc23aff7198292de}{vector4\+\_\+array}}
+typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}{vector4}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}{vector4}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a475009da12414d54dc23aff7198292de}{vector4\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{matrix33}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{matrix33}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a799768168e7710865249cb79f00fe9f1}{matrix33\+\_\+array}}
+typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{matrix33}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{matrix33}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a799768168e7710865249cb79f00fe9f1}{matrix33\+\_\+array}}
 \item 
 typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a28704bbec79d97d52555e258d604dd9b}{matrix34}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a28704bbec79d97d52555e258d604dd9b}{matrix34}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a8d08724ce1f4e322ef9d8b03f2d7ff11}{matrix34\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}{matrix44}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}{matrix44}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a309be6aacd92a7872d76c766139e6f12}{matrix44\+\_\+array}}
+typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}{matrix44}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}{matrix44}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a309be6aacd92a7872d76c766139e6f12}{matrix44\+\_\+array}}
 \item 
 typedef std\+::vector$<$ \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacepose_estimation_a7595409391720685f266b0af9f3bc8d9}{quaternion}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a48630d0d8ad1bf31bb4ccc2799214366}{quaternion\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} $>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a10926bd62246c0d3323c0eceb6f3feca}{pose\+\_\+array}}
+typedef std\+::pair$<$ \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}}, \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}} $>$ \mbox{\hyperlink{namespacepose_estimation_a31bde773961164941e654307ba56572e}{point\+\_\+pair}}
+\item 
+typedef std\+::list$<$ \mbox{\hyperlink{namespacepose_estimation_a31bde773961164941e654307ba56572e}{point\+\_\+pair}} $>$ \mbox{\hyperlink{namespacepose_estimation_ab4be9a207e24dc3740d9e1bcbafe46dd}{matched\+\_\+point\+\_\+container}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespacepose_estimation_a0cb19bdf746ec6819a47a7aadd3f48a2}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&pose)
 \end{DoxyCompactItemize}
 
 
@@ -71,17 +86,23 @@ typedef std\+::vector$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}},
 \doxysubsubsection{\texorpdfstring{keypoint\_vector}{keypoint\_vector}}
 {\footnotesize\ttfamily typedef std\+::vector$<$cv\+::\+Key\+Point$>$ \mbox{\hyperlink{namespacepose_estimation_a42d00a52b1e7a10923991e31781aba5f}{pose\+Estimation\+::keypoint\+\_\+vector}}}
 
-\mbox{\Hypertarget{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}\label{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}} 
+\mbox{\Hypertarget{namespacepose_estimation_ab4be9a207e24dc3740d9e1bcbafe46dd}\label{namespacepose_estimation_ab4be9a207e24dc3740d9e1bcbafe46dd}} 
+\index{poseEstimation@{poseEstimation}!matched\_point\_container@{matched\_point\_container}}
+\index{matched\_point\_container@{matched\_point\_container}!poseEstimation@{poseEstimation}}
+\doxysubsubsection{\texorpdfstring{matched\_point\_container}{matched\_point\_container}}
+{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacepose_estimation_a31bde773961164941e654307ba56572e}{point\+\_\+pair}}$>$ \mbox{\hyperlink{namespacepose_estimation_ab4be9a207e24dc3740d9e1bcbafe46dd}{pose\+Estimation\+::matched\+\_\+point\+\_\+container}}}
+
+\mbox{\Hypertarget{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}\label{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}} 
 \index{poseEstimation@{poseEstimation}!matrix33@{matrix33}}
 \index{matrix33@{matrix33}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{matrix33}{matrix33}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 3, 3$>$ \mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{pose\+Estimation\+::matrix33}}}
+{\footnotesize\ttfamily typedef Eigen\+::\+Matrix3d \mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{pose\+Estimation\+::matrix33}}}
 
 \mbox{\Hypertarget{namespacepose_estimation_a799768168e7710865249cb79f00fe9f1}\label{namespacepose_estimation_a799768168e7710865249cb79f00fe9f1}} 
 \index{poseEstimation@{poseEstimation}!matrix33\_array@{matrix33\_array}}
 \index{matrix33\_array@{matrix33\_array}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{matrix33\_array}{matrix33\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{matrix33}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_ab1bb6142ab64134c5984cc073971a100}{matrix33}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a799768168e7710865249cb79f00fe9f1}{pose\+Estimation\+::matrix33\+\_\+array}}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{matrix33}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a95032cd48afdfb073ebd2d1acdaf4990}{matrix33}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a799768168e7710865249cb79f00fe9f1}{pose\+Estimation\+::matrix33\+\_\+array}}}
 
 \mbox{\Hypertarget{namespacepose_estimation_a28704bbec79d97d52555e258d604dd9b}\label{namespacepose_estimation_a28704bbec79d97d52555e258d604dd9b}} 
 \index{poseEstimation@{poseEstimation}!matrix34@{matrix34}}
@@ -95,17 +116,23 @@ typedef std\+::vector$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}},
 \doxysubsubsection{\texorpdfstring{matrix34\_array}{matrix34\_array}}
 {\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a28704bbec79d97d52555e258d604dd9b}{matrix34}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a28704bbec79d97d52555e258d604dd9b}{matrix34}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a8d08724ce1f4e322ef9d8b03f2d7ff11}{pose\+Estimation\+::matrix34\+\_\+array}}}
 
-\mbox{\Hypertarget{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}\label{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}} 
+\mbox{\Hypertarget{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}\label{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}} 
 \index{poseEstimation@{poseEstimation}!matrix44@{matrix44}}
 \index{matrix44@{matrix44}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{matrix44}{matrix44}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 4, 4$>$ \mbox{\hyperlink{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}{pose\+Estimation\+::matrix44}}}
+{\footnotesize\ttfamily typedef Eigen\+::\+Matrix4d \mbox{\hyperlink{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}{pose\+Estimation\+::matrix44}}}
 
 \mbox{\Hypertarget{namespacepose_estimation_a309be6aacd92a7872d76c766139e6f12}\label{namespacepose_estimation_a309be6aacd92a7872d76c766139e6f12}} 
 \index{poseEstimation@{poseEstimation}!matrix44\_array@{matrix44\_array}}
 \index{matrix44\_array@{matrix44\_array}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{matrix44\_array}{matrix44\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}{matrix44}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a2465e256684209b90f64669326d57c9e}{matrix44}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a309be6aacd92a7872d76c766139e6f12}{pose\+Estimation\+::matrix44\+\_\+array}}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}{matrix44}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a64115ca4a50cfbaefa78f2a6a6da6fc1}{matrix44}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a309be6aacd92a7872d76c766139e6f12}{pose\+Estimation\+::matrix44\+\_\+array}}}
+
+\mbox{\Hypertarget{namespacepose_estimation_a31bde773961164941e654307ba56572e}\label{namespacepose_estimation_a31bde773961164941e654307ba56572e}} 
+\index{poseEstimation@{poseEstimation}!point\_pair@{point\_pair}}
+\index{point\_pair@{point\_pair}!poseEstimation@{poseEstimation}}
+\doxysubsubsection{\texorpdfstring{point\_pair}{point\_pair}}
+{\footnotesize\ttfamily typedef std\+::pair$<$\mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}}, \mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}}$>$ \mbox{\hyperlink{namespacepose_estimation_a31bde773961164941e654307ba56572e}{pose\+Estimation\+::point\+\_\+pair}}}
 
 \mbox{\Hypertarget{namespacepose_estimation_a79be94e3e8e766a7deb8c44824e949ce}\label{namespacepose_estimation_a79be94e3e8e766a7deb8c44824e949ce}} 
 \index{poseEstimation@{poseEstimation}!point\_vector@{point\_vector}}
@@ -137,17 +164,17 @@ typedef std\+::vector$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}},
 \doxysubsubsection{\texorpdfstring{rect\_vector}{rect\_vector}}
 {\footnotesize\ttfamily typedef std\+::vector$<$cv\+::\+Rect$>$ \mbox{\hyperlink{namespacepose_estimation_a09017b4c73132606bde5ade2526b2f97}{pose\+Estimation\+::rect\+\_\+vector}}}
 
-\mbox{\Hypertarget{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}\label{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}} 
+\mbox{\Hypertarget{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}\label{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}} 
 \index{poseEstimation@{poseEstimation}!vector2@{vector2}}
 \index{vector2@{vector2}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{vector2}{vector2}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 2, 1$>$ \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{pose\+Estimation\+::vector2}}}
+{\footnotesize\ttfamily typedef Eigen\+::\+Vector2d \mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{pose\+Estimation\+::vector2}}}
 
 \mbox{\Hypertarget{namespacepose_estimation_af0a5a5fdef9171ab21611dd778aacb07}\label{namespacepose_estimation_af0a5a5fdef9171ab21611dd778aacb07}} 
 \index{poseEstimation@{poseEstimation}!vector2\_array@{vector2\_array}}
 \index{vector2\_array@{vector2\_array}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{vector2\_array}{vector2\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_af0a5a5fdef9171ab21611dd778aacb07}{pose\+Estimation\+::vector2\+\_\+array}}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{vector2}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{vector2}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_af0a5a5fdef9171ab21611dd778aacb07}{pose\+Estimation\+::vector2\+\_\+array}}}
 
 \mbox{\Hypertarget{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}\label{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}} 
 \index{poseEstimation@{poseEstimation}!vector3@{vector3}}
@@ -161,15 +188,24 @@ typedef std\+::vector$<$ \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}},
 \doxysubsubsection{\texorpdfstring{vector3\_array}{vector3\_array}}
 {\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a59510a1f41a5dfbec0dcfc2ba507bba6}{vector3}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a2928c0fea359ecbbaab89f4a1eec287e}{pose\+Estimation\+::vector3\+\_\+array}}}
 
-\mbox{\Hypertarget{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}\label{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}} 
+\mbox{\Hypertarget{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}\label{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}} 
 \index{poseEstimation@{poseEstimation}!vector4@{vector4}}
 \index{vector4@{vector4}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{vector4}{vector4}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 4, 1$>$ \mbox{\hyperlink{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}{pose\+Estimation\+::vector4}}}
+{\footnotesize\ttfamily typedef Eigen\+::\+Vector4d \mbox{\hyperlink{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}{pose\+Estimation\+::vector4}}}
 
 \mbox{\Hypertarget{namespacepose_estimation_a475009da12414d54dc23aff7198292de}\label{namespacepose_estimation_a475009da12414d54dc23aff7198292de}} 
 \index{poseEstimation@{poseEstimation}!vector4\_array@{vector4\_array}}
 \index{vector4\_array@{vector4\_array}!poseEstimation@{poseEstimation}}
 \doxysubsubsection{\texorpdfstring{vector4\_array}{vector4\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}{vector4}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_a5706add6ee7dd98c7be4bc7984fbf2c3}{vector4}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a475009da12414d54dc23aff7198292de}{pose\+Estimation\+::vector4\+\_\+array}}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}{vector4}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacepose_estimation_aa9a60bece7f36147084b259f753fa06c}{vector4}}$>$ $>$ \mbox{\hyperlink{namespacepose_estimation_a475009da12414d54dc23aff7198292de}{pose\+Estimation\+::vector4\+\_\+array}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacepose_estimation_a0cb19bdf746ec6819a47a7aadd3f48a2}\label{namespacepose_estimation_a0cb19bdf746ec6819a47a7aadd3f48a2}} 
+\index{poseEstimation@{poseEstimation}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!poseEstimation@{poseEstimation}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream \& pose\+Estimation\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{pose }\end{DoxyParamCaption})}
 

@@ -16,8 +16,10 @@ Dead reckoning class\+: guess next pose using a motion model.
 \item 
 void \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a53a631d43fa74c3fa6ec3bf1ff8a657e}{reset}} ()
 \item 
-\mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a6584709d3c84b3f09457ba2cebe419bf}{predict\+\_\+next\+\_\+pose}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&current\+Pose)
-\begin{DoxyCompactList}\small\item\em Predicts next pose with motion model (dead reckoning) \end{DoxyCompactList}\end{DoxyCompactItemize}
+const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a8489eef940f8f1b533f33e32a000436b}{predict\+\_\+next\+\_\+pose}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&current\+Pose)
+\begin{DoxyCompactList}\small\item\em Predicts next pose with motion model (dead reckoning) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classpose_estimation_1_1_motion___model_a9711b42f42004c2718a22e18fd63663b}{update\+\_\+model}} (const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&pose)
+\begin{DoxyCompactList}\small\item\em Update the motion model using the refined pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -33,11 +35,11 @@ Dead reckoning class\+: guess next pose using a motion model.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classpose_estimation_1_1_motion___model_a6584709d3c84b3f09457ba2cebe419bf}\label{classpose_estimation_1_1_motion___model_a6584709d3c84b3f09457ba2cebe419bf}} 
+\mbox{\Hypertarget{classpose_estimation_1_1_motion___model_a8489eef940f8f1b533f33e32a000436b}\label{classpose_estimation_1_1_motion___model_a8489eef940f8f1b533f33e32a000436b}} 
 \index{poseEstimation::Motion\_Model@{poseEstimation::Motion\_Model}!predict\_next\_pose@{predict\_next\_pose}}
 \index{predict\_next\_pose@{predict\_next\_pose}!poseEstimation::Motion\_Model@{poseEstimation::Motion\_Model}}
 \doxysubsubsection{\texorpdfstring{predict\_next\_pose()}{predict\_next\_pose()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} pose\+Estimation\+::\+Motion\+\_\+\+Model\+::predict\+\_\+next\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{current\+Pose }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} pose\+Estimation\+::\+Motion\+\_\+\+Model\+::predict\+\_\+next\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{current\+Pose }\end{DoxyParamCaption})}
 
 
 
@@ -54,6 +56,21 @@ Predicts next pose with motion model (dead reckoning)
 \doxysubsubsection{\texorpdfstring{reset()}{reset()}}
 {\footnotesize\ttfamily void pose\+Estimation\+::\+Motion\+\_\+\+Model\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{classpose_estimation_1_1_motion___model_a9711b42f42004c2718a22e18fd63663b}\label{classpose_estimation_1_1_motion___model_a9711b42f42004c2718a22e18fd63663b}} 
+\index{poseEstimation::Motion\_Model@{poseEstimation::Motion\_Model}!update\_model@{update\_model}}
+\index{update\_model@{update\_model}!poseEstimation::Motion\_Model@{poseEstimation::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{update\_model()}{update\_model()}}
+{\footnotesize\ttfamily void pose\+Estimation\+::\+Motion\+\_\+\+Model\+::update\+\_\+model (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classpose_estimation_1_1_pose}{Pose}} \&}]{pose }\end{DoxyParamCaption})}
+
+
+
+Update the motion model using the refined pose. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pose} & Refined pose estimation \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

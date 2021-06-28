@@ -16,7 +16,7 @@ Stores a list of keypoints (features) and provide methods to find a match of a p
 \item 
 void \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_a0e7f239185ebb4d35204f2ceaa5478a9}{init}} (const cv\+::\+Mat \&image, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&keypoints, const cv\+::\+Mat \&descs, int tracking\+Radius, int hashing\+Cell\+Size, int vertical\+Search\+Radius, float triangulation\+Ratio\+Th, float tracking\+Ratio\+Th, float desc\+Dist\+Th, std\+::vector$<$ float $>$ $\ast$kps\+Depth=nullptr)
 \item 
-int \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_aca5f8c9ed386c4f00e7d17d52bd18d60}{find\+\_\+match\+\_\+index}} (const \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}} \&pt, const cv\+::\+Mat \&desc, float $\ast$d1, float $\ast$d2) const
+int \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_aca5f8c9ed386c4f00e7d17d52bd18d60}{find\+\_\+match\+\_\+index}} (const \mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{vector2}} \&pt, const cv\+::\+Mat \&desc, float $\ast$d1, float $\ast$d2) const
 \begin{DoxyCompactList}\small\item\em Searches or a match between the given point and our map features. It uses a k nearest neighbors method. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{classpose_estimation_1_1_image___features___struct_aff0cdb90bc04377493be7fa96e0edb40}{row\+\_\+match}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&desc) const
 \begin{DoxyCompactList}\small\item\em Searches for a match between a point and our map features. Reduces search space to rows. It uses a k nearest neighbors method. \end{DoxyCompactList}\item 
@@ -59,7 +59,7 @@ Stores a list of keypoints (features) and provide methods to find a match of a p
 \index{poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}!find\_match\_index@{find\_match\_index}}
 \index{find\_match\_index@{find\_match\_index}!poseEstimation::Image\_Features\_Struct@{poseEstimation::Image\_Features\_Struct}}
 \doxysubsubsection{\texorpdfstring{find\_match\_index()}{find\_match\_index()}}
-{\footnotesize\ttfamily int pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::find\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacepose_estimation_a5edc85f5ea8a74e8661d5732d8ec92d4}{vector2}} \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{desc,  }\item[{float $\ast$}]{d1,  }\item[{float $\ast$}]{d2 }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily int pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::find\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacepose_estimation_a6ea776e0c4210b6310c21420f12d9f91}{vector2}} \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{desc,  }\item[{float $\ast$}]{d1,  }\item[{float $\ast$}]{d2 }\end{DoxyParamCaption}) const}
 
 
 

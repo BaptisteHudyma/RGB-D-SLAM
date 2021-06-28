@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['uint_5fvector_513',['uint_vector',['../classprimitive_detection_1_1_primitive___detection.html#ad7d6395f08dd98ce5d713d23188585f9',1,'primitiveDetection::Primitive_Detection']]]
+  ['quaternion_580',['quaternion',['../namespacepose_estimation.html#a7595409391720685f266b0af9f3bc8d9',1,'poseEstimation']]],
+  ['quaternion_5farray_581',['quaternion_array',['../namespacepose_estimation.html#a48630d0d8ad1bf31bb4ccc2799214366',1,'poseEstimation']]]
 ];

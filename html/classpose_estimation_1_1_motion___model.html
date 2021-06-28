@@ -85,9 +85,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7286f58ba5c215cecd6ac84569e40d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53a631d43fa74c3fa6ec3bf1ff8a657e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_motion___model.html#a53a631d43fa74c3fa6ec3bf1ff8a657e">reset</a> ()</td></tr>
 <tr class="separator:a53a631d43fa74c3fa6ec3bf1ff8a657e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6584709d3c84b3f09457ba2cebe419bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpose_estimation_1_1_pose.html">Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_motion___model.html#a6584709d3c84b3f09457ba2cebe419bf">predict_next_pose</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;currentPose)</td></tr>
-<tr class="memdesc:a6584709d3c84b3f09457ba2cebe419bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts next pose with motion model (dead reckoning)  <a href="classpose_estimation_1_1_motion___model.html#a6584709d3c84b3f09457ba2cebe419bf">More...</a><br /></td></tr>
-<tr class="separator:a6584709d3c84b3f09457ba2cebe419bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8489eef940f8f1b533f33e32a000436b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_motion___model.html#a8489eef940f8f1b533f33e32a000436b">predict_next_pose</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;currentPose)</td></tr>
+<tr class="memdesc:a8489eef940f8f1b533f33e32a000436b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts next pose with motion model (dead reckoning)  <a href="classpose_estimation_1_1_motion___model.html#a8489eef940f8f1b533f33e32a000436b">More...</a><br /></td></tr>
+<tr class="separator:a8489eef940f8f1b533f33e32a000436b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9711b42f42004c2718a22e18fd63663b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpose_estimation_1_1_motion___model.html#a9711b42f42004c2718a22e18fd63663b">update_model</a> (const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;pose)</td></tr>
+<tr class="memdesc:a9711b42f42004c2718a22e18fd63663b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the motion model using the refined pose.  <a href="classpose_estimation_1_1_motion___model.html#a9711b42f42004c2718a22e18fd63663b">More...</a><br /></td></tr>
+<tr class="separator:a9711b42f42004c2718a22e18fd63663b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Dead reckoning class: guess next pose using a motion model. </p>
@@ -110,14 +113,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6584709d3c84b3f09457ba2cebe419bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6584709d3c84b3f09457ba2cebe419bf">&#9670;&nbsp;</a></span>predict_next_pose()</h2>
+<a id="a8489eef940f8f1b533f33e32a000436b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8489eef940f8f1b533f33e32a000436b">&#9670;&nbsp;</a></span>predict_next_pose()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> poseEstimation::Motion_Model::predict_next_pose </td>
+          <td class="memname">const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> poseEstimation::Motion_Model::predict_next_pose </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;&#160;</td>
           <td class="paramname"><em>currentPose</em></td><td>)</td>
@@ -150,6 +153,32 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9711b42f42004c2718a22e18fd63663b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9711b42f42004c2718a22e18fd63663b">&#9670;&nbsp;</a></span>update_model()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void poseEstimation::Motion_Model::update_model </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpose_estimation_1_1_pose.html">Pose</a> &amp;&#160;</td>
+          <td class="paramname"><em>pose</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update the motion model using the refined pose. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pose</td><td>Refined pose estimation </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
