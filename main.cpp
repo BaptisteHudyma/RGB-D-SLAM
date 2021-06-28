@@ -1,56 +1,13 @@
 #include <iostream>
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/line_descriptor.hpp>
 
-
-#include "DepthOperations.hpp"
-#include "PrimitiveDetection.hpp"
-#include "PlaneSegment.hpp"
-#include "Parameters.hpp"
-#include "MonocularDepthMap.hpp"
-#include "DepthMapSegmentation.hpp"
-#include "Point_Tracking.hpp"
-
-#include "LineSegmentDetector.hpp"
-#include "RGB_Slam.hpp"
-
+#include "RGBD_SLAM.hpp"
 #include "Pose.hpp"
 
 
-#include "GeodesicOperations.hpp"
 
 
-typedef std::vector<cv::Vec4f> line_vector;
-typedef std::list<std::unique_ptr<primitiveDetection::Primitive>> primitive_container; 
-
-using namespace primitiveDetection;
-using namespace poseEstimation;
-using namespace std;
-
-
-std::vector<cv::Vec3b> get_color_vector() {
-    std::vector<cv::Vec3b> color_code;
-    for(int i = 0; i < 100; i++){
-        cv::Vec3b color;
-        color[0] = rand() % 255;
-        color[1] = rand() % 255;
-        color[2] = rand() % 255;
-        color_code.push_back(color);
-    }
-
-    // Add specific colors for planes
-    color_code[0][0] = 0; color_code[0][1] = 0; color_code[0][2] = 255;
-    color_code[1][0] = 255; color_code[1][1] = 0; color_code[1][2] = 204;
-    color_code[2][0] = 255; color_code[2][1] = 100; color_code[2][2] = 0;
-    color_code[3][0] = 0; color_code[3][1] = 153; color_code[3][2] = 255;
-    // Add specific colors for cylinders
-    color_code[50][0] = 178; color_code[50][1] = 255; color_code[50][2] = 0;
-    color_code[51][0] = 255; color_code[51][1] = 0; color_code[51][2] = 51;
-    color_code[52][0] = 0; color_code[52][1] = 255; color_code[52][2] = 51;
-    color_code[53][0] = 153; color_code[53][1] = 0; color_code[53][2] = 255;
-    return color_code;
-}
 
 void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) {
     switch(cv::waitKey(1)) {
@@ -127,7 +84,6 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
 int main(int argc, char* argv[]) {
     std::stringstream dataPath;
     bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
-    bool useDepthSegmentation = false;
     int startIndex;
     unsigned int jumpFrames = 0;
 
@@ -145,16 +101,6 @@ int main(int argc, char* argv[]) {
     width = rgbImage.cols;
     height = rgbImage.rows;
 
-    // Get intrinsics parameters
-    std::stringstream calibPath, calibYAMLPath;
-    calibPath << dataPath.str() << "calib_params.xml";
-    calibYAMLPath << dataPath.str() << "calib_params.yaml";
-
-    //primitive connected graph creator
-    Depth_Operations depthOps(calibPath.str(), width, height, PATCH_SIZE);
-    if (not depthOps.is_ok()) {
-        return -1;
-    }
 
 
     //visual odometry params
@@ -177,46 +123,14 @@ int main(int argc, char* argv[]) {
     RGB_SLAM vo(params);
      */
 
-    //plane/cylinder finder
-    Primitive_Detection primDetector(height, width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
-    //Should refine, scale, Gaussian filter sigma
-    cv::LSD lineDetector(cv::LSD_REFINE_NONE, 0.3, 0.9);
-
-    // Populate with random color codes
-    std::vector<cv::Vec3b> color_code = get_color_vector();
-
-    //organized 3D depth image
-    Eigen::MatrixXf cloudArrayOrganized(width * height,3);
-    cv::Mat kernel = cv::Mat::ones(3, 3, CV_8U);
-
-
-    std::vector<cv::Vec3b> colors(150);
-    colors[0] = cv::Vec3b(0, 0, 0);//background
-    for (int label = 1; label < 150; label++) {
-        colors[label] = cv::Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
-    }
-
-    int minHessian = 500;
-    Points_Tracking RGB_Slam (minHessian);
+    primitiveDetection::RGBD_SLAM RGBD_Slam (dataPath, width, height, 600);
 
     //start with identity pose
-    Pose pose;
-
-    //keep track of the primitives tracked last frame
-    primitive_container previousFramePrimitives;
+    poseEstimation::Pose pose;
 
 
     //frame counters
     unsigned int frameIndex = startIndex;   //current frame index count
-    unsigned int totalFrameTreated = 0; 
-
-    //time counters
-    double meanTreatmentTime = 0.0;
-    double meanMatTreatmentTime = 0.0;
-    double meanPoseTreatmentTime = 0.0;
-    double maxTreatTime = 0.0;
-
-    double meanLineTreatment = 0.0;
 
     //stop condition
     bool runLoop = true;
@@ -228,178 +142,32 @@ int main(int argc, char* argv[]) {
             continue;
         }
 
-        //read images
+        // read images
         if(not load_images(dataPath, frameIndex, rgbImage, depthImage))
             break;
-        cv::Mat grayImage;
-        cv::cvtColor(rgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
-        //set variables
-        cv::Mat_<uchar> seg_output(height, width, uchar(0));    //primitive mask mat
-        primitive_container primitives;
+        // get optimized pose
+        double elapsedTime = cv::getTickCount();
+        pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
+        elapsedTime = (cv::getTickCount() - elapsedTime) / (double)cv::getTickFrequency();
 
-        //clean warp artefacts
-        //cv::Mat newMat;
-        //cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, kernel);
-        //cv::medianBlur(newMat, newMat, 3);
-        //cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
-
-        //project depth image in an organized cloud
-        double t1 = cv::getTickCount();
-        depthOps.get_organized_cloud_array(depthImage, cloudArrayOrganized);
-        double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
-        meanMatTreatmentTime += time_elapsed;
-
-        // Run primitive detection 
-        t1 = cv::getTickCount();
-        primDetector.find_primitives(cloudArrayOrganized, primitives, seg_output);
-        time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
-        meanTreatmentTime += time_elapsed;
-        maxTreatTime = max(maxTreatTime, time_elapsed);
-
-
-        // this frame points and  assoc
-        t1 = cv::getTickCount();
-
-        pose = RGB_Slam.compute_new_pose(rgbImage, depthImage);
-
-        meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
-
-        //associate primitives
-        std::map<int, int> associatedIds;
-        if(not previousFramePrimitives.empty()) {
-            //find matches between consecutive images
-            //compare normals, superposed area (and colors ?)
-            for(const std::unique_ptr<Primitive>& prim : primitives) {
-                for(const std::unique_ptr<Primitive>& prevPrim : previousFramePrimitives) {
-                    if(prim->is_similar(prevPrim)) {
-                        associatedIds[prim->get_id()] = prevPrim->get_id();
-                        break;
-                    }
-                }
-            }
-
-            //compute pose from matches 
-            //-> rotation assuming Manhattan world
-            //-> translation with min square minimisation
-
-            //local map reconstruction
-
-            //position refinement from local map
-
-            //global map update from local one
-
-        }
-        else {
-            //first frame, or no features detected last frame
-
-        }
-
-
-
-        //depth map segmentation
-        cv::Mat colored;
-        if(useDepthSegmentation) {
-            colored = rgbImage.clone();
-            double reducePourcent = 0.35;
-            cv::Mat finalSegmented;
-            get_segmented_depth_map(depthImage, finalSegmented, kernel, reducePourcent);
-            resize(finalSegmented, finalSegmented, rgbImage.size());
-            draw_segmented_labels(finalSegmented, colors, colored);
-
-            //display 
-            double min, max;
-            cv::minMaxLoc(depthImage, &min, &max);
-            if (min != max){ 
-                depthImage -= min;
-                depthImage.convertTo(depthImage, CV_8UC1, 255.0/(max-min));
-            }
-        }
-
-        //visual odometry tracking
-        /*
-           if(useFrameOdometry) {
-           Pose estimatedPose = vo.track(grayImage, depthImage);
-
-           if(vo.get_state() == vo.eState_LOST)
-           break;
-           }
-         */
-
-        if(useLineDetection) { //detect lines in image
-            t1 = cv::getTickCount();
-
-            //get lines
-            line_vector lines;
-            cv::Mat mask = depthImage > 0;
-
-            lineDetector.detect(grayImage, lines);
-
-            //fill holes
-            cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
-
-            //draw lines with associated depth data
-            for(line_vector::size_type i = 0; i < lines.size(); i++) {
-                cv::Vec4f& pts = lines.at(i);
-                cv::Point pt1(pts[0], pts[1]);
-                cv::Point pt2(pts[2], pts[3]);
-                if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
-                    //no depth at extreme points, check first and second quarter
-                    cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
-                    cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
-
-                    //at least a point with depth data
-                    if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
-                        cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
-                    else    //no depth data
-                        cv::line(rgbImage, pt1, pt2, cv::Scalar(255, 0, 255), 1);
-                }
-                else
-                    //line with associated depth
-                    cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 255, 255), 1);
-
-            }
-            meanLineTreatment += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
-        }
-
-        //display masks on image
-        cv::Mat segRgb = rgbImage.clone();//(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-
-        if(showPrimitiveMasks)
-            primDetector.apply_masks(rgbImage, color_code, seg_output, primitives, segRgb, associatedIds, time_elapsed);
-
-        // exchange frames features
-        previousFramePrimitives.swap(primitives);
-
-
-        //display with mono mask
-        //cv::cvtColor(depthImage, depthImage, cv::COLOR_GRAY2BGR);
-        if(useDepthSegmentation)
-            cv::hconcat(segRgb, colored, segRgb);
+        // display masks on image
+        cv::Mat segRgb = rgbImage.clone();
+        RGBD_Slam.get_debug_image(rgbImage, segRgb, elapsedTime, showPrimitiveMasks);
         cv::imshow("RGBD-SLAM", segRgb);
 
+        //check user inputs
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
 
-
-        //counters
+        // counters
         ++frameIndex;
-        ++totalFrameTreated;
     }
-    std::cout << "Process terminated at frame " << frameIndex << std::endl;
-    std::cout << "Mean image to point cloud treatment time is " << meanMatTreatmentTime / totalFrameTreated << std::endl;
-    std::cout << "Mean plane treatment time is " << meanTreatmentTime / totalFrameTreated << std::endl;
-    std::cout << "max treat time is " << maxTreatTime << std::endl;
-    std::cout << std::endl;
-    if(useLineDetection)
-        std::cout << "Mean line detection time is " << meanLineTreatment / totalFrameTreated << std::endl;
-    std::cout << "Mean pose estimation time is " << meanPoseTreatmentTime / totalFrameTreated << std::endl;
 
-    //std::cout << "init planes " << primDetector.resetTime/i << std::endl;
-    //std::cout << "Init hist " << primDetector.initTime/i << std::endl;
-    //std::cout << "grow " << primDetector.growTime/i << std::endl;
-    //std::cout << "refine planes " << primDetector.mergeTime/i << std::endl;
-    //std::cout << "refine cylinder " << primDetector.refineTime/i << std::endl;
-    //std::cout << "setMask " << primDetector.setMaskTime/i << std::endl;
+    std::cout << std::endl;
+    std::cout << "End pose : " << pose << std::endl;
+    std::cout << "Process terminated at frame " << frameIndex << std::endl;
+    std::cout << std::endl;
+    RGBD_Slam.show_statistics();
 
     cv::destroyAllWindows();
     exit(0);
