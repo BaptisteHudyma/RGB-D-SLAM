@@ -5,6 +5,7 @@
 
 #include "RGBD_SLAM.hpp"
 
+// cerr cout
 #include <iostream>
 
 namespace primitiveDetection {
@@ -13,15 +14,8 @@ namespace primitiveDetection {
 
     RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth, unsigned int imageHeight, unsigned int minHessian, double maxMatchDistance) :
         _width(imageWidth),
-        _height(imageHeight),
-        _maxMatchDistance(maxMatchDistance)
+        _height(imageHeight)
     {
-        if (_maxMatchDistance <= 0 or _maxMatchDistance > 1) {
-            std::cerr << CLASS_ERR << "Maximum matching distance disparity must be between 0 and 1" << std::endl;
-            exit(-1);
-        }
-
-
         // Get intrinsics parameters
         std::stringstream calibPath, calibYAMLPath;
         calibPath << dataPath.str() << "calib_params.xml";
@@ -39,17 +33,15 @@ namespace primitiveDetection {
         _motionModel.reset();
 
 
-        // Create feature extractor and matcher
-        _featureDetector = cv::xfeatures2d::SURF::create( minHessian );
-        _featuresMatcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
-
-
         //plane/cylinder finder
         _primitiveDetector = new Primitive_Detection(_height, _width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
 
         // Line segment detector
         //Should refine, scale, Gaussian filter sigma
         _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
+
+        // Point detector and matcher
+        _pointMatcher = new Key_Point_Extraction(maxMatchDistance, minHessian);
 
         // kernel for various operations
         _kernel = cv::Mat::ones(3, 3, CV_8U);
@@ -58,7 +50,6 @@ namespace primitiveDetection {
         set_color_vector();
 
         // set vars
-        _maxTreatTime = 0.0;
         _meanMatTreatmentTime = 0.0;
         _meanTreatmentTime = 0.0;
         _meanLineTreatment = 0.0;
@@ -108,7 +99,6 @@ namespace primitiveDetection {
         _primitiveDetector->find_primitives(cloudArrayOrganized, primitives, _segmentationOutput);
         time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
         _meanTreatmentTime += time_elapsed;
-        _maxTreatTime = std::max(_maxTreatTime, time_elapsed);
 
 
 
@@ -198,67 +188,17 @@ namespace primitiveDetection {
         if (showPrimitiveMasks)
             _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, debugImage, _previousAssociatedIds, elapsedTime);
 
-        if (_lastFrameKeypoints.size() > 0) {
-            for (const std::pair<unsigned int, poseEstimation::vector3> pair : _lastFrameKeypoints) {
-                const poseEstimation::vector3 point = pair.second;
-                if (point.z() <= 0) {
-                    cv::circle(debugImage, cv::Point(point.x(), point.y()), 4, cv::Scalar(0, 255, 255), 1);
-                }
-                else {
-                    // no depth
-                    cv::circle(debugImage, cv::Point(point.x(), point.y()), 4, cv::Scalar(255, 255, 0), 1);
-                }
-            }
-        }
-
-    }
-
-
-    void RGBD_SLAM::get_cleaned_keypoint(const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints) 
-    {
-        cv::Rect lastRect(cv::Point(), depthImage.size());
-        unsigned int i = 0;
-        for (const cv::KeyPoint& keypoint : kp) {
-            const cv::Point2f& pt = keypoint.pt;
-            if (lastRect.contains(pt)) {
-                const float depth = depthImage.at<float>(pt.y, pt.x);
-                if (depth > 0) {
-                    cleanedPoints.emplace( i, poseEstimation::vector3(pt.x, pt.y, depth) );
-                }
-                else {
-                    cleanedPoints.emplace( i, poseEstimation::vector3(pt.x, pt.y, 0) );
-                }
-            }
-            ++i;
-        }
+        _pointMatcher->get_debug_image(debugImage); 
     }
 
 
     const poseEstimation::Pose RGBD_SLAM::compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
-        std::vector<cv::KeyPoint> frameKeypoints;
-        cv::Mat frameDescriptors;
-
-        _featureDetector->detectAndCompute(grayImage, cv:: noArray(), frameKeypoints, frameDescriptors); 
-
-        keypoint_container cleanedKp;
-        get_cleaned_keypoint(depthImage, frameKeypoints, cleanedKp);
-
-        if (_lastFrameKeypoints.size() <= 0) {
-            //first call, or tracking lost
-            _lastFrameKeypoints.swap(cleanedKp);
-            _lastFrameDescriptors = frameDescriptors;
-            return _currentPose;
-        }
-        else if (frameKeypoints.size() <= 3) {
-            std::cout << "Not enough features detected for knn matching" << std::endl;
-            return _currentPose;
-        }
-
         //get and refine pose
         poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
-        const poseEstimation::matched_point_container matchedPoints = this->get_good_matches(cleanedKp, frameDescriptors);
+        const matched_point_container matchedPoints = _pointMatcher->detect_and_match_points(grayImage, depthImage);
+
 
         if (matchedPoints.size() > 5) {
             double t1 = cv::getTickCount();
@@ -292,46 +232,14 @@ namespace primitiveDetection {
         else
             std::cerr << "Not enough points for pose estimation: " << matchedPoints.size() << std::endl;
 
-
-
         //update motion model with refined pose
         _motionModel.update_model(refinedPose);
-
-
-        _lastFrameKeypoints.swap(cleanedKp);
-        _lastFrameDescriptors = frameDescriptors;
 
         _currentPose = refinedPose;
 
         return refinedPose;
     }
 
-    const poseEstimation::matched_point_container RGBD_SLAM::get_good_matches(keypoint_container& thisFrameKeypoints, cv::Mat& thisFrameDescriptors)
-    {
-        std::vector< std::vector<cv::DMatch> > knnMatches;
-        _featuresMatcher->knnMatch(_lastFrameDescriptors, thisFrameDescriptors, knnMatches, 2);
-
-        poseEstimation::matched_point_container matchedPoints;
-        for (size_t i = 0; i < knnMatches.size(); i++)
-        {
-            const std::vector<cv::DMatch>& match = knnMatches[i];
-            //check if point is a good match by checking it's distance to the second best matched point
-            if (match[0].distance < _maxMatchDistance * match[1].distance)
-            {
-                int trainIdx = match[0].trainIdx;   //last frame key point
-                int queryIdx = match[0].queryIdx;   //this frame key point
-
-                if (_lastFrameKeypoints.contains(trainIdx) and thisFrameKeypoints.contains(queryIdx)) {
-                    poseEstimation::point_pair newMatch = std::make_pair(
-                            _lastFrameKeypoints[trainIdx],
-                            thisFrameKeypoints[queryIdx]
-                            );
-                    matchedPoints.push_back(newMatch);
-                }
-            }
-        }
-        return matchedPoints;
-    }
 
 
     const std::string RGBD_SLAM::get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) 
@@ -391,15 +299,29 @@ namespace primitiveDetection {
         _colorCodes[53][0] = 153; _colorCodes[53][1] = 0; _colorCodes[53][2] = 255;
     }
 
-    void RGBD_SLAM::show_statistics() 
-    {
-        std::cout << "Mean image to point cloud treatment time is " << _meanMatTreatmentTime / _totalFrameTreated << std::endl;
-        std::cout << "Mean plane treatment time is " << _meanTreatmentTime / _totalFrameTreated << std::endl;
-        std::cout << "max treat time is " << _maxTreatTime << std::endl;
-        std::cout << std::endl;
-        std::cout << "Mean line detection time is " << _meanLineTreatment / _totalFrameTreated << std::endl;
-        std::cout << "Mean pose estimation time is " << _meanPoseTreatmentTime / _totalFrameTreated << std::endl;
 
+    double get_percent_of_elapsed_time(double treatmentTime, double totalTimeElapsed) 
+    {
+        if (totalTimeElapsed <= 0)
+            return 0;
+        return std::round(treatmentTime / totalTimeElapsed * 10000) / 100;
+    }
+
+
+    void RGBD_SLAM::show_statistics(double meanFrameTreatmentTime) 
+    {
+        double pointCloudTreatmentTime = _meanMatTreatmentTime / _totalFrameTreated;
+        std::cout << "Mean image to point cloud treatment time is " << pointCloudTreatmentTime << " seconds (" << get_percent_of_elapsed_time(pointCloudTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
+        double planeTreatmentTime = _meanTreatmentTime / _totalFrameTreated;
+        std::cout << "Mean primitive treatment time is " << planeTreatmentTime << " seconds (" << get_percent_of_elapsed_time(planeTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
+        std::cout << std::endl;
+
+        double lineDetectionTime = _meanLineTreatment / _totalFrameTreated;
+        std::cout << "Mean line detection time is " << lineDetectionTime << " seconds (" << get_percent_of_elapsed_time(lineDetectionTime, meanFrameTreatmentTime) << "%)" << std::endl;
+        double poseTreatmentTime = _meanPoseTreatmentTime / _totalFrameTreated;
+        std::cout << "Mean pose estimation time is " << poseTreatmentTime << " seconds (" << get_percent_of_elapsed_time(poseTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
+
+        _pointMatcher->show_statistics(meanFrameTreatmentTime, _totalFrameTreated);
     }
 
 } /* namespace poseEstimation */

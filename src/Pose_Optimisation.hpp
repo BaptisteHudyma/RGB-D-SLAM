@@ -3,6 +3,9 @@
 
 #include "types.hpp"
 
+// types
+#include "KeyPointDetection.hpp"
+
 #include <Eigen/Eigen>
 #include <unsupported/Eigen/NonLinearOptimization>
 
@@ -51,8 +54,6 @@ namespace poseEstimation {
             unsigned int _N;
         };
 
-    typedef std::pair<vector3, vector3> point_pair;
-    typedef std::list<point_pair> matched_point_container;
 
     struct Pose_Estimator: Levenberg_Marquard_Functor<double> 
     {

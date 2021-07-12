@@ -5,7 +5,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 set (CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
-set (CMAKE_CXX_FLAGS "-O4 -g -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
+set (CMAKE_CXX_FLAGS "-O4 -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
@@ -43,7 +43,8 @@ include_directories(
     ${PRIM}
     ${POSE}  
     ${THIRD_PARTY}
-    ${INC_DIRS})
+    ${INC_DIRS}
+    )
 
 add_executable(rgbslam 
     main.cpp
@@ -80,6 +81,7 @@ add_library(thirdParty
 
 add_library(slam
     ${SRC}/RGBD_SLAM.cpp
+    ${PRIM}/KeyPointDetection.cpp
     )
 
 target_link_libraries(rgbslam 

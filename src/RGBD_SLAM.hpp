@@ -2,7 +2,6 @@
 #define POINTS_TRACKING_HPP
 
 
-#include <opencv2/xfeatures2d.hpp>
 #include <opencv2/line_descriptor.hpp>
 
 #include <Eigen/Dense>
@@ -16,6 +15,7 @@
 #include "MonocularDepthMap.hpp"
 #include "DepthMapSegmentation.hpp"
 #include "LineSegmentDetector.hpp"
+#include "KeyPointDetection.hpp"
 #include "RGB_Slam.hpp"
 
 #include "Pose.hpp"
@@ -27,7 +27,6 @@ namespace primitiveDetection {
 
     class RGBD_SLAM {
         public:
-            typedef std::map<unsigned int, poseEstimation::vector3> keypoint_container;
             typedef std::vector<cv::Vec4f> line_vector;
             typedef std::list<std::unique_ptr<primitiveDetection::Primitive>> primitive_container; 
 
@@ -62,9 +61,9 @@ namespace primitiveDetection {
             void get_debug_image(const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks = true);
 
             /**
-             * \brief Shox the time statistics for certain parts of the program. Kind of a basic profiler
+             * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
              */
-            void show_statistics();
+            void show_statistics(double frameMeanTreatmentTime);
 
         protected:
 
@@ -78,15 +77,6 @@ namespace primitiveDetection {
              */
             const poseEstimation::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage);
 
-            /**
-             * \brief get a container with the filtered point matches. Uses _maxMatchDistance to estimate good matches. 
-             *
-             * \param[in] thisFrameKeypoints This frame detected and filtered keypoints
-             * \param[in] thisFrameDescriptors The associated descriptors
-             *
-             * \return The matched points
-             */
-            const poseEstimation::matched_point_container get_good_matches(keypoint_container& thisFrameKeypoints, cv::Mat& thisFrameDescriptors); 
 
             /**
              * \brief Use for debug.
@@ -94,14 +84,6 @@ namespace primitiveDetection {
              */
             const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status); 
 
-            /**
-             * \brief Get the filtered keypoints. Remove keypoints without depth informations 
-             *
-             * \param[in] depthImage The associated depth image, already rectified
-             * \param[in] kp Container for raw keypoints
-             * \param[out] cleanedPoints Container with the final clean keypoints
-             */
-            void get_cleaned_keypoint(const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints);
 
             void set_color_vector();
 
@@ -114,22 +96,15 @@ namespace primitiveDetection {
             /* Detectors */
             Primitive_Detection* _primitiveDetector;
             cv::LSD* _lineDetector;
-
+            Key_Point_Extraction* _pointMatcher;
 
             cv::Mat _kernel;
 
-            const double _maxMatchDistance;
 
             //keep track of the primitives tracked last frame
             primitive_container _previousFramePrimitives;
 
-            cv::Ptr<cv::xfeatures2d::SURF> _featureDetector;
-            cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
-
             std::map<int, int> _previousAssociatedIds;
-
-            keypoint_container _lastFrameKeypoints;
-            cv::Mat _lastFrameDescriptors;
 
             poseEstimation::Pose _currentPose;
             poseEstimation::Motion_Model _motionModel;
@@ -140,7 +115,6 @@ namespace primitiveDetection {
 
             // debug
             unsigned int _totalFrameTreated;
-            double _maxTreatTime;
             double _meanMatTreatmentTime;
             double _meanTreatmentTime;
             double _meanLineTreatment;

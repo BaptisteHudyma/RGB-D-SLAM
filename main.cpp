@@ -130,7 +130,10 @@ int main(int argc, char* argv[]) {
 
 
     //frame counters
+    unsigned int totalFrameTreated = 0;
     unsigned int frameIndex = startIndex;   //current frame index count
+    
+    double meanTreatmentTime = 0;
 
     //stop condition
     bool runLoop = true;
@@ -150,6 +153,7 @@ int main(int argc, char* argv[]) {
         double elapsedTime = cv::getTickCount();
         pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
         elapsedTime = (cv::getTickCount() - elapsedTime) / (double)cv::getTickFrequency();
+        meanTreatmentTime += elapsedTime;
 
         // display masks on image
         cv::Mat segRgb = rgbImage.clone();
@@ -160,6 +164,7 @@ int main(int argc, char* argv[]) {
         check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
 
         // counters
+        ++totalFrameTreated;
         ++frameIndex;
     }
 
@@ -167,7 +172,7 @@ int main(int argc, char* argv[]) {
     std::cout << "End pose : " << pose << std::endl;
     std::cout << "Process terminated at frame " << frameIndex << std::endl;
     std::cout << std::endl;
-    RGBD_Slam.show_statistics();
+    RGBD_Slam.show_statistics(meanTreatmentTime / totalFrameTreated);
 
     cv::destroyAllWindows();
     exit(0);
