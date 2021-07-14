@@ -77,14 +77,6 @@ namespace primitiveDetection {
              */
             const poseEstimation::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage);
 
-
-            /**
-             * \brief Use for debug.
-             * \return Returns a string with the human readable version of Eigen LevenbergMarquardt output status
-             */
-            const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status); 
-
-
             void set_color_vector();
 
         private:

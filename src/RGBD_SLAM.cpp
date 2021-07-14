@@ -212,13 +212,13 @@ namespace primitiveDetection {
             input[5] = 0;
             input[6] = 0;
 
-            poseEstimation::Pose_Functor pf(poseEstimation::Pose_Estimator(input.size(), matchedPoints));
-            Eigen::LevenbergMarquardt<poseEstimation::Pose_Functor, double> lm( pf );
+            poseOptimisation::Pose_Functor pf(poseOptimisation::Pose_Estimator(input.size(), matchedPoints));
+            Eigen::LevenbergMarquardt<poseOptimisation::Pose_Functor, double> lm( pf );
             lm.parameters.epsfcn = 1e-5;
             lm.parameters.maxfev= 1024;
 
             Eigen::LevenbergMarquardtSpace::Status endStatus = lm.minimize(input);
-            const std::string message = get_human_readable_end_message(endStatus);
+            const std::string message = poseOptimisation::get_human_readable_end_message(endStatus);
 
             poseEstimation::quaternion endRotation(input[3], input[4], input[5], input[6]);
             endRotation.normalize();
@@ -241,39 +241,6 @@ namespace primitiveDetection {
     }
 
 
-
-    const std::string RGBD_SLAM::get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) 
-    {
-        switch(status) {
-            case Eigen::LevenbergMarquardtSpace::Status::NotStarted :
-                return "not started";
-            case Eigen::LevenbergMarquardtSpace::Status::Running :
-                return "running";
-            case Eigen::LevenbergMarquardtSpace::Status::ImproperInputParameters :
-                return "improper input parameters";
-            case Eigen::LevenbergMarquardtSpace::Status::RelativeReductionTooSmall :
-                return "relative reduction too small";
-            case Eigen::LevenbergMarquardtSpace::Status::RelativeErrorTooSmall :
-                return "relative error too small";
-            case Eigen::LevenbergMarquardtSpace::Status::RelativeErrorAndReductionTooSmall :
-                return "relative error and reduction too small";
-            case Eigen::LevenbergMarquardtSpace::Status::CosinusTooSmall :
-                return "cosinus too small";
-            case Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation :
-                return "too many function evaluation";
-            case Eigen::LevenbergMarquardtSpace::Status::FtolTooSmall :
-                return "xtol too small";
-            case Eigen::LevenbergMarquardtSpace::Status::XtolTooSmall :
-                return "ftol too small";
-            case Eigen::LevenbergMarquardtSpace::Status::GtolTooSmall :
-                return "gtol too small";
-            case Eigen::LevenbergMarquardtSpace::Status::UserAsked :
-                return "user asked";
-            default:
-                return "error: empty message";
-        }
-        return std::string("");
-    }
 
 
 

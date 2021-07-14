@@ -11,9 +11,9 @@
 
 #include <iostream>
 
-namespace poseEstimation {
+namespace poseOptimisation{
 
-        
+
 
     /**
      * \brief Structure given to the Levenberg-Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric.
@@ -29,14 +29,10 @@ namespace poseEstimation {
                 ValuesAtCompileTime = NY
             };
 
+            // typedefs for the original functor
             typedef Eigen::Matrix<Scalar, InputsAtCompileTime, 1> InputType;
             typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, 1> ValueType;
             typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
-
-
-            /*Levenberg_Marquard_Functor() :
-              _M(InputsAtCompileTime), _N(ValuesAtCompileTime)
-              {}*/
 
             Levenberg_Marquard_Functor(unsigned int inputCount, unsigned int outputCount) :
                 _M(inputCount), _N(outputCount)
@@ -55,49 +51,32 @@ namespace poseEstimation {
         };
 
 
+    /**
+     * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator
+     */
     struct Pose_Estimator: Levenberg_Marquard_Functor<double> 
     {
         // Simple constructor
-        Pose_Estimator(unsigned int n, const matched_point_container& points) :
-            Levenberg_Marquard_Functor<double>(n, points.size()) 
-        {
-            //copy points
-            _points = points;
-        }
+        Pose_Estimator(unsigned int n, const matched_point_container& points);
 
         // Implementation of the objective function
-        int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
-            vector3 translation(z(0), z(1), z(2));
-            quaternion rotation(z(3), z(4), z(5), z(6));
-            rotation.normalize();
-            matrix33 rotationMatrix = rotation.toRotationMatrix();
-
-            unsigned int i = 0;
-            for(const point_pair& pointPair : _points) {
-                const vector3& p1 = pointPair.first;
-                const vector3& p2 = pointPair.second;
-
-                //pose error
-                const vector3 dist = p1 - ( rotationMatrix *  p2 + translation );
-                //fvec(i) = dist.squaredNorm(); 
-                //fvec(i) = dist.norm(); 
-
-                //manhattan
-                fvec(i) = abs(dist[0]) + abs(dist[1]) + abs(dist[2]);
-
-                ++i;
-            }
-            //std::cout << fvec.transpose() << std::endl;
-            return 0;
-        }
+        int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const;
 
         private:
         matched_point_container _points; 
-
     };
 
     struct Pose_Functor : Eigen::NumericalDiff<Pose_Estimator> {};
 
-}       /* poseEstimation */
+
+
+
+    /**
+     * \brief Use for debug.
+     * \return Returns a string with the human readable version of Eigen LevenbergMarquardt output status
+     */
+    const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status);
+
+}       /* poseOptimisation*/
 
 #endif

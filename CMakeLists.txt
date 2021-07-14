@@ -58,6 +58,7 @@ add_library(primitivesDetection
     ${PRIM}/Histogram.cpp
     ${PRIM}/DepthMapSegmentation.cpp
     ${PRIM}/ShapePrimitives.cpp
+    ${PRIM}/KeyPointDetection.cpp
     )
 add_library(poseEstimation
     ${POSE}/Pose.cpp
@@ -81,7 +82,7 @@ add_library(thirdParty
 
 add_library(slam
     ${SRC}/RGBD_SLAM.cpp
-    ${PRIM}/KeyPointDetection.cpp
+    ${SRC}/Pose_Optimisation.cpp
     )
 
 target_link_libraries(rgbslam 
