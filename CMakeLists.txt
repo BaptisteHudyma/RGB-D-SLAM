@@ -5,7 +5,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 set (CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
-set (CMAKE_CXX_FLAGS "-O4 -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
+set (CMAKE_CXX_FLAGS "-O4 -g -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
@@ -35,15 +35,22 @@ MESSAGE(${LINK_LIBS})
 
 set(SRC src)
 set(THIRD_PARTY third_party)
-set(PRIM ${SRC}/primitives_detection)
-set(POSE ${SRC}/pose_estimation)
+set(PRIM    ${SRC}/primitives_detection)
+set(POSE    ${SRC}/pose_estimation)
+set(MAP     ${SRC}/map_management)
+set(UTILS   ${SRC}/utils)
+
+include_directories(SYSTEM
+    ${INC_DIRS}
+    )
 
 include_directories(
     ${SRC}
     ${PRIM}
     ${POSE}  
+    ${MAP}
     ${THIRD_PARTY}
-    ${INC_DIRS}
+    ${UTILS}
     )
 
 add_executable(rgbslam 
@@ -58,8 +65,8 @@ add_library(primitivesDetection
     ${PRIM}/Histogram.cpp
     ${PRIM}/DepthMapSegmentation.cpp
     ${PRIM}/ShapePrimitives.cpp
-    ${PRIM}/KeyPointDetection.cpp
     )
+
 add_library(poseEstimation
     ${POSE}/Pose.cpp
     ${POSE}/PoseUtils.cpp
@@ -70,8 +77,14 @@ add_library(poseEstimation
     ${POSE}/Parameters.cpp
     ${POSE}/PNPSolver.cpp
 
-    ${SRC}/RGB_Slam.cpp
+    ${POSE}/RGB_Slam.cpp
+    ${POSE}/Pose_Optimisation.cpp
     )
+
+add_library(mapManagement
+    ${MAP}/local_map.cpp
+    )
+
 add_library(thirdParty
     ${SRC}/MonocularDepthMap.cpp
 
@@ -80,16 +93,21 @@ add_library(thirdParty
     ${THIRD_PARTY}/dsyevh3.cpp
     )
 
+add_library(utils
+    ${UTILS}/KeyPointDetection.cpp
+    )
+
 add_library(slam
     ${SRC}/RGBD_SLAM.cpp
-    ${SRC}/Pose_Optimisation.cpp
     )
 
 target_link_libraries(rgbslam 
     slam
     primitivesDetection
     poseEstimation
+    mapManagement
     thirdParty
+    utils
     ${LINK_LIBS} 
     )
 

@@ -77,15 +77,16 @@ namespace primitiveDetection {
                 }
                 else if(associatedIds.contains(index)) {    //shape associated with last frame shape
                     //there is a mask to display 
-                    if (colors.size() <= associatedIds.at(index)) {
+                    unsigned int primitiveIndex = static_cast<unsigned int>(associatedIds.at(index));
+                    if (colors.size() <= primitiveIndex) {
                         std::cerr << "Id of primitive is greater than available colors" << std::endl;
                         exit(-1);
                     }
-                    outPtr[c] = colors[associatedIds.at(index)] * 0.5 + rgbPtr[c] * 0.5;
+                    outPtr[c] = colors[primitiveIndex] * 0.5 + rgbPtr[c] * 0.5;
                 }
                 else {
                     //shape associated with nothing
-                    if (colors.size() <= index) {
+                    if (colors.size() <= static_cast<unsigned int>(index)) {
                         std::cerr << "Id of primitive is greater than available colors" << std::endl;
                         exit(-1);
                     }

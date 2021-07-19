@@ -41,7 +41,7 @@ namespace primitiveDetection {
         _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
         // Point detector and matcher
-        _pointMatcher = new Key_Point_Extraction(maxMatchDistance, minHessian);
+        _pointMatcher = new utils::Key_Point_Extraction(maxMatchDistance, minHessian);
 
         // kernel for various operations
         _kernel = cv::Mat::ones(3, 3, CV_8U);
@@ -214,15 +214,22 @@ namespace primitiveDetection {
 
             poseOptimisation::Pose_Functor pf(poseOptimisation::Pose_Estimator(input.size(), matchedPoints));
             Eigen::LevenbergMarquardt<poseOptimisation::Pose_Functor, double> lm( pf );
+
+            // xtol     : tolerance for the norm of the solution vector
+            // ftol     : tolerance for the norm of the vector function
+            // gtol     : tolerance for the norm of the gradient of the error function
+            // factor   : step bound for the diagonal shift
+            // epsfcn   : error precision
+            // maxfev   : maximum number of function evaluation
             lm.parameters.epsfcn = 1e-5;
-            lm.parameters.maxfev= 1024;
+            lm.parameters.maxfev = 1024;
 
             Eigen::LevenbergMarquardtSpace::Status endStatus = lm.minimize(input);
             const std::string message = poseOptimisation::get_human_readable_end_message(endStatus);
 
-            poseEstimation::quaternion endRotation(input[3], input[4], input[5], input[6]);
+            quaternion endRotation(input[3], input[4], input[5], input[6]);
             endRotation.normalize();
-            poseEstimation::vector3 endTranslation(input[0], input[1], input[2]);
+            vector3 endTranslation(input[0], input[1], input[2]);
 
             refinedPose.update(endTranslation, endRotation);
 

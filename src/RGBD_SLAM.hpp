@@ -88,7 +88,7 @@ namespace primitiveDetection {
             /* Detectors */
             Primitive_Detection* _primitiveDetector;
             cv::LSD* _lineDetector;
-            Key_Point_Extraction* _pointMatcher;
+            utils::Key_Point_Extraction* _pointMatcher;
 
             cv::Mat _kernel;
 
