@@ -56,7 +56,7 @@ namespace poseEstimation {
         std::vector<g2o::EdgeProjectP2MC *> monoEdges(matchedPoints.size());
         for (size_t i = 0, count = matchedPoints.size(); i < count; i++)
         {
-            //set the feature as a fixed point in graph
+            //set the matched map point as a fixed point in graph
             g2o::VertexPointXYZ *pointVertex = new g2o::VertexPointXYZ();
             pointVertex->setId(vertexID++);
             pointVertex->setMarginalized(false);

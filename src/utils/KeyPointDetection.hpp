@@ -8,12 +8,14 @@
 #include "types.hpp"
 
 
-typedef std::map<unsigned int, vector3> keypoint_container;
-typedef std::pair<vector3, vector3> point_pair;
-typedef std::list<point_pair> matched_point_container;
-
 namespace utils {
 
+#define MINIMUM_KEY_POINT_FOR_KNN 6
+
+    /**
+     * \brief A class to detect and store keypoints
+     *
+     */
     class Key_Point_Extraction 
     {
         public:
@@ -66,7 +68,12 @@ namespace utils {
 
         private:
 
-            cv::Ptr<cv::xfeatures2d::SURF> _featureDetector;
+            typedef cv::AgastFeatureDetector detector_type;
+            //cv::xfeatures2d::SURF
+
+            cv::Ptr<detector_type> _featureDetector;
+            cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
+
             cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
 
             const double _maxMatchDistance;

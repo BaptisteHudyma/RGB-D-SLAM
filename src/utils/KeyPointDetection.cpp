@@ -21,8 +21,12 @@ namespace utils {
         }
 
         // Create feature extractor and matcher
-        _featureDetector = cv::xfeatures2d::SURF::create( minHessian );
-        _featuresMatcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
+        //_featureDetector = cv::xfeatures2d::SURF::create( minHessian );
+        _featureDetector = detector_type::create( minHessian );
+        _descriptorExtractor = cv::xfeatures2d::BriefDescriptorExtractor::create();
+        
+        //cv::DescriptorMatcher::FLANNBASED
+        _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
 
         //profiling
         _meanPointExtractionTime = 0.0;
@@ -31,11 +35,17 @@ namespace utils {
     const matched_point_container Key_Point_Extraction::detect_and_match_points(const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         std::vector<cv::KeyPoint> frameKeypoints;
-        cv::Mat frameDescriptors;
 
+        //detect keypoints
         double t1 = cv::getTickCount();
-        _featureDetector->detectAndCompute(grayImage, cv:: noArray(), frameKeypoints, frameDescriptors); 
+        _featureDetector->detect(grayImage, frameKeypoints); 
         _meanPointExtractionTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+
+        cv::Mat frameDescriptors;
+        _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
+
+
+
 
         keypoint_container cleanedKp;
         get_cleaned_keypoint(depthImage, frameKeypoints, cleanedKp);
@@ -48,9 +58,11 @@ namespace utils {
             matched_point_container matchedPoints;
             return matchedPoints;
         }
-        else if (cleanedKp.size() <= 6) {
+        else if (cleanedKp.size() <= MINIMUM_KEY_POINT_FOR_KNN) {
             std::cout << "Not enough features detected for knn matching" << std::endl;
 
+            _lastFrameKeypoints.swap(cleanedKp);
+            _lastFrameDescriptors = frameDescriptors;
             matched_point_container matchedPoints;
             return matchedPoints;
         }
@@ -75,9 +87,9 @@ namespace utils {
                 if (depth > 0) {
                     cleanedPoints.emplace( i, vector3(pt.x, pt.y, depth) );
                 }
-                /*else {
+                else {
                   cleanedPoints.emplace( i, vector3(pt.x, pt.y, 0) );
-                  }*/
+                  }
             }
             ++i;
         }
@@ -114,7 +126,7 @@ namespace utils {
 
     void Key_Point_Extraction::get_debug_image(cv::Mat& debugImage) 
     {
-        if (_lastFrameKeypoints.size() > 0) {
+        if (_lastFrameKeypoints.size() > MINIMUM_KEY_POINT_FOR_KNN) {
             for (const std::pair<unsigned int, vector3> pair : _lastFrameKeypoints) {
                 const vector3 point = pair.second;
                 if (point.z() <= 0) {
