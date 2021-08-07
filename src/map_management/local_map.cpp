@@ -12,6 +12,10 @@ namespace map_management {
         // KNN search
         // Outliers ?
         // add map matches (world coordinates) to matched list
+        // add raw keypoints (frame coordinates) to staged points
+
+        //pose opti
+        //update map with stagged points, using optimized pose to update staged point positions
         
 
         /*

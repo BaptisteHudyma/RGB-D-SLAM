@@ -6,6 +6,7 @@
 #include <list>
 
 #include "types.hpp"
+#include "PoseUtils.hpp"
 
 
 namespace utils {
@@ -20,21 +21,31 @@ namespace utils {
     {
         public:
 
+            /**
+              * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
+              * \param[in] minHessian Resolution of the point detection
+              */
             Key_Point_Extraction(double maxMatchDistance, unsigned int minHessian);
 
             /**
              * \brief detect and compute the key point matches with the local map
              *
+             * \param[in] camPose Pose of the camera in world coordinates
+             * \param[in] grayImage The input image from camera
+             * \param[in] depthImage The input depth image 
+             *
+             * \return A container with the matched points (local map and newly detected)
              */
-            const matched_point_container detect_and_match_points(const cv::Mat& grayImage, const cv::Mat& depthImage);
+            const matched_point_container detect_and_match_points(const poseEstimation::Pose& camPose, const cv::Mat& grayImage, const cv::Mat& depthImage);
 
             /**
              * \brief Compute a debug image
              *
+             * \param[in] camPose Pose of the camera in world coordinates
              * \param[in, out] debugImage Output image
              */
 
-            void get_debug_image(cv::Mat& debugImage);
+            void get_debug_image(const poseEstimation::Pose& camPose, cv::Mat& debugImage);
 
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
@@ -64,14 +75,10 @@ namespace utils {
              * \param[in] kp Container for raw keypoints
              * \param[out] cleanedPoints Container with the final clean keypoints
              */
-            void get_cleaned_keypoint(const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints);
+            void get_cleaned_keypoint(const poseEstimation::Pose& camPose, const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints);
 
         private:
-
-            typedef cv::AgastFeatureDetector detector_type;
-            //cv::xfeatures2d::SURF
-
-            cv::Ptr<detector_type> _featureDetector;
+            cv::Ptr<cv::Feature2D> _featureDetector;
             cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
 
             cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;

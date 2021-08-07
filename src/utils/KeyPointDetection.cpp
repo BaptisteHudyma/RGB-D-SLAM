@@ -6,7 +6,9 @@
 // cout cerr
 #include <iostream>
 
+#include "utils.hpp"
 
+// Error display
 #define CLASS_ERR "<Key_Point_Extraction> "
 
 namespace utils {
@@ -21,18 +23,16 @@ namespace utils {
         }
 
         // Create feature extractor and matcher
-        //_featureDetector = cv::xfeatures2d::SURF::create( minHessian );
-        _featureDetector = detector_type::create( minHessian );
+        _featureDetector = cv::AgastFeatureDetector::create( minHessian );
         _descriptorExtractor = cv::xfeatures2d::BriefDescriptorExtractor::create();
-        
-        //cv::DescriptorMatcher::FLANNBASED
+
         _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
 
         //profiling
         _meanPointExtractionTime = 0.0;
     }
 
-    const matched_point_container Key_Point_Extraction::detect_and_match_points(const cv::Mat& grayImage, const cv::Mat& depthImage) 
+    const matched_point_container Key_Point_Extraction::detect_and_match_points(const poseEstimation::Pose& camPose, const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         std::vector<cv::KeyPoint> frameKeypoints;
 
@@ -48,7 +48,7 @@ namespace utils {
 
 
         keypoint_container cleanedKp;
-        get_cleaned_keypoint(depthImage, frameKeypoints, cleanedKp);
+        get_cleaned_keypoint(camPose, depthImage, frameKeypoints, cleanedKp);
 
         if (_lastFrameKeypoints.size() <= 0) {
             //first call, or tracking lost
@@ -76,20 +76,31 @@ namespace utils {
     }
 
 
-    void Key_Point_Extraction::get_cleaned_keypoint(const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints) 
+    void Key_Point_Extraction::get_cleaned_keypoint(const poseEstimation::Pose& camPose, const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints) 
     {
+        matrix34 camToWorldMtrx;
+        camToWorldMtrx << camPose.get_orientation_matrix(), camPose.get_position();
+        
+
         cv::Rect lastRect(cv::Point(), depthImage.size());
         unsigned int i = 0;
         for (const cv::KeyPoint& keypoint : kp) {
             const cv::Point2f& pt = keypoint.pt;
             if (lastRect.contains(pt)) {
-                const float depth = depthImage.at<float>(pt.y, pt.x);
+                // convert to meters
+                const float depth = depthImage.at<float>(pt.y, pt.x) / 1000;
                 if (depth > 0) {
-                    cleanedPoints.emplace( i, vector3(pt.x, pt.y, depth) );
+                    const vector3 worldPoint = screen_to_3D_coordinates(pt.x, pt.y, depth, camToWorldMtrx);
+                    cleanedPoints.emplace(i, worldPoint);
                 }
+                /*
                 else {
-                  cleanedPoints.emplace( i, vector3(pt.x, pt.y, 0) );
-                  }
+                    double x = (pt.x - cx) * fx;
+                    double y = (pt.y - cy) * fy;
+                    vector4 projectedPoint(x, y, 0, 1.0);
+                    cleanedPoints.emplace( i, camToWorldMtrx * projectedPoint);
+                }
+                */
             }
             ++i;
         }
@@ -124,17 +135,16 @@ namespace utils {
 
 
 
-    void Key_Point_Extraction::get_debug_image(cv::Mat& debugImage) 
+    void Key_Point_Extraction::get_debug_image(const poseEstimation::Pose& camPose, cv::Mat& debugImage) 
     {
         if (_lastFrameKeypoints.size() > MINIMUM_KEY_POINT_FOR_KNN) {
+            const matrix34& worldToCamMtrx = compute_world_to_camera_transform(camPose);
+
             for (const std::pair<unsigned int, vector3> pair : _lastFrameKeypoints) {
-                const vector3 point = pair.second;
-                if (point.z() <= 0) {
-                    cv::circle(debugImage, cv::Point(point.x(), point.y()), 4, cv::Scalar(0, 255, 255), 1);
-                }
-                else {
-                    // no depth
-                    cv::circle(debugImage, cv::Point(point.x(), point.y()), 4, cv::Scalar(255, 255, 0), 1);
+                const vector2& screenPoint = world_to_screen_coordinates(pair.second, worldToCamMtrx);
+
+                if (screenPoint[0] > 0 and screenPoint[1] > 0) {
+                    cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 255, 255), 1);
                 }
             }
         }

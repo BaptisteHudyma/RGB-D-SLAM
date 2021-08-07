@@ -16,10 +16,10 @@ namespace poseEstimation {
     /**
      * \brief Check if the point pt is visible from observer at position w2c 
      *
-     * \param[in] pt Point to check 
+     * \param[in] pt Point to check (world space) 
      * \param[in] w2c Position of the observer
      * \param[in] params Parameter container
-     * \param[out] outProjectedPt pt projected to world coordinates
+     * \param[out] outProjectedPt pt projected to frame coordinates
      *
      * \return True if point pt is visible from w2c
      */

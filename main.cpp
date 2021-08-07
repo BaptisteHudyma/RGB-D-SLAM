@@ -157,7 +157,7 @@ int main(int argc, char* argv[]) {
 
         // display masks on image
         cv::Mat segRgb = rgbImage.clone();
-        RGBD_Slam.get_debug_image(rgbImage, segRgb, elapsedTime, showPrimitiveMasks);
+        RGBD_Slam.get_debug_image(pose, rgbImage, segRgb, elapsedTime, showPrimitiveMasks);
         cv::imshow("RGBD-SLAM", segRgb);
 
         //check user inputs

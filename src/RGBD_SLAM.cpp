@@ -183,12 +183,12 @@ namespace primitiveDetection {
         return pose;
     }
 
-    void RGBD_SLAM::get_debug_image(const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) {
+    void RGBD_SLAM::get_debug_image(const poseEstimation::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) {
         debugImage = originalRGB.clone();
         if (showPrimitiveMasks)
             _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, debugImage, _previousAssociatedIds, elapsedTime);
 
-        _pointMatcher->get_debug_image(debugImage); 
+        _pointMatcher->get_debug_image(camPose, debugImage); 
     }
 
 
@@ -197,7 +197,7 @@ namespace primitiveDetection {
         //get and refine pose
         poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
-        const matched_point_container matchedPoints = _pointMatcher->detect_and_match_points(grayImage, depthImage);
+        const matched_point_container matchedPoints = _pointMatcher->detect_and_match_points(_currentPose, grayImage, depthImage);
 
 
         if (matchedPoints.size() > 5) {
@@ -222,7 +222,7 @@ namespace primitiveDetection {
             // epsfcn   : error precision
             // maxfev   : maximum number of function evaluation
             lm.parameters.epsfcn = 1e-5;
-            lm.parameters.maxfev = 1024;
+            lm.parameters.maxfev = 4048;
 
             Eigen::LevenbergMarquardtSpace::Status endStatus = lm.minimize(input);
             const std::string message = poseOptimisation::get_human_readable_end_message(endStatus);

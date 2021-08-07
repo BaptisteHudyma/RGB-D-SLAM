@@ -58,7 +58,7 @@ namespace primitiveDetection {
              * \param[in] elapsedTime Time since the last call (used for FPS count)
              * \param[in] showPrimitiveMasks Display the detected primitive masks
              */
-            void get_debug_image(const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks = true);
+            void get_debug_image(const poseEstimation::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks = true);
 
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler

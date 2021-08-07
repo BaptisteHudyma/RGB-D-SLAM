@@ -13,27 +13,26 @@ namespace poseOptimisation {
 
     // Implementation of the objective function
     int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
-        vector3 translation(z(0), z(1), z(2));
         quaternion rotation(z(3), z(4), z(5), z(6));
         rotation.normalize();
-        matrix33 rotationMatrix = rotation.toRotationMatrix();
+
+        const matrix33& rotationMatrix = rotation.toRotationMatrix();
+        const vector3 translation(z(0), z(1), z(2));
 
         unsigned int i = 0;
         for(const point_pair& pointPair : _points) {
-            const vector3& p1 = pointPair.first;
-            const vector3& p2 = pointPair.second;
+            const vector3& mapPoint = pointPair.first;
+            const vector3& detectedPoint = pointPair.second;
 
             //pose error
-            const vector3 dist = p1 - ( rotationMatrix *  p2 + translation );
+            const vector3 dist = detectedPoint - ( rotationMatrix * mapPoint + translation );
             //fvec(i) = dist.squaredNorm(); 
             //fvec(i) = dist.norm(); 
 
-            //manhattan
+            //Manhattan
             fvec(i) = abs(dist[0]) + abs(dist[1]) + abs(dist[2]);
-
             ++i;
         }
-        //std::cout << fvec.transpose() << std::endl;
         return 0;
     }
 
