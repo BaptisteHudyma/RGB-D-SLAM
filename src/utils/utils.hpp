@@ -55,12 +55,18 @@ namespace utils {
         return vector2(screenX, screenY);
     }
 
-    const matrix34 compute_world_to_camera_transform(const poseEstimation::Pose& camera_pose)
+    /**
+      * \brief Given a camera pose, returns a transformation matrix to convert a world point to camera point
+      *
+      * \param[in] cameraPose
+      *
+      */
+    const matrix34 compute_world_to_camera_transform(const poseEstimation::Pose& cameraPose)
     {
-        matrix33 worldToCamRotMtrx = (camera_pose.get_orientation_matrix()).transpose();
-        vector3 world_to_cam_translation = (-worldToCamRotMtrx) * camera_pose.get_position();
+        const matrix33& worldToCamRotMtrx = (cameraPose.get_orientation_matrix()).transpose();
+        const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * cameraPose.get_position();
         matrix34 worldToCamMtrx;
-        worldToCamMtrx << worldToCamRotMtrx, world_to_cam_translation;
+        worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
         return worldToCamMtrx;
     }
 
