@@ -78,7 +78,7 @@ namespace utils {
             void get_cleaned_keypoint(const poseEstimation::Pose& camPose, const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints);
 
         private:
-            cv::Ptr<cv::Feature2D> _featureDetector;
+            cv::Ptr<cv::FeatureDetector> _featureDetector;
             cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
 
             cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;

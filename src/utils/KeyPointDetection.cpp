@@ -80,27 +80,19 @@ namespace utils {
     {
         matrix34 camToWorldMtrx;
         camToWorldMtrx << camPose.get_orientation_matrix(), camPose.get_position();
-        
 
-        cv::Rect lastRect(cv::Point(), depthImage.size());
+
+        cv::Rect imageBoundaries(cv::Point(), depthImage.size());
         unsigned int i = 0;
         for (const cv::KeyPoint& keypoint : kp) {
             const cv::Point2f& pt = keypoint.pt;
-            if (lastRect.contains(pt)) {
+            if (imageBoundaries.contains(pt)) {
                 // convert to meters
                 const float depth = depthImage.at<float>(pt.y, pt.x) / 1000;
                 if (depth > 0) {
                     const vector3 worldPoint = screen_to_3D_coordinates(pt.x, pt.y, depth, camToWorldMtrx);
                     cleanedPoints.emplace(i, worldPoint);
                 }
-                /*
-                else {
-                    double x = (pt.x - cx) * fx;
-                    double y = (pt.y - cy) * fy;
-                    vector4 projectedPoint(x, y, 0, 1.0);
-                    cleanedPoints.emplace( i, camToWorldMtrx * projectedPoint);
-                }
-                */
             }
             ++i;
         }
