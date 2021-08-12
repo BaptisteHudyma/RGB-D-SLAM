@@ -6,6 +6,7 @@
 #include "PlaneSegment.hpp"
 
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     /**
@@ -118,6 +119,7 @@ namespace primitiveDetection {
 
     };
 
+}
 }
 
 #endif

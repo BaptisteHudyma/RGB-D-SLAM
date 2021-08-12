@@ -1,6 +1,7 @@
 #include "ShapePrimitives.hpp"
 #include <iostream>
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
 
@@ -94,4 +95,5 @@ namespace primitiveDetection {
     }
 
 
+}
 }

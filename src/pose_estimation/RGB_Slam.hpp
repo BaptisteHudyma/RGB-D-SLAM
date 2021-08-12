@@ -13,6 +13,7 @@
 #include <opencv2/core/core.hpp>
 #include <deque>
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     /**
@@ -83,6 +84,7 @@ namespace poseEstimation {
                 N_MATCHES_WINDOWS = 3
             };
     };
+}
 }
 
 #endif

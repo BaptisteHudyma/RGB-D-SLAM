@@ -1,10 +1,11 @@
 #include "local_map.hpp"
 
+namespace rgbd_slam {
 namespace map_management {
 
     Local_Map::Local_Map()
     {
-
+        _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
     }
 
     const matched_point_container Local_Map::find_matches(const keypoint_container& detectedPoints) 
@@ -73,6 +74,4 @@ namespace map_management {
     }
 
 }
-
-
-
+}

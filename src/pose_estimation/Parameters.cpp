@@ -1,6 +1,7 @@
 #include "Parameters.hpp"
 #include <opencv2/opencv.hpp>
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     Parameters::Parameters() {
@@ -67,4 +68,5 @@ namespace poseEstimation {
         return true;
     }
 
+}
 }

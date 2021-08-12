@@ -4,6 +4,7 @@
 //for cerr
 #include <iostream>
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     using namespace std;
@@ -390,4 +391,5 @@ namespace primitiveDetection {
     }
 
 
+}
 }

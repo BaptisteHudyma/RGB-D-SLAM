@@ -1,5 +1,6 @@
 #include "Pose.hpp"
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     Pose::Pose() {
@@ -32,4 +33,5 @@ namespace poseEstimation {
         return os;
     }
 
+}
 }

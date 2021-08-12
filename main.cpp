@@ -123,10 +123,10 @@ int main(int argc, char* argv[]) {
     RGB_SLAM vo(params);
      */
 
-    primitiveDetection::RGBD_SLAM RGBD_Slam (dataPath, width, height, 25);
+    rgbd_slam::RGBD_SLAM RGBD_Slam (dataPath, width, height, 25);
 
     //start with identity pose
-    poseEstimation::Pose pose;
+    rgbd_slam::poseEstimation::Pose pose;
 
 
     //frame counters

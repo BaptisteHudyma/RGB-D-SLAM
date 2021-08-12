@@ -94,6 +94,7 @@ add_library(thirdParty
     )
 
 add_library(utils
+    ${UTILS}/utils.cpp
     ${UTILS}/KeyPointDetection.cpp
     )
 

@@ -17,6 +17,7 @@
 #include "ShapePrimitives.hpp"
 
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     /**
@@ -213,6 +214,7 @@ namespace primitiveDetection {
             Primitive_Detection& operator=(const Primitive_Detection&);
     };
 
+}
 }
 
 #endif

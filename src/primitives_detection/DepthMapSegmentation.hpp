@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     /**
@@ -40,6 +41,7 @@ namespace primitiveDetection {
       * \param[out] outputImage Final segmented image
       */
     void draw_segmented_labels(const cv::Mat& segmentedImage, const std::vector<cv::Vec3b>& colors, cv::Mat& outputImage);
+}
 }
 
 #endif

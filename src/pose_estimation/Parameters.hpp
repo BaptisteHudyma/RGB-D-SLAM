@@ -3,6 +3,7 @@
 
 #include <string>
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     /**
@@ -93,6 +94,7 @@ namespace poseEstimation {
             unsigned int _viewer_point_size;
     };
 
+}
 }
 
 #endif

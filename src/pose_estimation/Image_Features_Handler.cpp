@@ -6,6 +6,7 @@
 #include <limits>
 #include <thread>
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     /**
@@ -277,4 +278,5 @@ namespace poseEstimation {
         }
     }
 
+}
 }

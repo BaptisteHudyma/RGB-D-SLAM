@@ -1,5 +1,6 @@
 #include "DepthOperations.hpp"
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     Depth_Operations::Depth_Operations(const std::string& parameterFilePath, unsigned int width, unsigned int height, unsigned int cellSize) 
@@ -150,4 +151,5 @@ namespace primitiveDetection {
 
 
 
+}
 }

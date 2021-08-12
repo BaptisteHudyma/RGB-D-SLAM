@@ -1,5 +1,6 @@
 #include "PoseUtils.hpp"
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
 
@@ -31,4 +32,5 @@ namespace poseEstimation {
         return vector2(projPt.x() * invZ, projPt.y() * invZ);
     }
 
+}
 }

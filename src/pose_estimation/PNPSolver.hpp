@@ -6,6 +6,7 @@
 #include <g2o/core/sparse_optimizer.h>
 
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     /**
@@ -38,6 +39,7 @@ namespace poseEstimation {
             g2o::SparseOptimizer _optimizer;
     };
 
+}
 }
 
 #endif

@@ -8,7 +8,7 @@
 // cerr cout
 #include <iostream>
 
-namespace primitiveDetection {
+namespace rgbd_slam {
 
 #define CLASS_ERR "<RGBD_SLAM> "
 
@@ -23,7 +23,7 @@ namespace primitiveDetection {
         std::string finalPath = calibPath.str();
 
         // primitive connected graph creator
-        _depthOps = new Depth_Operations(finalPath, _width, _height, PATCH_SIZE);
+        _depthOps = new primitiveDetection::Depth_Operations(finalPath, _width, _height, PATCH_SIZE);
         if (_depthOps == nullptr or not _depthOps->is_ok()) {
             std::cerr << CLASS_ERR << "Cannot load parameter files, exiting" << std::endl;
             exit(-1);
@@ -34,7 +34,7 @@ namespace primitiveDetection {
 
 
         //plane/cylinder finder
-        _primitiveDetector = new Primitive_Detection(_height, _width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
+        _primitiveDetector = new primitiveDetection::Primitive_Detection(_height, _width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
 
         // Line segment detector
         //Should refine, scale, Gaussian filter sigma
@@ -107,8 +107,8 @@ namespace primitiveDetection {
         if(not _previousFramePrimitives.empty()) {
             //find matches between consecutive images
             //compare normals, superposed area (and colors ?)
-            for(const std::unique_ptr<Primitive>& prim : primitives) {
-                for(const std::unique_ptr<Primitive>& prevPrim : _previousFramePrimitives) {
+            for(const std::unique_ptr<primitiveDetection::Primitive>& prim : primitives) {
+                for(const std::unique_ptr<primitiveDetection::Primitive>& prevPrim : _previousFramePrimitives) {
                     if(prim->is_similar(prevPrim)) {
                         associatedIds[prim->get_id()] = prevPrim->get_id();
                         break;

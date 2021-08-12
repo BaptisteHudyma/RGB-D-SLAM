@@ -1,5 +1,6 @@
 #include "MotionModel.hpp"
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
 
@@ -64,4 +65,5 @@ namespace poseEstimation {
     }
 
 
+}
 }

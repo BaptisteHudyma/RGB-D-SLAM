@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     /**
@@ -91,6 +92,7 @@ namespace primitiveDetection {
             cv::Mat_<float> _V;
             cv::Mat_<int> _cellMap;
     };
+}
 }
 
 #endif

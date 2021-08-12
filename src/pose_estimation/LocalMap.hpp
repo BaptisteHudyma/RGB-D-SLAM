@@ -7,7 +7,9 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
+namespace rgbd_slam {
 namespace poseEstimation {
+
     class Image_Features_Struct;
     class Image_Features_Handler;
 
@@ -98,6 +100,7 @@ namespace poseEstimation {
 
     };
 
+}
 }
 
 #endif

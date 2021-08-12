@@ -11,7 +11,8 @@
 
 #include <iostream>
 
-namespace poseOptimisation{
+namespace rgbd_slam {
+namespace poseOptimisation {
 
 
 
@@ -78,5 +79,6 @@ namespace poseOptimisation{
     const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status);
 
 }       /* poseOptimisation*/
+}
 
 #endif

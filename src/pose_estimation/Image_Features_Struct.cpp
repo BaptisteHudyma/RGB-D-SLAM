@@ -1,5 +1,6 @@
 #include "Image_Features_Struct.hpp"
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     Image_Features_Struct::Image_Features_Struct() : 
@@ -137,6 +138,7 @@ namespace poseEstimation {
 
 
 
+}
 }
 
 

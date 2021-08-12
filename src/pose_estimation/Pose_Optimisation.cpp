@@ -1,5 +1,6 @@
 #include "Pose_Optimisation.hpp"
 
+namespace rgbd_slam {
 namespace poseOptimisation {
 
 
@@ -72,3 +73,4 @@ namespace poseOptimisation {
 
 
 } /* poseOptimisation */
+}

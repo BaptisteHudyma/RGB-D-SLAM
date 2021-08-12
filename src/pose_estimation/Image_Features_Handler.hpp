@@ -7,6 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     typedef std::vector<cv::Rect> rect_vector;
@@ -69,6 +70,7 @@ namespace poseEstimation {
             compute_features_data _thData[2];
     };
 
+}
 }
 
 #endif

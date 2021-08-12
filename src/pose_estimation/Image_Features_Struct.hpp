@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     /**
@@ -138,6 +139,7 @@ namespace poseEstimation {
             }
     };
 
+}
 }
 
 #endif

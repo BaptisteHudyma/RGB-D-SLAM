@@ -5,6 +5,7 @@
 
 //lib simplification
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     Primitive_Detection::Primitive_Detection(unsigned int height, unsigned int width, unsigned int blocSize, float minCosAngleForMerge, float maxMergeDistance, bool useCylinderDetection)
@@ -663,5 +664,6 @@ namespace primitiveDetection {
 
 
 
+}
 }
 

@@ -8,6 +8,7 @@
 #include <Eigen/Dense>
 
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     /**
@@ -138,6 +139,7 @@ namespace primitiveDetection {
     };
 
 
+}
 }
 
 

@@ -3,6 +3,7 @@
 
 #include "Pose.hpp"
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     class Pose_Utils {
@@ -15,6 +16,7 @@ namespace poseEstimation {
 
             static const vector2 project_point(const vector3 &pt, const matrix34& projectionMatrix);
     };
+}
 }
 
 

@@ -9,6 +9,7 @@
 #include <Eigen/SVD>
 
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     static float min_x, max_x, min_y, max_y;
@@ -355,4 +356,5 @@ namespace poseEstimation {
 
 
 
+}
 }

@@ -6,6 +6,7 @@
 #include <Eigen/Dense>
 #include <Eigen/StdVector>
 
+namespace rgbd_slam { 
 namespace poseEstimation {
 
     /**
@@ -41,6 +42,8 @@ namespace poseEstimation {
 
     //array of poses
     typedef std::vector<Pose, Eigen::aligned_allocator<Pose>> pose_array;
+
+}
 }
 
 

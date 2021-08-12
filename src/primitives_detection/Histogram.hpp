@@ -4,6 +4,7 @@
 #include <Eigen/Dense>
 #include <vector>
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
     /**
@@ -64,6 +65,7 @@ namespace primitiveDetection {
             Histogram& operator=(const Histogram&);
     };
 
+}
 }
 
 #endif

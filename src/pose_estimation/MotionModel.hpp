@@ -6,6 +6,7 @@
 
 #include <Eigen/Dense>
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     /**
@@ -46,6 +47,7 @@ namespace poseEstimation {
                 vector3 _linearVelocity;
     };
 
+}
 }
 
 #endif

@@ -8,7 +8,7 @@
 #include "types.hpp"
 #include "PoseUtils.hpp"
 
-
+namespace rgbd_slam {
 namespace utils {
 
 #define MINIMUM_KEY_POINT_FOR_KNN 6
@@ -66,7 +66,7 @@ namespace utils {
              *
              * \return The matched points
              */
-            const matched_point_container get_good_matches(keypoint_container& thisFrameKeypoints, cv::Mat& thisFrameDescriptors); 
+            const matched_point_container get_good_matches(keypoint_container& thisFrameKeypoints, const cv::Mat& thisFrameDescriptors); 
 
             /**
              * \brief Get the filtered keypoints. Remove keypoints without depth informations 
@@ -92,6 +92,7 @@ namespace utils {
 
     };
 
+}
 }
 
 #endif

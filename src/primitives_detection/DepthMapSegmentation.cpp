@@ -2,6 +2,7 @@
 
 #include "GeodesicOperations.hpp"
 
+namespace rgbd_slam {
 namespace primitiveDetection {
 
 
@@ -138,4 +139,5 @@ namespace primitiveDetection {
         }
     }
 
+}
 }

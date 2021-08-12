@@ -18,6 +18,7 @@
 
 #define N_PASSES 2
 
+namespace rgbd_slam {
 namespace poseEstimation {
 
     PNP_Solver::PNP_Solver(double fx, double fy, double cx, double cy, double baseline) :
@@ -108,4 +109,5 @@ namespace poseEstimation {
         return opPose;
     }
 
+}
 }

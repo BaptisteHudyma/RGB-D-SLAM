@@ -22,8 +22,7 @@
 #include "MotionModel.hpp"
 #include "Pose_Optimisation.hpp"
 
-namespace primitiveDetection {
-
+namespace rgbd_slam {
 
     class RGBD_SLAM {
         public:
@@ -83,10 +82,10 @@ namespace primitiveDetection {
             const unsigned int _width;
             const unsigned int _height;
 
-            Depth_Operations* _depthOps;
+            primitiveDetection::Depth_Operations* _depthOps;
 
             /* Detectors */
-            Primitive_Detection* _primitiveDetector;
+            primitiveDetection::Primitive_Detection* _primitiveDetector;
             cv::LSD* _lineDetector;
             utils::Key_Point_Extraction* _pointMatcher;
 
