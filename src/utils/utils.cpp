@@ -30,10 +30,10 @@ namespace utils {
         return vector2(screenX, screenY);
     }
 
-    const matrix34 compute_world_to_camera_transform(const poseEstimation::Pose& cameraPose)
+    const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
     {
-        const matrix33& worldToCamRotMtrx = (cameraPose.get_orientation_matrix()).transpose();
-        const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * cameraPose.get_position();
+        const matrix33& worldToCamRotMtrx = (rotation.toRotationMatrix()).transpose();
+        const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * position;
         matrix34 worldToCamMtrx;
         worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
         return worldToCamMtrx;

@@ -6,93 +6,124 @@
 #include <list>
 
 #include "types.hpp"
+#include "map_point.hpp"
 #include "PoseUtils.hpp"
 
 namespace rgbd_slam {
-namespace utils {
+    namespace utils {
 
-#define MINIMUM_KEY_POINT_FOR_KNN 6
+        class Keypoint_Handler
+        {
+            public:
+                /**
+                 * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
+                 */
+                Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, double maxMatchDistance = 0.7);
 
-    /**
-     * \brief A class to detect and store keypoints
-     *
-     */
-    class Key_Point_Extraction 
-    {
-        public:
+                /**
+                 * \brief get a container with the filtered point matches. Uses _maxMatchDistance to estimate good matches. 
+                 *
+                 * \param[in] mapPoint A point to match 
+                 *
+                 * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
+                 */
+                int get_match_index(const Point& mapPoint) const; 
 
-            /**
-              * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
-              * \param[in] minHessian Resolution of the point detection
-              */
-            Key_Point_Extraction(double maxMatchDistance, unsigned int minHessian);
+                /**
+                  * \brief Return the depth associated with a certain keypoint
+                  */
+                double get_depth(unsigned int index) const
+                {
+                    assert(index < _depths.size());
 
-            /**
-             * \brief detect and compute the key point matches with the local map
-             *
-             * \param[in] camPose Pose of the camera in world coordinates
-             * \param[in] grayImage The input image from camera
-             * \param[in] depthImage The input depth image 
-             *
-             * \return A container with the matched points (local map and newly detected)
-             */
-            const matched_point_container detect_and_match_points(const poseEstimation::Pose& camPose, const cv::Mat& grayImage, const cv::Mat& depthImage);
+                    return _depths[index];
+                }
 
-            /**
-             * \brief Compute a debug image
-             *
-             * \param[in] camPose Pose of the camera in world coordinates
-             * \param[in, out] debugImage Output image
-             */
+                double get_depth_count() const
+                {
+                    return _depths.size();
+                }
 
-            void get_debug_image(const poseEstimation::Pose& camPose, cv::Mat& debugImage);
+                /**
+                 * \brief return the keypoint associated with the index
+                 */
+                const vector2 get_keypoint(unsigned int index) const 
+                {
+                    assert(index < _keypoints.size());
 
-            /**
-             * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
-             *
-             * \param[in] meanFrameTreatmentTime The mean time in seconds that this program used to treat one frame
-             * \param[in] frameCount Total of frame treated by the program
-             */
-            void show_statistics(double meanFrameTreatmentTime, unsigned int frameCount);
+                    const cv::Point2f point = _keypoints[index].pt;
+                    vector2 keypoint;
+                    keypoint << point.x, point.y;
+                    return keypoint;
+                }
 
-        protected:
+                const cv::Mat get_descriptor(unsigned int index) const
+                {
+                    assert(index < _keypoints.size());
+
+                    return _descriptors.row(index);
+                }
+
+                unsigned int get_keypoint_count() const
+                {
+                    return _keypoints.size();
+                }
 
 
-            /**
-             * \brief get a container with the filtered point matches. Uses _maxMatchDistance to estimate good matches. 
-             *
-             * \param[in] thisFrameKeypoints This frame detected and filtered keypoints
-             * \param[in] thisFrameDescriptors The associated descriptors
-             *
-             * \return The matched points
-             */
-            const matched_point_container get_good_matches(keypoint_container& thisFrameKeypoints, const cv::Mat& thisFrameDescriptors); 
+            private:
+                cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
 
-            /**
-             * \brief Get the filtered keypoints. Remove keypoints without depth informations 
-             *
-             * \param[in] depthImage The associated depth image, already rectified
-             * \param[in] kp Container for raw keypoints
-             * \param[out] cleanedPoints Container with the final clean keypoints
-             */
-            void get_cleaned_keypoint(const poseEstimation::Pose& camPose, const cv::Mat& depthImage, const std::vector<cv::KeyPoint>& kp, keypoint_container& cleanedPoints);
+                const double _maxMatchDistance;
 
-        private:
-            cv::Ptr<cv::FeatureDetector> _featureDetector;
-            cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
+                //store current frame keypoints
+                std::vector<cv::KeyPoint> _keypoints;
+                std::vector<double> _depths;
+                cv::Mat _descriptors;
 
-            cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
 
-            const double _maxMatchDistance;
+        };
 
-            keypoint_container _lastFrameKeypoints;
-            cv::Mat _lastFrameDescriptors;
+        /**
+         * \brief A class to detect and store keypoints
+         *
+         */
+        class Key_Point_Extraction 
+        {
+            public:
 
-            double _meanPointExtractionTime;
+                /**
+                 *
+                 */
+                Key_Point_Extraction(unsigned int minHessian = 25);
 
-    };
+                /**
+                 * \brief detect the keypoints in the gray image 
+                 *
+                 * \param[in] grayImage The input image from camera
+                 *
+                 * \return An object that contains the detected keypoints
+                 */
+                const Keypoint_Handler detect_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage);
 
-}
+
+                /**
+                 * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
+                 *
+                 * \param[in] meanFrameTreatmentTime The mean time in seconds that this program used to treat one frame
+                 * \param[in] frameCount Total of frame treated by the program
+                 */
+                void show_statistics(double meanFrameTreatmentTime, unsigned int frameCount) const;
+
+
+            private:
+                cv::Ptr<cv::FeatureDetector> _featureDetector;
+                cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
+
+                double _meanPointExtractionTime;
+
+        };
+
+    }
 }
 
 #endif

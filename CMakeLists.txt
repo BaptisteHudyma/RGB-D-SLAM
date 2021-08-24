@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(rgbSLAM)
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 set (CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
@@ -82,6 +82,7 @@ add_library(poseEstimation
     )
 
 add_library(mapManagement
+    ${MAP}/map_point.cpp
     ${MAP}/local_map.cpp
     )
 

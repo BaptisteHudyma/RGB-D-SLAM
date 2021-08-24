@@ -43,7 +43,7 @@ namespace utils {
       * \param[in] cameraPose
       *
       */
-    const matrix34 compute_world_to_camera_transform(const poseEstimation::Pose& cameraPose);
+    const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position);
 
 }
 }

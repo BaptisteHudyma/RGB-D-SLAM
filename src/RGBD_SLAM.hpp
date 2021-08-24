@@ -16,6 +16,7 @@
 #include "DepthMapSegmentation.hpp"
 #include "LineSegmentDetector.hpp"
 #include "KeyPointDetection.hpp"
+#include "local_map.hpp"
 #include "RGB_Slam.hpp"
 
 #include "Pose.hpp"
@@ -36,7 +37,7 @@ namespace rgbd_slam {
              * \param[in] minHessian Minimum Hessian parameter for point detection
              * \param[in] maxMatchDistance Maximum distance between the two closest point matches candidates (0 - 1)
              */
-            RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth = 640, unsigned int imageHeight = 480, unsigned int minHessian = 300, double maxMatchDistance = 0.7);
+            RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth = 640, unsigned int imageHeight = 480);
 
             /**
              * \brief Estimates a new pose from the given images
@@ -87,6 +88,8 @@ namespace rgbd_slam {
             /* Detectors */
             primitiveDetection::Primitive_Detection* _primitiveDetector;
             cv::LSD* _lineDetector;
+
+            map_management::Local_Map* _localMap;
             utils::Key_Point_Extraction* _pointMatcher;
 
             cv::Mat _kernel;

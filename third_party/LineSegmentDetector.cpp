@@ -288,7 +288,7 @@ namespace cv {
         std::vector<double> w, p, n;
 
         image = _image.getMat();
-        assert(not image.empty() and image.type() == cv::CV_8UC1);
+        assert(not image.empty() and image.type() == CV_8UC1);
 
         w_needed = _width.needed();
         p_needed = _prec.needed();

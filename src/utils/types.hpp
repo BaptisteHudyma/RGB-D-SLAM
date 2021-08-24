@@ -27,9 +27,8 @@ typedef std::vector<matrix44, Eigen::aligned_allocator<matrix44>> matrix44_array
 typedef std::vector<quaternion, Eigen::aligned_allocator<quaternion>> quaternion_array;
 
 // KeyPoint matching
-typedef std::map<unsigned int, vector3> keypoint_container;
-typedef std::pair<vector3, vector3> point_pair;
-typedef std::list<point_pair> matched_point_container;
+typedef std::pair<vector2, vector3> point_pair;
+typedef std::list<point_pair> match_point_container;
 
 
 #endif

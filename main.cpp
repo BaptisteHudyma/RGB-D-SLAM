@@ -123,7 +123,7 @@ int main(int argc, char* argv[]) {
     RGB_SLAM vo(params);
      */
 
-    rgbd_slam::RGBD_SLAM RGBD_Slam (dataPath, width, height, 25);
+    rgbd_slam::RGBD_SLAM RGBD_Slam (dataPath, width, height);
 
     //start with identity pose
     rgbd_slam::poseEstimation::Pose pose;

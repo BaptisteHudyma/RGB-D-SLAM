@@ -12,7 +12,7 @@ namespace rgbd_slam {
 
 #define CLASS_ERR "<RGBD_SLAM> "
 
-    RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth, unsigned int imageHeight, unsigned int minHessian, double maxMatchDistance) :
+    RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth, unsigned int imageHeight) :
         _width(imageWidth),
         _height(imageHeight)
     {
@@ -32,6 +32,8 @@ namespace rgbd_slam {
         // init motion model
         _motionModel.reset();
 
+        //local map
+        _localMap = new map_management::Local_Map();
 
         //plane/cylinder finder
         _primitiveDetector = new primitiveDetection::Primitive_Detection(_height, _width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
@@ -41,7 +43,7 @@ namespace rgbd_slam {
         _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
         // Point detector and matcher
-        _pointMatcher = new utils::Key_Point_Extraction(maxMatchDistance, minHessian);
+        _pointMatcher = new utils::Key_Point_Extraction();
 
         // kernel for various operations
         _kernel = cv::Mat::ones(3, 3, CV_8U);
@@ -188,7 +190,7 @@ namespace rgbd_slam {
         if (showPrimitiveMasks)
             _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, debugImage, _previousAssociatedIds, elapsedTime);
 
-        _pointMatcher->get_debug_image(camPose, debugImage); 
+        _localMap->get_debug_image(camPose, debugImage); 
     }
 
 
@@ -197,7 +199,8 @@ namespace rgbd_slam {
         //get and refine pose
         poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
-        const matched_point_container matchedPoints = _pointMatcher->detect_and_match_points(_currentPose, grayImage, depthImage);
+        const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
+        match_point_container matchedPoints = _localMap->find_matches(keypointObject);
 
 
         if (matchedPoints.size() > 5) {
@@ -243,6 +246,8 @@ namespace rgbd_slam {
         _motionModel.update_model(refinedPose);
 
         _currentPose = refinedPose;
+
+        _localMap->update(refinedPose, keypointObject);
 
         return refinedPose;
     }
