@@ -5,14 +5,6 @@
 
 #include <opencv2/opencv.hpp>
 
-//Observe a point for N frames to gain max liability
-#define MAP_POINT_AGE_LIABILITY 5
-// Maximum time before we consider this point too old
-#define MAX_LOST_TEMPORISATION 1
-// Minimum point liability for the local map
-#define MINIMUM_LIABILITY_FOR_LOCAL_MAP 0.7
-// Max unmatched points to consider this map point as lost
-#define MAX_UNMTACHED_FOR_TRACKING 2
 
 
 namespace rgbd_slam {
@@ -64,6 +56,10 @@ namespace rgbd_slam {
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
                 void update(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+
+                unsigned int get_age() const {
+                    return _age;
+                }
                 
                 int _lastMatchedIndex;
 

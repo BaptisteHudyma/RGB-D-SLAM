@@ -31,29 +31,21 @@ namespace rgbd_slam {
             
             // Convert to world coordinates
             rotation = _rotation * rotation;
-            translation = _position + translation;
+            translation += _position;
 
             const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
 
             unsigned int i = 0;
-            for (const point_pair& pointPair : _points) {
-                const vector2& detectedPoint = pointPair.first;
-
+            for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); pointIterator++, ++i) {
+                const vector2& detectedPoint = pointIterator->first;
                 // convert map point to screen coordinates
-                const vector2& screenCoordinates = utils::world_to_screen_coordinates(pointPair.second, transformationMatrix);
+                const vector2& screenCoordinates = utils::world_to_screen_coordinates(pointIterator->second, transformationMatrix);
 
-                double distance = get_distance(detectedPoint, screenCoordinates);
+                //double distance = get_distance(detectedPoint, screenCoordinates);
+                double distance = get_distance_manhattan(detectedPoint, screenCoordinates);
 
-                //pose error
-                //const vector3 dist = detectedPoint - ;
-                //fvec(i) = dist.squaredNorm(); 
-                //fvec(i) = dist.norm(); 
-
-                //Manhattan
-                fvec(i) = distance; 
-
-                //std::cout << distance << " " << detectedPoint.transpose() << " | " << screenCoordinates.transpose() << std::endl;
-                ++i;
+                //Supposed Sum of squares: reduce the sum
+                fvec(i) = std::sqrt(distance); 
             }
             return 0;
         }

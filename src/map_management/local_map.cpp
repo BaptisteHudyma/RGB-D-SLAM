@@ -20,6 +20,7 @@ namespace rgbd_slam {
                 if (matchIndex < 0) {
                     //unmatched point
                     mapPoint._lastMatchedIndex = -2;
+                    mapPoint.update_unmacthed();
                     continue;
                 }
                 else {
@@ -58,7 +59,17 @@ namespace rgbd_slam {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx);
 
                 if (screenPoint[0] > 0 and screenPoint[1] > 0) {
-                    cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 255, 255), 1);
+                    if (mapPoint._lastMatchedIndex < 0)
+                    {
+                        cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 0, 255), 1);
+                    }
+                    else if (mapPoint.get_age() < 1)
+                    {
+                        cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 255, 255), 1);
+                    }
+                    else {
+                        cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(255, 255, 0), 1);
+                    }
                 }
             }
         }
@@ -66,17 +77,20 @@ namespace rgbd_slam {
         void Local_Map::update_staged(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)
         {
             point_map_container::iterator pointMapIterator;
+            unsigned int removePointCount = 0;
             for (pointMapIterator = _localMap.begin(); pointMapIterator != _localMap.end(); ) {
                 //utils::Map_Point&
-                if (pointMapIterator->_lastMatchedIndex < 0) {
+                if (pointMapIterator->_lastMatchedIndex < 0 and pointMapIterator->is_lost(0)) {
                     // Remove useless point
                     _localMap.erase(pointMapIterator++);
+                    removePointCount += 1;
                 }
                 else {
                     pointMapIterator++;
                 }
             }
 
+            unsigned int addedPointCount = 0;
             // Add all new points (unmatched points) 
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
             for(unsigned int i = 0; i < _unmatched.size(); ++i)
@@ -88,10 +102,12 @@ namespace rgbd_slam {
                     const vector2& screenPoint = keypointObject.get_keypoint(i);
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint[0], screenPoint[1], depth, worldToCamMatrix);
                     _localMap.emplace(_localMap.end(), worldPoint, keypointObject.get_descriptor(i));
+                    addedPointCount += 1;
 
                 }
             }
 
+            std::cout << "Map now contains " << _localMap.size() << " points, with " << addedPointCount << " new points and " << removePointCount << " points removed" << std::endl;
         }
 
         void Local_Map::update_local_to_global() 

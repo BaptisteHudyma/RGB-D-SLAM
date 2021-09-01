@@ -1,5 +1,14 @@
 #include "map_point.hpp"
 
+//Observe a point for N frames to gain max liability
+#define MAP_POINT_AGE_LIABILITY 5
+// Maximum time before we consider this point too old
+#define MAX_LOST_TEMPORISATION 1
+// Minimum point liability for the local map
+#define MINIMUM_LIABILITY_FOR_LOCAL_MAP 0.7
+// Max unmatched points to consider this map point as lost
+#define MAX_UNMTACHED_FOR_TRACKING 5
+
 namespace rgbd_slam {
     namespace utils {
 
@@ -27,7 +36,7 @@ namespace rgbd_slam {
          * \brief True is this point is lost : should be removed from local map. Should be used only for map points
          */
         bool Map_Point::is_lost(double currentTimeStamp) {
-            return (_counter > MAX_UNMTACHED_FOR_TRACKING) and ((currentTimeStamp - _lastUpdated) > MAX_LOST_TEMPORISATION);
+            return (_counter > MAX_UNMTACHED_FOR_TRACKING) ;//and ((currentTimeStamp - _lastUpdated) > MAX_LOST_TEMPORISATION);
         }
 
         /**

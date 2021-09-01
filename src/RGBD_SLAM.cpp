@@ -197,8 +197,8 @@ namespace rgbd_slam {
     const poseEstimation::Pose RGBD_SLAM::compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         //get and refine pose
-        //poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
-        poseEstimation::Pose refinedPose(_currentPose);
+        poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
+        //poseEstimation::Pose refinedPose(_currentPose);
 
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         match_point_container matchedPoints = _localMap->find_matches(keypointObject);
@@ -232,10 +232,9 @@ namespace rgbd_slam {
             // factor   : step bound for the diagonal shift
             // epsfcn   : error precision
             // maxfev   : maximum number of function evaluation
-            lm.parameters.epsfcn = 1e-5;
             lm.parameters.maxfev = 4048;
 
-            Eigen::LevenbergMarquardtSpace::Status endStatus = lm.minimize(input);
+            const Eigen::LevenbergMarquardtSpace::Status endStatus = lm.minimize(input);
             const std::string message = poseOptimisation::get_human_readable_end_message(endStatus);
 
             quaternion endRotation(input[3], input[4], input[5], input[6]);
