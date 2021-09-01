@@ -17,7 +17,7 @@ namespace rgbd_slam {
             for (utils::Map_Point& mapPoint : _localMap) 
             {
                 int matchIndex = detectedKeypoint.get_match_index(mapPoint);
-                if (matchIndex < 0) {
+                if (matchIndex < 0 or detectedKeypoint.get_depth(matchIndex) <= 0) {
                     //unmatched point
                     mapPoint._lastMatchedIndex = -2;
                     mapPoint.update_unmacthed();
@@ -30,7 +30,10 @@ namespace rgbd_slam {
                 }
                 const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
                 assert(screenPoint[0] > 0 and screenPoint[1] > 0);
-                matchedPoints.emplace(matchedPoints.end(), screenPoint, mapPoint._coordinates);
+
+                const vector3 screen3DPoint(screenPoint(0), screenPoint(1), detectedKeypoint.get_depth(matchIndex));
+
+                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, mapPoint._coordinates);
             }
             _currentIndex += 1;
             return matchedPoints;

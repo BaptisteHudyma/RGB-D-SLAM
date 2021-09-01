@@ -15,11 +15,17 @@ namespace rgbd_slam {
         }
 
 
-        double get_distance_manhattan(const vector2& pointA, const vector2& pointB) {
-            return abs(pointA[0] - pointB[0]) + abs(pointA[1] - pointB[1]);
+        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) {
+            return abs(pointA[0] - pointB[0]) + 
+                abs(pointA[1] - pointB[1]) + 
+                abs(pointA[2] - pointB[2]);
         }
-        double get_distance(const vector2& pointA, const vector2& pointB) {
-            return std::sqrt(std::pow(pointA[0] - pointB[0], 2.0) + std::pow(pointA[1] - pointB[1], 2.0));
+        double get_distance(const vector3& pointA, const vector3& pointB) {
+            return std::sqrt(
+                    std::pow(pointA[0] - pointB[0], 2.0) + 
+                    std::pow(pointA[1] - pointB[1], 2.0) +
+                    std::pow(pointA[2] - pointB[2], 2.0) 
+                    );
         }
 
 
@@ -28,21 +34,21 @@ namespace rgbd_slam {
             quaternion rotation(z(3), z(4), z(5), z(6));
             rotation.normalize();
             vector3 translation(z(0), z(1), z(2));
-            
+
             // Convert to world coordinates
             rotation = _rotation * rotation;
             translation += _position;
 
-            const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+            matrix34 transformationMatrix;
+            transformationMatrix << rotation.toRotationMatrix(), translation;
+
 
             unsigned int i = 0;
-            for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); pointIterator++, ++i) {
-                const vector2& detectedPoint = pointIterator->first;
-                // convert map point to screen coordinates
-                const vector2& screenCoordinates = utils::world_to_screen_coordinates(pointIterator->second, transformationMatrix);
+            for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++i) {
+                const vector3& detectedPoint = pointIterator->first;
+                const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2),transformationMatrix); 
 
-                //double distance = get_distance(detectedPoint, screenCoordinates);
-                double distance = get_distance_manhattan(detectedPoint, screenCoordinates);
+                double distance = get_distance_manhattan(pointIterator->second, point3D); 
 
                 //Supposed Sum of squares: reduce the sum
                 fvec(i) = std::sqrt(distance); 

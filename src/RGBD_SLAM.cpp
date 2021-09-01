@@ -203,10 +203,10 @@ namespace rgbd_slam {
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         match_point_container matchedPoints = _localMap->find_matches(keypointObject);
 
-
         if (matchedPoints.size() > 5) {
             double t1 = cv::getTickCount();
 
+            // Vector to optimize: (0, 1, 2) is delta position, (3, 4, 5, 6) is rotation as a quaternion, 
             Eigen::VectorXd input(7);
             input[0] = 0;
             input[1] = 0;
@@ -216,7 +216,7 @@ namespace rgbd_slam {
             input[5] = 0;
             input[6] = 0;
 
-            poseOptimisation::Pose_Functor pf(
+            poseOptimisation::Pose_Functor pose_optimisation_functor(
                     poseOptimisation::Pose_Estimator(
                         input.size(), 
                         matchedPoints, 
@@ -224,7 +224,7 @@ namespace rgbd_slam {
                         refinedPose.get_orientation_quaternion()
                         )
                     );
-            Eigen::LevenbergMarquardt<poseOptimisation::Pose_Functor, double> lm( pf );
+            Eigen::LevenbergMarquardt<poseOptimisation::Pose_Functor, double> poseOptimisator( pose_optimisation_functor );
 
             // xtol     : tolerance for the norm of the solution vector
             // ftol     : tolerance for the norm of the vector function
@@ -232,10 +232,9 @@ namespace rgbd_slam {
             // factor   : step bound for the diagonal shift
             // epsfcn   : error precision
             // maxfev   : maximum number of function evaluation
-            lm.parameters.maxfev = 4048;
+            poseOptimisator.parameters.maxfev = 1500;//4048;
 
-            const Eigen::LevenbergMarquardtSpace::Status endStatus = lm.minimize(input);
-            const std::string message = poseOptimisation::get_human_readable_end_message(endStatus);
+            const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimisator.minimize(input);
 
             quaternion endRotation(input[3], input[4], input[5], input[6]);
             endRotation.normalize();
@@ -243,7 +242,11 @@ namespace rgbd_slam {
 
             refinedPose.update(endTranslation, endRotation);
 
-            std::cout << matchedPoints.size() << " pts " << endTranslation.transpose() << " in " << lm.iter << " iters. Result " << endStatus << " (" << message << ") in " << (cv::getTickCount() - t1) / cv::getTickFrequency() << std::endl;
+            if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
+            {
+                const std::string message = poseOptimisation::get_human_readable_end_message(endStatus);
+                std::cerr << matchedPoints.size() << " pts " << endTranslation.transpose() << " in " << poseOptimisator.iter << " iters. Result " << endStatus << " (" << message << ") in " << (cv::getTickCount() - t1) / cv::getTickFrequency() << std::endl;
+            }
 
         }
         else
