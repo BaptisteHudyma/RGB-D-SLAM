@@ -37,7 +37,7 @@ namespace rgbd_slam {
                 assert(pt.x > 0 and pt.y > 0);
                 if (imageBoundaries.contains(pt)) {
                     // convert to meters
-                    _depths.push_back(depthImage.at<const float>(pt.y, pt.x) / 1000);
+                    _depths.push_back(depthImage.at<const float>(pt.y, pt.x));
                 }
                 else {
                     _depths.push_back(0.0);
@@ -58,12 +58,14 @@ namespace rgbd_slam {
                 const std::vector<cv::DMatch>& match = knnMatches[0];
                 //check if point is a good match by checking it's distance to the second best matched point
                 if (match[0].distance < _maxMatchDistance * match[1].distance) {
-                    return match[0].trainIdx;   //this frame key point
+                    int id = match[0].trainIdx;
+                    return id;   //this frame key point
                 }
                 return -1;
             }
             else if (knnMatches[0].size() == 1) {
-                return knnMatches[0][0].trainIdx;   //this frame key point
+                int id = knnMatches[0][0].trainIdx;
+                return id;   //this frame key point
             }
             return -1;
         }

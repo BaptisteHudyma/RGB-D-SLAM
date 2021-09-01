@@ -57,13 +57,21 @@ namespace rgbd_slam {
         struct Pose_Estimator: Levenberg_Marquard_Functor<double> 
         {
             // Simple constructor
-            Pose_Estimator(unsigned int n, match_point_container& points);
+            /**
+             * \param[in] n Number of input parameters 
+             * \param[in,out] points Matched 2D (screen) to 3D (world) points
+             * \param[in] worldPosition Position of the observer in the world
+             * \param[in] worldRotation Orientation of the observer in the world
+             */
+            Pose_Estimator(unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
 
             // Implementation of the objective function
             int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const;
 
             private:
             const match_point_container& _points; 
+            const vector3 _position;
+            const quaternion _rotation;
         };
 
         struct Pose_Functor : Eigen::NumericalDiff<Pose_Estimator> {};

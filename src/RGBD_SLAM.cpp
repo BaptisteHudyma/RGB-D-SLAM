@@ -197,7 +197,8 @@ namespace rgbd_slam {
     const poseEstimation::Pose RGBD_SLAM::compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         //get and refine pose
-        poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
+        //poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
+        poseEstimation::Pose refinedPose(_currentPose);
 
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         match_point_container matchedPoints = _localMap->find_matches(keypointObject);
@@ -215,7 +216,14 @@ namespace rgbd_slam {
             input[5] = 0;
             input[6] = 0;
 
-            poseOptimisation::Pose_Functor pf(poseOptimisation::Pose_Estimator(input.size(), matchedPoints));
+            poseOptimisation::Pose_Functor pf(
+                    poseOptimisation::Pose_Estimator(
+                        input.size(), 
+                        matchedPoints, 
+                        refinedPose.get_position(),
+                        refinedPose.get_orientation_quaternion()
+                        )
+                    );
             Eigen::LevenbergMarquardt<poseOptimisation::Pose_Functor, double> lm( pf );
 
             // xtol     : tolerance for the norm of the solution vector
@@ -232,7 +240,7 @@ namespace rgbd_slam {
 
             quaternion endRotation(input[3], input[4], input[5], input[6]);
             endRotation.normalize();
-            vector3 endTranslation(input[0], input[1], input[2]);
+            const vector3 endTranslation(input[0], input[1], input[2]);
 
             refinedPose.update(endTranslation, endRotation);
 

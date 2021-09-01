@@ -63,11 +63,9 @@ namespace rgbd_slam {
                 /**
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
-                void update_map_point(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
-
-
-                void update_staged_point(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
-
+                void update(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+                
+                int _lastMatchedIndex;
 
             private:
                 // depending on context, if the point is staged then this is the number of frames it has been tracked while staged. If it is a map point, then this is the number of times it failed tracking.

@@ -5,9 +5,11 @@ namespace rgbd_slam {
 
 
 
-        Pose_Estimator::Pose_Estimator(unsigned int n, match_point_container& points) :
+        Pose_Estimator::Pose_Estimator(unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
             Levenberg_Marquard_Functor<double>(n, points.size()),
-            _points(points)
+            _points(points),
+            _position(worldPosition),
+            _rotation(worldRotation)
         {
             assert(_points.size() == points.size());
         }
@@ -25,7 +27,11 @@ namespace rgbd_slam {
         int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
             quaternion rotation(z(3), z(4), z(5), z(6));
             rotation.normalize();
-            const vector3 translation(z(0), z(1), z(2));
+            vector3 translation(z(0), z(1), z(2));
+            
+            // Convert to world coordinates
+            rotation = _rotation * rotation;
+            translation = _position + translation;
 
             const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
 

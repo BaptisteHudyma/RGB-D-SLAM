@@ -341,13 +341,16 @@ namespace poseEstimation {
         {
             if (_mapPoints[i].counter >= th)
             {
+                // If point is lost for too long
                 if (_mapPoints[i].match_idx >= 0)
                 {
+                    // if point is matched, mark feature point as unmatched
                     features.mark_as_matched(_mapPoints[i].match_idx, false);
                 }
             }
             else
             {
+                // keep those points
                 cleaned_map_points.push_back(_mapPoints[i]);
             }
         }

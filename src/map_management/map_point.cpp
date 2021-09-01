@@ -51,7 +51,7 @@ namespace rgbd_slam {
         /**
          * \brief Update this map point with the given informations: it is matched with another point
          */
-        void Map_Point::update_map_point(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
+        void Map_Point::update(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
         {
             _counter = 0;
             _age += 1;
@@ -59,15 +59,5 @@ namespace rgbd_slam {
             _descriptor = newDescriptor;
             _lastUpdated = observationTimeStamp;
         }
-
-        void Map_Point::update_staged_point(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
-        {
-            _counter += 1;
-            _age += 1;
-            _coordinates = newPointCoordinates;
-            _descriptor = newDescriptor;
-            _lastUpdated = observationTimeStamp;
-        }
-
     }
 }

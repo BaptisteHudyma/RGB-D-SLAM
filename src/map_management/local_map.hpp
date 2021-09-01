@@ -60,10 +60,16 @@ namespace rgbd_slam {
                 void update_local_to_global();
 
             private:
+                unsigned int _currentIndex;
+
                 //local point map
-                std::list<utils::Map_Point> _localMap;
+                typedef std::list<utils::Map_Point> point_map_container;
+                point_map_container _localMap;
+
+                std::vector<bool> _unmatched;
 
                 //local primitive map
+
 
         };
 
