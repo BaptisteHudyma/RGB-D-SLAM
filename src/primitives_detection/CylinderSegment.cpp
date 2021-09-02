@@ -10,7 +10,7 @@ namespace primitiveDetection {
     using namespace std;
     using namespace Eigen;
 
-    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, unsigned int subRegionId) {
+    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const unsigned int subRegionId) {
         //copy stored data
         _radius.push_back(seg._radius[subRegionId]);
         _centers.push_back(seg._centers[subRegionId]);
@@ -44,7 +44,7 @@ namespace primitiveDetection {
         _cellActivatedCount = 0;
     }
 
-    Cylinder_Segment::Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, unsigned int planeCount, const bool* activatedMask, unsigned int cellActivatedCount) {
+    Cylinder_Segment::Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const unsigned int planeCount, const bool* activatedMask, const unsigned int cellActivatedCount) {
         unsigned int samplesCount = planeCount;
         _cellActivatedCount = cellActivatedCount;
 
@@ -297,7 +297,7 @@ namespace primitiveDetection {
         return minDist;
     }
 
-    double Cylinder_Segment::distance(const Eigen::Vector3d& point, unsigned int id) {
+    double Cylinder_Segment::distance(const Eigen::Vector3d& point, const unsigned int id) {
         return (
                 (_pointsAxis2[id] - _pointsAxis1[id]).cross(
                     point - _pointsAxis2[id]
@@ -312,7 +312,7 @@ namespace primitiveDetection {
         return _segmentCount; 
     }
 
-    double Cylinder_Segment::get_MSE_at(unsigned int index) const { 
+    double Cylinder_Segment::get_MSE_at(const unsigned int index) const { 
         if(index >= _MSE.size()) {
             std::cerr << "get_MSE required index over MSE vector size" << std::endl;
             exit(-1);
@@ -320,7 +320,7 @@ namespace primitiveDetection {
         return _MSE[index]; 
     }
 
-    bool Cylinder_Segment::is_inlier_at (unsigned int indexA, unsigned int indexB) const { 
+    bool Cylinder_Segment::is_inlier_at (const unsigned int indexA, const unsigned int indexB) const { 
         if(indexA >= _inliers.size() or indexB >= _inliers[indexA].size()) {
             std::cerr << "get_inlier required index over inlier vector size" << std::endl;
             exit(-1);
@@ -328,7 +328,7 @@ namespace primitiveDetection {
         return _inliers[indexA](indexB); 
     }
 
-    unsigned int Cylinder_Segment::get_local_to_global_mapping(unsigned int index) const {
+    unsigned int Cylinder_Segment::get_local_to_global_mapping(const unsigned int index) const {
         if (index >= _cellActivatedCount) {
             std::cerr << "get_local_to_global required index over array size" << std::endl;
             exit(-1);
@@ -340,7 +340,7 @@ namespace primitiveDetection {
         return _local2globalMap[index]; 
     }
 
-    const Eigen::Vector3d& Cylinder_Segment::get_axis1_point(unsigned int index) const { 
+    const Eigen::Vector3d& Cylinder_Segment::get_axis1_point(const unsigned int index) const { 
         if(index >= _pointsAxis1.size()) {
             std::cerr << "get_axis_1 required index over axis1 vector size" << std::endl;
             exit(-1);
@@ -348,7 +348,7 @@ namespace primitiveDetection {
         return _pointsAxis1[index];
     }
 
-    const Eigen::Vector3d& Cylinder_Segment::get_axis2_point(unsigned int index) const {
+    const Eigen::Vector3d& Cylinder_Segment::get_axis2_point(const unsigned int index) const {
         if(index >= _pointsAxis2.size()) {
             std::cerr << "get_axis_2 required index over axis2 size" << std::endl;
             exit(-1);
@@ -356,7 +356,7 @@ namespace primitiveDetection {
         return _pointsAxis2[index];
     }
 
-    double Cylinder_Segment::get_axis_normal(unsigned int index) const { 
+    double Cylinder_Segment::get_axis_normal(const unsigned int index) const { 
         if(index >= _normalsAxis1Axis2.size()) {
             std::cerr << "get_axis_normal required index over normals vector size" << std::endl;
             exit(-1);
@@ -364,7 +364,7 @@ namespace primitiveDetection {
         return _normalsAxis1Axis2[index]; 
     }
 
-    double Cylinder_Segment::get_radius(unsigned int index) const {
+    double Cylinder_Segment::get_radius(const unsigned int index) const {
         if(index >= _radius.size()) {
             std::cerr << "get_radius required index over radius vector size" << std::endl;
             exit(-1);

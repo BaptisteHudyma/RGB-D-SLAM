@@ -34,7 +34,7 @@ namespace rgbd_slam {
                 typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, 1> ValueType;
                 typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
 
-                Levenberg_Marquard_Functor(unsigned int inputCount, unsigned int outputCount) :
+                Levenberg_Marquard_Functor(const unsigned int inputCount, const unsigned int outputCount) :
                     _M(inputCount), _N(outputCount)
                 {
                 }
@@ -63,7 +63,7 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Pose_Estimator(unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
+            Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
 
             // Implementation of the objective function
             int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const;

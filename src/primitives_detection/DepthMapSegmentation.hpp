@@ -31,7 +31,7 @@ namespace primitiveDetection {
       * \param[in] kernel The kernel to use for morphological operations
       * \param[in] reducePourcent Between 0 and 1, coefficient of reduction of the initial depth image. Lower the resolution but improves performances
       */
-    void get_segmented_depth_map(const cv::Mat& depthMap, cv::Mat& finalSegmented, const cv::Mat& kernel, double reducePourcent=0.5);
+    void get_segmented_depth_map(const cv::Mat& depthMap, cv::Mat& finalSegmented, const cv::Mat& kernel, const double reducePourcent=0.5);
 
     /**
       * \brief Draw individual segmented labels on an image

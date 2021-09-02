@@ -18,7 +18,7 @@ namespace rgbd_slam {
                 /**
                  * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
                  */
-                Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, double maxMatchDistance = 0.7);
+                Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, const double maxMatchDistance = 0.7);
 
                 /**
                  * \brief get a container with the filtered point matches. Uses _maxMatchDistance to estimate good matches. 
@@ -32,7 +32,7 @@ namespace rgbd_slam {
                 /**
                   * \brief Return the depth associated with a certain keypoint
                   */
-                double get_depth(unsigned int index) const
+                double get_depth(const unsigned int index) const
                 {
                     assert(index < _depths.size());
 
@@ -47,7 +47,7 @@ namespace rgbd_slam {
                 /**
                  * \brief return the keypoint associated with the index
                  */
-                const vector2 get_keypoint(unsigned int index) const 
+                const vector2 get_keypoint(const unsigned int index) const 
                 {
                     assert(index < _keypoints.size());
 
@@ -57,7 +57,7 @@ namespace rgbd_slam {
                     return keypoint;
                 }
 
-                const cv::Mat get_descriptor(unsigned int index) const
+                const cv::Mat get_descriptor(const unsigned int index) const
                 {
                     assert(index < _keypoints.size());
 
@@ -94,7 +94,7 @@ namespace rgbd_slam {
                 /**
                  *
                  */
-                Key_Point_Extraction(unsigned int minHessian = 25);
+                Key_Point_Extraction(const unsigned int minHessian = 25);
 
                 /**
                  * \brief detect the keypoints in the gray image 
@@ -112,7 +112,7 @@ namespace rgbd_slam {
                  * \param[in] meanFrameTreatmentTime The mean time in seconds that this program used to treat one frame
                  * \param[in] frameCount Total of frame treated by the program
                  */
-                void show_statistics(double meanFrameTreatmentTime, unsigned int frameCount) const;
+                void show_statistics(const double meanFrameTreatmentTime, const unsigned int frameCount) const;
 
 
             private:

@@ -8,7 +8,7 @@
 namespace rgbd_slam {
 namespace primitiveDetection {
 
-    Primitive_Detection::Primitive_Detection(unsigned int height, unsigned int width, unsigned int blocSize, float minCosAngleForMerge, float maxMergeDistance, bool useCylinderDetection)
+    Primitive_Detection::Primitive_Detection(const unsigned int height, const unsigned int width, const unsigned int blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
         :  
             _histogram(blocSize), 
             _width(width), _height(height),  _blocSize(blocSize), 
@@ -64,7 +64,7 @@ namespace primitiveDetection {
         setMaskTime = 0;
     }
 
-    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, double timeElapsed) {
+    void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, const double timeElapsed) {
         //apply masks on image
         for(unsigned int r = 0; r < _height; ++r){
             const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
@@ -619,7 +619,7 @@ namespace primitiveDetection {
     }
 
 
-    void Primitive_Detection::region_growing(unsigned short x, unsigned short y, const Eigen::Vector3d& seedPlaneNormal, double seedPlaneD) {
+    void Primitive_Detection::region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD) {
         unsigned int index = x + _horizontalCellsCount * y;
         if (index >= _totalCellCount or 
                 not _unassignedMask[index] or _activationMap[index]) {

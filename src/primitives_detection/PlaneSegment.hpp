@@ -20,10 +20,10 @@ namespace primitiveDetection {
              * \param[in] cellWidth Width and height of the depth image divisions
              * \param[in] ptsPerCellCount
              */
-            Plane_Segment(unsigned int cellWidth, unsigned int ptsPerCellCount);
+            Plane_Segment(const unsigned int cellWidth, const unsigned int ptsPerCellCount);
             Plane_Segment(const Plane_Segment& seg);
 
-            void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, unsigned int cellId);
+            void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const unsigned int cellId);
 
 
             /**

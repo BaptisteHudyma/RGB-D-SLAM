@@ -4,8 +4,14 @@ namespace rgbd_slam {
     namespace poseOptimisation {
 
 
+        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) {
+            return abs(pointA[0] - pointB[0]) + 
+                abs(pointA[1] - pointB[1]) + 
+                abs(pointA[2] - pointB[2]);
+        }
 
-        Pose_Estimator::Pose_Estimator(unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
+
+        Pose_Estimator::Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
             Levenberg_Marquard_Functor<double>(n, points.size()),
             _points(points),
             _position(worldPosition),
@@ -14,25 +20,10 @@ namespace rgbd_slam {
             assert(_points.size() == points.size());
         }
 
-
-        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) {
-            return abs(pointA[0] - pointB[0]) + 
-                abs(pointA[1] - pointB[1]) + 
-                abs(pointA[2] - pointB[2]);
-        }
-        double get_distance(const vector3& pointA, const vector3& pointB) {
-            return std::sqrt(
-                    std::pow(pointA[0] - pointB[0], 2.0) + 
-                    std::pow(pointA[1] - pointB[1], 2.0) +
-                    std::pow(pointA[2] - pointB[2], 2.0) 
-                    );
-        }
-
-
         // Implementation of the objective function
         int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
             quaternion rotation(z(3), z(4), z(5), z(6));
-            rotation.normalize();
+            //rotation.normalize();
             vector3 translation(z(0), z(1), z(2));
 
             // Convert to world coordinates
@@ -46,12 +37,10 @@ namespace rgbd_slam {
             unsigned int i = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++i) {
                 const vector3& detectedPoint = pointIterator->first;
-                const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2),transformationMatrix); 
-
-                double distance = get_distance_manhattan(pointIterator->second, point3D); 
+                const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
 
                 //Supposed Sum of squares: reduce the sum
-                fvec(i) = std::sqrt(distance); 
+                fvec(i) = sqrt(get_distance_manhattan(pointIterator->second, point3D)); 
             }
             return 0;
         }

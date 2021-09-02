@@ -10,7 +10,7 @@ namespace primitiveDetection {
      *      PRIMITIVE
      *
      */
-    Primitive::Primitive(unsigned int id, const cv::Mat& shapeMask) :
+    Primitive::Primitive(const unsigned int id, const cv::Mat& shapeMask) :
         _id(id)
     {
         _shapeMask = shapeMask.clone();
@@ -34,7 +34,7 @@ namespace primitiveDetection {
      *      CYLINDER
      *
      */
-    Cylinder::Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, unsigned int id, const cv::Mat& shapeMask) :
+    Cylinder::Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, const unsigned int id, const cv::Mat& shapeMask) :
         Primitive(id, shapeMask)
     {
         _radius = 0;
@@ -68,7 +68,7 @@ namespace primitiveDetection {
      *        PLANE
      *
      */
-    Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, unsigned int id, const cv::Mat& shapeMask) :
+    Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, const unsigned int id, const cv::Mat& shapeMask) :
         Primitive(id, shapeMask)
     {
         _mean = planeSeg->get_mean();

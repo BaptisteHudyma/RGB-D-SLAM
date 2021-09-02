@@ -44,7 +44,7 @@ namespace primitiveDetection {
             /**
               * \brief Hidden constructor, to set _id and shape
               */
-            Primitive(unsigned int id, const cv::Mat& shapeMask);
+            Primitive(const unsigned int id, const cv::Mat& shapeMask);
 
             /**
               * \brief Compute the Inter over Union factor of two masks

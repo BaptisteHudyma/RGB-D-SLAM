@@ -3,7 +3,7 @@
 namespace rgbd_slam {
 namespace primitiveDetection {
 
-    Depth_Operations::Depth_Operations(const std::string& parameterFilePath, unsigned int width, unsigned int height, unsigned int cellSize) 
+    Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const unsigned int width, const unsigned int height, const unsigned int cellSize) 
         : 
             _width(width), _height(height), _cellSize(cellSize),
             _cloudArray(width * height, 3),

@@ -16,7 +16,7 @@ namespace rgbd_slam {
             : _coordinates(coordinates), _descriptor(descriptor)
         {}
 
-        Map_Point::Map_Point(const vector3& coordinates, const cv::Mat& descriptor, double observationTimeStamp) 
+        Map_Point::Map_Point(const vector3& coordinates, const cv::Mat& descriptor, const double observationTimeStamp) 
             : Point(coordinates, descriptor)
         {
 
@@ -35,7 +35,7 @@ namespace rgbd_slam {
         /**
          * \brief True is this point is lost : should be removed from local map. Should be used only for map points
          */
-        bool Map_Point::is_lost(double currentTimeStamp) {
+        bool Map_Point::is_lost(const double currentTimeStamp) {
             return (_counter > MAX_UNMTACHED_FOR_TRACKING) ;//and ((currentTimeStamp - _lastUpdated) > MAX_LOST_TEMPORISATION);
         }
 
@@ -60,7 +60,7 @@ namespace rgbd_slam {
         /**
          * \brief Update this map point with the given informations: it is matched with another point
          */
-        void Map_Point::update(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
+        void Map_Point::update(const double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
         {
             _counter = 0;
             _age += 1;

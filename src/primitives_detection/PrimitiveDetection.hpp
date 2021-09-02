@@ -45,7 +45,7 @@ namespace primitiveDetection {
               * \param[in] maxMergeDist Maximum distance between the center of two planes to merge those planes
               * \param[in] useCylinderDetection Transform some planes in cylinders, when they show an obvious cylinder shape
               */
-            Primitive_Detection(unsigned int width, unsigned int height, unsigned int blocSize = 20, float minCosAngeForMerge = 0.9659, float maxMergeDist = 50, bool useCylinderDetection = false);
+            Primitive_Detection(const unsigned int width, const unsigned int height, const unsigned int blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
 
             /**
               * \brief Main compute function: computes the primitives in the depth imahe
@@ -69,7 +69,7 @@ namespace primitiveDetection {
              * \param[in] elapsedTime The time elapsed since last frame. Used to display fps
              * \param[in] associatedIds A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders
              */
-            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, double elapsedTime=0);
+            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, const double elapsedTime=0);
 
 
             ~Primitive_Detection();
@@ -151,7 +151,7 @@ namespace primitiveDetection {
              * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
              * \param[in] seedPlaneD D component of the plane to grow from
              */
-            void region_growing(unsigned short x, unsigned short y, const Eigen::Vector3d& seedPlaneNormal, double seedPlaneD);
+            void region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
 
             /**
              * \brief Fill an association matrix that links connected plane components

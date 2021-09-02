@@ -33,14 +33,14 @@ namespace rgbd_slam {
         {
 
             public:
-                Map_Point(const vector3& coordinates, const cv::Mat& descriptor, double observationTimeStamp = 0);
+                Map_Point(const vector3& coordinates, const cv::Mat& descriptor, const double observationTimeStamp = 0);
 
                 double get_liability(); 
 
                 /**
                  * \brief True is this point is lost : should be removed from local map. Should be used only for map points
                  */
-                bool is_lost(double currentTimeStamp); 
+                bool is_lost(const double currentTimeStamp); 
 
                 /**
                  * \brief Should add this staged point to the local map
@@ -55,7 +55,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
-                void update(double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+                void update(const double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
 
                 unsigned int get_age() const {
                     return _age;

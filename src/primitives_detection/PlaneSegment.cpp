@@ -8,7 +8,7 @@ namespace rgbd_slam {
 namespace primitiveDetection {
 
 
-    Plane_Segment::Plane_Segment(unsigned int cellWidth, unsigned int ptsPerCellCount) : 
+    Plane_Segment::Plane_Segment(const unsigned int cellWidth, const unsigned int ptsPerCellCount) : 
         _ptsPerCellCount(ptsPerCellCount), 
         _minZeroPointCount(_ptsPerCellCount/2.0), 
         _cellWidth(cellWidth), 
@@ -44,7 +44,7 @@ namespace primitiveDetection {
         _Szx = seg._Szx;
     }
 
-    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, unsigned int cellId) {
+    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const unsigned int cellId) {
         clear_plane_parameters();
         _isPlanar = true;
 

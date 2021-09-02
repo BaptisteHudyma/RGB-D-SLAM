@@ -232,7 +232,7 @@ namespace rgbd_slam {
             // factor   : step bound for the diagonal shift
             // epsfcn   : error precision
             // maxfev   : maximum number of function evaluation
-            poseOptimisator.parameters.maxfev = 1500;//4048;
+            poseOptimisator.parameters.maxfev = 2000;//4048;
 
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimisator.minimize(input);
 
@@ -247,6 +247,8 @@ namespace rgbd_slam {
                 const std::string message = poseOptimisation::get_human_readable_end_message(endStatus);
                 std::cerr << matchedPoints.size() << " pts " << endTranslation.transpose() << " in " << poseOptimisator.iter << " iters. Result " << endStatus << " (" << message << ") in " << (cv::getTickCount() - t1) / cv::getTickFrequency() << std::endl;
             }
+
+            _meanPoseOptimisationIterations += poseOptimisator.iter;
 
         }
         else
@@ -309,6 +311,8 @@ namespace rgbd_slam {
         std::cout << "Mean line detection time is " << lineDetectionTime << " seconds (" << get_percent_of_elapsed_time(lineDetectionTime, meanFrameTreatmentTime) << "%)" << std::endl;
         double poseTreatmentTime = _meanPoseTreatmentTime / _totalFrameTreated;
         std::cout << "Mean pose estimation time is " << poseTreatmentTime << " seconds (" << get_percent_of_elapsed_time(poseTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
+
+        std::cout << "Mean iteration for pose optimization: " << _meanPoseOptimisationIterations / _totalFrameTreated << std::endl;
 
         _pointMatcher->show_statistics(meanFrameTreatmentTime, _totalFrameTreated);
     }

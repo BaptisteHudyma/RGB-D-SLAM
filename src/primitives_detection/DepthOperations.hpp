@@ -19,7 +19,7 @@ namespace primitiveDetection {
               * \param[in] height Depth image height (constant)
               * \param[in] cellSize Size of the cloud point division (> 0)
               */
-            Depth_Operations(const std::string& paramFilePath, unsigned int width, unsigned int height, unsigned int cellSize);
+            Depth_Operations(const std::string& paramFilePath, const unsigned int width, const unsigned int height, const unsigned int cellSize);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 

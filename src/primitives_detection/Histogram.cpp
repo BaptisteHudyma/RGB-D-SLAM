@@ -5,7 +5,7 @@
 namespace rgbd_slam {
 namespace primitiveDetection {
 
-    Histogram::Histogram(unsigned int binPerCoordCount) : 
+    Histogram::Histogram(const unsigned int binPerCoordCount) : 
         _binPerCoordCount(binPerCoordCount),
         _binCount(_binPerCoordCount * _binPerCoordCount),
         //set limits
@@ -21,7 +21,7 @@ namespace primitiveDetection {
         _B.clear();
     }
 
-    void Histogram::init_histogram(Eigen::MatrixXd& points, bool* flags) {
+    void Histogram::init_histogram(const Eigen::MatrixXd& points, const bool* flags) {
         //_reset();
         _pointCount = points.rows();
         _B.assign(_pointCount, -1);
@@ -62,7 +62,7 @@ namespace primitiveDetection {
         }
     }
 
-    void Histogram::remove_point(unsigned int pointId) {
+    void Histogram::remove_point(const unsigned int pointId) {
         if(pointId > _B.size()) {
             std::cerr << "Histogram: remove_point called on invalid ID" << std::endl;
             exit(-1);

@@ -25,7 +25,7 @@ namespace primitiveDetection {
              * \param[in] activated_mask An array of size planeCount, referencing activated plane segments 
              * \param[in] cellActivatedCount
              */
-            Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, unsigned int planeCount, const bool* activated_mask, unsigned int cellActivatedCount);
+            Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const unsigned int planeCount, const bool* activated_mask, const unsigned int cellActivatedCount);
 
             /**
              * \brief Copy constructor
@@ -33,7 +33,7 @@ namespace primitiveDetection {
              * \param[in] seg Cylinder_Segment to copy
              * \param[in] subRegionId Cylinder element ID to copy
              */
-            Cylinder_Segment(const Cylinder_Segment& seg, unsigned int subRegionId);
+            Cylinder_Segment(const Cylinder_Segment& seg, const unsigned int subRegionId);
 
             /**
              * \brief Copy constructor
@@ -70,14 +70,14 @@ namespace primitiveDetection {
                  *
                  * \return the Mean Sqared Error of the fitting process
                  */
-                double get_MSE_at(unsigned int index) const;
+                double get_MSE_at(const unsigned int index) const;
 
                 /**
                  * \brief
                  *
                  *
                  */
-                bool is_inlier_at (unsigned int indexA, unsigned int indexB) const;
+                bool is_inlier_at (const unsigned int indexA, const unsigned int indexB) const;
 
                 /**
                  * \brief 
@@ -85,7 +85,7 @@ namespace primitiveDetection {
                  * \param[in] index The index of the cylinder part to search
                  *
                  */
-                unsigned int get_local_to_global_mapping(unsigned int index) const;
+                unsigned int get_local_to_global_mapping(const unsigned int index) const;
 
                 /**
                  * \brief 
@@ -93,21 +93,21 @@ namespace primitiveDetection {
                  * \param[in] index The index of the cylinder part to search
                  *
                  */
-                const Eigen::Vector3d& get_axis1_point(unsigned int index) const;
+                const Eigen::Vector3d& get_axis1_point(const unsigned int index) const;
 
                 /**
                  *
                  * \param[in] index The index of the cylinder part to search
                  *
                  */
-                const Eigen::Vector3d& get_axis2_point(unsigned int index) const;
+                const Eigen::Vector3d& get_axis2_point(const unsigned int index) const;
 
                 /**
                  * \brief Return the normal of a portion of this cylinder segement
                  *
                  * \param[in] index The index of the portion to return, between 0 and _normalsAxis1Axis2.size()
                  */
-                double get_axis_normal(unsigned int index) const;
+                double get_axis_normal(const unsigned int index) const;
 
 
                 /**
@@ -115,7 +115,7 @@ namespace primitiveDetection {
                  *
                  * \return The radius of the cylinder segment, in frame units
                  */
-                double get_radius(unsigned int index) const;
+                double get_radius(const unsigned int index) const;
 
                 /**
                  * \brief Return the absolute result of the dot product of the two normals
@@ -135,7 +135,7 @@ namespace primitiveDetection {
 
 
         protected:
-                double distance(const Eigen::Vector3d& point, unsigned int segmentId);
+                double distance(const Eigen::Vector3d& point, const unsigned int segmentId);
 
         private:
                 typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>  MatrixXb;

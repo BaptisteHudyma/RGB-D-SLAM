@@ -15,7 +15,7 @@ namespace rgbd_slam {
     namespace utils {
 
 
-        Keypoint_Handler::Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, double maxMatchDistance) :
+        Keypoint_Handler::Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, const double maxMatchDistance) :
             _maxMatchDistance(maxMatchDistance)
         {
             if (_maxMatchDistance <= 0 or _maxMatchDistance > 1) {
@@ -77,7 +77,7 @@ namespace rgbd_slam {
          */
 
 
-        Key_Point_Extraction::Key_Point_Extraction(unsigned int minHessian) 
+        Key_Point_Extraction::Key_Point_Extraction(const unsigned int minHessian) 
         {
             // Create feature extractor and matcher
             _featureDetector = cv::AgastFeatureDetector::create( minHessian );
@@ -104,14 +104,14 @@ namespace rgbd_slam {
 
 
 
-        double get_percent_of_elapsed_time(double treatmentTime, double totalTimeElapsed) 
+        double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) 
         {
             if (totalTimeElapsed <= 0)
                 return 0;
             return std::round(treatmentTime / totalTimeElapsed * 10000) / 100;
         }
 
-        void Key_Point_Extraction::show_statistics(double meanFrameTreatmentTime, unsigned int frameCount) const {
+        void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentTime, const unsigned int frameCount) const {
             if (frameCount > 0) { 
                 double meanPointExtractionTime = _meanPointExtractionTime / frameCount;
                 std::cout << "Mean point extraction time is " << meanPointExtractionTime << " seconds (" << get_percent_of_elapsed_time(meanPointExtractionTime, meanFrameTreatmentTime) << "%)" << std::endl;

@@ -15,7 +15,7 @@ namespace primitiveDetection {
             /**
               * \param[in] binPerCoordCount Size of a bin, in pixels
               */
-            Histogram(unsigned int binPerCoordCount);
+            Histogram(const unsigned int binPerCoordCount);
 
             /**
               * \brief Initialise the histogram 
@@ -23,7 +23,7 @@ namespace primitiveDetection {
               * \param[in] points Points to put directly in the histogram bins
               * \param[in] flags Array of size points.rows(), indicating which point is in a planar segment
               */
-            void init_histogram(Eigen::MatrixXd& points, bool* flags);
+            void init_histogram(const Eigen::MatrixXd& points, const bool* flags);
 
             /**
               * \brief Return the points in the bin containing the most points
@@ -35,7 +35,7 @@ namespace primitiveDetection {
             /**
               * \brief Remove all points from a bin
               */
-	        void remove_point(unsigned int pointId);
+	        void remove_point(const unsigned int pointId);
 
             /**
               * \brief Empty bins and clear content

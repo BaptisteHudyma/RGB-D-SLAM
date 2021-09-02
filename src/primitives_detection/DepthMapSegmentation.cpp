@@ -14,7 +14,7 @@ namespace primitiveDetection {
       * \param[out] labeledComponents Image of connected components, where every pixel is associated with an ID
       * \param[in] minArea Minimum acceptable area for a component
       */
-    void get_segmented_components(const cv::Mat& edgeMap, const cv::Mat& kernel, cv::Mat& labeledComponents, int minArea=300) {
+    void get_segmented_components(const cv::Mat& edgeMap, const cv::Mat& kernel, cv::Mat& labeledComponents, const int minArea=300) {
         cv::Mat edgeMapCleaned = edgeMap.clone();
         cv::fillHole(edgeMapCleaned, edgeMapCleaned);
         cv::morphologyEx(edgeMapCleaned, edgeMapCleaned, cv::MORPH_OPEN, kernel);
@@ -108,7 +108,7 @@ namespace primitiveDetection {
         }
     }
 
-    void get_segmented_depth_map(const cv::Mat& depthMap, cv::Mat& finalSegmented, const cv::Mat& kernel, double reducePourcent) {
+    void get_segmented_depth_map(const cv::Mat& depthMap, cv::Mat& finalSegmented, const cv::Mat& kernel, const double reducePourcent) {
         assert(depthMap.data and kernel.data);
 
         cv::Mat smallDepth, normalMap, edgeMap; 
