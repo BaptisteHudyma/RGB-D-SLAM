@@ -64,17 +64,21 @@ namespace rgbd_slam {
                 if (screenPoint[0] > 0 and screenPoint[1] > 0) {
                     if (mapPoint._lastMatchedIndex < 0)
                     {
+                        // unmatched points
                         cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 0, 255), 1);
                     }
-                    else if (mapPoint.get_age() < 1)
+                    else if (mapPoint.get_age() <= 1)
                     {
+                        // new points
                         cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 255, 255), 1);
                     }
                     else {
+                        // old matched map points
                         cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(255, 255, 0), 1);
                     }
                 }
             }
+
         }
 
         void Local_Map::update_staged(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)

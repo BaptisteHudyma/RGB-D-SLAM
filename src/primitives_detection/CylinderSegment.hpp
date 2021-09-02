@@ -2,7 +2,6 @@
 #define CYLINDER_SEGMENT_H
 
 #include "PlaneSegment.hpp"
-#include "Parameters.hpp"
 #include <vector>
 #include <memory>
 #include <Eigen/Dense>

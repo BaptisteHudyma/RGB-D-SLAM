@@ -94,7 +94,7 @@ namespace rgbd_slam {
             //detect keypoints
             double t1 = cv::getTickCount();
             _featureDetector->detect(grayImage, frameKeypoints); 
-            _meanPointExtractionTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+            _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
 
             cv::Mat frameDescriptors;
             _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
@@ -108,7 +108,7 @@ namespace rgbd_slam {
         {
             if (totalTimeElapsed <= 0)
                 return 0;
-            return std::round(treatmentTime / totalTimeElapsed * 10000) / 100;
+            return std::round(treatmentTime / totalTimeElapsed * 10000.0) / 100.0;
         }
 
         void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentTime, const unsigned int frameCount) const {

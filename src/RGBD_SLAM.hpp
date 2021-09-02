@@ -6,18 +6,14 @@
 
 #include <Eigen/Dense>
 
-#include "Parameters.hpp"
 #include "DepthOperations.hpp"
 
 #include "GeodesicOperations.hpp"
 #include "PrimitiveDetection.hpp"
 #include "PlaneSegment.hpp"
-#include "MonocularDepthMap.hpp"
-#include "DepthMapSegmentation.hpp"
 #include "LineSegmentDetector.hpp"
 #include "KeyPointDetection.hpp"
 #include "local_map.hpp"
-#include "RGB_Slam.hpp"
 
 #include "Pose.hpp"
 #include "MotionModel.hpp"

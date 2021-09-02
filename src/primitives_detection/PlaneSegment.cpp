@@ -1,6 +1,7 @@
 #include "PlaneSegment.hpp"
 #include "eig33sym.hpp"
-#include "Parameters.hpp"
+
+#include "parameters.hpp"
 
 #include <iostream>
 
@@ -70,17 +71,21 @@ namespace primitiveDetection {
         unsigned int i = _cellWidth * (_cellHeight / 2);
         unsigned int j = i + _cellWidth;
         float zLast = std::max(Z_matrix(i), Z_matrix(i + 1)); /* handles missing pixels on the borders*/
+        
+        const double depthAlphaValue = Parameters::get_depth_alpha();
+        const unsigned int depthDiscontinuityLimit = Parameters::get_depth_discontinuity_limit(); 
+
         i++;
         // Scan horizontally through the middle
         while(i < j){
             float z = Z_matrix(i);
             if(z > 0) {
-                if(abs(z - zLast) < DEPTH_ALPHA * (abs(z) + 0.5)) {
+                if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) {
                     zLast = z;
                 }
                 else { 
                     discontinuityCounter += 1;
-                    if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
+                    if(discontinuityCounter > depthDiscontinuityLimit) {
                         _isPlanar = false;
                         return;
                     }
@@ -97,12 +102,12 @@ namespace primitiveDetection {
         while(i < j){
             float z = Z_matrix(i);
             if(z > 0) {
-                if(abs(z - zLast) < DEPTH_ALPHA * (abs(z) + 0.5)) {
+                if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) {
                     zLast = z;
                 }
                 else {
                     discontinuityCounter += 1;
-                    if(discontinuityCounter > DEPTH_DISCONTINUITY_LIMIT) {
+                    if(discontinuityCounter > depthDiscontinuityLimit) {
                         _isPlanar = false;
                         return;
                     }
@@ -126,14 +131,14 @@ namespace primitiveDetection {
         if(_isPlanar) {
             fit_plane();
             //MSE > T_MSE
-            if(_MSE > pow(DEPTH_SIGMA_COEFF * pow(_mean[2], 2) + DEPTH_SIGMA_MARGIN, 2))
+            if(_MSE > pow(Parameters::get_depth_sigma_error() * pow(_mean[2], 2) + Parameters::get_depth_sigma_margin(), 2))
                 _isPlanar = false;
         }
 
     }
 
     bool Plane_Segment::is_depth_discontinuous(const Plane_Segment& planeSegment) {
-        return abs(_mean[2] - planeSegment._mean[2]) < 2 * DEPTH_ALPHA * (abs(_mean[2]) + 0.5);
+        return abs(_mean[2] - planeSegment._mean[2]) < 2 * Parameters::get_depth_alpha() * (abs(_mean[2]) + 0.5);
     }
 
 

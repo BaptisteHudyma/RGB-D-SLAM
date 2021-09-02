@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "Pose_Optimisation.hpp"
+#include "parameters.hpp"
 
 #include "RGBD_SLAM.hpp"
 
@@ -16,6 +17,8 @@ namespace rgbd_slam {
         _width(imageWidth),
         _height(imageHeight)
     {
+        // Load parameters (once)
+        Parameters::parse_file("");
         // Get intrinsics parameters
         std::stringstream calibPath, calibYAMLPath;
         calibPath << dataPath.str() << "calib_params.xml";
@@ -23,7 +26,12 @@ namespace rgbd_slam {
         std::string finalPath = calibPath.str();
 
         // primitive connected graph creator
-        _depthOps = new primitiveDetection::Depth_Operations(finalPath, _width, _height, PATCH_SIZE);
+        _depthOps = new primitiveDetection::Depth_Operations(
+                finalPath, 
+                _width, 
+                _height, 
+                Parameters::get_depth_map_patch_size()
+            );
         if (_depthOps == nullptr or not _depthOps->is_ok()) {
             std::cerr << CLASS_ERR << "Cannot load parameter files, exiting" << std::endl;
             exit(-1);
@@ -36,14 +44,21 @@ namespace rgbd_slam {
         _localMap = new map_management::Local_Map();
 
         //plane/cylinder finder
-        _primitiveDetector = new primitiveDetection::Primitive_Detection(_height, _width, PATCH_SIZE, COS_ANGLE_MAX, MAX_MERGE_DIST, true);
+        _primitiveDetector = new primitiveDetection::Primitive_Detection(
+                _height,
+                _width,
+                Parameters::get_depth_map_patch_size(),
+                Parameters::get_maximum_plane_match_angle(),
+                Parameters::get_maximum_merge_distance(),
+                true
+            );
 
         // Line segment detector
         //Should refine, scale, Gaussian filter sigma
         _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
         // Point detector and matcher
-        _pointMatcher = new utils::Key_Point_Extraction();
+        _pointMatcher = new utils::Key_Point_Extraction(Parameters::get_minimum_hessian());
 
         // kernel for various operations
         _kernel = cv::Mat::ones(3, 3, CV_8U);
@@ -203,7 +218,7 @@ namespace rgbd_slam {
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         match_point_container matchedPoints = _localMap->find_matches(keypointObject);
 
-        if (matchedPoints.size() > 5) {
+        if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
             double t1 = cv::getTickCount();
 
             // Vector to optimize: (0, 1, 2) is delta position, (3, 4, 5, 6) is rotation as a quaternion, 
@@ -232,7 +247,7 @@ namespace rgbd_slam {
             // factor   : step bound for the diagonal shift
             // epsfcn   : error precision
             // maxfev   : maximum number of function evaluation
-            poseOptimisator.parameters.maxfev = 2000;//4048;
+            poseOptimisator.parameters.maxfev = Parameters::get_maximum_optimization_iterations();
 
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimisator.minimize(input);
 

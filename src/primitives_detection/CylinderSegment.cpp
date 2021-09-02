@@ -1,5 +1,5 @@
 #include "CylinderSegment.hpp"
-#include "Parameters.hpp"
+#include "parameters.hpp"
 
 //for cerr
 #include <iostream>
@@ -48,6 +48,9 @@ namespace primitiveDetection {
         unsigned int samplesCount = planeCount;
         _cellActivatedCount = cellActivatedCount;
 
+        const float minimumCyinderScore = Parameters::get_cylinder_ransac_minimm_score();
+        const float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
+
         _segmentCount = 0;
         _local2globalMap = nullptr;
         _local2globalMap = new unsigned int[_cellActivatedCount];
@@ -91,7 +94,7 @@ namespace primitiveDetection {
         double score = S(2)/S(0);
 
         // Checkpoint 1
-        if(score < CYLINDER_SCORE_MIN){
+        if(score < minimumCyinderScore){
             return;
         }
 
@@ -139,7 +142,7 @@ namespace primitiveDetection {
             Eigen::MatrixXd D(1, _cellActivatedCount);
             MatrixXb I(1, _cellActivatedCount);
             MatrixXb IFinal(1, _cellActivatedCount);
-            double minHypothesisDist = CYLINDER_RANSAC_SQR_MAX_DIST * mLeft;
+            double minHypothesisDist = maximumSqrtDistance * mLeft;
             int inliersAcceptedCount = 0.9 * mLeft;
             int maxInliersCount = 0;
 
@@ -176,7 +179,7 @@ namespace primitiveDetection {
                     r = -r;
 
                 // Inliers
-                I = D.array() < CYLINDER_RANSAC_SQR_MAX_DIST;
+                I = (D.array() < maximumSqrtDistance);
 
                 //MSAC truncated distance
                 double dist = 0.0;
@@ -187,7 +190,7 @@ namespace primitiveDetection {
                             inliersCount += 1;
                             dist += D(i);
                         }else{
-                            dist += CYLINDER_RANSAC_SQR_MAX_DIST;
+                            dist += maximumSqrtDistance;
                         }
                     }
                 }

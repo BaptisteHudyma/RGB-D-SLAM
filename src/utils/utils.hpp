@@ -7,11 +7,6 @@
 namespace rgbd_slam {
 namespace utils {
 
-    const double cx = 3.1649e+02;
-    const double cy = 2.2923e+02;
-    const double fx = 5.4886e+02;
-    const double fy = 5.4959e+02;
-
 
     /*
      * \brief Transform a screen point with a depth value to a 3D point
