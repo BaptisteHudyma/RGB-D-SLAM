@@ -32,7 +32,8 @@ namespace rgbd_slam {
         _cylinderRansacMinimumScore = 75;
 
         _pointUnmatchedCountToLoose = 5;
-        _pointAgeLiability = 0;
+        _pointAgeLiability = 5;
+        _pointMinimumLiabilityForMap = 0.7;
 
         return true;
     }

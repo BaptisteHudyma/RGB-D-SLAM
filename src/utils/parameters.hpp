@@ -35,7 +35,12 @@ namespace rgbd_slam {
             static float get_cylinder_ransac_max_distance() { return _cylinderRansacSqrtMaxDistance; };
             static float get_cylinder_ransac_minimm_score() { return _cylinderRansacMinimumScore; };
 
+            // Max unmatched points to consider this map point as lost
             static unsigned int get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
+            //Observe a point for N frames to gain max liability
+            static unsigned int get_point_age_liability() { return _pointAgeLiability; };
+            // Minimum point liability for the local map
+            static double get_minimum_liability_for_local_map() { return _pointMinimumLiabilityForMap; };
 
         private:
             // Camera parameters
@@ -70,6 +75,7 @@ namespace rgbd_slam {
             // local map management
             inline static unsigned int _pointUnmatchedCountToLoose;    // Maximum unmatched times before removal
             inline static unsigned int _pointAgeLiability;             // Minimum age of a point to consider it good for the global map
+            inline static double _pointMinimumLiabilityForMap;
     };
 
 };

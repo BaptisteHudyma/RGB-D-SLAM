@@ -11,7 +11,7 @@ namespace rgbd_slam {
         }
 
 
-        Pose_Estimator::Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
+        Pose_Estimator::Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
             Levenberg_Marquard_Functor<double>(n, points.size()),
             _points(points),
             _position(worldPosition),
