@@ -14,6 +14,7 @@ namespace rgbd_slam {
         {
             _unmatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
             match_point_container matchedPoints; 
+            unsigned int alreadyMatchedPoint = 0;
             for (utils::Map_Point& mapPoint : _localMap) 
             {
                 int matchIndex = detectedKeypoint.get_match_index(mapPoint);
@@ -24,6 +25,12 @@ namespace rgbd_slam {
                     continue;
                 }
                 else {
+                    if (_unmatched[matchIndex]) {
+                        alreadyMatchedPoint += 1;
+                        mapPoint._lastMatchedIndex = -2;
+                        mapPoint.update_unmacthed();
+                        continue;
+                    }
                     _unmatched[matchIndex] = true;
                     mapPoint.update(_currentIndex, mapPoint._coordinates, mapPoint._descriptor);
                     mapPoint._lastMatchedIndex = matchIndex;
@@ -35,6 +42,8 @@ namespace rgbd_slam {
 
                 matchedPoints.emplace(matchedPoints.end(), screen3DPoint, mapPoint._coordinates);
             }
+            if (alreadyMatchedPoint > 0)
+                std::cerr << "Error: Some points were matched twice: " << alreadyMatchedPoint << std::endl;
             _currentIndex += 1;
             return matchedPoints;
         }

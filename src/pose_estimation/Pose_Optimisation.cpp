@@ -1,5 +1,7 @@
 #include "Pose_Optimisation.hpp"
 
+#include "parameters.hpp"
+
 namespace rgbd_slam {
     namespace poseOptimisation {
 
@@ -20,10 +22,25 @@ namespace rgbd_slam {
             assert(_points.size() == points.size());
         }
 
+        /**
+         * \brief Compute a weight associated by this error, using a Hubert type loss
+         */
+        double get_weight(const double error, const double medianOfErrors)
+        {
+            const double hubertLossA = Parameters::get_Hubert_loss_coefficient_a();
+            const double hubertLossB = Parameters::get_Hubert_loss_coefficient_b();
+
+            double score = abs(error / (hubertLossB * ( abs(error - medianOfErrors) )));
+            if (score > hubertLossA)
+            {
+                return hubertLossA / score;
+            }
+            return 1;
+        }
+
         // Implementation of the objective function
         int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
             quaternion rotation(z(3), z(4), z(5), z(6));
-            //rotation.normalize();
             vector3 translation(z(0), z(1), z(2));
 
             // Convert to world coordinates
@@ -33,15 +50,27 @@ namespace rgbd_slam {
             matrix34 transformationMatrix;
             transformationMatrix << rotation.toRotationMatrix(), translation;
 
-
-            unsigned int i = 0;
-            for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++i) {
+            unsigned int pointIndex = 0;
+            double meanValue = 0.0; 
+            for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 const vector3& detectedPoint = pointIterator->first;
                 const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
 
                 //Supposed Sum of squares: reduce the sum
-                fvec(i) = sqrt(get_distance_manhattan(pointIterator->second, point3D)); 
+                fvec(pointIndex) = sqrt(get_distance_manhattan(pointIterator->second, point3D)); 
+                meanValue += fvec(pointIndex);
             }
+            // Should be median of errors
+            meanValue /= pointIndex + 1;
+
+            // Should be median of (error - median of error)
+            double med = meanValue - meanValue / (pointIndex + 1);
+
+            for (unsigned int i = 0; i < pointIndex; ++i)
+            {
+                fvec(i) *= get_weight(fvec(i) - meanValue, med) * 0.7;
+            }
+
             return 0;
         }
 

@@ -73,6 +73,8 @@ namespace rgbd_slam {
              */
             const poseEstimation::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage);
 
+            void compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage);
+
             void set_color_vector();
 
         private:

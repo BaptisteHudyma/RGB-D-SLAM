@@ -31,7 +31,7 @@ namespace rgbd_slam {
                 _width, 
                 _height, 
                 Parameters::get_depth_map_patch_size()
-            );
+                );
         if (_depthOps == nullptr or not _depthOps->is_ok()) {
             std::cerr << CLASS_ERR << "Cannot load parameter files, exiting" << std::endl;
             exit(-1);
@@ -51,7 +51,7 @@ namespace rgbd_slam {
                 Parameters::get_maximum_plane_match_angle(),
                 Parameters::get_maximum_merge_distance(),
                 true
-            );
+                );
 
         // Line segment detector
         //Should refine, scale, Gaussian filter sigma
@@ -149,43 +149,10 @@ namespace rgbd_slam {
 
         }
 
-
         if(detectLines) { //detect lines in image
-            t1 = cv::getTickCount();
-
-            //get lines
-            line_vector lines;
-            cv::Mat mask = depthImage > 0;
-
-            _lineDetector->detect(grayImage, lines);
-
-            //fill holes
-            cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, _kernel);
-
-            //draw lines with associated depth data
-            for(line_vector::size_type i = 0; i < lines.size(); i++) {
-                cv::Vec4f& pts = lines.at(i);
-                cv::Point pt1(pts[0], pts[1]);
-                cv::Point pt2(pts[2], pts[3]);
-                if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
-                    //no depth at extreme points, check first and second quarter
-                    cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
-                    cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
-
-                    //at least a point with depth data
-                    if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
-                        cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
-                    else    //no depth data
-                        cv::line(rgbImage, pt1, pt2, cv::Scalar(255, 0, 255), 1);
-                }
-                else
-                    //line with associated depth
-                    cv::line(rgbImage, pt1, pt2, cv::Scalar(0, 255, 255), 1);
-
-            }
-            _meanLineTreatment += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+            cv::Mat outImage;
+            compute_lines(grayImage, depthImage, outImage);
         }
-
 
         // exchange frames features
         _previousFramePrimitives.swap(primitives);
@@ -251,11 +218,11 @@ namespace rgbd_slam {
 
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimisator.minimize(input);
 
-            quaternion endRotation(input[3], input[4], input[5], input[6]);
-            endRotation.normalize();
+            const quaternion endRotation(input[3], input[4], input[5], input[6]);
             const vector3 endTranslation(input[0], input[1], input[2]);
 
             refinedPose.update(endTranslation, endRotation);
+            //refinedPose = poseEstimation::Pose(endTranslation, endRotation);
 
             if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
             {
@@ -264,7 +231,6 @@ namespace rgbd_slam {
             }
 
             _meanPoseOptimisationIterations += poseOptimisator.iter;
-
         }
         else
             std::cerr << "Not enough points for pose estimation: " << matchedPoints.size() << std::endl;
@@ -331,5 +297,44 @@ namespace rgbd_slam {
 
         _pointMatcher->show_statistics(meanFrameTreatmentTime, _totalFrameTreated);
     }
+
+
+    void RGBD_SLAM::compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage)
+    {
+        double t1 = cv::getTickCount();
+
+        //get lines
+        line_vector lines;
+        cv::Mat mask = depthImage > 0;
+
+        _lineDetector->detect(grayImage, lines);
+
+        //fill holes
+        cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, _kernel);
+
+        //draw lines with associated depth data
+        for(line_vector::size_type i = 0; i < lines.size(); i++) {
+            cv::Vec4f& pts = lines.at(i);
+            cv::Point pt1(pts[0], pts[1]);
+            cv::Point pt2(pts[2], pts[3]);
+            if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
+                //no depth at extreme points, check first and second quarter
+                cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
+                cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
+
+                //at least a point with depth data
+                if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
+                    cv::line(outImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
+                else    //no depth data
+                    cv::line(outImage, pt1, pt2, cv::Scalar(255, 0, 255), 1);
+            }
+            else
+                //line with associated depth
+                cv::line(outImage, pt1, pt2, cv::Scalar(0, 255, 255), 1);
+
+        }
+        _meanLineTreatment += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+    }
+
 
 } /* namespace poseEstimation */
