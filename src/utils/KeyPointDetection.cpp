@@ -30,21 +30,18 @@ namespace rgbd_slam {
 
             // Fill depth values
             cv::Rect imageBoundaries(cv::Point(), depthImage.size());
-            _depths.reserve(_keypoints.size());
+            _depths = std::vector<double>(_keypoints.size());
             unsigned int i = 0;
             for(const cv::KeyPoint& keypoint : _keypoints) {
                 const cv::Point2f& pt = keypoint.pt;
                 assert(pt.x > 0 and pt.y > 0);
+
                 if (imageBoundaries.contains(pt)) {
                     // convert to meters
-                    _depths.push_back(depthImage.at<const float>(pt.y, pt.x) );
-                }
-                else {
-                    _depths.push_back(0.0);
+                    _depths[i] = (depthImage.at<const float>(pt.y, pt.x) / 1000 );
                 }
                 ++i;
             }
-
             assert(_keypoints.size() == _depths.size());
         }
 

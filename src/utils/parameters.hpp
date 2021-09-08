@@ -19,6 +19,7 @@ namespace rgbd_slam {
             static unsigned int get_maximum_optimization_iterations() { return _maximumOptimizationCall; };
             static double get_Hubert_loss_coefficient_a() { return _hubertLossCoefficientA; };
             static double get_Hubert_loss_coefficient_b() { return _hubertLossCoefficientB; };
+            static double get_point_error_multiplier() { return _pointErrorMultiplier; };
 
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
             static unsigned int get_minimum_hessian() { return _detectorMinHessian; };
@@ -56,6 +57,7 @@ namespace rgbd_slam {
             inline static unsigned int _maximumOptimizationCall; 
             inline static double _hubertLossCoefficientA;
             inline static double _hubertLossCoefficientB;
+            inline static double _pointErrorMultiplier;
 
             // Point Detection & matching
             inline static double _maximumMatchDistance;

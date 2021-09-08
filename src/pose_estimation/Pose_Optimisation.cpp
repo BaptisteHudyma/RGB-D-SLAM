@@ -27,6 +27,20 @@ namespace rgbd_slam {
             return 1;
         }
 
+        double get_hubert_estimator(const double score)
+        {
+            const double absScore = abs(score);
+            const double hubertThreshold = Parameters::get_Hubert_loss_coefficient_a();
+            
+            if (absScore < hubertThreshold)
+            {
+                return 0.5 * pow(score, 2.0);
+            }
+            else
+            {
+                return hubertThreshold * (absScore - 0.5 * hubertThreshold);
+            }
+        }
 
 
         Pose_Estimator::Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
@@ -70,6 +84,8 @@ namespace rgbd_slam {
             rotation = _rotation * rotation;
             translation += _position;
 
+            const double pointErrorMultiplier = Parameters::get_point_error_multiplier();
+
             matrix34 transformationMatrix;
             transformationMatrix << rotation.toRotationMatrix(), translation;
 
@@ -78,8 +94,10 @@ namespace rgbd_slam {
                 const vector3& detectedPoint = pointIterator->first;
                 const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
 
-                //Supposed Sum of squares: reduce the sum
-                fvec(pointIndex) = sqrt(_weights[pointIndex] * get_distance_manhattan(pointIterator->second, point3D)) * 0.5; 
+                //Supposed Sum of squares: 
+                // For some reason, sqrtf is waaaayyy faster than sqrtl, which is faster than sqrt
+                fvec(pointIndex) = sqrtf(pointErrorMultiplier * _weights[pointIndex] * get_distance_manhattan(pointIterator->second, point3D)); 
+                //fvec(pointIndex) = sqrtf(get_hubert_estimator(pointErrorMultiplier * _weights[pointIndex] * get_distance_manhattan(pointIterator->second, point3D))); 
             }
 
             return 0;

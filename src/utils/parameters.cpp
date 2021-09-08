@@ -15,6 +15,7 @@ namespace rgbd_slam {
         _maximumOptimizationCall = 4048;
         _hubertLossCoefficientA = 1.345;
         _hubertLossCoefficientB = 1.4826;
+        _pointErrorMultiplier = 0.5;
 
         _maximumMatchDistance = 0.7;
         _detectorMinHessian = 25;
