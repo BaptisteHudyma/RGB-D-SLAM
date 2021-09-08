@@ -70,6 +70,7 @@ namespace rgbd_slam {
 
             private:
             match_point_container& _points; 
+            std::vector<double> _weights;
             const vector3 _position;
             const quaternion _rotation;
         };

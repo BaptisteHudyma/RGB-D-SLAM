@@ -11,17 +11,6 @@ namespace rgbd_slam {
                 abs(pointA[1] - pointB[1]) + 
                 abs(pointA[2] - pointB[2]);
         }
-
-
-        Pose_Estimator::Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
-            Levenberg_Marquard_Functor<double>(n, points.size()),
-            _points(points),
-            _position(worldPosition),
-            _rotation(worldRotation)
-        {
-            assert(_points.size() == points.size());
-        }
-
         /**
          * \brief Compute a weight associated by this error, using a Hubert type loss
          */
@@ -38,6 +27,40 @@ namespace rgbd_slam {
             return 1;
         }
 
+
+
+        Pose_Estimator::Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
+            Levenberg_Marquard_Functor<double>(n, points.size()),
+            _points(points),
+            _position(worldPosition),
+            _rotation(worldRotation)
+        {
+            _weights = std::vector<double>(points.size());
+
+            matrix34 transformationMatrix;
+            transformationMatrix << _rotation.toRotationMatrix(), _position;
+
+            double meanOfErrors = 0.0;
+            std::vector<double> errors(points.size());
+            unsigned int pointCount = 0;
+            for(match_point_container::const_iterator pointIterator = points.cbegin(); pointIterator != points.cend(); ++pointIterator, ++pointCount) {
+                const vector3& detectedPoint = pointIterator->first;
+                const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
+
+                const double error = get_distance_manhattan(pointIterator->second, point3D); 
+                meanOfErrors += error;
+                errors[pointCount] = error;
+            }
+            meanOfErrors /= points.size();
+            double med = meanOfErrors - meanOfErrors / points.size();
+
+            // Fill weights
+            for (unsigned int i = 0; i < points.size(); ++i)
+            {
+                _weights[i] = get_weight(errors[i] - meanOfErrors, med);
+            }
+        }
+
         // Implementation of the objective function
         int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
             quaternion rotation(z(3), z(4), z(5), z(6));
@@ -51,24 +74,12 @@ namespace rgbd_slam {
             transformationMatrix << rotation.toRotationMatrix(), translation;
 
             unsigned int pointIndex = 0;
-            double meanValue = 0.0; 
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 const vector3& detectedPoint = pointIterator->first;
                 const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
 
                 //Supposed Sum of squares: reduce the sum
-                fvec(pointIndex) = sqrt(get_distance_manhattan(pointIterator->second, point3D)); 
-                meanValue += fvec(pointIndex);
-            }
-            // Should be median of errors
-            meanValue /= pointIndex + 1;
-
-            // Should be median of (error - median of error)
-            double med = meanValue - meanValue / (pointIndex + 1);
-
-            for (unsigned int i = 0; i < pointIndex; ++i)
-            {
-                fvec(i) *= get_weight(fvec(i) - meanValue, med) * 0.7;
+                fvec(pointIndex) = sqrt(_weights[pointIndex] * get_distance_manhattan(pointIterator->second, point3D)) * 0.5; 
             }
 
             return 0;
