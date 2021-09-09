@@ -21,12 +21,13 @@ namespace rgbd_slam {
         _detectorMinHessian = 25;
 
         // Local map
-        _pointUnmatchedCountToLoose = 15;
+        _pointUnmatchedCountToLoose = 10;
         _pointAgeConfidence = 15;
+        _pointStagedAgeConfidence = 5;
         _pointMinimumConfidenceForMap = 0.9;
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
-        _pointHubertThreshold = 1.5e-3;
+        _pointHubertThreshold = 1.5e-4;
         _pointErrorMultiplier = 0.2;
 
         // Primitive extraction

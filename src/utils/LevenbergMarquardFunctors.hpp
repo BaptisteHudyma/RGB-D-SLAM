@@ -1,5 +1,5 @@
-#ifndef POSE_OPTIMISATION_HPP
-#define POSE_OPTIMISATION_HPP 
+#ifndef RGBDSLAM_UTILS_LM_FUNCTORS
+#define RGBDSLAM_UTILS_LM_FUNCTORS
 
 #include "types.hpp"
 
@@ -13,7 +13,7 @@
 #include <iostream>
 
 namespace rgbd_slam {
-    namespace poseOptimisation {
+    namespace utils {
 
         /**
          * \brief Structure given to the Levenberg-Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric.
@@ -54,7 +54,8 @@ namespace rgbd_slam {
         /**
          * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator
          */
-        struct Pose_Estimator: Levenberg_Marquard_Functor<double> 
+        struct Pose_Estimator :
+            Levenberg_Marquard_Functor<double> 
         {
             // Simple constructor
             /**
@@ -78,15 +79,13 @@ namespace rgbd_slam {
         struct Pose_Functor : Eigen::NumericalDiff<Pose_Estimator> {};
 
 
-
-
         /**
          * \brief Use for debug.
          * \return Returns a string with the human readable version of Eigen LevenbergMarquardt output status
          */
         const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status);
 
-    }       /* poseOptimisation*/
-}
+    }       /* utils */
+}   /* rgbd_slam */
 
 #endif

@@ -22,7 +22,7 @@ namespace rgbd_slam {
 
         double Staged_Point::get_confidence() const 
         {
-            const double confidence = static_cast<double>(_matchesCount) / static_cast<double>(Parameters::get_point_age_confidence());
+            const double confidence = static_cast<double>(_matchesCount) / static_cast<double>(Parameters::get_point_staged_age_confidence());
             return std::max(std::min(confidence, 1.0), -1.0);
         }
 

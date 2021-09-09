@@ -17,7 +17,6 @@
 
 #include "Pose.hpp"
 #include "MotionModel.hpp"
-#include "Pose_Optimisation.hpp"
 
 namespace rgbd_slam {
 

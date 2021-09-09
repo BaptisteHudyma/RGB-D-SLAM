@@ -1,9 +1,9 @@
-#include "Pose_Optimisation.hpp"
+#include "LevenbergMarquardFunctors.hpp"
 
 #include "parameters.hpp"
 
 namespace rgbd_slam {
-    namespace poseOptimisation {
+    namespace utils {
 
 
         double get_distance_manhattan(const vector3& pointA, const vector3& pointB) {
@@ -78,6 +78,7 @@ namespace rgbd_slam {
         // Implementation of the objective function
         int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
             quaternion rotation(z(3), z(4), z(5), z(6));
+            rotation.normalize();
             vector3 translation(z(0), z(1), z(2));
 
             // Convert to world coordinates
@@ -97,7 +98,7 @@ namespace rgbd_slam {
                 //Supposed Sum of squares: 
                 // For some reason, sqrtf is waaaayyy faster than sqrtl, which is faster than sqrt
                 // Maybe the lesser precision ? it's an advantage here
-                fvec(pointIndex) = pointErrorMultiplier * _weights[pointIndex] * sqrtf(get_hubert_estimator(get_distance_manhattan(pointIterator->second, point3D))); 
+                fvec(pointIndex) = sqrtf(pointErrorMultiplier * _weights[pointIndex] * get_hubert_estimator(get_distance_manhattan(pointIterator->second, point3D))); 
             }
 
             return 0;
@@ -138,5 +139,5 @@ namespace rgbd_slam {
         }
 
 
-    } /* poseOptimisation */
-}
+    } /* utils */
+} /* rgbd_slam */

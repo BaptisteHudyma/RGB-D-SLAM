@@ -145,8 +145,6 @@ namespace rgbd_slam {
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, keypointObject.get_descriptor(i));
                 }
             }
-
-            std::cout << "Map now contains " << _localMap.size() << " points, with " << _stagedPoints.size() << " staged points" << std::endl;
         }
 
         void Local_Map::update_local_to_global() 

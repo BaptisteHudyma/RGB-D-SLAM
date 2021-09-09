@@ -78,7 +78,6 @@ add_library(poseEstimation
     ${POSE}/PNPSolver.cpp
 
     ${POSE}/RGB_Slam.cpp
-    ${POSE}/Pose_Optimisation.cpp
     )
 
 add_library(mapManagement
@@ -98,6 +97,8 @@ add_library(utils
     ${UTILS}/parameters.cpp
     ${UTILS}/utils.cpp
     ${UTILS}/KeyPointDetection.cpp
+    ${UTILS}/LevenbergMarquardFunctors.cpp
+    ${UTILS}/PoseOptimization.cpp
     )
 
 add_library(slam

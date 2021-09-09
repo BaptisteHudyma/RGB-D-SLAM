@@ -43,6 +43,7 @@ namespace rgbd_slam {
             static unsigned int get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
             //Observe a point for N frames to gain max liability
             static unsigned int get_point_age_confidence() { return _pointAgeConfidence; };
+            static unsigned int get_point_staged_age_confidence() { return _pointStagedAgeConfidence; };
             // Minimum point liability for the local map
             static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
 
@@ -83,6 +84,7 @@ namespace rgbd_slam {
             // local map management
             inline static unsigned int _pointUnmatchedCountToLoose;    // Maximum unmatched times before removal
             inline static unsigned int _pointAgeConfidence;            // Minimum age of a point to consider it good 
+            inline static unsigned int _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
             inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
     };
 
