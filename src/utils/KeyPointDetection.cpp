@@ -77,7 +77,7 @@ namespace rgbd_slam {
         Key_Point_Extraction::Key_Point_Extraction(const unsigned int minHessian) 
         {
             // Create feature extractor and matcher
-            _featureDetector = cv::AgastFeatureDetector::create( minHessian );
+            _featureDetector = cv::FastFeatureDetector::create( minHessian );
             _descriptorExtractor = cv::xfeatures2d::BriefDescriptorExtractor::create();
 
             //profiling

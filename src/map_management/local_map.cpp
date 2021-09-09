@@ -168,7 +168,14 @@ namespace rgbd_slam {
 
                 if (screenPoint[0] > 0 and screenPoint[1] > 0) {
                     //Map Point are green 
-                    cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 255, 0), 1);
+                    if (mapPoint._lastMatchedIndex < 0)
+                    {
+                        cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 128, 0), 1);
+                    }
+                    else
+                    {
+                        cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 255, 0), 1);
+                    }
                 }
             }
             for (const utils::Staged_Point& stagedPoint : _stagedPoints) {
@@ -176,7 +183,14 @@ namespace rgbd_slam {
 
                 if (screenPoint[0] > 0 and screenPoint[1] > 0) {
                     //Staged point are yellow 
-                    cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 200, 200), 1);
+                    if (stagedPoint._lastMatchedIndex < 0)
+                    {
+                        cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 100, 200), 1);
+                    }
+                    else
+                    {
+                        cv::circle(debugImage, cv::Point(screenPoint[0], screenPoint[1]), 4, cv::Scalar(0, 200, 200), 1);
+                    }
                 }
             }
 

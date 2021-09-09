@@ -19,7 +19,8 @@ namespace rgbd_slam {
             const double pointWeightThreshold = Parameters::get_point_weight_threshold();
             const double weightCoefficient = Parameters::get_point_weight_coefficient();
 
-            double score = abs(error / (weightCoefficient * ( abs(error - medianOfErrors) )));
+            const double theta = weightCoefficient * abs(error - medianOfErrors); 
+            const double score = abs(error / theta);
             if (score > pointWeightThreshold)
             {
                 return pointWeightThreshold / score;
@@ -31,7 +32,7 @@ namespace rgbd_slam {
         {
             const double absScore = abs(score);
             const double hubertThreshold = Parameters::get_point_Hubert_threshold();
-            
+
             if (absScore < hubertThreshold)
             {
                 return 0.5 * pow(score, 2.0);
@@ -40,6 +41,15 @@ namespace rgbd_slam {
             {
                 return hubertThreshold * (absScore - 0.5 * hubertThreshold);
             }
+        }
+
+        double get_median(std::vector<double>& inputVector)
+        {
+            std::sort(inputVector.begin(), inputVector.end());
+            if (inputVector.size() % 2 == 0)
+                return (inputVector[inputVector.size() / 2] + inputVector[inputVector.size() / 2 - 1]) / 2;
+            else 
+                return inputVector[inputVector.size() / 2];
         }
 
 
@@ -54,24 +64,32 @@ namespace rgbd_slam {
             matrix34 transformationMatrix;
             transformationMatrix << _rotation.toRotationMatrix(), _position;
 
-            double meanOfErrors = 0.0;
             std::vector<double> errors(points.size());
+            std::vector<double> medianErrorVector(points.size());
             unsigned int pointCount = 0;
+            // Compute the start error
             for(match_point_container::const_iterator pointIterator = points.cbegin(); pointIterator != points.cend(); ++pointIterator, ++pointCount) {
                 const vector3& detectedPoint = pointIterator->first;
                 const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
 
                 const double error = get_distance_manhattan(pointIterator->second, point3D); 
-                meanOfErrors += error;
                 errors[pointCount] = error;
+                medianErrorVector[pointCount] = error;
             }
-            meanOfErrors /= points.size();
-            double med = meanOfErrors - meanOfErrors / points.size();
+            // Compute median of all errors
+            const double medianOfErrors = get_median(medianErrorVector);;
+            
+            for(unsigned int i = 0; i < errors.size(); ++i)
+            {
+                medianErrorVector[i] = errors[i] - medianOfErrors;
+            }
+            // Compute (error - median of errors) median
+            const double medianOfErrorsMedian = get_median(medianErrorVector);
 
             // Fill weights
             for (unsigned int i = 0; i < points.size(); ++i)
             {
-                _weights[i] = get_weight(errors[i] - meanOfErrors, med);
+                _weights[i] = get_weight(errors[i] - medianOfErrors, medianOfErrorsMedian);
             }
         }
 
@@ -100,7 +118,6 @@ namespace rgbd_slam {
                 // Maybe the lesser precision ? it's an advantage here
                 fvec(pointIndex) = sqrtf(pointErrorMultiplier * _weights[pointIndex] * get_hubert_estimator(get_distance_manhattan(pointIterator->second, point3D))); 
             }
-
             return 0;
         }
 
