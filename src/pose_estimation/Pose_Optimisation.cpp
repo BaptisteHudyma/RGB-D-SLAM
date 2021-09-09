@@ -16,13 +16,13 @@ namespace rgbd_slam {
          */
         double get_weight(const double error, const double medianOfErrors)
         {
-            const double hubertLossA = Parameters::get_Hubert_loss_coefficient_a();
-            const double hubertLossB = Parameters::get_Hubert_loss_coefficient_b();
+            const double pointWeightThreshold = Parameters::get_point_weight_threshold();
+            const double weightCoefficient = Parameters::get_point_weight_coefficient();
 
-            double score = abs(error / (hubertLossB * ( abs(error - medianOfErrors) )));
-            if (score > hubertLossA)
+            double score = abs(error / (weightCoefficient * ( abs(error - medianOfErrors) )));
+            if (score > pointWeightThreshold)
             {
-                return hubertLossA / score;
+                return pointWeightThreshold / score;
             }
             return 1;
         }
@@ -30,7 +30,7 @@ namespace rgbd_slam {
         double get_hubert_estimator(const double score)
         {
             const double absScore = abs(score);
-            const double hubertThreshold = Parameters::get_Hubert_loss_coefficient_a();
+            const double hubertThreshold = Parameters::get_point_Hubert_threshold();
             
             if (absScore < hubertThreshold)
             {
@@ -96,8 +96,8 @@ namespace rgbd_slam {
 
                 //Supposed Sum of squares: 
                 // For some reason, sqrtf is waaaayyy faster than sqrtl, which is faster than sqrt
-                fvec(pointIndex) = sqrtf(pointErrorMultiplier * _weights[pointIndex] * get_distance_manhattan(pointIterator->second, point3D)); 
-                //fvec(pointIndex) = sqrtf(get_hubert_estimator(pointErrorMultiplier * _weights[pointIndex] * get_distance_manhattan(pointIterator->second, point3D))); 
+                // Maybe the lesser precision ? it's an advantage here
+                fvec(pointIndex) = pointErrorMultiplier * _weights[pointIndex] * sqrtf(get_hubert_estimator(get_distance_manhattan(pointIterator->second, point3D))); 
             }
 
             return 0;

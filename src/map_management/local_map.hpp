@@ -62,10 +62,17 @@ namespace rgbd_slam {
             private:
                 unsigned int _currentIndex;
 
-                //local point map
+                // local map point container
                 typedef std::list<utils::Map_Point> point_map_container;
-                point_map_container _localMap;
+                // staged points container
+                typedef std::list<utils::Staged_Point> staged_point_container;
 
+                // Local map contains world points with a good confidence
+                point_map_container _localMap;
+                // Staged points are potential new map points, waiting to confirm confidence
+                staged_point_container _stagedPoints;
+
+                // Hold unmatched detected point indexes, to add in the staged point container
                 std::vector<bool> _unmatched;
 
                 //local primitive map

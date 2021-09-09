@@ -178,14 +178,15 @@ namespace rgbd_slam {
 
     const poseEstimation::Pose RGBD_SLAM::compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
-        //get and refine pose
+        //get a pose with the motion model
         poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
-        //poseEstimation::Pose refinedPose(_currentPose);
 
+        // Detect and match key points with local map points
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         match_point_container matchedPoints = _localMap->find_matches(keypointObject);
 
         if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
+            // Enough matches to optimize
             double t1 = cv::getTickCount();
 
             // Vector to optimize: (0, 1, 2) is delta position, (3, 4, 5, 6) is rotation as a quaternion, 
@@ -233,13 +234,18 @@ namespace rgbd_slam {
             _meanPoseOptimisationIterations += poseOptimisator.iter;
         }
         else
+        {
+            // Not enough matches
             std::cerr << "Not enough points for pose estimation: " << matchedPoints.size() << std::endl;
+        }
 
         //update motion model with refined pose
         _motionModel.update_model(refinedPose);
 
+        // Update current pose
         _currentPose = refinedPose;
 
+        // Update local map
         _localMap->update(refinedPose, keypointObject);
 
         return refinedPose;

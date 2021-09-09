@@ -24,6 +24,46 @@ namespace rgbd_slam {
             Point (const vector3& coordinates, const cv::Mat& descriptor);
         };
 
+        class Staged_Point
+            : public Point
+        {
+            public:
+                Staged_Point(const vector3& coordinates, const cv::Mat& descriptor);
+
+                // Count the number of times his points was matched
+                int _matchesCount;
+
+                /**
+                 * \brief Should add this staged point to the local map
+                 */
+                bool should_add_to_local_map() const;
+
+                /**
+                  * \brief True if this staged point should not be added to local map
+                  */
+                bool should_remove_from_staged() const;
+
+                /**
+                  * \brief Call when this point was not matched to anything
+                  */
+                void update_unmatched();
+
+                /**
+                  * \brief Call when this point was matched to another point
+                  */
+                void update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+
+                int _lastMatchedIndex;
+            private:
+                /**
+                 * \brief Compute a confidence in this point (-1, 1)
+                 */
+                virtual double get_confidence() const;
+
+                // count of unique matches
+                int _matchedCount;
+        };
+
 
         /**
          * \brief A map point structure, containing all the necessary informations to identify a map point
@@ -33,50 +73,45 @@ namespace rgbd_slam {
         {
 
             public:
-                Map_Point(const vector3& coordinates, const cv::Mat& descriptor, const double observationTimeStamp = 0);
+                Map_Point(const vector3& coordinates, const cv::Mat& descriptor);
 
-                double get_liability(); 
 
                 /**
                  * \brief True is this point is lost : should be removed from local map. Should be used only for map points
                  */
-                bool is_lost(const double currentTimeStamp); 
-
-                /**
-                 * \brief Should add this staged point to the local map
-                 */
-                bool should_add_to_map();
+                bool is_lost() const; 
 
                 /**
                  * \brief Update this point without it being detected/matched
                  */
-                void update_unmacthed();
+                void update_unmatched();
 
                 /**
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
-                void update(const double observationTimeStamp, const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+                void update(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
 
-                unsigned int get_age() const {
+                int get_age() const {
                     return _age;
                 }
-                
+
                 int _lastMatchedIndex;
 
+            protected:
+                /**
+                  * \brief Compute a confidence score (-1, 1)
+                  */
+                double get_confidence() const; 
+
             private:
-                // depending on context, if the point is staged then this is the number of frames it has been tracked while staged. If it is a map point, then this is the number of times it failed tracking.
-                unsigned int _counter;
+                // The number of times this point failed tracking.
+                unsigned int _failTrackingCount;
 
                 // Successful matches count
-                unsigned int _age;   
+                int _age;   
 
-                //0 - 1: keypoint fiability (consecutive matches, ...) 
-                float _liability;
-
-                //timestamp of the last update
-                double _lastUpdated;
-
-
+                //0 - 1: keypoint confidence (consecutive matches, ...) 
+                float _confidence;
         };
 
     }

@@ -17,8 +17,9 @@ namespace rgbd_slam {
 
             static unsigned int get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
             static unsigned int get_maximum_optimization_iterations() { return _maximumOptimizationCall; };
-            static double get_Hubert_loss_coefficient_a() { return _hubertLossCoefficientA; };
-            static double get_Hubert_loss_coefficient_b() { return _hubertLossCoefficientB; };
+            static double get_point_weight_threshold() { return _pointWeightThreshold; };
+            static double get_point_weight_coefficient() { return _pointWeightCoefficient; };
+            static double get_point_Hubert_threshold() { return _pointHubertThreshold; };
             static double get_point_error_multiplier() { return _pointErrorMultiplier; };
 
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
@@ -41,9 +42,9 @@ namespace rgbd_slam {
             // Max unmatched points to consider this map point as lost
             static unsigned int get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
             //Observe a point for N frames to gain max liability
-            static unsigned int get_point_age_liability() { return _pointAgeLiability; };
+            static unsigned int get_point_age_confidence() { return _pointAgeConfidence; };
             // Minimum point liability for the local map
-            static double get_minimum_liability_for_local_map() { return _pointMinimumLiabilityForMap; };
+            static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
 
         private:
             // Camera parameters
@@ -55,8 +56,9 @@ namespace rgbd_slam {
             // Position optimization
             inline static unsigned int _minimumPointForOptimization;
             inline static unsigned int _maximumOptimizationCall; 
-            inline static double _hubertLossCoefficientA;
-            inline static double _hubertLossCoefficientB;
+            inline static double _pointWeightThreshold;
+            inline static double _pointWeightCoefficient;
+            inline static double _pointHubertThreshold;
             inline static double _pointErrorMultiplier;
 
             // Point Detection & matching
@@ -80,8 +82,8 @@ namespace rgbd_slam {
 
             // local map management
             inline static unsigned int _pointUnmatchedCountToLoose;    // Maximum unmatched times before removal
-            inline static unsigned int _pointAgeLiability;             // Minimum age of a point to consider it good for the global map
-            inline static double _pointMinimumLiabilityForMap;
+            inline static unsigned int _pointAgeConfidence;            // Minimum age of a point to consider it good 
+            inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
     };
 
 };
