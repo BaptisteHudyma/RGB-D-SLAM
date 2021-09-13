@@ -17,18 +17,18 @@ namespace rgbd_slam {
         _maximumOptimizationCall = 1024;
 
         // Point detection/Matching
-        _maximumMatchDistance = 0.9;
+        _maximumMatchDistance = 0.7;   // The closer to 0, the more discriminating
         _detectorMinHessian = 25;
 
         // Local map
         _pointUnmatchedCountToLoose = 10;
         _pointAgeConfidence = 15;
-        _pointStagedAgeConfidence = 5;
+        _pointStagedAgeConfidence = 10;
         _pointMinimumConfidenceForMap = 0.9;
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
-        _pointHubertThreshold = 1.5e-4;
-        _pointErrorMultiplier = 0.2;
+        _pointHubertThreshold = 1.5e-5;
+        _pointErrorMultiplier = 0.5;
 
         // Primitive extraction
         _primitiveMaximumCosAngle = cos(M_PI/10.0);

@@ -46,7 +46,7 @@ namespace rgbd_slam {
                 /**
                   * \brief Call when this point was not matched to anything
                   */
-                void update_unmatched();
+                void update_unmatched(int removeNMatches = 1);
 
                 /**
                   * \brief Call when this point was matched to another point

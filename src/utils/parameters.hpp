@@ -63,7 +63,7 @@ namespace rgbd_slam {
             inline static double _pointErrorMultiplier;
 
             // Point Detection & matching
-            inline static double _maximumMatchDistance;
+            inline static double _maximumMatchDistance; // Maximum distance between a point and his mach before refusing the match
             inline static unsigned int _detectorMinHessian;
 
             // Primitive extraction parameters

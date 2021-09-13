@@ -12,8 +12,9 @@ namespace rgbd_slam {
 
         match_point_container Local_Map::find_matches(const utils::Keypoint_Handler& detectedKeypoint)
         {
-            _unmatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
+            _isPointMatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
             match_point_container matchedPoints; 
+
             unsigned int alreadyMatchedPoint = 0;
             for (utils::Map_Point& mapPoint : _localMap) 
             {
@@ -25,7 +26,7 @@ namespace rgbd_slam {
                     continue;
                 }
                 else {
-                    if (_unmatched[matchIndex]) {
+                    if (_isPointMatched[matchIndex]) {
                         alreadyMatchedPoint += 1;
                         mapPoint._lastMatchedIndex = -2;
                         mapPoint.update_unmatched();
@@ -33,7 +34,7 @@ namespace rgbd_slam {
                     }
                     else
                     {
-                        _unmatched[matchIndex] = true;
+                        _isPointMatched[matchIndex] = true;
                         mapPoint.update(mapPoint._coordinates, detectedKeypoint.get_descriptor(matchIndex));
                         mapPoint._lastMatchedIndex = matchIndex;
                     } 
@@ -57,14 +58,15 @@ namespace rgbd_slam {
                     continue;
                 }
                 else {
-                    if (_unmatched[matchIndex]) {
+                    if (_isPointMatched[matchIndex]) {
+                        // Already matched to another point
                         stagedPoint._lastMatchedIndex = -2;
-                        stagedPoint.update_unmatched();
+                        stagedPoint.update_unmatched(2);
                         continue;
                     }
                     else
                     {
-                        _unmatched[matchIndex] = true;
+                        _isPointMatched[matchIndex] = true;
                         stagedPoint.update_matched(stagedPoint._coordinates, detectedKeypoint.get_descriptor(matchIndex));
                         stagedPoint._lastMatchedIndex = matchIndex;
                     }
@@ -134,9 +136,9 @@ namespace rgbd_slam {
 
             // Add all unmatched points to staged point container 
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
-            for(unsigned int i = 0; i < _unmatched.size(); ++i)
+            for(unsigned int i = 0; i < _isPointMatched.size(); ++i)
             {
-                if (not _unmatched[i]) {
+                if (not _isPointMatched[i]) {
                     const double depth = keypointObject.get_depth(i);
                     if (depth <= 0)
                         continue;

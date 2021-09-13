@@ -15,7 +15,13 @@ namespace rgbd_slam {
 
     RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth, unsigned int imageHeight) :
         _width(imageWidth),
-        _height(imageHeight)
+        _height(imageHeight),
+
+        _meanMatTreatmentTime(0.0),
+        _meanTreatmentTime(0.0),
+        _meanLineTreatment(0.0),
+        _meanPoseTreatmentTime(0.0),
+        _totalFrameTreated(0)
     {
         // Load parameters (once)
         Parameters::parse_file("");
@@ -65,13 +71,6 @@ namespace rgbd_slam {
 
         // set display colors
         set_color_vector();
-
-        // set vars
-        _meanMatTreatmentTime = 0.0;
-        _meanTreatmentTime = 0.0;
-        _meanLineTreatment = 0.0;
-        _meanPoseTreatmentTime = 0.0;
-        _totalFrameTreated = 0;
 
         if (_primitiveDetector == nullptr) {
             std::cerr << CLASS_ERR << " Instanciation of Primitive_Detector failed" << std::endl;
@@ -152,6 +151,7 @@ namespace rgbd_slam {
         if(detectLines) { //detect lines in image
             cv::Mat outImage;
             compute_lines(grayImage, depthImage, outImage);
+            cv::imshow("line", outImage);
         }
 
         // exchange frames features
@@ -170,7 +170,9 @@ namespace rgbd_slam {
     void RGBD_SLAM::get_debug_image(const poseEstimation::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) {
         debugImage = originalRGB.clone();
         if (showPrimitiveMasks)
+        {
             _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, debugImage, _previousAssociatedIds, elapsedTime);
+        }
 
         _localMap->get_debug_image(camPose, debugImage); 
     }
@@ -180,7 +182,7 @@ namespace rgbd_slam {
     {
         //get a pose with the motion model
         poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
-
+        
         // Detect and match key points with local map points
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         match_point_container matchedPoints = _localMap->find_matches(keypointObject);
@@ -256,8 +258,6 @@ namespace rgbd_slam {
         double poseTreatmentTime = _meanPoseTreatmentTime / _totalFrameTreated;
         std::cout << "Mean pose estimation time is " << poseTreatmentTime << " seconds (" << get_percent_of_elapsed_time(poseTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
 
-        std::cout << "Mean iteration for pose optimization: " << _meanPoseOptimisationIterations / _totalFrameTreated << std::endl;
-
         _pointMatcher->show_statistics(meanFrameTreatmentTime, _totalFrameTreated);
     }
 
@@ -265,6 +265,7 @@ namespace rgbd_slam {
     void RGBD_SLAM::compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage)
     {
         double t1 = cv::getTickCount();
+        outImage = grayImage.clone();
 
         //get lines
         line_vector lines;
@@ -300,4 +301,5 @@ namespace rgbd_slam {
     }
 
 
-} /* namespace poseEstimation */
+} /* rgbd_slam */
+

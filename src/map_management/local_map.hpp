@@ -73,7 +73,7 @@ namespace rgbd_slam {
                 staged_point_container _stagedPoints;
 
                 // Hold unmatched detected point indexes, to add in the staged point container
-                std::vector<bool> _unmatched;
+                std::vector<bool> _isPointMatched;
 
                 //local primitive map
 

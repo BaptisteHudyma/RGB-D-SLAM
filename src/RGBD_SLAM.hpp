@@ -91,8 +91,6 @@ namespace rgbd_slam {
 
             cv::Mat _kernel;
 
-            double _meanPoseOptimisationIterations;
-
 
             //keep track of the primitives tracked last frame
             primitive_container _previousFramePrimitives;

@@ -1,4 +1,5 @@
 #include "KeyPointDetection.hpp"
+#include "parameters.hpp"
 
 // circle
 #include <opencv2/opencv.hpp>
@@ -18,8 +19,8 @@ namespace rgbd_slam {
         Keypoint_Handler::Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, const double maxMatchDistance) :
             _maxMatchDistance(maxMatchDistance)
         {
-            if (_maxMatchDistance <= 0 or _maxMatchDistance > 1) {
-                std::cerr << CLASS_ERR << "Maximum matching distance disparity must be between 0 and 1" << std::endl;
+            if (_maxMatchDistance <= 0) {
+                std::cerr << CLASS_ERR << "Maximum matching distance must be > 0" << std::endl;
                 exit(-1);
             }
             // knn matcher
@@ -96,7 +97,7 @@ namespace rgbd_slam {
             cv::Mat frameDescriptors;
             _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
 
-            return Keypoint_Handler(frameKeypoints, frameDescriptors, depthImage); 
+            return Keypoint_Handler(frameKeypoints, frameDescriptors, depthImage, Parameters::get_maximum_match_distance()); 
         }
 
 

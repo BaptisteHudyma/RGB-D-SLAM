@@ -32,9 +32,9 @@ namespace rgbd_slam {
         }
 
         
-        void Staged_Point::update_unmatched()
+        void Staged_Point::update_unmatched(int removeNMatches)
         {
-            _matchesCount -= 1;
+            _matchesCount -= removeNMatches;
         }
 
         void Staged_Point::update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor)
