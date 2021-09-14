@@ -18,6 +18,9 @@ namespace rgbd_slam {
             // world coordinates
             vector3 _coordinates;
 
+            // Gaussian uncertainty in 3D
+            vector3 _coordinateUncertainty;
+
             // 3D descriptor (SURF)
             cv::Mat _descriptor;
 
@@ -89,7 +92,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
-                void update(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+                double update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
 
                 int get_age() const {
                     return _age;

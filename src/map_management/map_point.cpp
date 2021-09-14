@@ -31,7 +31,7 @@ namespace rgbd_slam {
             return (get_confidence() > Parameters::get_minimum_confidence_for_local_map());
         }
 
-        
+
         void Staged_Point::update_unmatched(int removeNMatches)
         {
             _matchesCount -= removeNMatches;
@@ -88,13 +88,18 @@ namespace rgbd_slam {
         /**
          * \brief Update this map point with the given informations: it is matched with another point
          */
-        void Map_Point::update(const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
+        double Map_Point::update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
         {
             _failTrackingCount = 0;
             _age += 1;
             // TODO: update coordinates with error
             //_coordinates = newPointCoordinates;
             _descriptor = newDescriptor;
+
+            return    
+                abs(newPointCoordinates.x() - _coordinates.x()) + 
+                abs(newPointCoordinates.y() - _coordinates.y()) +
+                abs(newPointCoordinates.z() - _coordinates.z());
         }
     }
 }

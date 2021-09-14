@@ -35,7 +35,6 @@ namespace rgbd_slam {
                     else
                     {
                         _isPointMatched[matchIndex] = true;
-                        mapPoint.update(mapPoint._coordinates, detectedKeypoint.get_descriptor(matchIndex));
                         mapPoint._lastMatchedIndex = matchIndex;
                     } 
                 }
@@ -67,7 +66,6 @@ namespace rgbd_slam {
                     else
                     {
                         _isPointMatched[matchIndex] = true;
-                        stagedPoint.update_matched(stagedPoint._coordinates, detectedKeypoint.get_descriptor(matchIndex));
                         stagedPoint._lastMatchedIndex = matchIndex;
                     }
                 }
@@ -88,10 +86,26 @@ namespace rgbd_slam {
 
         void Local_Map::update(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)
         {
+            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+
+            double meanPointMapError = 0.0;
+            double matchedPointCount = 0.0;
             // Remove old map points
-            point_map_container::const_iterator pointMapIterator = _localMap.cbegin();
-            while(pointMapIterator != _localMap.cend())
+            point_map_container::iterator pointMapIterator = _localMap.begin();
+            while(pointMapIterator != _localMap.end())
             {
+                const int matchedPointIndex = pointMapIterator->_lastMatchedIndex;
+                if (matchedPointIndex >= 0)
+                {
+                    // get match coordinates, transform them to world coordinates
+                    const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
+                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), keypointObject.get_depth(matchedPointIndex), worldToCamMatrix);
+
+                    // update this map point errors & position
+                    meanPointMapError += pointMapIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                    matchedPointCount += 1.0;
+                }
+
                 if (pointMapIterator->is_lost()) {
                     // Remove useless point
                     pointMapIterator = _localMap.erase(pointMapIterator);
@@ -103,18 +117,31 @@ namespace rgbd_slam {
             }
 
             // add staged points to local map
-            update_staged(optimizedPose, keypointObject);
+            update_staged(worldToCamMatrix, keypointObject);
 
             // add local map points to global map
             update_local_to_global();
+
+            std::cout << "Mean map point to detected point error is " << meanPointMapError / matchedPointCount << std::endl;
         }
 
-        void Local_Map::update_staged(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)
+        void Local_Map::update_staged(const matrix34& worldToCamMatrix, const utils::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
-            staged_point_container::const_iterator stagedPointIterator = _stagedPoints.cbegin();
-            while(stagedPointIterator != _stagedPoints.cend())
+            staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
+            while(stagedPointIterator != _stagedPoints.end())
             {
+                const int matchedPointIndex = stagedPointIterator->_lastMatchedIndex;
+                if (matchedPointIndex >= 0)
+                {
+                    // get match coordinates, transform them to world coordinates
+                    const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
+                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), keypointObject.get_depth(matchedPointIndex), worldToCamMatrix);
+
+                    // update this map point errors & position
+                    stagedPointIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                }
+                
                 if (stagedPointIterator->should_add_to_local_map())
                 {
                     // Add to local map, remove from staged points
@@ -135,7 +162,6 @@ namespace rgbd_slam {
 
 
             // Add all unmatched points to staged point container 
-            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
             for(unsigned int i = 0; i < _isPointMatched.size(); ++i)
             {
                 if (not _isPointMatched[i]) {

@@ -52,7 +52,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Add previously uncertain features to the local map
                  */
-                void update_staged(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject);
+                void update_staged(const matrix34& worldToCamMatrix, const utils::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
