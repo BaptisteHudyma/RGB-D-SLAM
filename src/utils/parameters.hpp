@@ -19,7 +19,8 @@ namespace rgbd_slam {
             static unsigned int get_maximum_optimization_iterations() { return _maximumOptimizationCall; };
             static double get_point_weight_threshold() { return _pointWeightThreshold; };
             static double get_point_weight_coefficient() { return _pointWeightCoefficient; };
-            static double get_point_Hubert_threshold() { return _pointHubertThreshold; };
+            static double get_point_loss_alpha() { return _pointLossAlpha; };
+            static double get_point_loss_scale() { return _pointLossScale; };
             static double get_point_error_multiplier() { return _pointErrorMultiplier; };
 
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
@@ -59,8 +60,9 @@ namespace rgbd_slam {
             inline static unsigned int _maximumOptimizationCall; 
             inline static double _pointWeightThreshold;
             inline static double _pointWeightCoefficient;
-            inline static double _pointHubertThreshold;
-            inline static double _pointErrorMultiplier;
+            inline static double _pointLossAlpha;   // loss steepness (_infinity, infinity)
+            inline static double _pointLossScale;   // Scale of the loss, typical error
+            inline static double _pointErrorMultiplier; // multiplier of the final loss value (useful when  using primitives along with points)
 
             // Point Detection & matching
             inline static double _maximumMatchDistance; // Maximum distance between a point and his mach before refusing the match

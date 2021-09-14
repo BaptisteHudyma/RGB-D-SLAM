@@ -5,7 +5,6 @@
 
 // types
 #include "map_point.hpp"
-#include "utils.hpp"
 
 #include <Eigen/Eigen>
 #include <unsupported/Eigen/NonLinearOptimization>

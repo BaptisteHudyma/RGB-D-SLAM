@@ -1,5 +1,6 @@
 #include "PoseOptimization.hpp"
 
+#include "utils.hpp"
 #include "LevenbergMarquardFunctors.hpp"
 #include "parameters.hpp"
 
@@ -8,16 +9,18 @@ namespace rgbd_slam {
 
         void Pose_Optimization::compute_optimized_pose(poseEstimation::Pose& currentPose, match_point_container& matchedPoints)
         {
-            // Vector to optimize: (0, 1, 2) is delta position, (3, 4, 5, 6) is rotation as a quaternion, 
-            Eigen::VectorXd input(7);
+            // Vector to optimize: (0, 1, 2) is delta position, (3, 4, 5) is delta rotation as a simplified quaternion (parameter W is sqrt(1 - x² - y² - z²) (works for small angles)
+            Eigen::VectorXd input(6);
+            // 3D pose
             input[0] = 0;
             input[1] = 0;
             input[2] = 0;
-            input[3] = 1;
+            // X Y Z of a quaternion
+            input[3] = 0;
             input[4] = 0;
             input[5] = 0;
-            input[6] = 0;
 
+            // Optimize function 
             Pose_Functor pose_optimisation_functor(
                     Pose_Estimator(
                         input.size(), 
@@ -26,6 +29,7 @@ namespace rgbd_slam {
                         currentPose.get_orientation_quaternion()
                         )
                     );
+            // Optimization algorithm
             Eigen::LevenbergMarquardt<Pose_Functor, double> poseOptimisator( pose_optimisation_functor );
 
             // xtol     : tolerance for the norm of the solution vector
@@ -38,9 +42,8 @@ namespace rgbd_slam {
 
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimisator.minimize(input);
 
-            quaternion endRotation(input[3], input[4], input[5], input[6]);
+            const quaternion& endRotation = get_underparametrized_quaternion(input[3], input[4], input[5]);
             const vector3 endTranslation(input[0], input[1], input[2]);
-            endRotation.normalize();
 
             if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
             {

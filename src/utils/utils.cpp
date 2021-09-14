@@ -5,6 +5,12 @@
 namespace rgbd_slam {
 namespace utils {
 
+    const quaternion get_underparametrized_quaternion(const double x, const double y, const double z)
+    {
+        const double w = sqrt(1.0 - pow(x, 2.0) - pow(y, 2.0) - pow(z, 2.0));
+        return quaternion(w, x, y, z);
+    }
+
     const vector3 screen_to_world_coordinates(const unsigned int screenX, const unsigned int screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
     {
         const double x = (static_cast<double>(screenX) - Parameters::get_camera_center_x()) * measuredZ / Parameters::get_camera_focal_x();

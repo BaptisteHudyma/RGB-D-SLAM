@@ -17,11 +17,11 @@ namespace rgbd_slam {
         _width(imageWidth),
         _height(imageHeight),
 
+        _totalFrameTreated(0),
         _meanMatTreatmentTime(0.0),
         _meanTreatmentTime(0.0),
         _meanLineTreatment(0.0),
-        _meanPoseTreatmentTime(0.0),
-        _totalFrameTreated(0)
+        _meanPoseTreatmentTime(0.0)
     {
         // Load parameters (once)
         Parameters::parse_file("");

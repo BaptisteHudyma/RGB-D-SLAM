@@ -1,5 +1,6 @@
 #include "LevenbergMarquardFunctors.hpp"
 
+#include "utils.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {
@@ -28,18 +29,34 @@ namespace rgbd_slam {
             return 1;
         }
 
-        double get_hubert_estimator(const double score)
+        /**
+          * \brief Implementation of "A General and Adaptive Robust Loss Function" (2019)
+          * By Jonathan T. Barron
+          *
+          * \param[in] error The error to pass to the loss function
+          * \param[in] apha The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == - infinity is Welsch loss
+          * \param[in] scale Standard deviation of the error, as a scale parameter
+          */
+        double get_generalized_loss_estimator(const double error, const double alpha = 1, const double scale = 1)
         {
-            const double absScore = abs(score);
-            const double hubertThreshold = Parameters::get_point_Hubert_threshold();
+            const double scaledSquaredError = pow(error / scale, 2.0);
 
-            if (absScore < hubertThreshold)
+            if (alpha == 2)
             {
-                return 0.5 * pow(score, 2.0);
+                return 0.5 * scaledSquaredError;
+            }
+            else if (alpha == 0)
+            {
+                return log(0.5 * scaledSquaredError + 1);
+            }
+            else if (alpha < -10000)
+            {
+                return 1 - exp( -0.5 * scaledSquaredError);
             }
             else
             {
-                return hubertThreshold * (absScore - 0.5 * hubertThreshold);
+                const double internalTerm = scaledSquaredError / abs(alpha - 2) + 1;
+                return (abs(alpha - 2) / alpha) * ( pow(internalTerm, alpha / 2.0) - 1);
             }
         }
 
@@ -95,8 +112,7 @@ namespace rgbd_slam {
 
         // Implementation of the objective function
         int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
-            quaternion rotation(z(3), z(4), z(5), z(6));
-            rotation.normalize();
+            quaternion rotation = get_underparametrized_quaternion(z(3), z(4), z(5));
             vector3 translation(z(0), z(1), z(2));
 
             // Convert to world coordinates
@@ -113,10 +129,10 @@ namespace rgbd_slam {
                 const vector3& detectedPoint = pointIterator->first;
                 const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
 
-                //Supposed Sum of squares: 
-                // For some reason, sqrtf is waaaayyy faster than sqrtl, which is faster than sqrt
+                // sqrtf is faster than sqrtl, which is faster than sqrt
                 // Maybe the lesser precision ? it's an advantage here
-                fvec(pointIndex) = sqrtf(pointErrorMultiplier * _weights[pointIndex] * get_hubert_estimator(get_distance_manhattan(pointIterator->second, point3D))); 
+                const double weightedLoss = get_generalized_loss_estimator(get_distance_manhattan(pointIterator->second, point3D), Parameters::get_point_loss_alpha(), Parameters::get_point_loss_scale());
+                fvec(pointIndex) = sqrtf(pointErrorMultiplier * _weights[pointIndex] * weightedLoss); 
             }
             return 0;
         }
