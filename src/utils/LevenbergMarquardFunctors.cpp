@@ -7,18 +7,11 @@ namespace rgbd_slam {
     namespace utils {
 
 
-        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) 
-        {
-            return sqrt(
-                        pow(pointA.x() - pointB.x(), 2.0) +
-                        pow(pointA.y() - pointB.y(), 2.0) +
-                        pow(pointA.z() - pointB.z(), 2.0));
-            /*
+        double get_distance_manhattan(const vector2& pointA, const vector2& pointB) 
+        { 
             return 
                 abs(pointA.x() - pointB.x()) + 
-                abs(pointA.y() - pointB.y()) + 
-                abs(pointA.z() - pointB.z());
-                */
+                abs(pointA.y() - pointB.y());
         }
         /**
          * \brief Compute a weight associated by this error, using a Hubert type loss
@@ -86,18 +79,18 @@ namespace rgbd_slam {
         {
             _weights = std::vector<double>(points.size());
 
-            matrix34 transformationMatrix;
-            transformationMatrix << _rotation.toRotationMatrix(), worldPosition;
+            const matrix34& transformationMatrix = compute_world_to_camera_transform(_rotation, worldPosition);
 
             std::vector<double> errors(points.size());
             std::vector<double> medianErrorVector(points.size());
             unsigned int pointCount = 0;
             // Compute the start error
-            for(match_point_container::const_iterator pointIterator = points.cbegin(); pointIterator != points.cend(); ++pointIterator, ++pointCount) {
-                const vector3& detectedPoint = pointIterator->first;
-                const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
+            for(match_point_container::const_iterator pointIterator = points.cbegin(); pointIterator != points.cend(); ++pointIterator, ++pointCount) 
+            {
+                const vector2 detectedPoint(pointIterator->first.x(), pointIterator->first.y());
+                const vector2& mapPoint = world_to_screen_coordinates(pointIterator->second, transformationMatrix);
 
-                const double error = get_distance_manhattan(pointIterator->second, point3D); 
+                const double error = get_distance_manhattan(mapPoint, detectedPoint); 
                 errors[pointCount] = error;
                 medianErrorVector[pointCount] = error;
             }
@@ -125,17 +118,16 @@ namespace rgbd_slam {
 
             const double pointErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / _points.size());
 
-            matrix34 transformationMatrix;
-            transformationMatrix << rotation.toRotationMatrix(), translation;
+            const matrix34& transformationMatrix = compute_world_to_camera_transform(rotation, translation);
 
             unsigned int pointIndex = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 // Project detected point to 3D space
-                const vector3& detectedPoint = pointIterator->first;
-                const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
+                const vector2 detectedPoint(pointIterator->first.x(), pointIterator->first.y());
+                const vector2& mapPoint = world_to_screen_coordinates(pointIterator->second, transformationMatrix);
                 
                 // Compute distance and pass it to loss function
-                const double distance = get_distance_manhattan(pointIterator->second, point3D);
+                const double distance = get_distance_manhattan(mapPoint, detectedPoint);
                 const double weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
 
                 // Compute the final error

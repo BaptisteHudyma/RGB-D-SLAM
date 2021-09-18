@@ -7,11 +7,6 @@
 namespace rgbd_slam {
     namespace utils {
 
-        /**
-         * \brief Return a quaternion with the w component computed from the x y z rotation components. It is a good parametrization for small rotations
-         */
-        const quaternion get_underparametrized_quaternion(const double x, const double y, const double z);
-
         /*
          * \brief Transform a screen point with a depth value to a 3D point
          *
