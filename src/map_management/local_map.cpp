@@ -88,8 +88,6 @@ namespace rgbd_slam {
         {
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
-            double meanPointMapError = 0.0;
-            double matchedPointCount = 0.0;
             // Remove old map points
             point_map_container::iterator pointMapIterator = _localMap.begin();
             while(pointMapIterator != _localMap.end())
@@ -102,8 +100,7 @@ namespace rgbd_slam {
                     const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), keypointObject.get_depth(matchedPointIndex), worldToCamMatrix);
 
                     // update this map point errors & position
-                    meanPointMapError += pointMapIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
-                    matchedPointCount += 1.0;
+                    const double pointMapError = pointMapIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
                 }
 
                 if (pointMapIterator->is_lost()) {
@@ -121,8 +118,6 @@ namespace rgbd_slam {
 
             // add local map points to global map
             update_local_to_global();
-
-            std::cout << "Mean map point to detected point error is " << meanPointMapError / matchedPointCount << std::endl;
         }
 
         void Local_Map::update_staged(const matrix34& worldToCamMatrix, const utils::Keypoint_Handler& keypointObject)

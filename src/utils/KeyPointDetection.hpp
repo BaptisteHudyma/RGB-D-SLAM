@@ -12,6 +12,9 @@
 namespace rgbd_slam {
     namespace utils {
 
+        /**
+          * \brief Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association
+          */
         class Keypoint_Handler
         {
             public:
@@ -85,7 +88,6 @@ namespace rgbd_slam {
 
         /**
          * \brief A class to detect and store keypoints
-         *
          */
         class Key_Point_Extraction 
         {
