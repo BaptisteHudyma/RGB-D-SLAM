@@ -51,10 +51,10 @@ namespace rgbd_slam {
 
 
         /**
-         * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. This is an optimizer for small relative movements
+         * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
          */
-        struct Local_Pose_Estimator :
-            Levenberg_Marquard_Functor<double> 
+        struct Global_Pose_Estimator :
+            Levenberg_Marquard_Functor<double>
         {
             // Simple constructor
             /**
@@ -63,7 +63,18 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Local_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues);
+            Global_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues);
+
+            /**
+              * \brief Return te distance between the map point and the it's matched point
+              *
+              * \param[in] mapPoint The map point in 3D world coordinates
+              * \param[in] matchedPoint The detected & matched point, in 3D screen coordinates
+              * \param[in] worldToCamMatrix The matrix to make a transformation from world coordinates to screen coordinates
+              *
+              * \return The 2D screen distance between those two points
+              */
+            double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const;
 
             // Implementation of the objective function
             int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const;
@@ -76,7 +87,7 @@ namespace rgbd_slam {
             const matrix43 _singularBvalues;
         };
 
-        struct Local_Pose_Functor : Eigen::NumericalDiff<Local_Pose_Estimator> {};
+        struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};
         
 
         /**

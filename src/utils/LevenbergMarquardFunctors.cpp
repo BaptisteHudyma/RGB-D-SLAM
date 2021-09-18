@@ -71,7 +71,7 @@ namespace rgbd_slam {
         }
 
 
-        Local_Pose_Estimator::Local_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
+        Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
             Levenberg_Marquard_Functor<double>(n, points.size()),
             _points(points),
             _rotation(worldRotation),
@@ -87,10 +87,8 @@ namespace rgbd_slam {
             // Compute the start error
             for(match_point_container::const_iterator pointIterator = points.cbegin(); pointIterator != points.cend(); ++pointIterator, ++pointCount) 
             {
-                const vector2 detectedPoint(pointIterator->first.x(), pointIterator->first.y());
-                const vector2& mapPoint = world_to_screen_coordinates(pointIterator->second, transformationMatrix);
+                const double error = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
 
-                const double error = get_distance_manhattan(mapPoint, detectedPoint); 
                 errors[pointCount] = error;
                 medianErrorVector[pointCount] = error;
             }
@@ -112,7 +110,8 @@ namespace rgbd_slam {
         }
 
         // Implementation of the objective function
-        int Local_Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
+        int Global_Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const 
+        {
             const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(z(3), z(4), z(5)), _singularBvalues);
             const vector3 translation(z(0), z(1), z(2));
 
@@ -122,23 +121,29 @@ namespace rgbd_slam {
 
             unsigned int pointIndex = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
-                // Project detected point to 3D space
-                const vector2 detectedPoint(pointIterator->first.x(), pointIterator->first.y());
-                const vector2& mapPoint = world_to_screen_coordinates(pointIterator->second, transformationMatrix);
+
+                // Use doubles to make it easier to optimize (smaller precision, but non ritical)
+
+                // Compute distance
+                const float distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
                 
-                // Compute distance and pass it to loss function
-                const double distance = get_distance_manhattan(mapPoint, detectedPoint);
-                const double weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
+                // Pass it to loss function
+                const float weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
 
                 // Compute the final error
-                // sqrtf is faster than sqrtl, which is faster than sqrt
-                // Maybe the lesser precision ? it's an advantage here
-                fvec(pointIndex) = _weights[pointIndex] * pointErrorMultiplier * sqrtf(weightedLoss) ; 
+                fvec(pointIndex) = _weights[pointIndex] * pointErrorMultiplier * weightedLoss ; 
             }
             return 0;
         }
 
 
+        double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
+        {
+            const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
+            const vector2& mapPointAs2D = world_to_screen_coordinates(mapPoint, worldToCamMatrix);
+
+            return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
+        }
 
 
 

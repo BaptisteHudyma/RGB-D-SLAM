@@ -44,8 +44,8 @@ namespace rgbd_slam {
             input[5] = 0;
 
             // Optimize function 
-            Local_Pose_Functor pose_optimisation_functor(
-                    Local_Pose_Estimator(
+            Global_Pose_Functor pose_optimisation_functor(
+                    Global_Pose_Estimator(
                         input.size(), 
                         matchedPoints, 
                         currentPose.get_position(),
@@ -54,7 +54,7 @@ namespace rgbd_slam {
                         )
                     );
             // Optimization algorithm
-            Eigen::LevenbergMarquardt<Local_Pose_Functor, double> poseOptimisator( pose_optimisation_functor );
+            Eigen::LevenbergMarquardt<Global_Pose_Functor, double> poseOptimisator( pose_optimisation_functor );
 
             // xtol     : tolerance for the norm of the solution vector
             // ftol     : tolerance for the norm of the vector function
