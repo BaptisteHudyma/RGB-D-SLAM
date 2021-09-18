@@ -16,7 +16,7 @@ namespace rgbd_slam {
             match_point_container matchedPoints; 
 
             unsigned int alreadyMatchedPoint = 0;
-            for (utils::Map_Point& mapPoint : _localMap) 
+            for (Map_Point& mapPoint : _localMap) 
             {
                 int matchIndex = detectedKeypoint.get_match_index(mapPoint);
                 if (matchIndex < 0 or detectedKeypoint.get_depth(matchIndex) <= 0) {
@@ -47,7 +47,7 @@ namespace rgbd_slam {
             }
 
             // Try to find matches in staged points
-            for(utils::Staged_Point& stagedPoint : _stagedPoints)
+            for(Staged_Point& stagedPoint : _stagedPoints)
             {
                 int matchIndex = detectedKeypoint.get_match_index(stagedPoint);
                 if (matchIndex < 0 or detectedKeypoint.get_depth(matchIndex) <= 0) {
@@ -191,7 +191,7 @@ namespace rgbd_slam {
         {
             const matrix34& worldToCamMtrx = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
-            for (const utils::Map_Point& mapPoint : _localMap) {
+            for (const Map_Point& mapPoint : _localMap) {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx);
 
                 if (screenPoint[0] > 0 and screenPoint[1] > 0) {
@@ -206,7 +206,7 @@ namespace rgbd_slam {
                     }
                 }
             }
-            for (const utils::Staged_Point& stagedPoint : _stagedPoints) {
+            for (const Staged_Point& stagedPoint : _stagedPoints) {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMtrx);
 
                 if (screenPoint[0] > 0 and screenPoint[1] > 0) {

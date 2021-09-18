@@ -8,7 +8,7 @@
 
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace map_management {
 
 
         /**
@@ -27,6 +27,9 @@ namespace rgbd_slam {
             Point (const vector3& coordinates, const cv::Mat& descriptor);
         };
 
+        /**
+          * \brief Concurrent for a map point
+          */
         class Staged_Point
             : public Point
         {
@@ -117,12 +120,13 @@ namespace rgbd_slam {
                 float _confidence;
         };
 
-    }
+    } /* map_management */
 
-    typedef std::list<utils::Point> point_container;
-    typedef std::pair<utils::Point, utils::Point> map_point_pair;
+    typedef std::list<map_management::Point> point_container;
+    typedef std::pair<map_management::Point, map_management::Point> map_point_pair;
     typedef std::list<map_point_pair> matched_point_container;
-    typedef std::map<unsigned int, utils::Point> point_map;
-}
+    typedef std::map<unsigned int, map_management::Point> point_map;
+
+} /* rgbd_slam */
 
 #endif

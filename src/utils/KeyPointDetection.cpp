@@ -46,7 +46,7 @@ namespace rgbd_slam {
             assert(_keypoints.size() == _depths.size());
         }
 
-        int Keypoint_Handler::get_match_index(const Point& mapPoint) const
+        int Keypoint_Handler::get_match_index(const map_management::Point& mapPoint) const
         {
             std::vector< std::vector<cv::DMatch> > knnMatches;
             _featuresMatcher->knnMatch(mapPoint._descriptor, _descriptors, knnMatches, 2);

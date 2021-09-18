@@ -27,7 +27,7 @@ namespace rgbd_slam {
                  *
                  * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
                  */
-                int get_match_index(const Point& mapPoint) const; 
+                int get_match_index(const map_management::Point& mapPoint) const; 
 
                 /**
                   * \brief Return the depth associated with a certain keypoint

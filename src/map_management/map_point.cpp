@@ -3,7 +3,7 @@
 #include "parameters.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace map_management {
 
         Point::Point (const vector3& coordinates, const cv::Mat& descriptor)
             : _coordinates(coordinates), _descriptor(descriptor)
@@ -101,5 +101,5 @@ namespace rgbd_slam {
                 abs(newPointCoordinates.y() - _coordinates.y()) +
                 abs(newPointCoordinates.z() - _coordinates.z());
         }
-    }
-}
+    }   /* map_management */
+} /* rgbd_slam */

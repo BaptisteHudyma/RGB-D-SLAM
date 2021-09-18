@@ -63,9 +63,9 @@ namespace rgbd_slam {
                 unsigned int _currentIndex;
 
                 // local map point container
-                typedef std::list<utils::Map_Point> point_map_container;
+                typedef std::list<Map_Point> point_map_container;
                 // staged points container
-                typedef std::list<utils::Staged_Point> staged_point_container;
+                typedef std::list<Staged_Point> staged_point_container;
 
                 // Local map contains world points with a good confidence
                 point_map_container _localMap;
