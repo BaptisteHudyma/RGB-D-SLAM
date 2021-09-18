@@ -39,7 +39,7 @@ namespace rgbd_slam {
 
                 if (imageBoundaries.contains(pt)) {
                     // convert to meters
-                    _depths[i] = (depthImage.at<const float>(pt.y, pt.x) / 1000 );
+                    _depths[i] = (depthImage.at<const float>(pt.y, pt.x)) * 0.001;
                 }
                 ++i;
             }

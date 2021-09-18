@@ -7,10 +7,18 @@ namespace rgbd_slam {
     namespace utils {
 
 
-        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) {
-            return abs(pointA[0] - pointB[0]) + 
-                abs(pointA[1] - pointB[1]) + 
-                abs(pointA[2] - pointB[2]);
+        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) 
+        {
+            return sqrt(
+                        pow(pointA.x() - pointB.x(), 2.0) +
+                        pow(pointA.y() - pointB.y(), 2.0) +
+                        pow(pointA.z() - pointB.z(), 2.0));
+            /*
+            return 
+                abs(pointA.x() - pointB.x()) + 
+                abs(pointA.y() - pointB.y()) + 
+                abs(pointA.z() - pointB.z());
+                */
         }
         /**
          * \brief Compute a weight associated by this error, using a Hubert type loss
@@ -30,13 +38,13 @@ namespace rgbd_slam {
         }
 
         /**
-          * \brief Implementation of "A General and Adaptive Robust Loss Function" (2019)
-          * By Jonathan T. Barron
-          *
-          * \param[in] error The error to pass to the loss function
-          * \param[in] apha The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == - infinity is Welsch loss
-          * \param[in] scale Standard deviation of the error, as a scale parameter
-          */
+         * \brief Implementation of "A General and Adaptive Robust Loss Function" (2019)
+         * By Jonathan T. Barron
+         *
+         * \param[in] error The error to pass to the loss function
+         * \param[in] apha The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == - infinity is Welsch loss
+         * \param[in] scale Standard deviation of the error, as a scale parameter
+         */
         double get_generalized_loss_estimator(const double error, const double alpha = 1, const double scale = 1)
         {
             const double scaledSquaredError = pow(error / scale, 2.0);
@@ -49,7 +57,7 @@ namespace rgbd_slam {
             {
                 return log(0.5 * scaledSquaredError + 1);
             }
-            else if (alpha < -10000)
+            else if (alpha < -100)
             {
                 return 1 - exp( -0.5 * scaledSquaredError);
             }
@@ -70,16 +78,16 @@ namespace rgbd_slam {
         }
 
 
-        Pose_Estimator::Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
+        Local_Pose_Estimator::Local_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
             Levenberg_Marquard_Functor<double>(n, points.size()),
             _points(points),
-            _position(worldPosition),
-            _rotation(worldRotation)
+            _rotation(worldRotation),
+            _singularBvalues(singularBvalues)
         {
             _weights = std::vector<double>(points.size());
 
             matrix34 transformationMatrix;
-            transformationMatrix << _rotation.toRotationMatrix(), _position;
+            transformationMatrix << _rotation.toRotationMatrix(), worldPosition;
 
             std::vector<double> errors(points.size());
             std::vector<double> medianErrorVector(points.size());
@@ -94,11 +102,11 @@ namespace rgbd_slam {
                 medianErrorVector[pointCount] = error;
             }
             // Compute median of all errors
-            const double medianOfErrors = get_median(medianErrorVector);;
-            
+            _medianOfDistances = get_median(medianErrorVector);;
+
             for(unsigned int i = 0; i < errors.size(); ++i)
             {
-                medianErrorVector[i] = errors[i] - medianOfErrors;
+                medianErrorVector[i] = errors[i] - _medianOfDistances;
             }
             // Compute (error - median of errors) median
             const double medianOfErrorsMedian = get_median(medianErrorVector);
@@ -106,36 +114,41 @@ namespace rgbd_slam {
             // Fill weights
             for (unsigned int i = 0; i < points.size(); ++i)
             {
-                _weights[i] = get_weight(errors[i] - medianOfErrors, medianOfErrorsMedian);
+                _weights[i] = get_weight(errors[i] - _medianOfDistances, medianOfErrorsMedian);
             }
         }
 
         // Implementation of the objective function
-        int Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
-            quaternion rotation = get_underparametrized_quaternion(z(3), z(4), z(5));
-            vector3 translation(z(0), z(1), z(2));
+        int Local_Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const {
+            const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(z(3), z(4), z(5)), _singularBvalues);
+            const vector3 translation(z(0), z(1), z(2));
 
-            // Convert to world coordinates
-            rotation = _rotation * rotation;
-            translation += _position;
-
-            const double pointErrorMultiplier = Parameters::get_point_error_multiplier();
+            const double pointErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / _points.size());
 
             matrix34 transformationMatrix;
             transformationMatrix << rotation.toRotationMatrix(), translation;
 
             unsigned int pointIndex = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
+                // Project detected point to 3D space
                 const vector3& detectedPoint = pointIterator->first;
                 const vector3& point3D = utils::screen_to_world_coordinates(detectedPoint(0), detectedPoint(1), detectedPoint(2), transformationMatrix); 
+                
+                // Compute distance and pass it to loss function
+                const double distance = get_distance_manhattan(pointIterator->second, point3D);
+                const double weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
 
+                // Compute the final error
                 // sqrtf is faster than sqrtl, which is faster than sqrt
                 // Maybe the lesser precision ? it's an advantage here
-                const double weightedLoss = get_generalized_loss_estimator(get_distance_manhattan(pointIterator->second, point3D), Parameters::get_point_loss_alpha(), Parameters::get_point_loss_scale());
-                fvec(pointIndex) = sqrtf(pointErrorMultiplier * _weights[pointIndex] * weightedLoss); 
+                fvec(pointIndex) = _weights[pointIndex] * pointErrorMultiplier * sqrtf(weightedLoss) ; 
             }
             return 0;
         }
+
+
+
+
 
 
         const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) 

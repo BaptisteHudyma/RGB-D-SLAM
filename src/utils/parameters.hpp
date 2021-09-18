@@ -16,11 +16,10 @@ namespace rgbd_slam {
             static double get_camera_focal_y() { return _cameraFocalY; };
 
             static unsigned int get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
-            static unsigned int get_maximum_optimization_iterations() { return _maximumOptimizationCall; };
+            static unsigned int get_maximum_global_optimization_iterations() { return _maximumGlobalOptimizationCall; };
             static double get_point_weight_threshold() { return _pointWeightThreshold; };
             static double get_point_weight_coefficient() { return _pointWeightCoefficient; };
             static double get_point_loss_alpha() { return _pointLossAlpha; };
-            static double get_point_loss_scale() { return _pointLossScale; };
             static double get_point_error_multiplier() { return _pointErrorMultiplier; };
 
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
@@ -57,11 +56,10 @@ namespace rgbd_slam {
 
             // Position optimization
             inline static unsigned int _minimumPointForOptimization;
-            inline static unsigned int _maximumOptimizationCall; 
+            inline static unsigned int _maximumGlobalOptimizationCall; 
             inline static double _pointWeightThreshold;
             inline static double _pointWeightCoefficient;
             inline static double _pointLossAlpha;   // loss steepness (_infinity, infinity)
-            inline static double _pointLossScale;   // Scale of the loss, typical error
             inline static double _pointErrorMultiplier; // multiplier of the final loss value (useful when  using primitives along with points)
 
             // Point Detection & matching

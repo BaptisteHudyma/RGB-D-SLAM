@@ -190,7 +190,7 @@ namespace rgbd_slam {
         if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
             // Enough matches to optimize
             // Optimize refined pose
-            utils::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints);
+            refinedPose = utils::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints);
         }
         else
         {

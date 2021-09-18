@@ -47,5 +47,22 @@ namespace utils {
         return worldToCamMtrx;
     }
 
+
+    const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB)
+    {
+        vector4 transformedEstimationVector = transformationMatrixB * estimationVector;
+        const double normOfV4 = transformedEstimationVector.norm();
+        if (normOfV4 == 0)
+            return originalQuaternion;
+
+        // Normalize v4
+        transformedEstimationVector /= normOfV4;
+
+        const vector4 quaternionAsVector(originalQuaternion.x(), originalQuaternion.y(), originalQuaternion.z(), originalQuaternion.w());
+        // Compute final quaternion
+        const vector4 finalQuaternion = sin(normOfV4) * transformedEstimationVector + cos(normOfV4) * quaternionAsVector;
+        return quaternion(finalQuaternion.w(), finalQuaternion.x(), finalQuaternion.y(), finalQuaternion.z());
+    }
+
 }
 }

@@ -14,7 +14,7 @@ namespace rgbd_slam {
 
         // Pose Optimization
         _minimumPointForOptimization = 5;
-        _maximumOptimizationCall = 1024;
+        _maximumGlobalOptimizationCall = 1024;
 
         // Point detection/Matching
         _maximumMatchDistance = 0.7;   // The closer to 0, the more discriminating
@@ -27,9 +27,8 @@ namespace rgbd_slam {
         _pointMinimumConfidenceForMap = 0.9;
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
-        _pointLossAlpha = 1;
-        _pointLossScale = 2.5;
-        _pointErrorMultiplier = 0.5;
+        _pointLossAlpha = -100;  // -infinity, infinity
+        _pointErrorMultiplier = 0.5;  // > 0
 
         // Primitive extraction
         _primitiveMaximumCosAngle = cos(M_PI/10.0);

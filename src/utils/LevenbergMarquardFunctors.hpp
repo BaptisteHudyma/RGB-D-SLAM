@@ -51,9 +51,9 @@ namespace rgbd_slam {
 
 
         /**
-         * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator
+         * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. This is an optimizer for small relative movements
          */
-        struct Pose_Estimator :
+        struct Local_Pose_Estimator :
             Levenberg_Marquard_Functor<double> 
         {
             // Simple constructor
@@ -63,20 +63,21 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
+            Local_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues);
 
             // Implementation of the objective function
             int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const;
 
             private:
+            double _medianOfDistances;
             match_point_container& _points; 
             std::vector<double> _weights;
-            const vector3 _position;
             const quaternion _rotation;
+            const matrix43 _singularBvalues;
         };
 
-        struct Pose_Functor : Eigen::NumericalDiff<Pose_Estimator> {};
-
+        struct Local_Pose_Functor : Eigen::NumericalDiff<Local_Pose_Estimator> {};
+        
 
         /**
          * \brief Use for debug.
