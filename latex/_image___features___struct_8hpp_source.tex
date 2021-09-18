@@ -1,0 +1,86 @@
+\hypertarget{_image___features___struct_8hpp_source}{}\doxysection{Image\+\_\+\+Features\+\_\+\+Struct.\+hpp}
+\label{_image___features___struct_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Image\_Features\_Struct.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Image\_Features\_Struct.hpp}}
+\mbox{\hyperlink{_image___features___struct_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef IMAGE\_FEATURES\_STRUCT\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define IMAGE\_FEATURES\_STRUCT\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{14     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}}
+\DoxyCodeLine{15     \{}
+\DoxyCodeLine{16         \textcolor{keyword}{public}:}
+\DoxyCodeLine{17             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae36b6e7ec3ca73b8a5b110c30320b5d1}{Image\_Features\_Struct}}();}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{31             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a5e579fb431bcf03609ef0cb7f05bd0dc}{init}}(\textcolor{keyword}{const} cv::Mat \&image, std::vector<cv::KeyPoint> \&keypoints, \textcolor{keyword}{const} cv::Mat \&descs,}
+\DoxyCodeLine{32                     \textcolor{keywordtype}{int} trackingRadius, \textcolor{keywordtype}{int} hashingCellSize, \textcolor{keywordtype}{int} verticalSearchRadius, \textcolor{keywordtype}{float} triangulationRatioTh,}
+\DoxyCodeLine{33                     \textcolor{keywordtype}{float} trackingRatioTh, \textcolor{keywordtype}{float} descDistTh, std::vector<float> *kpsDepth = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{46             \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a17a4cd63c154dbb0b6d2c688d2ff364a}{find\_match\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pt, \textcolor{keyword}{const} cv::Mat \&desc, \textcolor{keywordtype}{float} *d1, \textcolor{keywordtype}{float} *d2) \textcolor{keyword}{const}; }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{56             \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_aa82a38e8757fcf8d8ec95cfd1da5f98a}{row\_match}}(\textcolor{keyword}{const} cv::Point2f \&pt, \textcolor{keyword}{const} cv::Mat \&desc) \textcolor{keyword}{const};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{61             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_abcc7388f6b2206a33d07c9057e76ddd0}{mark\_as\_matched}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} idx, \textcolor{keywordtype}{bool} val) \{ \_matched\_marks[idx] = val; \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{66             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a2c9e240f04a012e3399aeb81baf1f3d6}{is\_matched}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} idx)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_matched\_marks[idx]; \}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{71             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae203933f47af18c59e18371fbdcc1b6e}{reset\_matched\_marks}}() \{ \_matched\_marks = std::vector<bool>(\_keypoints.size(), \textcolor{keyword}{false}); \}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{76             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a0cd025baadc30ba141fafc74eddcbce4}{is\_depth\_associated}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} !\_kps\_depths.empty(); \}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79         \textcolor{keyword}{public}: \textcolor{comment}{//getters}}
+\DoxyCodeLine{83 \textcolor{comment}{}            \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a3a53bc5778231a0f178a04e687f8fcef}{get\_tracking\_radius}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_tracking\_radius; \}}
+\DoxyCodeLine{87             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab84ac6b54d22106d0097be7aca2ce102}{get\_features\_count}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}\textcolor{keyword}{>}(\_keypoints.size()); \}}
+\DoxyCodeLine{91             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab9f3c5da285bee3d0a67c6ba9982bb89}{get\_keypoint\_depth}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} idx)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_kps\_depths[idx]; \}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{96             \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a04e0ad7f5ba9e57720ff03a07bd801ec}{get\_descriptor}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} index)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_descriptors.row(index); \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98             \textcolor{keyword}{const} cv::KeyPoint\& \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a12a9acc700de5c5bbc38ffc53b4e1f6b}{get\_keypoint}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} index)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_keypoints[index]; \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100             \textcolor{comment}{//setter}}
+\DoxyCodeLine{101             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a1f86974b67ba4733b5307501db83794a}{set\_tracking\_radius}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} tracking\_radius) \{ \_tracking\_radius = tracking\_radius; \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104         \textcolor{keyword}{private}:}
+\DoxyCodeLine{105             \textcolor{keyword}{typedef} std::vector<cv::KeyPoint> \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a75c6481b6ffcffb2aaf928c8c59eb2d5}{keypoint\_vector}};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107             \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a75c6481b6ffcffb2aaf928c8c59eb2d5}{keypoint\_vector}} \_keypoints;}
+\DoxyCodeLine{108             cv::Mat \_descriptors;}
+\DoxyCodeLine{109             cv::Ptr<cv::DescriptorMatcher> \_matcher;}
+\DoxyCodeLine{110             std::vector<bool> \_matched\_marks;}
+\DoxyCodeLine{111             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_cell\_size;}
+\DoxyCodeLine{112             \textcolor{keywordtype}{int} \_cell\_count\_x;}
+\DoxyCodeLine{113             \textcolor{keywordtype}{int} \_cell\_count\_y;}
+\DoxyCodeLine{114             \textcolor{keywordtype}{int} \_cell\_search\_radius;}
+\DoxyCodeLine{115             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_tracking\_radius;}
+\DoxyCodeLine{116             \textcolor{keywordtype}{int} \_img\_rows;}
+\DoxyCodeLine{117             \textcolor{keywordtype}{int} \_img\_cols;}
+\DoxyCodeLine{118             \textcolor{keywordtype}{int} \_vertical\_search\_radius;}
+\DoxyCodeLine{119             \textcolor{keywordtype}{float} \_triangulation\_ratio\_th;}
+\DoxyCodeLine{120             \textcolor{keywordtype}{float} \_tracking\_ratio\_th;}
+\DoxyCodeLine{121             \textcolor{keywordtype}{float} \_desc\_dist\_th;}
+\DoxyCodeLine{122             std::vector<float> \_kps\_depths;}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124             \textcolor{keyword}{typedef} std::vector<int> index\_list\_t;}
+\DoxyCodeLine{125             std::vector<std::vector<index\_list\_t>> \_index\_hashmap;}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127             \textcolor{keyword}{typedef} std::pair<int, int> index\_pair\_t;}
+\DoxyCodeLine{136             \textcolor{keyword}{inline} index\_pair\_t compute\_hashed\_index(\textcolor{keyword}{const} cv::Point2f \&val, \textcolor{keywordtype}{float} cellSize)\textcolor{keyword}{ const}}
+\DoxyCodeLine{137 \textcolor{keyword}{            }\{}
+\DoxyCodeLine{138                 \textcolor{keywordflow}{return} index\_pair\_t(floor(val.y / cellSize), floor(val.x / cellSize));}
+\DoxyCodeLine{139             \}}
+\DoxyCodeLine{140     \};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \}}
+\DoxyCodeLine{143 \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

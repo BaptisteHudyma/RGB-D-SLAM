@@ -1,0 +1,90 @@
+\hypertarget{_r_g_b_d___s_l_a_m_8hpp_source}{}\doxysection{RGBD\+\_\+\+SLAM.\+hpp}
+\label{_r_g_b_d___s_l_a_m_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/RGBD\_SLAM.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/RGBD\_SLAM.hpp}}
+\mbox{\hyperlink{_r_g_b_d___s_l_a_m_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef POINTS\_TRACKING\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define POINTS\_TRACKING\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <opencv2/line\_descriptor.hpp>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_depth_operations_8hpp}{DepthOperations.hpp}}"{}}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}GeodesicOperations.hpp"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_primitive_detection_8hpp}{PrimitiveDetection.hpp}}"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_plane_segment_8hpp}{PlaneSegment.hpp}}"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}LineSegmentDetector.hpp"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_key_point_detection_8hpp}{KeyPointDetection.hpp}}"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{local__map_8hpp}{local\_map.hpp}}"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_motion_model_8hpp}{MotionModel.hpp}}"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}} \{}
+\DoxyCodeLine{24         \textcolor{keyword}{public}:}
+\DoxyCodeLine{25             \textcolor{keyword}{typedef} std::vector<cv::Vec4f> \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a994e8053356d67ca9ea175e59149dfdc}{line\_vector}};}
+\DoxyCodeLine{26             \textcolor{keyword}{typedef} std::list<std::unique\_ptr<primitiveDetection::Primitive>> \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a5caf6515006c5d85e233b3f99c1b2051}{primitive\_container}}; }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{35             \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a522ead8498744fdc77e1088c1112e280}{RGBD\_SLAM}}(\textcolor{keyword}{const} std::stringstream\& dataPath, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} imageWidth = 640, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} imageHeight = 480);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{46             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_acb78e1fcebcde38e6d8fdabb3333f694}{track}}(\textcolor{keyword}{const} cv::Mat\& rgbImage, \textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keywordtype}{bool} detectLines = \textcolor{keyword}{false});}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{56             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a5d0e42ec7025a5bec21bbaad6ce29bf8}{get\_debug\_image}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}}\& camPose, \textcolor{keyword}{const} cv::Mat originalRGB, cv::Mat\& debugImage, \textcolor{keywordtype}{double} elapsedTime, \textcolor{keywordtype}{bool} showPrimitiveMasks = \textcolor{keyword}{true});}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{61             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ab7df5116d02f70d6a2c8ffca67a56f5b}{show\_statistics}}(\textcolor{keywordtype}{double} frameMeanTreatmentTime);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{73             \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a42b0795eeb4ea912499662e0b04f17d4}{compute\_new\_pose}} (\textcolor{keyword}{const} cv::Mat\& grayImage, \textcolor{keyword}{const} cv::Mat\& depthImage);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a80bf1bf691ef1247d8275535d0eb433c}{compute\_lines}}(\textcolor{keyword}{const} cv::Mat\& grayImage, \textcolor{keyword}{const} cv::Mat\& depthImage, cv::Mat\& outImage);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b806720e8040b9}{set\_color\_vector}}();}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79         \textcolor{keyword}{private}:}
+\DoxyCodeLine{80             \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_width;}
+\DoxyCodeLine{81             \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_height;}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83             \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_depth___operations}{primitiveDetection::Depth\_Operations}}* \_depthOps;}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85             \textcolor{comment}{/* Detectors */}}
+\DoxyCodeLine{86             \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive___detection}{primitiveDetection::Primitive\_Detection}}* \_primitiveDetector;}
+\DoxyCodeLine{87             cv::LSD* \_lineDetector;}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89             \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map}{map\_management::Local\_Map}}* \_localMap;}
+\DoxyCodeLine{90             \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_key___point___extraction}{utils::Key\_Point\_Extraction}}* \_pointMatcher;}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92             cv::Mat \_kernel;}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95             \textcolor{comment}{//keep track of the primitives tracked last frame}}
+\DoxyCodeLine{96             \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a5caf6515006c5d85e233b3f99c1b2051}{primitive\_container}} \_previousFramePrimitives;}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98             std::map<int, int> \_previousAssociatedIds;}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}} \_currentPose;}
+\DoxyCodeLine{101             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model}{poseEstimation::Motion\_Model}} \_motionModel;}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103             \textcolor{comment}{// display}}
+\DoxyCodeLine{104             cv::Mat\_<uchar> \_segmentationOutput;}
+\DoxyCodeLine{105             std::vector<cv::Vec3b> \_colorCodes;}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107             \textcolor{comment}{// debug}}
+\DoxyCodeLine{108             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_totalFrameTreated;}
+\DoxyCodeLine{109             \textcolor{keywordtype}{double} \_meanMatTreatmentTime;}
+\DoxyCodeLine{110             \textcolor{keywordtype}{double} \_meanTreatmentTime;}
+\DoxyCodeLine{111             \textcolor{keywordtype}{double} \_meanLineTreatment;}
+\DoxyCodeLine{112             \textcolor{keywordtype}{double} \_meanPoseTreatmentTime;}
+\DoxyCodeLine{113     \};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

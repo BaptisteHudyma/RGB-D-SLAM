@@ -1,0 +1,100 @@
+\hypertarget{classrgbd__slam_1_1primitive_detection_1_1_cylinder}{}\doxysection{rgbd\+\_\+slam\+::primitive\+Detection\+::Cylinder Class Reference}
+\label{classrgbd__slam_1_1primitive_detection_1_1_cylinder}\index{rgbd\_slam::primitiveDetection::Cylinder@{rgbd\_slam::primitiveDetection::Cylinder}}
+
+
+Specification of the \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}} class. Handles cylinder primitives.  
+
+
+
+
+{\ttfamily \#include $<$Shape\+Primitives.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::primitive\+Detection\+::Cylinder\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrgbd__slam_1_1primitive_detection_1_1_cylinder}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a6974c2135c87c811a63b6518d8c3d0ff}{Cylinder}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} $>$ \&cylinder\+Seg, unsigned int id, const cv\+::\+Mat \&shape\+Mask)
+\begin{DoxyCompactList}\small\item\em Construct a cylinder object. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a40d25a6c1a36806f7588f74903fc8578}{is\+\_\+similar}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}} $>$ \&prim)
+\begin{DoxyCompactList}\small\item\em Get the similarity of two cylinders, based on normal direction and radius. \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder_ae1621525f25466f6e0591a1a4334009a}{get\+\_\+distance}} (const Eigen\+::\+Vector3d \&point)
+\begin{DoxyCompactList}\small\item\em Get the distance of a point to the surface of the cylinder. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Specification of the \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}} class. Handles cylinder primitives. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a6974c2135c87c811a63b6518d8c3d0ff}\label{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a6974c2135c87c811a63b6518d8c3d0ff}} 
+\index{rgbd\_slam::primitiveDetection::Cylinder@{rgbd\_slam::primitiveDetection::Cylinder}!Cylinder@{Cylinder}}
+\index{Cylinder@{Cylinder}!rgbd\_slam::primitiveDetection::Cylinder@{rgbd\_slam::primitiveDetection::Cylinder}}
+\doxysubsubsection{\texorpdfstring{Cylinder()}{Cylinder()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::primitive\+Detection\+::\+Cylinder\+::\+Cylinder (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} $>$ \&}]{cylinder\+Seg,  }\item[{unsigned int}]{id,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})}
+
+
+
+Construct a cylinder object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cylinder\+Seg} & \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder}{Cylinder}} segment to copy \\
+\hline
+\mbox{\texttt{ in}}  & {\em id} & ID assigned to this shape (for tracking and debug) \\
+\hline
+\mbox{\texttt{ in}}  & {\em shape\+Mask} & Mask of the shape in the reference image \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1primitive_detection_1_1_cylinder_ae1621525f25466f6e0591a1a4334009a}\label{classrgbd__slam_1_1primitive_detection_1_1_cylinder_ae1621525f25466f6e0591a1a4334009a}} 
+\index{rgbd\_slam::primitiveDetection::Cylinder@{rgbd\_slam::primitiveDetection::Cylinder}!get\_distance@{get\_distance}}
+\index{get\_distance@{get\_distance}!rgbd\_slam::primitiveDetection::Cylinder@{rgbd\_slam::primitiveDetection::Cylinder}}
+\doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::primitive\+Detection\+::\+Cylinder\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get the distance of a point to the surface of the cylinder. 
+
+\begin{DoxyReturn}{Returns}
+The signed distance of the point to the surface, 0 if the point is on the surface, and \texorpdfstring{$<$}{<} 0 if the point is inside the cylinder 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a58063cec71c0cc4f8f1990f5f6e7c90e}{rgbd\+\_\+slam\+::primitive\+Detection\+::\+Primitive}}.
+
+\mbox{\Hypertarget{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a40d25a6c1a36806f7588f74903fc8578}\label{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a40d25a6c1a36806f7588f74903fc8578}} 
+\index{rgbd\_slam::primitiveDetection::Cylinder@{rgbd\_slam::primitiveDetection::Cylinder}!is\_similar@{is\_similar}}
+\index{is\_similar@{is\_similar}!rgbd\_slam::primitiveDetection::Cylinder@{rgbd\_slam::primitiveDetection::Cylinder}}
+\doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::primitive\+Detection\+::\+Cylinder\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}} $>$ \&}]{prim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get the similarity of two cylinders, based on normal direction and radius. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em prim} & Another primitive to compare to\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A double between 0 and 1, with 1 indicating identical cylinders 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a74fab7bea9fc412990b3a8d6dcc202c3}{rgbd\+\_\+slam\+::primitive\+Detection\+::\+Primitive}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/primitives\+\_\+detection/\mbox{\hyperlink{_shape_primitives_8hpp}{Shape\+Primitives.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/primitives\+\_\+detection/\mbox{\hyperlink{_shape_primitives_8cpp}{Shape\+Primitives.\+cpp}}\end{DoxyCompactItemize}

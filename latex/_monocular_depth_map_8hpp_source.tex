@@ -1,0 +1,34 @@
+\hypertarget{_monocular_depth_map_8hpp_source}{}\doxysection{Monocular\+Depth\+Map.\+hpp}
+\label{_monocular_depth_map_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/MonocularDepthMap.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/MonocularDepthMap.hpp}}
+\mbox{\hyperlink{_monocular_depth_map_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef MONOCULAR\_DEPTH\_MAP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define MONOCULAR\_DEPTH\_MAP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <opencv2/ximgproc/disparity\_filter.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <opencv2/xfeatures2d.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{11 \textcolor{keyword}{class }\mbox{\hyperlink{class_monocular___depth___map}{Monocular\_Depth\_Map}} \{}
+\DoxyCodeLine{12     \textcolor{keyword}{public}:}
+\DoxyCodeLine{13         \mbox{\hyperlink{class_monocular___depth___map_a73335b6eece3925f581b8d32586db5dd}{Monocular\_Depth\_Map}}(cv::Mat\& firstImage);}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_monocular___depth___map_ac3062c43bca58055c2a649fabd95ca11}{get\_monocular\_depth}}(cv::Mat\& image, cv::Mat\& depthMap);}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     \textcolor{keyword}{private}:}
+\DoxyCodeLine{18         cv::Ptr<cv::xfeatures2d::SURF> featureDetector;}
+\DoxyCodeLine{19         cv::Ptr<cv::DescriptorMatcher> featuresMatcher;}
+\DoxyCodeLine{20         cv::Ptr<cv::StereoSGBM> stereoDepthmapCompute;}
+\DoxyCodeLine{21         cv::Ptr<cv::ximgproc::DisparityWLSFilter> stereoFilter;}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23         \textcolor{keywordtype}{int} indexOfLast;}
+\DoxyCodeLine{24         std::vector<cv::KeyPoint> keypoints[2];}
+\DoxyCodeLine{25         cv::Mat descriptors[2];}
+\DoxyCodeLine{26         cv::Mat lastUndistorededImage;}
+\DoxyCodeLine{27 \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{31 }
+
+\end{DoxyCode}

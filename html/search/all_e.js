@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['operator_28_29_194',['operator()',['../structpose_estimation_1_1_pose___estimator.html#a48649151155648a91f50890b38633292',1,'poseEstimation::Pose_Estimator']]],
-  ['operator_3c_3c_195',['operator&lt;&lt;',['../namespacepose_estimation.html#a0cb19bdf746ec6819a47a7aadd3f48a2',1,'poseEstimation']]]
+  ['operator_28_29_0',['operator()',['../structrgbd__slam_1_1utils_1_1_global___pose___estimator.html#a749ac9f527068ea40f0eee9b35753e18',1,'rgbd_slam::utils::Global_Pose_Estimator']]],
+  ['operator_3c_3c_1',['operator&lt;&lt;',['../namespacergbd__slam_1_1pose_estimation.html#a58d29197f12355563eaf08e315b466ed',1,'rgbd_slam::poseEstimation']]]
 ];

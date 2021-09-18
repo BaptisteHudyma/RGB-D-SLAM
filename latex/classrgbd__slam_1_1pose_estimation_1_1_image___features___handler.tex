@@ -1,0 +1,106 @@
+\hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::Image\+\_\+\+Features\+\_\+\+Handler Class Reference}
+\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}\index{rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}}
+
+
+Main image feature detection class. Computes image features and provide methods for feature matching.  
+
+
+
+
+{\ttfamily \#include $<$Image\+\_\+\+Features\+\_\+\+Handler.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a5aaf915319895b45780c5b008a0b40be}{Image\+\_\+\+Features\+\_\+\+Handler}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&vo\+\_\+params)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a97100f7c07c1268936947b6d0c1b87f4}{compute\+\_\+features}} (const cv\+::\+Mat \&img\+Gray, const cv\+::\+Mat \&img\+Depth, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&out\+Struct)
+\begin{DoxyCompactList}\small\item\em Compute 3D features from gray and depth image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a3cfc5c1f0684d8f75c9112b1de5dbbe2}{row\+\_\+match}} (\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features\+Left, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features\+Right, std\+::vector$<$ cv\+::\+DMatch $>$ \&out\+Matches)
+\begin{DoxyCompactList}\small\item\em Searches for a matches between features and our map features. Reduces search space to rows. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a977da712a549d374a13df26437845b0e}{perform\+\_\+compute\+\_\+features}} (\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Detect features and compute all features descriptors in an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_aaa57d939e84617a3df2e8b41455dd142}{perform\+\_\+compute\+\_\+descriptors\+\_\+only}} (\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Compute the descriptors of a given feature set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main image feature detection class. Computes image features and provide methods for feature matching. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a5aaf915319895b45780c5b008a0b40be}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a5aaf915319895b45780c5b008a0b40be}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}!Image\_Features\_Handler@{Image\_Features\_Handler}}
+\index{Image\_Features\_Handler@{Image\_Features\_Handler}!rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{Image\_Features\_Handler()}{Image\_Features\_Handler()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::\+Image\+\_\+\+Features\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&}]{vo\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a97100f7c07c1268936947b6d0c1b87f4}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a97100f7c07c1268936947b6d0c1b87f4}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}!compute\_features@{compute\_features}}
+\index{compute\_features@{compute\_features}!rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{compute\_features()}{compute\_features()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::compute\+\_\+features (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{img\+Gray,  }\item[{const cv\+::\+Mat \&}]{img\+Depth,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{out\+Struct }\end{DoxyParamCaption})}
+
+
+
+Compute 3D features from gray and depth image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em img\+Gray} & Input image, as greyscale \\
+\hline
+\mbox{\texttt{ in}}  & {\em img\+Depth} & Input depth image \\
+\hline
+\mbox{\texttt{ out}}  & {\em out\+Struct} & Structure of map features \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_aaa57d939e84617a3df2e8b41455dd142}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_aaa57d939e84617a3df2e8b41455dd142}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}!perform\_compute\_descriptors\_only@{perform\_compute\_descriptors\_only}}
+\index{perform\_compute\_descriptors\_only@{perform\_compute\_descriptors\_only}!rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{perform\_compute\_descriptors\_only()}{perform\_compute\_descriptors\_only()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::perform\+\_\+compute\+\_\+descriptors\+\_\+only (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Compute the descriptors of a given feature set. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a977da712a549d374a13df26437845b0e}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a977da712a549d374a13df26437845b0e}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}!perform\_compute\_features@{perform\_compute\_features}}
+\index{perform\_compute\_features@{perform\_compute\_features}!rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{perform\_compute\_features()}{perform\_compute\_features()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::perform\+\_\+compute\+\_\+features (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}} $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Detect features and compute all features descriptors in an image. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a3cfc5c1f0684d8f75c9112b1de5dbbe2}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a3cfc5c1f0684d8f75c9112b1de5dbbe2}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}!row\_match@{row\_match}}
+\index{row\_match@{row\_match}!rgbd\_slam::poseEstimation::Image\_Features\_Handler@{rgbd\_slam::poseEstimation::Image\_Features\_Handler}}
+\doxysubsubsection{\texorpdfstring{row\_match()}{row\_match()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Handler\+::row\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features\+Left,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features\+Right,  }\item[{std\+::vector$<$ cv\+::\+DMatch $>$ \&}]{out\+Matches }\end{DoxyParamCaption})}
+
+
+
+Searches for a matches between features and our map features. Reduces search space to rows. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em features\+Left} & Container of all features in the left camera image (or previous image) \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em features\+Right} & Container of all features in the right camera image (or current frame) \\
+\hline
+\mbox{\texttt{ out}}  & {\em out\+Matches} & Container of all matches \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8hpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8cpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+cpp}}\end{DoxyCompactItemize}

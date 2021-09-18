@@ -1,14 +1,19 @@
 var searchData=
 [
-  ['_5fdetector_530',['_detector',['../structpose_estimation_1_1compute__features__data.html#a86931437a0bfe9f67fd4b7eea86db737',1,'poseEstimation::compute_features_data']]],
-  ['_5fext_5fkp_531',['_ext_kp',['../structpose_estimation_1_1compute__features__data.html#a64ff9a953eee15e11806e445883766f5',1,'poseEstimation::compute_features_data']]],
-  ['_5fextractor_532',['_extractor',['../structpose_estimation_1_1compute__features__data.html#a2d07fe99f0b20444f5ea347fca564154',1,'poseEstimation::compute_features_data']]],
-  ['_5ffeatures_5fstruct_533',['_features_struct',['../structpose_estimation_1_1compute__features__data.html#a344448d8b0557d0ae9c7fd158be92ab0',1,'poseEstimation::compute_features_data']]],
-  ['_5fid_534',['_id',['../classprimitive_detection_1_1_primitive.html#a424da0c883f25fd39a47ff91ced238b3',1,'primitiveDetection::Primitive']]],
-  ['_5fimg_535',['_img',['../structpose_estimation_1_1compute__features__data.html#ac01f538d6143c821a3fa1ba840e56fc8',1,'poseEstimation::compute_features_data']]],
-  ['_5fm_536',['_M',['../structpose_estimation_1_1_levenberg___marquard___functor.html#a10856c8769e1c446aa25afb4c49d6088',1,'poseEstimation::Levenberg_Marquard_Functor']]],
-  ['_5fn_537',['_N',['../structpose_estimation_1_1_levenberg___marquard___functor.html#a77da7000074d0bb2b24a54aaf5d28707',1,'poseEstimation::Levenberg_Marquard_Functor']]],
-  ['_5fshapemask_538',['_shapeMask',['../classprimitive_detection_1_1_primitive.html#aaa52c200274557357012b40401c74998',1,'primitiveDetection::Primitive']]],
-  ['_5fsubimgsrects_539',['_subImgsRects',['../structpose_estimation_1_1compute__features__data.html#adf3cafb9eb69f7416d4e6d5bf90693d4',1,'poseEstimation::compute_features_data']]],
-  ['_5fvoparams_540',['_voParams',['../structpose_estimation_1_1compute__features__data.html#aad0cdc34d0c529efb37bf990403ed00f',1,'poseEstimation::compute_features_data']]]
+  ['_5fcoordinates_0',['_coordinates',['../structrgbd__slam_1_1utils_1_1_point.html#a178b8914358f1e318636342cc9d8465b',1,'rgbd_slam::utils::Point']]],
+  ['_5fcoordinateuncertainty_1',['_coordinateUncertainty',['../structrgbd__slam_1_1utils_1_1_point.html#a7482f538834c123833af717bcbf2dc59',1,'rgbd_slam::utils::Point']]],
+  ['_5fdescriptor_2',['_descriptor',['../structrgbd__slam_1_1utils_1_1_point.html#a5d5105d886f458939b77151d2a62c6d3',1,'rgbd_slam::utils::Point']]],
+  ['_5fdetector_3',['_detector',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html#a6b2fc35fc8b793792fd978c83be1de19',1,'rgbd_slam::poseEstimation::compute_features_data']]],
+  ['_5fext_5fkp_4',['_ext_kp',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html#aadf2d2b88a7b4358a0ae462f71f81986',1,'rgbd_slam::poseEstimation::compute_features_data']]],
+  ['_5fextractor_5',['_extractor',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html#a173e9874c1042a6f162f2bcb190e143d',1,'rgbd_slam::poseEstimation::compute_features_data']]],
+  ['_5ffeatures_5fstruct_6',['_features_struct',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html#a63656923a85c78efbd7adbd46b989d08',1,'rgbd_slam::poseEstimation::compute_features_data']]],
+  ['_5fid_7',['_id',['../classrgbd__slam_1_1primitive_detection_1_1_primitive.html#a92faa842262e29985d905003fd93c29d',1,'rgbd_slam::primitiveDetection::Primitive']]],
+  ['_5fimg_8',['_img',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html#a7f44687d6c503cca70befe4d6a4bac99',1,'rgbd_slam::poseEstimation::compute_features_data']]],
+  ['_5flastmatchedindex_9',['_lastMatchedIndex',['../classrgbd__slam_1_1utils_1_1_staged___point.html#a8affaa137b9b412af405c726d01c7e5b',1,'rgbd_slam::utils::Staged_Point::_lastMatchedIndex()'],['../classrgbd__slam_1_1utils_1_1_map___point.html#ae0f110ecbd7ac9c68a2bd78484a46b4e',1,'rgbd_slam::utils::Map_Point::_lastMatchedIndex()']]],
+  ['_5fm_10',['_M',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#a07f02d97d37c1b0a8fb85e3eecc076d1',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]],
+  ['_5fmatchescount_11',['_matchesCount',['../classrgbd__slam_1_1utils_1_1_staged___point.html#a373d3226f40bc55992ee228e8511ba78',1,'rgbd_slam::utils::Staged_Point']]],
+  ['_5fn_12',['_N',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#a518a474c7cfd1eada2fd88cc751f5e31',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]],
+  ['_5fshapemask_13',['_shapeMask',['../classrgbd__slam_1_1primitive_detection_1_1_primitive.html#a9db7366893bb35500fb183a92659470f',1,'rgbd_slam::primitiveDetection::Primitive']]],
+  ['_5fsubimgsrects_14',['_subImgsRects',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html#aa07a512aa0e78705354b38d2b7360d3c',1,'rgbd_slam::poseEstimation::compute_features_data']]],
+  ['_5fvoparams_15',['_voParams',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html#a79779b0a8264aa7f3553906474c806ae',1,'rgbd_slam::poseEstimation::compute_features_data']]]
 ];

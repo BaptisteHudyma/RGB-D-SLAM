@@ -1,0 +1,38 @@
+\hypertarget{_p_n_p_solver_8hpp_source}{}\doxysection{PNPSolver.\+hpp}
+\label{_p_n_p_solver_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/PNPSolver.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/PNPSolver.hpp}}
+\mbox{\hyperlink{_p_n_p_solver_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef PNP\_SOLVER\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define PNP\_SOLVER\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_image___features___struct_8hpp}{Image\_Features\_Struct.hpp}}"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <g2o/core/sparse\_optimizer.h>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{15     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver}{PNP\_Solver}} \{}
+\DoxyCodeLine{16         \textcolor{keyword}{public}:}
+\DoxyCodeLine{17             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a0de5a2e2e46b66ac5e506837e669b23f}{PNP\_Solver}}(\textcolor{keywordtype}{double} fx, \textcolor{keywordtype}{double} fy, \textcolor{keywordtype}{double} cx, \textcolor{keywordtype}{double} cy, \textcolor{keywordtype}{double} baseline);}
+\DoxyCodeLine{18             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_af51513c53308ef7edb6f012f7b3f582b}{\string~PNP\_Solver}}();}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{30             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a285bd0982e155b0c3dfd4e905b6c851c}{compute\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}\& camPose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& features, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\_array}}\& matchedPoints, \textcolor{keyword}{const} std::vector<int>\& matchLeft);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32         \textcolor{keyword}{private}:}
+\DoxyCodeLine{33             \textcolor{keywordtype}{double} \_fx;}
+\DoxyCodeLine{34             \textcolor{keywordtype}{double} \_fy;}
+\DoxyCodeLine{35             \textcolor{keywordtype}{double} \_cx;}
+\DoxyCodeLine{36             \textcolor{keywordtype}{double} \_cy;}
+\DoxyCodeLine{37             \textcolor{keywordtype}{double} \_baseline;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39             g2o::SparseOptimizer \_optimizer;}
+\DoxyCodeLine{40     \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \}}
+\DoxyCodeLine{43 \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

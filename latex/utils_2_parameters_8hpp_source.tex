@@ -1,0 +1,99 @@
+\hypertarget{utils_2_parameters_8hpp_source}{}\doxysection{parameters.\+hpp}
+\label{utils_2_parameters_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/parameters.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/parameters.hpp}}
+\mbox{\hyperlink{utils_2_parameters_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBD\_SLAM\_PARAMETERS\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGDB\_SLAM\_PARAMETERS\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1_parameters}{Parameters}}}
+\DoxyCodeLine{9     \{}
+\DoxyCodeLine{10         \textcolor{keyword}{public}:}
+\DoxyCodeLine{11             \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_af70b03f5ad79e348930ab6d2a9fe419f}{parse\_file}}(\textcolor{keyword}{const} std::string\& fileName );}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae7d239922d416c180768ca5e52b586b0}{get\_camera\_center\_x}}() \{ \textcolor{keywordflow}{return} \_cameraCenterX; \};}
+\DoxyCodeLine{14             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae56f41d21ca8a5e697b0e00613f3e827}{get\_camera\_center\_y}}() \{ \textcolor{keywordflow}{return} \_cameraCenterY; \};}
+\DoxyCodeLine{15             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a20db45adae62af4e1d3e28f26004c0a9}{get\_camera\_focal\_x}}() \{ \textcolor{keywordflow}{return} \_cameraFocalX; \};}
+\DoxyCodeLine{16             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a166d4c77204d9f221124436b642de6f2}{get\_camera\_focal\_y}}() \{ \textcolor{keywordflow}{return} \_cameraFocalY; \};}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a2880f4be122cb36f19aae7e89da11069}{get\_minimum\_point\_count\_for\_optimization}}() \{ \textcolor{keywordflow}{return} \_minimumPointForOptimization; \};}
+\DoxyCodeLine{19             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a5f0f1acba0c8d7bea3aeba76eeef91d1}{get\_maximum\_global\_optimization\_iterations}}() \{ \textcolor{keywordflow}{return} \_maximumGlobalOptimizationCall; \};}
+\DoxyCodeLine{20             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ad86267a6f3abea8952163d472ee119e0}{get\_point\_weight\_threshold}}() \{ \textcolor{keywordflow}{return} \_pointWeightThreshold; \};}
+\DoxyCodeLine{21             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_afb7a350f0222cfcb8c826bddd3d949ea}{get\_point\_weight\_coefficient}}() \{ \textcolor{keywordflow}{return} \_pointWeightCoefficient; \};}
+\DoxyCodeLine{22             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_afbde154823f1ca5bb37dadad0dab30f3}{get\_point\_loss\_alpha}}() \{ \textcolor{keywordflow}{return} \_pointLossAlpha; \};}
+\DoxyCodeLine{23             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a193cfd6367d5252a77f2220e05bb875b}{get\_point\_error\_multiplier}}() \{ \textcolor{keywordflow}{return} \_pointErrorMultiplier; \};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a764956641d0ea277a8ee5dfb71459829}{get\_maximum\_match\_distance}}() \{ \textcolor{keywordflow}{return} \_maximumMatchDistance; \};}
+\DoxyCodeLine{26             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4700aa324ed1bd54a6dcd5d0ab4b249a}{get\_minimum\_hessian}}() \{ \textcolor{keywordflow}{return} \_detectorMinHessian; \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a64cfd1bf21c68ee4ddb7d30610306d45}{get\_maximum\_plane\_match\_angle}}() \{ \textcolor{keywordflow}{return} \_primitiveMaximumCosAngle; \};}
+\DoxyCodeLine{29             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ab30de332b8b16e51b6849aa4c56e802a}{get\_maximum\_merge\_distance}}() \{ \textcolor{keywordflow}{return} \_primitiveMaximumMergeDistance; \};}
+\DoxyCodeLine{30             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ab3fcc8d796e817736831f915f3169640}{get\_depth\_map\_patch\_size}}() \{ \textcolor{keywordflow}{return} \_depthMapPatchSize; \};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae7c966fa558ac7605d89fc38e4ca5fd5}{get\_minimum\_plane\_seed\_count}}() \{ \textcolor{keywordflow}{return} \_minimumPlaneSeedCount; \};}
+\DoxyCodeLine{33             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a08f2cd44812bbfb07c87c713c4bcab30}{get\_minimum\_cell\_activated}}() \{ \textcolor{keywordflow}{return} \_minimumCellActivated; \};}
+\DoxyCodeLine{34             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6ea449db89c681654d729672a54a2d80}{get\_depth\_sigma\_error}}() \{ \textcolor{keywordflow}{return} \_depthSigmaError; \};}
+\DoxyCodeLine{35             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_af91e391e15779536cf872f92a72ae27c}{get\_depth\_sigma\_margin}}() \{ \textcolor{keywordflow}{return} \_depthSigmaMargin; \};}
+\DoxyCodeLine{36             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a58bd82e72660e49f0e83457d3c8d0e37}{get\_depth\_discontinuity\_limit}}() \{ \textcolor{keywordflow}{return} \_depthDiscontinuityLimit; \};}
+\DoxyCodeLine{37             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6c7d861e5bfa643ece5d3c7cb2c9846f}{get\_depth\_alpha}}() \{ \textcolor{keywordflow}{return} \_depthAlpha; \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4cb40ff3ae97b22ca42dcf20bee15ed6}{get\_cylinder\_ransac\_max\_distance}}() \{ \textcolor{keywordflow}{return} \_cylinderRansacSqrtMaxDistance; \};}
+\DoxyCodeLine{40             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae1190b01216e37255a79ed33740bdf3c}{get\_cylinder\_ransac\_minimm\_score}}() \{ \textcolor{keywordflow}{return} \_cylinderRansacMinimumScore; \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42             \textcolor{comment}{// Max unmatched points to consider this map point as lost}}
+\DoxyCodeLine{43             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a208d976208b4d690f774626cc90b750d}{get\_maximum\_unmatched\_before\_removal}}() \{ \textcolor{keywordflow}{return} \_pointUnmatchedCountToLoose; \};}
+\DoxyCodeLine{44             \textcolor{comment}{//Observe a point for N frames to gain max liability}}
+\DoxyCodeLine{45             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aa09fce750d7eccf8d4e4febeb8bc2b1b}{get\_point\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointAgeConfidence; \};}
+\DoxyCodeLine{46             \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aa2828a727b362fb235e98d1bb84eaaa3}{get\_point\_staged\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointStagedAgeConfidence; \};}
+\DoxyCodeLine{47             \textcolor{comment}{// Minimum point liability for the local map}}
+\DoxyCodeLine{48             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4743d8efa22ba16a704875096d7817a3}{get\_minimum\_confidence\_for\_local\_map}}() \{ \textcolor{keywordflow}{return} \_pointMinimumConfidenceForMap; \};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50         \textcolor{keyword}{private}:}
+\DoxyCodeLine{51             \textcolor{comment}{// Camera parameters}}
+\DoxyCodeLine{52             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_cameraCenterX;}
+\DoxyCodeLine{53             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_cameraCenterY;}
+\DoxyCodeLine{54             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_cameraFocalX;}
+\DoxyCodeLine{55             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_cameraFocalY;}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57             \textcolor{comment}{// Position optimization}}
+\DoxyCodeLine{58             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_minimumPointForOptimization;}
+\DoxyCodeLine{59             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_maximumGlobalOptimizationCall; }
+\DoxyCodeLine{60             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightThreshold;}
+\DoxyCodeLine{61             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightCoefficient;}
+\DoxyCodeLine{62             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointLossAlpha;   \textcolor{comment}{// loss steepness (\_infinity, infinity)}}
+\DoxyCodeLine{63             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointErrorMultiplier; \textcolor{comment}{// multiplier of the final loss value (useful when  using primitives along with points)}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65             \textcolor{comment}{// Point Detection \& matching}}
+\DoxyCodeLine{66             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_maximumMatchDistance; \textcolor{comment}{// Maximum distance between a point and his mach before refusing the match}}
+\DoxyCodeLine{67             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_detectorMinHessian;}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69             \textcolor{comment}{// Primitive extraction parameters}}
+\DoxyCodeLine{70             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumCosAngle;         \textcolor{comment}{// Maximum angle between two planes to consider merging}}
+\DoxyCodeLine{71             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumMergeDistance;    \textcolor{comment}{// Maximum plane patch merge distance}}
+\DoxyCodeLine{72             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_depthMapPatchSize;         \textcolor{comment}{// Size of the minimum search area}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_minimumPlaneSeedCount;     \textcolor{comment}{// Minimum plane patches in a set to consider merging }}
+\DoxyCodeLine{75             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_minimumCellActivated;}
+\DoxyCodeLine{76             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaError;}
+\DoxyCodeLine{77             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaMargin;        \textcolor{comment}{// [3, 8]}}
+\DoxyCodeLine{78             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_depthDiscontinuityLimit; \textcolor{comment}{// Max number of discontinuities in a cell to reject it}}
+\DoxyCodeLine{79             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthAlpha;              \textcolor{comment}{// [0.02, 0.04]}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacSqrtMaxDistance;}
+\DoxyCodeLine{82             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacMinimumScore;}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84             \textcolor{comment}{// local map management}}
+\DoxyCodeLine{85             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_pointUnmatchedCountToLoose;    \textcolor{comment}{// Maximum unmatched times before removal}}
+\DoxyCodeLine{86             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_pointAgeConfidence;            \textcolor{comment}{// Minimum age of a point to consider it good }}
+\DoxyCodeLine{87             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_pointStagedAgeConfidence;        \textcolor{comment}{// Minimum age of a point in staged map to consider it good }}
+\DoxyCodeLine{88             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointMinimumConfidenceForMap;        \textcolor{comment}{// Minimum confidence of a staged point to add it to local map}}
+\DoxyCodeLine{89     \};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['keypoint_5fcontainer_564',['keypoint_container',['../classprimitive_detection_1_1_r_g_b_d___s_l_a_m.html#a3bae6b369328f3f33c18154937b62c65',1,'primitiveDetection::RGBD_SLAM']]],
-  ['keypoint_5fvector_565',['keypoint_vector',['../namespacepose_estimation.html#a42d00a52b1e7a10923991e31781aba5f',1,'poseEstimation']]]
+  ['keypoint_5fvector_0',['keypoint_vector',['../namespacergbd__slam_1_1pose_estimation.html#a75c6481b6ffcffb2aaf928c8c59eb2d5',1,'rgbd_slam::poseEstimation']]]
 ];

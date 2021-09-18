@@ -1,0 +1,81 @@
+\hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data Struct Reference}
+\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+
+
+Container storing an image, feature detectors, camera parameters, image division in search regions, ...  
+
+
+
+
+{\ttfamily \#include $<$Image\+\_\+\+Features\+\_\+\+Handler.\+hpp$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a7f44687d6c503cca70befe4d6a4bac99}{\+\_\+img}}
+\item 
+cv\+::\+Ptr$<$ cv\+::\+Agast\+Feature\+Detector $>$ \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a6b2fc35fc8b793792fd978c83be1de19}{\+\_\+detector}}
+\item 
+cv\+::\+Ptr$<$ cv\+::\+Descriptor\+Extractor $>$ \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a173e9874c1042a6f162f2bcb190e143d}{\+\_\+extractor}}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}{rect\+\_\+vector}} \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aa07a512aa0e78705354b38d2b7360d3c}{\+\_\+sub\+Imgs\+Rects}}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}{point\+\_\+vector}} $\ast$ \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aadf2d2b88a7b4358a0ae462f71f81986}{\+\_\+ext\+\_\+kp}}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} $\ast$ \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a63656923a85c78efbd7adbd46b989d08}{\+\_\+features\+\_\+struct}}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} $\ast$ \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a79779b0a8264aa7f3553906474c806ae}{\+\_\+vo\+Params}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Container storing an image, feature detectors, camera parameters, image division in search regions, ... 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a6b2fc35fc8b793792fd978c83be1de19}\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a6b2fc35fc8b793792fd978c83be1de19}} 
+\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}!\_detector@{\_detector}}
+\index{\_detector@{\_detector}!rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+\doxysubsubsection{\texorpdfstring{\_detector}{\_detector}}
+{\footnotesize\ttfamily cv\+::\+Ptr$<$cv\+::\+Agast\+Feature\+Detector$>$ rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data\+::\+\_\+detector}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aadf2d2b88a7b4358a0ae462f71f81986}\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aadf2d2b88a7b4358a0ae462f71f81986}} 
+\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}!\_ext\_kp@{\_ext\_kp}}
+\index{\_ext\_kp@{\_ext\_kp}!rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+\doxysubsubsection{\texorpdfstring{\_ext\_kp}{\_ext\_kp}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}{point\+\_\+vector}}$\ast$ rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data\+::\+\_\+ext\+\_\+kp}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a173e9874c1042a6f162f2bcb190e143d}\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a173e9874c1042a6f162f2bcb190e143d}} 
+\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}!\_extractor@{\_extractor}}
+\index{\_extractor@{\_extractor}!rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+\doxysubsubsection{\texorpdfstring{\_extractor}{\_extractor}}
+{\footnotesize\ttfamily cv\+::\+Ptr$<$cv\+::\+Descriptor\+Extractor$>$ rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data\+::\+\_\+extractor}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a63656923a85c78efbd7adbd46b989d08}\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a63656923a85c78efbd7adbd46b989d08}} 
+\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}!\_features\_struct@{\_features\_struct}}
+\index{\_features\_struct@{\_features\_struct}!rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+\doxysubsubsection{\texorpdfstring{\_features\_struct}{\_features\_struct}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}}$\ast$ rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data\+::\+\_\+features\+\_\+struct}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a7f44687d6c503cca70befe4d6a4bac99}\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a7f44687d6c503cca70befe4d6a4bac99}} 
+\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}!\_img@{\_img}}
+\index{\_img@{\_img}!rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+\doxysubsubsection{\texorpdfstring{\_img}{\_img}}
+{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data\+::\+\_\+img}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aa07a512aa0e78705354b38d2b7360d3c}\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aa07a512aa0e78705354b38d2b7360d3c}} 
+\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}!\_subImgsRects@{\_subImgsRects}}
+\index{\_subImgsRects@{\_subImgsRects}!rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+\doxysubsubsection{\texorpdfstring{\_subImgsRects}{\_subImgsRects}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}{rect\+\_\+vector}} rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data\+::\+\_\+sub\+Imgs\+Rects}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a79779b0a8264aa7f3553906474c806ae}\label{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a79779b0a8264aa7f3553906474c806ae}} 
+\index{rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}!\_voParams@{\_voParams}}
+\index{\_voParams@{\_voParams}!rgbd\_slam::poseEstimation::compute\_features\_data@{rgbd\_slam::poseEstimation::compute\_features\_data}}
+\doxysubsubsection{\texorpdfstring{\_voParams}{\_voParams}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}}$\ast$ rgbd\+\_\+slam\+::pose\+Estimation\+::compute\+\_\+features\+\_\+data\+::\+\_\+vo\+Params}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___handler_8hpp}{Image\+\_\+\+Features\+\_\+\+Handler.\+hpp}}\end{DoxyCompactItemize}

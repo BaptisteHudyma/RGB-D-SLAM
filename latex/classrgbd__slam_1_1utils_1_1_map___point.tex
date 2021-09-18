@@ -1,0 +1,116 @@
+\hypertarget{classrgbd__slam_1_1utils_1_1_map___point}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Map\+\_\+\+Point Class Reference}
+\label{classrgbd__slam_1_1utils_1_1_map___point}\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+
+
+A map point structure, containing all the necessary informations to identify a map point.  
+
+
+
+
+{\ttfamily \#include $<$map\+\_\+point.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::Map\+\_\+\+Point\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrgbd__slam_1_1utils_1_1_map___point}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point_aa3ff6985798f3850b526600d085ce080}{Map\+\_\+\+Point}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&coordinates, const cv\+::\+Mat \&descriptor)
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point_a371d216a58f9854c99c55e8c9a1966c8}{is\+\_\+lost}} () const
+\begin{DoxyCompactList}\small\item\em True is this point is lost \+: should be removed from local map. Should be used only for map points. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point_a1e34e7b65957d5064c70cd7d2bebf003}{update\+\_\+unmatched}} ()
+\begin{DoxyCompactList}\small\item\em Update this point without it being detected/matched. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point_a6d4f0486b870c0a3aa7b12da488a3a1a}{update\+\_\+matched}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&new\+Point\+Coordinates, const cv\+::\+Mat \&new\+Descriptor)
+\begin{DoxyCompactList}\small\item\em Update this map point with the given informations\+: it is matched with another point. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point_ad3adc95853734b637342804adf1a247d}{get\+\_\+age}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point_ae0f110ecbd7ac9c68a2bd78484a46b4e}{\+\_\+last\+Matched\+Index}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point_aa17f4aabb5ae44d26061f68afd39aa84}{get\+\_\+confidence}} () const
+\begin{DoxyCompactList}\small\item\em Compute a confidence score (-\/1, 1) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A map point structure, containing all the necessary informations to identify a map point. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_map___point_aa3ff6985798f3850b526600d085ce080}\label{classrgbd__slam_1_1utils_1_1_map___point_aa3ff6985798f3850b526600d085ce080}} 
+\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}!Map\_Point@{Map\_Point}}
+\index{Map\_Point@{Map\_Point}!rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{Map\_Point()}{Map\_Point()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Map\+\_\+\+Point\+::\+Map\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{coordinates,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point}{Map\+\_\+\+Point}} 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_map___point_ad3adc95853734b637342804adf1a247d}\label{classrgbd__slam_1_1utils_1_1_map___point_ad3adc95853734b637342804adf1a247d}} 
+\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}!get\_age@{get\_age}}
+\index{get\_age@{get\_age}!rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{get\_age()}{get\_age()}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::utils\+::\+Map\+\_\+\+Point\+::get\+\_\+age (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_map___point_aa17f4aabb5ae44d26061f68afd39aa84}\label{classrgbd__slam_1_1utils_1_1_map___point_aa17f4aabb5ae44d26061f68afd39aa84}} 
+\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}!get\_confidence@{get\_confidence}}
+\index{get\_confidence@{get\_confidence}!rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{get\_confidence()}{get\_confidence()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Map\+\_\+\+Point\+::get\+\_\+confidence (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Compute a confidence score (-\/1, 1) 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_map___point_a371d216a58f9854c99c55e8c9a1966c8}\label{classrgbd__slam_1_1utils_1_1_map___point_a371d216a58f9854c99c55e8c9a1966c8}} 
+\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}!is\_lost@{is\_lost}}
+\index{is\_lost@{is\_lost}!rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{is\_lost()}{is\_lost()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Map\+\_\+\+Point\+::is\+\_\+lost (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+True is this point is lost \+: should be removed from local map. Should be used only for map points. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_map___point_a6d4f0486b870c0a3aa7b12da488a3a1a}\label{classrgbd__slam_1_1utils_1_1_map___point_a6d4f0486b870c0a3aa7b12da488a3a1a}} 
+\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}!update\_matched@{update\_matched}}
+\index{update\_matched@{update\_matched}!rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{update\_matched()}{update\_matched()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Map\+\_\+\+Point\+::update\+\_\+matched (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{new\+Point\+Coordinates,  }\item[{const cv\+::\+Mat \&}]{new\+Descriptor }\end{DoxyParamCaption})}
+
+
+
+Update this map point with the given informations\+: it is matched with another point. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_map___point_a1e34e7b65957d5064c70cd7d2bebf003}\label{classrgbd__slam_1_1utils_1_1_map___point_a1e34e7b65957d5064c70cd7d2bebf003}} 
+\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}!update\_unmatched@{update\_unmatched}}
+\index{update\_unmatched@{update\_unmatched}!rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{update\_unmatched()}{update\_unmatched()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Map\+\_\+\+Point\+::update\+\_\+unmatched (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Update this point without it being detected/matched. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_map___point_ae0f110ecbd7ac9c68a2bd78484a46b4e}\label{classrgbd__slam_1_1utils_1_1_map___point_ae0f110ecbd7ac9c68a2bd78484a46b4e}} 
+\index{rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}!\_lastMatchedIndex@{\_lastMatchedIndex}}
+\index{\_lastMatchedIndex@{\_lastMatchedIndex}!rgbd\_slam::utils::Map\_Point@{rgbd\_slam::utils::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{\_lastMatchedIndex}{\_lastMatchedIndex}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::utils\+::\+Map\+\_\+\+Point\+::\+\_\+last\+Matched\+Index}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8hpp}{map\+\_\+point.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8cpp}{map\+\_\+point.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,104 @@
+\hypertarget{pose__estimation_2_parameters_8hpp_source}{}\doxysection{Parameters.\+hpp}
+\label{pose__estimation_2_parameters_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Parameters.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Parameters.hpp}}
+\mbox{\hyperlink{pose__estimation_2_parameters_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef LOAD\_PARAMETERS\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define LOAD\_PARAMETERS\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{12     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}}  \{}
+\DoxyCodeLine{13         \textcolor{keyword}{public}:}
+\DoxyCodeLine{14             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a7637b3df4f362312802e02592226fb62}{Parameters}}();}
+\DoxyCodeLine{15             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_aecfa0b6ff96644eb5d517330841f6345}{init\_from\_file}}(\textcolor{keyword}{const} std::string\& config\_file\_name);}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17             \textcolor{keyword}{enum} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a487b35c0da0e695467470e7a2fbf997b}{TriangulationPolicies}}}
+\DoxyCodeLine{18             \{}
+\DoxyCodeLine{19                 \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a487b35c0da0e695467470e7a2fbf997ba49c6f3fca1afdc210ff8534b88e4b1f6}{etriangulation\_policy\_decreasing\_matches}} = 1,}
+\DoxyCodeLine{20                 \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a487b35c0da0e695467470e7a2fbf997ba8c2f8a337ce4c3e7aa39595d699667c2}{etriangulation\_policy\_always\_triangulate}},}
+\DoxyCodeLine{21                 \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a487b35c0da0e695467470e7a2fbf997ba6790d45b2bac04cb9696b03392b04502}{etriangulation\_policy\_map\_size}}}
+\DoxyCodeLine{22             \};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24         \textcolor{keyword}{public}: \textcolor{comment}{//setters}}
+\DoxyCodeLine{25             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_ab928fa6428794925e6267d60558aaf4d}{set\_fx}}(\textcolor{keywordtype}{float} fx) \{ \_fx = fx; \}}
+\DoxyCodeLine{26             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a1af824b9e85618f18a769bb23c25c2db}{set\_fy}}(\textcolor{keywordtype}{float} fy) \{ \_fy = fy; \}}
+\DoxyCodeLine{27             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_ac4bc8c9db8bb0e3744e31ec0fe30658f}{set\_cx}}(\textcolor{keywordtype}{float} cx) \{ \_cx = cx; \}}
+\DoxyCodeLine{28             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a11039dc7f007a7b4f40adbe77565ce7b}{set\_cy}}(\textcolor{keywordtype}{float} cy) \{ \_cy = cy; \}}
+\DoxyCodeLine{29             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a0d5f01300c74dd45be46ee9311efcec0}{set\_width}}(\textcolor{keywordtype}{float} w) \{ \_img\_width = w; \}}
+\DoxyCodeLine{30             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a6fc5b339f736ceb9e8dc1563dfe0b7f5}{set\_height}}(\textcolor{keywordtype}{float} h) \{ \_img\_height = h; \}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32         \textcolor{keyword}{public}: \textcolor{comment}{//getters}}
+\DoxyCodeLine{33             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a5a53048c06182a194bace7618ae48b06}{get\_fx}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_fx; \}}
+\DoxyCodeLine{34             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a235c862c510225bd4c029fdf03b58adc}{get\_fy}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_fy; \}}
+\DoxyCodeLine{35             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a45ed4b64021dc0a00727840d47d24737}{get\_cx}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_cx; \}}
+\DoxyCodeLine{36             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_ac7cf52f4a6a9cd927706f96d5f056ead}{get\_cy}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_cy; \}}
+\DoxyCodeLine{37             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a5c93588212ffdbd6c1e107d510b009bc}{get\_baseline}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_baseline; \}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39             \textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a58e0cd3da2499ae5b079d69d4242ba45}{get\_height}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_img\_height; \}}
+\DoxyCodeLine{40             \textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a2a9d946b20e0666a3a81c28ed19b16a5}{get\_width}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_img\_width; \}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a02621d6ec1bd8a1d8fcab1fd8059e098}{get\_k1}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_k1; \}}
+\DoxyCodeLine{43             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a100e265d71ed27935348b05111c4178a}{get\_k2}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_k2; \}}
+\DoxyCodeLine{44             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a847e1e6d4f58202df1132f932dc77ce4}{get\_k3}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_k3; \}}
+\DoxyCodeLine{45             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a90649aac54d90338054890e50e9f5f46}{get\_p1}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_p1; \}}
+\DoxyCodeLine{46             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_ada8c6ae76b9c814ee65afeb9d0ce8822}{get\_p2}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_p2; \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a09ebcb03c2448596e5a45cb64ccd1f89}{get\_triangulation\_ratio\_test\_threshold}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_triangulation\_ratio\_test\_threshold; \}}
+\DoxyCodeLine{49             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_aab58d4081915b6ce71b2c8586a95fbc4}{get\_descriptor\_matching\_threshold}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_descriptor\_matching\_threshold; \}}
+\DoxyCodeLine{50             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a18a0a83c4d8f3fa143748b15fe85a03d}{get\_far\_plane\_distance}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_far\_plane\_distance; \}}
+\DoxyCodeLine{51             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a1e599ea2aa0c32036cbbc64bca2aa8e4}{get\_near\_plane\_distance}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_near\_plane\_distance; \}}
+\DoxyCodeLine{52             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_ac985b2913fd0e8a6c6aeeba1cc08f8a2}{get\_tracking\_ratio\_test\_threshold}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_tracking\_ratio\_test\_threshold; \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_abeadafbc57cee7c2f2df47bd23ce1cb5}{get\_detection\_cell\_size}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_detection\_cell\_size; \}}
+\DoxyCodeLine{55             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a2045406813f5bbcb7b7fdb19cf317431}{get\_agast\_threshold}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_agast\_threshold; \}}
+\DoxyCodeLine{56             \textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a232750ee3154f169f9d4441fb57349f2}{get\_max\_keypoints\_per\_cell}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_max\_keypoints\_per\_cell; \}}
+\DoxyCodeLine{57             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_af1ed18219faef4a28294e56c0f8c560c}{get\_tracking\_radius}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_tracking\_radius; \}}
+\DoxyCodeLine{58             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a207b17c7d4b98a6f8015e4b6041ac889}{get\_staged\_threshold}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_staged\_threshold; \}}
+\DoxyCodeLine{59             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a17508925b73038fc795b647f6eb1c2a8}{get\_untracked\_threshold}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_untracked\_threshold; \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61             \textcolor{keywordtype}{unsigned} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_af78097790aa2d0fa7e099a11f3190af1}{get\_min\_matches\_for\_tracking}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_min\_num\_matches\_for\_tracking; \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a5c20f66a556c32e27a03923d534f7ab1}{get\_camera\_size}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_viewer\_camera\_size; \}}
+\DoxyCodeLine{64             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_af94508f157e473c6612657f48bbec605}{get\_point\_size}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_viewer\_point\_size; \}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters_a892b5d61a1dd11462351bb993a5d43fe}{get\_triangulation\_policy}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_triangulation\_policy; \}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69         \textcolor{keyword}{private}:}
+\DoxyCodeLine{70             \textcolor{comment}{// The following parameters must be specified.}}
+\DoxyCodeLine{71             \textcolor{comment}{// Stereo is assumed to be undistorted and rectified.}}
+\DoxyCodeLine{72             \textcolor{keywordtype}{float} \_fx, \_fy, \_cx, \_cy;}
+\DoxyCodeLine{73             \textcolor{keywordtype}{float} \_baseline;}
+\DoxyCodeLine{74             \textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_img\_width;}
+\DoxyCodeLine{75             \textcolor{keywordtype}{long} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_img\_height;}
+\DoxyCodeLine{76             \textcolor{keywordtype}{float} \_k1, \_k2, \_p1, \_p2, \_k3; \textcolor{comment}{// distortion, only in rgbd case}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78             \textcolor{comment}{// The rest are optional.}}
+\DoxyCodeLine{79             \textcolor{keywordtype}{float} \_near\_plane\_distance, \_far\_plane\_distance; \textcolor{comment}{// viewable region}}
+\DoxyCodeLine{80             \textcolor{keywordtype}{float} \_triangulation\_ratio\_test\_threshold;      \textcolor{comment}{// cutoff for the ratio test performed when row matching for triangulating new map points}}
+\DoxyCodeLine{81             \textcolor{keywordtype}{float} \_tracking\_ratio\_test\_threshold;           \textcolor{comment}{// cutoff for the ratio test when matching during tracking}}
+\DoxyCodeLine{82             \textcolor{keywordtype}{float} \_descriptor\_matching\_threshold;           \textcolor{comment}{// when matching for triangulation or tracking, if only one candidate feature is found for the traget feature, ratio test cannot be performed and thus the candidate is declared a match if the descriptors distance is smaller than this value.}}
+\DoxyCodeLine{83             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_min\_num\_matches\_for\_tracking;              \textcolor{comment}{// minimum required matched for succesful tracking, otherwise tracking is considered lost}}
+\DoxyCodeLine{84             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_tracking\_radius;                           \textcolor{comment}{// the radius in pixels around each projected map point when looking for its detected image feature. Default 25px}}
+\DoxyCodeLine{85             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_detection\_cell\_size;                       \textcolor{comment}{// To enhance detected features distrubution, the image is devided into cells and features detetin is attempted in each. This is the side length of each cell.}}
+\DoxyCodeLine{86             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_max\_keypoints\_per\_cell;                    \textcolor{comment}{// maximum number of features to detect in each cell.}}
+\DoxyCodeLine{87             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_agast\_threshold;                           \textcolor{comment}{// Threshold for AGAST corner detector used.}}
+\DoxyCodeLine{88             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_untracked\_threshold;                       \textcolor{comment}{// When a map point is not tracked in untracked\_threshold number of frames then it is removed from the map.}}
+\DoxyCodeLine{89             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_staged\_threshold;                          \textcolor{comment}{// newly triangulated map points are initially put into a staging phase, if they were successfully tracked for staged\_threshold number of frames then they are declared good and added to the local map to be used for pose estimation. If staged\_threshold is set to zero then this feature is effectively disabled.}}
+\DoxyCodeLine{90             \textcolor{keywordtype}{bool} \_enable\_logging;}
+\DoxyCodeLine{91             \textcolor{keywordtype}{bool} \_enable\_visualization;}
+\DoxyCodeLine{92             \textcolor{keywordtype}{int} \_triangulation\_policy;}
+\DoxyCodeLine{93             \textcolor{keywordtype}{float} \_viewer\_camera\_size;}
+\DoxyCodeLine{94             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_viewer\_point\_size;}
+\DoxyCodeLine{95     \};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \}}
+\DoxyCodeLine{98 \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{101 }
+
+\end{DoxyCode}

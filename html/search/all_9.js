@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jacobiantype_156',['JacobianType',['../structpose_estimation_1_1_levenberg___marquard___functor.html#a3f3079bbcc7036db3b1f4c286c512e49',1,'poseEstimation::Levenberg_Marquard_Functor']]]
+  ['jacobiantype_0',['JacobianType',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#acf0b6771c8e906c35c13a715642d1903',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]]
 ];

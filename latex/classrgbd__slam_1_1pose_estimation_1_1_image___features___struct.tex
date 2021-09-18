@@ -1,0 +1,228 @@
+\hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::Image\+\_\+\+Features\+\_\+\+Struct Class Reference}
+\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+
+
+Stores a list of keypoints (features) and provide methods to find a match of a point in those features.  
+
+
+
+
+{\ttfamily \#include $<$Image\+\_\+\+Features\+\_\+\+Struct.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae36b6e7ec3ca73b8a5b110c30320b5d1}{Image\+\_\+\+Features\+\_\+\+Struct}} ()
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a5e579fb431bcf03609ef0cb7f05bd0dc}{init}} (const cv\+::\+Mat \&image, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&keypoints, const cv\+::\+Mat \&descs, int tracking\+Radius, int hashing\+Cell\+Size, int vertical\+Search\+Radius, float triangulation\+Ratio\+Th, float tracking\+Ratio\+Th, float desc\+Dist\+Th, std\+::vector$<$ float $>$ $\ast$kps\+Depth=nullptr)
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a17a4cd63c154dbb0b6d2c688d2ff364a}{find\+\_\+match\+\_\+index}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pt, const cv\+::\+Mat \&desc, float $\ast$d1, float $\ast$d2) const
+\begin{DoxyCompactList}\small\item\em Searches or a match between the given point and our map features. It uses a k nearest neighbors method. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_aa82a38e8757fcf8d8ec95cfd1da5f98a}{row\+\_\+match}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&desc) const
+\begin{DoxyCompactList}\small\item\em Searches for a match between a point and our map features. Reduces search space to rows. It uses a k nearest neighbors method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_abcc7388f6b2206a33d07c9057e76ddd0}{mark\+\_\+as\+\_\+matched}} (unsigned int idx, bool val)
+\begin{DoxyCompactList}\small\item\em Marks a feature id as been matched to a point. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a2c9e240f04a012e3399aeb81baf1f3d6}{is\+\_\+matched}} (unsigned int idx) const
+\begin{DoxyCompactList}\small\item\em Checks if a feature as already been matched to a point. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae203933f47af18c59e18371fbdcc1b6e}{reset\+\_\+matched\+\_\+marks}} ()
+\begin{DoxyCompactList}\small\item\em Reset the matched feature container. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a0cd025baadc30ba141fafc74eddcbce4}{is\+\_\+depth\+\_\+associated}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the features are associated with depth values. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a3a53bc5778231a0f178a04e687f8fcef}{get\+\_\+tracking\+\_\+radius}} () const
+\begin{DoxyCompactList}\small\item\em Return the knn search radius for matches. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab84ac6b54d22106d0097be7aca2ce102}{get\+\_\+features\+\_\+count}} () const
+\begin{DoxyCompactList}\small\item\em Return the feature count in the local map. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab9f3c5da285bee3d0a67c6ba9982bb89}{get\+\_\+keypoint\+\_\+depth}} (unsigned int idx) const
+\begin{DoxyCompactList}\small\item\em Return the depth the feature with index idx. \end{DoxyCompactList}\item 
+const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a04e0ad7f5ba9e57720ff03a07bd801ec}{get\+\_\+descriptor}} (unsigned int index) const
+\begin{DoxyCompactList}\small\item\em Return the descriptor of a feature. \end{DoxyCompactList}\item 
+const cv\+::\+Key\+Point \& \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a12a9acc700de5c5bbc38ffc53b4e1f6b}{get\+\_\+keypoint}} (unsigned int index) const
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a1f86974b67ba4733b5307501db83794a}{set\+\_\+tracking\+\_\+radius}} (unsigned int tracking\+\_\+radius)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Stores a list of keypoints (features) and provide methods to find a match of a point in those features. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae36b6e7ec3ca73b8a5b110c30320b5d1}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae36b6e7ec3ca73b8a5b110c30320b5d1}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!Image\_Features\_Struct@{Image\_Features\_Struct}}
+\index{Image\_Features\_Struct@{Image\_Features\_Struct}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{Image\_Features\_Struct()}{Image\_Features\_Struct()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::\+Image\+\_\+\+Features\+\_\+\+Struct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a17a4cd63c154dbb0b6d2c688d2ff364a}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a17a4cd63c154dbb0b6d2c688d2ff364a}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!find\_match\_index@{find\_match\_index}}
+\index{find\_match\_index@{find\_match\_index}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{find\_match\_index()}{find\_match\_index()}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::find\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{desc,  }\item[{float $\ast$}]{d1,  }\item[{float $\ast$}]{d2 }\end{DoxyParamCaption}) const}
+
+
+
+Searches or a match between the given point and our map features. It uses a k nearest neighbors method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pt} & Point to match \\
+\hline
+\mbox{\texttt{ in}}  & {\em desc} & Descriptor of point pt \\
+\hline
+\mbox{\texttt{ out}}  & {\em d1} & Distance of pt to the closest matching point \\
+\hline
+\mbox{\texttt{ out}}  & {\em d2} & Distance of pt to the second closest matching point, or -\/1\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Index of the best feature or -\/1 if not matched 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a04e0ad7f5ba9e57720ff03a07bd801ec}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a04e0ad7f5ba9e57720ff03a07bd801ec}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!get\_descriptor@{get\_descriptor}}
+\index{get\_descriptor@{get\_descriptor}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_descriptor()}{get\_descriptor()}}
+{\footnotesize\ttfamily const cv\+::\+Mat rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+descriptor (\begin{DoxyParamCaption}\item[{unsigned int}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the descriptor of a feature. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab84ac6b54d22106d0097be7aca2ce102}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab84ac6b54d22106d0097be7aca2ce102}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!get\_features\_count@{get\_features\_count}}
+\index{get\_features\_count@{get\_features\_count}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_features\_count()}{get\_features\_count()}}
+{\footnotesize\ttfamily unsigned int rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+features\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the feature count in the local map. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a12a9acc700de5c5bbc38ffc53b4e1f6b}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a12a9acc700de5c5bbc38ffc53b4e1f6b}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!get\_keypoint@{get\_keypoint}}
+\index{get\_keypoint@{get\_keypoint}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_keypoint()}{get\_keypoint()}}
+{\footnotesize\ttfamily const cv\+::\+Key\+Point \& rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+keypoint (\begin{DoxyParamCaption}\item[{unsigned int}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab9f3c5da285bee3d0a67c6ba9982bb89}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ab9f3c5da285bee3d0a67c6ba9982bb89}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!get\_keypoint\_depth@{get\_keypoint\_depth}}
+\index{get\_keypoint\_depth@{get\_keypoint\_depth}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_keypoint\_depth()}{get\_keypoint\_depth()}}
+{\footnotesize\ttfamily float rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+keypoint\+\_\+depth (\begin{DoxyParamCaption}\item[{unsigned int}]{idx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the depth the feature with index idx. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a3a53bc5778231a0f178a04e687f8fcef}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a3a53bc5778231a0f178a04e687f8fcef}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!get\_tracking\_radius@{get\_tracking\_radius}}
+\index{get\_tracking\_radius@{get\_tracking\_radius}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{get\_tracking\_radius()}{get\_tracking\_radius()}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::get\+\_\+tracking\+\_\+radius (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the knn search radius for matches. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a5e579fb431bcf03609ef0cb7f05bd0dc}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a5e579fb431bcf03609ef0cb7f05bd0dc}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!init@{init}}
+\index{init@{init}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::init (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{image,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{keypoints,  }\item[{const cv\+::\+Mat \&}]{descs,  }\item[{int}]{tracking\+Radius,  }\item[{int}]{hashing\+Cell\+Size,  }\item[{int}]{vertical\+Search\+Radius,  }\item[{float}]{triangulation\+Ratio\+Th,  }\item[{float}]{tracking\+Ratio\+Th,  }\item[{float}]{desc\+Dist\+Th,  }\item[{std\+::vector$<$ float $>$ $\ast$}]{kps\+Depth = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & Image where features were found. Used only to get the number of rows/columns \\
+\hline
+\mbox{\texttt{ in}}  & {\em keypoints} & Keypoints in image \\
+\hline
+\mbox{\texttt{ in}}  & {\em descs} & Descriptors of map features \\
+\hline
+\mbox{\texttt{ in}}  & {\em tracking\+Radius} & Maximum distance between two features to consider a match \\
+\hline
+\mbox{\texttt{ in}}  & {\em hashing\+Cell\+Size} & Size of the search match window in pixel. \\
+\hline
+\mbox{\texttt{ in}}  & {\em vertical\+Search\+Radius} & Maximum row distance between two features to consider a match \\
+\hline
+\mbox{\texttt{ in}}  & {\em triangulation\+Ratio\+Th} & \\
+\hline
+\mbox{\texttt{ in}}  & {\em tracking\+Ratio\+Th} & \\
+\hline
+\mbox{\texttt{ in}}  & {\em desc\+Dist\+Th} & Maximum distance of two descriptors to consider a match \\
+\hline
+\mbox{\texttt{ in}}  & {\em kps\+Depth} & (optional) Vector storing the depth of each feature \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a0cd025baadc30ba141fafc74eddcbce4}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a0cd025baadc30ba141fafc74eddcbce4}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!is\_depth\_associated@{is\_depth\_associated}}
+\index{is\_depth\_associated@{is\_depth\_associated}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{is\_depth\_associated()}{is\_depth\_associated()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::is\+\_\+depth\+\_\+associated (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the features are associated with depth values. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a2c9e240f04a012e3399aeb81baf1f3d6}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a2c9e240f04a012e3399aeb81baf1f3d6}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!is\_matched@{is\_matched}}
+\index{is\_matched@{is\_matched}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{is\_matched()}{is\_matched()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::is\+\_\+matched (\begin{DoxyParamCaption}\item[{unsigned int}]{idx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if a feature as already been matched to a point. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_abcc7388f6b2206a33d07c9057e76ddd0}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_abcc7388f6b2206a33d07c9057e76ddd0}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!mark\_as\_matched@{mark\_as\_matched}}
+\index{mark\_as\_matched@{mark\_as\_matched}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{mark\_as\_matched()}{mark\_as\_matched()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::mark\+\_\+as\+\_\+matched (\begin{DoxyParamCaption}\item[{unsigned int}]{idx,  }\item[{bool}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Marks a feature id as been matched to a point. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae203933f47af18c59e18371fbdcc1b6e}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_ae203933f47af18c59e18371fbdcc1b6e}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!reset\_matched\_marks@{reset\_matched\_marks}}
+\index{reset\_matched\_marks@{reset\_matched\_marks}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{reset\_matched\_marks()}{reset\_matched\_marks()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::reset\+\_\+matched\+\_\+marks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reset the matched feature container. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_aa82a38e8757fcf8d8ec95cfd1da5f98a}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_aa82a38e8757fcf8d8ec95cfd1da5f98a}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!row\_match@{row\_match}}
+\index{row\_match@{row\_match}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{row\_match()}{row\_match()}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::row\+\_\+match (\begin{DoxyParamCaption}\item[{const cv\+::\+Point2f \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{desc }\end{DoxyParamCaption}) const}
+
+
+
+Searches for a match between a point and our map features. Reduces search space to rows. It uses a k nearest neighbors method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pt} & The point to search a match for \\
+\hline
+\mbox{\texttt{ in}}  & {\em desc} & Descriptor of pt\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Index of the matched feature, or -\/1 if no match 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a1f86974b67ba4733b5307501db83794a}\label{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct_a1f86974b67ba4733b5307501db83794a}} 
+\index{rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}!set\_tracking\_radius@{set\_tracking\_radius}}
+\index{set\_tracking\_radius@{set\_tracking\_radius}!rgbd\_slam::poseEstimation::Image\_Features\_Struct@{rgbd\_slam::poseEstimation::Image\_Features\_Struct}}
+\doxysubsubsection{\texorpdfstring{set\_tracking\_radius()}{set\_tracking\_radius()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Image\+\_\+\+Features\+\_\+\+Struct\+::set\+\_\+tracking\+\_\+radius (\begin{DoxyParamCaption}\item[{unsigned int}]{tracking\+\_\+radius }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___struct_8hpp}{Image\+\_\+\+Features\+\_\+\+Struct.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_image___features___struct_8cpp}{Image\+\_\+\+Features\+\_\+\+Struct.\+cpp}}\end{DoxyCompactItemize}

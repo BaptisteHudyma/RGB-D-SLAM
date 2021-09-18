@@ -1,0 +1,25 @@
+\hypertarget{_levenberg_marquard_functors_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\+Levenberg\+Marquard\+Functors.cpp File Reference}
+\label{_levenberg_marquard_functors_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/LevenbergMarquardFunctors.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/LevenbergMarquardFunctors.cpp}}
+{\ttfamily \#include \char`\"{}Levenberg\+Marquard\+Functors.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4ba8f7525d651525350b572363fed081}{rgbd\+\_\+slam\+::utils\+::get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointA, const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac13081f91721c0f1cc6aa6cebc521301}{rgbd\+\_\+slam\+::utils\+::get\+\_\+weight}} (const double error, const double median\+Of\+Errors)
+\begin{DoxyCompactList}\small\item\em Compute a weight associated by this error, using a Hubert type loss. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a6991e4f4b4c3274d748208f7a19bb3be}{rgbd\+\_\+slam\+::utils\+::get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
+\begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac3f348ece872432f12e2c303a491f072}{rgbd\+\_\+slam\+::utils\+::get\+\_\+median}} (std\+::vector$<$ double $>$ \&input\+Vector)
+\item 
+const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1utils_a6d9c8322b1fc001b47df668e791993a7}{rgbd\+\_\+slam\+::utils\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
+\begin{DoxyCompactList}\small\item\em Use for debug. \end{DoxyCompactList}\end{DoxyCompactItemize}

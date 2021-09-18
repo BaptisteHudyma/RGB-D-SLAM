@@ -1,0 +1,76 @@
+\hypertarget{classrgbd__slam_1_1utils_1_1_key___point___extraction}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Key\+\_\+\+Point\+\_\+\+Extraction Class Reference}
+\label{classrgbd__slam_1_1utils_1_1_key___point___extraction}\index{rgbd\_slam::utils::Key\_Point\_Extraction@{rgbd\_slam::utils::Key\_Point\_Extraction}}
+
+
+A class to detect and store keypoints.  
+
+
+
+
+{\ttfamily \#include $<$Key\+Point\+Detection.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_key___point___extraction_ae42dab456c1a28b72f14108fc3093878}{Key\+\_\+\+Point\+\_\+\+Extraction}} (const unsigned int min\+Hessian=25)
+\item 
+const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_keypoint___handler}{Keypoint\+\_\+\+Handler}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_key___point___extraction_aee3ef366237bad639cd066713af7a323}{detect\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&depth\+Image)
+\begin{DoxyCompactList}\small\item\em detect the keypoints in the gray image \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_key___point___extraction_a52eba133397ad56330a2762287f9f7ce}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Time, const unsigned int frame\+Count) const
+\begin{DoxyCompactList}\small\item\em Show the time statistics for certain parts of the program. Kind of a basic profiler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to detect and store keypoints. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_key___point___extraction_ae42dab456c1a28b72f14108fc3093878}\label{classrgbd__slam_1_1utils_1_1_key___point___extraction_ae42dab456c1a28b72f14108fc3093878}} 
+\index{rgbd\_slam::utils::Key\_Point\_Extraction@{rgbd\_slam::utils::Key\_Point\_Extraction}!Key\_Point\_Extraction@{Key\_Point\_Extraction}}
+\index{Key\_Point\_Extraction@{Key\_Point\_Extraction}!rgbd\_slam::utils::Key\_Point\_Extraction@{rgbd\_slam::utils::Key\_Point\_Extraction}}
+\doxysubsubsection{\texorpdfstring{Key\_Point\_Extraction()}{Key\_Point\_Extraction()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::\+Key\+\_\+\+Point\+\_\+\+Extraction (\begin{DoxyParamCaption}\item[{const unsigned int}]{min\+Hessian = {\ttfamily 25} }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_key___point___extraction_aee3ef366237bad639cd066713af7a323}\label{classrgbd__slam_1_1utils_1_1_key___point___extraction_aee3ef366237bad639cd066713af7a323}} 
+\index{rgbd\_slam::utils::Key\_Point\_Extraction@{rgbd\_slam::utils::Key\_Point\_Extraction}!detect\_keypoints@{detect\_keypoints}}
+\index{detect\_keypoints@{detect\_keypoints}!rgbd\_slam::utils::Key\_Point\_Extraction@{rgbd\_slam::utils::Key\_Point\_Extraction}}
+\doxysubsubsection{\texorpdfstring{detect\_keypoints()}{detect\_keypoints()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_keypoint___handler}{Keypoint\+\_\+\+Handler}} rgbd\+\_\+slam\+::utils\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::detect\+\_\+keypoints (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat \&}]{depth\+Image }\end{DoxyParamCaption})}
+
+
+
+detect the keypoints in the gray image 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em gray\+Image} & The input image from camera\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An object that contains the detected keypoints 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_key___point___extraction_a52eba133397ad56330a2762287f9f7ce}\label{classrgbd__slam_1_1utils_1_1_key___point___extraction_a52eba133397ad56330a2762287f9f7ce}} 
+\index{rgbd\_slam::utils::Key\_Point\_Extraction@{rgbd\_slam::utils::Key\_Point\_Extraction}!show\_statistics@{show\_statistics}}
+\index{show\_statistics@{show\_statistics}!rgbd\_slam::utils::Key\_Point\_Extraction@{rgbd\_slam::utils::Key\_Point\_Extraction}}
+\doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Time,  }\item[{const unsigned int}]{frame\+Count }\end{DoxyParamCaption}) const}
+
+
+
+Show the time statistics for certain parts of the program. Kind of a basic profiler. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mean\+Frame\+Treatment\+Time} & The mean time in seconds that this program used to treat one frame \\
+\hline
+\mbox{\texttt{ in}}  & {\em frame\+Count} & Total of frame treated by the program \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_key_point_detection_8hpp}{Key\+Point\+Detection.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_key_point_detection_8cpp}{Key\+Point\+Detection.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,74 @@
+\hypertarget{_local_map_8hpp_source}{}\doxysection{Local\+Map.\+hpp}
+\label{_local_map_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/LocalMap.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/LocalMap.hpp}}
+\mbox{\hyperlink{_local_map_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef LOCAL\_MAP\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define LOCAL\_MAP\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{utils_2_parameters_8hpp}{Parameters.hpp}}"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13     \textcolor{keyword}{class }Image\_Features\_Struct;}
+\DoxyCodeLine{14     \textcolor{keyword}{class }Image\_Features\_Handler;}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map}{Local\_Map}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18         \textcolor{keyword}{public}:}
+\DoxyCodeLine{22             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a43286b16785b2c546b3fcbf968aaa6e9}{Local\_Map}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}}\& voparams,}
+\DoxyCodeLine{23                     \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}{Image\_Features\_Handler}}* featureHandler);}
+\DoxyCodeLine{24             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4d7b5dd73599be89f26565956bafb62b}{\string~Local\_Map}}();}
+\DoxyCodeLine{25             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6784b9899e780f3ef6c93891d64226d5}{reset}}();}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{34             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a457d4a74963bea99a82c07df22196778}{update\_with\_new\_triangulation}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}\& camPose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& features, \textcolor{keywordtype}{bool} dontStage = \textcolor{keyword}{false});}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{42             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a1bf8d1bbd8b0de6c1221a36504ab0ea6}{update\_staged\_map\_points}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}\& camPose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& features);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{49             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a57fde8f7779aecb4ad241e98890de4cc}{clean\_untracked\_points}}(\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& features);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51         \textcolor{keyword}{public}: \textcolor{comment}{//getters}}
+\DoxyCodeLine{52             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_af64855f5d4e753fe31ad94151a37312d}{get\_map\_size}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_mapPoints.size(); \}}
+\DoxyCodeLine{53             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6ebdc6482e6ff54a9d0b20a8c02b6ef0}{get\_staged\_points\_count}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_stagedPoints.size(); \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{65             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a477e7570c26d41c4dd0c647847ed87ec}{find\_matches}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&camPose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& features,}
+\DoxyCodeLine{66                     \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\_array}}\& mapPoints, std::vector<int>\& matchesLeft);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68         \textcolor{keyword}{private}:}
+\DoxyCodeLine{69             \textcolor{keyword}{struct }mapPoint}
+\DoxyCodeLine{70             \{}
+\DoxyCodeLine{71                 EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{72                     cv::Mat descriptor;     \textcolor{comment}{// descriptor for the keypoint used initially to triangulate this map point}}
+\DoxyCodeLine{73                 \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} position;       \textcolor{comment}{// world position of this point}}
+\DoxyCodeLine{74                 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} counter;   \textcolor{comment}{// depending on context, if the point is staged then this is the number of frames it has been tracked while staged. If it is a map point, then this is the number of times it failed tracking.}}
+\DoxyCodeLine{75                 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} age;       \textcolor{comment}{// number of frames this map point was successfully tracked and thus used in pose estimation}}
+\DoxyCodeLine{76                 \textcolor{keywordtype}{int} match\_idx;}
+\DoxyCodeLine{77             \};}
+\DoxyCodeLine{78             \textcolor{keyword}{typedef} std::vector<mapPoint, Eigen::aligned\_allocator<mapPoint>> mapPointArray;}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81             \mbox{\hyperlink{classrgbd__slam_1_1_parameters}{Parameters}} \_voParams;}
+\DoxyCodeLine{82             Image\_Features\_Handler *\_featuresHandler;}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84             mapPointArray \_mapPoints;}
+\DoxyCodeLine{85             mapPointArray \_stagedPoints;}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90             \textcolor{comment}{//void triangulate(const Pose \&camPose, Image\_Features\_Struct\& features, Image\_Features\_Struct\& featuresRight, mapPointArray\& outPoints);}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{99             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4f3d65ca6c8bebe2d9c346e6b3dcc63b}{triangulate\_rgbd}}(\textcolor{keyword}{const} Pose\& camPose, Image\_Features\_Struct\& features, mapPointArray\& outPoints);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101     \};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \}}
+\DoxyCodeLine{104 \}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

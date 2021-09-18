@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['mark_5fas_5fmatched_474',['mark_as_matched',['../classpose_estimation_1_1_image___features___struct.html#abfdba6a17e6877d567c5210e30b5025c',1,'poseEstimation::Image_Features_Struct']]],
-  ['merge_5fplanes_475',['merge_planes',['../classprimitive_detection_1_1_primitive___detection.html#af966d32f993bf7cae816e5472cc0aa5d',1,'primitiveDetection::Primitive_Detection']]],
-  ['monocular_5fdepth_5fmap_476',['Monocular_Depth_Map',['../class_monocular___depth___map.html#a73335b6eece3925f581b8d32586db5dd',1,'Monocular_Depth_Map']]],
-  ['motion_5fmodel_477',['Motion_Model',['../classpose_estimation_1_1_motion___model.html#a7286f58ba5c215cecd6ac84569e40d95',1,'poseEstimation::Motion_Model']]]
+  ['levenberg_5fmarquard_5ffunctor_0',['Levenberg_Marquard_Functor',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#aef9951b033fee99be0abe5d489b6d941',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]],
+  ['load_5fparameters_1',['load_parameters',['../classrgbd__slam_1_1primitive_detection_1_1_depth___operations.html#a66eaa87b44fe1cb937e6726938b639b8',1,'rgbd_slam::primitiveDetection::Depth_Operations']]],
+  ['local_5fmap_2',['Local_Map',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a55f49d47df2e5c63d581786b64645ee6',1,'rgbd_slam::map_management::Local_Map::Local_Map()'],['../classrgbd__slam_1_1pose_estimation_1_1_local___map.html#a43286b16785b2c546b3fcbf968aaa6e9',1,'rgbd_slam::poseEstimation::Local_Map::Local_Map()']]]
 ];

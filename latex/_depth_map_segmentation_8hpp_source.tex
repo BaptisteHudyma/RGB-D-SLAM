@@ -1,0 +1,25 @@
+\hypertarget{_depth_map_segmentation_8hpp_source}{}\doxysection{Depth\+Map\+Segmentation.\+hpp}
+\label{_depth_map_segmentation_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/primitives\_detection/DepthMapSegmentation.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/primitives\_detection/DepthMapSegmentation.hpp}}
+\mbox{\hyperlink{_depth_map_segmentation_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef DEPTH\_MAP\_SEGMENTATION}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define DEPTH\_MAP\_SEGMENTATION}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }primitiveDetection \{}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{15     \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacergbd__slam_1_1primitive_detection_acd0b1c195a1be046d7a4142276176bf9}{get\_normal\_map}}(\textcolor{keyword}{const} cv::Mat\& depthMap, cv::Mat\& normalMap) ;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{24     \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacergbd__slam_1_1primitive_detection_a81199460be1deb6eca2aa23058c626b2}{get\_edge\_masks}}(\textcolor{keyword}{const} cv::Mat\& depthMap, \textcolor{keyword}{const} cv::Mat\& normalMap, cv::Mat\& edgeMap);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{34     \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacergbd__slam_1_1primitive_detection_a3927753b034b1f78e2c99e4e56b3cf61}{get\_segmented\_depth\_map}}(\textcolor{keyword}{const} cv::Mat\& depthMap, cv::Mat\& finalSegmented, \textcolor{keyword}{const} cv::Mat\& kernel, \textcolor{keyword}{const} \textcolor{keywordtype}{double} reducePourcent=0.5);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{43     \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacergbd__slam_1_1primitive_detection_a1f0b0cfdc1647a99f14e08ffac56e094}{draw\_segmented\_labels}}(\textcolor{keyword}{const} cv::Mat\& segmentedImage, \textcolor{keyword}{const} std::vector<cv::Vec3b>\& colors, cv::Mat\& outputImage);}
+\DoxyCodeLine{44 \}}
+\DoxyCodeLine{45 \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

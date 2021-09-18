@@ -1,0 +1,46 @@
+\hypertarget{_motion_model_8hpp_source}{}\doxysection{Motion\+Model.\+hpp}
+\label{_motion_model_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/MotionModel.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/MotionModel.hpp}}
+\mbox{\hyperlink{_motion_model_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef MOTION\_MODEL\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define MOTION\_MODEL\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{15     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model}{Motion\_Model}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17         \textcolor{keyword}{public}:}
+\DoxyCodeLine{18             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model_a3e6c822c291908b6fc4bab3bb63142cd}{Motion\_Model}}();}
+\DoxyCodeLine{19             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model_a76f043f2f99ec2a81e1c4c300081d1c6}{reset}}();}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{26             \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model_a9e8e301483f03997ed94c622cfb5bc5a}{predict\_next\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}\& currentPose);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{33             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model_a3cf38e432414231f0ee753d651c32388}{update\_model}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}\& pose);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35             EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39         \textcolor{keyword}{private}:}
+\DoxyCodeLine{40                 \textcolor{comment}{// Last known rotation quaternion estimated by the motion model (set by update\_model)}}
+\DoxyCodeLine{41                 \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \_lastQ;}
+\DoxyCodeLine{42                 \textcolor{comment}{// Last computed angular velocity}}
+\DoxyCodeLine{43                 \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \_angularVelocity;}
+\DoxyCodeLine{44                 \textcolor{comment}{// Last known translation estimated by the motion model (set by update\_model)}}
+\DoxyCodeLine{45                 \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \_lastPosition;}
+\DoxyCodeLine{46                 \textcolor{comment}{// Last computed linear velocity}}
+\DoxyCodeLine{47                 \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \_linearVelocity;}
+\DoxyCodeLine{48     \};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \}}
+\DoxyCodeLine{51 \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

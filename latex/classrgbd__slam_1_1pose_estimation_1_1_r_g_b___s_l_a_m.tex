@@ -1,0 +1,144 @@
+\hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::RGB\+\_\+\+SLAM Class Reference}
+\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+
+
+SLAM algorithm based on special points tracking in a local map.  
+
+
+
+
+{\ttfamily \#include $<$RGB\+\_\+\+Slam.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}{e\+State}} \{ \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea36c960419e1c7560f2e5b39849acadde}{e\+State\+\_\+\+NOT\+\_\+\+INITIALIZED}} = 1
+, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1feafd3b4be297632cfea18daa7be730b6b6}{e\+State\+\_\+\+TRACKING}}
+, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea496c42a92d23b6d69d8ba08041c8ece5}{e\+State\+\_\+\+LOST}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a67e29bf0ac3484ce896874ca17d90b5a}{RGB\+\_\+\+SLAM}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&param)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ada33dfacba01b62ff190e840673acf95}{reset}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a684077279f7e92f12b0ef724bf9c6df2}{track}} (const cv\+::\+Mat \&img\+RGB, const cv\+::\+Mat \&img\+Depth)
+\begin{DoxyCompactList}\small\item\em Update the current pose from features and motion model. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}{e\+State}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a57ac767cf7b24e7d0a3bd70a991e36d7}{get\+\_\+state}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_aca73f89a085d04f5ea92039d5277c5ab}{need\+\_\+new\+\_\+triangulation}} ()
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a89365e1532e2c19b064aecdaa4900316}{triangulation\+\_\+policy\+\_\+decreasing\+\_\+matches}} ()
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ae5eaaa8ff512ae775fedf1284afd4193}{triangulation\+\_\+policy\+\_\+always\+\_\+triangulate}} ()
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a5700e6aaa45a435cb9faa9100fe5427e}{triangulation\+\_\+policy\+\_\+map\+\_\+size}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+SLAM algorithm based on special points tracking in a local map. 
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!eState@{eState}}
+\index{eState@{eState}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{eState}{eState}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}{rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::e\+State}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{eState\_NOT\_INITIALIZED@{eState\_NOT\_INITIALIZED}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!eState\_NOT\_INITIALIZED@{eState\_NOT\_INITIALIZED}}}\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea36c960419e1c7560f2e5b39849acadde}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea36c960419e1c7560f2e5b39849acadde}} 
+e\+State\+\_\+\+NOT\+\_\+\+INITIALIZED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{eState\_TRACKING@{eState\_TRACKING}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!eState\_TRACKING@{eState\_TRACKING}}}\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1feafd3b4be297632cfea18daa7be730b6b6}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1feafd3b4be297632cfea18daa7be730b6b6}} 
+e\+State\+\_\+\+TRACKING&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{eState\_LOST@{eState\_LOST}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!eState\_LOST@{eState\_LOST}}}\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea496c42a92d23b6d69d8ba08041c8ece5}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea496c42a92d23b6d69d8ba08041c8ece5}} 
+e\+State\+\_\+\+LOST&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a67e29bf0ac3484ce896874ca17d90b5a}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a67e29bf0ac3484ce896874ca17d90b5a}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!RGB\_SLAM@{RGB\_SLAM}}
+\index{RGB\_SLAM@{RGB\_SLAM}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{RGB\_SLAM()}{RGB\_SLAM()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::\+RGB\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&}]{param }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a57ac767cf7b24e7d0a3bd70a991e36d7}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a57ac767cf7b24e7d0a3bd70a991e36d7}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!get\_state@{get\_state}}
+\index{get\_state@{get\_state}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{get\_state()}{get\_state()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}{e\+State}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::get\+\_\+state (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_aca73f89a085d04f5ea92039d5277c5ab}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_aca73f89a085d04f5ea92039d5277c5ab}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!need\_new\_triangulation@{need\_new\_triangulation}}
+\index{need\_new\_triangulation@{need\_new\_triangulation}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{need\_new\_triangulation()}{need\_new\_triangulation()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::need\+\_\+new\+\_\+triangulation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ada33dfacba01b62ff190e840673acf95}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ada33dfacba01b62ff190e840673acf95}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!reset@{reset}}
+\index{reset@{reset}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a684077279f7e92f12b0ef724bf9c6df2}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a684077279f7e92f12b0ef724bf9c6df2}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!track@{track}}
+\index{track@{track}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::track (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{img\+RGB,  }\item[{const cv\+::\+Mat \&}]{img\+Depth }\end{DoxyParamCaption})}
+
+
+
+Update the current pose from features and motion model. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em } & \\
+\hline
+\end{DoxyParams}
+img\+RGB 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em img\+Depth} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new pose 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ae5eaaa8ff512ae775fedf1284afd4193}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ae5eaaa8ff512ae775fedf1284afd4193}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!triangulation\_policy\_always\_triangulate@{triangulation\_policy\_always\_triangulate}}
+\index{triangulation\_policy\_always\_triangulate@{triangulation\_policy\_always\_triangulate}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{triangulation\_policy\_always\_triangulate()}{triangulation\_policy\_always\_triangulate()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::triangulation\+\_\+policy\+\_\+always\+\_\+triangulate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a89365e1532e2c19b064aecdaa4900316}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a89365e1532e2c19b064aecdaa4900316}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!triangulation\_policy\_decreasing\_matches@{triangulation\_policy\_decreasing\_matches}}
+\index{triangulation\_policy\_decreasing\_matches@{triangulation\_policy\_decreasing\_matches}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{triangulation\_policy\_decreasing\_matches()}{triangulation\_policy\_decreasing\_matches()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::triangulation\+\_\+policy\+\_\+decreasing\+\_\+matches (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a5700e6aaa45a435cb9faa9100fe5427e}\label{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a5700e6aaa45a435cb9faa9100fe5427e}} 
+\index{rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}!triangulation\_policy\_map\_size@{triangulation\_policy\_map\_size}}
+\index{triangulation\_policy\_map\_size@{triangulation\_policy\_map\_size}!rgbd\_slam::poseEstimation::RGB\_SLAM@{rgbd\_slam::poseEstimation::RGB\_SLAM}}
+\doxysubsubsection{\texorpdfstring{triangulation\_policy\_map\_size()}{triangulation\_policy\_map\_size()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+Estimation\+::\+RGB\+\_\+\+SLAM\+::triangulation\+\_\+policy\+\_\+map\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_r_g_b___slam_8hpp}{RGB\+\_\+\+Slam.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_r_g_b___slam_8cpp}{RGB\+\_\+\+Slam.\+cpp}}\end{DoxyCompactItemize}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['patch_5fsize_555',['PATCH_SIZE',['../primitives__detection_2_parameters_8hpp.html#a1e23d3153a7cb6631b27071eecc17b71',1,'Parameters.hpp']]]
+  ['setmasktime_0',['setMaskTime',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#acd7b42a409f32a6f3c96931e8f73be65',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]]
 ];

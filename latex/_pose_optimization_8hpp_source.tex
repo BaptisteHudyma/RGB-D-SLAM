@@ -1,0 +1,29 @@
+\hypertarget{_pose_optimization_8hpp_source}{}\doxysection{Pose\+Optimization.\+hpp}
+\label{_pose_optimization_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/PoseOptimization.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/PoseOptimization.hpp}}
+\mbox{\hyperlink{_pose_optimization_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_POSE\_OPTIMIZATION\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_POSE\_OPTIMIZATION\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{8     \textcolor{keyword}{namespace }utils \{}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose___optimization}{Pose\_Optimization}}}
+\DoxyCodeLine{11         \{}
+\DoxyCodeLine{12             \textcolor{keyword}{public}:}
+\DoxyCodeLine{21                 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}}  \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose___optimization_ac186dabe434874601243bb1178288851}{compute\_optimized\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}}\& currentPose, \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\_point\_container}}\& matchedPoints);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23             \textcolor{keyword}{private}:}
+\DoxyCodeLine{32                 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}} get\_optimized\_global\_pose(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{poseEstimation::Pose}}\& currentPose, \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\_point\_container}}\& matchedPoints);}
+\DoxyCodeLine{33         \};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \}   \textcolor{comment}{/* utils */}}
+\DoxyCodeLine{36 \}   \textcolor{comment}{/* rgbd\_slam */}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

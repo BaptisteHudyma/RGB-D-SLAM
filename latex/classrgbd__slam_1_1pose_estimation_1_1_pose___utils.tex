@@ -1,0 +1,50 @@
+\hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose___utils}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::Pose\+\_\+\+Utils Class Reference}
+\label{classrgbd__slam_1_1pose_estimation_1_1_pose___utils}\index{rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}}
+
+
+{\ttfamily \#include $<$Pose\+Utils.\+hpp$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a249026c19569660e5535f8372d53044b}{compute\+\_\+right\+\_\+camera\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&left\+Cam\+Pose, double base\+Line)
+\item 
+static const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a25351c2ecbcb7f7d97d11a43d603d132}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&camera\+Pose)
+\item 
+static const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a505fa071e5336d46bd8c9f9e405cce93}{compute\+\_\+projection\+\_\+matrix}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&camera\+Pose, const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \&intrisics)
+\item 
+static const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_adef3cfdb3832997b6dcc0df9475b6181}{project\+\_\+point}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&pt, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&projection\+Matrix)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a505fa071e5336d46bd8c9f9e405cce93}\label{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a505fa071e5336d46bd8c9f9e405cce93}} 
+\index{rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}!compute\_projection\_matrix@{compute\_projection\_matrix}}
+\index{compute\_projection\_matrix@{compute\_projection\_matrix}!rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}}
+\doxysubsubsection{\texorpdfstring{compute\_projection\_matrix()}{compute\_projection\_matrix()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+\_\+\+Utils\+::compute\+\_\+projection\+\_\+matrix (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{camera\+Pose,  }\item[{const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \&}]{intrisics }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a249026c19569660e5535f8372d53044b}\label{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a249026c19569660e5535f8372d53044b}} 
+\index{rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}!compute\_right\_camera\_pose@{compute\_right\_camera\_pose}}
+\index{compute\_right\_camera\_pose@{compute\_right\_camera\_pose}!rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}}
+\doxysubsubsection{\texorpdfstring{compute\_right\_camera\_pose()}{compute\_right\_camera\_pose()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+\_\+\+Utils\+::compute\+\_\+right\+\_\+camera\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{left\+Cam\+Pose,  }\item[{double}]{base\+Line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a25351c2ecbcb7f7d97d11a43d603d132}\label{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_a25351c2ecbcb7f7d97d11a43d603d132}} 
+\index{rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}
+\index{compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}!rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}}
+\doxysubsubsection{\texorpdfstring{compute\_world\_to\_camera\_transform()}{compute\_world\_to\_camera\_transform()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+\_\+\+Utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{camera\+Pose }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_adef3cfdb3832997b6dcc0df9475b6181}\label{classrgbd__slam_1_1pose_estimation_1_1_pose___utils_adef3cfdb3832997b6dcc0df9475b6181}} 
+\index{rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}!project\_point@{project\_point}}
+\index{project\_point@{project\_point}!rgbd\_slam::poseEstimation::Pose\_Utils@{rgbd\_slam::poseEstimation::Pose\_Utils}}
+\doxysubsubsection{\texorpdfstring{project\_point()}{project\_point()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+\_\+\+Utils\+::project\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{pt,  }\item[{const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&}]{projection\+Matrix }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_pose_utils_8hpp}{Pose\+Utils.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_pose_utils_8cpp}{Pose\+Utils.\+cpp}}\end{DoxyCompactItemize}

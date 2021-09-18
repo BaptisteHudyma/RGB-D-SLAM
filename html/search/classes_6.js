@@ -1,13 +1,6 @@
 var searchData=
 [
-  ['parameters_308',['Parameters',['../classpose_estimation_1_1_parameters.html',1,'poseEstimation']]],
-  ['plane_309',['Plane',['../classprimitive_detection_1_1_plane.html',1,'primitiveDetection']]],
-  ['plane_5fsegment_310',['Plane_Segment',['../classprimitive_detection_1_1_plane___segment.html',1,'primitiveDetection']]],
-  ['pnp_5fsolver_311',['PNP_Solver',['../classpose_estimation_1_1_p_n_p___solver.html',1,'poseEstimation']]],
-  ['pose_312',['Pose',['../classpose_estimation_1_1_pose.html',1,'poseEstimation']]],
-  ['pose_5festimator_313',['Pose_Estimator',['../structpose_estimation_1_1_pose___estimator.html',1,'poseEstimation']]],
-  ['pose_5ffunctor_314',['Pose_Functor',['../structpose_estimation_1_1_pose___functor.html',1,'poseEstimation']]],
-  ['pose_5futils_315',['Pose_Utils',['../classpose_estimation_1_1_pose___utils.html',1,'poseEstimation']]],
-  ['primitive_316',['Primitive',['../classprimitive_detection_1_1_primitive.html',1,'primitiveDetection']]],
-  ['primitive_5fdetection_317',['Primitive_Detection',['../classprimitive_detection_1_1_primitive___detection.html',1,'primitiveDetection']]]
+  ['levenberg_5fmarquard_5ffunctor_0',['Levenberg_Marquard_Functor',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html',1,'rgbd_slam::utils']]],
+  ['levenberg_5fmarquard_5ffunctor_3c_20double_20_3e_1',['Levenberg_Marquard_Functor&lt; double &gt;',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html',1,'rgbd_slam::utils']]],
+  ['local_5fmap_2',['Local_Map',['../classrgbd__slam_1_1map__management_1_1_local___map.html',1,'rgbd_slam::map_management::Local_Map'],['../classrgbd__slam_1_1pose_estimation_1_1_local___map.html',1,'rgbd_slam::poseEstimation::Local_Map']]]
 ];

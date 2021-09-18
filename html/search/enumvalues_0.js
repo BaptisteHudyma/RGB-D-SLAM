@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['estate_5flost_594',['eState_LOST',['../classpose_estimation_1_1_r_g_b___s_l_a_m.html#a1ab4922fad17ed553713c2c0d7363ba4a027d2621ee22c836edaa8d03c2a82b56',1,'poseEstimation::RGB_SLAM']]],
-  ['estate_5fnot_5finitialized_595',['eState_NOT_INITIALIZED',['../classpose_estimation_1_1_r_g_b___s_l_a_m.html#a1ab4922fad17ed553713c2c0d7363ba4a0f5739bd322c348603a5cab0796ede1b',1,'poseEstimation::RGB_SLAM']]],
-  ['estate_5ftracking_596',['eState_TRACKING',['../classpose_estimation_1_1_r_g_b___s_l_a_m.html#a1ab4922fad17ed553713c2c0d7363ba4a0d96f4612ad86280ce5328eeada1302f',1,'poseEstimation::RGB_SLAM']]],
-  ['etriangulation_5fpolicy_5falways_5ftriangulate_597',['etriangulation_policy_always_triangulate',['../classpose_estimation_1_1_parameters.html#abfd528e902df5af1ea598007e514fadca64aa2dc390dfd77723db0f312abb320f',1,'poseEstimation::Parameters']]],
-  ['etriangulation_5fpolicy_5fdecreasing_5fmatches_598',['etriangulation_policy_decreasing_matches',['../classpose_estimation_1_1_parameters.html#abfd528e902df5af1ea598007e514fadcaa31641b3b69683f1a95a756dbde3cd28',1,'poseEstimation::Parameters']]],
-  ['etriangulation_5fpolicy_5fmap_5fsize_599',['etriangulation_policy_map_size',['../classpose_estimation_1_1_parameters.html#abfd528e902df5af1ea598007e514fadcab9f868d2760c77115451aec94f1dcb7b',1,'poseEstimation::Parameters']]]
+  ['estate_5flost_0',['eState_LOST',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1fea496c42a92d23b6d69d8ba08041c8ece5',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
+  ['estate_5fnot_5finitialized_1',['eState_NOT_INITIALIZED',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1fea36c960419e1c7560f2e5b39849acadde',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
+  ['estate_5ftracking_2',['eState_TRACKING',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1feafd3b4be297632cfea18daa7be730b6b6',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
+  ['etriangulation_5fpolicy_5falways_5ftriangulate_3',['etriangulation_policy_always_triangulate',['../classrgbd__slam_1_1pose_estimation_1_1_parameters.html#a487b35c0da0e695467470e7a2fbf997ba8c2f8a337ce4c3e7aa39595d699667c2',1,'rgbd_slam::poseEstimation::Parameters']]],
+  ['etriangulation_5fpolicy_5fdecreasing_5fmatches_4',['etriangulation_policy_decreasing_matches',['../classrgbd__slam_1_1pose_estimation_1_1_parameters.html#a487b35c0da0e695467470e7a2fbf997ba49c6f3fca1afdc210ff8534b88e4b1f6',1,'rgbd_slam::poseEstimation::Parameters']]],
+  ['etriangulation_5fpolicy_5fmap_5fsize_5',['etriangulation_policy_map_size',['../classrgbd__slam_1_1pose_estimation_1_1_parameters.html#a487b35c0da0e695467470e7a2fbf997ba6790d45b2bac04cb9696b03392b04502',1,'rgbd_slam::poseEstimation::Parameters']]]
 ];

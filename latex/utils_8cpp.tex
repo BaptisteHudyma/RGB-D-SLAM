@@ -1,0 +1,22 @@
+\hypertarget{utils_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/utils.cpp File Reference}
+\label{utils_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/utils.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/utils.cpp}}
+{\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ad466b2065539634e416f852610825df3}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const unsigned int screenX, const unsigned int screenY, const double measuredZ, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&camera\+To\+World\+Matrix)
+\item 
+const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position3D, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&world\+To\+Camera\+Matrix)
+\begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&rotation, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position)
+\begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point to camera point. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_adcb619faed0258c497773d553cbf426c}{rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+original\+\_\+quaternion}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&original\+Quaternion, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&estimation\+Vector, const \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}} \&transformation\+MatrixB)
+\begin{DoxyCompactList}\small\item\em Return a quaternion from an ideal parametrization estimation\+Vector. \end{DoxyCompactList}\end{DoxyCompactItemize}

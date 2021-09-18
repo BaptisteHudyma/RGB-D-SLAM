@@ -1,0 +1,172 @@
+\hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::Local\+\_\+\+Map Class Reference}
+\label{classrgbd__slam_1_1pose_estimation_1_1_local___map}\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+
+
+{\ttfamily \#include $<$Local\+Map.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a43286b16785b2c546b3fcbf968aaa6e9}{Local\+\_\+\+Map}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&voparams, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}{Image\+\_\+\+Features\+\_\+\+Handler}} $\ast$feature\+Handler)
+\begin{DoxyCompactList}\small\item\em Keeps a reference to the features\+Handler object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4d7b5dd73599be89f26565956bafb62b}{$\sim$\+Local\+\_\+\+Map}} ()
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6784b9899e780f3ef6c93891d64226d5}{reset}} ()
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a457d4a74963bea99a82c07df22196778}{update\+\_\+with\+\_\+new\+\_\+triangulation}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, bool dont\+Stage=false)
+\begin{DoxyCompactList}\small\item\em Triangulate new map points from refined pose and add them to the local map. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a1bf8d1bbd8b0de6c1221a36504ab0ea6}{update\+\_\+staged\+\_\+map\+\_\+points}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features)
+\begin{DoxyCompactList}\small\item\em Add/remove features from staged points container if they are not tracked, or not visible from current position. Add new points to local map. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a57fde8f7779aecb4ad241e98890de4cc}{clean\+\_\+untracked\+\_\+points}} (\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features)
+\begin{DoxyCompactList}\small\item\em Mark untracked points as untracked in map, and add tracked points to local map. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_af64855f5d4e753fe31ad94151a37312d}{get\+\_\+map\+\_\+size}} () const
+\item 
+unsigned int \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6ebdc6482e6ff54a9d0b20a8c02b6ef0}{get\+\_\+staged\+\_\+points\+\_\+count}} () const
+\item 
+unsigned int \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a477e7570c26d41c4dd0c647847ed87ec}{find\+\_\+matches}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\+\_\+array}} \&map\+Points, std\+::vector$<$ int $>$ \&matches\+Left)
+\begin{DoxyCompactList}\small\item\em Compute point matches from current pose in the local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4f3d65ca6c8bebe2d9c346e6b3dcc63b}{triangulate\+\_\+rgbd}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, map\+Point\+Array \&out\+Points)
+\begin{DoxyCompactList}\small\item\em Create a container of new map points, that can be added to the local map, or staged. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a43286b16785b2c546b3fcbf968aaa6e9}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a43286b16785b2c546b3fcbf968aaa6e9}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!Local\_Map@{Local\_Map}}
+\index{Local\_Map@{Local\_Map}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{Local\_Map()}{Local\_Map()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::\+Local\+\_\+\+Map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&}]{voparams,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}{Image\+\_\+\+Features\+\_\+\+Handler}} $\ast$}]{feature\+Handler }\end{DoxyParamCaption})}
+
+
+
+Keeps a reference to the features\+Handler object. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4d7b5dd73599be89f26565956bafb62b}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4d7b5dd73599be89f26565956bafb62b}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!````~Local\_Map@{$\sim$Local\_Map}}
+\index{````~Local\_Map@{$\sim$Local\_Map}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{$\sim$Local\_Map()}{~Local\_Map()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::$\sim$\+Local\+\_\+\+Map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a57fde8f7779aecb4ad241e98890de4cc}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a57fde8f7779aecb4ad241e98890de4cc}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!clean\_untracked\_points@{clean\_untracked\_points}}
+\index{clean\_untracked\_points@{clean\_untracked\_points}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{clean\_untracked\_points()}{clean\_untracked\_points()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::clean\+\_\+untracked\+\_\+points (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features }\end{DoxyParamCaption})}
+
+
+
+Mark untracked points as untracked in map, and add tracked points to local map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em features} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a477e7570c26d41c4dd0c647847ed87ec}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a477e7570c26d41c4dd0c647847ed87ec}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!find\_matches@{find\_matches}}
+\index{find\_matches@{find\_matches}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{find\_matches()}{find\_matches()}}
+{\footnotesize\ttfamily unsigned int rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::find\+\_\+matches (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{\mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\+\_\+array}} \&}]{map\+Points,  }\item[{std\+::vector$<$ int $>$ \&}]{matches\+Left }\end{DoxyParamCaption})}
+
+
+
+Compute point matches from current pose in the local map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Position of the observer \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em features} & Current image features \\
+\hline
+\mbox{\texttt{ out}}  & {\em map\+Points} & All points matched in map \\
+\hline
+\mbox{\texttt{ out}}  & {\em matches\+Left} & ID of the last frame matched points\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+matched point count 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_af64855f5d4e753fe31ad94151a37312d}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_af64855f5d4e753fe31ad94151a37312d}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!get\_map\_size@{get\_map\_size}}
+\index{get\_map\_size@{get\_map\_size}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{get\_map\_size()}{get\_map\_size()}}
+{\footnotesize\ttfamily unsigned int rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::get\+\_\+map\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6ebdc6482e6ff54a9d0b20a8c02b6ef0}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6ebdc6482e6ff54a9d0b20a8c02b6ef0}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!get\_staged\_points\_count@{get\_staged\_points\_count}}
+\index{get\_staged\_points\_count@{get\_staged\_points\_count}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{get\_staged\_points\_count()}{get\_staged\_points\_count()}}
+{\footnotesize\ttfamily unsigned int rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::get\+\_\+staged\+\_\+points\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6784b9899e780f3ef6c93891d64226d5}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a6784b9899e780f3ef6c93891d64226d5}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!reset@{reset}}
+\index{reset@{reset}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4f3d65ca6c8bebe2d9c346e6b3dcc63b}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a4f3d65ca6c8bebe2d9c346e6b3dcc63b}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!triangulate\_rgbd@{triangulate\_rgbd}}
+\index{triangulate\_rgbd@{triangulate\_rgbd}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{triangulate\_rgbd()}{triangulate\_rgbd()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::triangulate\+\_\+rgbd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{map\+Point\+Array \&}]{out\+Points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Create a container of new map points, that can be added to the local map, or staged. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Observer position, already refined \\
+\hline
+\mbox{\texttt{ in}}  & {\em features} & Detected features in RGB image \\
+\hline
+\mbox{\texttt{ out}}  & {\em out\+Points} & Container of new points, triangulated from true pose \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a1bf8d1bbd8b0de6c1221a36504ab0ea6}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a1bf8d1bbd8b0de6c1221a36504ab0ea6}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!update\_staged\_map\_points@{update\_staged\_map\_points}}
+\index{update\_staged\_map\_points@{update\_staged\_map\_points}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{update\_staged\_map\_points()}{update\_staged\_map\_points()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::update\+\_\+staged\+\_\+map\+\_\+points (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features }\end{DoxyParamCaption})}
+
+
+
+Add/remove features from staged points container if they are not tracked, or not visible from current position. Add new points to local map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Position of the camera, already refined \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em features} & Features to treat, can be marked as matched \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_local___map_a457d4a74963bea99a82c07df22196778}\label{classrgbd__slam_1_1pose_estimation_1_1_local___map_a457d4a74963bea99a82c07df22196778}} 
+\index{rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}!update\_with\_new\_triangulation@{update\_with\_new\_triangulation}}
+\index{update\_with\_new\_triangulation@{update\_with\_new\_triangulation}!rgbd\_slam::poseEstimation::Local\_Map@{rgbd\_slam::poseEstimation::Local\_Map}}
+\doxysubsubsection{\texorpdfstring{update\_with\_new\_triangulation()}{update\_with\_new\_triangulation()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Local\+\_\+\+Map\+::update\+\_\+with\+\_\+new\+\_\+triangulation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{bool}]{dont\+Stage = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Triangulate new map points from refined pose and add them to the local map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Position of camera, already refined \\
+\hline
+\mbox{\texttt{ in}}  & {\em features} & \\
+\hline
+\mbox{\texttt{ in}}  & {\em dont\+Stage} & Dont store staged points \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_local_map_8hpp}{Local\+Map.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_local_map_8cpp}{Local\+Map.\+cpp}}\end{DoxyCompactItemize}

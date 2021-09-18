@@ -1,0 +1,87 @@
+\hypertarget{structrgbd__slam_1_1utils_1_1_global___pose___estimator}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Global\+\_\+\+Pose\+\_\+\+Estimator Struct Reference}
+\label{structrgbd__slam_1_1utils_1_1_global___pose___estimator}\index{rgbd\_slam::utils::Global\_Pose\_Estimator@{rgbd\_slam::utils::Global\_Pose\_Estimator}}
+
+
+Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator.  
+
+
+
+
+{\ttfamily \#include $<$Levenberg\+Marquard\+Functors.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::Global\+\_\+\+Pose\+\_\+\+Estimator\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structrgbd__slam_1_1utils_1_1_global___pose___estimator}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a54aec2366907e90200d81720783ebbb9}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const unsigned int n, \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&world\+Position, const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&world\+Rotation, const \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}} \&singular\+Bvalues)
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a85ef89ff19f45701cba788e070370660}{get\+\_\+distance\+\_\+to\+\_\+point}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&map\+Point, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&matched\+Point, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&world\+To\+Cam\+Matrix) const
+\begin{DoxyCompactList}\small\item\em Return te distance between the map point and the it\textquotesingle{}s matched point. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a749ac9f527068ea40f0eee9b35753e18}{operator()}} (const Eigen\+::\+Vector\+Xd \&z, Eigen\+::\+Vector\+Xd \&fvec) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a54aec2366907e90200d81720783ebbb9}\label{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a54aec2366907e90200d81720783ebbb9}} 
+\index{rgbd\_slam::utils::Global\_Pose\_Estimator@{rgbd\_slam::utils::Global\_Pose\_Estimator}!Global\_Pose\_Estimator@{Global\_Pose\_Estimator}}
+\index{Global\_Pose\_Estimator@{Global\_Pose\_Estimator}!rgbd\_slam::utils::Global\_Pose\_Estimator@{rgbd\_slam::utils::Global\_Pose\_Estimator}}
+\doxysubsubsection{\texorpdfstring{Global\_Pose\_Estimator()}{Global\_Pose\_Estimator()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const unsigned int}]{n,  }\item[{\mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \&}]{points,  }\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{world\+Position,  }\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{world\+Rotation,  }\item[{const \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}} \&}]{singular\+Bvalues }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em n} & Number of input parameters \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em points} & Matched 2D (screen) to 3D (world) points \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+Position} & Position of the observer in the world \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+Rotation} & Orientation of the observer in the world \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a85ef89ff19f45701cba788e070370660}\label{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a85ef89ff19f45701cba788e070370660}} 
+\index{rgbd\_slam::utils::Global\_Pose\_Estimator@{rgbd\_slam::utils::Global\_Pose\_Estimator}!get\_distance\_to\_point@{get\_distance\_to\_point}}
+\index{get\_distance\_to\_point@{get\_distance\_to\_point}!rgbd\_slam::utils::Global\_Pose\_Estimator@{rgbd\_slam::utils::Global\_Pose\_Estimator}}
+\doxysubsubsection{\texorpdfstring{get\_distance\_to\_point()}{get\_distance\_to\_point()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::get\+\_\+distance\+\_\+to\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&}]{world\+To\+Cam\+Matrix }\end{DoxyParamCaption}) const}
+
+
+
+Return te distance between the map point and the it\textquotesingle{}s matched point. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em map\+Point} & The map point in 3D world coordinates \\
+\hline
+\mbox{\texttt{ in}}  & {\em matched\+Point} & The detected \& matched point, in 3D screen coordinates \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+To\+Cam\+Matrix} & The matrix to make a transformation from world coordinates to screen coordinates\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The 2D screen distance between those two points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a749ac9f527068ea40f0eee9b35753e18}\label{structrgbd__slam_1_1utils_1_1_global___pose___estimator_a749ac9f527068ea40f0eee9b35753e18}} 
+\index{rgbd\_slam::utils::Global\_Pose\_Estimator@{rgbd\_slam::utils::Global\_Pose\_Estimator}!operator()@{operator()}}
+\index{operator()@{operator()}!rgbd\_slam::utils::Global\_Pose\_Estimator@{rgbd\_slam::utils::Global\_Pose\_Estimator}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::utils\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::operator() (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{z,  }\item[{Eigen\+::\+Vector\+Xd \&}]{fvec }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_levenberg_marquard_functors_8hpp}{Levenberg\+Marquard\+Functors.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_levenberg_marquard_functors_8cpp}{Levenberg\+Marquard\+Functors.\+cpp}}\end{DoxyCompactItemize}

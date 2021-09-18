@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['image_5ffeatures_5fhandler_301',['Image_Features_Handler',['../classpose_estimation_1_1_image___features___handler.html',1,'poseEstimation']]],
-  ['image_5ffeatures_5fstruct_302',['Image_Features_Struct',['../classpose_estimation_1_1_image___features___struct.html',1,'poseEstimation']]]
+  ['histogram_0',['Histogram',['../classrgbd__slam_1_1primitive_detection_1_1_histogram.html',1,'rgbd_slam::primitiveDetection']]]
 ];

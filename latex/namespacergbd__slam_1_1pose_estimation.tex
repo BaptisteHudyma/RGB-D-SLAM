@@ -1,0 +1,77 @@
+\hypertarget{namespacergbd__slam_1_1pose_estimation}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation Namespace Reference}
+\label{namespacergbd__slam_1_1pose_estimation}\index{rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\+\_\+features\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em Container storing an image, feature detectors, camera parameters, image division in search regions, ... \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}{Image\+\_\+\+Features\+\_\+\+Handler}}
+\begin{DoxyCompactList}\small\item\em Main image feature detection class. Computes image features and provide methods for feature matching. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}}
+\begin{DoxyCompactList}\small\item\em Stores a list of keypoints (features) and provide methods to find a match of a point in those features. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map}{Local\+\_\+\+Map}}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model}{Motion\+\_\+\+Model}}
+\begin{DoxyCompactList}\small\item\em Dead reckoning class\+: guess next pose using a motion model. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}}
+\begin{DoxyCompactList}\small\item\em Load camera parameters from configuration file. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver}{PNP\+\_\+\+Solver}}
+\begin{DoxyCompactList}\small\item\em Compute a pose estimation. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}
+\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose___utils}{Pose\+\_\+\+Utils}}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}{RGB\+\_\+\+SLAM}}
+\begin{DoxyCompactList}\small\item\em SLAM algorithm based on special points tracking in a local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::vector$<$ cv\+::\+Rect $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}{rect\+\_\+vector}}
+\item 
+typedef std\+::vector$<$ cv\+::\+Key\+Point $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a75c6481b6ffcffb2aaf928c8c59eb2d5}{keypoint\+\_\+vector}}
+\item 
+typedef std\+::vector$<$ cv\+::\+Point2f $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}{point\+\_\+vector}}
+\item 
+typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a8554cd150c2590f61f53fc5b3eec8c6e}{pose\+\_\+array}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a58d29197f12355563eaf08e315b466ed}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&pose)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose_estimation_a75c6481b6ffcffb2aaf928c8c59eb2d5}\label{namespacergbd__slam_1_1pose_estimation_a75c6481b6ffcffb2aaf928c8c59eb2d5}} 
+\index{rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}!keypoint\_vector@{keypoint\_vector}}
+\index{keypoint\_vector@{keypoint\_vector}!rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}}
+\doxysubsubsection{\texorpdfstring{keypoint\_vector}{keypoint\_vector}}
+{\footnotesize\ttfamily typedef std\+::vector$<$cv\+::\+Key\+Point$>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a75c6481b6ffcffb2aaf928c8c59eb2d5}{rgbd\+\_\+slam\+::pose\+Estimation\+::keypoint\+\_\+vector}}}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}\label{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}} 
+\index{rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}!point\_vector@{point\_vector}}
+\index{point\_vector@{point\_vector}!rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}}
+\doxysubsubsection{\texorpdfstring{point\_vector}{point\_vector}}
+{\footnotesize\ttfamily typedef std\+::vector$<$cv\+::\+Point2f$>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}{rgbd\+\_\+slam\+::pose\+Estimation\+::point\+\_\+vector}}}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose_estimation_a8554cd150c2590f61f53fc5b3eec8c6e}\label{namespacergbd__slam_1_1pose_estimation_a8554cd150c2590f61f53fc5b3eec8c6e}} 
+\index{rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}!pose\_array@{pose\_array}}
+\index{pose\_array@{pose\_array}!rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}}
+\doxysubsubsection{\texorpdfstring{pose\_array}{pose\_array}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}$>$ $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a8554cd150c2590f61f53fc5b3eec8c6e}{rgbd\+\_\+slam\+::pose\+Estimation\+::pose\+\_\+array}}}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}\label{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}} 
+\index{rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}!rect\_vector@{rect\_vector}}
+\index{rect\_vector@{rect\_vector}!rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}}
+\doxysubsubsection{\texorpdfstring{rect\_vector}{rect\_vector}}
+{\footnotesize\ttfamily typedef std\+::vector$<$cv\+::\+Rect$>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}{rgbd\+\_\+slam\+::pose\+Estimation\+::rect\+\_\+vector}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose_estimation_a58d29197f12355563eaf08e315b466ed}\label{namespacergbd__slam_1_1pose_estimation_a58d29197f12355563eaf08e315b466ed}} 
+\index{rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!rgbd\_slam::poseEstimation@{rgbd\_slam::poseEstimation}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream \& rgbd\+\_\+slam\+::pose\+Estimation\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{pose }\end{DoxyParamCaption})}
+

@@ -1,0 +1,71 @@
+\hypertarget{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::PNP\+\_\+\+Solver Class Reference}
+\label{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver}\index{rgbd\_slam::poseEstimation::PNP\_Solver@{rgbd\_slam::poseEstimation::PNP\_Solver}}
+
+
+Compute a pose estimation.  
+
+
+
+
+{\ttfamily \#include $<$PNPSolver.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a0de5a2e2e46b66ac5e506837e669b23f}{PNP\+\_\+\+Solver}} (double fx, double fy, double cx, double cy, double baseline)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_af51513c53308ef7edb6f012f7b3f582b}{$\sim$\+PNP\+\_\+\+Solver}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a285bd0982e155b0c3dfd4e905b6c851c}{compute\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&cam\+Pose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&features, const \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\+\_\+array}} \&matched\+Points, const std\+::vector$<$ int $>$ \&match\+Left)
+\begin{DoxyCompactList}\small\item\em Refine a pose estimation using the matched points in this frame and local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Compute a pose estimation. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a0de5a2e2e46b66ac5e506837e669b23f}\label{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a0de5a2e2e46b66ac5e506837e669b23f}} 
+\index{rgbd\_slam::poseEstimation::PNP\_Solver@{rgbd\_slam::poseEstimation::PNP\_Solver}!PNP\_Solver@{PNP\_Solver}}
+\index{PNP\_Solver@{PNP\_Solver}!rgbd\_slam::poseEstimation::PNP\_Solver@{rgbd\_slam::poseEstimation::PNP\_Solver}}
+\doxysubsubsection{\texorpdfstring{PNP\_Solver()}{PNP\_Solver()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+PNP\+\_\+\+Solver\+::\+PNP\+\_\+\+Solver (\begin{DoxyParamCaption}\item[{double}]{fx,  }\item[{double}]{fy,  }\item[{double}]{cx,  }\item[{double}]{cy,  }\item[{double}]{baseline }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_af51513c53308ef7edb6f012f7b3f582b}\label{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_af51513c53308ef7edb6f012f7b3f582b}} 
+\index{rgbd\_slam::poseEstimation::PNP\_Solver@{rgbd\_slam::poseEstimation::PNP\_Solver}!````~PNP\_Solver@{$\sim$PNP\_Solver}}
+\index{````~PNP\_Solver@{$\sim$PNP\_Solver}!rgbd\_slam::poseEstimation::PNP\_Solver@{rgbd\_slam::poseEstimation::PNP\_Solver}}
+\doxysubsubsection{\texorpdfstring{$\sim$PNP\_Solver()}{~PNP\_Solver()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+PNP\+\_\+\+Solver\+::$\sim$\+PNP\+\_\+\+Solver (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a285bd0982e155b0c3dfd4e905b6c851c}\label{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver_a285bd0982e155b0c3dfd4e905b6c851c}} 
+\index{rgbd\_slam::poseEstimation::PNP\_Solver@{rgbd\_slam::poseEstimation::PNP\_Solver}!compute\_pose@{compute\_pose}}
+\index{compute\_pose@{compute\_pose}!rgbd\_slam::poseEstimation::PNP\_Solver@{rgbd\_slam::poseEstimation::PNP\_Solver}}
+\doxysubsubsection{\texorpdfstring{compute\_pose()}{compute\_pose()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+PNP\+\_\+\+Solver\+::compute\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \&}]{cam\+Pose,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\+\_\+\+Features\+\_\+\+Struct}} \&}]{features,  }\item[{const \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\+\_\+array}} \&}]{matched\+Points,  }\item[{const std\+::vector$<$ int $>$ \&}]{match\+Left }\end{DoxyParamCaption})}
+
+
+
+Refine a pose estimation using the matched points in this frame and local map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Current camera pose \\
+\hline
+\mbox{\texttt{ in}}  & {\em features} & Features detected in frame \\
+\hline
+\mbox{\texttt{ in}}  & {\em matched\+Points} & Macthed features with previous frame \\
+\hline
+\mbox{\texttt{ in}}  & {\em match\+Left} & Container associating this frame feature ids to map ids\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The pose estimated from the previous pose using matched features 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_p_n_p_solver_8hpp}{PNPSolver.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_p_n_p_solver_8cpp}{PNPSolver.\+cpp}}\end{DoxyCompactItemize}

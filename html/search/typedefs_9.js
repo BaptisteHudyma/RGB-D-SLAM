@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scalar_583',['Scalar',['../structpose_estimation_1_1_levenberg___marquard___functor.html#ae460273018fdd3dc925f90594caf432d',1,'poseEstimation::Levenberg_Marquard_Functor']]]
+  ['scalar_0',['Scalar',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#a77ce278b992bd7bc581dcee94a10496a',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]]
 ];

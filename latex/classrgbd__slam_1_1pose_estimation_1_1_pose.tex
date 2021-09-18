@@ -1,0 +1,97 @@
+\hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose}{}\doxysection{rgbd\+\_\+slam\+::pose\+Estimation\+::Pose Class Reference}
+\label{classrgbd__slam_1_1pose_estimation_1_1_pose}\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+
+
+Store a position.  
+
+
+
+
+{\ttfamily \#include $<$Pose.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a6158bddcb7f13c1607d4b7964c217933}{Pose}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_ae4bf4903bfc750dc9416382f9db61bc2}{Pose}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_aaa09b8124b169128894604929ed64d07}{set\+\_\+parameters}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a6462656112993a9c810ad34b0eb7619f}{update}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation)
+\item 
+\mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a9cf78a7637c633e456cd979428f705d6}{get\+\_\+position}} () const
+\item 
+\mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a52ff8143b10d355603085ecd782eb6a7}{get\+\_\+orientation\+\_\+matrix}} () const
+\item 
+\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_aa51caaa283fd6cb3187e90a0e6457837}{get\+\_\+orientation\+\_\+quaternion}} () const
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a941b1f7ab182db699dadf6e9a5762a3d}{display}} (std\+::ostream \&os) const
+\begin{DoxyCompactList}\small\item\em A display function, to avoid a friend operator function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Store a position. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_a6158bddcb7f13c1607d4b7964c217933}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_a6158bddcb7f13c1607d4b7964c217933}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!Pose@{Pose}}
+\index{Pose@{Pose}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{Pose()}{Pose()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::\+Pose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_ae4bf4903bfc750dc9416382f9db61bc2}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_ae4bf4903bfc750dc9416382f9db61bc2}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!Pose@{Pose}}
+\index{Pose@{Pose}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{Pose()}{Pose()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::\+Pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_a941b1f7ab182db699dadf6e9a5762a3d}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_a941b1f7ab182db699dadf6e9a5762a3d}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!display@{display}}
+\index{display@{display}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::display (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os }\end{DoxyParamCaption}) const}
+
+
+
+A display function, to avoid a friend operator function. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_a52ff8143b10d355603085ecd782eb6a7}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_a52ff8143b10d355603085ecd782eb6a7}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!get\_orientation\_matrix@{get\_orientation\_matrix}}
+\index{get\_orientation\_matrix@{get\_orientation\_matrix}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{get\_orientation\_matrix()}{get\_orientation\_matrix()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::get\+\_\+orientation\+\_\+matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_aa51caaa283fd6cb3187e90a0e6457837}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_aa51caaa283fd6cb3187e90a0e6457837}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!get\_orientation\_quaternion@{get\_orientation\_quaternion}}
+\index{get\_orientation\_quaternion@{get\_orientation\_quaternion}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{get\_orientation\_quaternion()}{get\_orientation\_quaternion()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::get\+\_\+orientation\+\_\+quaternion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_a9cf78a7637c633e456cd979428f705d6}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_a9cf78a7637c633e456cd979428f705d6}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!get\_position@{get\_position}}
+\index{get\_position@{get\_position}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{get\_position()}{get\_position()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::get\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_aaa09b8124b169128894604929ed64d07}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_aaa09b8124b169128894604929ed64d07}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!set\_parameters@{set\_parameters}}
+\index{set\_parameters@{set\_parameters}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{set\_parameters()}{set\_parameters()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::set\+\_\+parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1pose_estimation_1_1_pose_a6462656112993a9c810ad34b0eb7619f}\label{classrgbd__slam_1_1pose_estimation_1_1_pose_a6462656112993a9c810ad34b0eb7619f}} 
+\index{rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}!update@{update}}
+\index{update@{update}!rgbd\_slam::poseEstimation::Pose@{rgbd\_slam::poseEstimation::Pose}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+Estimation\+::\+Pose\+::update (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_pose_8hpp}{Pose.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+estimation/\mbox{\hyperlink{_pose_8cpp}{Pose.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,56 @@
+\hypertarget{_image___features___handler_8hpp_source}{}\doxysection{Image\+\_\+\+Features\+\_\+\+Handler.\+hpp}
+\label{_image___features___handler_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Image\_Features\_Handler.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Image\_Features\_Handler.hpp}}
+\mbox{\hyperlink{_image___features___handler_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef IMAGE\_FEATURES\_HANDLER\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define IMAGE\_FEATURES\_HANDLER\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_image___features___struct_8hpp}{Image\_Features\_Struct.hpp}}"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{utils_2_parameters_8hpp}{Parameters.hpp}}"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13     \textcolor{keyword}{typedef} std::vector<cv::Rect> \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}{rect\_vector}};}
+\DoxyCodeLine{14     \textcolor{keyword}{typedef} std::vector<cv::KeyPoint> \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a75c6481b6ffcffb2aaf928c8c59eb2d5}{keypoint\_vector}};}
+\DoxyCodeLine{15     \textcolor{keyword}{typedef} std::vector<cv::Point2f> \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}{point\_vector}};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{20     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\_features\_data}}}
+\DoxyCodeLine{21     \{}
+\DoxyCodeLine{22         cv::Mat \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a7f44687d6c503cca70befe4d6a4bac99}{\_img}};}
+\DoxyCodeLine{23         cv::Ptr<cv::AgastFeatureDetector> \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a6b2fc35fc8b793792fd978c83be1de19}{\_detector}};}
+\DoxyCodeLine{24         cv::Ptr<cv::DescriptorExtractor> \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a173e9874c1042a6f162f2bcb190e143d}{\_extractor}};}
+\DoxyCodeLine{25         \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}{rect\_vector}} \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aa07a512aa0e78705354b38d2b7360d3c}{\_subImgsRects}};}
+\DoxyCodeLine{26         \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_ad35ac2e39a2502684a529c0c07c5b827}{point\_vector}} *\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_aadf2d2b88a7b4358a0ae462f71f81986}{\_ext\_kp}};}
+\DoxyCodeLine{27         \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}} *\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a63656923a85c78efbd7adbd46b989d08}{\_features\_struct}};}
+\DoxyCodeLine{28         \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} *\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data_a79779b0a8264aa7f3553906474c806ae}{\_voParams}};}
+\DoxyCodeLine{29     \};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{34     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}{Image\_Features\_Handler}} \{}
+\DoxyCodeLine{35         \textcolor{keyword}{public}:}
+\DoxyCodeLine{36             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a5aaf915319895b45780c5b008a0b40be}{Image\_Features\_Handler}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&vo\_params);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{45             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a97100f7c07c1268936947b6d0c1b87f4}{compute\_features}}(\textcolor{keyword}{const} cv::Mat\& imgGray, \textcolor{keyword}{const} cv::Mat\& imgDepth, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& outStruct);}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{54             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a3cfc5c1f0684d8f75c9112b1de5dbbe2}{row\_match}}(\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& featuresLeft, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& featuresRight, std::vector<cv::DMatch>\& outMatches);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{60             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_a977da712a549d374a13df26437845b0e}{perform\_compute\_features}}(\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\_features\_data}} *p);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{65             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler_aaa57d939e84617a3df2e8b41455dd142}{perform\_compute\_descriptors\_only}}(\mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\_features\_data}} *p);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67         \textcolor{keyword}{private}:}
+\DoxyCodeLine{68             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \_voParams;}
+\DoxyCodeLine{69             \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a35176e065432708df39f32f37ad26a90}{rect\_vector}} \_subImgsRects;}
+\DoxyCodeLine{70             \mbox{\hyperlink{structrgbd__slam_1_1pose_estimation_1_1compute__features__data}{compute\_features\_data}} \_thData[2];}
+\DoxyCodeLine{71     \};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \}}
+\DoxyCodeLine{74 \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

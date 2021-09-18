@@ -1,0 +1,76 @@
+\hypertarget{_r_g_b___slam_8hpp_source}{}\doxysection{RGB\+\_\+\+Slam.\+hpp}
+\label{_r_g_b___slam_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/RGB\_Slam.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/RGB\_Slam.hpp}}
+\mbox{\hyperlink{_r_g_b___slam_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGB\_SLAM\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGB\_SLAM\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{utils_2_parameters_8hpp}{Parameters.hpp}}"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_local_map_8hpp}{LocalMap.hpp}}"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_image___features___handler_8hpp}{Image\_Features\_Handler.hpp}}"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_p_n_p_solver_8hpp}{PNPSolver.hpp}}"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_motion_model_8hpp}{MotionModel.hpp}}"{}}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <opencv2/core/core.hpp>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <deque>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{22     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}{RGB\_SLAM}} \{}
+\DoxyCodeLine{23         \textcolor{keyword}{public}:}
+\DoxyCodeLine{24             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a67e29bf0ac3484ce896874ca17d90b5a}{RGB\_SLAM}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \&param);}
+\DoxyCodeLine{25             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ada33dfacba01b62ff190e840673acf95}{reset}}();}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{35             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a684077279f7e92f12b0ef724bf9c6df2}{track}}(\textcolor{keyword}{const} cv::Mat\& imgRGB, \textcolor{keyword}{const} cv::Mat\& imgDepth);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37             \textcolor{keyword}{enum} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}{eState}}}
+\DoxyCodeLine{38             \{}
+\DoxyCodeLine{39                 \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea36c960419e1c7560f2e5b39849acadde}{eState\_NOT\_INITIALIZED}} = 1,}
+\DoxyCodeLine{40                 \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1feafd3b4be297632cfea18daa7be730b6b6}{eState\_TRACKING}},}
+\DoxyCodeLine{41                 \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fea496c42a92d23b6d69d8ba08041c8ece5}{eState\_LOST}}}
+\DoxyCodeLine{42             \};}
+\DoxyCodeLine{43             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}{eState}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a57ac767cf7b24e7d0a3bd70a991e36d7}{get\_state}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_state; \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{46             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_aca73f89a085d04f5ea92039d5277c5ab}{need\_new\_triangulation}}();}
+\DoxyCodeLine{47             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a89365e1532e2c19b064aecdaa4900316}{triangulation\_policy\_decreasing\_matches}}();}
+\DoxyCodeLine{48             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_ae5eaaa8ff512ae775fedf1284afd4193}{triangulation\_policy\_always\_triangulate}}();}
+\DoxyCodeLine{49             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a5700e6aaa45a435cb9faa9100fe5427e}{triangulation\_policy\_map\_size}}();}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51         \textcolor{keyword}{private}:}
+\DoxyCodeLine{61             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} perform\_tracking(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}}\& estimatedPose, \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___struct}{Image\_Features\_Struct}}\& features, \textcolor{keywordtype}{bool}\& isTracking);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_parameters}{Parameters}} \_params;}
+\DoxyCodeLine{64             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_image___features___handler}{Image\_Features\_Handler}} \_featureHandler;}
+\DoxyCodeLine{65             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_local___map}{Local\_Map}} \_localMap;}
+\DoxyCodeLine{66             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver}{PNP\_Solver}} \_pnpSolver;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \_lastPose;}
+\DoxyCodeLine{69             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_frameNumber;}
+\DoxyCodeLine{70             std::deque<long unsigned int> \_lastMatches;}
+\DoxyCodeLine{71             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a2d31fbcd1a10dc1af58789cb3431a1fe}{eState}} \_state;}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73             bool (\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}{RGB\_SLAM}}::*triangulationPolicy)();}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_motion___model}{Motion\_Model}} \_motionModel;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78         \textcolor{keyword}{private}:}
+\DoxyCodeLine{79             \textcolor{comment}{//prevent backend copy}}
+\DoxyCodeLine{80             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m_a67e29bf0ac3484ce896874ca17d90b5a}{RGB\_SLAM}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}{RGB\_SLAM}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{81             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}{RGB\_SLAM}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m}{RGB\_SLAM}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{82             \textcolor{keyword}{enum}}
+\DoxyCodeLine{83             \{}
+\DoxyCodeLine{84                 N\_MATCHES\_WINDOWS = 3}
+\DoxyCodeLine{85             \};}
+\DoxyCodeLine{86     \};}
+\DoxyCodeLine{87 \}}
+\DoxyCodeLine{88 \}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

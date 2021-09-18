@@ -1,14 +1,13 @@
 var searchData=
 [
-  ['set_5fcolor_5fvector_503',['set_color_vector',['../classprimitive_detection_1_1_r_g_b_d___s_l_a_m.html#a9459334b4f3fa197d540233a045767b2',1,'primitiveDetection::RGBD_SLAM']]],
-  ['set_5fcx_504',['set_cx',['../classpose_estimation_1_1_parameters.html#a3f9109508c561ee170d6ade7acb3588e',1,'poseEstimation::Parameters']]],
-  ['set_5fcy_505',['set_cy',['../classpose_estimation_1_1_parameters.html#a67b74166d14ec6de4f480d508794a614',1,'poseEstimation::Parameters']]],
-  ['set_5ffx_506',['set_fx',['../classpose_estimation_1_1_parameters.html#ad836eefab73ae98a6a6a5391a4918327',1,'poseEstimation::Parameters']]],
-  ['set_5ffy_507',['set_fy',['../classpose_estimation_1_1_parameters.html#a09557109a48e3bc1137bfb539c79533f',1,'poseEstimation::Parameters']]],
-  ['set_5fheight_508',['set_height',['../classpose_estimation_1_1_parameters.html#a33c71f53e07e50645c90a8998fb37d73',1,'poseEstimation::Parameters']]],
-  ['set_5fmasked_5fdisplay_509',['set_masked_display',['../classprimitive_detection_1_1_primitive___detection.html#a6d01eae4bce8ff3b8d2cc97af389b703',1,'primitiveDetection::Primitive_Detection']]],
-  ['set_5fparameters_510',['set_parameters',['../classpose_estimation_1_1_pose.html#a1ece52b37553fd49e5ebefc6789fa96c',1,'poseEstimation::Pose']]],
-  ['set_5ftracking_5fradius_511',['set_tracking_radius',['../classpose_estimation_1_1_image___features___struct.html#a927e02aaea46edc9d73c3007decdf9b3',1,'poseEstimation::Image_Features_Struct']]],
-  ['set_5fwidth_512',['set_width',['../classpose_estimation_1_1_parameters.html#ac3f8ea6fe9ca0f568d7916b2d34f58c3',1,'poseEstimation::Parameters']]],
-  ['show_5fstatistics_513',['show_statistics',['../classprimitive_detection_1_1_r_g_b_d___s_l_a_m.html#a8bc61385f8024c99562bdd28faebbea3',1,'primitiveDetection::RGBD_SLAM']]]
+  ['refine_5fcylinder_5fboundaries_0',['refine_cylinder_boundaries',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a71ac302f2adc09ed14ed7aa74983d03a',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
+  ['refine_5fplane_5fboundaries_1',['refine_plane_boundaries',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a2302fd22c7d10aff0d3a72535734588d',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
+  ['region_5fgrowing_2',['region_growing',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a1ac843e952423d2e8c94db78caada507',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
+  ['remove_5fpoint_3',['remove_point',['../classrgbd__slam_1_1primitive_detection_1_1_histogram.html#a2bee0e6d576dbd1d8d9a9303c96635a2',1,'rgbd_slam::primitiveDetection::Histogram']]],
+  ['reset_4',['reset',['../classrgbd__slam_1_1map__management_1_1_local___map.html#ad1073f3d16e8549024d939620831cc1e',1,'rgbd_slam::map_management::Local_Map::reset()'],['../classrgbd__slam_1_1pose_estimation_1_1_local___map.html#a6784b9899e780f3ef6c93891d64226d5',1,'rgbd_slam::poseEstimation::Local_Map::reset()'],['../classrgbd__slam_1_1pose_estimation_1_1_motion___model.html#a76f043f2f99ec2a81e1c4c300081d1c6',1,'rgbd_slam::poseEstimation::Motion_Model::reset()'],['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#ada33dfacba01b62ff190e840673acf95',1,'rgbd_slam::poseEstimation::RGB_SLAM::reset()'],['../classrgbd__slam_1_1primitive_detection_1_1_histogram.html#a79cd52b772519d777d230b086396f877',1,'rgbd_slam::primitiveDetection::Histogram::reset()']]],
+  ['reset_5fdata_5',['reset_data',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a1b6b8bf45a4f87ca1151cbbff81ce230',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
+  ['reset_5fmatched_5fmarks_6',['reset_matched_marks',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html#ae203933f47af18c59e18371fbdcc1b6e',1,'rgbd_slam::poseEstimation::Image_Features_Struct']]],
+  ['rgb_5fslam_7',['RGB_SLAM',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a67e29bf0ac3484ce896874ca17d90b5a',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
+  ['rgbd_5fslam_8',['RGBD_SLAM',['../classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a522ead8498744fdc77e1088c1112e280',1,'rgbd_slam::RGBD_SLAM']]],
+  ['row_5fmatch_9',['row_match',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___handler.html#a3cfc5c1f0684d8f75c9112b1de5dbbe2',1,'rgbd_slam::poseEstimation::Image_Features_Handler::row_match()'],['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html#aa82a38e8757fcf8d8ec95cfd1da5f98a',1,'rgbd_slam::poseEstimation::Image_Features_Struct::row_match()']]]
 ];
