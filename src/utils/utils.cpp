@@ -3,61 +3,44 @@
 #include "parameters.hpp"
 
 namespace rgbd_slam {
-namespace utils {
+    namespace utils {
 
 
-    const vector3 screen_to_world_coordinates(const unsigned int screenX, const unsigned int screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
-    {
-        const double x = (static_cast<double>(screenX) - Parameters::get_camera_center_x()) * measuredZ / Parameters::get_camera_focal_x();
-        const double y = (static_cast<double>(screenY) - Parameters::get_camera_center_y()) * measuredZ / Parameters::get_camera_focal_y();
+        const vector3 screen_to_world_coordinates(const unsigned int screenX, const unsigned int screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
+        {
+            const double x = (static_cast<double>(screenX) - Parameters::get_camera_center_x()) * measuredZ / Parameters::get_camera_focal_x();
+            const double y = (static_cast<double>(screenY) - Parameters::get_camera_center_y()) * measuredZ / Parameters::get_camera_focal_y();
 
-        vector4 worldPoint;
-        worldPoint << x, y, measuredZ, 1.0;
-        return cameraToWorldMatrix * worldPoint;
-    }
-
-    const vector2 world_to_screen_coordinates(const vector3& position3D, const matrix34& worldToCameraMatrix)
-    {
-        vector4 ptH;
-        ptH << position3D, 1.0;
-        const vector3& point3D = worldToCameraMatrix * ptH; 
-
-        if (point3D[2] == 0) {
-            return vector2(0.0, 0.0);
+            vector4 worldPoint;
+            worldPoint << x, y, measuredZ, 1.0;
+            return cameraToWorldMatrix * worldPoint;
         }
 
-        const double inverseDepth  = 1.0 / point3D[2];
-        const double screenX = Parameters::get_camera_focal_x() * point3D[0] * inverseDepth + Parameters::get_camera_center_x();
-        const double screenY = Parameters::get_camera_focal_y() * point3D[1] * inverseDepth + Parameters::get_camera_center_y();
+        const vector2 world_to_screen_coordinates(const vector3& position3D, const matrix34& worldToCameraMatrix)
+        {
+            vector4 ptH;
+            ptH << position3D, 1.0;
+            const vector3& point3D = worldToCameraMatrix * ptH; 
 
-        return vector2(screenX, screenY);
+            if (point3D[2] == 0) {
+                return vector2(0.0, 0.0);
+            }
+
+            const double inverseDepth  = 1.0 / point3D[2];
+            const double screenX = Parameters::get_camera_focal_x() * point3D[0] * inverseDepth + Parameters::get_camera_center_x();
+            const double screenY = Parameters::get_camera_focal_y() * point3D[1] * inverseDepth + Parameters::get_camera_center_y();
+
+            return vector2(screenX, screenY);
+        }
+
+        const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
+        {
+            const matrix33& worldToCamRotMtrx = (rotation.toRotationMatrix()).transpose();
+            const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * position;
+            matrix34 worldToCamMtrx;
+            worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
+            return worldToCamMtrx;
+        }
+
     }
-
-    const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
-    {
-        const matrix33& worldToCamRotMtrx = (rotation.toRotationMatrix()).transpose();
-        const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * position;
-        matrix34 worldToCamMtrx;
-        worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
-        return worldToCamMtrx;
-    }
-
-
-    const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB)
-    {
-        vector4 transformedEstimationVector = transformationMatrixB * estimationVector;
-        const double normOfV4 = transformedEstimationVector.norm();
-        if (normOfV4 == 0)
-            return originalQuaternion;
-
-        // Normalize v4
-        transformedEstimationVector /= normOfV4;
-
-        const vector4 quaternionAsVector(originalQuaternion.x(), originalQuaternion.y(), originalQuaternion.z(), originalQuaternion.w());
-        // Compute final quaternion
-        const vector4 finalQuaternion = sin(normOfV4) * transformedEstimationVector + cos(normOfV4) * quaternionAsVector;
-        return quaternion(finalQuaternion.w(), finalQuaternion.x(), finalQuaternion.y(), finalQuaternion.z());
-    }
-
-}
 }

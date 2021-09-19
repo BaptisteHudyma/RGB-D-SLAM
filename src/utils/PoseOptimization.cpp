@@ -23,13 +23,7 @@ namespace rgbd_slam {
             const quaternion& rotation = currentPose.get_orientation_quaternion();
 
             // Compute B matrix
-            const Eigen::MatrixXd BMatrix {
-                {- rotation.x() / rotation.w(), - rotation.y() / rotation.w(), - rotation.z() / rotation.w()},
-                {1, 0, 0},
-                {0, 1, 0},
-                {0, 0, 1}
-            };
-            const matrix43& singularBValues = Eigen::JacobiSVD<Eigen::MatrixXd>(BMatrix, Eigen::ComputeThinU).matrixU();
+            const matrix43& singularBValues = get_B_singular_values(rotation);
             
             // Vector to optimize: (0, 1, 2) is position,
             // Vector (3, 4, 5) is a rotation parametrization, representing a delta in rotation in the tangential hyperplane -From Using Quaternions for Parametrizing 3-D Rotation in Unconstrained Nonlinear Optimization)

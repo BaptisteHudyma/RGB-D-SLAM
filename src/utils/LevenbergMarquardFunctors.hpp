@@ -19,7 +19,8 @@ namespace rgbd_slam {
          *
          */
         template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic>
-            struct Levenberg_Marquard_Functor {
+            struct Levenberg_Marquard_Functor 
+            {
 
                 //tell the called the numerical type and input/ouput size
                 typedef _Scalar Scalar;
@@ -50,6 +51,27 @@ namespace rgbd_slam {
             };
 
 
+
+        /**
+         * \brief Compute a matrix parametrization of the quaternion, to be used with get_quaternion_from_original_quaternion
+         *
+         * \param[in] rotation The original quaternion
+         *
+         * \return A parametrization matrix
+         */
+        const matrix43 get_B_singular_values(const quaternion& rotation);
+
+        /**
+         * \brief Return a quaternion from an ideal parametrization estimationVector
+         *
+         * \param[in] originalQuaternion Original position used to compute transformationMatrixB
+         * \param[in] estimationVector Estimated vector, optimized by levenberg marquardt, to turn back to a quaternion
+         * \param[in] transformationMatrixB Transformation matrix used to transform estimationVector back to a quaternion
+         */
+        const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB);
+
+
+
         /**
          * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
          */
@@ -66,14 +88,14 @@ namespace rgbd_slam {
             Global_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues);
 
             /**
-              * \brief Return te distance between the map point and the it's matched point
-              *
-              * \param[in] mapPoint The map point in 3D world coordinates
-              * \param[in] matchedPoint The detected & matched point, in 3D screen coordinates
-              * \param[in] worldToCamMatrix The matrix to make a transformation from world coordinates to screen coordinates
-              *
-              * \return The 2D screen distance between those two points
-              */
+             * \brief Return te distance between the map point and the it's matched point
+             *
+             * \param[in] mapPoint The map point in 3D world coordinates
+             * \param[in] matchedPoint The detected & matched point, in 3D screen coordinates
+             * \param[in] worldToCamMatrix The matrix to make a transformation from world coordinates to screen coordinates
+             *
+             * \return The 2D screen distance between those two points
+             */
             double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const;
 
             // Implementation of the objective function
@@ -88,7 +110,7 @@ namespace rgbd_slam {
         };
 
         struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};
-        
+
 
         /**
          * \brief Use for debug.

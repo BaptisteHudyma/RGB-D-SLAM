@@ -39,16 +39,6 @@ namespace rgbd_slam {
          */
         const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position);
 
-
-        /**
-          * \brief Return a quaternion from an ideal parametrization estimationVector
-          *
-          * \param[in] originalQuaternion Original position used to compute transformationMatrixB
-          * \param[in] estimationVector Estimated vector, optimized by levenberg marquardt, to turn back to a quaternion
-          * \param[in] transformationMatrixB Transformation matrix used to transform estimationVector back to a quaternion
-          */
-        const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB);
-
     }
 }
 

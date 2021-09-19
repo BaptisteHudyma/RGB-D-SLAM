@@ -70,6 +70,34 @@ namespace rgbd_slam {
                 return inputVector[inputVector.size() / 2];
         }
 
+        const matrix43 get_B_singular_values(const quaternion& rotation)
+        {
+            const Eigen::MatrixXd BMatrix {
+                {- rotation.x() / rotation.w(), - rotation.y() / rotation.w(), - rotation.z() / rotation.w()},
+                    {1, 0, 0},
+                    {0, 1, 0},
+                    {0, 0, 1}
+            };
+            return Eigen::JacobiSVD<Eigen::MatrixXd>(BMatrix, Eigen::ComputeThinU).matrixU();
+        }
+
+
+        const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB)
+        {
+            vector4 transformedEstimationVector = transformationMatrixB * estimationVector;
+            const double normOfV4 = transformedEstimationVector.norm();
+            if (normOfV4 == 0)
+                return originalQuaternion;
+
+            // Normalize v4
+            transformedEstimationVector /= normOfV4;
+
+            const vector4 quaternionAsVector(originalQuaternion.x(), originalQuaternion.y(), originalQuaternion.z(), originalQuaternion.w());
+            // Compute final quaternion
+            const vector4 finalQuaternion = sin(normOfV4) * transformedEstimationVector + cos(normOfV4) * quaternionAsVector;
+            return quaternion(finalQuaternion.w(), finalQuaternion.x(), finalQuaternion.y(), finalQuaternion.z());
+        }
+
 
         Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
             Levenberg_Marquard_Functor<double>(n, points.size()),
@@ -125,7 +153,7 @@ namespace rgbd_slam {
                 // Use doubles to make it easier to optimize (smaller precision, but non ritical)
 
                 // Compute distance
-                const float distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
+                const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
                 
                 // Pass it to loss function
                 const float weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
