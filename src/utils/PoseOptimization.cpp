@@ -32,7 +32,7 @@ namespace rgbd_slam {
             input[0] = position.x();
             input[1] = position.y();
             input[2] = position.z();
-            // X Y Z of a quaternion
+            // X Y Z of a quaternion representation (0, 0, 0) corresponds to the quaternion itself
             input[3] = 0;
             input[4] = 0;
             input[5] = 0;

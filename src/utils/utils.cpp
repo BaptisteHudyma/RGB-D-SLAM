@@ -22,13 +22,13 @@ namespace rgbd_slam {
             ptH << position3D, 1.0;
             const vector3& point3D = worldToCameraMatrix * ptH; 
 
-            if (point3D[2] == 0) {
+            if (point3D.z() == 0) {
                 return vector2(0.0, 0.0);
             }
 
-            const double inverseDepth  = 1.0 / point3D[2];
-            const double screenX = Parameters::get_camera_focal_x() * point3D[0] * inverseDepth + Parameters::get_camera_center_x();
-            const double screenY = Parameters::get_camera_focal_y() * point3D[1] * inverseDepth + Parameters::get_camera_center_y();
+            const double inverseDepth  = 1.0 / point3D.z();
+            const double screenX = Parameters::get_camera_focal_x() * point3D.x() * inverseDepth + Parameters::get_camera_center_x();
+            const double screenY = Parameters::get_camera_focal_y() * point3D.y() * inverseDepth + Parameters::get_camera_center_y();
 
             return vector2(screenX, screenY);
         }

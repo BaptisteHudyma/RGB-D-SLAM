@@ -24,17 +24,24 @@ namespace rgbd_slam {
 
                 /**
                  * \brief Compute the point feature matches between the local map and a given set of points. Update the staged point list matched points
+                 *
+                 * \param[in] detectedKeypoint An object containing the detected key points in the rgbd frame
+                 *
+                 * \return A container associating the map/staged points to detected key points
                  */
                 match_point_container find_matches(const utils::Keypoint_Handler& detectedKeypoint); 
 
                 /**
-                 * \brief Update the local and global map 
+                 * \brief Update the local and global map. Add new points to staged and map container 
+                 *
+                 * \param[in] optimizedPose The clean true pose of the observer, after optimization
+                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
                 void update(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject);
 
 
                 /**
-                 * \brief Hard clean the local map
+                 * \brief Hard clean the local and staged map
                  */
                 void reset();
 
@@ -51,8 +58,11 @@ namespace rgbd_slam {
             protected:
                 /**
                  * \brief Add previously uncertain features to the local map
+                 *
+                 * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
+                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged(const matrix34& worldToCamMatrix, const utils::Keypoint_Handler& keypointObject);
+                void update_staged(const matrix34& camToWorldMatrix, const utils::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
@@ -60,8 +70,6 @@ namespace rgbd_slam {
                 void update_local_to_global();
 
             private:
-                unsigned int _currentIndex;
-
                 // local map point container
                 typedef std::list<Map_Point> point_map_container;
                 // staged points container
