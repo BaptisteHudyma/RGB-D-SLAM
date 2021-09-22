@@ -25,11 +25,12 @@ namespace rgbd_slam {
                 /**
                  * \brief Compute the point feature matches between the local map and a given set of points. Update the staged point list matched points
                  *
+                 * \param[in] currentPose The current observer pose.
                  * \param[in] detectedKeypoint An object containing the detected key points in the rgbd frame
                  *
                  * \return A container associating the map/staged points to detected key points
                  */
-                match_point_container find_matches(const utils::Keypoint_Handler& detectedKeypoint); 
+                match_point_container find_matches(const poseEstimation::Pose currentPose, const utils::Keypoint_Handler& detectedKeypoint); 
 
                 /**
                  * \brief Update the local and global map. Add new points to staged and map container 

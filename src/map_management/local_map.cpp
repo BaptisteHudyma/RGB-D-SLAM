@@ -9,16 +9,19 @@ namespace rgbd_slam {
         {
         }
 
-        match_point_container Local_Map::find_matches(const utils::Keypoint_Handler& detectedKeypoint)
+        match_point_container Local_Map::find_matches(const poseEstimation::Pose currentPose, const utils::Keypoint_Handler& detectedKeypoint)
         {
             _isPointMatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
             match_point_container matchedPoints; 
 
+            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
+
             // Try to find matches in local map
-            unsigned int alreadyMatchedPoint = 0;
             for (Map_Point& mapPoint : _localMap) 
             {
-                int matchIndex = detectedKeypoint.get_match_index(mapPoint);
+                const vector2& projectedMapPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMatrix);
+
+                int matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, mapPoint._descriptor, _isPointMatched);
                 if (matchIndex < 0 or detectedKeypoint.get_depth(matchIndex) <= 0) {
                     //unmatched point
                     mapPoint._lastMatchedIndex = -2;
@@ -26,17 +29,8 @@ namespace rgbd_slam {
                     continue;
                 }
                 else {
-                    if (_isPointMatched[matchIndex]) {
-                        alreadyMatchedPoint += 1;
-                        mapPoint._lastMatchedIndex = -2;
-                        mapPoint.update_unmatched();
-                        continue;
-                    }
-                    else
-                    {
-                        _isPointMatched[matchIndex] = true;
-                        mapPoint._lastMatchedIndex = matchIndex;
-                    } 
+                    _isPointMatched[matchIndex] = true;
+                    mapPoint._lastMatchedIndex = matchIndex;
                 }
                 const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
                 assert(screenPoint.x() > 0 and screenPoint.y() > 0);
@@ -49,25 +43,18 @@ namespace rgbd_slam {
             // Try to find matches in staged points
             for(Staged_Point& stagedPoint : _stagedPoints)
             {
-                int matchIndex = detectedKeypoint.get_match_index(stagedPoint);
+                const vector2& projectedStagedPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMatrix);
+                int matchIndex = detectedKeypoint.get_match_index(projectedStagedPoint, stagedPoint._descriptor, _isPointMatched);
+
                 if (matchIndex < 0 or detectedKeypoint.get_depth(matchIndex) <= 0) {
                     //unmatched point
-                    stagedPoint._lastMatchedIndex = -2;
+                    stagedPoint._lastMatchedIndex = -1;
                     stagedPoint.update_unmatched();
                     continue;
                 }
                 else {
-                    if (_isPointMatched[matchIndex]) {
-                        // Already matched to another point
-                        stagedPoint._lastMatchedIndex = -2;
-                        stagedPoint.update_unmatched(2);
-                        continue;
-                    }
-                    else 
-                    {
-                        _isPointMatched[matchIndex] = true;
-                        stagedPoint._lastMatchedIndex = matchIndex;
-                    }
+                    _isPointMatched[matchIndex] = true;
+                    stagedPoint._lastMatchedIndex = matchIndex;
                 }
                 const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
                 assert(screenPoint.x() > 0 and screenPoint.y() > 0);
@@ -77,8 +64,6 @@ namespace rgbd_slam {
                 matchedPoints.emplace(matchedPoints.end(), screen3DPoint, stagedPoint._coordinates);
             }
 
-            if (alreadyMatchedPoint > 0)
-                std::cerr << "Error: Some points were matched twice: " << alreadyMatchedPoint << std::endl;
             return matchedPoints;
         }
 
@@ -135,7 +120,7 @@ namespace rgbd_slam {
                     // update this map point errors & position
                     stagedPointIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
                 }
-                
+
                 if (stagedPointIterator->should_add_to_local_map())
                 {
                     // Add to local map, remove from staged points
@@ -153,7 +138,6 @@ namespace rgbd_slam {
                     ++stagedPointIterator;
                 }
             }
-
 
             // Add all unmatched points to staged point container 
             for(unsigned int i = 0; i < _isPointMatched.size(); ++i)
@@ -215,7 +199,6 @@ namespace rgbd_slam {
                     }
                 }
             }
-
         }
 
 

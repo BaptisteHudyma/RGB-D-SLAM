@@ -17,6 +17,8 @@ namespace rgbd_slam {
         _maximumGlobalOptimizationCall = 1024;
 
         // Point detection/Matching
+        _matchSearchRadius = 30;
+        _matchSearchCellSize = 50;
         _maximumMatchDistance = 0.7;   // The closer to 0, the more discriminating
         _detectorMinHessian = 25;
 

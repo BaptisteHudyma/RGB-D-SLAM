@@ -46,7 +46,7 @@ namespace rgbd_slam {
 
         bool Staged_Point::should_remove_from_staged() const
         {
-            return _matchesCount < 0;
+            return get_confidence() <= 0; 
         }
 
         /**

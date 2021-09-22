@@ -22,6 +22,8 @@ namespace rgbd_slam {
             static double get_point_loss_alpha() { return _pointLossAlpha; };
             static double get_point_error_multiplier() { return _pointErrorMultiplier; };
 
+            static double get_search_matches_distance() { return _matchSearchRadius; };
+            static double get_search_matches_cell_size() { return _matchSearchCellSize; };
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
             static unsigned int get_minimum_hessian() { return _detectorMinHessian; };
 
@@ -63,6 +65,8 @@ namespace rgbd_slam {
             inline static double _pointErrorMultiplier; // multiplier of the final loss value (useful when  using primitives along with points)
 
             // Point Detection & matching
+            inline static double _matchSearchRadius;    // Radius of the space around a point to search match points ins
+            inline static int _matchSearchCellSize;     // Size of a search space divider 
             inline static double _maximumMatchDistance; // Maximum distance between a point and his mach before refusing the match
             inline static unsigned int _detectorMinHessian;
 

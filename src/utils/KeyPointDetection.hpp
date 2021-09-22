@@ -13,8 +13,8 @@ namespace rgbd_slam {
     namespace utils {
 
         /**
-          * \brief Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association
-          */
+         * \brief Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association
+         */
         class Keypoint_Handler
         {
             public:
@@ -26,15 +26,17 @@ namespace rgbd_slam {
                 /**
                  * \brief get a container with the filtered point matches. Uses _maxMatchDistance to estimate good matches. 
                  *
-                 * \param[in] mapPoint A point to match 
+                 * \param[in] projectedMapPoint A 2D map point to match 
+                 * \param[in] mapPointDescriptor The descriptor of this map point
+                 * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched 
                  *
                  * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
                  */
-                int get_match_index(const map_management::Point& mapPoint) const; 
+                int get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const; 
 
                 /**
-                  * \brief Return the depth associated with a certain keypoint
-                  */
+                 * \brief Return the depth associated with a certain keypoint
+                 */
                 double get_depth(const unsigned int index) const
                 {
                     assert(index < _depths.size());
@@ -53,16 +55,12 @@ namespace rgbd_slam {
                 const vector2 get_keypoint(const unsigned int index) const 
                 {
                     assert(index < _keypoints.size());
-
-                    const cv::Point2f point = _keypoints[index].pt;
-                    vector2 keypoint;
-                    keypoint << point.x, point.y;
-                    return keypoint;
+                    return _keypoints[index];
                 }
 
                 const cv::Mat get_descriptor(const unsigned int index) const
                 {
-                    assert(index < _keypoints.size());
+                    assert(index < static_cast<unsigned int>(_descriptors.rows));
 
                     return _descriptors.row(index);
                 }
@@ -72,6 +70,32 @@ namespace rgbd_slam {
                     return _keypoints.size();
                 }
 
+            protected:
+
+                /**
+                 * \brief Return a mask eliminating the keypoints to far from the point to match
+                 *
+                 * \param[in] pointToSearch The 2D screen coordinates of the point to match
+                 * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched 
+                 *
+                 * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
+                 */
+                const cv::Mat compute_key_point_mask(const vector2& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const;
+
+                typedef std::pair<int, int> int_pair;
+                /**
+                 * \brief Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with _searchSpaceIndexContainer
+                 */
+                const int_pair get_search_space_coordinates(const vector2& pointToPlace) const;
+
+                /**
+                 * \brief Compute an 1D array index from a 2D array index.
+                 *
+                 * \param[in] searchSpaceIndex The 2D array index (y, x)
+                 */
+                unsigned int get_search_space_index(const int_pair& searchSpaceIndex) const;
+                unsigned int get_search_space_index(const unsigned int x, const unsigned int y) const;
+
 
             private:
                 cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
@@ -79,9 +103,18 @@ namespace rgbd_slam {
                 const double _maxMatchDistance;
 
                 //store current frame keypoints
-                std::vector<cv::KeyPoint> _keypoints;
+                std::vector<vector2> _keypoints;
                 std::vector<double> _depths;
                 cv::Mat _descriptors;
+
+                // Number of image divisions (cells)
+                int _cellCountX;
+                int _cellCountY;
+                int _searchSpaceCellRadius; 
+
+                // Corresponds to a 2D box containing index of key points in those boxes
+                typedef std::list<unsigned int> index_container;
+                std::vector<index_container> _searchSpaceIndexContainer;
 
 
         };

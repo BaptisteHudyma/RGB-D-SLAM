@@ -16,6 +16,7 @@ namespace rgbd_slam {
     namespace utils {
 
 
+
         Keypoint_Handler::Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, const double maxMatchDistance) :
             _maxMatchDistance(maxMatchDistance)
         {
@@ -26,30 +27,111 @@ namespace rgbd_slam {
             // knn matcher
             _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
 
-            _keypoints.swap(inKeypoints);
             _descriptors = inDescriptors;
 
-            // Fill depth values
+            const float cellSize = static_cast<float>(Parameters::get_search_matches_cell_size());
+            _searchSpaceCellRadius = std::ceil(Parameters::get_search_matches_distance() / cellSize);
+
+            _cellCountX = std::ceil(depthImage.cols / cellSize);
+            _cellCountY = std::ceil(depthImage.rows / cellSize);
+
+            _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
+
+            // Fill depth values, add points to image boxes
             cv::Rect imageBoundaries(cv::Point(), depthImage.size());
-            _depths = std::vector<double>(_keypoints.size());
-            unsigned int i = 0;
-            for(const cv::KeyPoint& keypoint : _keypoints) {
+
+            const unsigned int keyPointSize = inKeypoints.size();
+            _depths = std::vector<double>(keyPointSize, 0.0);
+            _keypoints = std::vector<vector2>(keyPointSize);
+
+            unsigned int pointIndex = 0;
+            for(const cv::KeyPoint& keypoint : inKeypoints) {
                 const cv::Point2f& pt = keypoint.pt;
-                assert(pt.x > 0 and pt.y > 0);
+
+                const vector2 vectorKeypoint(pt.x, pt.y); 
+
+                _keypoints[pointIndex] = vectorKeypoint; 
+
+                const unsigned int searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
+                _searchSpaceIndexContainer[searchSpaceIndex].push_back(pointIndex);
 
                 if (imageBoundaries.contains(pt)) {
                     // convert to meters
-                    _depths[i] = (depthImage.at<const float>(pt.y, pt.x)) * 0.001;
+                    _depths[pointIndex] = (depthImage.at<const float>(pt.y, pt.x)) * 0.001;
                 }
-                ++i;
+                ++pointIndex;
             }
-            assert(_keypoints.size() == _depths.size());
         }
 
-        int Keypoint_Handler::get_match_index(const map_management::Point& mapPoint) const
+
+        unsigned int Keypoint_Handler::get_search_space_index(const int_pair& searchSpaceIndex) const
         {
+            return get_search_space_index(searchSpaceIndex.second, searchSpaceIndex.first);
+        }
+        unsigned int Keypoint_Handler::get_search_space_index(const unsigned int x, const unsigned int y) const 
+        {
+            return y * _cellCountY + x;
+        }
+
+
+        typedef std::pair<int, int> int_pair;
+        const int_pair Keypoint_Handler::get_search_space_coordinates(const vector2& pointToPlace) const
+        {
+            const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+            const int_pair cellCoordinates(
+                    std::max(0.0, std::min(floor(pointToPlace.y() / cellSize), _cellCountY - 1.0)),
+                    std::max(0.0, std::min(floor(pointToPlace.x() / cellSize), _cellCountX - 1.0))
+                    );
+            return cellCoordinates;
+        }
+
+        const cv::Mat Keypoint_Handler::compute_key_point_mask(const vector2& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
+        {
+            const int_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
+
+            const unsigned int startY = std::max(0, searchSpaceCoordinates.first - _searchSpaceCellRadius);
+            const unsigned int startX = std::max(0, searchSpaceCoordinates.second - _searchSpaceCellRadius);
+
+            const unsigned int endY = std::min(_cellCountY, searchSpaceCoordinates.first + _searchSpaceCellRadius + 1);
+            const unsigned int endX = std::min(_cellCountX, searchSpaceCoordinates.second + _searchSpaceCellRadius + 1);
+
+            // Squared search diameter, to compare distance without sqrt
+            const float squaredSearchDiameter = pow(Parameters::get_search_matches_distance(), 2);
+
+            cv::Mat keyPointMask(cv::Mat::zeros(1, _keypoints.size(), CV_8UC1));
+            for (unsigned int i = startY; i < endY; ++i)
+            {
+                for (unsigned int j = startX; j < endX; ++j)
+                {
+                    const index_container& keypointIndexContainer = _searchSpaceIndexContainer[get_search_space_index(j, i)]; 
+                    for(int keypointIndex : keypointIndexContainer)
+                    {
+                        if (not isKeyPointMatchedContainer[keypointIndex])
+                        {
+                            const vector2& keypoint = get_keypoint(keypointIndex);
+                            const double squarredDistance = 
+                                pow(keypoint.x() - pointToSearch.x(), 2.0) + 
+                                pow(keypoint.y() - pointToSearch.y(), 2.0);
+
+                            if (squarredDistance <= squaredSearchDiameter)
+                                keyPointMask.at<uint8_t>(0, keypointIndex) = 1;
+                        }
+                    }
+                }
+            }
+
+            return keyPointMask;
+        }
+
+
+        int Keypoint_Handler::get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
+        {
+            assert(isKeyPointMatchedContainer.size() == _keypoints.size());
+
+            const cv::Mat& keyPointMask = compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer);
+
             std::vector< std::vector<cv::DMatch> > knnMatches;
-            _featuresMatcher->knnMatch(mapPoint._descriptor, _descriptors, knnMatches, 2);
+            _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask);
 
             //check the farthest neighbors
             if (knnMatches[0].size() > 1) {

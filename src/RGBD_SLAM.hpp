@@ -10,7 +10,6 @@
 
 #include "GeodesicOperations.hpp"
 #include "PrimitiveDetection.hpp"
-#include "PlaneSegment.hpp"
 #include "LineSegmentDetector.hpp"
 #include "KeyPointDetection.hpp"
 #include "local_map.hpp"
