@@ -33,6 +33,13 @@ namespace rgbd_slam {
             return vector2(screenX, screenY);
         }
 
+        const matrix34 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
+        {
+            matrix34 cameraToWorldMatrix;
+            cameraToWorldMatrix << rotation.toRotationMatrix(), position;
+            return cameraToWorldMatrix;
+        }
+
         const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
         {
             const matrix33& worldToCamRotMtrx = (rotation.toRotationMatrix()).transpose();

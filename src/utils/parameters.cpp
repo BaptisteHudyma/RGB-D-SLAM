@@ -29,7 +29,7 @@ namespace rgbd_slam {
         _pointMinimumConfidenceForMap = 0.9;
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
-        _pointLossAlpha = -100;  // -infinity, infinity
+        _pointLossAlpha = -1000;  // -infinity, infinity
         _pointErrorMultiplier = 0.5;  // > 0
 
         // Primitive extraction

@@ -24,20 +24,18 @@ namespace rgbd_slam {
                 int matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, mapPoint._descriptor, _isPointMatched);
                 if (matchIndex < 0 or detectedKeypoint.get_depth(matchIndex) <= 0) {
                     //unmatched point
-                    mapPoint._lastMatchedIndex = -2;
-                    mapPoint.update_unmatched();
-                    continue;
+                    mapPoint._lastMatchedIndex = -1;
                 }
                 else {
                     _isPointMatched[matchIndex] = true;
                     mapPoint._lastMatchedIndex = matchIndex;
+                    const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
+                    assert(screenPoint.x() > 0 and screenPoint.y() > 0);
+
+                    const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), detectedKeypoint.get_depth(matchIndex));
+
+                    matchedPoints.emplace(matchedPoints.end(), screen3DPoint, mapPoint._coordinates);
                 }
-                const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
-                assert(screenPoint.x() > 0 and screenPoint.y() > 0);
-
-                const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), detectedKeypoint.get_depth(matchIndex));
-
-                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, mapPoint._coordinates);
             }
 
             // Try to find matches in staged points
@@ -49,19 +47,17 @@ namespace rgbd_slam {
                 if (matchIndex < 0 or detectedKeypoint.get_depth(matchIndex) <= 0) {
                     //unmatched point
                     stagedPoint._lastMatchedIndex = -1;
-                    stagedPoint.update_unmatched();
-                    continue;
                 }
                 else {
                     _isPointMatched[matchIndex] = true;
                     stagedPoint._lastMatchedIndex = matchIndex;
+                    const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
+                    assert(screenPoint.x() > 0 and screenPoint.y() > 0);
+
+                    const vector3 screen3DPoint(screenPoint(0), screenPoint(1), detectedKeypoint.get_depth(matchIndex));
+
+                    matchedPoints.emplace(matchedPoints.end(), screen3DPoint, stagedPoint._coordinates);
                 }
-                const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
-                assert(screenPoint.x() > 0 and screenPoint.y() > 0);
-
-                const vector3 screen3DPoint(screenPoint(0), screenPoint(1), detectedKeypoint.get_depth(matchIndex));
-
-                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, stagedPoint._coordinates);
             }
 
             return matchedPoints;
@@ -70,7 +66,7 @@ namespace rgbd_slam {
 
         void Local_Map::update(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)
         {
-            const matrix34& camToWorldMatrix= utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+            const matrix34& camToWorldMatrix= utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // Remove old map points
             point_map_container::iterator pointMapIterator = _localMap.begin();
@@ -85,6 +81,10 @@ namespace rgbd_slam {
 
                     // update this map point errors & position
                     const double pointMapError = pointMapIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                }
+                else
+                {
+                    pointMapIterator->update_unmatched();
                 }
 
                 if (pointMapIterator->is_lost()) {
@@ -119,6 +119,10 @@ namespace rgbd_slam {
 
                     // update this map point errors & position
                     stagedPointIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                }
+                else
+                {
+                    stagedPointIterator->update_unmatched();
                 }
 
                 if (stagedPointIterator->should_add_to_local_map())
