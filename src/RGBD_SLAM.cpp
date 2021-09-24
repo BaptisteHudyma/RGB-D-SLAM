@@ -160,7 +160,7 @@ namespace rgbd_slam {
 
         // this frame points and  assoc
         t1 = cv::getTickCount();
-        poseEstimation::Pose pose = this->compute_new_pose(rgbImage, depthImage);
+        poseEstimation::Pose pose = this->compute_new_pose(grayImage, depthImage);
         _meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
         _totalFrameTreated += 1;
@@ -178,7 +178,7 @@ namespace rgbd_slam {
     }
 
 
-    const poseEstimation::Pose RGBD_SLAM::compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage) 
+    const poseEstimation::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         //get a pose with the motion model
         poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);

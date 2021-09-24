@@ -46,8 +46,7 @@ namespace rgbd_slam {
 
             unsigned int pointIndex = 0;
             for(const cv::KeyPoint& keypoint : inKeypoints) {
-                const cv::Point2f& pt = keypoint.pt;
-
+                const cv::Point2f pt = keypoint.pt;
                 const vector2 vectorKeypoint(pt.x, pt.y); 
 
                 _keypoints[pointIndex] = vectorKeypoint; 
@@ -174,10 +173,24 @@ namespace rgbd_slam {
             //detect keypoints
             double t1 = cv::getTickCount();
             _featureDetector->detect(grayImage, frameKeypoints); 
-            _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+
+            std::vector<cv::Point2f> framePoints;
+            framePoints.reserve(frameKeypoints.size());
+            cv::KeyPoint::convert(frameKeypoints, framePoints);
+
+            cv::Size winSize  = cv::Size(3, 3);
+            cv::Size zeroZone = cv::Size(-1, -1);
+            cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
+            cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
+
+            frameKeypoints.clear();
+            frameKeypoints.reserve(framePoints.size());
+            cv::KeyPoint::convert(framePoints, frameKeypoints);
 
             cv::Mat frameDescriptors;
             _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
+
+            _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
 
             return Keypoint_Handler(frameKeypoints, frameDescriptors, depthImage, Parameters::get_maximum_match_distance()); 
         }

@@ -155,7 +155,7 @@ namespace rgbd_slam {
                 // Compute distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
                 
-                // Pass it to loss function
+                // Pass it to loss function (cut some precision with a float cast)
                 const float weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
 
                 // Compute the final error
