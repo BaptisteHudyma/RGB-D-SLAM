@@ -24,7 +24,10 @@ namespace rgbd_slam {
         _meanPoseTreatmentTime(0.0)
         {
             // Load parameters (once)
-            Parameters::parse_file("");
+            if (not Parameters::is_valid())
+            {
+                Parameters::load_defaut();
+            }
             // Get intrinsics parameters
             std::stringstream calibPath, calibYAMLPath;
             calibPath << dataPath.str() << "calib_params.xml";

@@ -6,11 +6,42 @@ namespace rgbd_slam {
 
     bool Parameters::parse_file(const std::string& fileName )
     {
-        // Camera parameters
-        _cameraCenterX = 316.49;
-        _cameraCenterY = 229.23;
-        _cameraFocalX = 548.86;
-        _cameraFocalY = 549.59;
+        load_defaut();
+        _isValid = true;
+        // TODO
+        return _isValid;
+    }
+
+    void Parameters::load_defaut() 
+    {
+        // Initial position & rotation, if necessary
+        _startingPositionX = 0;
+        _startingPositionY = 0;
+        _startingPositionZ = 0;
+
+        _startingRotationX = 0;
+        _startingRotationY = 0;
+        _startingRotationZ = 0;
+
+        // Camera intrinsic parameters
+        _camera1FocalX = 548.86723733696215;
+        _camera1FocalY = 549.58402532237187;
+        _camera1CenterX = 316.49655835885483;
+        _camera1CenterY = 229.23873484682150;
+
+        _camera2FocalX = 575.92685448804468;
+        _camera2FocalY = 576.40791601093247;
+        _camera2CenterX = 315.15026356388171;
+        _camera2CenterY = 230.58580662101753;
+
+        // Camera 2 position & rotation
+        _camera2TranslationX = 1.1497548441022023e+01;
+        _camera2TranslationY = 3.5139088879273231e+01;
+        _camera2TranslationZ = 2.1887459420807019e+01;
+
+        _camera2RotationX = 0; 
+        _camera2RotationY = 0; 
+        _camera2RotationZ = 0; 
 
         // Point detection/Matching
         _matchSearchRadius = 30;
@@ -23,7 +54,7 @@ namespace rgbd_slam {
         _maximumGlobalOptimizationCall = 1024;
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
-        _pointLossAlpha = -1000;  // -infinity, infinity
+        _pointLossAlpha = -10;  // -infinity, infinity
         _pointErrorMultiplier = 0.5;  // > 0
 
         // Local map
@@ -43,12 +74,12 @@ namespace rgbd_slam {
         _depthSigmaMargin = 12;
         _depthDiscontinuityLimit = 4;
         _depthAlpha = 0.06;
-        
+
         // Cylinder ransac fitting
         _cylinderRansacSqrtMaxDistance = 0.04;
         _cylinderRansacMinimumScore = 75;
 
-        return true;
+        _isValid = true;
     }
 
 };  /* rgbd_slam */

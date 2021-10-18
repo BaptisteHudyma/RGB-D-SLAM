@@ -76,8 +76,6 @@ namespace primitiveDetection {
             float _cyRgb;
 
             //camera parameters
-            cv::Mat _Krgb;
-            cv::Mat _Kir;
             cv::Mat _Rstereo;
             cv::Mat _Tstereo;
 

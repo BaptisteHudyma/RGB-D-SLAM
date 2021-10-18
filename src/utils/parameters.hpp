@@ -9,12 +9,38 @@ namespace rgbd_slam {
     {
         public:
             static bool parse_file(const std::string& fileName );
+            static void load_defaut();
 
-            static double get_camera_center_x() { return _cameraCenterX; };
-            static double get_camera_center_y() { return _cameraCenterY; };
-            static double get_camera_focal_x() { return _cameraFocalX; };
-            static double get_camera_focal_y() { return _cameraFocalY; };
+            static bool is_valid() { return _isValid; };
 
+            static double get_starting_position_x() { return _startingPositionX; };
+            static double get_starting_position_y() { return _startingPositionY; };
+            static double get_starting_position_z() { return _startingPositionZ; };
+
+            static double get_starting_rotation_x() { return _startingRotationX; };
+            static double get_starting_rotation_y() { return _startingRotationY; };
+            static double get_starting_rotation_z() { return _startingRotationZ; };
+
+            // Camera 1 is the left camera in stereo, and the color camera in RGBD
+            static double get_camera_1_center_x() { return _camera1CenterX; };
+            static double get_camera_1_center_y() { return _camera1CenterY; };
+            static double get_camera_1_focal_x() { return _camera1FocalX; };
+            static double get_camera_1_focal_y() { return _camera1FocalY; };
+            // Camera 2 is the right camera in stereo, and the depth camera in RGBD
+            static double get_camera_2_center_x() { return _camera2CenterX; };
+            static double get_camera_2_center_y() { return _camera2CenterY; };
+            static double get_camera_2_focal_x() { return _camera2FocalX; };
+            static double get_camera_2_focal_y() { return _camera2FocalY; };
+
+            static double get_camera_2_translation_x() { return _camera2TranslationX; };
+            static double get_camera_2_translation_y() { return _camera2TranslationY; };
+            static double get_camera_2_translation_z() { return _camera2TranslationZ; };
+
+            static double get_camera_2_rotation_x() { return _camera2RotationX; };
+            static double get_camera_2_rotation_y() { return _camera2RotationY; };
+            static double get_camera_2_rotation_z() { return _camera2RotationZ; };
+
+            // Optimisation parameters
             static unsigned int get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
             static unsigned int get_maximum_global_optimization_iterations() { return _maximumGlobalOptimizationCall; };
             static double get_point_weight_threshold() { return _pointWeightThreshold; };
@@ -50,11 +76,37 @@ namespace rgbd_slam {
             static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
 
         private:
-            // Camera parameters
-            inline static double _cameraCenterX;
-            inline static double _cameraCenterY;
-            inline static double _cameraFocalX;
-            inline static double _cameraFocalY;
+            // Is this set of parameters valid
+            inline static bool _isValid; 
+            
+            // Starting position (m & radians)
+            inline static double _startingPositionX;
+            inline static double _startingPositionY;
+            inline static double _startingPositionZ;
+
+            inline static double _startingRotationX;
+            inline static double _startingRotationY;
+            inline static double _startingRotationZ;
+
+            // Cameras intrinsics parameters
+            inline static double _camera1CenterX;
+            inline static double _camera1CenterY;
+            inline static double _camera1FocalX;
+            inline static double _camera1FocalY;
+
+            inline static double _camera2CenterX;
+            inline static double _camera2CenterY;
+            inline static double _camera2FocalX;
+            inline static double _camera2FocalY;
+            
+            // Camera 2 position and rotation
+            inline static double _camera2TranslationX;
+            inline static double _camera2TranslationY;
+            inline static double _camera2TranslationZ;
+
+            inline static double _camera2RotationX;
+            inline static double _camera2RotationY;
+            inline static double _camera2RotationZ;
 
             // Position optimization
             inline static unsigned int _minimumPointForOptimization;

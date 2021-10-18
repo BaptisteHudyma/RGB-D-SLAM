@@ -4,6 +4,7 @@
 
 #include "RGBD_SLAM.hpp"
 #include "Pose.hpp"
+#include "parameters.hpp"
 
 
 
@@ -57,7 +58,7 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& use
         ;
 
     cv::CommandLineParser parser(argc, argv, keys);
-    parser.about("Plane Detection v1");
+    parser.about("RGBD SLam v0");
 
     if (parser.has("help")) {
         parser.printMessage();
@@ -71,7 +72,7 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& use
     jumpImages = parser.get<unsigned int>("j");
 
     if(not parser.check()) {
-        std::cout << "RGBD SLAM: Some paramers are missing: call with -h to get the list of parameters";
+        std::cout << "RGBD SLAM: Some parameters are missing: call with -h to get the list of parameters";
         parser.printErrors();
     }
     return parser.check();
@@ -104,6 +105,13 @@ int main(int argc, char* argv[]) {
 
     //start with identity pose
     rgbd_slam::poseEstimation::Pose pose;
+    const vector3 startingPosition(
+            rgbd_slam::Parameters::get_starting_position_x(),
+            rgbd_slam::Parameters::get_starting_position_y(),
+            rgbd_slam::Parameters::get_starting_position_z()
+            );
+    const quaternion startingRotation;
+    pose.set_parameters(startingPosition, startingRotation);
 
 
     //frame counters
