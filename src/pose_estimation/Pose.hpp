@@ -24,9 +24,9 @@ namespace poseEstimation {
             void update(const vector3& position, const quaternion& orientation);
 
             //getters
-            vector3 get_position() const { return _position; }
-            matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
-            quaternion get_orientation_quaternion() const { return _orientation; }
+            const vector3 get_position() const { return _position; }
+            const matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
+            const quaternion get_orientation_quaternion() const { return _orientation; }
 
             /**
              * \brief A display function, to avoid a friend operator function

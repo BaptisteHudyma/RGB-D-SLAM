@@ -37,11 +37,16 @@ namespace rgbd_slam {
             _matchesCount -= removeNMatches;
         }
 
-        void Staged_Point::update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor)
+        double Staged_Point::update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor)
         {
             _matchesCount += 1;
             // TODO: update coordinates with error
             _descriptor = newDescriptor;
+
+            return    
+                abs(newPointCoordinates.x() - _coordinates.x()) + 
+                abs(newPointCoordinates.y() - _coordinates.y()) +
+                abs(newPointCoordinates.z() - _coordinates.z());
         }
 
         bool Staged_Point::should_remove_from_staged() const
@@ -101,5 +106,8 @@ namespace rgbd_slam {
                 abs(newPointCoordinates.y() - _coordinates.y()) +
                 abs(newPointCoordinates.z() - _coordinates.z());
         }
+
+
+
     }   /* map_management */
 } /* rgbd_slam */

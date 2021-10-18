@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include <opencv2/opencv.hpp>
 
@@ -9,7 +10,8 @@
 
 
 
-void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) {
+void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
+{
     switch(cv::waitKey(1)) {
         //check pressed key
         case 'l':
@@ -31,25 +33,13 @@ void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiv
 /*
  * Load rgb and depth images from the folder dataPath at index imageIndex
  *
- *  returns true is load is successful, else return false
+ * returns true is load is successful, else return false
  */
-bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage, cv::Mat& depthImage) {
-    std::stringstream depthImagePath, rgbImgPath;
-    rgbImgPath << dataPath.str() << "rgb_"<< imageIndex <<".png";
-    depthImagePath << dataPath.str() << "depth_" << imageIndex << ".png";
 
-    rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
-    depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
-    depthImage.convertTo(depthImage, CV_32F);
-
-    //check if images exists
-    return depthImage.data and rgbImage.data;
-}
-
-bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& showPrimitiveMasks, bool& useLineDetection, bool& useFrameOdometry, int& startIndex, unsigned int& jumpImages) {
+bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& useLineDetection, bool& useFrameOdometry, int& startIndex, unsigned int& jumpImages) 
+{
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
-        "{f folder        |<none>| folder to parse        }"
         "{p primitive     |  1   | display primitive masks }"
         "{l lines         |  0   | Detect lines }"
         "{o odometry      |  0   | Use frame odometry }"
@@ -65,7 +55,6 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
         return false;
     }
 
-    dataPath << parser.get<cv::String>("f") << "/";
     showPrimitiveMasks = parser.get<bool>("p");
     useLineDetection = parser.get<bool>("l");
     useFrameOdometry = parser.get<bool>("o");
@@ -79,49 +68,26 @@ bool parse_parameters(int argc, char** argv, std::stringstream& dataPath, bool& 
     return parser.check();
 }
 
-
-
-int main(int argc, char* argv[]) {
-    std::stringstream dataPath;
+int main(int argc, char* argv[]) 
+{
+    std::stringstream dataPath("../data/freiburg1_xyz/");
     bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
     int startIndex;
     unsigned int jumpFrames = 0;
 
-    if (not parse_parameters(argc, argv, dataPath, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex, jumpFrames)) {
+    if (not parse_parameters(argc, argv, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex, jumpFrames)) {
         return 0;   //could not parse parameters correctly 
     }
 
-    int width, height;
-    cv::Mat rgbImage, depthImage;
-    if(not load_images(dataPath, startIndex, rgbImage, depthImage) ) {
-        std::cout << "Error loading images at " << dataPath.str() << std::endl;
-        return -1;
-    }
+    // Get file & folder names
+    const std::string rgbImageListPath = dataPath.str() + "rgb.txt";
+    const std::string depthImageListPath = dataPath.str() + "depth.txt";
 
-    width = rgbImage.cols;
-    height = rgbImage.rows;
+    std::ifstream rgbImagesFile(rgbImageListPath);
+    std::ifstream depthImagesFile(depthImageListPath);
 
-
-
-    //visual odometry params
-    /*
-       Parameters params;
-       if (not params.init_from_file(calibYAMLPath.str())) {
-       std::cout << "Failed to load YAML param file at: " << calibYAMLPath.str() << std::endl;
-       return -1;
-       }
-
-       params.set_fx(depthOps.get_rgb_fx());
-       params.set_fy(depthOps.get_rgb_fy());
-       params.set_cx(depthOps.get_rgb_cx());
-       params.set_cy(depthOps.get_rgb_cy());
-
-       params.set_height(height);
-       params.set_width(width);
-
-    //visual odom class
-    RGB_SLAM vo(params);
-     */
+    const int width  = 640; 
+    const int height = 480;
 
     rgbd_slam::RGBD_SLAM RGBD_Slam (dataPath, width, height);
 
@@ -132,22 +98,47 @@ int main(int argc, char* argv[]) {
     //frame counters
     unsigned int totalFrameTreated = 0;
     unsigned int frameIndex = startIndex;   //current frame index count
-    
+
     double meanTreatmentTime = 0;
 
     //stop condition
     bool runLoop = true;
-    while(runLoop) {
+    for(std::string rgbLine, depthLine; runLoop && std::getline(rgbImagesFile, rgbLine) && std::getline(depthImagesFile, depthLine); ) {
 
+        if (rgbLine[0] == '#' or depthLine[0] == '#')
+            continue;
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
             ++frameIndex;
             continue;
         }
 
-        // read images
-        if(not load_images(dataPath, frameIndex, rgbImage, depthImage))
-            break;
+        // Parse lines
+        std::istringstream inputRgbString(rgbLine);
+        std::istringstream inputDepthString(depthLine);
+
+        double rgbTimeStamp = 0;
+        std::string rgbImagePath;
+        inputRgbString >> rgbTimeStamp >> rgbImagePath;
+        rgbImagePath = dataPath.str() + rgbImagePath;
+
+        double depthTimeStamp = 0;
+        std::string depthImagePath;
+        inputDepthString >> depthTimeStamp >> depthImagePath;
+        depthImagePath = dataPath.str() + depthImagePath;
+
+        // Load images
+        cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
+        cv::Mat depthImage = cv::imread(depthImagePath, cv::IMREAD_GRAYSCALE);
+
+        if (rgbImage.empty() or depthImage.empty())
+        {
+            std::cerr << "Cannot load " << rgbImagePath << " or " << depthImagePath << std::endl;
+            continue;
+        }
+        // convert to mm & float 32
+        depthImage.convertTo(depthImage, CV_32FC1);
+        depthImage *= 10;
 
         // get optimized pose
         double elapsedTime = cv::getTickCount();

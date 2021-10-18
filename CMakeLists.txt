@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(rgbSLAM)
-set(CMAKE_BUILD_TYPE Debug)
+
+IF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE Debug)
+ENDIF()
 
 set (CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
@@ -35,10 +38,11 @@ MESSAGE(${LINK_LIBS})
 
 set(SRC src)
 set(THIRD_PARTY third_party)
-set(PRIM    ${SRC}/primitives_detection)
-set(POSE    ${SRC}/pose_estimation)
-set(MAP     ${SRC}/map_management)
-set(UTILS   ${SRC}/utils)
+set(PRIM        ${SRC}/primitives_detection)
+set(POSE        ${SRC}/pose_estimation)
+set(MAP         ${SRC}/map_management)
+set(UTILS       ${SRC}/utils)
+set(EXAMPLES    examples)
 
 include_directories(SYSTEM
     ${INC_DIRS}
@@ -51,13 +55,10 @@ include_directories(
     ${MAP}
     ${THIRD_PARTY}
     ${UTILS}
+    ${EXAMPLES}
     )
 
-add_executable(rgbslam 
-    main.cpp
-    )
-
-add_library(primitivesDetection
+add_library(primitivesDetection SHARED
     ${PRIM}/DepthOperations.cpp
     ${PRIM}/PrimitiveDetection.cpp
     ${PRIM}/PlaneSegment.cpp
@@ -67,7 +68,7 @@ add_library(primitivesDetection
     ${PRIM}/ShapePrimitives.cpp
     )
 
-add_library(poseEstimation
+add_library(poseEstimation SHARED
     ${POSE}/Pose.cpp
     ${POSE}/PoseUtils.cpp
     ${POSE}/Image_Features_Handler.cpp
@@ -80,12 +81,12 @@ add_library(poseEstimation
     ${POSE}/RGB_Slam.cpp
     )
 
-add_library(mapManagement
+add_library(mapManagement SHARED
     ${MAP}/map_point.cpp
     ${MAP}/local_map.cpp
     )
 
-add_library(thirdParty
+add_library(thirdParty SHARED
     ${SRC}/MonocularDepthMap.cpp
 
     ${THIRD_PARTY}/LineSegmentDetector.cpp
@@ -93,7 +94,7 @@ add_library(thirdParty
     ${THIRD_PARTY}/dsyevh3.cpp
     )
 
-add_library(utils
+add_library(utils SHARED
     ${UTILS}/parameters.cpp
     ${UTILS}/utils.cpp
     ${UTILS}/KeyPointDetection.cpp
@@ -101,12 +102,11 @@ add_library(utils
     ${UTILS}/PoseOptimization.cpp
     )
 
-add_library(slam
+add_library(${PROJECT_NAME} SHARED
     ${SRC}/RGBD_SLAM.cpp
     )
 
-target_link_libraries(rgbslam 
-    slam
+target_link_libraries(${PROJECT_NAME}
     primitivesDetection
     poseEstimation
     mapManagement
@@ -114,5 +114,19 @@ target_link_libraries(rgbslam
     utils
     ${LINK_LIBS} 
     )
+
+
+# Examples of use
+add_executable(slam_yoga_mat
+    ${EXAMPLES}/main_yoga_mat_dataset.cpp)
+target_link_libraries(slam_yoga_mat ${PROJECT_NAME})
+
+add_executable(slam_tunnel_mat
+    ${EXAMPLES}/main_tunnel_dataset.cpp)
+target_link_libraries(slam_tunnel_mat ${PROJECT_NAME})
+
+add_executable(slam_freiburg_xyz
+    ${EXAMPLES}/main_xyz_dataset.cpp)
+target_link_libraries(slam_freiburg_xyz ${PROJECT_NAME})
 
 

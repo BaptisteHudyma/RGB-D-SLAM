@@ -42,7 +42,7 @@ namespace rgbd_slam {
              *
              * \return The new estimated pose 
              */
-            poseEstimation::Pose track(const cv::Mat& rgbImage, const cv::Mat& depthImage, bool detectLines = false);
+            const poseEstimation::Pose track(const cv::Mat& rgbImage, const cv::Mat& depthImage, bool detectLines = false);
 
             /**
              * \brief Compute a debug image
@@ -57,7 +57,7 @@ namespace rgbd_slam {
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
              */
-            void show_statistics(double frameMeanTreatmentTime);
+            void show_statistics(double frameMeanTreatmentTime) const;
 
         protected:
 

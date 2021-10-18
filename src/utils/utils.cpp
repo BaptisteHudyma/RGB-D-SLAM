@@ -5,7 +5,6 @@
 namespace rgbd_slam {
     namespace utils {
 
-
         const vector3 screen_to_world_coordinates(const unsigned int screenX, const unsigned int screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
         {
             const double x = (static_cast<double>(screenX) - Parameters::get_camera_center_x()) * measuredZ / Parameters::get_camera_focal_x();
@@ -47,6 +46,22 @@ namespace rgbd_slam {
             matrix34 worldToCamMtrx;
             worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
             return worldToCamMtrx;
+        }
+
+        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointError)
+        {
+            const double cameraFX = Parameters::get_camera_focal_x();
+            const double cameraFY = Parameters::get_camera_focal_y();
+            const double cameraCX = Parameters::get_camera_center_x();
+            const double cameraCY = Parameters::get_camera_center_y();
+
+            const matrix33 jacobian {
+                {depth / cameraFX, 0.0, (screenPoint.x() - cameraCX) / cameraFX },
+                {0.0, depth / cameraFY, (screenPoint.y() - cameraCY) / cameraFY },
+                {0.0, 0.0, 1.0}
+            };
+
+            return jacobian * screenPointError * jacobian.transpose();
         }
 
     }

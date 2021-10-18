@@ -7,30 +7,30 @@ namespace rgbd_slam {
     bool Parameters::parse_file(const std::string& fileName )
     {
         // Camera parameters
-        _cameraCenterX = 3.1649e+02;
-        _cameraCenterY = 2.2923e+02;
-        _cameraFocalX = 5.4886e+02;
-        _cameraFocalY = 5.4959e+02;
-
-        // Pose Optimization
-        _minimumPointForOptimization = 5;
-        _maximumGlobalOptimizationCall = 1024;
+        _cameraCenterX = 316.49;
+        _cameraCenterY = 229.23;
+        _cameraFocalX = 548.86;
+        _cameraFocalY = 549.59;
 
         // Point detection/Matching
         _matchSearchRadius = 30;
         _matchSearchCellSize = 50;
         _maximumMatchDistance = 0.7;   // The closer to 0, the more discriminating
-        _detectorMinHessian = 25;
+        _detectorMinHessian = 45;
+
+        // Pose Optimization
+        _minimumPointForOptimization = 5;
+        _maximumGlobalOptimizationCall = 1024;
+        _pointWeightThreshold = 1.345;
+        _pointWeightCoefficient = 1.4826;
+        _pointLossAlpha = -1000;  // -infinity, infinity
+        _pointErrorMultiplier = 0.5;  // > 0
 
         // Local map
         _pointUnmatchedCountToLoose = 10;
         _pointAgeConfidence = 15;
         _pointStagedAgeConfidence = 10;
         _pointMinimumConfidenceForMap = 0.9;
-        _pointWeightThreshold = 1.345;
-        _pointWeightCoefficient = 1.4826;
-        _pointLossAlpha = -1000;  // -infinity, infinity
-        _pointErrorMultiplier = 0.5;  // > 0
 
         // Primitive extraction
         _primitiveMaximumCosAngle = cos(M_PI/10.0);

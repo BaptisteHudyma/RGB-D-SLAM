@@ -22,69 +22,69 @@ namespace rgbd_slam {
         _meanTreatmentTime(0.0),
         _meanLineTreatment(0.0),
         _meanPoseTreatmentTime(0.0)
-    {
-        // Load parameters (once)
-        Parameters::parse_file("");
-        // Get intrinsics parameters
-        std::stringstream calibPath, calibYAMLPath;
-        calibPath << dataPath.str() << "calib_params.xml";
-        calibYAMLPath << dataPath.str() << "calib_params.yaml";
-        std::string finalPath = calibPath.str();
+        {
+            // Load parameters (once)
+            Parameters::parse_file("");
+            // Get intrinsics parameters
+            std::stringstream calibPath, calibYAMLPath;
+            calibPath << dataPath.str() << "calib_params.xml";
+            calibYAMLPath << dataPath.str() << "calib_params.yaml";
+            std::string finalPath = calibPath.str();
 
-        // primitive connected graph creator
-        _depthOps = new primitiveDetection::Depth_Operations(
-                finalPath, 
-                _width, 
-                _height, 
-                Parameters::get_depth_map_patch_size()
-                );
-        if (_depthOps == nullptr or not _depthOps->is_ok()) {
-            std::cerr << CLASS_ERR << "Cannot load parameter files, exiting" << std::endl;
-            exit(-1);
+            // primitive connected graph creator
+            _depthOps = new primitiveDetection::Depth_Operations(
+                    finalPath, 
+                    _width, 
+                    _height, 
+                    Parameters::get_depth_map_patch_size()
+                    );
+            if (_depthOps == nullptr or not _depthOps->is_ok()) {
+                std::cerr << CLASS_ERR << "Cannot load parameter files, exiting" << std::endl;
+                exit(-1);
+            }
+
+            // init motion model
+            _motionModel.reset();
+
+            //local map
+            _localMap = new map_management::Local_Map();
+
+            //plane/cylinder finder
+            _primitiveDetector = new primitiveDetection::Primitive_Detection(
+                    _height,
+                    _width,
+                    Parameters::get_depth_map_patch_size(),
+                    Parameters::get_maximum_plane_match_angle(),
+                    Parameters::get_maximum_merge_distance(),
+                    true
+                    );
+
+            // Line segment detector
+            //Should refine, scale, Gaussian filter sigma
+            _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
+
+            // Point detector and matcher
+            _pointMatcher = new utils::Key_Point_Extraction(Parameters::get_minimum_hessian());
+
+            // kernel for various operations
+            _kernel = cv::Mat::ones(3, 3, CV_8U);
+
+            // set display colors
+            set_color_vector();
+
+            if (_primitiveDetector == nullptr) {
+                std::cerr << CLASS_ERR << " Instanciation of Primitive_Detector failed" << std::endl;
+                exit(-1);
+            }
+            if (_lineDetector == nullptr) {
+                std::cerr << CLASS_ERR << " Instanciation of Line_Detector failed" << std::endl;
+                exit(-1);
+            }
+
         }
 
-        // init motion model
-        _motionModel.reset();
 
-        //local map
-        _localMap = new map_management::Local_Map();
-
-        //plane/cylinder finder
-        _primitiveDetector = new primitiveDetection::Primitive_Detection(
-                _height,
-                _width,
-                Parameters::get_depth_map_patch_size(),
-                Parameters::get_maximum_plane_match_angle(),
-                Parameters::get_maximum_merge_distance(),
-                true
-                );
-
-        // Line segment detector
-        //Should refine, scale, Gaussian filter sigma
-        _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
-
-        // Point detector and matcher
-        _pointMatcher = new utils::Key_Point_Extraction(Parameters::get_minimum_hessian());
-
-        // kernel for various operations
-        _kernel = cv::Mat::ones(3, 3, CV_8U);
-
-        // set display colors
-        set_color_vector();
-
-        if (_primitiveDetector == nullptr) {
-            std::cerr << CLASS_ERR << " Instanciation of Primitive_Detector failed" << std::endl;
-            exit(-1);
-        }
-        if (_lineDetector == nullptr) {
-            std::cerr << CLASS_ERR << " Instanciation of Line_Detector failed" << std::endl;
-            exit(-1);
-        }
-
-    }
-
-
-    poseEstimation::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
+    const poseEstimation::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
     {
         cv::Mat depthImage = inputDepthImage.clone();
         cv::Mat rgbImage = inputRgbImage.clone();
@@ -160,14 +160,20 @@ namespace rgbd_slam {
 
         // this frame points and  assoc
         t1 = cv::getTickCount();
-        poseEstimation::Pose pose = this->compute_new_pose(grayImage, depthImage);
+        poseEstimation::Pose refinedPose = this->compute_new_pose(grayImage, depthImage);
         _meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
+        //update motion model with refined pose
+        _motionModel.update_model(refinedPose);
+        // Update current pose
+        _currentPose = refinedPose;
+
         _totalFrameTreated += 1;
-        return pose;
+        return refinedPose;
     }
 
-    void RGBD_SLAM::get_debug_image(const poseEstimation::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) {
+    void RGBD_SLAM::get_debug_image(const poseEstimation::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) 
+    {
         debugImage = originalRGB.clone();
         if (showPrimitiveMasks)
         {
@@ -182,7 +188,7 @@ namespace rgbd_slam {
     {
         //get a pose with the motion model
         poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
-        
+
         // Detect and match key points with local map points
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         match_point_container matchedPoints = _localMap->find_matches(refinedPose, keypointObject);
@@ -197,12 +203,6 @@ namespace rgbd_slam {
             // Not enough matches
             std::cerr << "Not enough points for pose estimation: " << matchedPoints.size() << std::endl;
         }
-
-        //update motion model with refined pose
-        _motionModel.update_model(refinedPose);
-
-        // Update current pose
-        _currentPose = refinedPose;
 
         // Update local map
         _localMap->update(refinedPose, keypointObject);
@@ -245,7 +245,7 @@ namespace rgbd_slam {
     }
 
 
-    void RGBD_SLAM::show_statistics(double meanFrameTreatmentTime) 
+    void RGBD_SLAM::show_statistics(double meanFrameTreatmentTime) const 
     {
         double pointCloudTreatmentTime = _meanMatTreatmentTime / _totalFrameTreated;
         std::cout << "Mean image to point cloud treatment time is " << pointCloudTreatmentTime << " seconds (" << get_percent_of_elapsed_time(pointCloudTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;

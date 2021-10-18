@@ -19,28 +19,21 @@ namespace poseEstimation {
 
 
 
-    const Pose Motion_Model::predict_next_pose(const Pose& currentPose) {
+    const Pose Motion_Model::predict_next_pose(const Pose& currentPose) const {
         //compute next linear velocity
         vector3 newLinVelocity = currentPose.get_position() - _lastPosition;
         newLinVelocity = (newLinVelocity + _linearVelocity) * 0.5;
 
         //compute new angular velocity
-        quaternion currentQ = currentPose.get_orientation_quaternion();
-        quaternion angVelDiff = currentQ * _lastQ.inverse();
+        const quaternion currentQ = currentPose.get_orientation_quaternion();
+        const quaternion angVelDiff = currentQ * _lastQ.inverse();
         quaternion newAngVel = angVelDiff.slerp(0.5, _angularVelocity);
         newAngVel.normalize();
 
         //Integrate to compute predictions
-        vector3 integralPos = currentPose.get_position() + newLinVelocity;
+        const vector3 integralPos = currentPose.get_position() + newLinVelocity;
         quaternion integralQ = currentQ * newAngVel;
         integralQ.normalize();
-
-        /*
-        _lastQ = currentQ;
-        _angularVelocity = newAngVel;
-        _lastPosition = currentPose.get_position();
-        _linearVelocity = newLinVelocity;
-        */
 
         return Pose(integralPos, integralQ);
     }
@@ -52,8 +45,8 @@ namespace poseEstimation {
         newLinVelocity = (newLinVelocity + _linearVelocity) * 0.5;
 
         //compute new angular velocity
-        quaternion currentQ = pose.get_orientation_quaternion();
-        quaternion angVelDiff = currentQ * _lastQ.inverse();
+        const quaternion currentQ = pose.get_orientation_quaternion();
+        const quaternion angVelDiff = currentQ * _lastQ.inverse();
         quaternion newAngVel = angVelDiff.slerp(0.5, _angularVelocity);
         newAngVel.normalize();
 

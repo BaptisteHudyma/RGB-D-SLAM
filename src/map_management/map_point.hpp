@@ -57,7 +57,7 @@ namespace rgbd_slam {
                 /**
                   * \brief Call when this point was matched to another point
                   */
-                void update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+                double update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
 
                 int _lastMatchedIndex;
             private:

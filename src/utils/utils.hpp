@@ -42,6 +42,12 @@ namespace rgbd_slam {
          */
         const matrix34 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position);
 
+
+        /**
+         * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
+         */
+        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointError);
+
     }
 }
 

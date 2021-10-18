@@ -159,7 +159,7 @@ namespace rgbd_slam {
                 const float weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
 
                 // Compute the final error
-                fvec(pointIndex) = _weights[pointIndex] * pointErrorMultiplier * weightedLoss ; 
+                fvec(pointIndex) = _weights[pointIndex] * pointErrorMultiplier * weightedLoss; 
             }
             return 0;
         }

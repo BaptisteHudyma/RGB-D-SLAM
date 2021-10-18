@@ -68,26 +68,42 @@ namespace rgbd_slam {
         {
             const matrix34& camToWorldMatrix= utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
+            // Must update [2][2] with depth error
+            matrix33 screenPointError {
+                {1.0/12.0, 0,        0},
+                {0,        1.0/12.0, 0},
+                {0,        0,        0},
+            };
+
             // Remove old map points
             point_map_container::iterator pointMapIterator = _localMap.begin();
             while(pointMapIterator != _localMap.end())
             {
+                bool shouldRemovePoint = false;
                 const int matchedPointIndex = pointMapIterator->_lastMatchedIndex;
                 if (matchedPointIndex >= 0)
                 {
                     // get match coordinates, transform them to world coordinates
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
-                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), keypointObject.get_depth(matchedPointIndex), camToWorldMatrix);
+                    const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
+
+                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
+
+                    const double pointDepthError = 0.00313 + 0.00116 * matchedPointDepth + 0.00052 * pow(matchedPointDepth, 2.0);
+                    //screenPointError(2, 2) = pointDepthError;
+                    //std::cout << utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, screenPointError) << std::endl;
+                    //std::cout << std::endl;
 
                     // update this map point errors & position
-                    const double pointMapError = pointMapIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                    const double retroprojectionError = pointMapIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                    shouldRemovePoint = (retroprojectionError > 1);
                 }
                 else
                 {
                     pointMapIterator->update_unmatched();
                 }
 
-                if (pointMapIterator->is_lost()) {
+                if (shouldRemovePoint or  pointMapIterator->is_lost()) {
                     // Remove useless point
                     pointMapIterator = _localMap.erase(pointMapIterator);
                 }
@@ -110,6 +126,7 @@ namespace rgbd_slam {
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
             while(stagedPointIterator != _stagedPoints.end())
             {
+                bool shouldRemovePoint = false;
                 const int matchedPointIndex = stagedPointIterator->_lastMatchedIndex;
                 if (matchedPointIndex >= 0)
                 {
@@ -118,14 +135,15 @@ namespace rgbd_slam {
                     const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), keypointObject.get_depth(matchedPointIndex), camToWorldMatrix);
 
                     // update this map point errors & position
-                    stagedPointIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                    const double retroprojectionError = stagedPointIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
+                    shouldRemovePoint = (retroprojectionError > 1);
                 }
                 else
                 {
                     stagedPointIterator->update_unmatched();
                 }
 
-                if (stagedPointIterator->should_add_to_local_map())
+                if (shouldRemovePoint or stagedPointIterator->should_add_to_local_map())
                 {
                     // Add to local map, remove from staged points
                     _localMap.emplace(_localMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->_descriptor);
