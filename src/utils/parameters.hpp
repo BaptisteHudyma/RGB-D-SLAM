@@ -42,7 +42,13 @@ namespace rgbd_slam {
 
             // Optimisation parameters
             static unsigned int get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
-            static unsigned int get_maximum_global_optimization_iterations() { return _maximumGlobalOptimizationCall; };
+            static unsigned int get_optimization_maximum_iterations() { return _optimizationMaximumIterations; };
+            static double get_optimization_error_precision() { return _optimizationErrorPrecision; };
+            static double get_optimization_xtol() { return _optimizationToleranceOfSolutionVectorNorm; };
+            static double get_optimization_ftol() { return _optimizationToleranceOfVectorFunction; };
+            static double get_optimization_gtol() { return _optimizationToleranceOfErrorFunctionGradient; };
+            static double get_optimization_factor() { return _optimizationDiagonalStepBoundShift; };
+
             static double get_point_weight_threshold() { return _pointWeightThreshold; };
             static double get_point_weight_coefficient() { return _pointWeightCoefficient; };
             static double get_point_loss_alpha() { return _pointLossAlpha; };
@@ -110,7 +116,16 @@ namespace rgbd_slam {
 
             // Position optimization
             inline static unsigned int _minimumPointForOptimization;
-            inline static unsigned int _maximumGlobalOptimizationCall; 
+
+            inline static double _optimizationToleranceOfSolutionVectorNorm;    // tolerance for the norm of the solution vector
+            inline static double _optimizationToleranceOfVectorFunction;        // tolerance for the norm of the vector function
+
+            inline static double _optimizationToleranceOfErrorFunctionGradient; // tolerance for the norm of the gradient of the error function
+            inline static double _optimizationDiagonalStepBoundShift;           // step bound for the diagonal shift
+            inline static double _optimizationErrorPrecision;                   // error precision
+
+            inline static unsigned int _optimizationMaximumIterations;  // Max iteration of the Levenberg Marquart optimisation
+
             inline static double _pointWeightThreshold;
             inline static double _pointWeightCoefficient;
             inline static double _pointLossAlpha;   // loss steepness (_infinity, infinity)

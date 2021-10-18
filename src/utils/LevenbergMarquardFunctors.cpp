@@ -13,6 +13,26 @@ namespace rgbd_slam {
                 abs(pointA.x() - pointB.x()) + 
                 abs(pointA.y() - pointB.y());
         }
+        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) 
+        { 
+            return 
+                abs(pointA.x() - pointB.x()) + 
+                abs(pointA.y() - pointB.y()) +
+                abs(pointA.z() - pointB.z());
+        }
+        double get_distance_squared(const vector2& pointA, const vector2& pointB) 
+        { 
+            return 
+                pow(pointA.x() - pointB.x(), 2.0) + 
+                pow(pointA.y() - pointB.y(), 2.0);
+        }
+        double get_distance_squared(const vector3& pointA, const vector3& pointB) 
+        { 
+            return 
+                pow(pointA.x() - pointB.x(), 2.0) + 
+                pow(pointA.y() - pointB.y(), 2.0) +
+                pow(pointA.z() - pointB.z(), 2.0);
+        }
         /**
          * \brief Compute a weight associated by this error, using a Hubert type loss
          */
@@ -100,7 +120,7 @@ namespace rgbd_slam {
 
 
         Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
-            Levenberg_Marquard_Functor<double>(n, points.size()),
+            Levenberg_Marquardt_Functor<double>(n, points.size()),
             _points(points),
             _rotation(worldRotation),
             _singularBvalues(singularBvalues)
@@ -138,12 +158,12 @@ namespace rgbd_slam {
         }
 
         // Implementation of the objective function
-        int Global_Pose_Estimator::operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const 
+        int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
         {
-            const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(z(3), z(4), z(5)), _singularBvalues);
-            const vector3 translation(z(0), z(1), z(2));
+            const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(x(3), x(4), x(5)), _singularBvalues);
+            const vector3 translation(x(0), x(1), x(2));
 
-            const double pointErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / _points.size());
+            const double pointErrorMultiplier = Parameters::get_point_error_multiplier() / _points.size();
 
             const matrix34& transformationMatrix = compute_world_to_camera_transform(rotation, translation);
 
@@ -154,13 +174,38 @@ namespace rgbd_slam {
 
                 // Compute distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
-                
+
                 // Pass it to loss function (cut some precision with a float cast)
-                const float weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
+                const double weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
 
                 // Compute the final error
-                fvec(pointIndex) = _weights[pointIndex] * pointErrorMultiplier * weightedLoss; 
+                fvec(pointIndex) = sqrt(pointErrorMultiplier * _weights[pointIndex] * weightedLoss); 
             }
+            return 0;
+        }
+
+
+        int Global_Pose_Estimator::df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const
+        {
+            const double epsilon = Parameters::get_optimization_error_precision();
+            for (int i = 0; i < x.size(); i++) {
+                Eigen::VectorXd xPlus(x);
+                xPlus(i) += epsilon;
+                Eigen::VectorXd xMinus(x);
+                xMinus(i) -= epsilon;
+
+                Eigen::VectorXd fvecPlus(values());
+                operator()(xPlus, fvecPlus);
+
+                Eigen::VectorXd fvecMinus(values());
+                operator()(xMinus, fvecMinus);
+
+                Eigen::VectorXd fvecDiff(values());
+                fvecDiff = (fvecPlus - fvecMinus) / (2.0 * epsilon);
+
+                fjac.block(0, i, values(), 1) = fvecDiff;
+            }
+
             return 0;
         }
 
@@ -170,7 +215,8 @@ namespace rgbd_slam {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
             const vector2& mapPointAs2D = world_to_screen_coordinates(mapPoint, worldToCamMatrix);
 
-            return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
+            const double distance = get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
+            return distance * distance;
         }
 
 

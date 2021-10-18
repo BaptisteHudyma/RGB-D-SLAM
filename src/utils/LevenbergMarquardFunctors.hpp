@@ -19,7 +19,7 @@ namespace rgbd_slam {
          *
          */
         template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic>
-            struct Levenberg_Marquard_Functor 
+            struct Levenberg_Marquardt_Functor 
             {
 
                 //tell the called the numerical type and input/ouput size
@@ -34,7 +34,7 @@ namespace rgbd_slam {
                 typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, 1> ValueType;
                 typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
 
-                Levenberg_Marquard_Functor(const unsigned int inputCount, const unsigned int outputCount) :
+                Levenberg_Marquardt_Functor(const unsigned int inputCount, const unsigned int outputCount) :
                     _M(inputCount), _N(outputCount)
                 {
                 }
@@ -76,7 +76,7 @@ namespace rgbd_slam {
          * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
          */
         struct Global_Pose_Estimator :
-            Levenberg_Marquard_Functor<double>
+            Levenberg_Marquardt_Functor<double>
         {
             // Simple constructor
             /**
@@ -98,8 +98,21 @@ namespace rgbd_slam {
              */
             double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const;
 
-            // Implementation of the objective function
-            int operator()(const Eigen::VectorXd& z, Eigen::VectorXd& fvec) const;
+            /**
+             * \brief Implementation of the objective function
+             *
+             * \param[in] x The vector of parameters to optimize (Size M)
+             * \param[out] fvec The vector of errors, of size N (N the number of points) 
+             */
+            int operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const;
+
+            /**
+             * \brief Compute the Jacobian matrix of the input parameters
+             * 
+             * \param[in] x A vector of dimension M, with M the number of parameters to optimize
+             * \param[out] fjac A matrix NxM, with M the number of parameters to optimize. This is the Jacobian of the errors
+             */
+            int df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const;
 
             private:
             double _medianOfDistances;

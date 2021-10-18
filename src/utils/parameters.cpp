@@ -1,6 +1,7 @@
 #include "parameters.hpp"
 
 #include <math.h>
+#include <cfloat>
 
 namespace rgbd_slam {
 
@@ -46,15 +47,21 @@ namespace rgbd_slam {
         // Point detection/Matching
         _matchSearchRadius = 30;
         _matchSearchCellSize = 50;
-        _maximumMatchDistance = 0.7;   // The closer to 0, the more discriminating
-        _detectorMinHessian = 45;
+        _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
+        _detectorMinHessian = 45;       // The higher the least detected points
 
         // Pose Optimization
         _minimumPointForOptimization = 5;
-        _maximumGlobalOptimizationCall = 1024;
+        _optimizationMaximumIterations = 1024;
+        _optimizationErrorPrecision = 0.5;
+        _optimizationToleranceOfSolutionVectorNorm = sqrt(DBL_EPSILON); // Smallest delta of doubles
+        _optimizationToleranceOfVectorFunction = sqrt(DBL_EPSILON);
+        _optimizationToleranceOfErrorFunctionGradient = 0;
+        _optimizationDiagonalStepBoundShift = 100;
+
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
-        _pointLossAlpha = -10;  // -infinity, infinity
+        _pointLossAlpha = -100;  // -infinity, infinity
         _pointErrorMultiplier = 0.5;  // > 0
 
         // Local map
