@@ -72,7 +72,7 @@ namespace rgbd_slam {
         _minimumCellActivated = 5;
         _depthSigmaError = 1.425e-6;
         _depthSigmaMargin = 12;
-        _depthDiscontinuityLimit = 4;
+        _depthDiscontinuityLimit = 10;
         _depthAlpha = 0.06;
 
         // Cylinder ransac fitting

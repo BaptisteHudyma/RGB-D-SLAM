@@ -125,7 +125,8 @@ namespace rgbd_slam {
 
         int Keypoint_Handler::get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
         {
-            assert(isKeyPointMatchedContainer.size() == _keypoints.size());
+            if (_keypoints.size() <= 0)
+                return -1;
 
             const cv::Mat& keyPointMask = compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer);
 
@@ -169,27 +170,29 @@ namespace rgbd_slam {
         const Keypoint_Handler Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage) 
         {
             std::vector<cv::KeyPoint> frameKeypoints;
+            cv::Mat frameDescriptors;
 
             //detect keypoints
             double t1 = cv::getTickCount();
             _featureDetector->detect(grayImage, frameKeypoints); 
 
-            std::vector<cv::Point2f> framePoints;
-            framePoints.reserve(frameKeypoints.size());
-            cv::KeyPoint::convert(frameKeypoints, framePoints);
+            if (frameKeypoints.size() > 0)
+            {
+                std::vector<cv::Point2f> framePoints;
+                framePoints.reserve(frameKeypoints.size());
+                cv::KeyPoint::convert(frameKeypoints, framePoints);
 
-            cv::Size winSize  = cv::Size(3, 3);
-            cv::Size zeroZone = cv::Size(-1, -1);
-            cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
-            cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
+                cv::Size winSize  = cv::Size(3, 3);
+                cv::Size zeroZone = cv::Size(-1, -1);
+                cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
+                cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
 
-            frameKeypoints.clear();
-            frameKeypoints.reserve(framePoints.size());
-            cv::KeyPoint::convert(framePoints, frameKeypoints);
+                frameKeypoints.clear();
+                frameKeypoints.reserve(framePoints.size());
+                cv::KeyPoint::convert(framePoints, frameKeypoints);
 
-            cv::Mat frameDescriptors;
-            _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
-
+                _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
+            }
             _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
 
             return Keypoint_Handler(frameKeypoints, frameDescriptors, depthImage, Parameters::get_maximum_match_distance()); 
