@@ -194,7 +194,7 @@ namespace rgbd_slam {
 
         // Detect and match key points with local map points
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
-        match_point_container matchedPoints = _localMap->find_matches(refinedPose, keypointObject);
+        const match_point_container& matchedPoints = _localMap->find_matches(refinedPose, keypointObject);
 
         if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
             // Enough matches to optimize

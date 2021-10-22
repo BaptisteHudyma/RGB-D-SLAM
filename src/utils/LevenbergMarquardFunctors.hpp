@@ -85,7 +85,7 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Global_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues);
+            Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues);
 
             /**
              * \brief Return te distance between the map point and the it's matched point
@@ -115,10 +115,9 @@ namespace rgbd_slam {
             int df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const;
 
             private:
-            double _medianOfDistances;
-            match_point_container& _points; 
-            std::vector<double> _weights;
+            const match_point_container& _points; 
             const quaternion _rotation;
+            const vector3 _position;
             const matrix43 _singularBvalues;
         };
 

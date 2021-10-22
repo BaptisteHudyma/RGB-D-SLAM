@@ -18,7 +18,7 @@ namespace rgbd_slam {
                   *
                   * \return An optimized global pose
                   */
-                static const poseEstimation::Pose  compute_optimized_pose(const poseEstimation::Pose& currentPose, match_point_container& matchedPoints);
+                static const poseEstimation::Pose  compute_optimized_pose(const poseEstimation::Pose& currentPose, const match_point_container& matchedPoints);
 
             private:
                 /**
@@ -29,7 +29,7 @@ namespace rgbd_slam {
                   *
                   * \return The estimated world translation & rotation of the camera pose 
                   */
-                static const poseEstimation::Pose get_optimized_global_pose(const poseEstimation::Pose& currentPose, match_point_container& matchedPoints);
+                static const poseEstimation::Pose get_optimized_global_pose(const poseEstimation::Pose& currentPose, const match_point_container& matchedPoints);
         };
 
     }   /* utils */

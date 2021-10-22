@@ -33,22 +33,6 @@ namespace rgbd_slam {
                 pow(pointA.y() - pointB.y(), 2.0) +
                 pow(pointA.z() - pointB.z(), 2.0);
         }
-        /**
-         * \brief Compute a weight associated by this error, using a Hubert type loss
-         */
-        double get_weight(const double error, const double medianOfErrors)
-        {
-            const double pointWeightThreshold = Parameters::get_point_weight_threshold();
-            const double weightCoefficient = Parameters::get_point_weight_coefficient();
-
-            const double theta = weightCoefficient * abs(error - medianOfErrors); 
-            const double score = abs(error / theta);
-            if (score > pointWeightThreshold)
-            {
-                return pointWeightThreshold / score;
-            }
-            return 1;
-        }
 
         /**
          * \brief Implementation of "A General and Adaptive Robust Loss Function" (2019)
@@ -81,15 +65,6 @@ namespace rgbd_slam {
             }
         }
 
-        double get_median(std::vector<double>& inputVector)
-        {
-            std::sort(inputVector.begin(), inputVector.end());
-            if (inputVector.size() % 2 == 0)
-                return (inputVector[inputVector.size() / 2] + inputVector[inputVector.size() / 2 - 1]) / 2;
-            else 
-                return inputVector[inputVector.size() / 2];
-        }
-
         const matrix43 get_B_singular_values(const quaternion& rotation)
         {
             const Eigen::MatrixXd BMatrix {
@@ -119,42 +94,13 @@ namespace rgbd_slam {
         }
 
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
+        Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
             Levenberg_Marquardt_Functor<double>(n, points.size()),
             _points(points),
             _rotation(worldRotation),
+            _position(worldPosition),
             _singularBvalues(singularBvalues)
         {
-            _weights = std::vector<double>(points.size());
-
-            const matrix34& transformationMatrix = compute_world_to_camera_transform(_rotation, worldPosition);
-
-            std::vector<double> errors(points.size());
-            std::vector<double> medianErrorVector(points.size());
-            unsigned int pointCount = 0;
-            // Compute the start error
-            for(match_point_container::const_iterator pointIterator = points.cbegin(); pointIterator != points.cend(); ++pointIterator, ++pointCount) 
-            {
-                const double error = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
-
-                errors[pointCount] = error;
-                medianErrorVector[pointCount] = error;
-            }
-            // Compute median of all errors
-            _medianOfDistances = get_median(medianErrorVector);
-
-            for(unsigned int i = 0; i < errors.size(); ++i)
-            {
-                medianErrorVector[i] = errors[i] - _medianOfDistances;
-            }
-            // Compute (error - median of errors) median
-            const double medianOfErrorsMedian = get_median(medianErrorVector);
-
-            // Fill weights
-            for (unsigned int i = 0; i < points.size(); ++i)
-            {
-                _weights[i] = get_weight(errors[i] - _medianOfDistances, medianOfErrorsMedian);
-            }
         }
 
         // Implementation of the objective function
@@ -179,7 +125,6 @@ namespace rgbd_slam {
                 const double weightedLoss = get_generalized_loss_estimator(distance * distance, lossAlpha, lossScale);
 
                 // Compute the final error
-                //fvec(pointIndex) = sqrtOfErrorMultiplier * _weights[pointIndex] * weightedLoss; 
                 fvec(pointIndex) = sqrtOfErrorMultiplier * weightedLoss; 
             }
             return 0;

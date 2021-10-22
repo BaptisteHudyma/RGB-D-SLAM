@@ -9,7 +9,7 @@
 namespace rgbd_slam {
     namespace utils {
 
-        const poseEstimation::Pose Pose_Optimization::compute_optimized_pose(const poseEstimation::Pose& currentPose, match_point_container& matchedPoints)
+        const poseEstimation::Pose Pose_Optimization::compute_optimized_pose(const poseEstimation::Pose& currentPose, const match_point_container& matchedPoints) 
         {
             const poseEstimation::Pose& newGlobalPose = get_optimized_global_pose(currentPose, matchedPoints);
 
@@ -17,7 +17,7 @@ namespace rgbd_slam {
         }
 
 
-        const poseEstimation::Pose Pose_Optimization::get_optimized_global_pose(const poseEstimation::Pose& currentPose, match_point_container& matchedPoints)
+        const poseEstimation::Pose Pose_Optimization::get_optimized_global_pose(const poseEstimation::Pose& currentPose, const match_point_container& matchedPoints) 
         {
             const vector3& position = currentPose.get_position();
             const quaternion& rotation = currentPose.get_orientation_quaternion();
