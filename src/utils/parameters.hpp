@@ -52,6 +52,7 @@ namespace rgbd_slam {
             static double get_point_weight_threshold() { return _pointWeightThreshold; };
             static double get_point_weight_coefficient() { return _pointWeightCoefficient; };
             static double get_point_loss_alpha() { return _pointLossAlpha; };
+            static double get_point_loss_scale() { return _pointLossScale; };
             static double get_point_error_multiplier() { return _pointErrorMultiplier; };
 
             static double get_search_matches_distance() { return _matchSearchRadius; };
@@ -129,6 +130,7 @@ namespace rgbd_slam {
             inline static double _pointWeightThreshold;
             inline static double _pointWeightCoefficient;
             inline static double _pointLossAlpha;   // loss steepness (_infinity, infinity)
+            inline static double _pointLossScale;   // loss scale (> 0), Unit: Pixels
             inline static double _pointErrorMultiplier; // multiplier of the final loss value (useful when  using primitives along with points)
 
             // Point Detection & matching

@@ -60,7 +60,7 @@ namespace rgbd_slam {
          */
         double get_generalized_loss_estimator(const double error, const double alpha = 1, const double scale = 1)
         {
-            const double scaledSquaredError = pow(error / scale, 2.0);
+            const double scaledSquaredError = (error * error) / (scale * scale);
 
             if (alpha == 2)
             {
@@ -141,7 +141,7 @@ namespace rgbd_slam {
                 medianErrorVector[pointCount] = error;
             }
             // Compute median of all errors
-            _medianOfDistances = get_median(medianErrorVector);;
+            _medianOfDistances = get_median(medianErrorVector);
 
             for(unsigned int i = 0; i < errors.size(); ++i)
             {
@@ -163,23 +163,24 @@ namespace rgbd_slam {
             const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(x(3), x(4), x(5)), _singularBvalues);
             const vector3 translation(x(0), x(1), x(2));
 
-            const double pointErrorMultiplier = Parameters::get_point_error_multiplier() / _points.size();
+            const double sqrtOfErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / _points.size());
+            const double lossAlpha = Parameters::get_point_loss_alpha();
+            const double lossScale = Parameters::get_point_loss_scale();
 
             const matrix34& transformationMatrix = compute_world_to_camera_transform(rotation, translation);
 
             unsigned int pointIndex = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
 
-                // Use doubles to make it easier to optimize (smaller precision, but non ritical)
-
                 // Compute distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
 
                 // Pass it to loss function (cut some precision with a float cast)
-                const double weightedLoss = get_generalized_loss_estimator(distance, Parameters::get_point_loss_alpha(), _medianOfDistances);
+                const double weightedLoss = get_generalized_loss_estimator(distance * distance, lossAlpha, lossScale);
 
                 // Compute the final error
-                fvec(pointIndex) = sqrt(pointErrorMultiplier * _weights[pointIndex] * weightedLoss); 
+                //fvec(pointIndex) = sqrtOfErrorMultiplier * _weights[pointIndex] * weightedLoss; 
+                fvec(pointIndex) = sqrtOfErrorMultiplier * weightedLoss; 
             }
             return 0;
         }
@@ -216,7 +217,7 @@ namespace rgbd_slam {
             const vector2& mapPointAs2D = world_to_screen_coordinates(mapPoint, worldToCamMatrix);
 
             const double distance = get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
-            return distance * distance;
+            return distance;
         }
 
 
