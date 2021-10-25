@@ -77,24 +77,29 @@ namespace rgbd_slam {
                     const int index = static_cast<int>(maskImage.at<uchar>(r, c)) - 1;   //get index of plane/cylinder at [r, c]
 
                     if(index < 0) {
+                        // No primitive detected
                         outPtr[c] = rgbPtr[c];
                     }
                     else if(associatedIds.contains(index)) {    //shape associated with last frame shape
                         //there is a mask to display 
-                        unsigned int primitiveIndex = static_cast<unsigned int>(associatedIds.at(index));
+                        const unsigned int primitiveIndex = static_cast<unsigned int>(associatedIds.at(index));
                         if (colors.size() <= primitiveIndex) {
                             std::cerr << "Id of primitive is greater than available colors" << std::endl;
-                            exit(-1);
                         }
-                        outPtr[c] = colors[primitiveIndex] * 0.5 + rgbPtr[c] * 0.5;
+                        else
+                        {
+                            outPtr[c] = colors[primitiveIndex] * 0.5 + rgbPtr[c] * 0.5;
+                        }
                     }
                     else {
                         //shape associated with nothing
                         if (colors.size() <= static_cast<unsigned int>(index)) {
                             std::cerr << "Id of primitive is greater than available colors" << std::endl;
-                            exit(-1);
                         }
-                        outPtr[c] = colors[index] * 0.2 + rgbPtr[c] * 0.8;
+                        else
+                        {
+                            outPtr[c] = colors[index] * 0.2 + rgbPtr[c] * 0.8;
+                        }
                     }
                 }
             }
