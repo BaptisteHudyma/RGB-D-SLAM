@@ -9,13 +9,12 @@
 // cout cerr
 #include <iostream>
 
-#include "utils.hpp"
-
 // Error display
 #define CLASS_ERR "<Key_Point_Extraction> "
 
 namespace rgbd_slam {
-    namespace utils {
+namespace features {
+namespace keypoints {
 
 
 
@@ -216,7 +215,6 @@ namespace rgbd_slam {
             }
         }
 
-
-    }
 }
-
+}
+}

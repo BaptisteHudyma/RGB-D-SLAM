@@ -18,7 +18,8 @@
 
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
     /**
       * \brief Main extraction class. Extracts shape primitives from an organized cloud of points
@@ -214,6 +215,7 @@ namespace primitiveDetection {
             Primitive_Detection& operator=(const Primitive_Detection&);
     };
 
+}
 }
 }
 

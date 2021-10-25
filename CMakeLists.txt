@@ -38,7 +38,7 @@ MESSAGE(${LINK_LIBS})
 
 set(SRC src)
 set(THIRD_PARTY third_party)
-set(PRIM        ${SRC}/primitives_detection)
+set(FEATS       ${SRC}/features)
 set(MAP         ${SRC}/map_management)
 set(UTILS       ${SRC}/utils)
 set(EXAMPLES    examples)
@@ -49,21 +49,23 @@ include_directories(SYSTEM
 
 include_directories(
     ${SRC}
-    ${PRIM}
+    ${FEATS}
     ${MAP}
     ${THIRD_PARTY}
     ${UTILS}
     ${EXAMPLES}
     )
 
-add_library(primitivesDetection SHARED
-    ${PRIM}/DepthOperations.cpp
-    ${PRIM}/PrimitiveDetection.cpp
-    ${PRIM}/PlaneSegment.cpp
-    ${PRIM}/CylinderSegment.cpp
-    ${PRIM}/Histogram.cpp
-    ${PRIM}/DepthMapSegmentation.cpp
-    ${PRIM}/ShapePrimitives.cpp
+add_library(features SHARED
+    ${FEATS}/DepthOperations.cpp
+    ${FEATS}/PrimitiveDetection.cpp
+    ${FEATS}/PlaneSegment.cpp
+    ${FEATS}/CylinderSegment.cpp
+    ${FEATS}/Histogram.cpp
+    ${FEATS}/DepthMapSegmentation.cpp
+    ${FEATS}/ShapePrimitives.cpp
+
+    ${FEATS}/KeyPointDetection.cpp
     )
 
 add_library(mapManagement SHARED
@@ -82,7 +84,6 @@ add_library(thirdParty SHARED
 add_library(utils SHARED
     ${UTILS}/parameters.cpp
     ${UTILS}/utils.cpp
-    ${UTILS}/KeyPointDetection.cpp
     ${UTILS}/LevenbergMarquardFunctors.cpp
     ${UTILS}/PoseOptimization.cpp
     ${UTILS}/Pose.cpp
@@ -94,7 +95,7 @@ add_library(${PROJECT_NAME} SHARED
     )
 
 target_link_libraries(${PROJECT_NAME}
-    primitivesDetection
+    features 
     mapManagement
     thirdParty
     utils

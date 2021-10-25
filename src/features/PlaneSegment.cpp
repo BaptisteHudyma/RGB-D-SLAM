@@ -6,7 +6,8 @@
 #include <iostream>
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
 
     Plane_Segment::Plane_Segment(const unsigned int cellWidth, const unsigned int ptsPerCellCount) : 
@@ -254,5 +255,6 @@ namespace primitiveDetection {
     }
 
 
+}
 }
 }

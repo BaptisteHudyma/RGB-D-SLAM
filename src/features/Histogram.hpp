@@ -5,7 +5,8 @@
 #include <vector>
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
     /**
       * \brief Basic 2D Histogram class, handling an histogram of N x N
@@ -65,6 +66,7 @@ namespace primitiveDetection {
             Histogram& operator=(const Histogram&);
     };
 
+}
 }
 }
 

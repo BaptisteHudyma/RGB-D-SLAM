@@ -9,7 +9,8 @@
 #include "map_point.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+namespace features {
+namespace keypoints {
 
         /**
          * \brief Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association
@@ -157,7 +158,8 @@ namespace rgbd_slam {
 
         };
 
-    }
+}
+}
 }
 
 #endif

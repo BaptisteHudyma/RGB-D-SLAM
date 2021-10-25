@@ -9,7 +9,8 @@
 
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
     /**
       * \brief A base class used to compute the tracking analysis. It is a pure virtual class.
@@ -141,7 +142,6 @@ namespace primitiveDetection {
 
 }
 }
-
-
+}
 
 #endif

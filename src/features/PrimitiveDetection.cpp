@@ -9,7 +9,8 @@ const unsigned int CYLINDER_CODE_OFFSET = 50;
 //lib simplification
 
 namespace rgbd_slam {
-    namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
         Primitive_Detection::Primitive_Detection(const unsigned int height, const unsigned int width, const unsigned int blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
             :  
@@ -670,8 +671,7 @@ namespace rgbd_slam {
             delete []_planeGrid;
         }
 
-
-
-    }
+}
+}
 }
 

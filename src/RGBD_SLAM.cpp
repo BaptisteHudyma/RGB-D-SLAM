@@ -35,7 +35,7 @@ namespace rgbd_slam {
             std::string finalPath = calibPath.str();
 
             // primitive connected graph creator
-            _depthOps = new primitiveDetection::Depth_Operations(
+            _depthOps = new features::primitives::Depth_Operations(
                     finalPath, 
                     _width, 
                     _height, 
@@ -53,7 +53,7 @@ namespace rgbd_slam {
             _localMap = new map_management::Local_Map();
 
             //plane/cylinder finder
-            _primitiveDetector = new primitiveDetection::Primitive_Detection(
+            _primitiveDetector = new features::primitives::Primitive_Detection(
                     _height,
                     _width,
                     Parameters::get_depth_map_patch_size(),
@@ -67,7 +67,7 @@ namespace rgbd_slam {
             _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
             // Point detector and matcher
-            _pointMatcher = new utils::Key_Point_Extraction(Parameters::get_minimum_hessian());
+            _pointMatcher = new features::keypoints::Key_Point_Extraction(Parameters::get_minimum_hessian());
 
             // kernel for various operations
             _kernel = cv::Mat::ones(3, 3, CV_8U);
@@ -126,8 +126,8 @@ namespace rgbd_slam {
         if(not _previousFramePrimitives.empty()) {
             //find matches between consecutive images
             //compare normals, superposed area (and colors ?)
-            for(const std::unique_ptr<primitiveDetection::Primitive>& prim : primitives) {
-                for(const std::unique_ptr<primitiveDetection::Primitive>& prevPrim : _previousFramePrimitives) {
+            for(const primitive_uniq_ptr& prim : primitives) {
+                for(const primitive_uniq_ptr& prevPrim : _previousFramePrimitives) {
                     if(prim->is_similar(prevPrim)) {
                         associatedIds[prim->get_id()] = prevPrim->get_id();
                         break;
@@ -193,7 +193,7 @@ namespace rgbd_slam {
         utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
         // Detect and match key points with local map points
-        const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
+        const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
         const match_point_container& matchedPoints = _localMap->find_matches(refinedPose, keypointObject);
 
         if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {

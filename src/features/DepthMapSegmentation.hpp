@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
 
     /**
      * \brief Compute the normal map associated with a depth image

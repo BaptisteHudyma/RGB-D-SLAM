@@ -2,7 +2,8 @@
 #include "parameters.hpp"
 
 namespace rgbd_slam {
-    namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
         Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const unsigned int width, const unsigned int height, const unsigned int cellSize) 
             : 
@@ -147,6 +148,6 @@ namespace rgbd_slam {
         }
 
 
-
-    }
+}
+}
 }

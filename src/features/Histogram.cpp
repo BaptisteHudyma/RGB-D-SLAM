@@ -3,7 +3,8 @@
 #include <iostream>
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
     Histogram::Histogram(const unsigned int binPerCoordCount) : 
         _binPerCoordCount(binPerCoordCount),
@@ -77,5 +78,6 @@ namespace primitiveDetection {
         delete []_H;
     }
 
+}
 }
 }

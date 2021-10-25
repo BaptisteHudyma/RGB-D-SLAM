@@ -7,7 +7,8 @@
 
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
     /**
      * \brief Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program
@@ -119,6 +120,7 @@ namespace primitiveDetection {
 
     };
 
+}
 }
 }
 

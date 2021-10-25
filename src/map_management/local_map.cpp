@@ -9,7 +9,7 @@ namespace rgbd_slam {
         {
         }
 
-        match_point_container Local_Map::find_matches(const utils::Pose currentPose, const utils::Keypoint_Handler& detectedKeypoint)
+        match_point_container Local_Map::find_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
         {
             _isPointMatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
             match_point_container matchedPoints; 
@@ -64,7 +64,7 @@ namespace rgbd_slam {
         }
 
 
-        void Local_Map::update(const utils::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)
+        void Local_Map::update(const utils::Pose optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             const matrix34& camToWorldMatrix= utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
@@ -120,7 +120,7 @@ namespace rgbd_slam {
             update_local_to_global();
         }
 
-        void Local_Map::update_staged(const matrix34& camToWorldMatrix, const utils::Keypoint_Handler& keypointObject)
+        void Local_Map::update_staged(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();

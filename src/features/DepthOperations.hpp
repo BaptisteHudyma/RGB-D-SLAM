@@ -6,7 +6,8 @@
 #include <Eigen/Dense>
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
     /**
       * \brief Handles operations on the initial depth image, to transform it on a connected cloud points. It also handles the loading of the camera parameters from the configuration file
@@ -90,6 +91,7 @@ namespace primitiveDetection {
             cv::Mat_<float> _V;
             cv::Mat_<int> _cellMap;
     };
+}
 }
 }
 

@@ -2,7 +2,8 @@
 #include <iostream>
 
 namespace rgbd_slam {
-namespace primitiveDetection {
+namespace features {
+namespace primitives {
 
 
     /*
@@ -95,5 +96,6 @@ namespace primitiveDetection {
     }
 
 
+}
 }
 }
