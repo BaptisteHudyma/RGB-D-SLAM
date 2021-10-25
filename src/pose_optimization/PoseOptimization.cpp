@@ -48,7 +48,7 @@ namespace rgbd_slam {
                         )
                     );
             // Optimization algorithm
-            Eigen::LevenbergMarquardt<Global_Pose_Functor, double> poseOptimisator( pose_optimisation_functor );
+            Eigen::LevenbergMarquardt<Global_Pose_Functor, double> poseOptimizator( pose_optimisation_functor );
 
             // maxfev   : maximum number of function evaluation
             // xtol     : tolerance for the norm of the solution vector
@@ -56,15 +56,15 @@ namespace rgbd_slam {
             // gtol     : tolerance for the norm of the gradient of the error function
             // factor   : step bound for the diagonal shift
             // epsfcn   : error precision
-            poseOptimisator.parameters.maxfev = Parameters::get_optimization_maximum_iterations();
-            poseOptimisator.parameters.epsfcn = Parameters::get_optimization_error_precision();
-            poseOptimisator.parameters.xtol = Parameters::get_optimization_xtol();
-            poseOptimisator.parameters.ftol = Parameters::get_optimization_ftol();
-            poseOptimisator.parameters.gtol = Parameters::get_optimization_gtol();
-            poseOptimisator.parameters.factor = Parameters::get_optimization_factor();
+            poseOptimizator.parameters.maxfev = Parameters::get_optimization_maximum_iterations();
+            poseOptimizator.parameters.epsfcn = Parameters::get_optimization_error_precision();
+            poseOptimizator.parameters.xtol = Parameters::get_optimization_xtol();
+            poseOptimizator.parameters.ftol = Parameters::get_optimization_ftol();
+            poseOptimizator.parameters.gtol = Parameters::get_optimization_gtol();
+            poseOptimizator.parameters.factor = Parameters::get_optimization_factor();
 
 
-            const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimisator.minimize(input);
+            const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
 
             const quaternion& endRotation = get_quaternion_from_original_quaternion(rotation, vector3(input[3], input[4], input[5]), singularBValues); 
             const vector3 endPosition(input[0], input[1], input[2]);
@@ -73,7 +73,7 @@ namespace rgbd_slam {
             {
                 // Error: reached end of minimization without reaching a minimum
                 const std::string message = get_human_readable_end_message(endStatus);
-                std::cerr << matchedPoints.size() << " pts " << endPosition.transpose() << ". Result " << endStatus << " (" << message << ")" << std::endl;
+                std::cerr << matchedPoints.size() << " pts | Position is " << endPosition.transpose() << " | Result " << endStatus << " (" << message << ")" << std::endl;
             }
 
             // Update refine pose with optimized pose

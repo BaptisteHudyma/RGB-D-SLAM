@@ -53,7 +53,7 @@ namespace rgbd_slam {
         // Pose Optimization
         _minimumPointForOptimization = 5;
         _optimizationMaximumIterations = 1024;
-        _optimizationErrorPrecision = 0;
+        _optimizationErrorPrecision = 0.1;
         _optimizationToleranceOfSolutionVectorNorm = sqrt(DBL_EPSILON); // Smallest delta of doubles
         _optimizationToleranceOfVectorFunction = sqrt(DBL_EPSILON);
         _optimizationToleranceOfErrorFunctionGradient = 0;

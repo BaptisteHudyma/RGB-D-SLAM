@@ -33,9 +33,22 @@ set(G2O_LIBRARIES ${G2O_CORE_LIBRARY} ${G2O_STUFF_LIBRARY} ${G2O_TYPES_SBA} ${G2
 list(APPEND INC_DIRS ${G2O_INCLUDE_DIR})
 list(APPEND LINK_LIBS ${G2O_LIBRARIES})
 
-MESSAGE(${LINK_LIBS})
+# Load GTEST
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+set(TESTS tests)
+enable_testing()
 
 
+
+# Compile main program
 set(SRC src)
 set(THIRD_PARTY third_party)
 set(FEATS       ${SRC}/features)
@@ -120,3 +133,5 @@ add_executable(slam_freiburg_xyz
 target_link_libraries(slam_freiburg_xyz ${PROJECT_NAME})
 
 
+# Include test dir
+include(${CMAKE_MODULE_PATH}/runTests.cmake) 
