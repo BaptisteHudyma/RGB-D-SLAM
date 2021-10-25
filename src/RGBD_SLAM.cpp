@@ -109,14 +109,14 @@ namespace rgbd_slam {
         // organized 3D depth image
         Eigen::MatrixXf cloudArrayOrganized(_width * _height, 3);
         _depthOps->get_organized_cloud_array(depthImage, cloudArrayOrganized);
-        double time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+        double time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
         _meanMatTreatmentTime += time_elapsed;
 
         // Run primitive detection 
         t1 = cv::getTickCount();
         _segmentationOutput = cv::Mat::zeros(depthImage.size(), uchar(0));    //primitive mask mat
         _primitiveDetector->find_primitives(cloudArrayOrganized, primitives, _segmentationOutput);
-        time_elapsed = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
+        time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
         _meanTreatmentTime += time_elapsed;
 
 
@@ -250,17 +250,19 @@ namespace rgbd_slam {
 
     void RGBD_SLAM::show_statistics(double meanFrameTreatmentTime) const 
     {
-        double pointCloudTreatmentTime = _meanMatTreatmentTime / _totalFrameTreated;
-        std::cout << "Mean image to point cloud treatment time is " << pointCloudTreatmentTime << " seconds (" << get_percent_of_elapsed_time(pointCloudTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
-        double planeTreatmentTime = _meanTreatmentTime / _totalFrameTreated;
-        std::cout << "Mean primitive treatment time is " << planeTreatmentTime << " seconds (" << get_percent_of_elapsed_time(planeTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
-        std::cout << std::endl;
+        if (_totalFrameTreated > 0)
+        {
+            double pointCloudTreatmentTime = _meanMatTreatmentTime / _totalFrameTreated;
+            std::cout << "Mean image to point cloud treatment time is " << pointCloudTreatmentTime << " seconds (" << get_percent_of_elapsed_time(pointCloudTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
+            double planeTreatmentTime = _meanTreatmentTime / _totalFrameTreated;
+            std::cout << "Mean primitive treatment time is " << planeTreatmentTime << " seconds (" << get_percent_of_elapsed_time(planeTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
+            std::cout << std::endl;
 
-        double lineDetectionTime = _meanLineTreatment / _totalFrameTreated;
-        std::cout << "Mean line detection time is " << lineDetectionTime << " seconds (" << get_percent_of_elapsed_time(lineDetectionTime, meanFrameTreatmentTime) << "%)" << std::endl;
-        double poseTreatmentTime = _meanPoseTreatmentTime / _totalFrameTreated;
-        std::cout << "Mean pose estimation time is " << poseTreatmentTime << " seconds (" << get_percent_of_elapsed_time(poseTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
-
+            double lineDetectionTime = _meanLineTreatment / _totalFrameTreated;
+            std::cout << "Mean line detection time is " << lineDetectionTime << " seconds (" << get_percent_of_elapsed_time(lineDetectionTime, meanFrameTreatmentTime) << "%)" << std::endl;
+            double poseTreatmentTime = _meanPoseTreatmentTime / _totalFrameTreated;
+            std::cout << "Mean pose estimation time is " << poseTreatmentTime << " seconds (" << get_percent_of_elapsed_time(poseTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
+        }
         _pointMatcher->show_statistics(meanFrameTreatmentTime, _totalFrameTreated);
     }
 

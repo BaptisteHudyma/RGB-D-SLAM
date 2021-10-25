@@ -87,7 +87,7 @@ namespace primitives {
         }
 
         // Compute covariance
-        Eigen::MatrixXd cov = (N * N.adjoint()) / double(N.cols() - 1);
+        Eigen::MatrixXd cov = (N * N.adjoint()) / static_cast<double>(N.cols() - 1);
 
         // PCA using QR decomposition for symmetric matrices
         Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> es(cov);

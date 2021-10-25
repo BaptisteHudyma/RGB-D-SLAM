@@ -64,7 +64,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Compute a confidence in this point (-1, 1)
                  */
-                virtual double get_confidence() const;
+                double get_confidence() const;
 
                 // count of unique matches
                 int _matchedCount;

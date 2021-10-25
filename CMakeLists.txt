@@ -64,7 +64,6 @@ add_library(features SHARED
     ${FEATS}/PlaneSegment.cpp
     ${FEATS}/CylinderSegment.cpp
     ${FEATS}/Histogram.cpp
-    ${FEATS}/DepthMapSegmentation.cpp
     ${FEATS}/ShapePrimitives.cpp
 
     ${FEATS}/KeyPointDetection.cpp
