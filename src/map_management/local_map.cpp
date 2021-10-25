@@ -9,7 +9,7 @@ namespace rgbd_slam {
         {
         }
 
-        match_point_container Local_Map::find_matches(const poseEstimation::Pose currentPose, const utils::Keypoint_Handler& detectedKeypoint)
+        match_point_container Local_Map::find_matches(const utils::Pose currentPose, const utils::Keypoint_Handler& detectedKeypoint)
         {
             _isPointMatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
             match_point_container matchedPoints; 
@@ -64,7 +64,7 @@ namespace rgbd_slam {
         }
 
 
-        void Local_Map::update(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)
+        void Local_Map::update(const utils::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject)
         {
             const matrix34& camToWorldMatrix= utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
@@ -187,7 +187,7 @@ namespace rgbd_slam {
             _stagedPoints.clear();
         }
 
-        void Local_Map::get_debug_image(const poseEstimation::Pose& camPose, cv::Mat& debugImage) const 
+        void Local_Map::get_debug_image(const utils::Pose& camPose, cv::Mat& debugImage) const 
         {
             const matrix34& worldToCamMtrx = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 

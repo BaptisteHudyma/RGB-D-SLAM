@@ -1,7 +1,7 @@
 #include "Pose.hpp"
 
 namespace rgbd_slam {
-namespace poseEstimation {
+namespace utils {
 
     Pose::Pose() {
         _position.setZero();

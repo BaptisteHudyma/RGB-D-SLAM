@@ -30,7 +30,7 @@ namespace rgbd_slam {
                  *
                  * \return A container associating the map/staged points to detected key points
                  */
-                match_point_container find_matches(const poseEstimation::Pose currentPose, const utils::Keypoint_Handler& detectedKeypoint); 
+                match_point_container find_matches(const utils::Pose currentPose, const utils::Keypoint_Handler& detectedKeypoint); 
 
                 /**
                  * \brief Update the local and global map. Add new points to staged and map container 
@@ -38,7 +38,7 @@ namespace rgbd_slam {
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update(const poseEstimation::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject);
+                void update(const utils::Pose optimizedPose, const utils::Keypoint_Handler& keypointObject);
 
 
                 /**
@@ -54,7 +54,7 @@ namespace rgbd_slam {
                  * \param[in, out] debugImage Output image
                  */
 
-                void get_debug_image(const poseEstimation::Pose& camPose, cv::Mat& debugImage) const;
+                void get_debug_image(const utils::Pose& camPose, cv::Mat& debugImage) const;
 
             protected:
                 /**

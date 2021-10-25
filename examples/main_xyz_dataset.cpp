@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
     // Load a default set of parameters
     rgbd_slam::Parameters::load_defaut();
     //start with identity pose
-    rgbd_slam::poseEstimation::Pose pose;
+    rgbd_slam::utils::Pose pose;
     const vector3 startingPosition(
             rgbd_slam::Parameters::get_starting_position_x(),
             rgbd_slam::Parameters::get_starting_position_y(),

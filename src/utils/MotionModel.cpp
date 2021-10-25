@@ -1,7 +1,7 @@
 #include "MotionModel.hpp"
 
 namespace rgbd_slam {
-namespace poseEstimation {
+namespace utils {
 
 
     Motion_Model::Motion_Model() {

@@ -87,7 +87,7 @@ namespace rgbd_slam {
         }
 
 
-    const poseEstimation::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
+    const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
     {
         cv::Mat depthImage = inputDepthImage.clone();
         cv::Mat rgbImage = inputRgbImage.clone();
@@ -163,7 +163,7 @@ namespace rgbd_slam {
 
         // this frame points and  assoc
         t1 = cv::getTickCount();
-        poseEstimation::Pose refinedPose = this->compute_new_pose(grayImage, depthImage);
+        utils::Pose refinedPose = this->compute_new_pose(grayImage, depthImage);
         _meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
         //update motion model with refined pose
@@ -175,7 +175,7 @@ namespace rgbd_slam {
         return refinedPose;
     }
 
-    void RGBD_SLAM::get_debug_image(const poseEstimation::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) 
+    void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) 
     {
         debugImage = originalRGB.clone();
         if (showPrimitiveMasks)
@@ -187,10 +187,10 @@ namespace rgbd_slam {
     }
 
 
-    const poseEstimation::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage) 
+    const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         //get a pose with the motion model
-        poseEstimation::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
+        utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
         // Detect and match key points with local map points
         const utils::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);

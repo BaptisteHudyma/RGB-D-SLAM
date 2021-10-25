@@ -1,6 +1,8 @@
 #include "KeyPointDetection.hpp"
 #include "parameters.hpp"
 
+#include "utils.hpp"
+
 // circle
 #include <opencv2/opencv.hpp>
 

@@ -7,7 +7,6 @@
 
 #include "types.hpp"
 #include "map_point.hpp"
-#include "PoseUtils.hpp"
 
 namespace rgbd_slam {
     namespace utils {

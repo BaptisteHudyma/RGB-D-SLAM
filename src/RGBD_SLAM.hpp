@@ -42,7 +42,7 @@ namespace rgbd_slam {
              *
              * \return The new estimated pose 
              */
-            const poseEstimation::Pose track(const cv::Mat& rgbImage, const cv::Mat& depthImage, bool detectLines = false);
+            const utils::Pose track(const cv::Mat& rgbImage, const cv::Mat& depthImage, bool detectLines = false);
 
             /**
              * \brief Compute a debug image
@@ -52,7 +52,7 @@ namespace rgbd_slam {
              * \param[in] elapsedTime Time since the last call (used for FPS count)
              * \param[in] showPrimitiveMasks Display the detected primitive masks
              */
-            void get_debug_image(const poseEstimation::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks = true);
+            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks = true);
 
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
@@ -69,7 +69,7 @@ namespace rgbd_slam {
              *
              * \return The new estimated pose from points positions
              */
-            const poseEstimation::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage);
+            const utils::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage);
 
             void compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage);
 
@@ -96,8 +96,8 @@ namespace rgbd_slam {
 
             std::map<int, int> _previousAssociatedIds;
 
-            poseEstimation::Pose _currentPose;
-            poseEstimation::Motion_Model _motionModel;
+            utils::Pose _currentPose;
+            utils::Motion_Model _motionModel;
 
             // display
             cv::Mat_<uchar> _segmentationOutput;

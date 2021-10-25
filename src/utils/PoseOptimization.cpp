@@ -9,15 +9,15 @@
 namespace rgbd_slam {
     namespace utils {
 
-        const poseEstimation::Pose Pose_Optimization::compute_optimized_pose(const poseEstimation::Pose& currentPose, const match_point_container& matchedPoints) 
+        const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints) 
         {
-            const poseEstimation::Pose& newGlobalPose = get_optimized_global_pose(currentPose, matchedPoints);
+            const utils::Pose& newGlobalPose = get_optimized_global_pose(currentPose, matchedPoints);
 
             return newGlobalPose;
         }
 
 
-        const poseEstimation::Pose Pose_Optimization::get_optimized_global_pose(const poseEstimation::Pose& currentPose, const match_point_container& matchedPoints) 
+        const utils::Pose Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints) 
         {
             const vector3& position = currentPose.get_position();
             const quaternion& rotation = currentPose.get_orientation_quaternion();
@@ -77,7 +77,7 @@ namespace rgbd_slam {
             }
 
             // Update refine pose with optimized pose
-            return poseEstimation::Pose(endPosition, endRotation);
+            return utils::Pose(endPosition, endRotation);
         }
 
     }   /* utils */

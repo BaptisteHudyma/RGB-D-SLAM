@@ -7,7 +7,7 @@
 #include <Eigen/StdVector>
 
 namespace rgbd_slam { 
-namespace poseEstimation {
+namespace utils {
 
     /**
      * \brief Store a position

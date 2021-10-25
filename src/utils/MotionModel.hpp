@@ -7,7 +7,7 @@
 #include <Eigen/Dense>
 
 namespace rgbd_slam {
-namespace poseEstimation {
+namespace utils {
 
     /**
      * \brief Dead reckoning class: guess next pose using a motion model

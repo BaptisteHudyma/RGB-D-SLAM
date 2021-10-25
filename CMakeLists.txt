@@ -39,7 +39,6 @@ MESSAGE(${LINK_LIBS})
 set(SRC src)
 set(THIRD_PARTY third_party)
 set(PRIM        ${SRC}/primitives_detection)
-set(POSE        ${SRC}/pose_estimation)
 set(MAP         ${SRC}/map_management)
 set(UTILS       ${SRC}/utils)
 set(EXAMPLES    examples)
@@ -51,7 +50,6 @@ include_directories(SYSTEM
 include_directories(
     ${SRC}
     ${PRIM}
-    ${POSE}  
     ${MAP}
     ${THIRD_PARTY}
     ${UTILS}
@@ -66,19 +64,6 @@ add_library(primitivesDetection SHARED
     ${PRIM}/Histogram.cpp
     ${PRIM}/DepthMapSegmentation.cpp
     ${PRIM}/ShapePrimitives.cpp
-    )
-
-add_library(poseEstimation SHARED
-    ${POSE}/Pose.cpp
-    ${POSE}/PoseUtils.cpp
-    ${POSE}/Image_Features_Handler.cpp
-    ${POSE}/Image_Features_Struct.cpp
-    ${POSE}/LocalMap.cpp
-    ${POSE}/MotionModel.cpp
-    ${POSE}/Parameters.cpp
-    ${POSE}/PNPSolver.cpp
-
-    ${POSE}/RGB_Slam.cpp
     )
 
 add_library(mapManagement SHARED
@@ -100,6 +85,8 @@ add_library(utils SHARED
     ${UTILS}/KeyPointDetection.cpp
     ${UTILS}/LevenbergMarquardFunctors.cpp
     ${UTILS}/PoseOptimization.cpp
+    ${UTILS}/Pose.cpp
+    ${UTILS}/MotionModel.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED
@@ -108,7 +95,6 @@ add_library(${PROJECT_NAME} SHARED
 
 target_link_libraries(${PROJECT_NAME}
     primitivesDetection
-    poseEstimation
     mapManagement
     thirdParty
     utils
