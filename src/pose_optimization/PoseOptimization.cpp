@@ -7,7 +7,7 @@
 #include <Eigen/StdVector>
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace pose_optimization {
 
         const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints) 
         {
@@ -80,5 +80,5 @@ namespace rgbd_slam {
             return utils::Pose(endPosition, endRotation);
         }
 
-    }   /* utils */
+    }   /* pose_optimization*/
 }   /* rgbd_slam */

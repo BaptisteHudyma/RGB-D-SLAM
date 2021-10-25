@@ -12,7 +12,7 @@
 #include <iostream>
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace pose_optimization {
 
         /**
          * \brief Structure given to the Levenberg-Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric.
@@ -130,7 +130,7 @@ namespace rgbd_slam {
          */
         const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status);
 
-    }       /* utils */
+    }       /* pose_optimization*/
 }   /* rgbd_slam */
 
 #endif

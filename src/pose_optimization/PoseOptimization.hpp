@@ -5,7 +5,7 @@
 #include "types.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace pose_optimization {
 
         class Pose_Optimization
         {
@@ -32,7 +32,7 @@ namespace rgbd_slam {
                 static const utils::Pose get_optimized_global_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints);
         };
 
-    }   /* utils */
+    }   /* pose_optimization */
 }   /* rgbd_slam */
 
 

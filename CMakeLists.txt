@@ -39,6 +39,7 @@ MESSAGE(${LINK_LIBS})
 set(SRC src)
 set(THIRD_PARTY third_party)
 set(FEATS       ${SRC}/features)
+set(POSE_OPTI   ${SRC}/pose_optimization)
 set(MAP         ${SRC}/map_management)
 set(UTILS       ${SRC}/utils)
 set(EXAMPLES    examples)
@@ -50,6 +51,7 @@ include_directories(SYSTEM
 include_directories(
     ${SRC}
     ${FEATS}
+    ${POSE_OPTI}
     ${MAP}
     ${THIRD_PARTY}
     ${UTILS}
@@ -74,18 +76,19 @@ add_library(mapManagement SHARED
     )
 
 add_library(thirdParty SHARED
-    ${SRC}/MonocularDepthMap.cpp
-
     ${THIRD_PARTY}/LineSegmentDetector.cpp
     ${THIRD_PARTY}/GeodesicOperations.cpp
     ${THIRD_PARTY}/dsyevh3.cpp
     )
 
+add_library(poseOptimization SHARED
+    ${POSE_OPTI}/LevenbergMarquardFunctors.cpp
+    ${POSE_OPTI}/PoseOptimization.cpp
+    )
+
 add_library(utils SHARED
     ${UTILS}/parameters.cpp
     ${UTILS}/utils.cpp
-    ${UTILS}/LevenbergMarquardFunctors.cpp
-    ${UTILS}/PoseOptimization.cpp
     ${UTILS}/Pose.cpp
     ${UTILS}/MotionModel.cpp
     )
@@ -97,6 +100,7 @@ add_library(${PROJECT_NAME} SHARED
 target_link_libraries(${PROJECT_NAME}
     features 
     mapManagement
+    poseOptimization
     thirdParty
     utils
     ${LINK_LIBS} 

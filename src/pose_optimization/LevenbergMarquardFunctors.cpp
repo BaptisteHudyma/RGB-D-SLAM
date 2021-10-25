@@ -4,7 +4,7 @@
 #include "parameters.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace pose_optimization {
 
 
         double get_distance_manhattan(const vector2& pointA, const vector2& pointB) 
@@ -113,7 +113,7 @@ namespace rgbd_slam {
             const double lossAlpha = Parameters::get_point_loss_alpha();
             const double lossScale = Parameters::get_point_loss_scale();
 
-            const matrix34& transformationMatrix = compute_world_to_camera_transform(rotation, translation);
+            const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
 
             unsigned int pointIndex = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
@@ -159,7 +159,7 @@ namespace rgbd_slam {
         double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
         {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
-            const vector2& mapPointAs2D = world_to_screen_coordinates(mapPoint, worldToCamMatrix);
+            const vector2& mapPointAs2D = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix);
 
             const double distance = get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
             return distance;
@@ -202,5 +202,5 @@ namespace rgbd_slam {
         }
 
 
-    } /* utils */
+    } /* pose_optimization */
 } /* rgbd_slam */
