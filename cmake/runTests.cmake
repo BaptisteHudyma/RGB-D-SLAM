@@ -1,10 +1,10 @@
 
 
 # Run pose optimizations, with error tolerance
-add_executable(poseOptimizationTest
-    ${TESTS}/pose_optimization_test.cpp
+add_executable(testPoseOptimization
+    ${TESTS}/test_pose_optimization.cpp
     )
-target_link_libraries(poseOptimizationTest
+target_link_libraries(testPoseOptimization
     gtest_main
     ${PROJECT_NAME}
     )
@@ -12,4 +12,4 @@ target_link_libraries(poseOptimizationTest
 
 
 include(GoogleTest)
-gtest_discover_tests(poseOptimizationTest)
+gtest_discover_tests(testPoseOptimization)

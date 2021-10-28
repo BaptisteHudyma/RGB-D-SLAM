@@ -10,14 +10,14 @@ namespace rgbd_slam {
         /*
          * \brief Transform a screen point with a depth value to a 3D point
          *
-         * \param[in] screenX X coordinates of the 2D point
-         * \param[in] screenY Y coordinates of the 2D point
+         * \param[in] screenX X coordinates of the 2D point (double because we can have sub pixel accuracy)
+         * \param[in] screenY Y coordinates of the 2D point (double because we can have sub pixel accuracy)
          * \param[in] measuredZ Measured z depth of the point, in meters
          * \param[in] cameraToWorldMatrix Matrix to transform local to world coordinates
          *
          * \return A 3D point in frame coordinates
          */
-        const vector3 screen_to_world_coordinates(const unsigned int screenX, const unsigned int screenY, const double measuredZ, const matrix34& cameraToWorldMatrix);
+        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix34& cameraToWorldMatrix);
 
 
         /**

@@ -107,7 +107,11 @@ namespace rgbd_slam {
         int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
         {
             const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(x(3), x(4), x(5)), _singularBvalues);
-            const vector3 translation(x(0), x(1), x(2));
+            const vector3 translation(
+                    x(0),
+                    x(1),
+                    x(2)
+                    );
 
             const double sqrtOfErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / _points.size());
             const double lossAlpha = Parameters::get_point_loss_alpha();
@@ -121,7 +125,7 @@ namespace rgbd_slam {
                 // Compute distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
 
-                // Pass it to loss function (cut some precision with a float cast)
+                // Pass it to loss function
                 const double weightedLoss = get_generalized_loss_estimator(distance * distance, lossAlpha, lossScale);
 
                 // Compute the final error
@@ -131,7 +135,7 @@ namespace rgbd_slam {
         }
 
 
-        int Global_Pose_Estimator::df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const
+        /*int Global_Pose_Estimator::df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const
         {
             const double epsilon = Parameters::get_optimization_error_precision();
             for (int i = 0; i < x.size(); i++) {
@@ -153,7 +157,7 @@ namespace rgbd_slam {
             }
 
             return 0;
-        }
+        }*/
 
 
         double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const

@@ -53,7 +53,7 @@ namespace rgbd_slam {
         // Pose Optimization
         _minimumPointForOptimization = 5;
         _optimizationMaximumIterations = 1024;
-        _optimizationErrorPrecision = 0.1;
+        _optimizationErrorPrecision = 0;
         _optimizationToleranceOfSolutionVectorNorm = sqrt(DBL_EPSILON); // Smallest delta of doubles
         _optimizationToleranceOfVectorFunction = sqrt(DBL_EPSILON);
         _optimizationToleranceOfErrorFunctionGradient = 0;
@@ -61,8 +61,8 @@ namespace rgbd_slam {
 
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
-        _pointLossAlpha = 0;   // -infinity, infinity
-        _pointLossScale = pow(0.7, 2.0);    // Unit: Pixel
+        _pointLossAlpha = 2;    // -infinity, infinity
+        _pointLossScale = 10; // Unit: Pixel
         _pointErrorMultiplier = 0.5;  // > 0
 
         // Local map

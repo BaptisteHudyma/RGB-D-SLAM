@@ -112,7 +112,7 @@ namespace rgbd_slam {
              * \param[in] x A vector of dimension M, with M the number of parameters to optimize
              * \param[out] fjac A matrix NxM, with M the number of parameters to optimize. This is the Jacobian of the errors
              */
-            int df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const;
+            //int df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const;
 
             private:
             const match_point_container& _points; 

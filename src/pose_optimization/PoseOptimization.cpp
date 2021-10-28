@@ -19,7 +19,7 @@ namespace rgbd_slam {
 
         const utils::Pose Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints) 
         {
-            const vector3& position = currentPose.get_position();
+            const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();
 
             // Compute B matrix
@@ -67,9 +67,13 @@ namespace rgbd_slam {
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
 
             const quaternion& endRotation = get_quaternion_from_original_quaternion(rotation, vector3(input[3], input[4], input[5]), singularBValues); 
-            const vector3 endPosition(input[0], input[1], input[2]);
+            const vector3 endPosition(
+                    input[0],
+                    input[1],
+                    input[2]
+                    );
 
-            if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
+            //if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
             {
                 // Error: reached end of minimization without reaching a minimum
                 const std::string message = get_human_readable_end_message(endStatus);

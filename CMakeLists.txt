@@ -135,3 +135,6 @@ target_link_libraries(slam_freiburg_xyz ${PROJECT_NAME})
 
 # Include test dir
 include(${CMAKE_MODULE_PATH}/runTests.cmake) 
+
+
+

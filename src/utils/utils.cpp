@@ -5,13 +5,14 @@
 namespace rgbd_slam {
     namespace utils {
 
-        const vector3 screen_to_world_coordinates(const unsigned int screenX, const unsigned int screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
+        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
         {
-            const double x = (static_cast<double>(screenX) - Parameters::get_camera_1_center_x()) * measuredZ / Parameters::get_camera_1_focal_x();
-            const double y = (static_cast<double>(screenY) - Parameters::get_camera_1_center_y()) * measuredZ / Parameters::get_camera_1_focal_y();
+            const double depthMillimeters = measuredZ;
+            const double x = (screenX - Parameters::get_camera_1_center_x()) * depthMillimeters / Parameters::get_camera_1_focal_x();
+            const double y = (screenY - Parameters::get_camera_1_center_y()) * depthMillimeters / Parameters::get_camera_1_focal_y();
 
             vector4 worldPoint;
-            worldPoint << x, y, measuredZ, 1.0;
+            worldPoint << x, y, depthMillimeters, 1.0;
             return cameraToWorldMatrix * worldPoint;
         }
 
@@ -19,7 +20,7 @@ namespace rgbd_slam {
         {
             vector4 ptH;
             ptH << position3D, 1.0;
-            const vector3& point3D = worldToCameraMatrix * ptH; 
+            const vector3& point3D = (worldToCameraMatrix * ptH); 
 
             if (point3D.z() == 0) {
                 return vector2(0.0, 0.0);
@@ -35,14 +36,14 @@ namespace rgbd_slam {
         const matrix34 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
         {
             matrix34 cameraToWorldMatrix;
-            cameraToWorldMatrix << rotation.toRotationMatrix(), position;
+            cameraToWorldMatrix << rotation.toRotationMatrix(), (position);
             return cameraToWorldMatrix;
         }
 
         const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
         {
             const matrix33& worldToCamRotMtrx = (rotation.toRotationMatrix()).transpose();
-            const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * position;
+            const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * (position);
             matrix34 worldToCamMtrx;
             worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
             return worldToCamMtrx;
