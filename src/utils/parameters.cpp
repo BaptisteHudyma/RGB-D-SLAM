@@ -62,7 +62,7 @@ namespace rgbd_slam {
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
         _pointLossAlpha = 2;    // -infinity, infinity
-        _pointLossScale = 10; // Unit: Pixel
+        _pointLossScale = 1000; // Unit: Pixel
         _pointErrorMultiplier = 0.5;  // > 0
 
         // Local map

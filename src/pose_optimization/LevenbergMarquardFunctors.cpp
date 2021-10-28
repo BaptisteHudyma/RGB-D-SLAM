@@ -113,23 +113,33 @@ namespace rgbd_slam {
                     x(2)
                     );
 
-            const double sqrtOfErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / _points.size());
+            const unsigned int pointContainerSize = _points.size();
+
+            const double sqrtOfErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / static_cast<double>(pointContainerSize));
             const double lossAlpha = Parameters::get_point_loss_alpha();
             const double lossScale = Parameters::get_point_loss_scale();
 
             const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+            
 
+            double mean = 0;
             unsigned int pointIndex = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
-
                 // Compute distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
+                mean += distance / static_cast<double>(pointContainerSize);
+                fvec(pointIndex) = distance;
+            }
+
+            for(unsigned int i = 0; i < pointContainerSize; ++i)
+            {
+                const double distance = (fvec(i) * fvec(i)) / mean;
 
                 // Pass it to loss function
-                const double weightedLoss = get_generalized_loss_estimator(distance * distance, lossAlpha, lossScale);
+                const double weightedLoss = get_generalized_loss_estimator(distance, lossAlpha, lossScale);
 
                 // Compute the final error
-                fvec(pointIndex) = sqrtOfErrorMultiplier * weightedLoss; 
+                fvec(i) = sqrtOfErrorMultiplier * weightedLoss; 
             }
             return 0;
         }

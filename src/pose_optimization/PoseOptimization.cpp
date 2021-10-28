@@ -73,7 +73,7 @@ namespace rgbd_slam {
                     input[2]
                     );
 
-            //if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
+            if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
             {
                 // Error: reached end of minimization without reaching a minimum
                 const std::string message = get_human_readable_end_message(endStatus);

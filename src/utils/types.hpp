@@ -19,6 +19,21 @@ typedef Eigen::Matrix<double, 4, 3> matrix43;
 typedef Eigen::Matrix4d matrix44;
 typedef Eigen::Quaternion<double> quaternion;
 
+struct EulerAngles
+{
+    double yaw;
+    double pitch;
+    double roll;
+
+    EulerAngles() {};
+
+    EulerAngles(const double y, const double p, const double r):
+        yaw(y),
+        pitch(p),
+        roll(r)
+    {};
+};
+
 typedef std::vector<vector2, Eigen::aligned_allocator<vector2>> vector2_array;
 typedef std::vector<vector3, Eigen::aligned_allocator<vector3>> vector3_array;
 typedef std::vector<vector4, Eigen::aligned_allocator<vector4>> vector4_array;

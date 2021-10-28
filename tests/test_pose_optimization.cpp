@@ -51,10 +51,6 @@ namespace rgbd_slam {
 
             const point_pair matched(screenPointEnd, worldPointStart);
             matchedPoints.push_back(matched);
-
-            // debug result
-            vector3 trueWP = endPose.get_orientation_matrix() * worldPointStart + (endPose.get_position() * 1000.0);
-            std::cout << trueWP.transpose() << " | " << utils::screen_to_world_coordinates(transformedPoint.x(), transformedPoint.y(), worldPointStart.z(), C2WtransformationMatrix).transpose() << std::endl;
         }
         return matchedPoints;
     }
@@ -88,12 +84,14 @@ namespace rgbd_slam {
 
         // Initial pose
         const vector3 initialPosition(0, 0, 0);
-        const quaternion initialQuaternion(1, 0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
         const utils::Pose initialPose(initialPosition, initialQuaternion);
 
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const quaternion trueQuaternion(1, 0, 0, 0);
+        const EulerAngles trueEulerAngles(0, 0, 0);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
@@ -101,7 +99,8 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const quaternion initialQuaternionGuess(1, 0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
@@ -119,12 +118,14 @@ namespace rgbd_slam {
 
         // Initial pose
         const vector3 initialPosition(0, 0, 0);
-        const quaternion initialQuaternion(1, 0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
         const utils::Pose initialPose(initialPosition, initialQuaternion);
 
         // True End pose
         const vector3 truePosition(1, 1, 1);
-        const quaternion trueQuaternion(1, 0, 0, 0);
+        const EulerAngles trueEulerAngles(0, 0, 0);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
@@ -132,7 +133,8 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(1, 1, 1);
-        const quaternion initialQuaternionGuess(1, 0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
@@ -149,12 +151,14 @@ namespace rgbd_slam {
 
         // Initial pose
         const vector3 initialPosition(0, 0, 0);
-        const quaternion initialQuaternion(1, 0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
         const utils::Pose initialPose(initialPosition, initialQuaternion);
 
         // True End pose
         const vector3 truePosition(1, 1, 1);
-        const quaternion trueQuaternion(1, 0, 0, 0);
+        const EulerAngles trueEulerAngles(0, 0, 0);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
@@ -162,7 +166,8 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0.9, 0.9, 0.9);
-        const quaternion initialQuaternionGuess(1, 0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
@@ -179,12 +184,14 @@ namespace rgbd_slam {
 
         // Initial pose
         const vector3 initialPosition(0, 0, 0);
-        const quaternion initialQuaternion(1, 0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
         const utils::Pose initialPose(initialPosition, initialQuaternion);
 
         // True End pose
         const vector3 truePosition(1, 1, 1);
-        const quaternion trueQuaternion(1, 0, 0, 0);
+        const EulerAngles trueEulerAngles(0, 0, 0);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
@@ -192,7 +199,8 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0.5, 0.5, 0.5);
-        const quaternion initialQuaternionGuess(1, 0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
@@ -209,12 +217,14 @@ namespace rgbd_slam {
 
         // Initial pose
         const vector3 initialPosition(0, 0, 0);
-        const quaternion initialQuaternion(1, 0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
         const utils::Pose initialPose(initialPosition, initialQuaternion);
 
         // True End pose
         const vector3 truePosition(1, 1, 1);
-        const quaternion trueQuaternion(1, 0, 0, 0);
+        const EulerAngles trueEulerAngles(0, 0, 0);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
@@ -222,7 +232,8 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0.3, 0.2, 0.3);
-        const quaternion initialQuaternionGuess(1, 0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
@@ -239,12 +250,14 @@ namespace rgbd_slam {
 
         // Initial pose
         const vector3 initialPosition(0, 0, 0);
-        const quaternion initialQuaternion(1, 0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
         const utils::Pose initialPose(initialPosition, initialQuaternion);
 
         // True End pose
         const vector3 truePosition(1, 1, 1);
-        const quaternion trueQuaternion(0.75, 0.25, 0, 0);
+        const EulerAngles trueEulerAngles(0.5, 0, 0);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
@@ -252,7 +265,8 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0.9, 0.9, 0.9);
-        const quaternion initialQuaternionGuess(1, 0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);

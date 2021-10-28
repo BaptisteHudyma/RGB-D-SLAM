@@ -1,6 +1,7 @@
 #include "utils.hpp"
 
 #include "parameters.hpp"
+#include <cmath>
 
 namespace rgbd_slam {
     namespace utils {
@@ -58,11 +59,52 @@ namespace rgbd_slam {
 
             const matrix33 jacobian {
                 {depth / cameraFX, 0.0, (screenPoint.x() - cameraCX) / cameraFX },
-                {0.0, depth / cameraFY, (screenPoint.y() - cameraCY) / cameraFY },
-                {0.0, 0.0, 1.0}
+                    {0.0, depth / cameraFY, (screenPoint.y() - cameraCY) / cameraFY },
+                    {0.0, 0.0, 1.0}
             };
 
             return jacobian * screenPointError * jacobian.transpose();
+        }
+
+
+        const quaternion get_quaternion_from_euler_angles(const EulerAngles& eulerAngles)
+        {
+            const double cy = cos(eulerAngles.yaw * 0.5);
+            const double sy = sin(eulerAngles.yaw * 0.5);
+            const double cp = cos(eulerAngles.pitch * 0.5);
+            const double sp = sin(eulerAngles.pitch * 0.5);
+            const double cr = cos(eulerAngles.roll * 0.5);
+            const double sr = sin(eulerAngles.roll * 0.5);
+
+            const quaternion quat(
+                    cr * cp * cy + sr * sp * sy,
+                    sr * cp * cy - cr * sp * sy,
+                    cr * sp * cy + sr * cp * sy,
+                    cr * cp * sy - sr * sp * cy
+                    );
+            return quat;
+        }
+
+        const EulerAngles get_euler_angles_from_quaternion(const quaternion& quat)
+        {
+            EulerAngles eulerAngles;
+            eulerAngles.yaw = std::atan2(
+                    2 * (quat.w() * quat.x() + quat.y() * quat.z()),
+                    1 - 2 * (quat.x() * quat.x() + quat.y() * quat.y())
+                    );
+
+            const double sinp = 2 * (quat.w() * quat.y() - quat.z() * quat.x());
+            if (std::abs(sinp) >= 1)
+                eulerAngles.pitch = std::copysign(M_PI / 2, sinp);
+            else
+                eulerAngles.pitch = std::asin(sinp);
+
+            eulerAngles.roll = std::atan2(
+                    2 * (quat.w() * quat.z() + quat.x() * quat.y()),
+                    1 - 2 * (quat.y() * quat.y() + quat.z() * quat.z())
+                    );
+
+            return eulerAngles;
         }
 
     }

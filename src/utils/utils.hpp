@@ -48,6 +48,16 @@ namespace rgbd_slam {
          */
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointError);
 
+        /**
+         * \brief Compute a quaternion from the given euler angles, in radians
+         */
+        const quaternion get_quaternion_from_euler_angles(const EulerAngles& eulerAngles);
+        
+        /**
+         * \brief Compute euler angles from a given quaternion
+         */
+        const EulerAngles get_euler_angles_from_quaternion(const quaternion& quat);
+
     }
 }
 
