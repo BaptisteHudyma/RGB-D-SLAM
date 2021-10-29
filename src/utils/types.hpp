@@ -10,6 +10,8 @@
  *        Declare the most common types used in this program
  */
 
+const double EulerToRadian = M_PI/180.0;
+
 typedef Eigen::Vector2d vector2;
 typedef Eigen::Matrix<double, 3, 1> vector3;
 typedef Eigen::Vector4d vector4;

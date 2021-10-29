@@ -62,6 +62,16 @@ namespace rgbd_slam {
         const matrix43 get_B_singular_values(const quaternion& rotation);
 
         /**
+         * \brief Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation)
+         */
+        vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat);
+
+        /**
+          * \brief Compute a quaternion from the Lie projection (Scaled Axis representation)
+          */
+        quaternion get_quaternion_from_scale_axis_coefficients(const vector3 optimizationCoefficients);
+
+        /**
          * \brief Return a quaternion from an ideal parametrization estimationVector
          *
          * \param[in] originalQuaternion Original position used to compute transformationMatrixB

@@ -1,5 +1,7 @@
 #include "Pose.hpp"
 
+#include "utils.hpp"
+
 namespace rgbd_slam {
 namespace utils {
 
@@ -24,7 +26,8 @@ namespace utils {
 
 
     void Pose::display(std::ostream& os) const {
-        os << _position.transpose() << " | " << _orientation.coeffs().transpose();
+        const EulerAngles displayAngles = get_euler_angles_from_quaternion(_orientation);
+        os << _position.transpose() << " | " << displayAngles.yaw / EulerToRadian << ", " << displayAngles.pitch / EulerToRadian << ", " << displayAngles.roll / EulerToRadian << std::endl;
     }
 
 

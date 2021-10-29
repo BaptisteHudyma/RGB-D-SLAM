@@ -33,9 +33,10 @@ namespace rgbd_slam {
             input[1] = position.y();
             input[2] = position.z();
             // X Y Z of a quaternion representation (0, 0, 0) corresponds to the quaternion itself
-            input[3] = 0;
-            input[4] = 0;
-            input[5] = 0;
+            const vector3& rotationCoefficients = get_scaled_axis_coefficients_from_quaternion(rotation);
+            input[3] = rotationCoefficients.x();
+            input[4] = rotationCoefficients.y();
+            input[5] = rotationCoefficients.z();
 
             // Optimize function 
             Global_Pose_Functor pose_optimisation_functor(
@@ -66,7 +67,8 @@ namespace rgbd_slam {
 
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
 
-            const quaternion& endRotation = get_quaternion_from_original_quaternion(rotation, vector3(input[3], input[4], input[5]), singularBValues); 
+            //const quaternion& endRotation = get_quaternion_from_original_quaternion(rotation, vector3(input[3], input[4], input[5]), singularBValues); 
+            const quaternion& endRotation = get_quaternion_from_scale_axis_coefficients(vector3(input[3], input[4], input[5])); 
             const vector3 endPosition(
                     input[0],
                     input[1],

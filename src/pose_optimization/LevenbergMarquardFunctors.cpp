@@ -13,25 +13,11 @@ namespace rgbd_slam {
                 abs(pointA.x() - pointB.x()) + 
                 abs(pointA.y() - pointB.y());
         }
-        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) 
-        { 
-            return 
-                abs(pointA.x() - pointB.x()) + 
-                abs(pointA.y() - pointB.y()) +
-                abs(pointA.z() - pointB.z());
-        }
         double get_distance_squared(const vector2& pointA, const vector2& pointB) 
         { 
             return 
                 pow(pointA.x() - pointB.x(), 2.0) + 
                 pow(pointA.y() - pointB.y(), 2.0);
-        }
-        double get_distance_squared(const vector3& pointA, const vector3& pointB) 
-        { 
-            return 
-                pow(pointA.x() - pointB.x(), 2.0) + 
-                pow(pointA.y() - pointB.y(), 2.0) +
-                pow(pointA.z() - pointB.z(), 2.0);
         }
 
         /**
@@ -76,6 +62,34 @@ namespace rgbd_slam {
             return Eigen::JacobiSVD<Eigen::MatrixXd>(BMatrix, Eigen::ComputeThinU).matrixU();
         }
 
+        vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
+        {
+            // forcing positive "w" to work from 0 to PI
+            const quaternion& q = (quat.w() >= 0) ? quat : quaternion(-quat.coeffs());
+            const vector3& qv = q.vec();
+
+            const double sinha = qv.norm();
+            if(sinha > 0)
+            {
+                double  angle = 2 * atan2(sinha, q.w()); //NOTE: signed
+                return qv * (angle/sinha);
+            }
+            else{
+                // if l is too small, its norm can be equal 0 but norm_inf greater than 0
+                // probably w is much bigger that vec, use it as length
+                return qv * (2 / q.w()); ////NOTE: signed
+            }
+        }
+
+        quaternion get_quaternion_from_scale_axis_coefficients(const vector3 optimizationCoefficients)
+        {
+            const double a = optimizationCoefficients.norm();
+            double ha = a * 0.5;
+            double scale = (a > 0) ? (sin(ha) / a) : 0.5;
+
+            return quaternion(cos(ha), optimizationCoefficients.x() * scale, optimizationCoefficients.y() * scale, optimizationCoefficients.z() * scale);
+        }
+
 
         const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB)
         {
@@ -106,7 +120,9 @@ namespace rgbd_slam {
         // Implementation of the objective function
         int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
         {
-            const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(x(3), x(4), x(5)), _singularBvalues);
+            //const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(x(3), x(4), x(5)), _singularBvalues);
+            const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
+
             const vector3 translation(
                     x(0),
                     x(1),
@@ -120,7 +136,7 @@ namespace rgbd_slam {
             const double lossScale = Parameters::get_point_loss_scale();
 
             const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-            
+
 
             double mean = 0;
             unsigned int pointIndex = 0;
@@ -146,28 +162,28 @@ namespace rgbd_slam {
 
 
         /*int Global_Pose_Estimator::df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const
-        {
-            const double epsilon = Parameters::get_optimization_error_precision();
-            for (int i = 0; i < x.size(); i++) {
-                Eigen::VectorXd xPlus(x);
-                xPlus(i) += epsilon;
-                Eigen::VectorXd xMinus(x);
-                xMinus(i) -= epsilon;
+          {
+          const double epsilon = Parameters::get_optimization_error_precision();
+          for (int i = 0; i < x.size(); i++) {
+          Eigen::VectorXd xPlus(x);
+          xPlus(i) += epsilon;
+          Eigen::VectorXd xMinus(x);
+          xMinus(i) -= epsilon;
 
-                Eigen::VectorXd fvecPlus(values());
-                operator()(xPlus, fvecPlus);
+          Eigen::VectorXd fvecPlus(values());
+          operator()(xPlus, fvecPlus);
 
-                Eigen::VectorXd fvecMinus(values());
-                operator()(xMinus, fvecMinus);
+          Eigen::VectorXd fvecMinus(values());
+          operator()(xMinus, fvecMinus);
 
-                Eigen::VectorXd fvecDiff(values());
-                fvecDiff = (fvecPlus - fvecMinus) / (2.0 * epsilon);
+          Eigen::VectorXd fvecDiff(values());
+          fvecDiff = (fvecPlus - fvecMinus) / (2.0 * epsilon);
 
-                fjac.block(0, i, values(), 1) = fvecDiff;
-            }
+          fjac.block(0, i, values(), 1) = fvecDiff;
+          }
 
-            return 0;
-        }*/
+          return 0;
+          }*/
 
 
         double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
