@@ -75,7 +75,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a no movements, with a perfect initial guess, in perfect environnement (no error on points)
      */
-    TEST(noRotationNoTranslation, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, noRotationNoTranslation) 
     {
         if (not Parameters::is_valid())
         {
@@ -110,7 +110,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a perfect initial guess, in perfect environnement (no error on points)
      */
-    TEST(perfectGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, perfectGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -149,7 +149,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a very good initial guess, in perfect environnement (no error on points)
      */
-    TEST(translationGoodGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, translationGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -183,7 +183,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a medium initial guess, in perfect environnement (no error on points)
      */
-    TEST(translationMediumGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, translationMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -217,7 +217,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a bad initial guess, in perfect environnement (no error on points)
      */
-    TEST(translationBadGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, translationBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -256,7 +256,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a good initial guess (5 degrees apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationYawGoodGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationYawGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -284,12 +284,10 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationPitchGoodGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationPitchGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -317,12 +315,10 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationRollGoodGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationRollGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -350,12 +346,10 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationGoodGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -383,15 +377,13 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
     /*
      * Run a test with a medium initial guess (20 degrees apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationYawMediumGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationYawMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -422,7 +414,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationPitchMedium_guess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationPitchMedium_guess) 
     {
         if (not Parameters::is_valid())
         {
@@ -453,7 +445,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationRollMediumGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationRollMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -484,7 +476,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationMediumGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -518,7 +510,7 @@ namespace rgbd_slam {
     /*
      * Run a test with bad initial guess (90% apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationYawBadGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationYawBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -549,7 +541,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationPitchBadGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationPitchBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -580,7 +572,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationRollBadGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationRollBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -611,7 +603,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationBadGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -650,7 +642,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a good initial guess (5 degrees apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationTranslationGoodGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationTranslationGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -684,7 +676,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a medium initial guess (20 degrees apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationTranslationMediumGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationTranslationMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -718,7 +710,7 @@ namespace rgbd_slam {
     /*
      * Run a test with bad initial guess (90% appart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationTranslationBadGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationAssertions, rotationTranslationBadGuess) 
     {
         if (not Parameters::is_valid())
         {
