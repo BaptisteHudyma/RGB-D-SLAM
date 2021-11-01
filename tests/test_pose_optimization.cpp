@@ -72,10 +72,14 @@ namespace rgbd_slam {
     }
 
 
+    /**
+     *          ROTATION & TRANSLATION TESTS
+     */
+
     /*
      * Run a test with a no movements, with a perfect initial guess, in perfect environnement (no error on points)
      */
-    TEST(noRotationNoTranslation, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationTests, noRotationNoTranslation) 
     {
         if (not Parameters::is_valid())
         {
@@ -110,7 +114,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a perfect initial guess, in perfect environnement (no error on points)
      */
-    TEST(perfectGuess, PoseOptimizationAssertions) 
+    TEST(PoseOptimizationTests, perfectGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -141,6 +145,109 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
+    /*
+     * Run a test with a good initial guess (5 degrees apart), in perfect environnement, with a rotation (no error on points)
+     */
+    TEST(PoseOptimizationTests, rotationTranslationGoodGuess) 
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        // Initial pose
+        const vector3 initialPosition(0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
+        const utils::Pose initialPose(initialPosition, initialQuaternion);
+
+        // True End pose
+        const vector3 truePosition(1, 1, 1);
+        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+        const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+        const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+
+
+        // Estimated pose base
+        const vector3 initialPositionGuess(0.9, 0.9, 0.9);
+        const EulerAngles initialEulerAnglesGuess(1.2, 1.2, 1.2);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+        const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+    }
+
+    /*
+     * Run a test with a medium initial guess (20 degrees apart), in perfect environnement, with a rotation (no error on points)
+     */
+    TEST(PoseOptimizationTests, rotationTranslationMediumGuess) 
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        // Initial pose
+        const vector3 initialPosition(0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
+        const utils::Pose initialPose(initialPosition, initialQuaternion);
+
+        // True End pose
+        const vector3 truePosition(1, 1, 1);
+        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+        const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+        const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+
+
+        // Estimated pose base
+        const vector3 initialPositionGuess(0.5, 0.5, 0.5);
+        const EulerAngles initialEulerAnglesGuess(0.7, 0.7, 0.7);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+        const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+    }
+
+    /*
+     * Run a test with bad initial guess (90% appart), in perfect environnement, with a rotation (no error on points)
+     */
+    TEST(PoseOptimizationTests, rotationTranslationBadGuess) 
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        // Initial pose
+        const vector3 initialPosition(0, 0, 0);
+        const EulerAngles initialEulerAngles(0, 0, 0);
+        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
+        const utils::Pose initialPose(initialPosition, initialQuaternion);
+
+        // True End pose
+        const vector3 truePosition(1, 1, 1);
+        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+        const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+        const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+
+
+        // Estimated pose base
+        const vector3 initialPositionGuess(0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+        const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+    }
+
+
 
     /**
      *          TRANSLATION TESTS
@@ -149,7 +256,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a very good initial guess, in perfect environnement (no error on points)
      */
-    TEST(translationGoodGuess, PoseOptimizationAssertions) 
+    TEST(TranslationOptimizationTests, translationGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -183,7 +290,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a medium initial guess, in perfect environnement (no error on points)
      */
-    TEST(translationMediumGuess, PoseOptimizationAssertions) 
+    TEST(TranslationOptimizationTests, translationMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -217,7 +324,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a bad initial guess, in perfect environnement (no error on points)
      */
-    TEST(translationBadGuess, PoseOptimizationAssertions) 
+    TEST(TranslationOptimizationTests, translationBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -256,7 +363,7 @@ namespace rgbd_slam {
     /*
      * Run a test with a good initial guess (5 degrees apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationYawGoodGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationYawGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -284,12 +391,10 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationPitchGoodGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationPitchGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -317,12 +422,10 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationRollGoodGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationRollGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -350,12 +453,10 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationGoodGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationGoodGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -383,15 +484,13 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        std::cout << trueQuaternion << "  |   " << initialQuaternionGuess << std::endl;
-
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
     /*
      * Run a test with a medium initial guess (20 degrees apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationYawMediumGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationYawMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -422,7 +521,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationPitchMedium_guess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationPitchMedium_guess) 
     {
         if (not Parameters::is_valid())
         {
@@ -453,7 +552,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationRollMediumGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationRollMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -484,7 +583,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationMediumGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationMediumGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -518,7 +617,7 @@ namespace rgbd_slam {
     /*
      * Run a test with bad initial guess (90% apart), in perfect environnement, with a rotation (no error on points)
      */
-    TEST(rotationYawBadGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationYawBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -549,7 +648,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationPitchBadGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationPitchBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -580,7 +679,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationRollBadGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationRollBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -611,7 +710,7 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
     }
 
-    TEST(rotationBadGuess, PoseOptimizationAssertions) 
+    TEST(RotationOptimizationTests, rotationBadGuess) 
     {
         if (not Parameters::is_valid())
         {
@@ -626,113 +725,6 @@ namespace rgbd_slam {
 
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
-        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
-        const utils::Pose trueEndPose(truePosition, trueQuaternion);
-
-        const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
-
-
-        // Estimated pose base
-        const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
-        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
-        const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
-
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
-    }
-
-
-    /**
-     *          ROTATION & TRANSLATION TESTS
-     */
-
-    /*
-     * Run a test with a good initial guess (5 degrees apart), in perfect environnement, with a rotation (no error on points)
-     */
-    TEST(rotationTranslationGoodGuess, PoseOptimizationAssertions) 
-    {
-        if (not Parameters::is_valid())
-        {
-            Parameters::load_defaut();
-        }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
-        // True End pose
-        const vector3 truePosition(1, 1, 1);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
-        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
-        const utils::Pose trueEndPose(truePosition, trueQuaternion);
-
-        const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
-
-
-        // Estimated pose base
-        const vector3 initialPositionGuess(0.9, 0.9, 0.9);
-        const EulerAngles initialEulerAnglesGuess(1.2, 1.2, 1.2);
-        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
-        const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
-
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
-    }
-
-    /*
-     * Run a test with a medium initial guess (20 degrees apart), in perfect environnement, with a rotation (no error on points)
-     */
-    TEST(rotationTranslationMediumGuess, PoseOptimizationAssertions) 
-    {
-        if (not Parameters::is_valid())
-        {
-            Parameters::load_defaut();
-        }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
-        // True End pose
-        const vector3 truePosition(1, 1, 1);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
-        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
-        const utils::Pose trueEndPose(truePosition, trueQuaternion);
-
-        const match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
-
-
-        // Estimated pose base
-        const vector3 initialPositionGuess(0.5, 0.5, 0.5);
-        const EulerAngles initialEulerAnglesGuess(0.7, 0.7, 0.7);
-        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
-        const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
-
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
-    }
-
-    /*
-     * Run a test with bad initial guess (90% appart), in perfect environnement, with a rotation (no error on points)
-     */
-    TEST(rotationTranslationBadGuess, PoseOptimizationAssertions) 
-    {
-        if (not Parameters::is_valid())
-        {
-            Parameters::load_defaut();
-        }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
-        // True End pose
-        const vector3 truePosition(1, 1, 1);
         const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
