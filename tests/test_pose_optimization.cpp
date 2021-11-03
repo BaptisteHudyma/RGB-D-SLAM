@@ -7,8 +7,8 @@
 
 namespace rgbd_slam {
 
-    const unsigned int POINTS_IN_CUBE = 100;
-    const double CUBE_SIDE_SIZE = 4000;   // Meters
+    const unsigned int NUMBER_OF_POINTS_IN_CUBE = 4 * 4 * 4;
+    const double CUBE_SIDE_SIZE = 3;   // Meters
     const double CUBE_START_X = 10; 
     const double CUBE_START_Y = 10;
     const double CUBE_START_Z = 10;
@@ -23,9 +23,10 @@ namespace rgbd_slam {
     const point_container get_cube_points(const unsigned int numberOfPoints)
     {
         const unsigned int numberOfPointsByLine = static_cast<unsigned int>(pow(static_cast<double>(numberOfPoints), 1.0 / 3.0));
-        const double numberOfPointsByLineDouble = CUBE_SIDE_SIZE / static_cast<double>(numberOfPointsByLine);
+        const double numberOfPointsByLineDouble = CUBE_SIDE_SIZE / static_cast<double>(numberOfPointsByLine - 1);
 
-        point_container pointContainer(pow(numberOfPointsByLine, 3));
+        point_container pointContainer;
+        pointContainer.reserve(pow(numberOfPointsByLine, 3));
 
         for(unsigned int cubePlaneIndex = 0; cubePlaneIndex < numberOfPointsByLine; ++cubePlaneIndex)
         {
@@ -45,13 +46,12 @@ namespace rgbd_slam {
         return pointContainer;
     }
 
-
     const match_point_container get_matched_points(const utils::Pose& endPose, const double error)
     {
         const matrix34& W2CtransformationMatrix = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
 
         match_point_container matchedPoints;
-        for (const Point point : get_cube_points(POINTS_IN_CUBE))
+        for (const Point point : get_cube_points(NUMBER_OF_POINTS_IN_CUBE))
         {
             // world coordinates
             const vector3 worldPointStart(point.x, point.y, point.z);
