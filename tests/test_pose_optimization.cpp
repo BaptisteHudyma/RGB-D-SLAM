@@ -7,40 +7,54 @@
 
 namespace rgbd_slam {
 
+    const unsigned int POINTS_IN_CUBE = 100;
+    const double CUBE_SIDE_SIZE = 4000;   // Meters
+    const double CUBE_START_X = 10; 
+    const double CUBE_START_Y = 10;
+    const double CUBE_START_Z = 10;
 
-    // CM
-    const double MAP_POINTS[20][3] = {
-        {37, 56, 24},   //1
-        {42, 86, 20},   //2
-        {25, 45, 8},    //3
-        {0, 14, 28},    //4
-        {37, 49, 11},   //5
-        {49, 22, 21},   //6
-        {52, 22, 22},   //7
-        {82, 0.5, 1},   //8
-        {49, 74, 92},   //9
-        {21, 22, 21},   //10
-        {40, 87, 2},    //11
-        {79, 34, 56},   //12
-        {01, 0.1, 29},  //13
-        {32, 78, 92},  //14
-        {10, 178, 18},  //15
-        {04, 912, 2},  //16
-        {179, 98, 12},  //17
-        {31, 12, 4},  //18
-        {157, 84, 9},  //19
-        {29, 102, 2},  //20
+
+    struct Point {
+        double x;
+        double y;
+        double z;
     };
+    typedef std::vector<Point> point_container;
+    const point_container get_cube_points(const unsigned int numberOfPoints)
+    {
+        const unsigned int numberOfPointsByLine = static_cast<unsigned int>(pow(static_cast<double>(numberOfPoints), 1.0 / 3.0));
+        const double numberOfPointsByLineDouble = CUBE_SIDE_SIZE / static_cast<double>(numberOfPointsByLine);
+
+        point_container pointContainer(pow(numberOfPointsByLine, 3));
+
+        for(unsigned int cubePlaneIndex = 0; cubePlaneIndex < numberOfPointsByLine; ++cubePlaneIndex)
+        {
+            for(unsigned int cubeLineIndex = 0; cubeLineIndex < numberOfPointsByLine; ++cubeLineIndex)
+            {
+                for(unsigned int cubeColumnIndex = 0; cubeColumnIndex < numberOfPointsByLine; ++cubeColumnIndex)
+                {
+                    Point cubePoint;
+                    cubePoint.x = CUBE_START_X + cubePlaneIndex  * numberOfPointsByLineDouble;
+                    cubePoint.y = CUBE_START_Y + cubeLineIndex   * numberOfPointsByLineDouble;
+                    cubePoint.z = CUBE_START_Z + cubeColumnIndex * numberOfPointsByLineDouble;
+
+                    pointContainer.push_back(cubePoint);
+                }
+            }
+        }
+        return pointContainer;
+    }
+
 
     const match_point_container get_matched_points(const utils::Pose& endPose, const double error)
     {
         const matrix34& W2CtransformationMatrix = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
 
         match_point_container matchedPoints;
-        for (const double* array : MAP_POINTS)
+        for (const Point point : get_cube_points(POINTS_IN_CUBE))
         {
             // world coordinates
-            const vector3 worldPointStart(array[0] * 100, array[1] * 100, array[2] * 100);
+            const vector3 worldPointStart(point.x, point.y, point.z);
             //
             const vector2& transformedPoint = utils::world_to_screen_coordinates(worldPointStart, W2CtransformationMatrix);
             // screen coordinates
@@ -58,7 +72,7 @@ namespace rgbd_slam {
         const utils::Pose endPose = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints);
 
         const double approxPositionError = 0.05;  // cm
-        const double approxRotationError = 1.0 * EulerToRadian;   // 1 degree
+        const double approxRotationError = 0.2;   // 0.2 degree
         EXPECT_NEAR(trueEndPose.get_position().x(), endPose.get_position().x(), approxPositionError);
         EXPECT_NEAR(trueEndPose.get_position().y(), endPose.get_position().y(), approxPositionError);
         EXPECT_NEAR(trueEndPose.get_position().z(), endPose.get_position().z(), approxPositionError);
