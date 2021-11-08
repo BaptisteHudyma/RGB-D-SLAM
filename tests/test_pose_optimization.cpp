@@ -7,11 +7,18 @@
 
 namespace rgbd_slam {
 
-    const unsigned int NUMBER_OF_POINTS_IN_CUBE = 4 * 4 * 4;
-    const double CUBE_SIDE_SIZE = 3;   // Meters
+    const unsigned int NUMBER_OF_POINTS_IN_CUBE = 3 * 3 * 3;
+    const double CUBE_SIDE_SIZE = 3;   // Millimeters
     const double CUBE_START_X = 10; 
     const double CUBE_START_Y = 10;
     const double CUBE_START_Z = 10;
+
+    const double END_POSITION = 1;
+    const double END_ROTATION = M_PI / 2.0;
+
+    const double GOOD_GUESS = 0.9;
+    const double MEDIUM_CUESS = 0.5;
+    const double BAD_GUESS = 0.1;
 
 
     struct Point {
@@ -66,13 +73,22 @@ namespace rgbd_slam {
         return matchedPoints;
     }
 
+    /**
+     * Return the distance between two angles, in radians
+     */
+    double get_angle_distance(const double angleA, const double angleB)
+    {
+        const double diff = std::fmod(abs(angleA - angleB), 2 * M_PI);
+        return std::min(diff, abs(diff - 2.0 * M_PI));
+    }
+
     void run_test_optimization(const match_point_container& matchedPoints, const utils::Pose& trueEndPose, const utils::Pose& initialPoseGuess)
     {
         // Compute end pose
         const utils::Pose endPose = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints);
 
-        const double approxPositionError = 0.05;  // cm
-        const double approxRotationError = 0.2;   // 0.2 degree
+        const double approxPositionError = 1;  // mm
+        const double approxRotationError = 0.1 * EulerToRadian;   // 0.1 degree
         EXPECT_NEAR(trueEndPose.get_position().x(), endPose.get_position().x(), approxPositionError);
         EXPECT_NEAR(trueEndPose.get_position().y(), endPose.get_position().y(), approxPositionError);
         EXPECT_NEAR(trueEndPose.get_position().z(), endPose.get_position().z(), approxPositionError);
@@ -80,9 +96,9 @@ namespace rgbd_slam {
         const EulerAngles trueEndEulerAngles = utils::get_euler_angles_from_quaternion(trueEndPose.get_orientation_quaternion());
         const EulerAngles endEulerAngles = utils::get_euler_angles_from_quaternion(endPose.get_orientation_quaternion());
 
-        EXPECT_NEAR(trueEndEulerAngles.yaw, endEulerAngles.yaw, approxRotationError);
-        EXPECT_NEAR(trueEndEulerAngles.pitch, endEulerAngles.pitch, approxRotationError);
-        EXPECT_NEAR(trueEndEulerAngles.roll, endEulerAngles.roll, approxRotationError);
+        EXPECT_LT( get_angle_distance(trueEndEulerAngles.yaw, endEulerAngles.yaw), approxRotationError);
+        EXPECT_LT( get_angle_distance(trueEndEulerAngles.pitch, endEulerAngles.pitch), approxRotationError);
+        EXPECT_LT( get_angle_distance(trueEndEulerAngles.roll, endEulerAngles.roll), approxRotationError);
     }
 
 
@@ -99,12 +115,6 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
 
         // True End pose
         const vector3 truePosition(0, 0, 0);
@@ -134,16 +144,10 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
+        
         // True End pose
-        const vector3 truePosition(1, 1, 1);
-        const EulerAngles trueEulerAngles(1, 1, 1);
+        const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+        const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -151,8 +155,8 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(1, 1, 1);
-        const EulerAngles initialEulerAnglesGuess(1, 1, 1);
+        const vector3 initialPositionGuess(END_POSITION, END_POSITION, END_POSITION);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -169,15 +173,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
-        const vector3 truePosition(1, 1, 1);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+        const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -185,8 +183,8 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(0.9, 0.9, 0.9);
-        const EulerAngles initialEulerAnglesGuess(1.2, 1.2, 1.2);
+        const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * GOOD_GUESS, END_ROTATION * GOOD_GUESS, END_ROTATION * GOOD_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -202,16 +200,10 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
+        
         // True End pose
-        const vector3 truePosition(1, 1, 1);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+        const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -219,8 +211,8 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(0.5, 0.5, 0.5);
-        const EulerAngles initialEulerAnglesGuess(0.7, 0.7, 0.7);
+        const vector3 initialPositionGuess(END_POSITION * MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -237,15 +229,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
-        const vector3 truePosition(1, 1, 1);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+        const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -253,8 +239,8 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * BAD_GUESS, END_ROTATION * BAD_GUESS, END_ROTATION * BAD_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -276,15 +262,9 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
+        
         // True End pose
-        const vector3 truePosition(1, 1, 1);
+        const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
         const EulerAngles trueEulerAngles(0, 0, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
@@ -293,7 +273,7 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(0.9, 0.9, 0.9);
+        const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
         const EulerAngles initialEulerAnglesGuess(0, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
@@ -311,14 +291,8 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
-        const vector3 truePosition(1, 1, 1);
+        const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
         const EulerAngles trueEulerAngles(0, 0, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
@@ -327,7 +301,7 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(0.5, 0.5, 0.5);
+        const vector3 initialPositionGuess(END_POSITION* MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS);
         const EulerAngles initialEulerAnglesGuess(0, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
@@ -345,14 +319,8 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
-        const vector3 truePosition(1, 1, 1);
+        const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
         const EulerAngles trueEulerAngles(0, 0, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
@@ -361,7 +329,7 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(0, 0, 0);
+        const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
         const EulerAngles initialEulerAnglesGuess(0, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
@@ -384,15 +352,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(1.4, 0, 0);
+        const EulerAngles trueEulerAngles(END_ROTATION, 0, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -401,7 +363,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(1.3, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * GOOD_GUESS, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -414,16 +376,10 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
+        
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(0, 1.4, 0);
+        const EulerAngles trueEulerAngles(0, END_ROTATION, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -432,7 +388,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 1.3, 0);
+        const EulerAngles initialEulerAnglesGuess(0, END_ROTATION * GOOD_GUESS, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -446,15 +402,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(0, 0, 1.4);
+        const EulerAngles trueEulerAngles(0, 0, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -463,7 +413,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 1.3);
+        const EulerAngles initialEulerAnglesGuess(0, 0, END_ROTATION * GOOD_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -477,15 +427,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -494,7 +438,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(1.3, 1.3, 1.3);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * GOOD_GUESS, END_ROTATION * GOOD_GUESS, END_ROTATION * GOOD_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -511,15 +455,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(1.4, 0, 0);
+        const EulerAngles trueEulerAngles(END_ROTATION, 0, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -528,7 +466,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0.7, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_CUESS, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -542,15 +480,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(0, 1.4, 0);
+        const EulerAngles trueEulerAngles(0, END_ROTATION, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -559,7 +491,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0.7, 0);
+        const EulerAngles initialEulerAnglesGuess(0, END_ROTATION * MEDIUM_CUESS, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -573,15 +505,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(0, 0, 1.4);
+        const EulerAngles trueEulerAngles(0, 0, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -590,7 +516,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 0.7);
+        const EulerAngles initialEulerAnglesGuess(0, 0, END_ROTATION * MEDIUM_CUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -604,15 +530,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -621,7 +541,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0.7, 0.7, 0.7);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -638,15 +558,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(1.4, 0, 0);
+        const EulerAngles trueEulerAngles(END_ROTATION, 0, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -655,7 +569,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * BAD_GUESS, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -668,16 +582,10 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
+        
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(0, 1.4, 0);
+        const EulerAngles trueEulerAngles(0, END_ROTATION, 0);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -686,7 +594,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, END_ROTATION * BAD_GUESS, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -700,15 +608,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(0, 0, 1.4);
+        const EulerAngles trueEulerAngles(0, 0, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -717,7 +619,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(0, 0, END_ROTATION * BAD_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -731,15 +633,9 @@ namespace rgbd_slam {
             Parameters::load_defaut();
         }
 
-        // Initial pose
-        const vector3 initialPosition(0, 0, 0);
-        const EulerAngles initialEulerAngles(0, 0, 0);
-        const quaternion initialQuaternion(utils::get_quaternion_from_euler_angles(initialEulerAngles));
-        const utils::Pose initialPose(initialPosition, initialQuaternion);
-
         // True End pose
         const vector3 truePosition(0, 0, 0);
-        const EulerAngles trueEulerAngles(1.4, 1.4, 1.4);
+        const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
@@ -748,7 +644,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * BAD_GUESS, END_ROTATION * BAD_GUESS, END_ROTATION * BAD_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
