@@ -51,34 +51,19 @@ namespace rgbd_slam {
             };
 
 
-
-        /**
-         * \brief Compute a matrix parametrization of the quaternion, to be used with get_quaternion_from_original_quaternion
-         *
-         * \param[in] rotation The original quaternion
-         *
-         * \return A parametrization matrix
-         */
-        const matrix43 get_B_singular_values(const quaternion& rotation);
-
         /**
          * \brief Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation)
          */
         vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat);
 
         /**
-          * \brief Compute a quaternion from the Lie projection (Scaled Axis representation)
-          */
+         * \brief Compute a quaternion from the Lie projection (Scaled Axis representation)
+         */
         quaternion get_quaternion_from_scale_axis_coefficients(const vector3 optimizationCoefficients);
 
-        /**
-         * \brief Return a quaternion from an ideal parametrization estimationVector
-         *
-         * \param[in] originalQuaternion Original position used to compute transformationMatrixB
-         * \param[in] estimationVector Estimated vector, optimized by levenberg marquardt, to turn back to a quaternion
-         * \param[in] transformationMatrixB Transformation matrix used to transform estimationVector back to a quaternion
-         */
-        const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB);
+
+        quaternion get_quaternion_exponential(const quaternion& quat);
+        quaternion get_quaternion_logarithm(const quaternion& quat);
 
 
 
@@ -95,7 +80,7 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues);
+            Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
 
             /**
              * \brief Return te distance between the map point and the it's matched point
@@ -116,19 +101,10 @@ namespace rgbd_slam {
              */
             int operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const;
 
-            /**
-             * \brief Compute the Jacobian matrix of the input parameters
-             * 
-             * \param[in] x A vector of dimension M, with M the number of parameters to optimize
-             * \param[out] fjac A matrix NxM, with M the number of parameters to optimize. This is the Jacobian of the errors
-             */
-            //int df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const;
-
             private:
             const match_point_container& _points; 
             const quaternion _rotation;
             const vector3 _position;
-            const matrix43 _singularBvalues;
         };
 
         struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};

@@ -22,9 +22,6 @@ namespace rgbd_slam {
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();
 
-            // Compute B matrix
-            const matrix43& singularBValues = get_B_singular_values(rotation);
-
             // Vector to optimize: (0, 1, 2) is position,
             // Vector (3, 4, 5) is a rotation parametrization, representing a delta in rotation in the tangential hyperplane -From Using Quaternions for Parametrizing 3-D Rotation in Unconstrained Nonlinear Optimization)
             Eigen::VectorXd input(6);
@@ -44,8 +41,7 @@ namespace rgbd_slam {
                         input.size(), 
                         matchedPoints, 
                         currentPose.get_position(),
-                        currentPose.get_orientation_quaternion(),
-                        singularBValues
+                        currentPose.get_orientation_quaternion()
                         )
                     );
             // Optimization algorithm
@@ -67,7 +63,6 @@ namespace rgbd_slam {
 
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
 
-            //const quaternion& endRotation = get_quaternion_from_original_quaternion(rotation, vector3(input[3], input[4], input[5]), singularBValues); 
             const quaternion& endRotation = get_quaternion_from_scale_axis_coefficients(vector3(input[3], input[4], input[5])); 
             const vector3 endPosition(
                     input[0],

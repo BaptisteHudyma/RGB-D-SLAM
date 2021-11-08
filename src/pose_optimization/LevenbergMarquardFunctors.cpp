@@ -13,6 +13,13 @@ namespace rgbd_slam {
                 abs(pointA.x() - pointB.x()) + 
                 abs(pointA.y() - pointB.y());
         }
+        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) 
+        { 
+            return 
+                abs(pointA.x() - pointB.x()) + 
+                abs(pointA.y() - pointB.y()) +
+                abs(pointA.z() - pointB.z());
+        }
         double get_distance_squared(const vector2& pointA, const vector2& pointB) 
         { 
             return 
@@ -51,17 +58,6 @@ namespace rgbd_slam {
             }
         }
 
-        const matrix43 get_B_singular_values(const quaternion& rotation)
-        {
-            const Eigen::MatrixXd BMatrix {
-                {- rotation.x() / rotation.w(), - rotation.y() / rotation.w(), - rotation.z() / rotation.w()},
-                    {1, 0, 0},
-                    {0, 1, 0},
-                    {0, 0, 1}
-            };
-            return Eigen::JacobiSVD<Eigen::MatrixXd>(BMatrix, Eigen::ComputeThinU).matrixU();
-        }
-
         vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
         {
             // forcing positive "w" to work from 0 to PI
@@ -71,13 +67,13 @@ namespace rgbd_slam {
             const double sinha = qv.norm();
             if(sinha > 0)
             {
-                double  angle = 2 * atan2(sinha, q.w()); //NOTE: signed
-                return qv * (angle/sinha);
+                const double angle = 2 * atan2(sinha, q.w()); //NOTE: signed
+                return (qv * (angle / sinha));
             }
             else{
                 // if l is too small, its norm can be equal 0 but norm_inf greater than 0
                 // probably w is much bigger that vec, use it as length
-                return qv * (2 / q.w()); ////NOTE: signed
+                return (qv * (2 / q.w())); ////NOTE: signed
             }
         }
 
@@ -91,36 +87,53 @@ namespace rgbd_slam {
         }
 
 
-        const quaternion get_quaternion_from_original_quaternion(const quaternion& originalQuaternion, const vector3& estimationVector, const matrix43& transformationMatrixB)
+        double sinc(double x)
         {
-            vector4 transformedEstimationVector = transformationMatrixB * estimationVector;
-            const double normOfV4 = transformedEstimationVector.norm();
-            if (normOfV4 == 0)
-                return originalQuaternion;
+            return (x == 0) ? 1 : (sin(x) / x);
+        }
 
-            // Normalize v4
-            transformedEstimationVector /= normOfV4;
+        quaternion get_quaternion_exponential(const quaternion& quat)
+        {
+            const double a = quat.vec().norm();
+            const double expW = exp(quat.w());
+            if (a == 0)
+            {
+                return quaternion(expW, 0, 0, 0);
+            }
+            quaternion res;
+            res.w() = expW * cos(a);
+            res.vec() = expW * sinc(a) * quat.vec();
+            return res;
+        }
 
-            const vector4 quaternionAsVector(originalQuaternion.x(), originalQuaternion.y(), originalQuaternion.z(), originalQuaternion.w());
-            // Compute final quaternion
-            const vector4 finalQuaternion = sin(normOfV4) * transformedEstimationVector + cos(normOfV4) * quaternionAsVector;
-            return quaternion(finalQuaternion.w(), finalQuaternion.x(), finalQuaternion.y(), finalQuaternion.z());
+        quaternion get_quaternion_logarithm(const quaternion& quat)
+        {
+            const double expW = quat.norm();
+            const double w = log(expW);
+            const double a = acos(quat.w() / expW);
+            if (a == 0)
+            {
+                return quaternion(w, 0, 0, 0);
+            }
+            quaternion res;
+            res.w() = w;
+            res.vec() = quat.vec() / expW / (sin(a) / a);
+            return res;
         }
 
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation, const matrix43& singularBvalues) :
+
+        Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
             Levenberg_Marquardt_Functor<double>(n, points.size()),
             _points(points),
             _rotation(worldRotation),
-            _position(worldPosition),
-            _singularBvalues(singularBvalues)
+            _position(worldPosition)
         {
         }
 
         // Implementation of the objective function
         int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
         {
-            //const quaternion& rotation = get_quaternion_from_original_quaternion(_rotation, vector3(x(3), x(4), x(5)), _singularBvalues);
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
 
             const vector3 translation(
@@ -136,7 +149,6 @@ namespace rgbd_slam {
             const double lossScale = Parameters::get_point_loss_scale();
 
             const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-
 
             double mean = 0;
             unsigned int pointIndex = 0;
@@ -160,42 +172,32 @@ namespace rgbd_slam {
             return 0;
         }
 
-
-        /*int Global_Pose_Estimator::df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const
-          {
-          const double epsilon = Parameters::get_optimization_error_precision();
-          for (int i = 0; i < x.size(); i++) {
-          Eigen::VectorXd xPlus(x);
-          xPlus(i) += epsilon;
-          Eigen::VectorXd xMinus(x);
-          xMinus(i) -= epsilon;
-
-          Eigen::VectorXd fvecPlus(values());
-          operator()(xPlus, fvecPlus);
-
-          Eigen::VectorXd fvecMinus(values());
-          operator()(xMinus, fvecMinus);
-
-          Eigen::VectorXd fvecDiff(values());
-          fvecDiff = (fvecPlus - fvecMinus) / (2.0 * epsilon);
-
-          fjac.block(0, i, values(), 1) = fvecDiff;
-          }
-
-          return 0;
-          }*/
-
-
+        
+        
         double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
         {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
             const vector2& mapPointAs2D = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix);
 
-            const double distance = get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
-            return distance;
+            return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
         }
+        /*
+        double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
+        {
+            const vector2& mapPointAs2D = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix);
+            const vector3 mapPointAs3D(mapPointAs2D.x(), mapPointAs2D.y(), mapPoint.z());
 
+            return get_distance_manhattan(matchedPoint, mapPointAs3D);
+        }
+        */
+        /*
+        double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) const
+        {
+            const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
 
+            return get_distance_manhattan(matchedPointAs3D, mapPoint);
+        }
+        */
 
 
         const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) 
