@@ -89,14 +89,14 @@ namespace primitives {
              * 
              * \return A double between 0 and 1, with 1 indicating identical cylinders
              */
-            virtual bool is_similar(const std::unique_ptr<Primitive>& prim);
+            virtual bool is_similar(const std::unique_ptr<Primitive>& prim) override;
 
             /**
              * \brief Get the distance of a point to the surface of the cylinder
              *
              * \return The signed distance of the point to the surface, 0 if the point is on the surface, and < 0 if the point is inside the cylinder
              */
-            virtual double get_distance(const Eigen::Vector3d& point);
+            virtual double get_distance(const Eigen::Vector3d& point) override;
 
         protected:
 
@@ -129,9 +129,9 @@ namespace primitives {
              * 
              * \return A double between 0 and 1, with 1 indicating identical planes
              */
-            virtual bool is_similar(const std::unique_ptr<Primitive>& prim);
+            virtual bool is_similar(const std::unique_ptr<Primitive>& prim) override;
 
-            virtual double get_distance(const Eigen::Vector3d& point);
+            virtual double get_distance(const Eigen::Vector3d& point) override;
 
         private:
             Eigen::Vector3d _mean;      //mean center point

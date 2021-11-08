@@ -54,15 +54,15 @@ namespace rgbd_slam {
         _minimumPointForOptimization = 5;
         _optimizationMaximumIterations = 1024;
         _optimizationErrorPrecision = 0;
-        _optimizationToleranceOfSolutionVectorNorm = sqrt(DBL_EPSILON); // Smallest delta of doubles
-        _optimizationToleranceOfVectorFunction = sqrt(DBL_EPSILON);
+        _optimizationToleranceOfSolutionVectorNorm = 1e-4;//sqrt(DBL_EPSILON); // Smallest delta of doubles
+        _optimizationToleranceOfVectorFunction = 1e-3;
         _optimizationToleranceOfErrorFunctionGradient = 0;
         _optimizationDiagonalStepBoundShift = 100;
 
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
         _pointLossAlpha = 2;    // -infinity, infinity
-        _pointLossScale = 1000; // Unit: Pixel
+        _pointLossScale = 100; // Unit: Pixel
         _pointErrorMultiplier = 0.5;  // > 0
 
         // Local map

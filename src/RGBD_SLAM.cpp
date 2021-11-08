@@ -100,7 +100,7 @@ namespace rgbd_slam {
 
         //clean warp artefacts
         //cv::Mat newMat;
-        //cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, kernel);
+        //cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, _kernel);
         //cv::medianBlur(newMat, newMat, 3);
         //cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
 
@@ -157,10 +157,6 @@ namespace rgbd_slam {
             cv::imshow("line", outImage);
         }
 
-        // exchange frames features
-        _previousFramePrimitives.swap(primitives);
-        _previousAssociatedIds.swap(associatedIds);
-
         // this frame points and  assoc
         t1 = cv::getTickCount();
         utils::Pose refinedPose = this->compute_new_pose(grayImage, depthImage);
@@ -170,6 +166,10 @@ namespace rgbd_slam {
         _motionModel.update_model(refinedPose);
         // Update current pose
         _currentPose = refinedPose;
+
+        // exchange frames features
+        _previousFramePrimitives.swap(primitives);
+        _previousAssociatedIds.swap(associatedIds);
 
         _totalFrameTreated += 1;
         return refinedPose;

@@ -89,7 +89,7 @@ namespace rgbd_slam {
 
                     const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
 
-                    const double pointDepthError = 0.00313 + 0.00116 * matchedPointDepth + 0.00052 * pow(matchedPointDepth, 2.0);
+                    //const double pointDepthError = 0.00313 + 0.00116 * matchedPointDepth + 0.00052 * pow(matchedPointDepth, 2.0);
                     //screenPointError(2, 2) = pointDepthError;
                     //std::cout << utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, screenPointError) << std::endl;
                     //std::cout << std::endl;

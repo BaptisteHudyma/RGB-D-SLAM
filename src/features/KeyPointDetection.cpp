@@ -56,8 +56,8 @@ namespace keypoints {
                 _searchSpaceIndexContainer[searchSpaceIndex].push_back(pointIndex);
 
                 if (imageBoundaries.contains(pt)) {
-                    // convert to meters
-                    _depths[pointIndex] = (depthImage.at<const float>(pt.y, pt.x)) * 0.001;
+                    // Depths are in millimeters
+                    _depths[pointIndex] = (depthImage.at<const float>(pt.y, pt.x));
                 }
                 ++pointIndex;
             }

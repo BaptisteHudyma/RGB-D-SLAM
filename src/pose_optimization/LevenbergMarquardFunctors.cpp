@@ -80,9 +80,8 @@ namespace rgbd_slam {
         quaternion get_quaternion_from_scale_axis_coefficients(const vector3 optimizationCoefficients)
         {
             const double a = optimizationCoefficients.norm();
-            double ha = a * 0.5;
-            double scale = (a > 0) ? (sin(ha) / a) : 0.5;
-
+            const double ha = a * 0.5;
+            const double scale = (a > 0) ? (sin(ha) / a) : 0.5;
             return quaternion(cos(ha), optimizationCoefficients.x() * scale, optimizationCoefficients.y() * scale, optimizationCoefficients.z() * scale);
         }
 
