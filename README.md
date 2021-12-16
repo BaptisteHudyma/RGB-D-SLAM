@@ -21,6 +21,7 @@ For now, we are at the state of visual odometry with local mapping.
 opencv
 Eigen
 g2o
+pugixml
 ```
 
 How to build Build

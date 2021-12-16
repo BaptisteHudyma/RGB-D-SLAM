@@ -134,12 +134,7 @@ namespace rgbd_slam {
         int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
         {
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
-
-            const vector3 translation(
-                    x(0),
-                    x(1),
-                    x(2)
-                    );
+            const vector3 translation(x(0), x(1), x(2));
 
             const unsigned int pointContainerSize = _points.size();
 

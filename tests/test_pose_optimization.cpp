@@ -7,14 +7,14 @@
 
 namespace rgbd_slam {
 
-    const unsigned int NUMBER_OF_POINTS_IN_CUBE = 5 * 5 * 5;
+    const unsigned int NUMBER_OF_POINTS_IN_CUBE = 3 * 3 * 3;
     const double CUBE_SIDE_SIZE = 2000;   // Millimeters
     const double CUBE_START_X = 500;
     const double CUBE_START_Y = 500;
     const double CUBE_START_Z = 3000;
 
     const double END_POSITION = 100;
-    const double END_ROTATION = M_PI / 2.0;
+    const double END_ROTATION = M_PI * 0.7;
 
     const double GOOD_GUESS = 0.9;
     const double MEDIUM_CUESS = 0.5;

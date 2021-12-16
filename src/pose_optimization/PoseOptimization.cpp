@@ -63,7 +63,13 @@ namespace rgbd_slam {
 
             const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
 
-            const quaternion& endRotation = get_quaternion_from_scale_axis_coefficients(vector3(input[3], input[4], input[5])); 
+            const quaternion& endRotation = get_quaternion_from_scale_axis_coefficients(
+                    vector3(
+                        input[3],
+                        input[4],
+                        input[5]
+                        )
+                    ); 
             const vector3 endPosition(
                     input[0],
                     input[1],
