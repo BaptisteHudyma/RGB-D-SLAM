@@ -160,20 +160,20 @@ namespace rgbd_slam {
                     /**
                      * \brief Compute the current frame keypoints from optical flow. There is need for matching with this configuration
                      *
-                     * \param[in] imagePreviousThe input (previous) image to treat
-                     * \param[in] imageCurrent The input (current) image to treat
+                     * \param[in] imagePreviousThe input (previous) image to treat, ad a pyramide
+                     * \param[in] imageCurrent The input (current) image to treat, as a pyramide
                      * \param[in] keypointsPrevious The keypoints detected in imagePrevious
                      * \param[in] errorThreshold an error Threshold, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
                      */
-                    const KeypointsWithStatusStruct get_keypoints_from_optical_flow(const cv::Mat& imagePrevious, const cv::Mat& imageCurrent, const std::vector<cv::Point2f>& keypointsPrevious, const double errorThreshold, const double maxDistanceThreshold);
+                    const KeypointsWithStatusStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const std::vector<cv::Point2f>& keypointsPrevious, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold);
 
 
                 private:
                     cv::Ptr<cv::FeatureDetector> _featureDetector;
                     cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
 
-                    cv::Mat _lastFrame;
+                    std::vector<cv::Mat> _lastFramePyramide;
                     cv::Mat _mask;
                     std::vector<cv::Point2f> _lastKeypoints;
 

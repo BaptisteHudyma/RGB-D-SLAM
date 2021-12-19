@@ -195,29 +195,41 @@ namespace rgbd_slam {
                     framePoints.reserve(frameKeypoints.size());
                     cv::KeyPoint::convert(frameKeypoints, framePoints);
 
-                    cv::Size winSize  = cv::Size(3, 3);
-                    cv::Size zeroZone = cv::Size(-1, -1);
-                    cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
+                    const cv::Size winSize  = cv::Size(3, 3);
+                    const cv::Size zeroZone = cv::Size(-1, -1);
+                    const cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
                     cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
 
-                    if (_lastFrame.empty() or _lastKeypoints.size() <= 0)
+                    // Compute image pyramide
+                    const cv::Size pyramidSize = cv::Size(25,25);   // must be bigger than the size used in calcOpticalFlow
+                    std::vector<cv::Mat> newImagePyramide;
+                    size_t pyramidDepth = 5;
+                    if (_lastFramePyramide.size() <= 0 or _lastKeypoints.size() <= 0)
                     {
                         _lastKeypoints = framePoints;
                         // first frame, do not use optical flow
                         _mask = cv::Mat::zeros(grayImage.size(), grayImage.type());
+                        cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
                     }
                     else {
-                        const Key_Point_Extraction::KeypointsWithStatusStruct& keypointsWithStatus = get_keypoints_from_optical_flow(_lastFrame, grayImage, _lastKeypoints, 35, 100);
+                        pyramidDepth = 1;
+                        if( _lastFramePyramide.size() < 2 * (pyramidDepth + 1) ) {
+                            pyramidDepth = _lastFramePyramide.size() / 2 - 1;
+                        }
+                        cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
+
+                        const Key_Point_Extraction::KeypointsWithStatusStruct& keypointsWithStatus = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, _lastKeypoints, pyramidDepth, 21, 35, 100);
 
                         _lastKeypoints = keypointsWithStatus._keypoints;
                     }
-                    _lastFrame = grayImage.clone();
+                    _lastFramePyramide = newImagePyramide;
 
                     frameKeypoints.clear();
                     frameKeypoints.reserve(framePoints.size());
                     cv::KeyPoint::convert(framePoints, frameKeypoints);
 
                     // Compute descriptors
+                    // Caution: the frameKeypoints list is mutable by this function, and should be use instead of framePoints
                     _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
                 }
                 _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
@@ -226,13 +238,13 @@ namespace rgbd_slam {
             }
 
 
-            const Key_Point_Extraction::KeypointsWithStatusStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const cv::Mat& imagePrevious, const cv::Mat& imageCurrent, const std::vector<cv::Point2f>& keypointsPrevious, const double errorThreshold, const double maxDistanceThreshold)
+            const Key_Point_Extraction::KeypointsWithStatusStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const std::vector<cv::Point2f>& keypointsPrevious, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold)
             {
                 KeypointsWithStatusStruct keypointStruct;
                 keypointStruct._isValid = false;
 
                 // START of optical flow
-                if (imagePrevious.empty() or imageCurrent.empty() or errorThreshold < 0 or keypointsPrevious.size() <= 0)
+                if (imagePreviousPyramide.size() <= 0 or imageCurrentPyramide.size() <= 0 or errorThreshold < 0 or keypointsPrevious.size() <= 0)
                 {
                     std::cerr << "OpticalFlow: invalid parameters" << std::endl;
                     return keypointStruct;
@@ -249,11 +261,11 @@ namespace rgbd_slam {
                 errorContainer.reserve(previousKeyPointCount);
                 forwardPoints.reserve(previousKeyPointCount);
 
-                cv::TermCriteria criteria = cv::TermCriteria((cv::TermCriteria::COUNT) + (cv::TermCriteria::EPS), 10, 0.03);
+                const cv::Size windowSizeObject = cv::Size(windowSize, windowSize);
+                const cv::TermCriteria criteria = cv::TermCriteria((cv::TermCriteria::COUNT) + (cv::TermCriteria::EPS), 10, 0.03);
 
                 // Get forward points: optical flow from previous to current image to extract new keypoints
-                cv::calcOpticalFlowPyrLK(imagePrevious, imageCurrent, keypointsPrevious, forwardPoints, statusContainer, errorContainer, cv::Size(15,15), 2, criteria);
-
+                cv::calcOpticalFlowPyrLK(imagePreviousPyramide, imageCurrentPyramide, keypointsPrevious, forwardPoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);
 
                 // Contains the keypoints from this frame, without outliers
                 std::vector<cv::Point2f> backwardKeypoints;
@@ -284,7 +296,7 @@ namespace rgbd_slam {
                         continue;
                     }
 
-                    if (not is_in_border(forwardPoints[keypointIndex], imageCurrent))
+                    if (not is_in_border(forwardPoints[keypointIndex], imageCurrentPyramide.at(0)))
                     {
                         // point not in image borders
                         keypointStruct._status.push_back(false);
@@ -304,7 +316,7 @@ namespace rgbd_slam {
                 }
 
                 // Backward tracking: go from this frame inliers to the last frame inliers
-                cv::calcOpticalFlowPyrLK(imageCurrent, imagePrevious, keypointStruct._keypoints, backwardKeypoints, statusContainer, errorContainer, cv::Size(15,15), 2, criteria);
+                cv::calcOpticalFlowPyrLK(imageCurrentPyramide, imagePreviousPyramide, keypointStruct._keypoints, backwardKeypoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);
 
                 // mark outliers as false and visualize
                 for(uint i = 0; i < keypointStruct._keypoints.size(); i++)
@@ -323,12 +335,11 @@ namespace rgbd_slam {
 
                     // Draw the tracks
                     cv::line(_mask, keypointStruct._keypoints[i], backwardKeypoints[i], cv::Scalar(255), 2);
-                    cv::circle(imageCurrent, keypointStruct._keypoints[i], 2, cv::Scalar(240), -1);
                 }
 
                 // Display the demo
                 cv::Mat img;
-                cv::add(imageCurrent, _mask, img);
+                cv::add(imageCurrentPyramide.at(0), _mask, img);
                 cv::imshow("flow", img);
 
                 keypointStruct._isValid = true;
