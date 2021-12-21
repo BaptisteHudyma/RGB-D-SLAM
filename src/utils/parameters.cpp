@@ -49,11 +49,12 @@ namespace rgbd_slam {
         _matchSearchCellSize = 50;
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
         _detectorMinHessian = 45;       // The higher the least detected points
-        _keypointRefreshFrequency = 10; // Update the keypoint list every N calls
+        _keypointRefreshFrequency = 5; // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
         _opticalFlowPyramidWindowSize = 25;
         _opticalFlowMaxError = 35;      // error in pixel after which a point is rejected
         _opticalFlowMaxDistance = 100;  // distance in pixel after which a point is rejected
+        _keypointMaskDiameter = 30;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
         _minimumPointForOptimization = 5;

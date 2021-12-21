@@ -172,11 +172,11 @@ namespace rgbd_slam {
                 _meanPointExtractionTime = 0.0;
             }
 
-            const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage)//, const cv::Mat& mask)
+            const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask)
             {
                 std::vector<cv::Point2f> framePoints;
                 std::vector<cv::KeyPoint> frameKeypoints;
-                _featureDetector->detect(grayImage, frameKeypoints); 
+                _featureDetector->detect(grayImage, frameKeypoints, mask); 
 
                 if (frameKeypoints.size() > 0)
                 {
@@ -195,6 +195,26 @@ namespace rgbd_slam {
                 }
 
                 return framePoints;
+            }
+
+            const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer)
+            {
+                const size_t radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_diameter();  // in pixels
+                const cv::Scalar fillColor(0, 0, 0);
+                cv::Mat mask = cv::Mat::ones(imageSize, CV_8UC1);
+                for (const cv::Point2f& point : keypointContainer)
+                {
+#if 1
+                    cv::circle(mask, point, radiusOfAreaAroundPoint, fillColor, -1);
+#else
+                    const int areaXmin = point.x - radiusOfAreaAroundPoint;
+                    const int areaXmax = point.x + radiusOfAreaAroundPoint;
+                    const int areaYmin = point.y - radiusOfAreaAroundPoint;
+                    const int areaYmax = point.y + radiusOfAreaAroundPoint;
+                    cv::rectangle(mask, cv::Point(areaXmin, areaYmin), cv::Point(areaXmax, areaYmax), fillColor, -1);
+#endif
+                }
+                return mask;
             }
 
             const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const bool forceKeypointDetection) 
@@ -231,23 +251,26 @@ namespace rgbd_slam {
                         utils::log_error("No keypoints available to use optical flow algorithm");
                     }
                 }
+                //else: No optical flow for the first frame
                 _lastFramePyramide = newImagePyramide;
 
                 /*
                  * KEY POINT DETECTION
+                 *      Use keypoint detection when low on keypoints, or when requested
                  */   
 
                 // detect keypoint if: it is requested OR not enough points were detected
                 const bool shouldDetectKeypoints = forceKeypointDetection or _lastKeypoints.size() < Parameters::get_minimum_point_count_for_optimization();
                 if (shouldDetectKeypoints)
                 {
+                    // create a mask at current keypoint location
+                    const cv::Mat& keypointMask = compute_key_point_mask(grayImage.size(), _lastKeypoints);
 
                     // get new keypoints
-                    const std::vector<cv::Point2f>& keypoints = detect_keypoints(grayImage);
+                    const std::vector<cv::Point2f>& keypoints = detect_keypoints(grayImage, keypointMask);
 
                     // merge keypoints
-                    //_lastKeypoints.insert(_lastKeypoints.end(), keypoints.begin(), keypoints.end());
-                    _lastKeypoints = keypoints;
+                    _lastKeypoints.insert(_lastKeypoints.end(), keypoints.begin(), keypoints.end());
                 }
 
                 /**
