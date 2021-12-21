@@ -59,6 +59,11 @@ namespace rgbd_slam {
             static double get_search_matches_cell_size() { return _matchSearchCellSize; };
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
             static unsigned int get_minimum_hessian() { return _detectorMinHessian; };
+            static unsigned int get_keypoint_refresh_frequency() { return _keypointRefreshFrequency; };
+            static unsigned int get_optical_flow_pyramid_depth() { return _opticalFlowPyramidDepth; };
+            static unsigned int get_optical_flow_pyramid_windown_size() { return _opticalFlowPyramidWindowSize; };
+            static unsigned int get_optical_flow_max_error() { return _opticalFlowMaxError; };
+            static unsigned int get_optical_flow_max_distance() { return _opticalFlowMaxDistance; };
 
             static float get_maximum_plane_match_angle() { return _primitiveMaximumCosAngle; };
             static float get_maximum_merge_distance() { return _primitiveMaximumMergeDistance; };
@@ -138,6 +143,11 @@ namespace rgbd_slam {
             inline static int _matchSearchCellSize;     // Size of a search space divider 
             inline static double _maximumMatchDistance; // Maximum distance between a point and his mach before refusing the match
             inline static unsigned int _detectorMinHessian;
+            inline static unsigned int _keypointRefreshFrequency;
+            inline static unsigned int _opticalFlowPyramidDepth;
+            inline static unsigned int _opticalFlowPyramidWindowSize;
+            inline static unsigned int _opticalFlowMaxError;
+            inline static unsigned int _opticalFlowMaxDistance;
 
             // Primitive extraction parameters
             inline static float _primitiveMaximumCosAngle;         // Maximum angle between two planes to consider merging

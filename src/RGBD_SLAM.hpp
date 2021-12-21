@@ -82,6 +82,8 @@ namespace rgbd_slam {
 
             features::primitives::Depth_Operations* _depthOps;
 
+            size_t _computeKeypointCount;
+
             /* Detectors */
             features::primitives::Primitive_Detection* _primitiveDetector;
             cv::LSD* _lineDetector;

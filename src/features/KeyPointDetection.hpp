@@ -171,12 +171,18 @@ namespace rgbd_slam {
                     const KeypointsWithStatusStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const std::vector<cv::Point2f>& keypointsPrevious, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold);
 
 
+                    /**
+                      * \brief Compute new key point, with an optional mask to exclude detection zones
+                      *
+                      * \return An array of points in the input image
+                      */
+                    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage);//, const cv::Mat& mask);
+
                 private:
                     cv::Ptr<cv::FeatureDetector> _featureDetector;
                     cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
 
                     std::vector<cv::Mat> _lastFramePyramide;
-                    cv::Mat _mask;
                     std::vector<cv::Point2f> _lastKeypoints;
 
                     double _meanPointExtractionTime;
