@@ -1,5 +1,6 @@
 #include "local_map.hpp"
 
+#include "parameters.hpp"
 #include "utils.hpp"
 
 namespace rgbd_slam {
@@ -96,7 +97,7 @@ namespace rgbd_slam {
 
                     // update this map point errors & position
                     const double retroprojectionError = pointMapIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
-                    shouldRemovePoint = (retroprojectionError > 1);
+                    shouldRemovePoint = (retroprojectionError > Parameters::get_maximum_map_retroprojection_error());
                 }
                 else
                 {
@@ -136,7 +137,7 @@ namespace rgbd_slam {
 
                     // update this map point errors & position
                     const double retroprojectionError = stagedPointIterator->update_matched(newCoordinates, keypointObject.get_descriptor(matchedPointIndex));
-                    shouldRemovePoint = (retroprojectionError > 1);
+                    shouldRemovePoint = (retroprojectionError > Parameters::get_maximum_map_retroprojection_error());
                 }
                 else
                 {

@@ -80,6 +80,8 @@ namespace rgbd_slam {
             static float get_cylinder_ransac_max_distance() { return _cylinderRansacSqrtMaxDistance; };
             static float get_cylinder_ransac_minimm_score() { return _cylinderRansacMinimumScore; };
 
+            // Map
+
             // Max unmatched points to consider this map point as lost
             static unsigned int get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
             //Observe a point for N frames to gain max liability
@@ -87,6 +89,7 @@ namespace rgbd_slam {
             static unsigned int get_point_staged_age_confidence() { return _pointStagedAgeConfidence; };
             // Minimum point liability for the local map
             static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
+            static double get_maximum_map_retroprojection_error() { return _mapMaximumRetroprojectionError; };
 
         private:
             // Is this set of parameters valid
@@ -171,6 +174,7 @@ namespace rgbd_slam {
             inline static unsigned int _pointAgeConfidence;            // Minimum age of a point to consider it good 
             inline static unsigned int _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
             inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
+            inline static double _mapMaximumRetroprojectionError;       // Maximum error between a map point retro projection and the new point position before removing it from the local map
     };
 
 };

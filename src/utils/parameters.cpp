@@ -76,6 +76,7 @@ namespace rgbd_slam {
         _pointAgeConfidence = 15;
         _pointStagedAgeConfidence = 10;
         _pointMinimumConfidenceForMap = 0.9;
+        _mapMaximumRetroprojectionError = 15;
 
         // Primitive extraction
         _primitiveMaximumCosAngle = cos(M_PI/10.0);
