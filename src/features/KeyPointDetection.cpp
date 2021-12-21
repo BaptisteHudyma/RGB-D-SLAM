@@ -172,61 +172,81 @@ namespace rgbd_slam {
                 _meanPointExtractionTime = 0.0;
             }
 
-            const Keypoint_Handler Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage) 
+            const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const bool forceKeypointDetection) 
             {
                 std::vector<cv::KeyPoint> frameKeypoints;
+                std::vector<cv::Point2f> framePoints;
                 cv::Mat frameDescriptors;
 
                 //detect keypoints
                 double t1 = cv::getTickCount();
-                _featureDetector->detect(grayImage, frameKeypoints); 
 
-                if (frameKeypoints.size() > 0)
+                /*
+                 * KEY POINT DETECTION
+                 */   
+
+                const bool shouldDetectKeypoints = forceKeypointDetection or _lastKeypoints.size() < Parameters::get_minimum_point_count_for_optimization();
+                if (shouldDetectKeypoints)
                 {
-                    // Refine keypoints
-                    std::vector<cv::Point2f> framePoints;
-                    framePoints.reserve(frameKeypoints.size());
-                    cv::KeyPoint::convert(frameKeypoints, framePoints);
+                    _featureDetector->detect(grayImage, frameKeypoints); 
 
-                    const cv::Size winSize  = cv::Size(3, 3);
-                    const cv::Size zeroZone = cv::Size(-1, -1);
-                    const cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
-                    cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
-
-                    // Compute image pyramide
-                    const cv::Size pyramidSize = cv::Size(25,25);   // must be bigger than the size used in calcOpticalFlow
-                    std::vector<cv::Mat> newImagePyramide;
-                    size_t pyramidDepth = 5;
-                    if (_lastFramePyramide.size() <= 0 or _lastKeypoints.size() <= 0)
+                    if (frameKeypoints.size() > 0)
                     {
+                        // Refine keypoints
+                        framePoints.reserve(frameKeypoints.size());
+                        cv::KeyPoint::convert(frameKeypoints, framePoints);
+
+                        const cv::Size winSize  = cv::Size(3, 3);
+                        const cv::Size zeroZone = cv::Size(-1, -1);
+                        const cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
+                        cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
+
+                        // update last keypoints
+                        // TODO merge keypoints instead of replacing them
                         _lastKeypoints = framePoints;
-                        // first frame, do not use optical flow
-                        _mask = cv::Mat::zeros(grayImage.size(), grayImage.type());
-                        cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
                     }
-                    else {
-                        pyramidDepth = 1;
-                        if( _lastFramePyramide.size() < 2 * (pyramidDepth + 1) ) {
-                            pyramidDepth = _lastFramePyramide.size() / 2 - 1;
-                        }
-                        cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
-
-                        const Key_Point_Extraction::KeypointsWithStatusStruct& keypointsWithStatus = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, _lastKeypoints, pyramidDepth, 21, 35, 100);
-
-                        std::cout << "previous " << _lastKeypoints.size() << " | new " << keypointsWithStatus._keypoints.size() << "  " << keypointsWithStatus._status.size() << std::endl;
-
-                        _lastKeypoints = keypointsWithStatus._keypoints;
-                    }
-                    _lastFramePyramide = newImagePyramide;
-
-                    frameKeypoints.clear();
-                    frameKeypoints.reserve(framePoints.size());
-                    cv::KeyPoint::convert(framePoints, frameKeypoints);
-
-                    // Compute descriptors
-                    // Caution: the frameKeypoints list is mutable by this function, and should be use instead of framePoints
-                    _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
                 }
+
+                /*
+                 * OPTICAL FLOW
+                 */
+
+                // Compute image pyramide
+                const cv::Size pyramidSize = cv::Size(25,25);   // must be bigger than the size used in calcOpticalFlow
+                std::vector<cv::Mat> newImagePyramide;
+                size_t pyramidDepth = 5;
+                if (_lastFramePyramide.size() <= 0 or _lastKeypoints.size() <= 0)
+                {
+                    _lastKeypoints = framePoints;
+                    // first frame, do not use optical flow
+                    _mask = cv::Mat::zeros(grayImage.size(), grayImage.type());
+                    cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
+                }
+                else {
+                    pyramidDepth = 1;
+                    if( _lastFramePyramide.size() < 2 * (pyramidDepth + 1) ) {
+                        pyramidDepth = _lastFramePyramide.size() / 2 - 1;
+                    }
+                    cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
+
+                    const Key_Point_Extraction::KeypointsWithStatusStruct& keypointsWithStatus = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, _lastKeypoints, pyramidDepth, 21, 35, 100);
+
+                    _lastKeypoints = keypointsWithStatus._keypoints;
+                }
+                _lastFramePyramide = newImagePyramide;
+
+                /**
+                 *  DESCRIPTORS
+                 */
+
+                frameKeypoints.clear();
+                frameKeypoints.reserve(_lastKeypoints.size());
+                cv::KeyPoint::convert(_lastKeypoints, frameKeypoints);
+
+                // Compute descriptors
+                // Caution: the frameKeypoints list is mutable by this function, and should be use instead of _lastKeypoints
+                _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
+
                 _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
 
                 return Keypoint_Handler(frameKeypoints, frameDescriptors, depthImage, Parameters::get_maximum_match_distance()); 
@@ -330,13 +350,13 @@ namespace rgbd_slam {
                     }
 
                     // Draw the tracks
-                    cv::line(_mask, keypointStruct._keypoints[i], backwardKeypoints[i], cv::Scalar(255), 2);
+                    //cv::line(_mask, keypointStruct._keypoints[i], backwardKeypoints[i], cv::Scalar(255), 2);
                 }
 
                 // Display the demo
-                cv::Mat img;
-                cv::add(imageCurrentPyramide.at(0), _mask, img);
-                cv::imshow("flow", img);
+                //cv::Mat img;
+                //cv::add(imageCurrentPyramide.at(0), _mask, img);
+                //cv::imshow("flow", img);
 
                 keypointStruct._isValid = true;
 

@@ -132,13 +132,15 @@ namespace rgbd_slam {
                     Key_Point_Extraction(const unsigned int minHessian = 25);
 
                     /**
-                     * \brief detect the keypoints in the gray image 
+                     * \brief compute the keypoints in the gray image, using optical flow and/or generic feature detectors 
                      *
                      * \param[in] grayImage The input image from camera
+                     * \param[in] depthImage The input depth image from camera
+                     * \param[in] forceKeypointDetection Force the detection of keypoints in the image
                      *
                      * \return An object that contains the detected keypoints
                      */
-                    const Keypoint_Handler detect_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage);
+                    const Keypoint_Handler compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const bool forceKeypointDetection = false);
 
 
                     /**

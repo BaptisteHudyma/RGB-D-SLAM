@@ -189,7 +189,7 @@ namespace rgbd_slam {
         utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
         // Detect and match key points with local map points
-        const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->detect_keypoints(grayImage, depthImage);
+        const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage);
         const match_point_container& matchedPoints = _localMap->find_matches(refinedPose, keypointObject);
 
         if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {

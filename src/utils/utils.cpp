@@ -12,7 +12,7 @@ namespace rgbd_slam {
             std::cout << "[INF] "
                 << std::filesystem::path(location.file_name()).filename().string() << "("
                 << location.line() << ":" << location.column() <<  ") "
-                << location.function_name() << " | "
+                //<< location.function_name() << " | "
                 << message << std::endl;
         }
         void log_error(std::string_view message, const std::source_location& location)
@@ -20,7 +20,7 @@ namespace rgbd_slam {
             std::cerr << "[ERR] "
                 << std::filesystem::path(location.file_name()).filename().string() << "("
                 << location.line() << ":" << location.column() <<  ") "
-                << location.function_name() << " | "
+                //<< location.function_name() << " | "
                 << message << std::endl;
         }
 
