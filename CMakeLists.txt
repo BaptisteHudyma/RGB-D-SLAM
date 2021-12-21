@@ -8,7 +8,7 @@ ENDIF()
 
 set (CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
-set (CMAKE_CXX_FLAGS "-O4 -g -pedantic -pedantic-errors -Wall -Wextra")# -Wconversion -Wsign-conversion")
+set (CMAKE_CXX_FLAGS "-O4 -g -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal")# -Wconversion -Wsign-conversion")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})

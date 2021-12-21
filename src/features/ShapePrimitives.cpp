@@ -21,13 +21,13 @@ namespace primitives {
         //get union of masks
         cv::Mat unionMat = (_shapeMask | prim->_shapeMask);
 
-        double IOU = cv::countNonZero(unionMat);
-        if(IOU == 0)
+        int IOU = cv::countNonZero(unionMat);
+        if(IOU <= 0)
             return 0.0;
 
         //get inter of masks
         cv::Mat interMat = (_shapeMask & prim->_shapeMask);
-        return cv::countNonZero(interMat) / IOU;
+        return static_cast<double>(cv::countNonZero(interMat)) / static_cast<double>(IOU);
     }
 
     /*

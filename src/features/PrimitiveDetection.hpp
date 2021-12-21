@@ -15,6 +15,7 @@
 #include "CylinderSegment.hpp"
 #include "Histogram.hpp"
 #include "ShapePrimitives.hpp"
+#include "types.hpp"
 
 
 namespace rgbd_slam {
@@ -160,7 +161,7 @@ namespace primitives {
              * \param[in] segmentMap
              * \param[out] planesAssociationMatrix
              */
-            void get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix);
+            void get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix);
 
         private:
             Histogram _histogram;

@@ -393,7 +393,7 @@ namespace rgbd_slam {
             void Primitive_Detection::merge_planes(uint_vector& planeMergeLabels) {
                 const unsigned int planeCount = _planeSegments.size();
 
-                Eigen::MatrixXd planesAssocMat = Eigen::MatrixXd::Zero(planeCount, planeCount);
+                Matrixb planesAssocMat = Matrixb::Constant(planeCount, planeCount, false);
                 get_connected_components(_gridPlaneSegmentMap, planesAssocMat);
 
                 for(unsigned int i = 0; i < planeCount; ++i)
@@ -449,7 +449,7 @@ namespace rgbd_slam {
                     double min, max;
                     cv::minMaxLoc(_maskEroded, &min, &max);
 
-                    if(max == 0)    //completely eroded
+                    if(max <= 0)    //completely eroded
                         continue;
 
                     cv::dilate(_mask, _maskDilated, _maskSquareKernel);
@@ -516,7 +516,7 @@ namespace rgbd_slam {
                     cv::minMaxLoc(_maskEroded, &min, &max);
 
                     // If completely eroded ignore cylinder
-                    if (max == 0)
+                    if (max <= 0)
                         continue;
 
                     cylinderFinalCount += 1;
@@ -605,7 +605,7 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Eigen::MatrixXd& planesAssociationMatrix) {
+            void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix) {
                 unsigned int rows2scanCount = segmentMap.rows - 1;
                 unsigned int cols2scanCount = segmentMap.cols - 1;
 

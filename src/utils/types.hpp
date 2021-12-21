@@ -12,6 +12,7 @@
 
 const double EulerToRadian = M_PI/180.0;
 
+typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> Matrixb;
 typedef Eigen::Vector2d vector2;
 typedef Eigen::Matrix<double, 3, 1> vector3;
 typedef Eigen::Vector4d vector4;

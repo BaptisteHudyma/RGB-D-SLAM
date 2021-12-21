@@ -41,7 +41,7 @@ namespace rgbd_slam {
             ptH << position3D, 1.0;
             const vector3& point3D = (worldToCameraMatrix * ptH); 
 
-            if (point3D.z() == 0) {
+            if (point3D.z() <= 0) {
                 return vector2(0.0, 0.0);
             }
 

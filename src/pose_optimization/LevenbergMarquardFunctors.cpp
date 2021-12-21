@@ -39,22 +39,22 @@ namespace rgbd_slam {
         {
             const double scaledSquaredError = (error * error) / (scale * scale);
 
-            if (alpha == 2)
-            {
-                return 0.5 * scaledSquaredError;
-            }
-            else if (alpha == 0)
-            {
-                return log(0.5 * scaledSquaredError + 1);
-            }
-            else if (alpha < -100)
-            {
-                return 1 - exp( -0.5 * scaledSquaredError);
-            }
-            else
+            if (alpha > 2)
             {
                 const double internalTerm = scaledSquaredError / abs(alpha - 2) + 1;
                 return (abs(alpha - 2) / alpha) * ( pow(internalTerm, alpha / 2.0) - 1);
+            }
+            if (alpha <= 2 and alpha > 0)
+            {
+                return 0.5 * scaledSquaredError;
+            }
+            else if (alpha <= 0 and alpha > -100)
+            {
+                return log(0.5 * scaledSquaredError + 1);
+            }
+            else 
+            {
+                return 1 - exp( -0.5 * scaledSquaredError);
             }
         }
 
