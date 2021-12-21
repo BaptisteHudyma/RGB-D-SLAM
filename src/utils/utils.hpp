@@ -4,8 +4,19 @@
 #include "types.hpp"
 #include "Pose.hpp"
 
+#include <iostream>
+#include <string_view>
+#include <source_location>
+
+
 namespace rgbd_slam {
     namespace utils {
+
+        /**
+         * Log an error line
+         */
+        void log(std::string_view message, const std::source_location& location = std::source_location::current());
+        void log_error(std::string_view message, const std::source_location& location = std::source_location::current());
 
         /*
          * \brief Transform a screen point with a depth value to a 3D point
@@ -52,7 +63,7 @@ namespace rgbd_slam {
          * \brief Compute a quaternion from the given euler angles, in radians
          */
         const quaternion get_quaternion_from_euler_angles(const EulerAngles& eulerAngles);
-        
+
         /**
          * \brief Compute euler angles from a given quaternion
          */

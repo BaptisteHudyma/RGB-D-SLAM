@@ -80,7 +80,7 @@ namespace rgbd_slam {
             {
                 // Error: reached end of minimization without reaching a minimum
                 const std::string message = get_human_readable_end_message(endStatus);
-                std::cerr << matchedPoints.size() << " pts | Position is " << endPosition.transpose() << " | Result " << endStatus << " (" << message << ")" << std::endl;
+                utils::log("Failed to converge with " + std::to_string(matchedPoints.size()) + " points | Status " + message);
             }
 
             // Update refine pose with optimized pose

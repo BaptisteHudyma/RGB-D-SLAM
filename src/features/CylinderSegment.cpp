@@ -1,8 +1,6 @@
 #include "CylinderSegment.hpp"
 #include "parameters.hpp"
-
-//for cerr
-#include <iostream>
+#include "utils.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -318,7 +316,7 @@ namespace primitives {
 
     double Cylinder_Segment::get_MSE_at(const unsigned int index) const { 
         if(index >= _MSE.size()) {
-            std::cerr << "get_MSE required index over MSE vector size" << std::endl;
+            utils::log_error("get_MSE required index over MSE vector size");
             exit(-1);
         }
         return _MSE[index]; 
@@ -326,7 +324,7 @@ namespace primitives {
 
     bool Cylinder_Segment::is_inlier_at (const unsigned int indexA, const unsigned int indexB) const { 
         if(indexA >= _inliers.size() or indexB >= _inliers[indexA].size()) {
-            std::cerr << "get_inlier required index over inlier vector size" << std::endl;
+            utils::log_error("get_inlier required index over inlier vector size");
             exit(-1);
         }
         return _inliers[indexA](indexB); 
@@ -334,11 +332,11 @@ namespace primitives {
 
     unsigned int Cylinder_Segment::get_local_to_global_mapping(const unsigned int index) const {
         if (index >= _cellActivatedCount) {
-            std::cerr << "get_local_to_global required index over array size" << std::endl;
+            utils::log_error("get_local_to_global required index over array size");
             exit(-1);
         }
         if(_local2globalMap == nullptr) {
-            std::cerr << "_local2globalMap not initialized" << std::endl;
+            utils::log_error("_local2globalMap not initialized");
             exit(-1);
         }
         return _local2globalMap[index]; 
@@ -346,7 +344,7 @@ namespace primitives {
 
     const Eigen::Vector3d& Cylinder_Segment::get_axis1_point(const unsigned int index) const { 
         if(index >= _pointsAxis1.size()) {
-            std::cerr << "get_axis_1 required index over axis1 vector size" << std::endl;
+            utils::log_error("get_axis_1 required index over axis1 vector size");
             exit(-1);
         }
         return _pointsAxis1[index];
@@ -354,7 +352,7 @@ namespace primitives {
 
     const Eigen::Vector3d& Cylinder_Segment::get_axis2_point(const unsigned int index) const {
         if(index >= _pointsAxis2.size()) {
-            std::cerr << "get_axis_2 required index over axis2 size" << std::endl;
+            utils::log_error("get_axis_2 required index over axis2 size");
             exit(-1);
         }
         return _pointsAxis2[index];
@@ -362,7 +360,7 @@ namespace primitives {
 
     double Cylinder_Segment::get_axis_normal(const unsigned int index) const { 
         if(index >= _normalsAxis1Axis2.size()) {
-            std::cerr << "get_axis_normal required index over normals vector size" << std::endl;
+            utils::log_error("get_axis_normal required index over normals vector size");
             exit(-1);
         }
         return _normalsAxis1Axis2[index]; 
@@ -370,7 +368,7 @@ namespace primitives {
 
     double Cylinder_Segment::get_radius(const unsigned int index) const {
         if(index >= _radius.size()) {
-            std::cerr << "get_radius required index over radius vector size" << std::endl;
+            utils::log_error("get_radius required index over radius vector size");
             exit(-1);
         }
         return _radius[index]; 

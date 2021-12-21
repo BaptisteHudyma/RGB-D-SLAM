@@ -6,13 +6,6 @@
 // circle
 #include <opencv2/opencv.hpp>
 
-// cout cerr
-#include <iostream>
-
-// Error display
-#define CLASS_ERR "<Key_Point_Extraction> "
-
-
 const float BORDER_SIZE = 1.; // Border of an image, in which points will be ignored
 
 namespace rgbd_slam {
@@ -33,7 +26,7 @@ namespace rgbd_slam {
                 _maxMatchDistance(maxMatchDistance)
             {
                 if (_maxMatchDistance <= 0) {
-                    std::cerr << CLASS_ERR << "Maximum matching distance must be > 0" << std::endl;
+                    utils::log_error("Maximum matching distance must be > 0");
                     exit(-1);
                 }
                 // knn matcher
@@ -220,6 +213,8 @@ namespace rgbd_slam {
 
                         const Key_Point_Extraction::KeypointsWithStatusStruct& keypointsWithStatus = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, _lastKeypoints, pyramidDepth, 21, 35, 100);
 
+                        std::cout << "previous " << _lastKeypoints.size() << " | new " << keypointsWithStatus._keypoints.size() << "  " << keypointsWithStatus._status.size() << std::endl;
+
                         _lastKeypoints = keypointsWithStatus._keypoints;
                     }
                     _lastFramePyramide = newImagePyramide;
@@ -246,7 +241,7 @@ namespace rgbd_slam {
                 // START of optical flow
                 if (imagePreviousPyramide.size() <= 0 or imageCurrentPyramide.size() <= 0 or errorThreshold < 0 or keypointsPrevious.size() <= 0)
                 {
-                    std::cerr << "OpticalFlow: invalid parameters" << std::endl;
+                    utils::log_error("OpticalFlow: invalid parameters");
                     return keypointStruct;
                 }
 
@@ -311,7 +306,7 @@ namespace rgbd_slam {
 
                 if (keypointStruct._keypoints.size() <= 0)
                 {
-                    std::cerr << "No new points detected for backtracking" << std::endl;
+                    utils::log("No new points detected for backtracking", std::source_location::current());
                     return keypointStruct;
                 }
 
@@ -319,7 +314,8 @@ namespace rgbd_slam {
                 cv::calcOpticalFlowPyrLK(imageCurrentPyramide, imagePreviousPyramide, keypointStruct._keypoints, backwardKeypoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);
 
                 // mark outliers as false and visualize
-                for(uint i = 0; i < keypointStruct._keypoints.size(); i++)
+                const size_t keypointSize = keypointStruct._keypoints.size();
+                for(uint i = 0; i < keypointSize; i++)
                 {
                     const size_t keypointIndex = keypointIds[i];
                     if(statusContainer[i] != 1) {

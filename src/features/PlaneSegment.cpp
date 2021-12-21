@@ -2,8 +2,7 @@
 #include "eig33sym.hpp"
 
 #include "parameters.hpp"
-
-#include <iostream>
+#include "utils.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -187,7 +186,7 @@ namespace primitives {
         double sv[3] = {0, 0, 0};
         double v[3] = {0};
         if(not LA::eig33sym(cov, sv, v))
-            std::cout << "Too much error" << std::endl;
+            utils::log("Too much error");
 
         //_d = -v.dot(_mean);
         _d = -(v[0] * _mean[0] + v[1] * _mean[1] + v[2] * _mean[2]);

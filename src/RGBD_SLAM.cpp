@@ -3,15 +3,11 @@
 
 #include "PoseOptimization.hpp"
 #include "parameters.hpp"
+#include "utils.hpp"
 
 #include "RGBD_SLAM.hpp"
 
-// cerr cout
-#include <iostream>
-
 namespace rgbd_slam {
-
-#define CLASS_ERR "<RGBD_SLAM> "
 
     RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth, unsigned int imageHeight) :
         _width(imageWidth),
@@ -42,7 +38,7 @@ namespace rgbd_slam {
                     Parameters::get_depth_map_patch_size()
                     );
             if (_depthOps == nullptr or not _depthOps->is_ok()) {
-                std::cerr << CLASS_ERR << "Cannot load parameter files, exiting" << std::endl;
+                utils::log_error("Cannot load parameter files, exiting");
                 exit(-1);
             }
 
@@ -76,11 +72,11 @@ namespace rgbd_slam {
             set_color_vector();
 
             if (_primitiveDetector == nullptr) {
-                std::cerr << CLASS_ERR << " Instanciation of Primitive_Detector failed" << std::endl;
+                utils::log_error("Instanciation of Primitive_Detector failed");
                 exit(-1);
             }
             if (_lineDetector == nullptr) {
-                std::cerr << CLASS_ERR << " Instanciation of Line_Detector failed" << std::endl;
+                utils::log_error("Instanciation of Line_Detector failed");
                 exit(-1);
             }
 
@@ -204,7 +200,7 @@ namespace rgbd_slam {
         else
         {
             // Not enough matches
-            std::cerr << "Not enough points for pose estimation: " << matchedPoints.size() << std::endl;
+            utils::log("Not enough points for pose estimation: " + std::to_string(matchedPoints.size()));
         }
 
         // Update local map

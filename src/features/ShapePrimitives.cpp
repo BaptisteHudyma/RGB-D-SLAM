@@ -1,5 +1,5 @@
 #include "ShapePrimitives.hpp"
-#include <iostream>
+#include "utils.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -61,7 +61,7 @@ namespace primitives {
 
     double Cylinder::get_distance(const Eigen::Vector3d& point) {
         //TODO implement
-        std::cerr << "Error: get_point_distance is not implemented for Cylinder objects" << std::endl;
+        utils::log_error("Error: get_point_distance is not implemented for Cylinder objects");
         return 0;
     }
 

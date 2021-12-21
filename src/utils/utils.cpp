@@ -2,9 +2,27 @@
 
 #include "parameters.hpp"
 #include <cmath>
+#include <filesystem>
 
 namespace rgbd_slam {
     namespace utils {
+
+        void log(std::string_view message, const std::source_location& location)
+        {
+            std::cout << "[INF] "
+                << std::filesystem::path(location.file_name()).filename().string() << "("
+                << location.line() << ":" << location.column() <<  ") "
+                << location.function_name() << " | "
+                << message << std::endl;
+        }
+        void log_error(std::string_view message, const std::source_location& location)
+        {
+            std::cerr << "[ERR] "
+                << std::filesystem::path(location.file_name()).filename().string() << "("
+                << location.line() << ":" << location.column() <<  ") "
+                << location.function_name() << " | "
+                << message << std::endl;
+        }
 
         const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
         {

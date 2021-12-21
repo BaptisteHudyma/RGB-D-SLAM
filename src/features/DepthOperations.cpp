@@ -1,5 +1,6 @@
 #include "DepthOperations.hpp"
 #include "parameters.hpp"
+#include "utils.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -104,7 +105,7 @@ namespace primitives {
                 fs.release();
                 return true;
             }else{
-                std::cerr << "Calibration file " << parameterFilePath<< " missing" << std::endl;
+                rgbd_slam::utils::log_error("Calibration file " + parameterFilePath + " missing");
                 return false;
             }
             fs.release();
