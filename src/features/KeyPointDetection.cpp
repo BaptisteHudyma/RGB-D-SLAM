@@ -179,9 +179,16 @@ namespace rgbd_slam {
                 std::vector<cv::KeyPoint> frameKeypoints;
                 _featureDetector->detect(grayImage, frameKeypoints, mask); 
 
-                if (frameKeypoints.size() > minimumPointsForValidity)
+                if (frameKeypoints.size() <=  minimumPointsForValidity)
                 {
-                    // Refine keypoints
+                    // Not enough keypoints detected: restart with a more precise detector
+                    frameKeypoints.clear();
+                    _advancedFeatureDetector->detect(grayImage, frameKeypoints, mask); 
+                }
+
+                if (frameKeypoints.size() >  minimumPointsForValidity)
+                {
+                    // Refine keypoints positions
                     framePoints.reserve(frameKeypoints.size());
                     cv::KeyPoint::convert(frameKeypoints, framePoints);
 
@@ -189,24 +196,6 @@ namespace rgbd_slam {
                     const cv::Size zeroZone = cv::Size(-1, -1);
                     const cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
                     cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
-                }
-                else
-                {
-                    // Not enough keypoints detected: restart with a more precise detector
-                    frameKeypoints.clear();
-                    _advancedFeatureDetector->detect(grayImage, frameKeypoints, mask); 
-
-                    if (frameKeypoints.size() > 0)
-                    {
-                        // Refine keypoints
-                        framePoints.reserve(frameKeypoints.size());
-                        cv::KeyPoint::convert(frameKeypoints, framePoints);
-
-                        const cv::Size winSize  = cv::Size(3, 3);
-                        const cv::Size zeroZone = cv::Size(-1, -1);
-                        const cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
-                        cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
-                    }
                 }
 
                 return framePoints;
