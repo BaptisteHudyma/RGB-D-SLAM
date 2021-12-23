@@ -42,6 +42,7 @@ namespace rgbd_slam {
 
             // Optimisation parameters
             static unsigned int get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
+            static unsigned int get_maximum_point_count_per_frame() { return _maximumPointPerFrame; };
             static unsigned int get_optimization_maximum_iterations() { return _optimizationMaximumIterations; };
             static double get_optimization_error_precision() { return _optimizationErrorPrecision; };
             static double get_optimization_xtol() { return _optimizationToleranceOfSolutionVectorNorm; };
@@ -125,7 +126,8 @@ namespace rgbd_slam {
             inline static double _camera2RotationZ;
 
             // Position optimization
-            inline static unsigned int _minimumPointForOptimization;
+            inline static unsigned int _minimumPointForOptimization;    // Minimum points to launch optimization
+            inline static unsigned int _maximumPointPerFrame;           // maximum points per frame, over which we do not want to detect more points (optimization)
 
             inline static double _optimizationToleranceOfSolutionVectorNorm;    // tolerance for the norm of the solution vector
             inline static double _optimizationToleranceOfVectorFunction;        // tolerance for the norm of the vector function

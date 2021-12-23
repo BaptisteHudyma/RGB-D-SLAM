@@ -174,9 +174,13 @@ namespace rgbd_slam {
                     /**
                       * \brief Compute new key point, with an optional mask to exclude detection zones
                       *
+                      * \param[in] grayImage The image in which we want to detect waypoints
+                      * \param[in] mask The mask which we do not want to detect waypoints
+                      * \param[in] minimumPointsForValidity The minimum number of points under which we will use the precise detector
+                      *
                       * \return An array of points in the input image
                       */
-                    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask);
+                    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity);
 
                     const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer);
 

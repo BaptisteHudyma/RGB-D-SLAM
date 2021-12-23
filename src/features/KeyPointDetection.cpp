@@ -173,13 +173,13 @@ namespace rgbd_slam {
                 _meanPointExtractionTime = 0.0;
             }
 
-            const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask)
+            const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity)
             {
                 std::vector<cv::Point2f> framePoints;
                 std::vector<cv::KeyPoint> frameKeypoints;
                 _featureDetector->detect(grayImage, frameKeypoints, mask); 
 
-                if (frameKeypoints.size() > 0)
+                if (frameKeypoints.size() > minimumPointsForValidity)
                 {
                     // Refine keypoints
                     framePoints.reserve(frameKeypoints.size());
@@ -192,8 +192,10 @@ namespace rgbd_slam {
                 }
                 else
                 {
-                    // No keypoints detected: restart with a more precise detector
+                    // Not enough keypoints detected: restart with a more precise detector
+                    frameKeypoints.clear();
                     _advancedFeatureDetector->detect(grayImage, frameKeypoints, mask); 
+
                     if (frameKeypoints.size() > 0)
                     {
                         // Refine keypoints
@@ -273,14 +275,15 @@ namespace rgbd_slam {
                  */   
 
                 // detect keypoint if: it is requested OR not enough points were detected
-                const bool shouldDetectKeypoints = forceKeypointDetection or _lastKeypoints.size() < Parameters::get_minimum_point_count_for_optimization();
-                if (shouldDetectKeypoints)
+                const size_t minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
+                const bool shouldDetectKeypoints = forceKeypointDetection or _lastKeypoints.size() < minimumPointsForOptimization;
+                if (shouldDetectKeypoints and _lastKeypoints.size() < Parameters::get_maximum_point_count_per_frame())
                 {
                     // create a mask at current keypoint location
                     const cv::Mat& keypointMask = compute_key_point_mask(grayImage.size(), _lastKeypoints);
 
                     // get new keypoints
-                    const std::vector<cv::Point2f>& keypoints = detect_keypoints(grayImage, keypointMask);
+                    const std::vector<cv::Point2f>& keypoints = detect_keypoints(grayImage, keypointMask, minimumPointsForOptimization);
 
                     // merge keypoints
                     _lastKeypoints.insert(_lastKeypoints.end(), keypoints.begin(), keypoints.end());
