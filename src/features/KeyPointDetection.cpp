@@ -166,6 +166,7 @@ namespace rgbd_slam {
             {
                 // Create feature extractor and matcher
                 _featureDetector = cv::FastFeatureDetector::create( minHessian );
+                _advancedFeatureDetector = cv::FastFeatureDetector::create( minHessian / 2 );
                 _descriptorExtractor = cv::xfeatures2d::BriefDescriptorExtractor::create();
 
                 //profiling
@@ -191,7 +192,19 @@ namespace rgbd_slam {
                 }
                 else
                 {
-                    utils::log("No keypoints were detected in the input image");
+                    // No keypoints detected: restart with a more precise detector
+                    _advancedFeatureDetector->detect(grayImage, frameKeypoints, mask); 
+                    if (frameKeypoints.size() > 0)
+                    {
+                        // Refine keypoints
+                        framePoints.reserve(frameKeypoints.size());
+                        cv::KeyPoint::convert(frameKeypoints, framePoints);
+
+                        const cv::Size winSize  = cv::Size(3, 3);
+                        const cv::Size zeroZone = cv::Size(-1, -1);
+                        const cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
+                        cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
+                    }
                 }
 
                 return framePoints;

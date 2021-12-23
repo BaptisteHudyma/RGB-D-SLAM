@@ -174,7 +174,7 @@ namespace rgbd_slam {
             inline static unsigned int _pointAgeConfidence;            // Minimum age of a point to consider it good 
             inline static unsigned int _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
             inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
-            inline static double _mapMaximumRetroprojectionError;       // Maximum error between a map point retro projection and the new point position before removing it from the local map
+            inline static double _mapMaximumRetroprojectionError;       // Maximum error between a map point retro projection and the new point position before removing it from the local map (in millimeters)
     };
 
 };
