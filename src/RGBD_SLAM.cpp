@@ -204,7 +204,7 @@ namespace rgbd_slam {
         else
         {
             // Not enough matches
-            utils::log("Not enough points for pose estimation: " + std::to_string(matchedPoints.size()));
+            utils::log("Not enough points match for pose estimation: " + std::to_string(matchedPoints.size()) + " matches with " + std::to_string(keypointObject.get_keypoint_count()) + " detected or tracked points");
         }
 
         // Update local map

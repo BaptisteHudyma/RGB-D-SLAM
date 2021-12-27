@@ -22,10 +22,10 @@ namespace rgbd_slam {
             // Try to find matches in local map
             for (Map_Point& mapPoint : _localMap) 
             {
-                const vector2& projectedMapPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMatrix);
                 int matchIndex = detectedKeypoint.get_tracking_match_index(mapPoint._id, _isPointMatched);
                 if (matchIndex < 0)
                 {
+                    const vector2& projectedMapPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMatrix);
                     matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, mapPoint._descriptor, _isPointMatched);
                 }
 
@@ -53,11 +53,10 @@ namespace rgbd_slam {
             // Try to find matches in staged points
             for(Staged_Point& stagedPoint : _stagedPoints)
             {
-                const vector2& projectedStagedPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMatrix);
-
                 int matchIndex = detectedKeypoint.get_tracking_match_index(stagedPoint._id, _isPointMatched);
                 if (matchIndex < 0)
                 {
+                    const vector2& projectedStagedPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMatrix);
                     matchIndex = detectedKeypoint.get_match_index(projectedStagedPoint, stagedPoint._descriptor, _isPointMatched);
                 }
 
@@ -86,10 +85,9 @@ namespace rgbd_slam {
         }
 
 
-        void Local_Map::update(const utils::Pose optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
+        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
         {
             const matrix34& camToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
-            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // add local map points
             update_local_map(camToWorldMatrix, keypointObject);
@@ -98,26 +96,7 @@ namespace rgbd_slam {
             update_staged(camToWorldMatrix, keypointObject);
 
             // Update tracked keypoints object
-            keypointsWithIds._ids.clear();
-            keypointsWithIds._keypoints.clear();
-            const size_t numberOfNewKeypoints = _localMap.size() + _stagedPoints.size();
-            keypointsWithIds._ids.reserve(numberOfNewKeypoints);
-            keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
-
-            for (const Map_Point& point : _localMap)
-            {
-                const vector2& projectedPoint = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
-                const cv::Point2f projectedPointCV(projectedPoint.x(), projectedPoint.y());
-                keypointsWithIds._keypoints.push_back(projectedPointCV);
-                keypointsWithIds._ids.push_back(point._id);
-            }
-            for (const Staged_Point& point : _stagedPoints)
-            {
-                const vector2& projectedPoint = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
-                const cv::Point2f projectedPointCV(projectedPoint.x(), projectedPoint.y());
-                keypointsWithIds._keypoints.push_back(projectedPointCV);
-                keypointsWithIds._ids.push_back(point._id);
-            }
+            update_tracked_keypoint_object(optimizedPose, keypointsWithIds);
 
             // add local map points to global map
             update_local_to_global();
@@ -241,6 +220,33 @@ namespace rgbd_slam {
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, keypointObject.get_descriptor(i));
                 }
             }
+        }
+
+        void Local_Map::update_tracked_keypoint_object(const utils::Pose& optimizedPose, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
+        {
+            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+            keypointsWithIds._ids.clear();
+            keypointsWithIds._keypoints.clear();
+            const size_t numberOfNewKeypoints = _localMap.size() + _stagedPoints.size();
+            keypointsWithIds._ids.reserve(numberOfNewKeypoints);
+            keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
+
+            for (const Map_Point& point : _localMap)
+            {
+                const vector2& projectedPoint = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
+                const cv::Point2f projectedPointCV(projectedPoint.x(), projectedPoint.y());
+                keypointsWithIds._keypoints.push_back(projectedPointCV);
+                keypointsWithIds._ids.push_back(point._id);
+            }
+            for (const Staged_Point& point : _stagedPoints)
+            {
+                const vector2& projectedPoint = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
+                const cv::Point2f projectedPointCV(projectedPoint.x(), projectedPoint.y());
+                keypointsWithIds._keypoints.push_back(projectedPointCV);
+                keypointsWithIds._ids.push_back(point._id);
+            }
+
+            std::cout << "local map: " << _localMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
         }
 
         void Local_Map::update_local_to_global() 

@@ -48,7 +48,7 @@ namespace rgbd_slam {
         _matchSearchRadius = 30;
         _matchSearchCellSize = 50;
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
-        _detectorMinHessian = 45;       // The higher the least detected points
+        _detectorMinHessian = 40;       // The higher the least detected points
         _keypointRefreshFrequency = 5; // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
         _opticalFlowPyramidWindowSize = 25;

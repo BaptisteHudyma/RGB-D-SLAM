@@ -317,6 +317,8 @@ namespace rgbd_slam {
                 {
                     if (lastKeypointsWithIds._keypoints.size() > 0) {
                         newKeypointsObject = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance);
+
+                        // TODO: add descriptors to handle short term rematching of lost optical flow features
                     }
                     else
                     {
