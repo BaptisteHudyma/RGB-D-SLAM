@@ -37,10 +37,15 @@ namespace rgbd_slam {
                  *
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
-                 * \param[in,out] keypointsWithIds The reference object for keypoints. This function will update the unique ids of new keypoints
                  */
-                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, features::keypoints::KeypointsWithIdStruct& keypointsWithIds);
+                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject);
 
+                /**
+                  * \brief Return an object containing the tracked features 
+                  *
+                  * \param[in] pose The current pose of the observer
+                  */
+                const features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(const utils::Pose& pose) const;
 
                 /**
                  * \brief Hard clean the local and staged map
@@ -64,7 +69,6 @@ namespace rgbd_slam {
                  *
                  * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
-                 * \param[in,out] keypointsWithIds The reference object for keypoints. This function will update the unique ids of new keypoints
                  */
                 void update_local_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
@@ -75,14 +79,6 @@ namespace rgbd_slam {
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
                 void update_staged(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
-
-                /**
-                  * \brief Update the tracked keypoint object using the update local map and staged points
-                  *
-                  * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
-                  * \param[in,out] keypointsWithIds The reference object for keypoints. This function will update the unique ids of new keypoints
-                  */
-                void update_tracked_keypoint_object(const utils::Pose& optimizedPose, features::keypoints::KeypointsWithIdStruct& keypointsWithIds);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features

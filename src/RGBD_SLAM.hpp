@@ -83,7 +83,6 @@ namespace rgbd_slam {
             features::primitives::Depth_Operations* _depthOps;
 
             size_t _computeKeypointCount;
-            features::keypoints::KeypointsWithIdStruct _lastKeypointWithId;  // keep track of the last frame keypoints and the associated map id
 
             /* Detectors */
             features::primitives::Primitive_Detection* _primitiveDetector;

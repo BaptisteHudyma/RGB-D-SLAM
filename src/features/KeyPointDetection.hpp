@@ -162,12 +162,12 @@ namespace rgbd_slam {
                      *
                      * \param[in] grayImage The input image from camera
                      * \param[in] depthImage The input depth image from camera
-                     * \param[in/out] lastKeypointsWithIds The keypoints of the previous detection step, that will be tracked with optical flow
+                     * \param[in] lastKeypointsWithIds The keypoints of the previous detection step, that will be tracked with optical flow
                      * \param[in] forceKeypointDetection Force the detection of keypoints in the image
                      *
                      * \return An object that contains the detected keypoints
                      */
-                    const Keypoint_Handler compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, KeypointsWithIdStruct& lastKeypointsWithIds, const bool forceKeypointDetection = false);
+                    const Keypoint_Handler compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const KeypointsWithIdStruct& lastKeypointsWithIds, const bool forceKeypointDetection = false);
 
 
                     /**
@@ -189,7 +189,7 @@ namespace rgbd_slam {
                      * \param[in] errorThreshold an error Threshold, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
                      */
-                    KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold);
+                    KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold) const;
 
 
                     /**
@@ -201,9 +201,9 @@ namespace rgbd_slam {
                      *
                      * \return An array of points in the input image
                      */
-                    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity);
+                    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity) const;
 
-                    const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer);
+                    const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer) const;
 
                 private:
                     cv::Ptr<cv::FeatureDetector> _featureDetector;

@@ -240,7 +240,7 @@ namespace rgbd_slam {
                 _meanPointExtractionTime = 0.0;
             }
 
-            const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity)
+            const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity) const
             {
                 std::vector<cv::Point2f> framePoints;
                 std::vector<cv::KeyPoint> frameKeypoints;
@@ -268,7 +268,7 @@ namespace rgbd_slam {
                 return framePoints;
             }
 
-            const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer)
+            const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer) const
             {
                 const size_t radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_diameter();  // in pixels
                 const cv::Scalar fillColor(0, 0, 0);
@@ -288,7 +288,7 @@ namespace rgbd_slam {
                 return mask;
             }
 
-            const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, KeypointsWithIdStruct& lastKeypointsWithIds, const bool forceKeypointDetection) 
+            const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const KeypointsWithIdStruct& lastKeypointsWithIds, const bool forceKeypointDetection) 
             {
                 assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
 
@@ -376,24 +376,12 @@ namespace rgbd_slam {
                 _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
 
                 // Update last keypoint struct
-                lastKeypointsWithIds._keypoints.swap(newKeypointsObject._keypoints); 
-                lastKeypointsWithIds._ids.swap(newKeypointsObject._ids); 
-
-
-                const Keypoint_Handler keypointHandler(detectedKeypoints, keypointDescriptors, lastKeypointsWithIds, depthImage, Parameters::get_maximum_match_distance()); 
-
-                // Update lastKeypointsWithIds with detected points
-                if (detectedKeypoints.size() > 0)
-                {
-                    lastKeypointsWithIds._keypoints.insert(lastKeypointsWithIds._keypoints.begin(), detectedKeypoints.begin(), detectedKeypoints.end());
-                    std::vector<size_t> emptyIndexes = std::vector<size_t>(detectedKeypoints.size());
-                    lastKeypointsWithIds._ids.insert(lastKeypointsWithIds._ids.begin(), emptyIndexes.begin(), emptyIndexes.end());
-                }
+                const Keypoint_Handler keypointHandler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, Parameters::get_maximum_match_distance()); 
                 return keypointHandler;
             }
 
 
-            KeypointsWithIdStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold)
+            KeypointsWithIdStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold) const
             {
                 assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
 

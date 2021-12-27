@@ -85,7 +85,7 @@ namespace rgbd_slam {
         }
 
 
-        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
+        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             const matrix34& camToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
@@ -95,11 +95,10 @@ namespace rgbd_slam {
             // add staged points to local map
             update_staged(camToWorldMatrix, keypointObject);
 
-            // Update tracked keypoints object
-            update_tracked_keypoint_object(optimizedPose, keypointsWithIds);
-
             // add local map points to global map
             update_local_to_global();
+
+            //std::cout << "local map: " << _localMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
         }
 
         void Local_Map::update_local_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
@@ -222,11 +221,11 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::update_tracked_keypoint_object(const utils::Pose& optimizedPose, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
+        const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& pose) const
         {
-            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
-            keypointsWithIds._ids.clear();
-            keypointsWithIds._keypoints.clear();
+            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
+
+            features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
             const size_t numberOfNewKeypoints = _localMap.size() + _stagedPoints.size();
             keypointsWithIds._ids.reserve(numberOfNewKeypoints);
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
@@ -246,7 +245,7 @@ namespace rgbd_slam {
                 keypointsWithIds._ids.push_back(point._id);
             }
 
-            std::cout << "local map: " << _localMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
+            return keypointsWithIds;
         }
 
         void Local_Map::update_local_to_global() 
