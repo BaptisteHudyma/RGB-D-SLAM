@@ -22,7 +22,7 @@ namespace rgbd_slam {
             } 
 
 
-            Keypoint_Handler::Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, const double maxMatchDistance) :
+            Keypoint_Handler::Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance) :
                 _maxMatchDistance(maxMatchDistance)
             {
                 if (_maxMatchDistance <= 0) {
@@ -43,15 +43,16 @@ namespace rgbd_slam {
                 _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
 
                 // Fill depth values, add points to image boxes
-                cv::Rect imageBoundaries(cv::Point(), depthImage.size());
+                cv::Rect depthImageBoundaries(cv::Point(), depthImage.size());
 
-                const unsigned int keyPointSize = inKeypoints.size();
-                _depths = std::vector<double>(keyPointSize, 0.0);
-                _keypoints = std::vector<vector2>(keyPointSize);
+                const unsigned int allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
+                _depths = std::vector<double>(allKeypointSize, 0.0);
+                _keypoints = std::vector<vector2>(allKeypointSize);
 
-                unsigned int pointIndex = 0;
-                for(const cv::KeyPoint& keypoint : inKeypoints) {
-                    const cv::Point2f pt = keypoint.pt;
+                // Add detected keypoints first
+                const size_t keypointIndexOffset = inKeypoints.size();
+                for(size_t pointIndex = 0; pointIndex < keypointIndexOffset; ++pointIndex) {
+                    const cv::Point2f& pt = inKeypoints[pointIndex];;
                     const vector2 vectorKeypoint(pt.x, pt.y); 
 
                     _keypoints[pointIndex] = vectorKeypoint; 
@@ -59,11 +60,36 @@ namespace rgbd_slam {
                     const unsigned int searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
                     _searchSpaceIndexContainer[searchSpaceIndex].push_back(pointIndex);
 
-                    if (imageBoundaries.contains(pt)) {
+                    if (depthImageBoundaries.contains(pt)) {
                         // Depths are in millimeters
                         _depths[pointIndex] = (depthImage.at<const float>(pt.y, pt.x));
                     }
-                    ++pointIndex;
+                }
+
+
+                // Add optical flow keypoints then 
+                const size_t opticalPointSize = lastKeypointsWithIds._keypoints.size();
+                for(size_t pointIndex = 0; pointIndex < opticalPointSize; ++pointIndex) {
+                    const size_t newKeypointIndex = pointIndex + keypointIndexOffset;
+
+                    // fill in unique point index
+                    const size_t uniqueIndex = lastKeypointsWithIds._ids[pointIndex];
+                    if (uniqueIndex > 0) {
+                        _uniqueIdsToKeypointIndex[uniqueIndex] = newKeypointIndex;
+                    }
+                    else {
+                        utils::log_error("A keypoint detected by optical flow does nothave a valid keypoint id");
+                    }
+
+                    const cv::Point2f& pt = lastKeypointsWithIds._keypoints[pointIndex];;
+                    const vector2 vectorKeypoint(pt.x, pt.y); 
+
+                    _keypoints[newKeypointIndex] = vectorKeypoint; 
+
+                    if (depthImageBoundaries.contains(pt)) {
+                        // Depths are in millimeters
+                        _depths[newKeypointIndex] = (depthImage.at<const float>(pt.y, pt.x));
+                    }
                 }
             }
 
@@ -102,7 +128,7 @@ namespace rgbd_slam {
                 // Squared search diameter, to compare distance without sqrt
                 const float squaredSearchDiameter = pow(Parameters::get_search_matches_distance(), 2);
 
-                cv::Mat keyPointMask(cv::Mat::zeros(1, _keypoints.size(), CV_8UC1));
+                cv::Mat keyPointMask(cv::Mat::zeros(1, _descriptors.rows, CV_8UC1));
                 for (unsigned int i = startY; i < endY; ++i)
                 {
                     for (unsigned int j = startX; j < endX; ++j)
@@ -127,11 +153,52 @@ namespace rgbd_slam {
                 return keyPointMask;
             }
 
-
-            int Keypoint_Handler::get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
+            int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const
             {
                 if (_keypoints.size() <= 0)
                     return -1;
+
+                // search if the keypoint id is in the detected points
+                if (mapPointId > 0)
+                {
+                    // return the match if it's the case
+                    intToIntContainer::const_iterator uniqueIndexIterator = _uniqueIdsToKeypointIndex.find(mapPointId);
+                    if (uniqueIndexIterator != _uniqueIdsToKeypointIndex.cend()) {
+                        return static_cast<int>(uniqueIndexIterator->second);
+                    }
+                }
+                return -1;
+            }
+
+            int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId, const std::vector<bool>& isKeyPointMatchedContainer) const
+            {
+                assert(isKeyPointMatchedContainer.size() == _keypoints.size());
+
+                if (mapPointId > 0) {
+                    const int trackingIndex = get_tracking_match_index(mapPointId);
+                    if (trackingIndex >= 0)
+                    {
+                        if (!isKeyPointMatchedContainer[trackingIndex]) {
+                            return trackingIndex;
+                        }
+                        else {
+                            // Somehow, this unique index is already associated with another keypoint
+                            utils::log_error("The requested point unique index is already matched");
+                        }
+                    }
+                }
+                return -1;
+            }
+
+            int Keypoint_Handler::get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
+            {
+                assert(isKeyPointMatchedContainer.size() == _keypoints.size());
+                // cannot compute matches without a match or descriptors
+                if (_keypoints.size() <= 0 or _descriptors.rows <= 0)
+                    return -1;
+
+                // check descriptor dimensions
+                assert(mapPointDescriptor.cols == _descriptors.cols);
 
                 const cv::Mat& keyPointMask = compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer);
 
@@ -221,9 +288,12 @@ namespace rgbd_slam {
                 return mask;
             }
 
-            const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const bool forceKeypointDetection) 
+            const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, KeypointsWithIdStruct& lastKeypointsWithIds, const bool forceKeypointDetection) 
             {
-                cv::Mat frameDescriptors;
+                assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
+
+                KeypointsWithIdStruct newKeypointsObject;
+                cv::Mat keypointDescriptors;
 
                 //detect keypoints
                 double t1 = cv::getTickCount();
@@ -245,10 +315,8 @@ namespace rgbd_slam {
                 cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
                 if (_lastFramePyramide.size() > 0)
                 {
-                    if (_lastKeypoints.size() > 0) {
-                        const Key_Point_Extraction::KeypointsWithStatusStruct& keypointsWithStatus = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, _lastKeypoints, pyramidDepth, pyramidWindowSize, maxError, maxDistance);
-
-                        _lastKeypoints = keypointsWithStatus._keypoints;
+                    if (lastKeypointsWithIds._keypoints.size() > 0) {
+                        newKeypointsObject = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance);
                     }
                     else
                     {
@@ -258,51 +326,82 @@ namespace rgbd_slam {
                 //else: No optical flow for the first frame
                 _lastFramePyramide = newImagePyramide;
 
+                assert(newKeypointsObject._keypoints.size() == newKeypointsObject._ids.size());
+
                 /*
                  * KEY POINT DETECTION
                  *      Use keypoint detection when low on keypoints, or when requested
                  */   
 
                 // detect keypoint if: it is requested OR not enough points were detected
+                std::vector<cv::Point2f> detectedKeypoints;
                 const size_t minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
-                const bool shouldDetectKeypoints = forceKeypointDetection or _lastKeypoints.size() < minimumPointsForOptimization;
-                if (shouldDetectKeypoints and _lastKeypoints.size() < Parameters::get_maximum_point_count_per_frame())
+                const bool shouldDetectKeypoints = forceKeypointDetection or newKeypointsObject._keypoints.size() < minimumPointsForOptimization;
+                if (shouldDetectKeypoints and newKeypointsObject._keypoints.size() < Parameters::get_maximum_point_count_per_frame())
                 {
                     // create a mask at current keypoint location
-                    const cv::Mat& keypointMask = compute_key_point_mask(grayImage.size(), _lastKeypoints);
+                    const cv::Mat& keypointMask = compute_key_point_mask(grayImage.size(), newKeypointsObject._keypoints);
 
                     // get new keypoints
-                    const std::vector<cv::Point2f>& keypoints = detect_keypoints(grayImage, keypointMask, minimumPointsForOptimization);
-
-                    // merge keypoints
-                    _lastKeypoints.insert(_lastKeypoints.end(), keypoints.begin(), keypoints.end());
+                    detectedKeypoints = detect_keypoints(grayImage, keypointMask, minimumPointsForOptimization);
                 }
 
-                /**
-                 *  DESCRIPTORS
-                 */
+                cv::Mat detectedKeypointDescriptors;
+                if (detectedKeypoints.size() > 0)
+                {
+                    /**
+                     *  DESCRIPTORS
+                     */
+                    std::vector<cv::KeyPoint> frameKeypoints;
+                    frameKeypoints.reserve(detectedKeypoints.size());
+                    cv::KeyPoint::convert(detectedKeypoints, frameKeypoints);
 
-                std::vector<cv::KeyPoint> frameKeypoints;
-                frameKeypoints.reserve(_lastKeypoints.size());
-                cv::KeyPoint::convert(_lastKeypoints, frameKeypoints);
+                    // Compute descriptors
+                    // Caution: the frameKeypoints list is mutable by this function
+                    _descriptorExtractor->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
 
-                // Compute descriptors
-                // Caution: the frameKeypoints list is mutable by this function, and should be use instead of _lastKeypoints
-                _descriptorExtractor->compute(grayImage, frameKeypoints, frameDescriptors);
+                    // convert back to keypoint list
+                    detectedKeypoints.clear();
+                    detectedKeypoints.reserve(frameKeypoints.size());
+                    cv::KeyPoint::convert(frameKeypoints, detectedKeypoints);
+
+                    if (keypointDescriptors.rows > 0)
+                        cv::vconcat(detectedKeypointDescriptors, keypointDescriptors, keypointDescriptors);
+                    else
+                        keypointDescriptors = detectedKeypointDescriptors;
+                }
 
                 _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
 
-                return Keypoint_Handler(frameKeypoints, frameDescriptors, depthImage, Parameters::get_maximum_match_distance()); 
+                // Update last keypoint struct
+                lastKeypointsWithIds._keypoints.swap(newKeypointsObject._keypoints); 
+                lastKeypointsWithIds._ids.swap(newKeypointsObject._ids); 
+
+
+                const Keypoint_Handler keypointHandler(detectedKeypoints, keypointDescriptors, lastKeypointsWithIds, depthImage, Parameters::get_maximum_match_distance()); 
+
+                // Update lastKeypointsWithIds with detected points
+                if (detectedKeypoints.size() > 0)
+                {
+                    lastKeypointsWithIds._keypoints.insert(lastKeypointsWithIds._keypoints.begin(), detectedKeypoints.begin(), detectedKeypoints.end());
+                    std::vector<size_t> emptyIndexes = std::vector<size_t>(detectedKeypoints.size());
+                    lastKeypointsWithIds._ids.insert(lastKeypointsWithIds._ids.begin(), emptyIndexes.begin(), emptyIndexes.end());
+                }
+                return keypointHandler;
             }
 
 
-            const Key_Point_Extraction::KeypointsWithStatusStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const std::vector<cv::Point2f>& keypointsPrevious, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold)
+            KeypointsWithIdStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold)
             {
-                KeypointsWithStatusStruct keypointStruct;
+                assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
+
+                KeypointsWithIdStruct keypointStruct;
                 keypointStruct._isValid = false;
 
+                const std::vector<cv::Point2f>& lastKeypoints = lastKeypointsWithIds._keypoints;
+
                 // START of optical flow
-                if (imagePreviousPyramide.size() <= 0 or imageCurrentPyramide.size() <= 0 or errorThreshold < 0 or keypointsPrevious.size() <= 0)
+                if (imagePreviousPyramide.size() <= 0 or imageCurrentPyramide.size() <= 0 or errorThreshold < 0 or lastKeypoints.size() <= 0)
                 {
                     utils::log_error("OpticalFlow: invalid parameters");
                     return keypointStruct;
@@ -313,7 +412,7 @@ namespace rgbd_slam {
                 std::vector<float> errorContainer;
                 std::vector<cv::Point2f> forwardPoints;
 
-                const size_t previousKeyPointCount = keypointsPrevious.size();
+                const size_t previousKeyPointCount = lastKeypoints.size();
                 // Reserve room for the status, error and points
                 statusContainer.reserve(previousKeyPointCount);
                 errorContainer.reserve(previousKeyPointCount);
@@ -323,74 +422,77 @@ namespace rgbd_slam {
                 const cv::TermCriteria criteria = cv::TermCriteria((cv::TermCriteria::COUNT) + (cv::TermCriteria::EPS), 10, 0.03);
 
                 // Get forward points: optical flow from previous to current image to extract new keypoints
-                cv::calcOpticalFlowPyrLK(imagePreviousPyramide, imageCurrentPyramide, keypointsPrevious, forwardPoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);
+                cv::calcOpticalFlowPyrLK(imagePreviousPyramide, imageCurrentPyramide, lastKeypoints, forwardPoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);
 
                 // Contains the keypoints from this frame, without outliers
                 std::vector<cv::Point2f> backwardKeypoints;
                 // contains the ids of the good waypoints
-                std::vector<unsigned int> keypointIds;
+                std::vector<size_t> keypointIndexContainer;
 
                 backwardKeypoints.reserve(previousKeyPointCount);
-                keypointIds.reserve(previousKeyPointCount);
+                keypointIndexContainer.reserve(previousKeyPointCount);
 
                 // set output structure
-                keypointStruct._keypoints.reserve(previousKeyPointCount);
-                keypointStruct._status.reserve(previousKeyPointCount);
-
+                std::vector<bool> keypointStatus;
+                keypointStatus.reserve(previousKeyPointCount);
+                std::vector<cv::Point2f> newKeypoints;
+                newKeypoints.reserve(previousKeyPointCount);
 
                 // Remove outliers from current waypoint list by creating a new one
-                for(uint keypointIndex = 0; keypointIndex < previousKeyPointCount; ++keypointIndex)
+                for(size_t keypointIndex = 0; keypointIndex < previousKeyPointCount; ++keypointIndex)
                 {
                     if(statusContainer[keypointIndex] != 1) {
                         // point was not associated
-                        keypointStruct._status.push_back(false);
+                        keypointStatus.push_back(false);
                         continue;
                     }
 
                     if (errorContainer[keypointIndex] > errorThreshold)
                     {
                         // point error is too great
-                        keypointStruct._status.push_back(false);
+                        keypointStatus.push_back(false);
                         continue;
                     }
 
                     if (not is_in_border(forwardPoints[keypointIndex], imageCurrentPyramide.at(0)))
                     {
                         // point not in image borders
-                        keypointStruct._status.push_back(false);
+                        keypointStatus.push_back(false);
                         continue;
                     }
 
-                    keypointStruct._keypoints.push_back(forwardPoints[keypointIndex]);
-                    backwardKeypoints.push_back(keypointsPrevious[keypointIndex]);
-                    keypointIds.push_back(keypointIndex);
-                    keypointStruct._status.push_back(true);
+                    newKeypoints.push_back(forwardPoints[keypointIndex]);
+                    backwardKeypoints.push_back(lastKeypoints[keypointIndex]);
+                    keypointIndexContainer.push_back(keypointIndex);
+                    keypointStatus.push_back(true);
                 }
 
-                if (keypointStruct._keypoints.size() <= 0)
+                if (newKeypoints.size() <= 0)
                 {
                     utils::log("No new points detected for backtracking", std::source_location::current());
                     return keypointStruct;
                 }
 
                 // Backward tracking: go from this frame inliers to the last frame inliers
-                cv::calcOpticalFlowPyrLK(imageCurrentPyramide, imagePreviousPyramide, keypointStruct._keypoints, backwardKeypoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);
+                cv::calcOpticalFlowPyrLK(imageCurrentPyramide, imagePreviousPyramide, newKeypoints, backwardKeypoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);
 
                 // mark outliers as false and visualize
-                const size_t keypointSize = keypointStruct._keypoints.size();
-                for(uint i = 0; i < keypointSize; i++)
+                const size_t keypointSize = newKeypoints.size();
+                keypointStruct._ids.reserve(previousKeyPointCount);
+                keypointStruct._keypoints.reserve(keypointSize);
+                for(size_t i = 0; i < keypointSize; i++)
                 {
-                    const size_t keypointIndex = keypointIds[i];
-                    if(statusContainer[i] != 1) {
-                        keypointStruct._status[keypointIndex] = false;
+                    const size_t keypointIndex = keypointIndexContainer[i];
+                    if(statusContainer[i] != 1 or not keypointStatus[keypointIndex]) {
+                        continue;
+                    }
+                    if (cv::norm(lastKeypoints[keypointIndex] - backwardKeypoints[i]) > maxDistanceThreshold) 
+                    {
                         continue;
                     }
 
-                    if (cv::norm(keypointsPrevious[keypointIndex] - backwardKeypoints[i]) > maxDistanceThreshold) 
-                    {
-                        keypointStruct._status[keypointIndex] = false;
-                        continue;
-                    }
+                    keypointStruct._keypoints.push_back(newKeypoints[keypointIndex]);
+                    keypointStruct._ids.push_back(lastKeypointsWithIds._ids[keypointIndex]);
                 }
                 keypointStruct._isValid = true;
 

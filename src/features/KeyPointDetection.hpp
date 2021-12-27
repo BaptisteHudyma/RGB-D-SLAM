@@ -12,6 +12,16 @@ namespace rgbd_slam {
     namespace features {
         namespace keypoints {
 
+
+            /**
+             * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map
+             */
+            struct KeypointsWithIdStruct {
+                bool _isValid;
+                std::vector<cv::Point2f> _keypoints;
+                std::vector<size_t> _ids;
+            };
+
             /**
              * \brief Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association
              */
@@ -21,11 +31,23 @@ namespace rgbd_slam {
                     /**
                      * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
                      */
-                    Keypoint_Handler(std::vector<cv::KeyPoint>& inKeypoints, cv::Mat& inDescriptors, const cv::Mat& depthImage, const double maxMatchDistance = 0.7);
+                    Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance = 0.7);
 
                     /**
-                     * \brief get a container with the filtered point matches. Uses _maxMatchDistance to estimate good matches. 
+                     * \brief Get a tracking index if it exist, or -1.
                      *
+                     * \param[in] mapPointId The unique id that we want to check
+                     * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched 
+*
+                     * \return the index of the tracked point in _keypoints, or -1 if no match was found
+                     */
+                    int get_tracking_match_index(const size_t mapPointId, const std::vector<bool>& isKeyPointMatchedContainer) const;
+                    int get_tracking_match_index(const size_t mapPointId) const;
+
+                    /**
+                     * \brief get an index corresponding to the index of the point matches.
+                     *
+                     * \param[in] maoPointId The unique id of the point to match
                      * \param[in] projectedMapPoint A 2D map point to match 
                      * \param[in] mapPointDescriptor The descriptor of this map point
                      * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched 
@@ -105,6 +127,8 @@ namespace rgbd_slam {
                     //store current frame keypoints
                     std::vector<vector2> _keypoints;
                     std::vector<double> _depths;
+                    typedef std::map<size_t, size_t> intToIntContainer;
+                    intToIntContainer _uniqueIdsToKeypointIndex;
                     cv::Mat _descriptors;
 
                     // Number of image divisions (cells)
@@ -118,6 +142,8 @@ namespace rgbd_slam {
 
 
             };
+
+
 
             /**
              * \brief A class to detect and store keypoints
@@ -136,11 +162,12 @@ namespace rgbd_slam {
                      *
                      * \param[in] grayImage The input image from camera
                      * \param[in] depthImage The input depth image from camera
+                     * \param[in/out] lastKeypointsWithIds The keypoints of the previous detection step, that will be tracked with optical flow
                      * \param[in] forceKeypointDetection Force the detection of keypoints in the image
                      *
                      * \return An object that contains the detected keypoints
                      */
-                    const Keypoint_Handler compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const bool forceKeypointDetection = false);
+                    const Keypoint_Handler compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, KeypointsWithIdStruct& lastKeypointsWithIds, const bool forceKeypointDetection = false);
 
 
                     /**
@@ -153,12 +180,6 @@ namespace rgbd_slam {
 
                 protected:
 
-                    struct KeypointsWithStatusStruct {
-                        bool _isValid;
-                        std::vector<cv::Point2f> _keypoints;
-                        std::vector<bool> _status;
-                    };
-
                     /**
                      * \brief Compute the current frame keypoints from optical flow. There is need for matching with this configuration
                      *
@@ -168,18 +189,18 @@ namespace rgbd_slam {
                      * \param[in] errorThreshold an error Threshold, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
                      */
-                    const KeypointsWithStatusStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const std::vector<cv::Point2f>& keypointsPrevious, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold);
+                    KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold);
 
 
                     /**
-                      * \brief Compute new key point, with an optional mask to exclude detection zones
-                      *
-                      * \param[in] grayImage The image in which we want to detect waypoints
-                      * \param[in] mask The mask which we do not want to detect waypoints
-                      * \param[in] minimumPointsForValidity The minimum number of points under which we will use the precise detector
-                      *
-                      * \return An array of points in the input image
-                      */
+                     * \brief Compute new key point, with an optional mask to exclude detection zones
+                     *
+                     * \param[in] grayImage The image in which we want to detect waypoints
+                     * \param[in] mask The mask which we do not want to detect waypoints
+                     * \param[in] minimumPointsForValidity The minimum number of points under which we will use the precise detector
+                     *
+                     * \return An array of points in the input image
+                     */
                     const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity);
 
                     const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer);
@@ -190,7 +211,6 @@ namespace rgbd_slam {
                     cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
 
                     std::vector<cv::Mat> _lastFramePyramide;
-                    std::vector<cv::Point2f> _lastKeypoints;
 
                     double _meanPointExtractionTime;
 

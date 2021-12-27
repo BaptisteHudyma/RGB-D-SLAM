@@ -33,12 +33,13 @@ namespace rgbd_slam {
                 match_point_container find_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
 
                 /**
-                 * \brief Update the local and global map. Add new points to staged and map container 
+                 * \brief Update the local and global map. Add new points to staged and map container. Compute the new tracked point vector
                  *
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
+                 * \param[in,out] keypointsWithIds The reference object for keypoints. This function will update the unique ids of new keypoints
                  */
-                void update(const utils::Pose optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update(const utils::Pose optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, features::keypoints::KeypointsWithIdStruct& keypointsWithIds);
 
 
                 /**
@@ -57,6 +58,16 @@ namespace rgbd_slam {
                 void get_debug_image(const utils::Pose& camPose, cv::Mat& debugImage) const;
 
             protected:
+
+                /**
+                 * \brief Update local map features 
+                 *
+                 * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
+                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
+                 * \param[in,out] keypointsWithIds The reference object for keypoints. This function will update the unique ids of new keypoints
+                 */
+                void update_local_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+
                 /**
                  * \brief Add previously uncertain features to the local map
                  *

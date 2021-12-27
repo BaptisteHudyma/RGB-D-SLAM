@@ -191,7 +191,8 @@ namespace rgbd_slam {
 
         // Detect and match key points with local map points
         const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) == 0;
-        const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, shouldRecomputeKeypoints);
+        
+        const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, _lastKeypointWithId, shouldRecomputeKeypoints);
         const match_point_container& matchedPoints = _localMap->find_matches(refinedPose, keypointObject);
         _computeKeypointCount += 1;
 
@@ -207,7 +208,7 @@ namespace rgbd_slam {
         }
 
         // Update local map
-        _localMap->update(refinedPose, keypointObject);
+        _localMap->update(refinedPose, keypointObject, _lastKeypointWithId);
 
         return refinedPose;
     }

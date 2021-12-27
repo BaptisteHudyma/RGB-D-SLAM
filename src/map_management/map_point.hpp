@@ -24,7 +24,15 @@ namespace rgbd_slam {
             // 3D descriptor (SURF)
             cv::Mat _descriptor;
 
+            // unique identifier, to match this point without using descriptors
+            const size_t _id;
+
+            protected:
             Point (const vector3& coordinates, const cv::Mat& descriptor);
+            // copy constructor
+            Point (const vector3& coordinates, const cv::Mat& descriptor, const size_t id);
+
+            inline static size_t _currentPointId = 1;   // 0 is invalid
         };
 
         /**
@@ -35,6 +43,7 @@ namespace rgbd_slam {
         {
             public:
                 Staged_Point(const vector3& coordinates, const cv::Mat& descriptor);
+                Staged_Point(const vector3& coordinates, const cv::Mat& descriptor, const size_t id);
 
                 // Count the number of times his points was matched
                 int _matchesCount;
@@ -57,7 +66,7 @@ namespace rgbd_slam {
                 /**
                   * \brief Call when this point was matched to another point
                   */
-                double update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+                double update_matched(const vector3& newPointCoordinates);
 
                 int _lastMatchedIndex;
             private:
@@ -80,6 +89,7 @@ namespace rgbd_slam {
 
             public:
                 Map_Point(const vector3& coordinates, const cv::Mat& descriptor);
+                Map_Point(const vector3& coordinates, const cv::Mat& descriptor, const size_t id);
 
 
                 /**
@@ -95,7 +105,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
-                double update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor);
+                double update_matched(const vector3& newPointCoordinates);
 
                 int get_age() const {
                     return _age;

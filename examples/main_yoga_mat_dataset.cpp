@@ -151,6 +151,8 @@ int main(int argc, char* argv[]) {
         // counters
         ++totalFrameTreated;
         ++frameIndex;
+
+        std::cout << "\x1B[2J\x1B[H" << pose << std::endl;
     }
 
     std::cout << std::endl;

@@ -5,9 +5,20 @@
 namespace rgbd_slam {
     namespace map_management {
 
-        Point::Point (const vector3& coordinates, const cv::Mat& descriptor)
-            : _coordinates(coordinates), _descriptor(descriptor)
-        {}
+        Point::Point (const vector3& coordinates, const cv::Mat& descriptor) :
+            _coordinates(coordinates), 
+            _descriptor(descriptor),
+            _id(Point::_currentPointId)
+        {
+            Point::_currentPointId += 1;
+        }
+        
+        Point::Point (const vector3& coordinates, const cv::Mat& descriptor, const size_t id) :
+            _coordinates(coordinates), 
+            _descriptor(descriptor),
+            _id(id)
+        {
+        }
 
 
         /**
@@ -18,6 +29,13 @@ namespace rgbd_slam {
             : Point(coordinates, descriptor)
         {
             _matchesCount = 0; 
+            _lastMatchedIndex = -1;
+        }
+        Staged_Point::Staged_Point(const vector3& coordinates, const cv::Mat& descriptor, const size_t id)
+            : Point(coordinates, descriptor, id)
+        {
+            _matchesCount = 0; 
+            _lastMatchedIndex = -1;
         }
 
         double Staged_Point::get_confidence() const 
@@ -37,11 +55,10 @@ namespace rgbd_slam {
             _matchesCount -= removeNMatches;
         }
 
-        double Staged_Point::update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor)
+        double Staged_Point::update_matched(const vector3& newPointCoordinates)
         {
             _matchesCount += 1;
             // TODO: update coordinates with error
-            _descriptor = newDescriptor;
 
             return    
                 abs(newPointCoordinates.x() - _coordinates.x()) + 
@@ -62,9 +79,16 @@ namespace rgbd_slam {
         Map_Point::Map_Point(const vector3& coordinates, const cv::Mat& descriptor) 
             : Point(coordinates, descriptor)
         {
-
             _age = 0;
             _failTrackingCount = 0;
+            _lastMatchedIndex = -1;
+        }
+        Map_Point::Map_Point(const vector3& coordinates, const cv::Mat& descriptor, const size_t id) 
+            : Point(coordinates, descriptor, id)
+        {
+            _age = 0;
+            _failTrackingCount = 0;
+            _lastMatchedIndex = -1;
         }
 
         double Map_Point::get_confidence() const
@@ -93,13 +117,12 @@ namespace rgbd_slam {
         /**
          * \brief Update this map point with the given informations: it is matched with another point
          */
-        double Map_Point::update_matched(const vector3& newPointCoordinates, const cv::Mat& newDescriptor) 
+        double Map_Point::update_matched(const vector3& newPointCoordinates) 
         {
             _failTrackingCount = 0;
             _age += 1;
             // TODO: update coordinates with error
             //_coordinates = newPointCoordinates;
-            _descriptor = newDescriptor;
 
             return    
                 abs(newPointCoordinates.x() - _coordinates.x()) + 
