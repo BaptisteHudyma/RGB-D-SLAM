@@ -11,6 +11,7 @@ namespace rgbd_slam {
             _id(Point::_currentPointId)
         {
             Point::_currentPointId += 1;
+            _screenCoordinates = cv::Point2f(-1, -1);
         }
         
         Point::Point (const vector3& coordinates, const cv::Mat& descriptor, const size_t id) :
@@ -18,6 +19,7 @@ namespace rgbd_slam {
             _descriptor(descriptor),
             _id(id)
         {
+            _screenCoordinates = cv::Point2f(-1, -1);
         }
 
 
@@ -53,6 +55,7 @@ namespace rgbd_slam {
         void Staged_Point::update_unmatched(int removeNMatches)
         {
             _matchesCount -= removeNMatches;
+            _screenCoordinates = cv::Point2f(-1, -1);
         }
 
         double Staged_Point::update_matched(const vector3& newPointCoordinates)
@@ -112,6 +115,7 @@ namespace rgbd_slam {
             // decrease successful matches
             _age -= 1;
             _failTrackingCount += 1;
+            _screenCoordinates = cv::Point2f(-1, -1);
         }
 
         /**

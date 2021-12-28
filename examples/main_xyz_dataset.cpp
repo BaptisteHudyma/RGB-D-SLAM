@@ -168,7 +168,7 @@ int main(int argc, char* argv[])
         ++totalFrameTreated;
         ++frameIndex;
         
-        std::cout << "\x1B[2J\x1B[H" << pose << std::endl;
+        //std::cout << "\x1B[2J\x1B[H" << pose << std::endl;
     }
 
     std::cout << std::endl;

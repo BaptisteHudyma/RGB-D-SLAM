@@ -229,20 +229,30 @@ namespace rgbd_slam {
         {
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
 
-            features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
             const size_t numberOfNewKeypoints = _localMap.size() + _stagedPoints.size();
+
+            // initialize output structure
+            features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
             keypointsWithIds._ids.reserve(numberOfNewKeypoints);
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
 
+            // add map points with valid retroprojected coordinates
             for (const Map_Point& point : _localMap)
             {
-                keypointsWithIds._keypoints.push_back(point._screenCoordinates);
-                keypointsWithIds._ids.push_back(point._id);
+                if (point._screenCoordinates.x >= 0)
+                {
+                    keypointsWithIds._keypoints.push_back(point._screenCoordinates);
+                    keypointsWithIds._ids.push_back(point._id);
+                }
             }
+            // add staged points with valid retroprojected coordinates
             for (const Staged_Point& point : _stagedPoints)
             {
-                keypointsWithIds._keypoints.push_back(point._screenCoordinates);
-                keypointsWithIds._ids.push_back(point._id);
+                if (point._screenCoordinates.x >= 0)
+                {
+                    keypointsWithIds._keypoints.push_back(point._screenCoordinates);
+                    keypointsWithIds._ids.push_back(point._id);
+                }
             }
 
             return keypointsWithIds;

@@ -160,7 +160,8 @@ namespace rgbd_slam {
         _meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
         //update motion model with refined pose
-        _motionModel.update_model(refinedPose);
+        _motionModel.update_model(refinedPose); 
+
         // Update current pose
         _currentPose = refinedPose;
 
