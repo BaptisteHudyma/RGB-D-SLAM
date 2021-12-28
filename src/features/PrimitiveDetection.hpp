@@ -35,7 +35,7 @@ namespace primitives {
             typedef std::vector<plane_segment_unique_ptr> planes_ptr_vector; 
             typedef std::vector<cylinder_segment_unique_ptr> cylinders_ptr_vector; 
             typedef std::list<std::unique_ptr<Primitive>> primitive_container; 
-            typedef std::vector<unsigned int> uint_vector;
+            typedef std::vector<uint> uint_vector;
 
         public:
 
@@ -47,7 +47,7 @@ namespace primitives {
               * \param[in] maxMergeDist Maximum distance between the center of two planes to merge those planes
               * \param[in] useCylinderDetection Transform some planes in cylinders, when they show an obvious cylinder shape
               */
-            Primitive_Detection(const unsigned int width, const unsigned int height, const unsigned int blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
+            Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
 
             /**
               * \brief Main compute function: computes the primitives in the depth imahe
@@ -111,7 +111,7 @@ namespace primitives {
              * \param[out] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
              * \param[in] remainingPlanarCells Unmatched plane count 
              */
-            void grow_planes_and_cylinders(unsigned int remainingPlanarCells, intpair_vector& cylinderToRegionMap);
+            void grow_planes_and_cylinders(uint remainingPlanarCells, intpair_vector& cylinderToRegionMap);
 
             /**
              * \brief Merge close planes by comparing normals and MSE
@@ -166,21 +166,21 @@ namespace primitives {
         private:
             Histogram _histogram;
 
-            const unsigned int _width;
-            const unsigned int _height;
-            const unsigned int _blocSize;
-            const unsigned int _pointsPerCellCount;
+            const uint _width;
+            const uint _height;
+            const uint _blocSize;
+            const uint _pointsPerCellCount;
             const float _minCosAngleForMerge;
             const float _maxMergeDist;
 
             const bool _useCylinderDetection;
 
-            const unsigned int _cellWidth;
-            const unsigned int _cellHeight;
+            const uint _cellWidth;
+            const uint _cellHeight;
 
-            const unsigned int _horizontalCellsCount;
-            const unsigned int _verticalCellsCount;
-            const unsigned int _totalCellCount;
+            const uint _horizontalCellsCount;
+            const uint _verticalCellsCount;
+            const uint _totalCellCount;
 
             plane_segment_unique_ptr *_planeGrid;
             planes_ptr_vector _planeSegments;

@@ -11,7 +11,7 @@ namespace primitives {
      *      PRIMITIVE
      *
      */
-    Primitive::Primitive(const unsigned int id, const cv::Mat& shapeMask) :
+    Primitive::Primitive(const uint id, const cv::Mat& shapeMask) :
         _id(id)
     {
         _shapeMask = shapeMask.clone();
@@ -35,11 +35,11 @@ namespace primitives {
      *      CYLINDER
      *
      */
-    Cylinder::Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, const unsigned int id, const cv::Mat& shapeMask) :
+    Cylinder::Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, const uint id, const cv::Mat& shapeMask) :
         Primitive(id, shapeMask)
     {
         _radius = 0;
-        for(unsigned int i = 0; i < cylinderSeg->get_segment_count(); ++i) {
+        for(uint i = 0; i < cylinderSeg->get_segment_count(); ++i) {
             _radius += cylinderSeg->get_radius(i);
         }
         _radius /= cylinderSeg->get_segment_count();
@@ -70,7 +70,7 @@ namespace primitives {
      *        PLANE
      *
      */
-    Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, const unsigned int id, const cv::Mat& shapeMask) :
+    Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, const uint id, const cv::Mat& shapeMask) :
         Primitive(id, shapeMask)
     {
         _mean = planeSeg->get_mean();

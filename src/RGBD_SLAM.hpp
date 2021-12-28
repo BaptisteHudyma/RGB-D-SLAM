@@ -32,7 +32,7 @@ namespace rgbd_slam {
              * \param[in] minHessian Minimum Hessian parameter for point detection
              * \param[in] maxMatchDistance Maximum distance between the two closest point matches candidates (0 - 1)
              */
-            RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth = 640, unsigned int imageHeight = 480);
+            RGBD_SLAM(const std::stringstream& dataPath, const uint imageWidth = 640, const uint imageHeight = 480);
 
             /**
              * \brief Estimates a new pose from the given images
@@ -77,8 +77,8 @@ namespace rgbd_slam {
             void set_color_vector();
 
         private:
-            const unsigned int _width;
-            const unsigned int _height;
+            const uint _width;
+            const uint _height;
 
             features::primitives::Depth_Operations* _depthOps;
 
@@ -107,7 +107,7 @@ namespace rgbd_slam {
             std::vector<cv::Vec3b> _colorCodes;
 
             // debug
-            unsigned int _totalFrameTreated;
+            uint _totalFrameTreated;
             double _meanMatTreatmentTime;
             double _meanTreatmentTime;
             double _meanLineTreatment;

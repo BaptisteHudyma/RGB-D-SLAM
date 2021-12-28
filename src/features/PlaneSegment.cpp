@@ -9,7 +9,7 @@ namespace features {
 namespace primitives {
 
 
-    Plane_Segment::Plane_Segment(const unsigned int cellWidth, const unsigned int ptsPerCellCount) : 
+    Plane_Segment::Plane_Segment(const uint cellWidth, const uint ptsPerCellCount) : 
         _ptsPerCellCount(ptsPerCellCount), 
         _minZeroPointCount(_ptsPerCellCount/2.0), 
         _cellWidth(cellWidth), 
@@ -45,11 +45,11 @@ namespace primitives {
         _Szx = seg._Szx;
     }
 
-    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const unsigned int cellId) {
+    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const uint cellId) {
         clear_plane_parameters();
         _isPlanar = true;
 
-        unsigned int offset = cellId * _ptsPerCellCount;
+        uint offset = cellId * _ptsPerCellCount;
 
         //get z of depth points
         const Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
@@ -67,13 +67,13 @@ namespace primitives {
 
         // Check for discontinuities using cross search
         //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
-        unsigned int discontinuityCounter = 0;
-        unsigned int i = _cellWidth * (_cellHeight / 2);
-        unsigned int j = i + _cellWidth;
+        uint discontinuityCounter = 0;
+        uint i = _cellWidth * (_cellHeight / 2);
+        uint j = i + _cellWidth;
         float zLast = std::max(Z_matrix(i), Z_matrix(i + 1)); /* handles missing pixels on the borders*/
         
         const double depthAlphaValue = Parameters::get_depth_alpha();
-        const unsigned int depthDiscontinuityLimit = Parameters::get_depth_discontinuity_limit(); 
+        const uint depthDiscontinuityLimit = Parameters::get_depth_discontinuity_limit(); 
 
         i++;
         // Scan horizontally through the middle

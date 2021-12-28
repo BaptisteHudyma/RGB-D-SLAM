@@ -9,7 +9,7 @@ namespace primitives {
     using namespace std;
     using namespace Eigen;
 
-    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const unsigned int subRegionId) {
+    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId) {
         //copy stored data
         _radius.push_back(seg._radius[subRegionId]);
         _centers.push_back(seg._centers[subRegionId]);
@@ -43,8 +43,8 @@ namespace primitives {
         _cellActivatedCount = 0;
     }
 
-    Cylinder_Segment::Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const unsigned int planeCount, const bool* activatedMask, const unsigned int cellActivatedCount) {
-        unsigned int samplesCount = planeCount;
+    Cylinder_Segment::Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const uint planeCount, const bool* activatedMask, const uint cellActivatedCount) {
+        uint samplesCount = planeCount;
         _cellActivatedCount = cellActivatedCount;
 
         const float minimumCyinderScore = Parameters::get_cylinder_ransac_minimm_score();
@@ -52,14 +52,14 @@ namespace primitives {
 
         _segmentCount = 0;
         _local2globalMap = nullptr;
-        _local2globalMap = new unsigned int[_cellActivatedCount];
+        _local2globalMap = new uint[_cellActivatedCount];
 
         Eigen::MatrixXd N(3, 2 * _cellActivatedCount);
         Eigen::MatrixXd P(3, _cellActivatedCount);
 
         // Init. P and N
         int j = 0;
-        for(unsigned int i = 0; i < samplesCount; i++){
+        for(uint i = 0; i < samplesCount; i++){
             if (activatedMask[i]){
                 const Vector3d& planeNormal = planeGrid[i]->get_normal();
                 const Vector3d& planeMean = planeGrid[i]->get_mean();
@@ -74,7 +74,7 @@ namespace primitives {
             }
         }
         // Concatenate [N -N]
-        for(unsigned int i = 0; i < samplesCount; i++){
+        for(uint i = 0; i < samplesCount; i++){
             if (activatedMask[i]){
                 const Vector3d& planeNormal = planeGrid[i]->get_normal();
                 N(0, j) = -planeNormal[0];
@@ -131,7 +131,7 @@ namespace primitives {
         MatrixXb idsLeftMask(1, _cellActivatedCount);
 
         vector<int> idsLeft;
-        for(unsigned int i = 0; i < _cellActivatedCount; i++){
+        for(uint i = 0; i < _cellActivatedCount; i++){
             idsLeft.push_back(i);
             idsLeftMask(i) = true;
         }
@@ -183,7 +183,7 @@ namespace primitives {
                 //MSAC truncated distance
                 double dist = 0.0;
                 int inliersCount = 0;
-                for(unsigned int i = 0;i < _cellActivatedCount; i++){
+                for(uint i = 0;i < _cellActivatedCount; i++){
                     if(idsLeftMask(i)){
                         if(I(i)) {
                             inliersCount += 1;
@@ -197,7 +197,7 @@ namespace primitives {
                 if(dist < minHypothesisDist){
                     minHypothesisDist = dist;
                     maxInliersCount = inliersCount;
-                    for(unsigned int i = 0; i < _cellActivatedCount; i++){
+                    for(uint i = 0; i < _cellActivatedCount; i++){
                         if(idsLeftMask(i)){
                             IFinal(i) = I(i);
                         }else{
@@ -219,7 +219,7 @@ namespace primitives {
 
             // Remove cells from list of remaining cells
             idsLeft.clear();
-            for(unsigned int i = 0; i < _cellActivatedCount; i++){
+            for(uint i = 0; i < _cellActivatedCount; i++){
                 if(IFinal(i)) {
                     idsLeftMask(i) = false;
                     mLeft--;
@@ -233,7 +233,7 @@ namespace primitives {
             e1.setZero();
             e2.setZero();
             double b = 0;
-            for(unsigned int i = 0; i < _cellActivatedCount; i++){
+            for(uint i = 0; i < _cellActivatedCount; i++){
                 if(IFinal(i)) {
                     e1 += N.col(i);
                     e2 += PProj.col(i);
@@ -265,7 +265,7 @@ namespace primitives {
             double P1P2d = (P2d - P1d).norm();
             // Use point-to-line distances (same as cylinder distances)
             Eigen::Vector3d P3;
-            for(unsigned int i = 0; i < _cellActivatedCount; i++){
+            for(uint i = 0; i < _cellActivatedCount; i++){
                 if(IFinal(i)) {
                     P3 = P.block<3,1>(0, i);
                     //D(i) = (P3-center).norm()-r;
@@ -275,7 +275,7 @@ namespace primitives {
             D = D.array().square();
 
             double mse = 0; 
-            for(unsigned int i = 0; i < _cellActivatedCount; i++){
+            for(uint i = 0; i < _cellActivatedCount; i++){
                 if(IFinal(i))
                     mse += D(i);
             }
@@ -299,7 +299,7 @@ namespace primitives {
         return minDist;
     }
 
-    double Cylinder_Segment::distance(const Eigen::Vector3d& point, const unsigned int id) {
+    double Cylinder_Segment::distance(const Eigen::Vector3d& point, const uint id) {
         return (
                 (_pointsAxis2[id] - _pointsAxis1[id]).cross(
                     point - _pointsAxis2[id]
@@ -310,11 +310,11 @@ namespace primitives {
     /*
      *  Getters
      */
-    unsigned int Cylinder_Segment::get_segment_count() const { 
+    uint Cylinder_Segment::get_segment_count() const { 
         return _segmentCount; 
     }
 
-    double Cylinder_Segment::get_MSE_at(const unsigned int index) const { 
+    double Cylinder_Segment::get_MSE_at(const uint index) const { 
         if(index >= _MSE.size()) {
             utils::log_error("get_MSE required index over MSE vector size");
             exit(-1);
@@ -322,7 +322,7 @@ namespace primitives {
         return _MSE[index]; 
     }
 
-    bool Cylinder_Segment::is_inlier_at (const unsigned int indexA, const unsigned int indexB) const { 
+    bool Cylinder_Segment::is_inlier_at (const uint indexA, const uint indexB) const { 
         if(indexA >= _inliers.size() or indexB >= _inliers[indexA].size()) {
             utils::log_error("get_inlier required index over inlier vector size");
             exit(-1);
@@ -330,7 +330,7 @@ namespace primitives {
         return _inliers[indexA](indexB); 
     }
 
-    unsigned int Cylinder_Segment::get_local_to_global_mapping(const unsigned int index) const {
+    uint Cylinder_Segment::get_local_to_global_mapping(const uint index) const {
         if (index >= _cellActivatedCount) {
             utils::log_error("get_local_to_global required index over array size");
             exit(-1);
@@ -342,7 +342,7 @@ namespace primitives {
         return _local2globalMap[index]; 
     }
 
-    const Eigen::Vector3d& Cylinder_Segment::get_axis1_point(const unsigned int index) const { 
+    const Eigen::Vector3d& Cylinder_Segment::get_axis1_point(const uint index) const { 
         if(index >= _pointsAxis1.size()) {
             utils::log_error("get_axis_1 required index over axis1 vector size");
             exit(-1);
@@ -350,7 +350,7 @@ namespace primitives {
         return _pointsAxis1[index];
     }
 
-    const Eigen::Vector3d& Cylinder_Segment::get_axis2_point(const unsigned int index) const {
+    const Eigen::Vector3d& Cylinder_Segment::get_axis2_point(const uint index) const {
         if(index >= _pointsAxis2.size()) {
             utils::log_error("get_axis_2 required index over axis2 size");
             exit(-1);
@@ -358,7 +358,7 @@ namespace primitives {
         return _pointsAxis2[index];
     }
 
-    double Cylinder_Segment::get_axis_normal(const unsigned int index) const { 
+    double Cylinder_Segment::get_axis_normal(const uint index) const { 
         if(index >= _normalsAxis1Axis2.size()) {
             utils::log_error("get_axis_normal required index over normals vector size");
             exit(-1);
@@ -366,7 +366,7 @@ namespace primitives {
         return _normalsAxis1Axis2[index]; 
     }
 
-    double Cylinder_Segment::get_radius(const unsigned int index) const {
+    double Cylinder_Segment::get_radius(const uint index) const {
         if(index >= _radius.size()) {
             utils::log_error("get_radius required index over radius vector size");
             exit(-1);

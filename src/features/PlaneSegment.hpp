@@ -21,10 +21,10 @@ namespace primitives {
              * \param[in] cellWidth Width and height of the depth image divisions
              * \param[in] ptsPerCellCount
              */
-            Plane_Segment(const unsigned int cellWidth, const unsigned int ptsPerCellCount);
+            Plane_Segment(const uint cellWidth, const uint ptsPerCellCount);
             Plane_Segment(const Plane_Segment& seg);
 
-            void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const unsigned int cellId);
+            void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const uint cellId);
 
 
             /**
@@ -87,12 +87,12 @@ namespace primitives {
         protected:
 
         private:
-                const unsigned int _ptsPerCellCount;  //max nb of points per initial cell
-                const unsigned int _minZeroPointCount;  //min acceptable zero points in a node
-                const unsigned int _cellWidth;
-                const unsigned int _cellHeight;
+                const uint _ptsPerCellCount;  //max nb of points per initial cell
+                const uint _minZeroPointCount;  //min acceptable zero points in a node
+                const uint _cellWidth;
+                const uint _cellHeight;
 
-                unsigned int _pointCount;         //point count
+                uint _pointCount;         //point count
                 double _score;    //plane fitting score
                 double _MSE;     //plane fitting mean square error
                 bool _isPlanar;  //true if node represent a correct node, false: ignore node while mapping

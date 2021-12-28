@@ -101,7 +101,6 @@ namespace rgbd_slam {
 
                 //local primitive map
 
-
         };
 
     }

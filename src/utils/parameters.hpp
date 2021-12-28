@@ -41,9 +41,9 @@ namespace rgbd_slam {
             static double get_camera_2_rotation_z() { return _camera2RotationZ; };
 
             // Optimisation parameters
-            static unsigned int get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
-            static unsigned int get_maximum_point_count_per_frame() { return _maximumPointPerFrame; };
-            static unsigned int get_optimization_maximum_iterations() { return _optimizationMaximumIterations; };
+            static uint get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
+            static uint get_maximum_point_count_per_frame() { return _maximumPointPerFrame; };
+            static uint get_optimization_maximum_iterations() { return _optimizationMaximumIterations; };
             static double get_optimization_error_precision() { return _optimizationErrorPrecision; };
             static double get_optimization_xtol() { return _optimizationToleranceOfSolutionVectorNorm; };
             static double get_optimization_ftol() { return _optimizationToleranceOfVectorFunction; };
@@ -59,23 +59,23 @@ namespace rgbd_slam {
             static double get_search_matches_distance() { return _matchSearchRadius; };
             static double get_search_matches_cell_size() { return _matchSearchCellSize; };
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
-            static unsigned int get_minimum_hessian() { return _detectorMinHessian; };
-            static unsigned int get_keypoint_refresh_frequency() { return _keypointRefreshFrequency; };
-            static unsigned int get_optical_flow_pyramid_depth() { return _opticalFlowPyramidDepth; };
-            static unsigned int get_optical_flow_pyramid_windown_size() { return _opticalFlowPyramidWindowSize; };
-            static unsigned int get_optical_flow_max_error() { return _opticalFlowMaxError; };
-            static unsigned int get_optical_flow_max_distance() { return _opticalFlowMaxDistance; };
-            static unsigned int get_keypoint_mask_diameter() { return _keypointMaskDiameter; };
+            static uint get_minimum_hessian() { return _detectorMinHessian; };
+            static uint get_keypoint_refresh_frequency() { return _keypointRefreshFrequency; };
+            static uint get_optical_flow_pyramid_depth() { return _opticalFlowPyramidDepth; };
+            static uint get_optical_flow_pyramid_windown_size() { return _opticalFlowPyramidWindowSize; };
+            static uint get_optical_flow_max_error() { return _opticalFlowMaxError; };
+            static uint get_optical_flow_max_distance() { return _opticalFlowMaxDistance; };
+            static uint get_keypoint_mask_diameter() { return _keypointMaskDiameter; };
 
             static float get_maximum_plane_match_angle() { return _primitiveMaximumCosAngle; };
             static float get_maximum_merge_distance() { return _primitiveMaximumMergeDistance; };
-            static unsigned int get_depth_map_patch_size() { return _depthMapPatchSize; };
+            static uint get_depth_map_patch_size() { return _depthMapPatchSize; };
 
-            static unsigned int get_minimum_plane_seed_count() { return _minimumPlaneSeedCount; };
-            static unsigned int get_minimum_cell_activated() { return _minimumCellActivated; };
+            static uint get_minimum_plane_seed_count() { return _minimumPlaneSeedCount; };
+            static uint get_minimum_cell_activated() { return _minimumCellActivated; };
             static double get_depth_sigma_error() { return _depthSigmaError; };
             static double get_depth_sigma_margin() { return _depthSigmaMargin; };
-            static unsigned int get_depth_discontinuity_limit() { return _depthDiscontinuityLimit; };
+            static uint get_depth_discontinuity_limit() { return _depthDiscontinuityLimit; };
             static double get_depth_alpha() { return _depthAlpha; };
 
             static float get_cylinder_ransac_max_distance() { return _cylinderRansacSqrtMaxDistance; };
@@ -84,10 +84,10 @@ namespace rgbd_slam {
             // Map
 
             // Max unmatched points to consider this map point as lost
-            static unsigned int get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
+            static uint get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
             //Observe a point for N frames to gain max liability
-            static unsigned int get_point_age_confidence() { return _pointAgeConfidence; };
-            static unsigned int get_point_staged_age_confidence() { return _pointStagedAgeConfidence; };
+            static uint get_point_age_confidence() { return _pointAgeConfidence; };
+            static uint get_point_staged_age_confidence() { return _pointStagedAgeConfidence; };
             // Minimum point liability for the local map
             static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
             static double get_maximum_map_retroprojection_error() { return _mapMaximumRetroprojectionError; };
@@ -126,8 +126,8 @@ namespace rgbd_slam {
             inline static double _camera2RotationZ;
 
             // Position optimization
-            inline static unsigned int _minimumPointForOptimization;    // Minimum points to launch optimization
-            inline static unsigned int _maximumPointPerFrame;           // maximum points per frame, over which we do not want to detect more points (optimization)
+            inline static uint _minimumPointForOptimization;    // Minimum points to launch optimization
+            inline static uint _maximumPointPerFrame;           // maximum points per frame, over which we do not want to detect more points (optimization)
 
             inline static double _optimizationToleranceOfSolutionVectorNorm;    // tolerance for the norm of the solution vector
             inline static double _optimizationToleranceOfVectorFunction;        // tolerance for the norm of the vector function
@@ -136,7 +136,7 @@ namespace rgbd_slam {
             inline static double _optimizationDiagonalStepBoundShift;           // step bound for the diagonal shift
             inline static double _optimizationErrorPrecision;                   // error precision
 
-            inline static unsigned int _optimizationMaximumIterations;  // Max iteration of the Levenberg Marquart optimisation
+            inline static uint _optimizationMaximumIterations;  // Max iteration of the Levenberg Marquart optimisation
 
             inline static double _pointWeightThreshold;
             inline static double _pointWeightCoefficient;
@@ -148,33 +148,33 @@ namespace rgbd_slam {
             inline static double _matchSearchRadius;    // Radius of the space around a point to search match points ins
             inline static int _matchSearchCellSize;     // Size of a search space divider 
             inline static double _maximumMatchDistance; // Maximum distance between a point and his mach before refusing the match
-            inline static unsigned int _detectorMinHessian;
-            inline static unsigned int _keypointRefreshFrequency;
-            inline static unsigned int _opticalFlowPyramidDepth;
-            inline static unsigned int _opticalFlowPyramidWindowSize;
-            inline static unsigned int _opticalFlowMaxError;
-            inline static unsigned int _opticalFlowMaxDistance;
-            inline static unsigned int _keypointMaskDiameter;
+            inline static uint _detectorMinHessian;
+            inline static uint _keypointRefreshFrequency;
+            inline static uint _opticalFlowPyramidDepth;
+            inline static uint _opticalFlowPyramidWindowSize;
+            inline static uint _opticalFlowMaxError;
+            inline static uint _opticalFlowMaxDistance;
+            inline static uint _keypointMaskDiameter;
 
             // Primitive extraction parameters
             inline static float _primitiveMaximumCosAngle;         // Maximum angle between two planes to consider merging
             inline static float _primitiveMaximumMergeDistance;    // Maximum plane patch merge distance
-            inline static unsigned int _depthMapPatchSize;         // Size of the minimum search area
+            inline static uint _depthMapPatchSize;         // Size of the minimum search area
 
-            inline static unsigned int _minimumPlaneSeedCount;     // Minimum plane patches in a set to consider merging 
-            inline static unsigned int _minimumCellActivated;
+            inline static uint _minimumPlaneSeedCount;     // Minimum plane patches in a set to consider merging 
+            inline static uint _minimumCellActivated;
             inline static double _depthSigmaError;
             inline static double _depthSigmaMargin;        // [3, 8]
-            inline static unsigned int _depthDiscontinuityLimit; // Max number of discontinuities in a cell to reject it
+            inline static uint _depthDiscontinuityLimit; // Max number of discontinuities in a cell to reject it
             inline static double _depthAlpha;              // [0.02, 0.04]
 
             inline static float _cylinderRansacSqrtMaxDistance;
             inline static float _cylinderRansacMinimumScore;
 
             // local map management
-            inline static unsigned int _pointUnmatchedCountToLoose;    // Maximum unmatched times before removal
-            inline static unsigned int _pointAgeConfidence;            // Minimum age of a point to consider it good 
-            inline static unsigned int _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
+            inline static uint _pointUnmatchedCountToLoose;    // Maximum unmatched times before removal
+            inline static uint _pointAgeConfidence;            // Minimum age of a point to consider it good 
+            inline static uint _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
             inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
             inline static double _mapMaximumRetroprojectionError;       // Maximum error between a map point retro projection and the new point position before removing it from the local map (in millimeters)
     };

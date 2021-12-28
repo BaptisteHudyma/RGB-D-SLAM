@@ -9,7 +9,7 @@
 
 namespace rgbd_slam {
 
-    RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, unsigned int imageWidth, unsigned int imageHeight) :
+    RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, const uint imageWidth, const uint imageHeight) :
         _width(imageWidth),
         _height(imageHeight),
 
@@ -187,26 +187,36 @@ namespace rgbd_slam {
     const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         //get a pose with the motion model
-        utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
+        //utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
+        utils::Pose refinedPose = (_currentPose);
 
         // Detect and match key points with local map points
         const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) == 0;
-        
+
         const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features(_currentPose);
         const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
         const match_point_container& matchedPoints = _localMap->find_matches(refinedPose, keypointObject);
-        _computeKeypointCount += 1;
 
-        if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
-            // Enough matches to optimize
-            // Optimize refined pose
-            refinedPose = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints);
-        }
-        else
+        if (_computeKeypointCount != 0)
         {
-            // Not enough matches
-            utils::log("Not enough points match for pose estimation: " + std::to_string(matchedPoints.size()) + " matches with " + std::to_string(keypointObject.get_keypoint_count()) + " detected or tracked points");
+            if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
+                // Enough matches to optimize
+                // Optimize refined pose
+                refinedPose = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints);
+            }
+            else
+            {
+                // Not enough matches
+                utils::log("Not enough points match for pose estimation: " + std::to_string(matchedPoints.size()) + " matches with " + std::to_string(keypointObject.get_keypoint_count()) + " detected or tracked points");
+            }
         }
+        //else: first call: no optimization
+
+        if (shouldRecomputeKeypoints) {
+            // reset the counter to not overflow
+            _computeKeypointCount = 0; 
+        }
+        _computeKeypointCount += 1;
 
         // Update local map
         _localMap->update(refinedPose, keypointObject);

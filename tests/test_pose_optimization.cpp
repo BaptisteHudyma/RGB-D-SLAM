@@ -7,7 +7,7 @@
 
 namespace rgbd_slam {
 
-    const unsigned int NUMBER_OF_POINTS_IN_CUBE = 3 * 3 * 3;
+    const unsigned int NUMBER_OF_POINTS_IN_CUBE = 4 * 4 * 4;
     const double CUBE_SIDE_SIZE = 2000;   // Millimeters
     const double CUBE_START_X = 500;
     const double CUBE_START_Y = 500;
@@ -17,7 +17,7 @@ namespace rgbd_slam {
     const double END_ROTATION = M_PI * 0.7;
 
     const double GOOD_GUESS = 0.9;
-    const double MEDIUM_CUESS = 0.5;
+    const double MEDIUM_GUESS = 0.5;
     const double BAD_GUESS = 0.1;
 
 
@@ -211,8 +211,8 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(END_POSITION * MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS);
-        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS);
+        const vector3 initialPositionGuess(END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_GUESS, END_ROTATION * MEDIUM_GUESS, END_ROTATION * MEDIUM_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -301,7 +301,7 @@ namespace rgbd_slam {
 
 
         // Estimated pose base
-        const vector3 initialPositionGuess(END_POSITION* MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS, END_POSITION * MEDIUM_CUESS);
+        const vector3 initialPositionGuess(END_POSITION* MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS);
         const EulerAngles initialEulerAnglesGuess(0, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
@@ -466,7 +466,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_CUESS, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_GUESS, 0, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -491,7 +491,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, END_ROTATION * MEDIUM_CUESS, 0);
+        const EulerAngles initialEulerAnglesGuess(0, END_ROTATION * MEDIUM_GUESS, 0);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -516,7 +516,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(0, 0, END_ROTATION * MEDIUM_CUESS);
+        const EulerAngles initialEulerAnglesGuess(0, 0, END_ROTATION * MEDIUM_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
@@ -541,7 +541,7 @@ namespace rgbd_slam {
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
-        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS, END_ROTATION * MEDIUM_CUESS);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION * MEDIUM_GUESS, END_ROTATION * MEDIUM_GUESS, END_ROTATION * MEDIUM_GUESS);
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 

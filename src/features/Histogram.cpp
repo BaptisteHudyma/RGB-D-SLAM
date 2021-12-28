@@ -5,14 +5,14 @@ namespace rgbd_slam {
 namespace features {
 namespace primitives {
 
-    Histogram::Histogram(const unsigned int binPerCoordCount) : 
+    Histogram::Histogram(const uint binPerCoordCount) : 
         _binPerCoordCount(binPerCoordCount),
         _binCount(_binPerCoordCount * _binPerCoordCount),
         //set limits
         _minX(0), _minY(-M_PI),
         _maxXminX(M_PI - _minX), _maxYminY(M_PI - _minY)
     {
-        _H = new unsigned int[_binCount];
+        _H = new uint[_binCount];
         reset();
     }
 
@@ -26,7 +26,7 @@ namespace primitives {
         _pointCount = points.rows();
         _B.assign(_pointCount, -1);
 
-        for(unsigned int i = 0; i < _pointCount; i += 1) {
+        for(uint i = 0; i < _pointCount; i += 1) {
             if(flags[i]) {
                 int xQ = (_binPerCoordCount - 1) * (points(i, 0) - _minX) / _maxXminX;
                 //dealing with degeneracy
@@ -41,10 +41,10 @@ namespace primitives {
         }
     }
 
-    void Histogram::get_points_from_most_frequent_bin(std::vector<unsigned int>& pointIds ) {
+    void Histogram::get_points_from_most_frequent_bin(std::vector<uint>& pointIds ) {
         int mostFrequentBin = -1;
-        unsigned int maxOccurencesCount = 0;
-        for(unsigned int i = 0; i < _binCount; i += 1) {
+        uint maxOccurencesCount = 0;
+        for(uint i = 0; i < _binCount; i += 1) {
             //get most frequent bin index
             if(_H[i] > maxOccurencesCount) {
                 mostFrequentBin = i;
@@ -54,7 +54,7 @@ namespace primitives {
 
         if(mostFrequentBin >= 0) {
             //most frequent bin is not empty
-            for(unsigned int i = 0; i < _pointCount; i += 1) {
+            for(uint i = 0; i < _pointCount; i += 1) {
                 if(_B[i] == mostFrequentBin) {
                     pointIds.push_back(i);
                 }
@@ -62,7 +62,7 @@ namespace primitives {
         }
     }
 
-    void Histogram::remove_point(const unsigned int pointId) {
+    void Histogram::remove_point(const uint pointId) {
         if(pointId > _B.size()) {
             utils::log_error("Histogram: remove_point called on invalid ID");
             exit(-1);

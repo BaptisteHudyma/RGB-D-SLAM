@@ -38,14 +38,14 @@ namespace primitives {
             /**
               * \brief Return this shape assigned id
               */
-            unsigned int get_id() const { return _id; };
+            uint get_id() const { return _id; };
 
 
         protected:
             /**
               * \brief Hidden constructor, to set _id and shape
               */
-            Primitive(const unsigned int id, const cv::Mat& shapeMask);
+            Primitive(const uint id, const cv::Mat& shapeMask);
 
             /**
               * \brief Compute the Inter over Union factor of two masks
@@ -57,7 +57,7 @@ namespace primitives {
             double get_IOU(const std::unique_ptr<Primitive>& prim) const;
 
             //members
-            const unsigned int _id;
+            const uint _id;
             cv::Mat _shapeMask;
 
         private:
@@ -80,7 +80,7 @@ namespace primitives {
              * \param[in] id ID assigned to this shape (for tracking and debug)
              * \param[in] shapeMask Mask of the shape in the reference image
              */
-            Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, unsigned int id, const cv::Mat& shapeMask);
+            Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, uint id, const cv::Mat& shapeMask);
 
             /**
              * \brief Get the similarity of two cylinders, based on normal direction and radius
@@ -120,7 +120,7 @@ namespace primitives {
              * \param[in] id ID assigned to this shape (for tracking and debug)
              * \param[in] shapeMask Mask of the shape in the reference image
              */
-            Plane(const std::unique_ptr<Plane_Segment>& planeSeg, unsigned int id, const cv::Mat& shapeMask);
+            Plane(const std::unique_ptr<Plane_Segment>& planeSeg, uint id, const cv::Mat& shapeMask);
 
             /**
              * \brief Get the similarity of two planes, based on normal direction

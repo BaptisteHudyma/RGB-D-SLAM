@@ -6,7 +6,7 @@ namespace rgbd_slam {
 namespace features {
 namespace primitives {
 
-        Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const unsigned int width, const unsigned int height, const unsigned int cellSize) 
+        Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize) 
             : 
                 _width(width), _height(height), _cellSize(cellSize),
                 _cloudArray(width * height, 3),
@@ -59,14 +59,14 @@ namespace primitives {
 
             cv::Mat outputDepth = cv::Mat::zeros(_height, _width, CV_32F);
             _cloudArray.setZero();
-            for(unsigned int r = 0; r < _height; r++){
+            for(uint r = 0; r < _height; r++){
                 float* sx = _Xt.ptr<float>(r);
                 float* sy = _Yt.ptr<float>(r);
                 float* sz = depthImage.ptr<float>(r);
                 float* u_ptr = _U.ptr<float>(r);
                 float* v_ptr = _V.ptr<float>(r);
 
-                for(unsigned int c = 0; c < _width; c++){
+                for(uint c = 0; c < _width; c++){
                     float z = sz[c];
                     float u = u_ptr[c];
                     float v = v_ptr[c];
@@ -83,11 +83,11 @@ namespace primitives {
             }
 
             //project cloud point by cells
-            unsigned int mxn = _width * _height;
-            unsigned int mxn2 = 2 * mxn;
-            for(unsigned int r = 0, it = 0; r < _height; r++){
+            uint mxn = _width * _height;
+            uint mxn2 = 2 * mxn;
+            for(uint r = 0, it = 0; r < _height; r++){
                 int* cellMapPtr = _cellMap.ptr<int>(r);
-                for(unsigned int c = 0; c < _width; c++, it++){
+                for(uint c = 0; c < _width; c++, it++){
                     int id = cellMapPtr[c];
                     organizedCloudArray(id) = _cloudArray(it);
                     organizedCloudArray(mxn + id) = _cloudArray(mxn + it);
@@ -115,7 +115,7 @@ namespace primitives {
          *  Called after loading parameters to init matrices
          */
         void Depth_Operations::init_matrices() {
-            unsigned int horizontalCellsCount = static_cast<unsigned int>(_width / _cellSize);
+            uint horizontalCellsCount = static_cast<uint>(_width / _cellSize);
 
             _fxIr = Parameters::get_camera_2_focal_x();
             _fyIr = Parameters::get_camera_2_focal_y();
@@ -127,8 +127,8 @@ namespace primitives {
             _cyRgb = Parameters::get_camera_1_center_y();
 
             // Pre-computations for backprojection
-            for (unsigned int r = 0; r < _height; r++){
-                for (unsigned int c = 0; c < _width; c++){
+            for (uint r = 0; r < _height; r++){
+                for (uint c = 0; c < _width; c++){
                     // Not efficient but at this stage doesn t matter
                     _Xpre.at<float>(r, c) = static_cast<float>((c - _cxIr) / _fxIr); 
                     _Ypre.at<float>(r, c) = static_cast<float>((r - _cyIr) / _fyIr);
@@ -136,13 +136,13 @@ namespace primitives {
             }
 
             // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point clouds are contiguous
-            for (unsigned int r = 0; r < _height; r++){
-                unsigned int cellR = static_cast<unsigned int>(r / _cellSize);
-                unsigned int localR = static_cast<unsigned int>(r % _cellSize);
+            for (uint r = 0; r < _height; r++){
+                uint cellR = static_cast<uint>(r / _cellSize);
+                uint localR = static_cast<uint>(r % _cellSize);
 
-                for (unsigned int c = 0; c < _width; c++){
-                    unsigned int cellC =  static_cast<unsigned int>(c / _cellSize);
-                    unsigned int localC = static_cast<unsigned int>(c % _cellSize);
+                for (uint c = 0; c < _width; c++){
+                    uint cellC =  static_cast<uint>(c / _cellSize);
+                    uint localC = static_cast<uint>(c % _cellSize);
                     _cellMap.at<int>(r, c) = (cellR * horizontalCellsCount + cellC) * _cellSize * _cellSize + localR * _cellSize + localC;
                 }
             }

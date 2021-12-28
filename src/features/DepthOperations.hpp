@@ -20,7 +20,7 @@ namespace primitives {
               * \param[in] height Depth image height (constant)
               * \param[in] cellSize Size of the cloud point division (> 0)
               */
-            Depth_Operations(const std::string& paramFilePath, const unsigned int width, const unsigned int height, const unsigned int cellSize);
+            Depth_Operations(const std::string& paramFilePath, const uint width, const uint height, const uint cellSize);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -58,9 +58,9 @@ namespace primitives {
             void init_matrices();
 
         private:
-            unsigned int _width;
-            unsigned int _height;
-            unsigned int _cellSize;
+            uint _width;
+            uint _height;
+            uint _cellSize;
             bool _isOk;
 
             Eigen::MatrixXf _cloudArray;

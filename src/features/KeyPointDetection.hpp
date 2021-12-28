@@ -17,7 +17,6 @@ namespace rgbd_slam {
              * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map
              */
             struct KeypointsWithIdStruct {
-                bool _isValid;
                 std::vector<cv::Point2f> _keypoints;
                 std::vector<size_t> _ids;
             };
@@ -189,7 +188,7 @@ namespace rgbd_slam {
                      * \param[in] errorThreshold an error Threshold, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
                      */
-                    KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const size_t pyramidDepth, const size_t windowSize, const double errorThreshold, const double maxDistanceThreshold) const;
+                    KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold) const;
 
 
                     /**
@@ -201,7 +200,7 @@ namespace rgbd_slam {
                      *
                      * \return An array of points in the input image
                      */
-                    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const size_t minimumPointsForValidity) const;
+                    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const;
 
                     const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer) const;
 

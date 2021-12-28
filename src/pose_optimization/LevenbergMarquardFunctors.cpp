@@ -122,7 +122,7 @@ namespace rgbd_slam {
 
 
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
+        Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
             Levenberg_Marquardt_Functor<double>(n, points.size()),
             _points(points),
             _rotation(worldRotation),
@@ -136,7 +136,7 @@ namespace rgbd_slam {
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
             const vector3 translation(x(0), x(1), x(2));
 
-            const unsigned int pointContainerSize = _points.size();
+            const size_t pointContainerSize = _points.size();
 
             const double sqrtOfErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / static_cast<double>(pointContainerSize));
             const double lossAlpha = Parameters::get_point_loss_alpha();
@@ -145,7 +145,7 @@ namespace rgbd_slam {
             const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
 
             double mean = 0;
-            unsigned int pointIndex = 0;
+            size_t pointIndex = 0;
             for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 // Compute distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
@@ -153,8 +153,9 @@ namespace rgbd_slam {
                 fvec(pointIndex) = distance;
             }
 
-            for(unsigned int i = 0; i < pointContainerSize; ++i)
+            for(size_t i = 0; i < pointContainerSize; ++i)
             {
+                // distance squared divided by mean of all distances
                 const double distance = (fvec(i) * fvec(i)) / mean;
 
                 // Pass it to loss function

@@ -34,20 +34,20 @@ namespace rgbd_slam {
                 typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, 1> ValueType;
                 typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
 
-                Levenberg_Marquardt_Functor(const unsigned int inputCount, const unsigned int outputCount) :
+                Levenberg_Marquardt_Functor(const uint inputCount, const uint outputCount) :
                     _M(inputCount), _N(outputCount)
                 {
                 }
 
-                unsigned int values() const {
+                uint values() const {
                     return _N;
                 }
-                unsigned int inputs() const {
+                uint inputs() const {
                     return _M;
                 }
 
-                unsigned int _M;
-                unsigned int _N;
+                uint _M;
+                uint _N;
             };
 
 
@@ -80,7 +80,7 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Global_Pose_Estimator(const unsigned int n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
+            Global_Pose_Estimator(const size_t n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
 
             /**
              * \brief Return te distance between the map point and the it's matched point
