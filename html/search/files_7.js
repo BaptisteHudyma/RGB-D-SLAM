@@ -1,19 +1,6 @@
 var searchData=
 [
-  ['parameters_2ecpp_0',['Parameters.cpp',['../pose__estimation_2_parameters_8cpp.html',1,'']]],
-  ['parameters_2ecpp_1',['parameters.cpp',['../utils_2_parameters_8cpp.html',1,'']]],
-  ['parameters_2ehpp_2',['Parameters.hpp',['../pose__estimation_2_parameters_8hpp.html',1,'']]],
-  ['parameters_2ehpp_3',['parameters.hpp',['../utils_2_parameters_8hpp.html',1,'']]],
-  ['planesegment_2ecpp_4',['PlaneSegment.cpp',['../_plane_segment_8cpp.html',1,'']]],
-  ['planesegment_2ehpp_5',['PlaneSegment.hpp',['../_plane_segment_8hpp.html',1,'']]],
-  ['pnpsolver_2ecpp_6',['PNPSolver.cpp',['../_p_n_p_solver_8cpp.html',1,'']]],
-  ['pnpsolver_2ehpp_7',['PNPSolver.hpp',['../_p_n_p_solver_8hpp.html',1,'']]],
-  ['pose_2ecpp_8',['Pose.cpp',['../_pose_8cpp.html',1,'']]],
-  ['pose_2ehpp_9',['Pose.hpp',['../_pose_8hpp.html',1,'']]],
-  ['poseoptimization_2ecpp_10',['PoseOptimization.cpp',['../_pose_optimization_8cpp.html',1,'']]],
-  ['poseoptimization_2ehpp_11',['PoseOptimization.hpp',['../_pose_optimization_8hpp.html',1,'']]],
-  ['poseutils_2ecpp_12',['PoseUtils.cpp',['../_pose_utils_8cpp.html',1,'']]],
-  ['poseutils_2ehpp_13',['PoseUtils.hpp',['../_pose_utils_8hpp.html',1,'']]],
-  ['primitivedetection_2ecpp_14',['PrimitiveDetection.cpp',['../_primitive_detection_8cpp.html',1,'']]],
-  ['primitivedetection_2ehpp_15',['PrimitiveDetection.hpp',['../_primitive_detection_8hpp.html',1,'']]]
+  ['readme_2emd_0',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['rgbd_5fslam_2ecpp_1',['RGBD_SLAM.cpp',['../_r_g_b_d___s_l_a_m_8cpp.html',1,'']]],
+  ['rgbd_5fslam_2ehpp_2',['RGBD_SLAM.hpp',['../_r_g_b_d___s_l_a_m_8hpp.html',1,'']]]
 ];

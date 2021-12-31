@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['estate_0',['eState',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1fe',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
-  ['estate_5flost_1',['eState_LOST',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1fea496c42a92d23b6d69d8ba08041c8ece5',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
-  ['estate_5fnot_5finitialized_2',['eState_NOT_INITIALIZED',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1fea36c960419e1c7560f2e5b39849acadde',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
-  ['estate_5ftracking_3',['eState_TRACKING',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1feafd3b4be297632cfea18daa7be730b6b6',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
-  ['etriangulation_5fpolicy_5falways_5ftriangulate_4',['etriangulation_policy_always_triangulate',['../classrgbd__slam_1_1pose_estimation_1_1_parameters.html#a487b35c0da0e695467470e7a2fbf997ba8c2f8a337ce4c3e7aa39595d699667c2',1,'rgbd_slam::poseEstimation::Parameters']]],
-  ['etriangulation_5fpolicy_5fdecreasing_5fmatches_5',['etriangulation_policy_decreasing_matches',['../classrgbd__slam_1_1pose_estimation_1_1_parameters.html#a487b35c0da0e695467470e7a2fbf997ba49c6f3fca1afdc210ff8534b88e4b1f6',1,'rgbd_slam::poseEstimation::Parameters']]],
-  ['etriangulation_5fpolicy_5fmap_5fsize_6',['etriangulation_policy_map_size',['../classrgbd__slam_1_1pose_estimation_1_1_parameters.html#a487b35c0da0e695467470e7a2fbf997ba6790d45b2bac04cb9696b03392b04502',1,'rgbd_slam::poseEstimation::Parameters']]],
-  ['expand_5fsegment_7',['expand_segment',['../classrgbd__slam_1_1primitive_detection_1_1_plane___segment.html#a5778316acb4e31bfc6cb926652eb2d4d',1,'rgbd_slam::primitiveDetection::Plane_Segment::expand_segment(const Plane_Segment &amp;planeSegment)'],['../classrgbd__slam_1_1primitive_detection_1_1_plane___segment.html#ad8401c3523b3024e362c5580fbe38a77',1,'rgbd_slam::primitiveDetection::Plane_Segment::expand_segment(const std::unique_ptr&lt; Plane_Segment &gt; &amp;planeSegment)']]]
+  ['depth_5foperations_0',['Depth_Operations',['../classrgbd__slam_1_1features_1_1primitives_1_1_depth___operations.html#acdbdb0ca169dc118b65db34c98c5d5fd',1,'rgbd_slam::features::primitives::Depth_Operations::Depth_Operations()'],['../classrgbd__slam_1_1features_1_1primitives_1_1_depth___operations.html',1,'rgbd_slam::features::primitives::Depth_Operations']]],
+  ['depthoperations_2ecpp_1',['DepthOperations.cpp',['../_depth_operations_8cpp.html',1,'']]],
+  ['depthoperations_2ehpp_2',['DepthOperations.hpp',['../_depth_operations_8hpp.html',1,'']]],
+  ['detect_5fkeypoints_3',['detect_keypoints',['../classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a3dd4e2a25365bca3f79c605ac069503c',1,'rgbd_slam::features::keypoints::Key_Point_Extraction']]],
+  ['display_4',['display',['../classrgbd__slam_1_1utils_1_1_pose.html#a2e0fc4113367a9b843df5493e410577e',1,'rgbd_slam::utils::Pose']]],
+  ['distance_5',['distance',['../classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ab056be57a479d22327a0aa21bc88a9e0',1,'rgbd_slam::features::primitives::Cylinder_Segment::distance(const Eigen::Vector3d &amp;point)'],['../classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a1c2eb10c436165721677a60f06b11f4d',1,'rgbd_slam::features::primitives::Cylinder_Segment::distance(const Eigen::Vector3d &amp;point, const uint segmentId)']]]
 ];

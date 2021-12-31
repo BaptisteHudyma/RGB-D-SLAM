@@ -1,0 +1,192 @@
+\hypertarget{parameters_8hpp_source}{}\doxysection{parameters.\+hpp}
+\label{parameters_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/parameters.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/parameters.hpp}}
+\mbox{\hyperlink{parameters_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBD\_SLAM\_PARAMETERS\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGDB\_SLAM\_PARAMETERS\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1_parameters}{Parameters}}}
+\DoxyCodeLine{9     \{}
+\DoxyCodeLine{10         \textcolor{keyword}{public}:}
+\DoxyCodeLine{11             \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_af70b03f5ad79e348930ab6d2a9fe419f}{parse\_file}}(\textcolor{keyword}{const} std::string\& fileName );}
+\DoxyCodeLine{12             \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ac1f915351a6d6e326cc3c5f5709d5580}{load\_defaut}}();}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14             \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ad607d01aa693b5154cac576542e689fb}{is\_valid}}() \{ \textcolor{keywordflow}{return} \_isValid; \};}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a454d495bbb337b827b6d391429c425fc}{get\_starting\_position\_x}}() \{ \textcolor{keywordflow}{return} \_startingPositionX; \};}
+\DoxyCodeLine{17             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ac2df9ec15514961c935757693ea59c16}{get\_starting\_position\_y}}() \{ \textcolor{keywordflow}{return} \_startingPositionY; \};}
+\DoxyCodeLine{18             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_af03a923c0b4547d45040ddf710eae5df}{get\_starting\_position\_z}}() \{ \textcolor{keywordflow}{return} \_startingPositionZ; \};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a7b77811670b80298461d159997870d8b}{get\_starting\_rotation\_x}}() \{ \textcolor{keywordflow}{return} \_startingRotationX; \};}
+\DoxyCodeLine{21             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_afd340c83482e1ffdc1cb41ae98b16840}{get\_starting\_rotation\_y}}() \{ \textcolor{keywordflow}{return} \_startingRotationY; \};}
+\DoxyCodeLine{22             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a07ef3675adeca139a5a4eae0d2a4f12c}{get\_starting\_rotation\_z}}() \{ \textcolor{keywordflow}{return} \_startingRotationZ; \};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24             \textcolor{comment}{// Camera 1 is the left camera in stereo, and the color camera in RGBD}}
+\DoxyCodeLine{25             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3ac395c89ea2b99334d3927b79e39202}{get\_camera\_1\_center\_x}}() \{ \textcolor{keywordflow}{return} \_camera1CenterX; \};}
+\DoxyCodeLine{26             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a69ac6bffa576c0b3f805f7e1ebd7b90d}{get\_camera\_1\_center\_y}}() \{ \textcolor{keywordflow}{return} \_camera1CenterY; \};}
+\DoxyCodeLine{27             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a83a41be5150feda0a6d3525fecbdcaf7}{get\_camera\_1\_focal\_x}}() \{ \textcolor{keywordflow}{return} \_camera1FocalX; \};}
+\DoxyCodeLine{28             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a68413fd2dfad9fd47a56970f5673ce19}{get\_camera\_1\_focal\_y}}() \{ \textcolor{keywordflow}{return} \_camera1FocalY; \};}
+\DoxyCodeLine{29             \textcolor{comment}{// Camera 2 is the right camera in stereo, and the depth camera in RGBD}}
+\DoxyCodeLine{30             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3a4ddbc4ca8e5461a05790345f99f21d}{get\_camera\_2\_center\_x}}() \{ \textcolor{keywordflow}{return} \_camera2CenterX; \};}
+\DoxyCodeLine{31             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_acf8b007080e2cd457c80d679c32302a7}{get\_camera\_2\_center\_y}}() \{ \textcolor{keywordflow}{return} \_camera2CenterY; \};}
+\DoxyCodeLine{32             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a9ba3d3c5130817ac0674e3feb7ff2306}{get\_camera\_2\_focal\_x}}() \{ \textcolor{keywordflow}{return} \_camera2FocalX; \};}
+\DoxyCodeLine{33             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a84a537b7e8e183aee68a98ab2a3e032c}{get\_camera\_2\_focal\_y}}() \{ \textcolor{keywordflow}{return} \_camera2FocalY; \};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a97cbb3aaab53981df657c66b8195122f}{get\_camera\_2\_translation\_x}}() \{ \textcolor{keywordflow}{return} \_camera2TranslationX; \};}
+\DoxyCodeLine{36             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ab41546ebacbaf787a4ecc8a60059cd94}{get\_camera\_2\_translation\_y}}() \{ \textcolor{keywordflow}{return} \_camera2TranslationY; \};}
+\DoxyCodeLine{37             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ab4ce0866cdb1b862eb74d8d2b39fa463}{get\_camera\_2\_translation\_z}}() \{ \textcolor{keywordflow}{return} \_camera2TranslationZ; \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a53bad1018e39b99484b932babd65bfa0}{get\_camera\_2\_rotation\_x}}() \{ \textcolor{keywordflow}{return} \_camera2RotationX; \};}
+\DoxyCodeLine{40             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae61750b1e71287962ecf1ed833ba92e7}{get\_camera\_2\_rotation\_y}}() \{ \textcolor{keywordflow}{return} \_camera2RotationY; \};}
+\DoxyCodeLine{41             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae99ae2aaae91543f64722344e7f2456f}{get\_camera\_2\_rotation\_z}}() \{ \textcolor{keywordflow}{return} \_camera2RotationZ; \};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43             \textcolor{comment}{// Optimisation parameters}}
+\DoxyCodeLine{44             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a850e679de0ef3b2dae619828b4c41643}{get\_minimum\_point\_count\_for\_optimization}}() \{ \textcolor{keywordflow}{return} \_minimumPointForOptimization; \};}
+\DoxyCodeLine{45             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ad5b80f8f279de2bcc308b3375a2df6d2}{get\_maximum\_point\_count\_per\_frame}}() \{ \textcolor{keywordflow}{return} \_maximumPointPerFrame; \};}
+\DoxyCodeLine{46             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a55630cd661c96dd08949c34061ecfcfc}{get\_optimization\_maximum\_iterations}}() \{ \textcolor{keywordflow}{return} \_optimizationMaximumIterations; \};}
+\DoxyCodeLine{47             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a06769aa8310aec9c95a07ffb37db2a81}{get\_optimization\_error\_precision}}() \{ \textcolor{keywordflow}{return} \_optimizationErrorPrecision; \};}
+\DoxyCodeLine{48             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4f25a4898bae767c43d148cbb53a34d0}{get\_optimization\_xtol}}() \{ \textcolor{keywordflow}{return} \_optimizationToleranceOfSolutionVectorNorm; \};}
+\DoxyCodeLine{49             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a5e07b1eeb7eaf94e844d583804978d2c}{get\_optimization\_ftol}}() \{ \textcolor{keywordflow}{return} \_optimizationToleranceOfVectorFunction; \};}
+\DoxyCodeLine{50             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a82042da110892f0cb0fe14c146e10180}{get\_optimization\_gtol}}() \{ \textcolor{keywordflow}{return} \_optimizationToleranceOfErrorFunctionGradient; \};}
+\DoxyCodeLine{51             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a213e6dbf97dcabf42fea5dd00ed80ebe}{get\_optimization\_factor}}() \{ \textcolor{keywordflow}{return} \_optimizationDiagonalStepBoundShift; \};}
+\DoxyCodeLine{52             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a2f9c07e7a672b8dee2299ae34d1218de}{get\_maximum\_optimization\_retroprojection\_error}}() \{ \textcolor{keywordflow}{return} \_maximumRetroprojectionError; \};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ad86267a6f3abea8952163d472ee119e0}{get\_point\_weight\_threshold}}() \{ \textcolor{keywordflow}{return} \_pointWeightThreshold; \};}
+\DoxyCodeLine{55             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_afb7a350f0222cfcb8c826bddd3d949ea}{get\_point\_weight\_coefficient}}() \{ \textcolor{keywordflow}{return} \_pointWeightCoefficient; \};}
+\DoxyCodeLine{56             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_afbde154823f1ca5bb37dadad0dab30f3}{get\_point\_loss\_alpha}}() \{ \textcolor{keywordflow}{return} \_pointLossAlpha; \};}
+\DoxyCodeLine{57             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aababc939e22f72d6675059fa5f2c8163}{get\_point\_loss\_scale}}() \{ \textcolor{keywordflow}{return} \_pointLossScale; \};}
+\DoxyCodeLine{58             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a193cfd6367d5252a77f2220e05bb875b}{get\_point\_error\_multiplier}}() \{ \textcolor{keywordflow}{return} \_pointErrorMultiplier; \};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a5c3b7fe39a4ae5c7382408126b8f1c7a}{get\_search\_matches\_distance}}() \{ \textcolor{keywordflow}{return} \_matchSearchRadius; \};}
+\DoxyCodeLine{61             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_abddde410436ccb2d7856604c417b6d3e}{get\_search\_matches\_cell\_size}}() \{ \textcolor{keywordflow}{return} \_matchSearchCellSize; \};}
+\DoxyCodeLine{62             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a764956641d0ea277a8ee5dfb71459829}{get\_maximum\_match\_distance}}() \{ \textcolor{keywordflow}{return} \_maximumMatchDistance; \};}
+\DoxyCodeLine{63             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3df87291b31400203cd0b98cbe6b4516}{get\_minimum\_hessian}}() \{ \textcolor{keywordflow}{return} \_detectorMinHessian; \};}
+\DoxyCodeLine{64             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_afa41c4bf17939e68fb42afa7811cf0be}{get\_keypoint\_refresh\_frequency}}() \{ \textcolor{keywordflow}{return} \_keypointRefreshFrequency; \};}
+\DoxyCodeLine{65             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aeaec9faf2af28267a6d827e4edc5fcdc}{get\_optical\_flow\_pyramid\_depth}}() \{ \textcolor{keywordflow}{return} \_opticalFlowPyramidDepth; \};}
+\DoxyCodeLine{66             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a1485bfcd41228f28bc66f059c404bce7}{get\_optical\_flow\_pyramid\_windown\_size}}() \{ \textcolor{keywordflow}{return} \_opticalFlowPyramidWindowSize; \};}
+\DoxyCodeLine{67             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a1d08b1ffb6d37066cdffe531216103a1}{get\_optical\_flow\_max\_error}}() \{ \textcolor{keywordflow}{return} \_opticalFlowMaxError; \};}
+\DoxyCodeLine{68             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a46332e5816b8d2bcf00043acab567e2e}{get\_optical\_flow\_max\_distance}}() \{ \textcolor{keywordflow}{return} \_opticalFlowMaxDistance; \};}
+\DoxyCodeLine{69             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a526ad7c9813d402145e6e435c88ce8cf}{get\_keypoint\_mask\_diameter}}() \{ \textcolor{keywordflow}{return} \_keypointMaskDiameter; \};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a64cfd1bf21c68ee4ddb7d30610306d45}{get\_maximum\_plane\_match\_angle}}() \{ \textcolor{keywordflow}{return} \_primitiveMaximumCosAngle; \};}
+\DoxyCodeLine{72             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ab30de332b8b16e51b6849aa4c56e802a}{get\_maximum\_merge\_distance}}() \{ \textcolor{keywordflow}{return} \_primitiveMaximumMergeDistance; \};}
+\DoxyCodeLine{73             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_af5b2cfcab2433260bd54fade79f5274c}{get\_depth\_map\_patch\_size}}() \{ \textcolor{keywordflow}{return} \_depthMapPatchSize; \};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a80a20ace688d1e4d19ba03485ace3c40}{get\_minimum\_plane\_seed\_count}}() \{ \textcolor{keywordflow}{return} \_minimumPlaneSeedCount; \};}
+\DoxyCodeLine{76             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ac120684aace96e51ee8a9843db363daa}{get\_minimum\_cell\_activated}}() \{ \textcolor{keywordflow}{return} \_minimumCellActivated; \};}
+\DoxyCodeLine{77             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6ea449db89c681654d729672a54a2d80}{get\_depth\_sigma\_error}}() \{ \textcolor{keywordflow}{return} \_depthSigmaError; \};}
+\DoxyCodeLine{78             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_af91e391e15779536cf872f92a72ae27c}{get\_depth\_sigma\_margin}}() \{ \textcolor{keywordflow}{return} \_depthSigmaMargin; \};}
+\DoxyCodeLine{79             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a2008ff865b9a97b11aa19070c07dfeb7}{get\_depth\_discontinuity\_limit}}() \{ \textcolor{keywordflow}{return} \_depthDiscontinuityLimit; \};}
+\DoxyCodeLine{80             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6c7d861e5bfa643ece5d3c7cb2c9846f}{get\_depth\_alpha}}() \{ \textcolor{keywordflow}{return} \_depthAlpha; \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4cb40ff3ae97b22ca42dcf20bee15ed6}{get\_cylinder\_ransac\_max\_distance}}() \{ \textcolor{keywordflow}{return} \_cylinderRansacSqrtMaxDistance; \};}
+\DoxyCodeLine{83             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae1190b01216e37255a79ed33740bdf3c}{get\_cylinder\_ransac\_minimm\_score}}() \{ \textcolor{keywordflow}{return} \_cylinderRansacMinimumScore; \};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85             \textcolor{comment}{// Map}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87             \textcolor{comment}{// Max unmatched points to consider this map point as lost}}
+\DoxyCodeLine{88             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3be7111a9c245fdc4330d26da4193b6d}{get\_maximum\_unmatched\_before\_removal}}() \{ \textcolor{keywordflow}{return} \_pointUnmatchedCountToLoose; \};}
+\DoxyCodeLine{89             \textcolor{comment}{//Observe a point for N frames to gain max liability}}
+\DoxyCodeLine{90             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae5705b7f677376e5c7ce01248a24e543}{get\_point\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointAgeConfidence; \};}
+\DoxyCodeLine{91             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a754162a46c3dda3643df55c6e873d328}{get\_point\_staged\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointStagedAgeConfidence; \};}
+\DoxyCodeLine{92             \textcolor{comment}{// Minimum point liability for the local map}}
+\DoxyCodeLine{93             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4743d8efa22ba16a704875096d7817a3}{get\_minimum\_confidence\_for\_local\_map}}() \{ \textcolor{keywordflow}{return} \_pointMinimumConfidenceForMap; \};}
+\DoxyCodeLine{94             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e0373a14804d1270}{get\_maximum\_map\_retroprojection\_error}}() \{ \textcolor{keywordflow}{return} \_mapMaximumRetroprojectionError; \};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96         \textcolor{keyword}{private}:}
+\DoxyCodeLine{97             \textcolor{comment}{// Is this set of parameters valid}}
+\DoxyCodeLine{98             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \_isValid; }
+\DoxyCodeLine{99             }
+\DoxyCodeLine{100             \textcolor{comment}{// Starting position (m \& radians)}}
+\DoxyCodeLine{101             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionX;}
+\DoxyCodeLine{102             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionY;}
+\DoxyCodeLine{103             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionZ;}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationX;}
+\DoxyCodeLine{106             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationY;}
+\DoxyCodeLine{107             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationZ;}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109             \textcolor{comment}{// Cameras intrinsics parameters}}
+\DoxyCodeLine{110             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1CenterX;}
+\DoxyCodeLine{111             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1CenterY;}
+\DoxyCodeLine{112             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1FocalX;}
+\DoxyCodeLine{113             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1FocalY;}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2CenterX;}
+\DoxyCodeLine{116             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2CenterY;}
+\DoxyCodeLine{117             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2FocalX;}
+\DoxyCodeLine{118             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2FocalY;}
+\DoxyCodeLine{119             }
+\DoxyCodeLine{120             \textcolor{comment}{// Camera 2 position and rotation}}
+\DoxyCodeLine{121             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationX;}
+\DoxyCodeLine{122             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationY;}
+\DoxyCodeLine{123             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationZ;}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationX;}
+\DoxyCodeLine{126             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationY;}
+\DoxyCodeLine{127             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationZ;}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129             \textcolor{comment}{// Position optimization}}
+\DoxyCodeLine{130             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumPointForOptimization;    \textcolor{comment}{// Minimum points to launch optimization}}
+\DoxyCodeLine{131             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_maximumPointPerFrame;           \textcolor{comment}{// maximum points per frame, over which we do not want to detect more points (optimization)}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfSolutionVectorNorm;    \textcolor{comment}{// tolerance for the norm of the solution vector}}
+\DoxyCodeLine{134             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfVectorFunction;        \textcolor{comment}{// tolerance for the norm of the vector function}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfErrorFunctionGradient; \textcolor{comment}{// tolerance for the norm of the gradient of the error function}}
+\DoxyCodeLine{137             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationDiagonalStepBoundShift;           \textcolor{comment}{// step bound for the diagonal shift}}
+\DoxyCodeLine{138             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationErrorPrecision;                   \textcolor{comment}{// error precision}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_optimizationMaximumIterations;  \textcolor{comment}{// Max iteration of the Levenberg Marquart optimisation}}
+\DoxyCodeLine{141             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_maximumRetroprojectionError;  \textcolor{comment}{// maximum projection error over which we will remove outliers et restart optimization}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightThreshold;}
+\DoxyCodeLine{144             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightCoefficient;}
+\DoxyCodeLine{145             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointLossAlpha;   \textcolor{comment}{// loss steepness (\_infinity, infinity)}}
+\DoxyCodeLine{146             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointLossScale;   \textcolor{comment}{// loss scale (> 0), Unit: Pixels}}
+\DoxyCodeLine{147             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointErrorMultiplier; \textcolor{comment}{// multiplier of the final loss value (useful when  using primitives along with points)}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149             \textcolor{comment}{// Point Detection \& matching}}
+\DoxyCodeLine{150             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_matchSearchRadius;    \textcolor{comment}{// Radius of the space around a point to search match points ins}}
+\DoxyCodeLine{151             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{int} \_matchSearchCellSize;     \textcolor{comment}{// Size of a search space divider }}
+\DoxyCodeLine{152             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_maximumMatchDistance; \textcolor{comment}{// Maximum distance between a point and his mach before refusing the match}}
+\DoxyCodeLine{153             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_detectorMinHessian;}
+\DoxyCodeLine{154             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_keypointRefreshFrequency;}
+\DoxyCodeLine{155             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowPyramidDepth;}
+\DoxyCodeLine{156             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowPyramidWindowSize;}
+\DoxyCodeLine{157             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowMaxError;}
+\DoxyCodeLine{158             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowMaxDistance;}
+\DoxyCodeLine{159             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_keypointMaskDiameter;}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161             \textcolor{comment}{// Primitive extraction parameters}}
+\DoxyCodeLine{162             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumCosAngle;         \textcolor{comment}{// Maximum angle between two planes to consider merging}}
+\DoxyCodeLine{163             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumMergeDistance;    \textcolor{comment}{// Maximum plane patch merge distance}}
+\DoxyCodeLine{164             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_depthMapPatchSize;         \textcolor{comment}{// Size of the minimum search area}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumPlaneSeedCount;     \textcolor{comment}{// Minimum plane patches in a set to consider merging }}
+\DoxyCodeLine{167             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumCellActivated;}
+\DoxyCodeLine{168             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaError;}
+\DoxyCodeLine{169             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaMargin;        \textcolor{comment}{// [3, 8]}}
+\DoxyCodeLine{170             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_depthDiscontinuityLimit; \textcolor{comment}{// Max number of discontinuities in a cell to reject it}}
+\DoxyCodeLine{171             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthAlpha;              \textcolor{comment}{// [0.02, 0.04]}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacSqrtMaxDistance;}
+\DoxyCodeLine{174             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacMinimumScore;}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176             \textcolor{comment}{// local map management}}
+\DoxyCodeLine{177             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointUnmatchedCountToLoose;    \textcolor{comment}{// Maximum unmatched times before removal}}
+\DoxyCodeLine{178             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointAgeConfidence;            \textcolor{comment}{// Minimum age of a point to consider it good }}
+\DoxyCodeLine{179             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointStagedAgeConfidence;        \textcolor{comment}{// Minimum age of a point in staged map to consider it good }}
+\DoxyCodeLine{180             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointMinimumConfidenceForMap;        \textcolor{comment}{// Minimum confidence of a staged point to add it to local map}}
+\DoxyCodeLine{181             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_mapMaximumRetroprojectionError;       \textcolor{comment}{// Maximum error between a map point retro projection and the new point position before removing it from the local map (in millimeters)}}
+\DoxyCodeLine{182     \};}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

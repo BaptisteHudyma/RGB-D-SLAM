@@ -82,28 +82,30 @@ $(function() {
 Public Types</h2></td></tr>
 <tr class="memitem:a994e8053356d67ca9ea175e59149dfdc"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; cv::Vec4f &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a994e8053356d67ca9ea175e59149dfdc">line_vector</a></td></tr>
 <tr class="separator:a994e8053356d67ca9ea175e59149dfdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5caf6515006c5d85e233b3f99c1b2051"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1primitive_detection_1_1_primitive.html">primitiveDetection::Primitive</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a5caf6515006c5d85e233b3f99c1b2051">primitive_container</a></td></tr>
-<tr class="separator:a5caf6515006c5d85e233b3f99c1b2051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a660c497b911a40db76ef501700ded9b6"><td class="memItemLeft" align="right" valign="top">typedef std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">features::primitives::Primitive</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">primitive_uniq_ptr</a></td></tr>
+<tr class="separator:a660c497b911a40db76ef501700ded9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac22a34ff01a2439c6e8796ed2e723b2e"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">primitive_uniq_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac22a34ff01a2439c6e8796ed2e723b2e">primitive_container</a></td></tr>
+<tr class="separator:ac22a34ff01a2439c6e8796ed2e723b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a522ead8498744fdc77e1088c1112e280"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a522ead8498744fdc77e1088c1112e280">RGBD_SLAM</a> (const std::stringstream &amp;dataPath, unsigned int imageWidth=640, unsigned int imageHeight=480)</td></tr>
-<tr class="separator:a522ead8498744fdc77e1088c1112e280"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb78e1fcebcde38e6d8fdabb3333f694"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#acb78e1fcebcde38e6d8fdabb3333f694">track</a> (const cv::Mat &amp;rgbImage, const cv::Mat &amp;depthImage, bool detectLines=false)</td></tr>
-<tr class="memdesc:acb78e1fcebcde38e6d8fdabb3333f694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates a new pose from the given images.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#acb78e1fcebcde38e6d8fdabb3333f694">More...</a><br /></td></tr>
-<tr class="separator:acb78e1fcebcde38e6d8fdabb3333f694"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d0e42ec7025a5bec21bbaad6ce29bf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a5d0e42ec7025a5bec21bbaad6ce29bf8">get_debug_image</a> (const <a class="el" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a> &amp;camPose, const cv::Mat originalRGB, cv::Mat &amp;debugImage, double elapsedTime, bool showPrimitiveMasks=true)</td></tr>
-<tr class="memdesc:a5d0e42ec7025a5bec21bbaad6ce29bf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a debug image.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a5d0e42ec7025a5bec21bbaad6ce29bf8">More...</a><br /></td></tr>
-<tr class="separator:a5d0e42ec7025a5bec21bbaad6ce29bf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7df5116d02f70d6a2c8ffca67a56f5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ab7df5116d02f70d6a2c8ffca67a56f5b">show_statistics</a> (double frameMeanTreatmentTime)</td></tr>
-<tr class="memdesc:ab7df5116d02f70d6a2c8ffca67a56f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the time statistics for certain parts of the program. Kind of a basic profiler.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ab7df5116d02f70d6a2c8ffca67a56f5b">More...</a><br /></td></tr>
-<tr class="separator:ab7df5116d02f70d6a2c8ffca67a56f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa034a580e25b83903a9efb4b27a3e7c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#aa034a580e25b83903a9efb4b27a3e7c6">RGBD_SLAM</a> (const std::stringstream &amp;dataPath, const uint imageWidth=640, const uint imageHeight=480)</td></tr>
+<tr class="separator:aa034a580e25b83903a9efb4b27a3e7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0c846a941da735a65e6f7b40fc7618a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac0c846a941da735a65e6f7b40fc7618a">track</a> (const cv::Mat &amp;rgbImage, const cv::Mat &amp;depthImage, bool detectLines=false)</td></tr>
+<tr class="memdesc:ac0c846a941da735a65e6f7b40fc7618a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates a new pose from the given images.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac0c846a941da735a65e6f7b40fc7618a">More...</a><br /></td></tr>
+<tr class="separator:ac0c846a941da735a65e6f7b40fc7618a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad47db0ad20ab9b12d8a57dcb16893e33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ad47db0ad20ab9b12d8a57dcb16893e33">get_debug_image</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;camPose, const cv::Mat originalRGB, cv::Mat &amp;debugImage, double elapsedTime, bool showPrimitiveMasks=true)</td></tr>
+<tr class="memdesc:ad47db0ad20ab9b12d8a57dcb16893e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a debug image.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ad47db0ad20ab9b12d8a57dcb16893e33">More...</a><br /></td></tr>
+<tr class="separator:ad47db0ad20ab9b12d8a57dcb16893e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c885e3b71e3dcfbb81d7c60937f6136"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a2c885e3b71e3dcfbb81d7c60937f6136">show_statistics</a> (double frameMeanTreatmentTime) const</td></tr>
+<tr class="memdesc:a2c885e3b71e3dcfbb81d7c60937f6136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the time statistics for certain parts of the program. Kind of a basic profiler.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a2c885e3b71e3dcfbb81d7c60937f6136">More...</a><br /></td></tr>
+<tr class="separator:a2c885e3b71e3dcfbb81d7c60937f6136"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a42b0795eeb4ea912499662e0b04f17d4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a42b0795eeb4ea912499662e0b04f17d4">compute_new_pose</a> (const cv::Mat &amp;grayImage, const cv::Mat &amp;depthImage)</td></tr>
-<tr class="memdesc:a42b0795eeb4ea912499662e0b04f17d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a new pose from the keypoints points between two following images. It uses only the keypoints with an associated depth.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a42b0795eeb4ea912499662e0b04f17d4">More...</a><br /></td></tr>
-<tr class="separator:a42b0795eeb4ea912499662e0b04f17d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed05330b1c55f7cf06d898f5011508d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a9ed05330b1c55f7cf06d898f5011508d">compute_new_pose</a> (const cv::Mat &amp;grayImage, const cv::Mat &amp;depthImage)</td></tr>
+<tr class="memdesc:a9ed05330b1c55f7cf06d898f5011508d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a new pose from the keypoints points between two following images. It uses only the keypoints with an associated depth.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a9ed05330b1c55f7cf06d898f5011508d">More...</a><br /></td></tr>
+<tr class="separator:a9ed05330b1c55f7cf06d898f5011508d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80bf1bf691ef1247d8275535d0eb433c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a80bf1bf691ef1247d8275535d0eb433c">compute_lines</a> (const cv::Mat &amp;grayImage, const cv::Mat &amp;depthImage, cv::Mat &amp;outImage)</td></tr>
 <tr class="separator:a80bf1bf691ef1247d8275535d0eb433c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a496a44dc9b41f28e81b806720e8040b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a496a44dc9b41f28e81b806720e8040b9">set_color_vector</a> ()</td></tr>
@@ -124,14 +126,28 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5caf6515006c5d85e233b3f99c1b2051" name="a5caf6515006c5d85e233b3f99c1b2051"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5caf6515006c5d85e233b3f99c1b2051">&#9670;&nbsp;</a></span>primitive_container</h2>
+<a id="ac22a34ff01a2439c6e8796ed2e723b2e" name="ac22a34ff01a2439c6e8796ed2e723b2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac22a34ff01a2439c6e8796ed2e723b2e">&#9670;&nbsp;</a></span>primitive_container</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::list&lt;std::unique_ptr&lt;<a class="el" href="classrgbd__slam_1_1primitive_detection_1_1_primitive.html">primitiveDetection::Primitive</a>&gt; &gt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a5caf6515006c5d85e233b3f99c1b2051">rgbd_slam::RGBD_SLAM::primitive_container</a></td>
+          <td class="memname">typedef std::list&lt;<a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">primitive_uniq_ptr</a>&gt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac22a34ff01a2439c6e8796ed2e723b2e">rgbd_slam::RGBD_SLAM::primitive_container</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a660c497b911a40db76ef501700ded9b6" name="a660c497b911a40db76ef501700ded9b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a660c497b911a40db76ef501700ded9b6">&#9670;&nbsp;</a></span>primitive_uniq_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::unique_ptr&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">features::primitives::Primitive</a>&gt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">rgbd_slam::RGBD_SLAM::primitive_uniq_ptr</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -139,8 +155,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a522ead8498744fdc77e1088c1112e280" name="a522ead8498744fdc77e1088c1112e280"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a522ead8498744fdc77e1088c1112e280">&#9670;&nbsp;</a></span>RGBD_SLAM()</h2>
+<a id="aa034a580e25b83903a9efb4b27a3e7c6" name="aa034a580e25b83903a9efb4b27a3e7c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa034a580e25b83903a9efb4b27a3e7c6">&#9670;&nbsp;</a></span>RGBD_SLAM()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -154,13 +170,13 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>imageWidth</em> = <code>640</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>imageHeight</em> = <code>480</code>&#160;</td>
         </tr>
         <tr>
@@ -226,8 +242,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a42b0795eeb4ea912499662e0b04f17d4" name="a42b0795eeb4ea912499662e0b04f17d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42b0795eeb4ea912499662e0b04f17d4">&#9670;&nbsp;</a></span>compute_new_pose()</h2>
+<a id="a9ed05330b1c55f7cf06d898f5011508d" name="a9ed05330b1c55f7cf06d898f5011508d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ed05330b1c55f7cf06d898f5011508d">&#9670;&nbsp;</a></span>compute_new_pose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,7 +252,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a> rgbd_slam::RGBD_SLAM::compute_new_pose </td>
+          <td class="memname">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> rgbd_slam::RGBD_SLAM::compute_new_pose </td>
           <td>(</td>
           <td class="paramtype">const cv::Mat &amp;&#160;</td>
           <td class="paramname"><em>grayImage</em>, </td>
@@ -272,8 +288,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5d0e42ec7025a5bec21bbaad6ce29bf8" name="a5d0e42ec7025a5bec21bbaad6ce29bf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d0e42ec7025a5bec21bbaad6ce29bf8">&#9670;&nbsp;</a></span>get_debug_image()</h2>
+<a id="ad47db0ad20ab9b12d8a57dcb16893e33" name="ad47db0ad20ab9b12d8a57dcb16893e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad47db0ad20ab9b12d8a57dcb16893e33">&#9670;&nbsp;</a></span>get_debug_image()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +297,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void rgbd_slam::RGBD_SLAM::get_debug_image </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
           <td class="paramname"><em>camPose</em>, </td>
         </tr>
         <tr>
@@ -354,8 +370,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab7df5116d02f70d6a2c8ffca67a56f5b" name="ab7df5116d02f70d6a2c8ffca67a56f5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7df5116d02f70d6a2c8ffca67a56f5b">&#9670;&nbsp;</a></span>show_statistics()</h2>
+<a id="a2c885e3b71e3dcfbb81d7c60937f6136" name="a2c885e3b71e3dcfbb81d7c60937f6136"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c885e3b71e3dcfbb81d7c60937f6136">&#9670;&nbsp;</a></span>show_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,7 +381,7 @@ Protected Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>frameMeanTreatmentTime</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -374,14 +390,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acb78e1fcebcde38e6d8fdabb3333f694" name="acb78e1fcebcde38e6d8fdabb3333f694"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb78e1fcebcde38e6d8fdabb3333f694">&#9670;&nbsp;</a></span>track()</h2>
+<a id="ac0c846a941da735a65e6f7b40fc7618a" name="ac0c846a941da735a65e6f7b40fc7618a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c846a941da735a65e6f7b40fc7618a">&#9670;&nbsp;</a></span>track()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a> rgbd_slam::RGBD_SLAM::track </td>
+          <td class="memname">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> rgbd_slam::RGBD_SLAM::track </td>
           <td>(</td>
           <td class="paramtype">const cv::Mat &amp;&#160;</td>
           <td class="paramname"><em>rgbImage</em>, </td>

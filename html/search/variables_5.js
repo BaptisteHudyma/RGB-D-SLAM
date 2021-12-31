@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['refinetime_0',['refineTime',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a9fd07f1ff6ec17ecda1f8f42db311af3',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
-  ['resettime_1',['resetTime',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a63ccbaea58b5a573ce47283a74016da8',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]]
+  ['inittime_0',['initTime',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a8e4334b78d47adf54a76b32812c18080',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
 ];

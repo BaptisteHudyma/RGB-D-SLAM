@@ -1,0 +1,79 @@
+\hypertarget{classrgbd__slam_1_1utils_1_1_motion___model}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Motion\+\_\+\+Model Class Reference}
+\label{classrgbd__slam_1_1utils_1_1_motion___model}\index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}}
+
+
+Dead reckoning class\+: guess next pose using a motion model.  
+
+
+
+
+{\ttfamily \#include $<$Motion\+Model.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a92747ec6ef3d202641797ccd08b36f07}{Motion\+\_\+\+Model}} ()
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}{reset}} ()
+\item 
+const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ad46746162eb145a3944dc1156088bad3}{predict\+\_\+next\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&current\+Pose) const
+\begin{DoxyCompactList}\small\item\em Predicts next pose with motion model (dead reckoning) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}{update\+\_\+model}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose)
+\begin{DoxyCompactList}\small\item\em Update the motion model using the refined pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Dead reckoning class\+: guess next pose using a motion model. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_motion___model_a92747ec6ef3d202641797ccd08b36f07}\label{classrgbd__slam_1_1utils_1_1_motion___model_a92747ec6ef3d202641797ccd08b36f07}} 
+\index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}!Motion\_Model@{Motion\_Model}}
+\index{Motion\_Model@{Motion\_Model}!rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{Motion\_Model()}{Motion\_Model()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Motion\+\_\+\+Model\+::\+Motion\+\_\+\+Model (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_motion___model_ad46746162eb145a3944dc1156088bad3}\label{classrgbd__slam_1_1utils_1_1_motion___model_ad46746162eb145a3944dc1156088bad3}} 
+\index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}!predict\_next\_pose@{predict\_next\_pose}}
+\index{predict\_next\_pose@{predict\_next\_pose}!rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{predict\_next\_pose()}{predict\_next\_pose()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} rgbd\+\_\+slam\+::utils\+::\+Motion\+\_\+\+Model\+::predict\+\_\+next\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&}]{current\+Pose }\end{DoxyParamCaption}) const}
+
+
+
+Predicts next pose with motion model (dead reckoning) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em current\+Pose} & Last frame pose \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}\label{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}} 
+\index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}!reset@{reset}}
+\index{reset@{reset}!rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Motion\+\_\+\+Model\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}\label{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}} 
+\index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}!update\_model@{update\_model}}
+\index{update\_model@{update\_model}!rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{update\_model()}{update\_model()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Motion\+\_\+\+Model\+::update\+\_\+model (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&}]{pose }\end{DoxyParamCaption})}
+
+
+
+Update the motion model using the refined pose. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pose} & Refined pose estimation \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_motion_model_8hpp}{Motion\+Model.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_motion_model_8cpp}{Motion\+Model.\+cpp}}\end{DoxyCompactItemize}

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['find_5fmatch_5findex_0',['find_match_index',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html#a17a4cd63c154dbb0b6d2c688d2ff364a',1,'rgbd_slam::poseEstimation::Image_Features_Struct']]],
-  ['find_5fmatches_1',['find_matches',['../classrgbd__slam_1_1map__management_1_1_local___map.html#aec0c7d3eb7eb707ed9a4f33cc06d16f4',1,'rgbd_slam::map_management::Local_Map::find_matches()'],['../classrgbd__slam_1_1pose_estimation_1_1_local___map.html#a477e7570c26d41c4dd0c647847ed87ec',1,'rgbd_slam::poseEstimation::Local_Map::find_matches()']]],
-  ['find_5fprimitives_2',['find_primitives',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a6b591b9a9ac80a4b79ee3f3199f633a6',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
-  ['fit_5fplane_3',['fit_plane',['../classrgbd__slam_1_1primitive_detection_1_1_plane___segment.html#a8a97c4150eb45f5844444f4171d425f7',1,'rgbd_slam::primitiveDetection::Plane_Segment']]]
+  ['eulerangles_0',['EulerAngles',['../struct_euler_angles.html',1,'EulerAngles'],['../struct_euler_angles.html#a21dc8b9e6a85feeedd03ea5c6c0eaf24',1,'EulerAngles::EulerAngles()'],['../struct_euler_angles.html#abbc1171c807c86092782b81147194008',1,'EulerAngles::EulerAngles(const double y, const double p, const double r)']]],
+  ['eulertoradian_1',['EulerToRadian',['../types_8hpp.html#ae29dd89108990c60b90e1a0202df28ad',1,'types.hpp']]],
+  ['expand_5fsegment_2',['expand_segment',['../classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a8b1e72fb7ce2a37682169726012392cd',1,'rgbd_slam::features::primitives::Plane_Segment::expand_segment(const Plane_Segment &amp;planeSegment)'],['../classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#aa7e557b15828188b43abb01e12cfbf3e',1,'rgbd_slam::features::primitives::Plane_Segment::expand_segment(const std::unique_ptr&lt; Plane_Segment &gt; &amp;planeSegment)']]]
 ];

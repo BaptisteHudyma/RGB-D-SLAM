@@ -8,36 +8,51 @@
 \DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
 \DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{8     \textcolor{keyword}{namespace }utils \{}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{10         \textcolor{comment}{/*}}
-\DoxyCodeLine{11 \textcolor{comment}{         * \(\backslash\)brief Transform a screen point with a depth value to a 3D point}}
-\DoxyCodeLine{12 \textcolor{comment}{         *}}
-\DoxyCodeLine{13 \textcolor{comment}{         * \(\backslash\)param[in] screenX X coordinates of the 2D point}}
-\DoxyCodeLine{14 \textcolor{comment}{         * \(\backslash\)param[in] screenY Y coordinates of the 2D point}}
-\DoxyCodeLine{15 \textcolor{comment}{         * \(\backslash\)param[in] measuredZ Measured z depth of the point, in meters}}
-\DoxyCodeLine{16 \textcolor{comment}{         * \(\backslash\)param[in] cameraToWorldMatrix Matrix to transform local to world coordinates}}
-\DoxyCodeLine{17 \textcolor{comment}{         *}}
-\DoxyCodeLine{18 \textcolor{comment}{         * \(\backslash\)return A 3D point in frame coordinates}}
-\DoxyCodeLine{19 \textcolor{comment}{         */}}
-\DoxyCodeLine{20         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ad466b2065539634e416f852610825df3}{screen\_to\_world\_coordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} screenX, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} screenY, \textcolor{keyword}{const} \textcolor{keywordtype}{double} measuredZ, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}\& cameraToWorldMatrix);}
-\DoxyCodeLine{21 }
-\DoxyCodeLine{22 }
-\DoxyCodeLine{31         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}{world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& position3D, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}\& worldToCameraMatrix);}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <string\_view>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <source\_location>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{13     \textcolor{keyword}{namespace }utils \{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{18         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}{log}}(std::string\_view message, \textcolor{keyword}{const} std::source\_location\& location = std::source\_location::current());}
+\DoxyCodeLine{19         \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{log\_error}}(std::string\_view message, \textcolor{keyword}{const} std::source\_location\& location = std::source\_location::current());}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21         \textcolor{comment}{/*}}
+\DoxyCodeLine{22 \textcolor{comment}{         * \(\backslash\)brief Transform a screen point with a depth value to a 3D point}}
+\DoxyCodeLine{23 \textcolor{comment}{         *}}
+\DoxyCodeLine{24 \textcolor{comment}{         * \(\backslash\)param[in] screenX X coordinates of the 2D point (double because we can have sub pixel accuracy)}}
+\DoxyCodeLine{25 \textcolor{comment}{         * \(\backslash\)param[in] screenY Y coordinates of the 2D point (double because we can have sub pixel accuracy)}}
+\DoxyCodeLine{26 \textcolor{comment}{         * \(\backslash\)param[in] measuredZ Measured z depth of the point, in meters}}
+\DoxyCodeLine{27 \textcolor{comment}{         * \(\backslash\)param[in] cameraToWorldMatrix Matrix to transform local to world coordinates}}
+\DoxyCodeLine{28 \textcolor{comment}{         *}}
+\DoxyCodeLine{29 \textcolor{comment}{         * \(\backslash\)return A 3D point in frame coordinates}}
+\DoxyCodeLine{30 \textcolor{comment}{         */}}
+\DoxyCodeLine{31         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{screen\_to\_world\_coordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} screenX, \textcolor{keyword}{const} \textcolor{keywordtype}{double} screenY, \textcolor{keyword}{const} \textcolor{keywordtype}{double} measuredZ, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}\& cameraToWorldMatrix);}
 \DoxyCodeLine{32 }
 \DoxyCodeLine{33 }
-\DoxyCodeLine{40         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& position);}
-\DoxyCodeLine{41 }
-\DoxyCodeLine{42 }
-\DoxyCodeLine{50         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_adcb619faed0258c497773d553cbf426c}{get\_quaternion\_from\_original\_quaternion}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}\& originalQuaternion, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& estimationVector, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}}\& transformationMatrixB);}
-\DoxyCodeLine{51 }
-\DoxyCodeLine{52     \}}
-\DoxyCodeLine{53 \}}
-\DoxyCodeLine{54 }
+\DoxyCodeLine{42         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}{world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& position3D, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}\& worldToCameraMatrix);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{48         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& position);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{54         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& position);}
 \DoxyCodeLine{55 }
 \DoxyCodeLine{56 }
-\DoxyCodeLine{57 }
-\DoxyCodeLine{58 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{60         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{get\_world\_point\_covariance}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}}\& screenPoint, \textcolor{keyword}{const} \textcolor{keywordtype}{double} depth, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}}\& screenPointError);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{65         \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\_quaternion\_from\_euler\_angles}}(\textcolor{keyword}{const} \mbox{\hyperlink{struct_euler_angles}{EulerAngles}}\& eulerAngles);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{70         \textcolor{keyword}{const} \mbox{\hyperlink{struct_euler_angles}{EulerAngles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{get\_euler\_angles\_from\_quaternion}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}\& quat);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     \}}
+\DoxyCodeLine{73 \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

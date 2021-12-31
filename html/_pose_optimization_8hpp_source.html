@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/PoseOptimization.hpp Source File</title>
+<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/PoseOptimization.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_c9de52d4215f6e8365628700895a3af2.html">utils</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_3e3cb7d4847b2be67364ad0181e85e4a.html">pose_optimization</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -77,29 +77,29 @@ $(function() {
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">types.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacergbd__slam.html">rgbd_slam</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">namespace </span>utils {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">namespace </span>pose_optimization {</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1utils_1_1_pose___optimization.html">   10</a></span>        <span class="keyword">class </span><a class="code hl_class" href="classrgbd__slam_1_1utils_1_1_pose___optimization.html">Pose_Optimization</a></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html">   10</a></span>        <span class="keyword">class </span><a class="code hl_class" href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html">Pose_Optimization</a></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>            <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a>  <a class="code hl_function" href="classrgbd__slam_1_1utils_1_1_pose___optimization.html#ac186dabe434874601243bb1178288851">compute_optimized_pose</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a>&amp; currentPose, <a class="code hl_typedef" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a>&amp; matchedPoints);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>  <a class="code hl_function" href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a79b32e5aa77704bfb3d53676561192df">compute_optimized_pose</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&amp; currentPose, <span class="keyword">const</span> <a class="code hl_typedef" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a>&amp; matchedPoints);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a> get_optimized_global_pose(<span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">poseEstimation::Pose</a>&amp; currentPose, <a class="code hl_typedef" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a>&amp; matchedPoints);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> get_optimized_global_pose(<span class="keyword">const</span> <a class="code hl_class" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&amp; currentPose, <span class="keyword">const</span> <a class="code hl_typedef" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a>&amp; matchedPoints);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        };</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }   <span class="comment">/* utils */</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }   <span class="comment">/* pose_optimization */</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}   <span class="comment">/* rgbd_slam */</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_pose_8hpp_html"><div class="ttname"><a href="_pose_8hpp.html">Pose.hpp</a></div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1pose_estimation_1_1_pose_html"><div class="ttname"><a href="classrgbd__slam_1_1pose_estimation_1_1_pose.html">rgbd_slam::poseEstimation::Pose</a></div><div class="ttdoc">Store a position.</div><div class="ttdef"><b>Definition:</b> Pose.hpp:15</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1utils_1_1_pose___optimization_html"><div class="ttname"><a href="classrgbd__slam_1_1utils_1_1_pose___optimization.html">rgbd_slam::utils::Pose_Optimization</a></div><div class="ttdef"><b>Definition:</b> PoseOptimization.hpp:11</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1utils_1_1_pose___optimization_html_ac186dabe434874601243bb1178288851"><div class="ttname"><a href="classrgbd__slam_1_1utils_1_1_pose___optimization.html#ac186dabe434874601243bb1178288851">rgbd_slam::utils::Pose_Optimization::compute_optimized_pose</a></div><div class="ttdeci">static const poseEstimation::Pose compute_optimized_pose(const poseEstimation::Pose &amp;currentPose, match_point_container &amp;matchedPoints)</div><div class="ttdoc">Compute a new observer global pose, to replace the current estimated pose.</div><div class="ttdef"><b>Definition:</b> PoseOptimization.cpp:12</div></div>
-<div class="ttc" id="anamespacergbd__slam_html"><div class="ttname"><a href="namespacergbd__slam.html">rgbd_slam</a></div><div class="ttdef"><b>Definition:</b> local_map.cpp:5</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1pose__optimization_1_1_pose___optimization_html"><div class="ttname"><a href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html">rgbd_slam::pose_optimization::Pose_Optimization</a></div><div class="ttdef"><b>Definition:</b> PoseOptimization.hpp:11</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1pose__optimization_1_1_pose___optimization_html_a79b32e5aa77704bfb3d53676561192df"><div class="ttname"><a href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a79b32e5aa77704bfb3d53676561192df">rgbd_slam::pose_optimization::Pose_Optimization::compute_optimized_pose</a></div><div class="ttdeci">static const utils::Pose compute_optimized_pose(const utils::Pose &amp;currentPose, const match_point_container &amp;matchedPoints)</div><div class="ttdoc">Compute a new observer global pose, to replace the current estimated pose.</div><div class="ttdef"><b>Definition:</b> PoseOptimization.cpp:66</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1utils_1_1_pose_html"><div class="ttname"><a href="classrgbd__slam_1_1utils_1_1_pose.html">rgbd_slam::utils::Pose</a></div><div class="ttdoc">Store a position.</div><div class="ttdef"><b>Definition:</b> Pose.hpp:15</div></div>
+<div class="ttc" id="anamespacergbd__slam_html"><div class="ttname"><a href="namespacergbd__slam.html">rgbd_slam</a></div><div class="ttdef"><b>Definition:</b> CylinderSegment.cpp:5</div></div>
 <div class="ttc" id="atypes_8hpp_html"><div class="ttname"><a href="types_8hpp.html">types.hpp</a></div></div>
-<div class="ttc" id="atypes_8hpp_html_aea7e50cc70a6901989c6e6d8980201d8"><div class="ttname"><a href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a></div><div class="ttdeci">std::list&lt; point_pair &gt; match_point_container</div><div class="ttdef"><b>Definition:</b> types.hpp:32</div></div>
+<div class="ttc" id="atypes_8hpp_html_aea7e50cc70a6901989c6e6d8980201d8"><div class="ttname"><a href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a></div><div class="ttdeci">std::list&lt; point_pair &gt; match_point_container</div><div class="ttdef"><b>Definition:</b> types.hpp:50</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/LevenbergMarquardFunctors.cpp File Reference</title>
+<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/LevenbergMarquardFunctors.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_c9de52d4215f6e8365628700895a3af2.html">utils</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_3e3cb7d4847b2be67364ad0181e85e4a.html">pose_optimization</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -75,30 +75,41 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_levenberg_marquard_functors_8hpp_source.html">LevenbergMarquardFunctors.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="utils_2_parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacergbd__slam"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html">rgbd_slam</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacergbd__slam_1_1utils"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html">rgbd_slam::utils</a></td></tr>
+<tr class="memitem:namespacergbd__slam_1_1pose__optimization"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html">rgbd_slam::pose_optimization</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4ba8f7525d651525350b572363fed081"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a4ba8f7525d651525350b572363fed081">rgbd_slam::utils::get_distance_manhattan</a> (const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;pointA, const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;pointB)</td></tr>
-<tr class="separator:a4ba8f7525d651525350b572363fed081"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac13081f91721c0f1cc6aa6cebc521301"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ac13081f91721c0f1cc6aa6cebc521301">rgbd_slam::utils::get_weight</a> (const double error, const double medianOfErrors)</td></tr>
-<tr class="memdesc:ac13081f91721c0f1cc6aa6cebc521301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a weight associated by this error, using a Hubert type loss.  <a href="namespacergbd__slam_1_1utils.html#ac13081f91721c0f1cc6aa6cebc521301">More...</a><br /></td></tr>
-<tr class="separator:ac13081f91721c0f1cc6aa6cebc521301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6991e4f4b4c3274d748208f7a19bb3be"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a6991e4f4b4c3274d748208f7a19bb3be">rgbd_slam::utils::get_generalized_loss_estimator</a> (const double error, const double alpha=1, const double scale=1)</td></tr>
-<tr class="memdesc:a6991e4f4b4c3274d748208f7a19bb3be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of "A General and Adaptive Robust Loss Function" (2019) By Jonathan T. Barron.  <a href="namespacergbd__slam_1_1utils.html#a6991e4f4b4c3274d748208f7a19bb3be">More...</a><br /></td></tr>
-<tr class="separator:a6991e4f4b4c3274d748208f7a19bb3be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3f348ece872432f12e2c303a491f072"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ac3f348ece872432f12e2c303a491f072">rgbd_slam::utils::get_median</a> (std::vector&lt; double &gt; &amp;inputVector)</td></tr>
-<tr class="separator:ac3f348ece872432f12e2c303a491f072"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d9c8322b1fc001b47df668e791993a7"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a6d9c8322b1fc001b47df668e791993a7">rgbd_slam::utils::get_human_readable_end_message</a> (Eigen::LevenbergMarquardtSpace::Status status)</td></tr>
-<tr class="memdesc:a6d9c8322b1fc001b47df668e791993a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use for debug.  <a href="namespacergbd__slam_1_1utils.html#a6d9c8322b1fc001b47df668e791993a7">More...</a><br /></td></tr>
-<tr class="separator:a6d9c8322b1fc001b47df668e791993a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70715953a0c8c4bad83b0d41d80c9ce3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a70715953a0c8c4bad83b0d41d80c9ce3">rgbd_slam::pose_optimization::get_distance_manhattan</a> (const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;pointA, const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;pointB)</td></tr>
+<tr class="separator:a70715953a0c8c4bad83b0d41d80c9ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8823ced068f1f1969affa48a9c7280d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ac8823ced068f1f1969affa48a9c7280d">rgbd_slam::pose_optimization::get_distance_manhattan</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;pointA, const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;pointB)</td></tr>
+<tr class="separator:ac8823ced068f1f1969affa48a9c7280d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91f59ece099a17dfa78c3a84cea32593"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a91f59ece099a17dfa78c3a84cea32593">rgbd_slam::pose_optimization::get_distance_squared</a> (const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;pointA, const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;pointB)</td></tr>
+<tr class="separator:a91f59ece099a17dfa78c3a84cea32593"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c5baaf110f1e80eb1c0a168f313f031"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a1c5baaf110f1e80eb1c0a168f313f031">rgbd_slam::pose_optimization::get_generalized_loss_estimator</a> (const double error, const double alpha=1, const double scale=1)</td></tr>
+<tr class="memdesc:a1c5baaf110f1e80eb1c0a168f313f031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of "A General and Adaptive Robust Loss Function" (2019) By Jonathan T. Barron.  <a href="namespacergbd__slam_1_1pose__optimization.html#a1c5baaf110f1e80eb1c0a168f313f031">More...</a><br /></td></tr>
+<tr class="separator:a1c5baaf110f1e80eb1c0a168f313f031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5631cae47389e44a75b184bf60db8201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a5631cae47389e44a75b184bf60db8201">rgbd_slam::pose_optimization::get_scaled_axis_coefficients_from_quaternion</a> (const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;quat)</td></tr>
+<tr class="memdesc:a5631cae47389e44a75b184bf60db8201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation)  <a href="namespacergbd__slam_1_1pose__optimization.html#a5631cae47389e44a75b184bf60db8201">More...</a><br /></td></tr>
+<tr class="separator:a5631cae47389e44a75b184bf60db8201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee6808d772dc72ceac7fd61a3564eca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#aeee6808d772dc72ceac7fd61a3564eca">rgbd_slam::pose_optimization::get_quaternion_from_scale_axis_coefficients</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> optimizationCoefficients)</td></tr>
+<tr class="memdesc:aeee6808d772dc72ceac7fd61a3564eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from the Lie projection (Scaled Axis representation)  <a href="namespacergbd__slam_1_1pose__optimization.html#aeee6808d772dc72ceac7fd61a3564eca">More...</a><br /></td></tr>
+<tr class="separator:aeee6808d772dc72ceac7fd61a3564eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43746126908c987c1010d692700b43e7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a43746126908c987c1010d692700b43e7">rgbd_slam::pose_optimization::sinc</a> (double x)</td></tr>
+<tr class="separator:a43746126908c987c1010d692700b43e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a60b66cfa4c51c64babcb5ad9b259c1ba">rgbd_slam::pose_optimization::get_quaternion_exponential</a> (const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;quat)</td></tr>
+<tr class="separator:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae2acb81b214e548bffd58f4ebf90d2f5">rgbd_slam::pose_optimization::get_quaternion_logarithm</a> (const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;quat)</td></tr>
+<tr class="separator:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7a23970392763710a2096a10bbdb68a"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ac7a23970392763710a2096a10bbdb68a">rgbd_slam::pose_optimization::get_human_readable_end_message</a> (Eigen::LevenbergMarquardtSpace::Status status)</td></tr>
+<tr class="memdesc:ac7a23970392763710a2096a10bbdb68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use for debug.  <a href="namespacergbd__slam_1_1pose__optimization.html#ac7a23970392763710a2096a10bbdb68a">More...</a><br /></td></tr>
+<tr class="separator:ac7a23970392763710a2096a10bbdb68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

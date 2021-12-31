@@ -1,33 +1,41 @@
-\hypertarget{_key_point_detection_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\+Key\+Point\+Detection.cpp File Reference}
-\label{_key_point_detection_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/KeyPointDetection.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/KeyPointDetection.cpp}}
+\hypertarget{_key_point_detection_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\+Key\+Point\+Detection.cpp File Reference}
+\label{_key_point_detection_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/KeyPointDetection.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/KeyPointDetection.cpp}}
 {\ttfamily \#include \char`\"{}Key\+Point\+Detection.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
-{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
-{\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
-namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{rgbd\+\_\+slam\+::features}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints}{rgbd\+\_\+slam\+::features\+::keypoints}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Macros}
+\doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{_key_point_detection_8cpp_a2763801dcd6ebc317c578e813b9d46d2}{CLASS\+\_\+\+ERR}}~\char`\"{}$<$Key\+\_\+\+Point\+\_\+\+Extraction$>$ \char`\"{}
+typedef std\+::pair$<$ int, int $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ae55bb72725640a20ea2ea8875d954da2}{rgbd\+\_\+slam\+::features\+::keypoints\+::int\+\_\+pair}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7e2ecdbe9a3c9afae2e51cc048a8bb6b}{rgbd\+\_\+slam\+::utils\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ad1e4b59b0306fab61597157a08378679}{rgbd\+\_\+slam\+::features\+::keypoints\+::is\+\_\+in\+\_\+border}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&im)
+\begin{DoxyCompactList}\small\item\em checks if a point is in an image, with border \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}{rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const float \mbox{\hyperlink{_key_point_detection_8cpp_ae733a6f1b2a7620908882b826fce053d}{BORDER\+\_\+\+SIZE}} = 1.
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Macro Definition Documentation}
-\mbox{\Hypertarget{_key_point_detection_8cpp_a2763801dcd6ebc317c578e813b9d46d2}\label{_key_point_detection_8cpp_a2763801dcd6ebc317c578e813b9d46d2}} 
-\index{KeyPointDetection.cpp@{KeyPointDetection.cpp}!CLASS\_ERR@{CLASS\_ERR}}
-\index{CLASS\_ERR@{CLASS\_ERR}!KeyPointDetection.cpp@{KeyPointDetection.cpp}}
-\doxysubsubsection{\texorpdfstring{CLASS\_ERR}{CLASS\_ERR}}
-{\footnotesize\ttfamily \#define CLASS\+\_\+\+ERR~\char`\"{}$<$Key\+\_\+\+Point\+\_\+\+Extraction$>$ \char`\"{}}
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_key_point_detection_8cpp_ae733a6f1b2a7620908882b826fce053d}\label{_key_point_detection_8cpp_ae733a6f1b2a7620908882b826fce053d}} 
+\index{KeyPointDetection.cpp@{KeyPointDetection.cpp}!BORDER\_SIZE@{BORDER\_SIZE}}
+\index{BORDER\_SIZE@{BORDER\_SIZE}!KeyPointDetection.cpp@{KeyPointDetection.cpp}}
+\doxysubsubsection{\texorpdfstring{BORDER\_SIZE}{BORDER\_SIZE}}
+{\footnotesize\ttfamily const float BORDER\+\_\+\+SIZE = 1.}
 

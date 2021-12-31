@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['track_0',['track',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a684077279f7e92f12b0ef724bf9c6df2',1,'rgbd_slam::poseEstimation::RGB_SLAM::track()'],['../classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#acb78e1fcebcde38e6d8fdabb3333f694',1,'rgbd_slam::RGBD_SLAM::track()']]],
-  ['triangulate_5frgbd_1',['triangulate_rgbd',['../classrgbd__slam_1_1pose_estimation_1_1_local___map.html#a4f3d65ca6c8bebe2d9c346e6b3dcc63b',1,'rgbd_slam::poseEstimation::Local_Map']]],
-  ['triangulation_5fpolicy_5falways_5ftriangulate_2',['triangulation_policy_always_triangulate',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#ae5eaaa8ff512ae775fedf1284afd4193',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
-  ['triangulation_5fpolicy_5fdecreasing_5fmatches_3',['triangulation_policy_decreasing_matches',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a89365e1532e2c19b064aecdaa4900316',1,'rgbd_slam::poseEstimation::RGB_SLAM']]],
-  ['triangulation_5fpolicy_5fmap_5fsize_4',['triangulation_policy_map_size',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a5700e6aaa45a435cb9faa9100fe5427e',1,'rgbd_slam::poseEstimation::RGB_SLAM']]]
+  ['update_0',['update',['../classrgbd__slam_1_1map__management_1_1_local___map.html#acb427d40a4505ee65e0726079b1eb847',1,'rgbd_slam::map_management::Local_Map::update()'],['../classrgbd__slam_1_1utils_1_1_pose.html#ac7208b85cf6fa3e558828c152affb7dd',1,'rgbd_slam::utils::Pose::update()']]],
+  ['update_5flocal_5fmap_1',['update_local_map',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a723380f1cf0d00f0fbbdf705d8a912ca',1,'rgbd_slam::map_management::Local_Map']]],
+  ['update_5flocal_5fto_5fglobal_2',['update_local_to_global',['../classrgbd__slam_1_1map__management_1_1_local___map.html#af62ebdf2d7be0eca02c759a8cc1ea602',1,'rgbd_slam::map_management::Local_Map']]],
+  ['update_5fmatched_3',['update_matched',['../classrgbd__slam_1_1map__management_1_1_staged___point.html#ad544edd78f76ae4df4fac26584a5ffd2',1,'rgbd_slam::map_management::Staged_Point::update_matched()'],['../classrgbd__slam_1_1map__management_1_1_map___point.html#a7e1bd7580c668df8217aee1e09c103b5',1,'rgbd_slam::map_management::Map_Point::update_matched()']]],
+  ['update_5fmodel_4',['update_model',['../classrgbd__slam_1_1utils_1_1_motion___model.html#a0e2eb38348c4c6df954f973220e0b289',1,'rgbd_slam::utils::Motion_Model']]],
+  ['update_5fstaged_5',['update_staged',['../classrgbd__slam_1_1map__management_1_1_local___map.html#afe7084a159af92f2680c6e6aa9a73e77',1,'rgbd_slam::map_management::Local_Map']]],
+  ['update_5funmatched_6',['update_unmatched',['../classrgbd__slam_1_1map__management_1_1_staged___point.html#ad923fcae1fdd8877e02d7a9d5cffb8bb',1,'rgbd_slam::map_management::Staged_Point::update_unmatched()'],['../classrgbd__slam_1_1map__management_1_1_map___point.html#a0e2a117a881bcfead6b40aae86e749ec',1,'rgbd_slam::map_management::Map_Point::update_unmatched()']]]
 ];

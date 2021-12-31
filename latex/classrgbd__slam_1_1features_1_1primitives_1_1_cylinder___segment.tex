@@ -1,0 +1,261 @@
+\hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{}\doxysection{rgbd\+\_\+slam\+::features\+::primitives\+::Cylinder\+\_\+\+Segment Class Reference}
+\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+
+
+Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting.  
+
+
+
+
+{\ttfamily \#include $<$Cylinder\+Segment.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac62f5eb827245ec60af4a1229d95792c}{Cylinder\+\_\+\+Segment}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ $\ast$plane\+Grid, const uint plane\+Count, const bool $\ast$activated\+\_\+mask, const uint cell\+Activated\+Count)
+\begin{DoxyCompactList}\small\item\em Main constructor\+: fits a cylinder using the plane segments in plane\+Grid, using RANSAC. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac4315d3396bf884157894e07f06082d4}{Cylinder\+\_\+\+Segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&seg, const uint sub\+Region\+Id)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a6136d615dca19b4846442e98d574a5fa}{Cylinder\+\_\+\+Segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&seg)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ab056be57a479d22327a0aa21bc88a9e0}{distance}} (const Eigen\+::\+Vector3d \&point)
+\begin{DoxyCompactList}\small\item\em Compute the point to cylinder surface distance. This distance is an approximation, our cylinder being defined as a sum of plane segments and points on it\textquotesingle{}s main axis. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aba1bf83d06ebe85c2c0de6376ec94690}{$\sim$\+Cylinder\+\_\+\+Segment}} ()
+\item 
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ad73f410c2f2bd380789b417261f7c68a}{get\+\_\+segment\+\_\+count}} () const
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac8ec84248e1ee17c05964aac8b5d2728}{get\+\_\+\+MSE\+\_\+at}} (const uint index) const
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aab95eb1d517c381a2cf4e9e397b69477}{is\+\_\+inlier\+\_\+at}} (const uint indexA, const uint indexB) const
+\item 
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a8a53f50e5ac2f910cbad54c17acd0265}{get\+\_\+local\+\_\+to\+\_\+global\+\_\+mapping}} (const uint index) const
+\item 
+const Eigen\+::\+Vector3d \& \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac9853399c4c6fde82a04db71351ece8d}{get\+\_\+axis1\+\_\+point}} (const uint index) const
+\item 
+const Eigen\+::\+Vector3d \& \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a22822859e69aed28da27d38552e36b71}{get\+\_\+axis2\+\_\+point}} (const uint index) const
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a10d9f1cf9b6b69eb0ecc16e8accb689e}{get\+\_\+axis\+\_\+normal}} (const uint index) const
+\begin{DoxyCompactList}\small\item\em Return the normal of a portion of this cylinder segement. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ad67eead6600159f3bac21b201c76b476}{get\+\_\+radius}} (const uint index) const
+\begin{DoxyCompactList}\small\item\em Return the radius of this cylinder segment. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a4ce81b964dfba335920a69befca1ceb1}{get\+\_\+normal\+\_\+similarity}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&other)
+\begin{DoxyCompactList}\small\item\em Return the absolute result of the dot product of the two normals. \end{DoxyCompactList}\item 
+const Eigen\+::\+Vector3d \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a9624b41b280578a17007010188f16a33}{get\+\_\+normal}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a1c2eb10c436165721677a60f06b11f4d}{distance}} (const Eigen\+::\+Vector3d \&point, const uint segment\+Id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac62f5eb827245ec60af4a1229d95792c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac62f5eb827245ec60af4a1229d95792c}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!Cylinder\_Segment@{Cylinder\_Segment}}
+\index{Cylinder\_Segment@{Cylinder\_Segment}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{Cylinder\_Segment()}{Cylinder\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::\+Cylinder\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ $\ast$}]{plane\+Grid,  }\item[{const uint}]{plane\+Count,  }\item[{const bool $\ast$}]{activated\+\_\+mask,  }\item[{const uint}]{cell\+Activated\+Count }\end{DoxyParamCaption})}
+
+
+
+Main constructor\+: fits a cylinder using the plane segments in plane\+Grid, using RANSAC. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em plane\+Grid} & The plane segment container \\
+\hline
+\mbox{\texttt{ in}}  & {\em plane\+Count} & \\
+\hline
+\mbox{\texttt{ in}}  & {\em activated\+\_\+mask} & An array of size plane\+Count, referencing activated plane segments \\
+\hline
+\mbox{\texttt{ in}}  & {\em cell\+Activated\+Count} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac4315d3396bf884157894e07f06082d4}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac4315d3396bf884157894e07f06082d4}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!Cylinder\_Segment@{Cylinder\_Segment}}
+\index{Cylinder\_Segment@{Cylinder\_Segment}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{Cylinder\_Segment()}{Cylinder\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::\+Cylinder\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&}]{seg,  }\item[{const uint}]{sub\+Region\+Id }\end{DoxyParamCaption})}
+
+
+
+Copy constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em seg} & \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} to copy \\
+\hline
+\mbox{\texttt{ in}}  & {\em sub\+Region\+Id} & \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} element ID to copy \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a6136d615dca19b4846442e98d574a5fa}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a6136d615dca19b4846442e98d574a5fa}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!Cylinder\_Segment@{Cylinder\_Segment}}
+\index{Cylinder\_Segment@{Cylinder\_Segment}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{Cylinder\_Segment()}{Cylinder\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::\+Cylinder\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&}]{seg }\end{DoxyParamCaption})}
+
+
+
+Copy constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em seg} & \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} to copy \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aba1bf83d06ebe85c2c0de6376ec94690}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aba1bf83d06ebe85c2c0de6376ec94690}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!````~Cylinder\_Segment@{$\sim$Cylinder\_Segment}}
+\index{````~Cylinder\_Segment@{$\sim$Cylinder\_Segment}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{$\sim$Cylinder\_Segment()}{~Cylinder\_Segment()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::$\sim$\+Cylinder\+\_\+\+Segment (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ab056be57a479d22327a0aa21bc88a9e0}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ab056be57a479d22327a0aa21bc88a9e0}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!distance@{distance}}
+\index{distance@{distance}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point }\end{DoxyParamCaption})}
+
+
+
+Compute the point to cylinder surface distance. This distance is an approximation, our cylinder being defined as a sum of plane segments and points on it\textquotesingle{}s main axis. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em point} & The point to compute distance to\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The signed distance between the point and cylinder surface 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a1c2eb10c436165721677a60f06b11f4d}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a1c2eb10c436165721677a60f06b11f4d}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!distance@{distance}}
+\index{distance@{distance}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point,  }\item[{const uint}]{segment\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac9853399c4c6fde82a04db71351ece8d}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac9853399c4c6fde82a04db71351ece8d}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_axis1\_point@{get\_axis1\_point}}
+\index{get\_axis1\_point@{get\_axis1\_point}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_axis1\_point()}{get\_axis1\_point()}}
+{\footnotesize\ttfamily const Eigen\+::\+Vector3d \& rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+axis1\+\_\+point (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & The index of the cylinder part to search \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a22822859e69aed28da27d38552e36b71}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a22822859e69aed28da27d38552e36b71}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_axis2\_point@{get\_axis2\_point}}
+\index{get\_axis2\_point@{get\_axis2\_point}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_axis2\_point()}{get\_axis2\_point()}}
+{\footnotesize\ttfamily const Eigen\+::\+Vector3d \& rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+axis2\+\_\+point (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & The index of the cylinder part to search \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a10d9f1cf9b6b69eb0ecc16e8accb689e}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a10d9f1cf9b6b69eb0ecc16e8accb689e}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_axis\_normal@{get\_axis\_normal}}
+\index{get\_axis\_normal@{get\_axis\_normal}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_axis\_normal()}{get\_axis\_normal()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+axis\+\_\+normal (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const}
+
+
+
+Return the normal of a portion of this cylinder segement. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & The index of the portion to return, between 0 and \+\_\+normals\+Axis1\+Axis2.\+size() \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a8a53f50e5ac2f910cbad54c17acd0265}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a8a53f50e5ac2f910cbad54c17acd0265}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_local\_to\_global\_mapping@{get\_local\_to\_global\_mapping}}
+\index{get\_local\_to\_global\_mapping@{get\_local\_to\_global\_mapping}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_local\_to\_global\_mapping()}{get\_local\_to\_global\_mapping()}}
+{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+local\+\_\+to\+\_\+global\+\_\+mapping (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & The index of the cylinder part to search \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac8ec84248e1ee17c05964aac8b5d2728}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac8ec84248e1ee17c05964aac8b5d2728}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_MSE\_at@{get\_MSE\_at}}
+\index{get\_MSE\_at@{get\_MSE\_at}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_MSE\_at()}{get\_MSE\_at()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+\+MSE\+\_\+at (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & The index of the cylinder part to search\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the Mean Sqared Error of the fitting process 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a9624b41b280578a17007010188f16a33}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a9624b41b280578a17007010188f16a33}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_normal@{get\_normal}}
+\index{get\_normal@{get\_normal}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_normal()}{get\_normal()}}
+{\footnotesize\ttfamily const Eigen\+::\+Vector3d rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a4ce81b964dfba335920a69befca1ceb1}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a4ce81b964dfba335920a69befca1ceb1}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_normal\_similarity@{get\_normal\_similarity}}
+\index{get\_normal\_similarity@{get\_normal\_similarity}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_normal\_similarity()}{get\_normal\_similarity()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+normal\+\_\+similarity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+Return the absolute result of the dot product of the two normals. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other} & The cyclinder segment to compare normal with\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A double between 0 and 1, 0 when the normals are orthogonal, 1 il they are parallels. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ad67eead6600159f3bac21b201c76b476}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ad67eead6600159f3bac21b201c76b476}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_radius@{get\_radius}}
+\index{get\_radius@{get\_radius}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_radius()}{get\_radius()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+radius (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const}
+
+
+
+Return the radius of this cylinder segment. 
+
+\begin{DoxyReturn}{Returns}
+The radius of the cylinder segment, in frame units 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ad73f410c2f2bd380789b417261f7c68a}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ad73f410c2f2bd380789b417261f7c68a}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!get\_segment\_count@{get\_segment\_count}}
+\index{get\_segment\_count@{get\_segment\_count}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_segment\_count()}{get\_segment\_count()}}
+{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::get\+\_\+segment\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+The number of plane segments fitted in this cylinder surface 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aab95eb1d517c381a2cf4e9e397b69477}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aab95eb1d517c381a2cf4e9e397b69477}} 
+\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!is\_inlier\_at@{is\_inlier\_at}}
+\index{is\_inlier\_at@{is\_inlier\_at}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
+\doxysubsubsection{\texorpdfstring{is\_inlier\_at()}{is\_inlier\_at()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::is\+\_\+inlier\+\_\+at (\begin{DoxyParamCaption}\item[{const uint}]{indexA,  }\item[{const uint}]{indexB }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_cylinder_segment_8hpp}{Cylinder\+Segment.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_cylinder_segment_8cpp}{Cylinder\+Segment.\+cpp}}\end{DoxyCompactItemize}

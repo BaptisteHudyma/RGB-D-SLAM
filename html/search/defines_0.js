@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['class_5ferr_0',['CLASS_ERR',['../_r_g_b_d___s_l_a_m_8cpp.html#a2763801dcd6ebc317c578e813b9d46d2',1,'CLASS_ERR():&#160;RGBD_SLAM.cpp'],['../_key_point_detection_8cpp.html#a2763801dcd6ebc317c578e813b9d46d2',1,'CLASS_ERR():&#160;KeyPointDetection.cpp']]]
+  ['rgdb_5fslam_5fparameters_5fhpp_0',['RGDB_SLAM_PARAMETERS_HPP',['../parameters_8hpp.html#a0606921f7f0f9553d159fb594683904a',1,'parameters.hpp']]]
 ];

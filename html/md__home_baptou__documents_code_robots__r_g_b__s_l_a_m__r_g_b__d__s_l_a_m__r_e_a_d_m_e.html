@@ -67,11 +67,22 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p >My take on a SLAM, based on shape primitive recognition with a RGB-D camera. The system uses depth informations as a connected 2D graph to extract primitive shapes, and use them with 3D points and lines to estimate it's position in space. A map is created with those points, lines and primitive shapes.</p>
-<p >The primitive detection is based on <a href="https://arxiv.org/pdf/1803.02380.pdf">Fast Cylinder and Plane Extraction from Depth Cameras for Visua Odometry</a>. The pose estimation is based on <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6165120/">Lightweight Visual Odometry for Autonomous Mobile Robots</a>.</p>
-<p >See the Doxygen documentation on <a href="https://baptistehudyma.github.io/RGB-D-SLAM/html/index.html">GitHub Pages</a>.</p>
-<p >packages </p><div class="fragment"><div class="line">opencv</div>
+<p >The primitive detection is based on <a href="https://arxiv.org/pdf/1803.02380.pdf">Fast Cylinder and Plane Extraction from Depth Cameras for Visua Odometry</a>. See the Doxygen documentation on <a href="https://baptistehudyma.github.io/RGB-D-SLAM/html/index.html">GitHub Pages</a>.</p>
+<p >For now, we are at the state of visual odometry with local mapping.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+To be implemented soon</h1>
+<ul>
+<li>Map point error model</li>
+<li>Advanced camera parameter model</li>
+<li>Point descriptors based on custom neural network</li>
+<li>Loop closing based on multiscale neural network</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md2"></a>
+packages</h1>
+<div class="fragment"><div class="line">opencv</div>
 <div class="line">Eigen</div>
 <div class="line">g2o</div>
+<div class="line">pugixml</div>
 </div><!-- fragment --><p >How to build Build </p><div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">make</div>
@@ -81,9 +92,9 @@ $(function() {
 <div class="line">-c use cylinder detection </div>
 <div class="line">-i index of starting frame (&gt; 0)</div>
 </div><!-- fragment --><p >Check mem errors </p><div class="fragment"><div class="line">valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./rgbdslam</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md3"></a>
 References:</h1>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Primitive extraction</h2>
 <ul>
 <li><a href="https://arxiv.org/pdf/1803.02380.pdf">Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry</a></li>
@@ -91,17 +102,27 @@ Primitive extraction</h2>
 <li><a href="https://merl.com/publications/docs/TR2014-066.pdf">Fast Plane Extraction in Organized Point Clouds Using Agglomerative HierarchicalClustering</a></li>
 <li><a href="https://www.researchgate.net/publication/328822338_Depth_image-based_plane_detection">Depth image-based plane detection</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Pose Optimization</h2>
+<ul>
+<li><a href="https://www.yumpu.com/en/document/read/30132260/using-quaternions-for-parametrizing-3-d-rotations-in-">Using Quaternions for Parametrizing 3D Rotations in Unconstrained Nonlinear Optimization</a> - 2001</li>
+<li>[At All Costs: A Comparison of Robust Cost Functions for Camera Correspondence Outliers]() - 2015</li>
+<li>[An Eﬀicient Solution to the Homography-Based Relative Pose Problem With a Common Reference Direction]() - 2019</li>
+<li>[A Quaternion-based Certifiably Optimal Solution to the Wahba Problem with Outliers]()</li>
+<li>[A General and Adaptive Robust Loss Function]() - 2019</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Visual odometry</h2>
 <ul>
 <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6165120/">LVT: Lightweight Visual Odometry for Autonomous Mobile Robots</a></li>
 <li><a href="https://www.researchgate.net/publication/283806535_Dense_RGB-D_visual_odometry_using_inverse_depth">Dense RGB-D visual odometry using inverse depth</a></li>
 <li><a href="http://epubs.surrey.ac.uk/846020/1/SPLODE.pdf">SPLODE: Semi-Probabilistic Point and Line Odometry with Depth Estimation from RGB-D Camera Motion</a></li>
 <li><a href="http://mapir.isa.uma.es/rgomez/publications/iros16plsvo.pdf">PL-SVO: Semi-Direct Monocular Visual Odometry byCombining Points and Line Segments</a></li>
-<li><a href="https://arxiv.org/pdf/1705.06516v1.pdf">Probabilistic Combination of Noisy Points andPlanes for RGB-D Odometry</a> and <a href="https://arxiv.org/pdf/1706.04034.pdf">Probabilistic RGB-D Odometry based on Points, Linesand Planes Under Depth Uncertainty</a></li>
+<li><a href="https://arxiv.org/pdf/1705.06516v1.pdf">Probabilistic Combination of Noisy Points andPlanes for RGB-D Odometry</a> and <a href="https://arxiv.org/pdf/1706.04034.pdf">Probabilistic RGB-D Odometry based on Points, Linesand Planes Under Depth Uncertainty</a> - 2017</li>
 <li><a href="https://www.mdpi.com/1424-8220/20/10/2922/htm">Robust Stereo Visual Inertial Navigation System Based on Multi-Stage Outlier Removal in Dynamic Environments</a></li>
+<li>[RP-VIO: Robust Plane-based Visual-Inertial Odometry for Dynamic Environments]() - 2021</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 SLAM</h2>
 <ul>
 <li><a href="https://arxiv.org/pdf/1610.06475.pdf">ORB-SLAM2: an Open-Source SLAM System for Monocular, Stereo and RGB-D Cameras</a></li>
@@ -110,7 +131,9 @@ SLAM</h2>
 <li><a href="http://robotics.jacobs-university.de/publicationData/JFR-3D-PlaneSLAM.pdf">Online 3D SLAM by Registration of Large PlanarSurface Segments and Closed Form Pose-GraphRelaxation</a></li>
 <li><a href="http://udel.edu/~yuyang/downloads/geneva_iros2018.pdf">LIPS: LiDAR-Inertial 3D Plane SLAM</a></li>
 <li><a href="https://arxiv.org/pdf/1703.07334.pdf">Pop-up SLAM: Semantic Monocular Plane SLAM for Low-texture Environments</a></li>
-<li><a href="https://arxiv.org/pdf/1809.03415.pdf">Monocular Object and Plane SLAM in Structured Environments</a> </li>
+<li><a href="https://arxiv.org/pdf/1809.03415.pdf">Monocular Object and Plane SLAM in Structured Environments</a></li>
+<li><a href="https://www.mdpi.com/1424-8220/19/17/3795/htm">Point-Plane SLAM Using Supposed Planes for Indoor Environments</a></li>
+<li>[Stereo Plane SLAM Based on Intersecting Lines]() - 2020 </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

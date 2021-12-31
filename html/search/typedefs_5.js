@@ -1,13 +1,11 @@
 var searchData=
 [
-  ['map_5fpoint_5fpair_0',['map_point_pair',['../namespacergbd__slam.html#a1078d3e6851ec98ff7e60936c9fcd13d',1,'rgbd_slam']]],
-  ['match_5fpoint_5fcontainer_1',['match_point_container',['../types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8',1,'types.hpp']]],
-  ['matched_5fpoint_5fcontainer_2',['matched_point_container',['../namespacergbd__slam.html#acb92efd792d97b44c1f403017ac54de9',1,'rgbd_slam']]],
-  ['matrix33_3',['matrix33',['../types_8hpp.html#a751ce357da6646262debecc0de7f028f',1,'types.hpp']]],
-  ['matrix33_5farray_4',['matrix33_array',['../types_8hpp.html#aaf4224fc835744acce67bd9375d309bb',1,'types.hpp']]],
-  ['matrix34_5',['matrix34',['../types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4',1,'types.hpp']]],
-  ['matrix34_5farray_6',['matrix34_array',['../types_8hpp.html#a2b51ff17a2de63ec227c31cf24ab3aab',1,'types.hpp']]],
-  ['matrix43_7',['matrix43',['../types_8hpp.html#a0866cfdd932fef4a103f4634636b90ed',1,'types.hpp']]],
-  ['matrix44_8',['matrix44',['../types_8hpp.html#a533ca594c9517fb869a28306ee1022a8',1,'types.hpp']]],
-  ['matrix44_5farray_9',['matrix44_array',['../types_8hpp.html#a744b3504c936bad31d99956ef13ace8c',1,'types.hpp']]]
+  ['plane_5fsegment_5funique_5fptr_0',['plane_segment_unique_ptr',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a65c1f8eea51000c775c6e2c024df7d8b',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
+  ['planes_5fptr_5fvector_1',['planes_ptr_vector',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a1c6de1dae1c5b4783520c1720ad1bd7b',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
+  ['point_5fcontainer_2',['point_container',['../namespacergbd__slam.html#a72a7655490cf888467a9fcfb29bc4145',1,'rgbd_slam']]],
+  ['point_5fmap_3',['point_map',['../namespacergbd__slam.html#aabf57974b523109882f55bf41bffdfda',1,'rgbd_slam']]],
+  ['point_5fpair_4',['point_pair',['../types_8hpp.html#aeb419a5e7dfc9486ab8f7a5a097fe7b0',1,'types.hpp']]],
+  ['pose_5farray_5',['pose_array',['../namespacergbd__slam_1_1utils.html#ad5c3e0ac91a5ac0fa91e12e608cb8399',1,'rgbd_slam::utils']]],
+  ['primitive_5fcontainer_6',['primitive_container',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a6a07d900465f69c2c39a3356584e362e',1,'rgbd_slam::features::primitives::Primitive_Detection::primitive_container()'],['../classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac22a34ff01a2439c6e8796ed2e723b2e',1,'rgbd_slam::RGBD_SLAM::primitive_container()']]],
+  ['primitive_5funiq_5fptr_7',['primitive_uniq_ptr',['../classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6',1,'rgbd_slam::RGBD_SLAM']]]
 ];

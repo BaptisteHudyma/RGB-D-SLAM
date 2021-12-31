@@ -1,0 +1,97 @@
+\hypertarget{classrgbd__slam_1_1utils_1_1_pose}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Pose Class Reference}
+\label{classrgbd__slam_1_1utils_1_1_pose}\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+
+
+Store a position.  
+
+
+
+
+{\ttfamily \#include $<$Pose.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_ad7ff1d3a18b7d9225fd6d1a4ead2f950}{Pose}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a301d519f6a6c6451a1c84632d9a26559}{Pose}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_ad9fbfd415abf4f4fbc1b833616cce2de}{set\+\_\+parameters}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_ac7208b85cf6fa3e558828c152affb7dd}{update}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation)
+\item 
+const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a86076bd8557d057b52b48258a0327fc0}{get\+\_\+position}} () const
+\item 
+const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a359f91a1949247fd4c92d6b366b69e5d}{get\+\_\+orientation\+\_\+matrix}} () const
+\item 
+const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a350c1b7c06d67d9f47495641dab8deda}{get\+\_\+orientation\+\_\+quaternion}} () const
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a2e0fc4113367a9b843df5493e410577e}{display}} (std\+::ostream \&os) const
+\begin{DoxyCompactList}\small\item\em A display function, to avoid a friend operator function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Store a position. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_ad7ff1d3a18b7d9225fd6d1a4ead2f950}\label{classrgbd__slam_1_1utils_1_1_pose_ad7ff1d3a18b7d9225fd6d1a4ead2f950}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!Pose@{Pose}}
+\index{Pose@{Pose}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{Pose()}{Pose()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Pose\+::\+Pose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_a301d519f6a6c6451a1c84632d9a26559}\label{classrgbd__slam_1_1utils_1_1_pose_a301d519f6a6c6451a1c84632d9a26559}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!Pose@{Pose}}
+\index{Pose@{Pose}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{Pose()}{Pose()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Pose\+::\+Pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_a2e0fc4113367a9b843df5493e410577e}\label{classrgbd__slam_1_1utils_1_1_pose_a2e0fc4113367a9b843df5493e410577e}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!display@{display}}
+\index{display@{display}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Pose\+::display (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os }\end{DoxyParamCaption}) const}
+
+
+
+A display function, to avoid a friend operator function. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_a359f91a1949247fd4c92d6b366b69e5d}\label{classrgbd__slam_1_1utils_1_1_pose_a359f91a1949247fd4c92d6b366b69e5d}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!get\_orientation\_matrix@{get\_orientation\_matrix}}
+\index{get\_orientation\_matrix@{get\_orientation\_matrix}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{get\_orientation\_matrix()}{get\_orientation\_matrix()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} rgbd\+\_\+slam\+::utils\+::\+Pose\+::get\+\_\+orientation\+\_\+matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_a350c1b7c06d67d9f47495641dab8deda}\label{classrgbd__slam_1_1utils_1_1_pose_a350c1b7c06d67d9f47495641dab8deda}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!get\_orientation\_quaternion@{get\_orientation\_quaternion}}
+\index{get\_orientation\_quaternion@{get\_orientation\_quaternion}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{get\_orientation\_quaternion()}{get\_orientation\_quaternion()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::utils\+::\+Pose\+::get\+\_\+orientation\+\_\+quaternion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_a86076bd8557d057b52b48258a0327fc0}\label{classrgbd__slam_1_1utils_1_1_pose_a86076bd8557d057b52b48258a0327fc0}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!get\_position@{get\_position}}
+\index{get\_position@{get\_position}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{get\_position()}{get\_position()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Pose\+::get\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_ad9fbfd415abf4f4fbc1b833616cce2de}\label{classrgbd__slam_1_1utils_1_1_pose_ad9fbfd415abf4f4fbc1b833616cce2de}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!set\_parameters@{set\_parameters}}
+\index{set\_parameters@{set\_parameters}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{set\_parameters()}{set\_parameters()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Pose\+::set\+\_\+parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_ac7208b85cf6fa3e558828c152affb7dd}\label{classrgbd__slam_1_1utils_1_1_pose_ac7208b85cf6fa3e558828c152affb7dd}} 
+\index{rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}!update@{update}}
+\index{update@{update}!rgbd\_slam::utils::Pose@{rgbd\_slam::utils::Pose}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Pose\+::update (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position,  }\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{orientation }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_pose_8hpp}{Pose.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{_pose_8cpp}{Pose.\+cpp}}\end{DoxyCompactItemize}

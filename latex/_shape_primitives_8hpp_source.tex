@@ -1,5 +1,5 @@
 \hypertarget{_shape_primitives_8hpp_source}{}\doxysection{Shape\+Primitives.\+hpp}
-\label{_shape_primitives_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/primitives\_detection/ShapePrimitives.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/primitives\_detection/ShapePrimitives.hpp}}
+\label{_shape_primitives_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/ShapePrimitives.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/ShapePrimitives.hpp}}
 \mbox{\hyperlink{_shape_primitives_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef PRIMITIVE\_DETECTION\_PRIMITIVES\_HPP}}
@@ -13,73 +13,73 @@
 \DoxyCodeLine{9 }
 \DoxyCodeLine{10 }
 \DoxyCodeLine{11 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{12 \textcolor{keyword}{namespace }primitiveDetection \{}
-\DoxyCodeLine{13 }
-\DoxyCodeLine{17     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}} \{}
-\DoxyCodeLine{18         \textcolor{keyword}{public}:}
-\DoxyCodeLine{24             \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a74fab7bea9fc412990b3a8d6dcc202c3}{is\_similar}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim) = 0; }
-\DoxyCodeLine{25 }
-\DoxyCodeLine{33             \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a58063cec71c0cc4f8f1990f5f6e7c90e}{get\_distance}}(\textcolor{keyword}{const} Eigen::Vector3d\& point) = 0;}
-\DoxyCodeLine{34 }
-\DoxyCodeLine{35             \textcolor{keyword}{virtual} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_ae7ef8ff8b0f8f4b97a658607b7009350}{\string~Primitive}}() \{\};}
-\DoxyCodeLine{36 }
-\DoxyCodeLine{40             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a94961dba57042d583920e68139840f82}{get\_id}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a92faa842262e29985d905003fd93c29d}{\_id}}; \};}
-\DoxyCodeLine{41 }
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }features \{}
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }primitives \{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{18     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} \{}
+\DoxyCodeLine{19         \textcolor{keyword}{public}:}
+\DoxyCodeLine{25             \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a07e7678584cd03660df651b28d0f03ae}{is\_similar}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim) = 0; }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{34             \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a471b0ff8f7657a1f658d6640d145504e}{get\_distance}}(\textcolor{keyword}{const} Eigen::Vector3d\& point) = 0;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36             \textcolor{keyword}{virtual} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a8d095166c9fce31468d141ae07cc38f9}{\string~Primitive}}() \{\};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{41             uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a3276e6ceeb3acdb1026d2321d5e1db33}{get\_id}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a24edb776b2ccc9c46ddca7c08e1a23cf}{\_id}}; \};}
 \DoxyCodeLine{42 }
-\DoxyCodeLine{43         \textcolor{keyword}{protected}:}
-\DoxyCodeLine{47             \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a2368a418bf57166b6b4b25c977291722}{Primitive}}(\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keyword}{const} cv::Mat\& shapeMask);}
-\DoxyCodeLine{48 }
-\DoxyCodeLine{56             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_ae3b0f45a1db41e93661875c508c5a33a}{get\_IOU}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim) \textcolor{keyword}{const};}
-\DoxyCodeLine{57 }
-\DoxyCodeLine{58             \textcolor{comment}{//members}}
-\DoxyCodeLine{59             \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a92faa842262e29985d905003fd93c29d}{\_id}};}
-\DoxyCodeLine{60             cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a9db7366893bb35500fb183a92659470f}{\_shapeMask}};}
-\DoxyCodeLine{61 }
-\DoxyCodeLine{62         \textcolor{keyword}{private}:}
-\DoxyCodeLine{63             \textcolor{comment}{//remove copy functions}}
-\DoxyCodeLine{64             \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive_a2368a418bf57166b6b4b25c977291722}{Primitive}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}}\&) = \textcolor{keyword}{delete};}
-\DoxyCodeLine{65             \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}}\&) = \textcolor{keyword}{delete};}
-\DoxyCodeLine{66     \};}
-\DoxyCodeLine{67 }
-\DoxyCodeLine{71     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder}{Cylinder}} :}
-\DoxyCodeLine{72         \textcolor{keyword}{public} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}}}
-\DoxyCodeLine{73     \{}
-\DoxyCodeLine{74         \textcolor{keyword}{public}:}
-\DoxyCodeLine{82             \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a6974c2135c87c811a63b6518d8c3d0ff}{Cylinder}}(\textcolor{keyword}{const} std::unique\_ptr<Cylinder\_Segment>\& cylinderSeg, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keyword}{const} cv::Mat\& shapeMask);}
-\DoxyCodeLine{83 }
-\DoxyCodeLine{91             \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder_a40d25a6c1a36806f7588f74903fc8578}{is\_similar}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim);}
-\DoxyCodeLine{92 }
-\DoxyCodeLine{98             \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_cylinder_ae1621525f25466f6e0591a1a4334009a}{get\_distance}}(\textcolor{keyword}{const} Eigen::Vector3d\& point);}
-\DoxyCodeLine{99 }
-\DoxyCodeLine{100         \textcolor{keyword}{protected}:}
-\DoxyCodeLine{101 }
-\DoxyCodeLine{102         \textcolor{keyword}{private}:}
-\DoxyCodeLine{103             \textcolor{keywordtype}{double} \_radius;}
-\DoxyCodeLine{104             Eigen::Vector3d \_normal;}
-\DoxyCodeLine{105     \};}
-\DoxyCodeLine{106 }
-\DoxyCodeLine{110     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_plane}{Plane}} :}
-\DoxyCodeLine{111         \textcolor{keyword}{public} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_primitive}{Primitive}} }
-\DoxyCodeLine{112     \{}
-\DoxyCodeLine{113         \textcolor{keyword}{public}:}
-\DoxyCodeLine{114 }
-\DoxyCodeLine{122             \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_plane_aaf62d61c1e6c7cc6de4e973381d6e1bb}{Plane}}(\textcolor{keyword}{const} std::unique\_ptr<Plane\_Segment>\& planeSeg, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keyword}{const} cv::Mat\& shapeMask);}
-\DoxyCodeLine{123 }
-\DoxyCodeLine{131             \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_plane_a079e7f7c1a3cbc796ae8b6184d8a395b}{is\_similar}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim);}
-\DoxyCodeLine{132 }
-\DoxyCodeLine{133             \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1primitive_detection_1_1_plane_a2a859f84939e221ffc273592cdde9b11}{get\_distance}}(\textcolor{keyword}{const} Eigen::Vector3d\& point);}
-\DoxyCodeLine{134 }
-\DoxyCodeLine{135         \textcolor{keyword}{private}:}
-\DoxyCodeLine{136             Eigen::Vector3d \_mean;      \textcolor{comment}{//mean center point}}
-\DoxyCodeLine{137             Eigen::Vector3d \_normal;    \textcolor{comment}{//normal of the plane}}
-\DoxyCodeLine{138             \textcolor{keywordtype}{double} \_d;     \textcolor{comment}{//fourth component of the plane parameters}}
-\DoxyCodeLine{139     \};}
-\DoxyCodeLine{140 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{48             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a729381920ba721a402e94922b5a21a4e}{Primitive}}(\textcolor{keyword}{const} uint \textcolor{keywordtype}{id}, \textcolor{keyword}{const} cv::Mat\& shapeMask);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{57             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ad325f4611aa50db9c4da0ed933a3a777}{get\_IOU}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim) \textcolor{keyword}{const};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59             \textcolor{comment}{//members}}
+\DoxyCodeLine{60             \textcolor{keyword}{const} uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a24edb776b2ccc9c46ddca7c08e1a23cf}{\_id}};}
+\DoxyCodeLine{61             cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a59e1eb452738a0e25b06b0f44edf9fde}{\_shapeMask}};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63         \textcolor{keyword}{private}:}
+\DoxyCodeLine{64             \textcolor{comment}{//remove copy functions}}
+\DoxyCodeLine{65             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a729381920ba721a402e94922b5a21a4e}{Primitive}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{66             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{67     \};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{72     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} :}
+\DoxyCodeLine{73         \textcolor{keyword}{public} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}}}
+\DoxyCodeLine{74     \{}
+\DoxyCodeLine{75         \textcolor{keyword}{public}:}
+\DoxyCodeLine{83             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_aa2a4d80c850eca45548d55d447bea6e5}{Cylinder}}(\textcolor{keyword}{const} std::unique\_ptr<Cylinder\_Segment>\& cylinderSeg, uint \textcolor{keywordtype}{id}, \textcolor{keyword}{const} cv::Mat\& shapeMask);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{92             \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}{is\_similar}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim) \textcolor{keyword}{override};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{99             \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ab9e41baf4ff8675fdfeae3bbdb241da2}{get\_distance}}(\textcolor{keyword}{const} Eigen::Vector3d\& point) \textcolor{keyword}{override};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103         \textcolor{keyword}{private}:}
+\DoxyCodeLine{104             \textcolor{keywordtype}{double} \_radius;}
+\DoxyCodeLine{105             Eigen::Vector3d \_normal;}
+\DoxyCodeLine{106     \};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{111     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} :}
+\DoxyCodeLine{112         \textcolor{keyword}{public} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} }
+\DoxyCodeLine{113     \{}
+\DoxyCodeLine{114         \textcolor{keyword}{public}:}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{123             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a5e70f41b0bf1ceeedbc60f6cbb25af77}{Plane}}(\textcolor{keyword}{const} std::unique\_ptr<Plane\_Segment>\& planeSeg, uint \textcolor{keywordtype}{id}, \textcolor{keyword}{const} cv::Mat\& shapeMask);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{132             \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a66e77ae84ff5929262109109d893f0b6}{is\_similar}}(\textcolor{keyword}{const} std::unique\_ptr<Primitive>\& prim) \textcolor{keyword}{override};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134             \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6592806aa5bd56b382a36f125581035f}{get\_distance}}(\textcolor{keyword}{const} Eigen::Vector3d\& point) \textcolor{keyword}{override};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136         \textcolor{keyword}{private}:}
+\DoxyCodeLine{137             Eigen::Vector3d \_mean;      \textcolor{comment}{//mean center point}}
+\DoxyCodeLine{138             Eigen::Vector3d \_normal;    \textcolor{comment}{//normal of the plane}}
+\DoxyCodeLine{139             \textcolor{keywordtype}{double} \_d;     \textcolor{comment}{//fourth component of the plane parameters}}
+\DoxyCodeLine{140     \};}
 \DoxyCodeLine{141 }
-\DoxyCodeLine{142 \}}
+\DoxyCodeLine{142 }
 \DoxyCodeLine{143 \}}
-\DoxyCodeLine{144 }
-\DoxyCodeLine{145 }
+\DoxyCodeLine{144 \}}
+\DoxyCodeLine{145 \}}
 \DoxyCodeLine{146 }
 \DoxyCodeLine{147 \textcolor{preprocessor}{\#endif}}
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['setmasktime_0',['setMaskTime',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#acd7b42a409f32a6f3c96931e8f73be65',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]]
+  ['mergetime_0',['mergeTime',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#afa8239c91447b7a5b6f2590a7024e5b1',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
 ];

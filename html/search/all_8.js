@@ -1,28 +1,6 @@
 var searchData=
 [
-  ['image_5ffeatures_5fhandler_0',['Image_Features_Handler',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___handler.html#a5aaf915319895b45780c5b008a0b40be',1,'rgbd_slam::poseEstimation::Image_Features_Handler::Image_Features_Handler()'],['../classrgbd__slam_1_1pose_estimation_1_1_image___features___handler.html',1,'rgbd_slam::poseEstimation::Image_Features_Handler']]],
-  ['image_5ffeatures_5fhandler_2ecpp_1',['Image_Features_Handler.cpp',['../_image___features___handler_8cpp.html',1,'']]],
-  ['image_5ffeatures_5fhandler_2ehpp_2',['Image_Features_Handler.hpp',['../_image___features___handler_8hpp.html',1,'']]],
-  ['image_5ffeatures_5fstruct_3',['Image_Features_Struct',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html#ae36b6e7ec3ca73b8a5b110c30320b5d1',1,'rgbd_slam::poseEstimation::Image_Features_Struct::Image_Features_Struct()'],['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html',1,'rgbd_slam::poseEstimation::Image_Features_Struct']]],
-  ['image_5ffeatures_5fstruct_2ecpp_4',['Image_Features_Struct.cpp',['../_image___features___struct_8cpp.html',1,'']]],
-  ['image_5ffeatures_5fstruct_2ehpp_5',['Image_Features_Struct.hpp',['../_image___features___struct_8hpp.html',1,'']]],
-  ['init_6',['init',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html#a5e579fb431bcf03609ef0cb7f05bd0dc',1,'rgbd_slam::poseEstimation::Image_Features_Struct']]],
-  ['init_5ffrom_5ffile_7',['init_from_file',['../classrgbd__slam_1_1pose_estimation_1_1_parameters.html#aecfa0b6ff96644eb5d517330841f6345',1,'rgbd_slam::poseEstimation::Parameters']]],
-  ['init_5fhistogram_8',['init_histogram',['../classrgbd__slam_1_1primitive_detection_1_1_histogram.html#a6b695f337dc7936568c0e624e22e1c8c',1,'rgbd_slam::primitiveDetection::Histogram::init_histogram()'],['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a7956a852194bba9082bbaa25c6c41b98',1,'rgbd_slam::primitiveDetection::Primitive_Detection::init_histogram()']]],
-  ['init_5fmatrices_9',['init_matrices',['../classrgbd__slam_1_1primitive_detection_1_1_depth___operations.html#a478bd932ddcfe06773f5d4e75ce20d89',1,'rgbd_slam::primitiveDetection::Depth_Operations']]],
-  ['init_5fplanar_5fcell_5ffitting_10',['init_planar_cell_fitting',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a22df7fc49e0d4d966713acb1d04d549a',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
-  ['init_5fplane_5fsegment_11',['init_plane_segment',['../classrgbd__slam_1_1primitive_detection_1_1_plane___segment.html#ae590cbfc8c858155068e64537ce54934',1,'rgbd_slam::primitiveDetection::Plane_Segment']]],
-  ['inittime_12',['initTime',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#aa89d1b70bb67c34e13c56a3b778cf0d3',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
-  ['inputs_13',['inputs',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#ab512b147d18478ac6a17d113097f8dff',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]],
-  ['inputsatcompiletime_14',['InputsAtCompileTime',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#a35cd7fe11abf564965162ff8dd2999b0a29d97f1b0515a1d02e640ba896499397',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]],
-  ['inputtype_15',['InputType',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#a246a2500065fd6e484df9f46a5fa1c82',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]],
-  ['intpair_5fvector_16',['intpair_vector',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a81ff6f9c67f4ed97ab98435d28648f82',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
-  ['is_5fdepth_5fassociated_17',['is_depth_associated',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html#a0cd025baadc30ba141fafc74eddcbce4',1,'rgbd_slam::poseEstimation::Image_Features_Struct']]],
-  ['is_5fdepth_5fdiscontinuous_18',['is_depth_discontinuous',['../classrgbd__slam_1_1primitive_detection_1_1_plane___segment.html#ae2bfa9a211f10e487acaa54fb42f4732',1,'rgbd_slam::primitiveDetection::Plane_Segment']]],
-  ['is_5finlier_5fat_19',['is_inlier_at',['../classrgbd__slam_1_1primitive_detection_1_1_cylinder___segment.html#a02401f50b2894b779986f57b0c6b8d19',1,'rgbd_slam::primitiveDetection::Cylinder_Segment']]],
-  ['is_5flost_20',['is_lost',['../classrgbd__slam_1_1utils_1_1_map___point.html#a371d216a58f9854c99c55e8c9a1966c8',1,'rgbd_slam::utils::Map_Point']]],
-  ['is_5fmatched_21',['is_matched',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___struct.html#a2c9e240f04a012e3399aeb81baf1f3d6',1,'rgbd_slam::poseEstimation::Image_Features_Struct']]],
-  ['is_5fok_22',['is_ok',['../classrgbd__slam_1_1primitive_detection_1_1_depth___operations.html#af328a9dc652397b6dedaec6d86c08654',1,'rgbd_slam::primitiveDetection::Depth_Operations']]],
-  ['is_5fplanar_23',['is_planar',['../classrgbd__slam_1_1primitive_detection_1_1_plane___segment.html#a6f38c0d21df7b8c5f9ef62405722037e',1,'rgbd_slam::primitiveDetection::Plane_Segment']]],
-  ['is_5fsimilar_24',['is_similar',['../classrgbd__slam_1_1primitive_detection_1_1_primitive.html#a74fab7bea9fc412990b3a8d6dcc202c3',1,'rgbd_slam::primitiveDetection::Primitive::is_similar()'],['../classrgbd__slam_1_1primitive_detection_1_1_cylinder.html#a40d25a6c1a36806f7588f74903fc8578',1,'rgbd_slam::primitiveDetection::Cylinder::is_similar()'],['../classrgbd__slam_1_1primitive_detection_1_1_plane.html#a079e7f7c1a3cbc796ae8b6184d8a395b',1,'rgbd_slam::primitiveDetection::Plane::is_similar()']]]
+  ['histogram_0',['Histogram',['../classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a2c554b601e1418e56cb53973929d2274',1,'rgbd_slam::features::primitives::Histogram::Histogram()'],['../classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html',1,'rgbd_slam::features::primitives::Histogram']]],
+  ['histogram_2ecpp_1',['Histogram.cpp',['../_histogram_8cpp.html',1,'']]],
+  ['histogram_2ehpp_2',['Histogram.hpp',['../_histogram_8hpp.html',1,'']]]
 ];

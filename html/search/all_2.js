@@ -1,23 +1,4 @@
 var searchData=
 [
-  ['class_5ferr_0',['CLASS_ERR',['../_key_point_detection_8cpp.html#a2763801dcd6ebc317c578e813b9d46d2',1,'CLASS_ERR():&#160;KeyPointDetection.cpp'],['../_r_g_b_d___s_l_a_m_8cpp.html#a2763801dcd6ebc317c578e813b9d46d2',1,'CLASS_ERR():&#160;RGBD_SLAM.cpp']]],
-  ['clean_5funtracked_5fpoints_1',['clean_untracked_points',['../classrgbd__slam_1_1pose_estimation_1_1_local___map.html#a57fde8f7779aecb4ad241e98890de4cc',1,'rgbd_slam::poseEstimation::Local_Map']]],
-  ['clear_5fplane_5fparameters_2',['clear_plane_parameters',['../classrgbd__slam_1_1primitive_detection_1_1_plane___segment.html#ad6417a05d313873da29a8d2f18042d76',1,'rgbd_slam::primitiveDetection::Plane_Segment']]],
-  ['compute_5ffeatures_3',['compute_features',['../classrgbd__slam_1_1pose_estimation_1_1_image___features___handler.html#a97100f7c07c1268936947b6d0c1b87f4',1,'rgbd_slam::poseEstimation::Image_Features_Handler']]],
-  ['compute_5ffeatures_5fdata_4',['compute_features_data',['../structrgbd__slam_1_1pose_estimation_1_1compute__features__data.html',1,'rgbd_slam::poseEstimation']]],
-  ['compute_5flines_5',['compute_lines',['../classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a80bf1bf691ef1247d8275535d0eb433c',1,'rgbd_slam::RGBD_SLAM']]],
-  ['compute_5fnew_5fpose_6',['compute_new_pose',['../classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a42b0795eeb4ea912499662e0b04f17d4',1,'rgbd_slam::RGBD_SLAM']]],
-  ['compute_5foptimized_5fpose_7',['compute_optimized_pose',['../classrgbd__slam_1_1utils_1_1_pose___optimization.html#ac186dabe434874601243bb1178288851',1,'rgbd_slam::utils::Pose_Optimization']]],
-  ['compute_5fpose_8',['compute_pose',['../classrgbd__slam_1_1pose_estimation_1_1_p_n_p___solver.html#a285bd0982e155b0c3dfd4e905b6c851c',1,'rgbd_slam::poseEstimation::PNP_Solver']]],
-  ['compute_5fprojection_5fmatrix_9',['compute_projection_matrix',['../classrgbd__slam_1_1pose_estimation_1_1_pose___utils.html#a505fa071e5336d46bd8c9f9e405cce93',1,'rgbd_slam::poseEstimation::Pose_Utils']]],
-  ['compute_5fright_5fcamera_5fpose_10',['compute_right_camera_pose',['../classrgbd__slam_1_1pose_estimation_1_1_pose___utils.html#a249026c19569660e5535f8372d53044b',1,'rgbd_slam::poseEstimation::Pose_Utils']]],
-  ['compute_5fworld_5fto_5fcamera_5ftransform_11',['compute_world_to_camera_transform',['../namespacergbd__slam_1_1utils.html#a28578e2a6faeee85b26e97663b1e2b2d',1,'rgbd_slam::utils::compute_world_to_camera_transform()'],['../classrgbd__slam_1_1pose_estimation_1_1_pose___utils.html#a25351c2ecbcb7f7d97d11a43d603d132',1,'rgbd_slam::poseEstimation::Pose_Utils::compute_world_to_camera_transform()']]],
-  ['constants_2ehpp_12',['Constants.hpp',['../_constants_8hpp.html',1,'']]],
-  ['cylinder_13',['Cylinder',['../classrgbd__slam_1_1primitive_detection_1_1_cylinder.html#a6974c2135c87c811a63b6518d8c3d0ff',1,'rgbd_slam::primitiveDetection::Cylinder::Cylinder()'],['../classrgbd__slam_1_1primitive_detection_1_1_cylinder.html',1,'rgbd_slam::primitiveDetection::Cylinder']]],
-  ['cylinder_5fcode_5foffset_14',['CYLINDER_CODE_OFFSET',['../_primitive_detection_8cpp.html#ae3ac6a75f3bad0e27428199535ea4acc',1,'PrimitiveDetection.cpp']]],
-  ['cylinder_5fsegment_15',['Cylinder_Segment',['../classrgbd__slam_1_1primitive_detection_1_1_cylinder___segment.html#a5551a69a6aec443706f8d9fac6cdfee0',1,'rgbd_slam::primitiveDetection::Cylinder_Segment::Cylinder_Segment(const std::unique_ptr&lt; Plane_Segment &gt; *planeGrid, const unsigned int planeCount, const bool *activated_mask, const unsigned int cellActivatedCount)'],['../classrgbd__slam_1_1primitive_detection_1_1_cylinder___segment.html#ac84f73bd7044c5b58854d863287abd89',1,'rgbd_slam::primitiveDetection::Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment &amp;seg, const unsigned int subRegionId)'],['../classrgbd__slam_1_1primitive_detection_1_1_cylinder___segment.html#a848344ace676e8dceafbe9c6ce669fe1',1,'rgbd_slam::primitiveDetection::Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment &amp;seg)'],['../classrgbd__slam_1_1primitive_detection_1_1_cylinder___segment.html',1,'rgbd_slam::primitiveDetection::Cylinder_Segment']]],
-  ['cylinder_5fsegment_5funique_5fptr_16',['cylinder_segment_unique_ptr',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a58217a3b8251b8d7188a93d2ce768b76',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
-  ['cylinders_5fptr_5fvector_17',['cylinders_ptr_vector',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a6733820dcc916eb4f09b76495cb12604',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]],
-  ['cylindersegment_2ecpp_18',['CylinderSegment.cpp',['../_cylinder_segment_8cpp.html',1,'']]],
-  ['cylindersegment_2ehpp_19',['CylinderSegment.hpp',['../_cylinder_segment_8hpp.html',1,'']]]
+  ['border_5fsize_0',['BORDER_SIZE',['../_key_point_detection_8cpp.html#ae733a6f1b2a7620908882b826fce053d',1,'KeyPointDetection.cpp']]]
 ];

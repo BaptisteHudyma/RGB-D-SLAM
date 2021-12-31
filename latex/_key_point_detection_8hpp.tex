@@ -1,22 +1,25 @@
-\hypertarget{_key_point_detection_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\+Key\+Point\+Detection.hpp File Reference}
-\label{_key_point_detection_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/KeyPointDetection.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/KeyPointDetection.hpp}}
+\hypertarget{_key_point_detection_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\+Key\+Point\+Detection.hpp File Reference}
+\label{_key_point_detection_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/KeyPointDetection.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/KeyPointDetection.hpp}}
 {\ttfamily \#include $<$opencv2/xfeatures2d.\+hpp$>$}\newline
 {\ttfamily \#include $<$map$>$}\newline
 {\ttfamily \#include $<$list$>$}\newline
 {\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}map\+\_\+point.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Pose\+Utils.\+hpp\char`\"{}}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_keypoint___handler}{rgbd\+\_\+slam\+::utils\+::\+Keypoint\+\_\+\+Handler}}
-\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_key___point___extraction}{rgbd\+\_\+slam\+::utils\+::\+Key\+\_\+\+Point\+\_\+\+Extraction}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct}}
+\begin{DoxyCompactList}\small\item\em Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}}
+\begin{DoxyCompactList}\small\item\em Handler object to store a reference to detected key points. Passed to classes like Local\+\_\+\+Map for data association. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction}}
 \begin{DoxyCompactList}\small\item\em A class to detect and store keypoints. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
-namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{rgbd\+\_\+slam\+::features}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints}{rgbd\+\_\+slam\+::features\+::keypoints}}
 \end{DoxyCompactItemize}

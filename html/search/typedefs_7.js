@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['quaternion_0',['quaternion',['../types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7',1,'types.hpp']]],
-  ['quaternion_5farray_1',['quaternion_array',['../types_8hpp.html#ae56cce0e28a34ac7f99c5dab8628ab3f',1,'types.hpp']]]
+  ['scalar_0',['Scalar',['../structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html#ac17e7c1e7b79a465b35470493424a0a7',1,'rgbd_slam::pose_optimization::Levenberg_Marquardt_Functor']]]
 ];

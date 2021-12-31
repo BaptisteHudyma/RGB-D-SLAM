@@ -1,0 +1,51 @@
+\hypertarget{namespacergbd__slam_1_1features_1_1keypoints}{}\doxysection{rgbd\+\_\+slam\+::features\+::keypoints Namespace Reference}
+\label{namespacergbd__slam_1_1features_1_1keypoints}\index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction}{Key\+\_\+\+Point\+\_\+\+Extraction}}
+\begin{DoxyCompactList}\small\item\em A class to detect and store keypoints. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\+\_\+\+Handler}}
+\begin{DoxyCompactList}\small\item\em Handler object to store a reference to detected key points. Passed to classes like Local\+\_\+\+Map for data association. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}}
+\begin{DoxyCompactList}\small\item\em Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::pair$<$ int, int $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ae55bb72725640a20ea2ea8875d954da2}{int\+\_\+pair}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ad1e4b59b0306fab61597157a08378679}{is\+\_\+in\+\_\+border}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&im)
+\begin{DoxyCompactList}\small\item\em checks if a point is in an image, with border \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_ae55bb72725640a20ea2ea8875d954da2}\label{namespacergbd__slam_1_1features_1_1keypoints_ae55bb72725640a20ea2ea8875d954da2}} 
+\index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!int\_pair@{int\_pair}}
+\index{int\_pair@{int\_pair}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
+\doxysubsubsection{\texorpdfstring{int\_pair}{int\_pair}}
+{\footnotesize\ttfamily typedef std\+::pair$<$int, int$>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ae55bb72725640a20ea2ea8875d954da2}{rgbd\+\_\+slam\+::features\+::keypoints\+::int\+\_\+pair}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}\label{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}} 
+\index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}}
+\index{get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
+\doxysubsubsection{\texorpdfstring{get\_percent\_of\_elapsed\_time()}{get\_percent\_of\_elapsed\_time()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_ad1e4b59b0306fab61597157a08378679}\label{namespacergbd__slam_1_1features_1_1keypoints_ad1e4b59b0306fab61597157a08378679}} 
+\index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!is\_in\_border@{is\_in\_border}}
+\index{is\_in\_border@{is\_in\_border}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
+\doxysubsubsection{\texorpdfstring{is\_in\_border()}{is\_in\_border()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::keypoints\+::is\+\_\+in\+\_\+border (\begin{DoxyParamCaption}\item[{const cv\+::\+Point2f \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{im }\end{DoxyParamCaption})}
+
+
+
+checks if a point is in an image, with border 
+

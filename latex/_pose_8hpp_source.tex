@@ -1,5 +1,5 @@
 \hypertarget{_pose_8hpp_source}{}\doxysection{Pose.\+hpp}
-\label{_pose_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Pose.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_estimation/Pose.hpp}}
+\label{_pose_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/Pose.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/Pose.hpp}}
 \mbox{\hyperlink{_pose_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef POSE\_CONTAINER\_HPP}}
@@ -11,35 +11,35 @@
 \DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Eigen/StdVector>}}
 \DoxyCodeLine{8 }
 \DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{ }
-\DoxyCodeLine{10 \textcolor{keyword}{namespace }poseEstimation \{}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }utils \{}
 \DoxyCodeLine{11 }
-\DoxyCodeLine{15     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose}{Pose}} \{}
+\DoxyCodeLine{15     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \{}
 \DoxyCodeLine{16         EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
 \DoxyCodeLine{17         \textcolor{keyword}{public}:}
-\DoxyCodeLine{18             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a6158bddcb7f13c1607d4b7964c217933}{Pose}}(); }
-\DoxyCodeLine{19             \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a6158bddcb7f13c1607d4b7964c217933}{Pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation);}
+\DoxyCodeLine{18             \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_ad7ff1d3a18b7d9225fd6d1a4ead2f950}{Pose}}(); }
+\DoxyCodeLine{19             \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_ad7ff1d3a18b7d9225fd6d1a4ead2f950}{Pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation);}
 \DoxyCodeLine{20 }
 \DoxyCodeLine{21             \textcolor{comment}{//setters}}
-\DoxyCodeLine{22             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_aaa09b8124b169128894604929ed64d07}{set\_parameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation);}
+\DoxyCodeLine{22             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_ad9fbfd415abf4f4fbc1b833616cce2de}{set\_parameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&orientation);}
 \DoxyCodeLine{23 }
-\DoxyCodeLine{24             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a6462656112993a9c810ad34b0eb7619f}{update}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& position, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}\& orientation);}
+\DoxyCodeLine{24             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_ac7208b85cf6fa3e558828c152affb7dd}{update}}(\textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}\& position, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}\& orientation);}
 \DoxyCodeLine{25 }
 \DoxyCodeLine{26             \textcolor{comment}{//getters}}
-\DoxyCodeLine{27             \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a9cf78a7637c633e456cd979428f705d6}{get\_position}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_position; \}}
-\DoxyCodeLine{28             \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a52ff8143b10d355603085ecd782eb6a7}{get\_orientation\_matrix}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_orientation.toRotationMatrix(); \}}
-\DoxyCodeLine{29             \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_aa51caaa283fd6cb3187e90a0e6457837}{get\_orientation\_quaternion}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_orientation; \}}
+\DoxyCodeLine{27             \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a86076bd8557d057b52b48258a0327fc0}{get\_position}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_position; \}}
+\DoxyCodeLine{28             \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a359f91a1949247fd4c92d6b366b69e5d}{get\_orientation\_matrix}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_orientation.toRotationMatrix(); \}}
+\DoxyCodeLine{29             \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a350c1b7c06d67d9f47495641dab8deda}{get\_orientation\_quaternion}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_orientation; \}}
 \DoxyCodeLine{30 }
-\DoxyCodeLine{34             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1pose_estimation_1_1_pose_a941b1f7ab182db699dadf6e9a5762a3d}{display}}(std::ostream\& os) \textcolor{keyword}{const};}
+\DoxyCodeLine{34             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_a2e0fc4113367a9b843df5493e410577e}{display}}(std::ostream\& os) \textcolor{keyword}{const};}
 \DoxyCodeLine{35 }
 \DoxyCodeLine{36         \textcolor{keyword}{private}:}
 \DoxyCodeLine{37             \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \_orientation;}
 \DoxyCodeLine{38             \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \_position;}
 \DoxyCodeLine{39     \};}
 \DoxyCodeLine{40 }
-\DoxyCodeLine{41     std::ostream\& \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a58d29197f12355563eaf08e315b466ed}{operator<<}}(std::ostream\& os, \textcolor{keyword}{const} Pose\& pose);}
+\DoxyCodeLine{41     std::ostream\& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}{operator<<}}(std::ostream\& os, \textcolor{keyword}{const} Pose\& pose);}
 \DoxyCodeLine{42 }
 \DoxyCodeLine{43     \textcolor{comment}{//array of poses}}
-\DoxyCodeLine{44     \textcolor{keyword}{typedef} std::vector<Pose, Eigen::aligned\_allocator<Pose>> \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation_a8554cd150c2590f61f53fc5b3eec8c6e}{pose\_array}};}
+\DoxyCodeLine{44     \textcolor{keyword}{typedef} std::vector<Pose, Eigen::aligned\_allocator<Pose>> \mbox{\hyperlink{namespacergbd__slam_1_1utils_ad5c3e0ac91a5ac0fa91e12e608cb8399}{pose\_array}};}
 \DoxyCodeLine{45 }
 \DoxyCodeLine{46 \}}
 \DoxyCodeLine{47 \}}

@@ -3,11 +3,11 @@
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{features}}
+\item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1map__management}{map\+\_\+management}}
 \item 
-namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose_estimation}{pose\+Estimation}}
-\item 
-namespace \mbox{\hyperlink{namespacergbd__slam_1_1primitive_detection}{primitive\+Detection}}
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{pose\+\_\+optimization}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{utils}}
 \end{DoxyCompactItemize}
@@ -21,13 +21,13 @@ class \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\+\_\+\+SLAM}}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::list$<$ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a3d4823ff2c7597936194ca5753e5d1e6}{point\+\_\+container}}
+typedef std\+::list$<$ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}{point\+\_\+container}}
 \item 
-typedef std\+::pair$<$ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a1078d3e6851ec98ff7e60936c9fcd13d}{map\+\_\+point\+\_\+pair}}
+typedef std\+::pair$<$ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\+\_\+point\+\_\+pair}}
 \item 
-typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_a1078d3e6851ec98ff7e60936c9fcd13d}{map\+\_\+point\+\_\+pair}} $>$ \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{matched\+\_\+point\+\_\+container}}
+typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\+\_\+point\+\_\+pair}} $>$ \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{matched\+\_\+point\+\_\+container}}
 \item 
-typedef std\+::map$<$ unsigned int, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a9b3c56ab9f342e1f75c8cb417823c392}{point\+\_\+map}}
+typedef std\+::map$<$ unsigned int, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_aabf57974b523109882f55bf41bffdfda}{point\+\_\+map}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -37,29 +37,29 @@ double \mbox{\hyperlink{namespacergbd__slam_a9ea2d91bb44d771590c65ee304863542}{g
 
 
 \doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_a1078d3e6851ec98ff7e60936c9fcd13d}\label{namespacergbd__slam_a1078d3e6851ec98ff7e60936c9fcd13d}} 
+\mbox{\Hypertarget{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}\label{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}} 
 \index{rgbd\_slam@{rgbd\_slam}!map\_point\_pair@{map\_point\_pair}}
 \index{map\_point\_pair@{map\_point\_pair}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{map\_point\_pair}{map\_point\_pair}}
-{\footnotesize\ttfamily typedef std\+::pair$<$\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a1078d3e6851ec98ff7e60936c9fcd13d}{rgbd\+\_\+slam\+::map\+\_\+point\+\_\+pair}}}
+{\footnotesize\ttfamily typedef std\+::pair$<$\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{rgbd\+\_\+slam\+::map\+\_\+point\+\_\+pair}}}
 
 \mbox{\Hypertarget{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}\label{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}} 
 \index{rgbd\_slam@{rgbd\_slam}!matched\_point\_container@{matched\_point\_container}}
 \index{matched\_point\_container@{matched\_point\_container}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matched\_point\_container}{matched\_point\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_a1078d3e6851ec98ff7e60936c9fcd13d}{map\+\_\+point\+\_\+pair}}$>$ \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{rgbd\+\_\+slam\+::matched\+\_\+point\+\_\+container}}}
+{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\+\_\+point\+\_\+pair}}$>$ \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{rgbd\+\_\+slam\+::matched\+\_\+point\+\_\+container}}}
 
-\mbox{\Hypertarget{namespacergbd__slam_a3d4823ff2c7597936194ca5753e5d1e6}\label{namespacergbd__slam_a3d4823ff2c7597936194ca5753e5d1e6}} 
+\mbox{\Hypertarget{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}\label{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}} 
 \index{rgbd\_slam@{rgbd\_slam}!point\_container@{point\_container}}
 \index{point\_container@{point\_container}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{point\_container}{point\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a3d4823ff2c7597936194ca5753e5d1e6}{rgbd\+\_\+slam\+::point\+\_\+container}}}
+{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}{rgbd\+\_\+slam\+::point\+\_\+container}}}
 
-\mbox{\Hypertarget{namespacergbd__slam_a9b3c56ab9f342e1f75c8cb417823c392}\label{namespacergbd__slam_a9b3c56ab9f342e1f75c8cb417823c392}} 
+\mbox{\Hypertarget{namespacergbd__slam_aabf57974b523109882f55bf41bffdfda}\label{namespacergbd__slam_aabf57974b523109882f55bf41bffdfda}} 
 \index{rgbd\_slam@{rgbd\_slam}!point\_map@{point\_map}}
 \index{point\_map@{point\_map}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{point\_map}{point\_map}}
-{\footnotesize\ttfamily typedef std\+::map$<$unsigned int, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{utils\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a9b3c56ab9f342e1f75c8cb417823c392}{rgbd\+\_\+slam\+::point\+\_\+map}}}
+{\footnotesize\ttfamily typedef std\+::map$<$unsigned int, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_aabf57974b523109882f55bf41bffdfda}{rgbd\+\_\+slam\+::point\+\_\+map}}}
 
 
 

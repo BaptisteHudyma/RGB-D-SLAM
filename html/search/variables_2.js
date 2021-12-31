@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['growtime_0',['growTime',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#ae74ecea4df56631aa2319f8c310e319e',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]]
+  ['cylinder_5fcode_5foffset_0',['CYLINDER_CODE_OFFSET',['../_primitive_detection_8cpp.html#aa15634d3fdb84963b42ecd6457e934fd',1,'PrimitiveDetection.cpp']]]
 ];

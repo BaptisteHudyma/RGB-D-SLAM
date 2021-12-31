@@ -1,5 +1,5 @@
-\hypertarget{_levenberg_marquard_functors_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\+Levenberg\+Marquard\+Functors.cpp File Reference}
-\label{_levenberg_marquard_functors_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/LevenbergMarquardFunctors.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/LevenbergMarquardFunctors.cpp}}
+\hypertarget{_levenberg_marquard_functors_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\+Levenberg\+Marquard\+Functors.cpp File Reference}
+\label{_levenberg_marquard_functors_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/LevenbergMarquardFunctors.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/LevenbergMarquardFunctors.cpp}}
 {\ttfamily \#include \char`\"{}Levenberg\+Marquard\+Functors.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
@@ -8,18 +8,28 @@
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
-namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4ba8f7525d651525350b572363fed081}{rgbd\+\_\+slam\+::utils\+::get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointA, const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointB)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a70715953a0c8c4bad83b0d41d80c9ce3}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointA, const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointB)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac13081f91721c0f1cc6aa6cebc521301}{rgbd\+\_\+slam\+::utils\+::get\+\_\+weight}} (const double error, const double median\+Of\+Errors)
-\begin{DoxyCompactList}\small\item\em Compute a weight associated by this error, using a Hubert type loss. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a6991e4f4b4c3274d748208f7a19bb3be}{rgbd\+\_\+slam\+::utils\+::get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&pointA, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointA, const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
 \begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac3f348ece872432f12e2c303a491f072}{rgbd\+\_\+slam\+::utils\+::get\+\_\+median}} (std\+::vector$<$ double $>$ \&input\+Vector)
+\mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
+\begin{DoxyCompactList}\small\item\em Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aeee6808d772dc72ceac7fd61a3564eca}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} optimization\+Coefficients)
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from the Lie projection (Scaled Axis representation) \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a43746126908c987c1010d692700b43e7}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::sinc}} (double x)
 \item 
-const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1utils_a6d9c8322b1fc001b47df668e791993a7}{rgbd\+\_\+slam\+::utils\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
+\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+exponential}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
+\item 
+\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+logarithm}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
+\item 
+const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
 \begin{DoxyCompactList}\small\item\em Use for debug. \end{DoxyCompactList}\end{DoxyCompactItemize}

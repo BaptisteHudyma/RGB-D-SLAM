@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mergetime_0',['mergeTime',['../classrgbd__slam_1_1primitive_detection_1_1_primitive___detection.html#a30c43444c268ff971d78e0e49265b879',1,'rgbd_slam::primitiveDetection::Primitive_Detection']]]
+  ['growtime_0',['growTime',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a8bd7311ff1c1968b338c80fa710b5f18',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
 ];

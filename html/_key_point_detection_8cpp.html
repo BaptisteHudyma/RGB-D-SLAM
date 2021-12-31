@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/KeyPointDetection.cpp File Reference</title>
+<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/KeyPointDetection.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,49 +63,59 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_c9de52d4215f6e8365628700895a3af2.html">utils</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_87159ec37f32ca60a20da7386d2ff939.html">features</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">KeyPointDetection.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_key_point_detection_8hpp_source.html">KeyPointDetection.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="utils_2_parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
-<code>#include &lt;opencv2/opencv.hpp&gt;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
+<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils.hpp</a>&quot;</code><br />
+<code>#include &lt;opencv2/opencv.hpp&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacergbd__slam"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html">rgbd_slam</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacergbd__slam_1_1utils"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html">rgbd_slam::utils</a></td></tr>
+<tr class="memitem:namespacergbd__slam_1_1features"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features.html">rgbd_slam::features</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacergbd__slam_1_1features_1_1keypoints"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features_1_1keypoints.html">rgbd_slam::features::keypoints</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a2763801dcd6ebc317c578e813b9d46d2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_key_point_detection_8cpp.html#a2763801dcd6ebc317c578e813b9d46d2">CLASS_ERR</a>&#160;&#160;&#160;&quot;&lt;Key_Point_Extraction&gt; &quot;</td></tr>
-<tr class="separator:a2763801dcd6ebc317c578e813b9d46d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ae55bb72725640a20ea2ea8875d954da2"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features_1_1keypoints.html#ae55bb72725640a20ea2ea8875d954da2">rgbd_slam::features::keypoints::int_pair</a></td></tr>
+<tr class="separator:ae55bb72725640a20ea2ea8875d954da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7e2ecdbe9a3c9afae2e51cc048a8bb6b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a7e2ecdbe9a3c9afae2e51cc048a8bb6b">rgbd_slam::utils::get_percent_of_elapsed_time</a> (const double treatmentTime, const double totalTimeElapsed)</td></tr>
-<tr class="separator:a7e2ecdbe9a3c9afae2e51cc048a8bb6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1e4b59b0306fab61597157a08378679"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features_1_1keypoints.html#ad1e4b59b0306fab61597157a08378679">rgbd_slam::features::keypoints::is_in_border</a> (const cv::Point2f &amp;pt, const cv::Mat &amp;im)</td></tr>
+<tr class="memdesc:ad1e4b59b0306fab61597157a08378679"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if a point is in an image, with border  <a href="namespacergbd__slam_1_1features_1_1keypoints.html#ad1e4b59b0306fab61597157a08378679">More...</a><br /></td></tr>
+<tr class="separator:ad1e4b59b0306fab61597157a08378679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32c3a65d4275dbdab6fdcadea7835a2f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features_1_1keypoints.html#a32c3a65d4275dbdab6fdcadea7835a2f">rgbd_slam::features::keypoints::get_percent_of_elapsed_time</a> (const double treatmentTime, const double totalTimeElapsed)</td></tr>
+<tr class="separator:a32c3a65d4275dbdab6fdcadea7835a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ae733a6f1b2a7620908882b826fce053d"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_key_point_detection_8cpp.html#ae733a6f1b2a7620908882b826fce053d">BORDER_SIZE</a> = 1.</td></tr>
+<tr class="separator:ae733a6f1b2a7620908882b826fce053d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a2763801dcd6ebc317c578e813b9d46d2" name="a2763801dcd6ebc317c578e813b9d46d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2763801dcd6ebc317c578e813b9d46d2">&#9670;&nbsp;</a></span>CLASS_ERR</h2>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ae733a6f1b2a7620908882b826fce053d" name="ae733a6f1b2a7620908882b826fce053d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae733a6f1b2a7620908882b826fce053d">&#9670;&nbsp;</a></span>BORDER_SIZE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CLASS_ERR&#160;&#160;&#160;&quot;&lt;Key_Point_Extraction&gt; &quot;</td>
+          <td class="memname">const float BORDER_SIZE = 1.</td>
         </tr>
       </table>
 </div><div class="memdoc">

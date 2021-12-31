@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['refinetime_556',['refineTime',['../classprimitive_detection_1_1_primitive___detection.html#a426e6b3861957fc5a31a963ccd920939',1,'primitiveDetection::Primitive_Detection']]],
-  ['resettime_557',['resetTime',['../classprimitive_detection_1_1_primitive___detection.html#a39cc93ab9fed03f8e9ee77f7a7d33c3c',1,'primitiveDetection::Primitive_Detection']]]
+  ['pitch_0',['pitch',['../struct_euler_angles.html#a2b3fff8a202b634470b2c816b9bd8da7',1,'EulerAngles']]]
 ];

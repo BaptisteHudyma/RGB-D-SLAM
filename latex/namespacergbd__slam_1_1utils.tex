@@ -3,50 +3,60 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_global___pose___estimator}{Global\+\_\+\+Pose\+\_\+\+Estimator}}
-\begin{DoxyCompactList}\small\item\em Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_global___pose___functor}{Global\+\_\+\+Pose\+\_\+\+Functor}}
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model}{Motion\+\_\+\+Model}}
+\begin{DoxyCompactList}\small\item\em Dead reckoning class\+: guess next pose using a motion model. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}
+\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_key___point___extraction}{Key\+\_\+\+Point\+\_\+\+Extraction}}
-\begin{DoxyCompactList}\small\item\em A class to detect and store keypoints. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_keypoint___handler}{Keypoint\+\_\+\+Handler}}
-\item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor}{Levenberg\+\_\+\+Marquard\+\_\+\+Functor}}
-\begin{DoxyCompactList}\small\item\em Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_map___point}{Map\+\_\+\+Point}}
-\begin{DoxyCompactList}\small\item\em A map point structure, containing all the necessary informations to identify a map point. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_point}{Point}}
-\begin{DoxyCompactList}\small\item\em Basic keypoint class. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose___optimization}{Pose\+\_\+\+Optimization}}
-\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_staged___point}{Staged\+\_\+\+Point}}
+typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_1_1utils_ad5c3e0ac91a5ac0fa91e12e608cb8399}{pose\+\_\+array}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7e2ecdbe9a3c9afae2e51cc048a8bb6b}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4ba8f7525d651525350b572363fed081}{get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointA, const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointB)
+void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}{log}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac13081f91721c0f1cc6aa6cebc521301}{get\+\_\+weight}} (const double error, const double median\+Of\+Errors)
-\begin{DoxyCompactList}\small\item\em Compute a weight associated by this error, using a Hubert type loss. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a6991e4f4b4c3274d748208f7a19bb3be}{get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
-\begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac3f348ece872432f12e2c303a491f072}{get\+\_\+median}} (std\+::vector$<$ double $>$ \&input\+Vector)
+void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{log\+\_\+error}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
 \item 
-const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1utils_a6d9c8322b1fc001b47df668e791993a7}{get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
-\begin{DoxyCompactList}\small\item\em Use for debug. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ad466b2065539634e416f852610825df3}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const unsigned int screenX, const unsigned int screenY, const double measuredZ, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&camera\+To\+World\+Matrix)
+const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&camera\+To\+World\+Matrix)
 \item 
 const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}{world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position3D, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&world\+To\+Camera\+Matrix)
 \begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&rotation, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position)
+\begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&rotation, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position)
-\begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point to camera point. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_adcb619faed0258c497773d553cbf426c}{get\+\_\+quaternion\+\_\+from\+\_\+original\+\_\+quaternion}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&original\+Quaternion, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&estimation\+Vector, const \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}} \&transformation\+MatrixB)
-\begin{DoxyCompactList}\small\item\em Return a quaternion from an ideal parametrization estimation\+Vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \&screen\+Point\+Error)
+\begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \&euler\+Angles)
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
+\begin{DoxyCompactList}\small\item\em Compute euler angles from a given quaternion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ad5c3e0ac91a5ac0fa91e12e608cb8399}\label{namespacergbd__slam_1_1utils_ad5c3e0ac91a5ac0fa91e12e608cb8399}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!pose\_array@{pose\_array}}
+\index{pose\_array@{pose\_array}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{pose\_array}{pose\_array}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}$>$ $>$ \mbox{\hyperlink{namespacergbd__slam_1_1utils_ad5c3e0ac91a5ac0fa91e12e608cb8399}{rgbd\+\_\+slam\+::utils\+::pose\+\_\+array}}}
+
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}\label{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}}
+\index{compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{compute\_camera\_to\_world\_transform()}{compute\_camera\_to\_world\_transform()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position }\end{DoxyParamCaption})}
+
+
+
+Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) 
+
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}\label{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}
 \index{compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
@@ -55,97 +65,61 @@ const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}
 
 
 
-Given a camera pose, returns a transformation matrix to convert a world point to camera point. 
+Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) 
 
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em camera\+Pose} & \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a4ba8f7525d651525350b572363fed081}\label{namespacergbd__slam_1_1utils_a4ba8f7525d651525350b572363fed081}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_distance\_manhattan@{get\_distance\_manhattan}}
-\index{get\_distance\_manhattan@{get\_distance\_manhattan}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{pointB }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a6991e4f4b4c3274d748208f7a19bb3be}\label{namespacergbd__slam_1_1utils_a6991e4f4b4c3274d748208f7a19bb3be}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_generalized\_loss\_estimator@{get\_generalized\_loss\_estimator}}
-\index{get\_generalized\_loss\_estimator@{get\_generalized\_loss\_estimator}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_generalized\_loss\_estimator()}{get\_generalized\_loss\_estimator()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+generalized\+\_\+loss\+\_\+estimator (\begin{DoxyParamCaption}\item[{const double}]{error,  }\item[{const double}]{alpha = {\ttfamily 1},  }\item[{const double}]{scale = {\ttfamily 1} }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}\label{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_euler\_angles\_from\_quaternion@{get\_euler\_angles\_from\_quaternion}}
+\index{get\_euler\_angles\_from\_quaternion@{get\_euler\_angles\_from\_quaternion}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{get\_euler\_angles\_from\_quaternion()}{get\_euler\_angles\_from\_quaternion()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} rgbd\+\_\+slam\+::utils\+::get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
 
 
 
-Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. 
+Compute euler angles from a given quaternion. 
 
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em error} & The error to pass to the loss function \\
-\hline
-\mbox{\texttt{ in}}  & {\em apha} & The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == -\/ infinity is Welsch loss \\
-\hline
-\mbox{\texttt{ in}}  & {\em scale} & Standard deviation of the error, as a scale parameter \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a6d9c8322b1fc001b47df668e791993a7}\label{namespacergbd__slam_1_1utils_a6d9c8322b1fc001b47df668e791993a7}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}}
-\index{get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_human\_readable\_end\_message()}{get\_human\_readable\_end\_message()}}
-{\footnotesize\ttfamily const std\+::string rgbd\+\_\+slam\+::utils\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message (\begin{DoxyParamCaption}\item[{Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status}]{status }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}\label{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_quaternion\_from\_euler\_angles@{get\_quaternion\_from\_euler\_angles}}
+\index{get\_quaternion\_from\_euler\_angles@{get\_quaternion\_from\_euler\_angles}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{get\_quaternion\_from\_euler\_angles()}{get\_quaternion\_from\_euler\_angles()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \&}]{euler\+Angles }\end{DoxyParamCaption})}
 
 
 
-Use for debug. 
+Compute a quaternion from the given euler angles, in radians. 
 
-\begin{DoxyReturn}{Returns}
-Returns a string with the human readable version of Eigen Levenberg\+Marquardt output status 
-\end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ac3f348ece872432f12e2c303a491f072}\label{namespacergbd__slam_1_1utils_ac3f348ece872432f12e2c303a491f072}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_median@{get\_median}}
-\index{get\_median@{get\_median}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_median()}{get\_median()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+median (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{input\+Vector }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a7e2ecdbe9a3c9afae2e51cc048a8bb6b}\label{namespacergbd__slam_1_1utils_a7e2ecdbe9a3c9afae2e51cc048a8bb6b}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}}
-\index{get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_percent\_of\_elapsed\_time()}{get\_percent\_of\_elapsed\_time()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_adcb619faed0258c497773d553cbf426c}\label{namespacergbd__slam_1_1utils_adcb619faed0258c497773d553cbf426c}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_quaternion\_from\_original\_quaternion@{get\_quaternion\_from\_original\_quaternion}}
-\index{get\_quaternion\_from\_original\_quaternion@{get\_quaternion\_from\_original\_quaternion}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_quaternion\_from\_original\_quaternion()}{get\_quaternion\_from\_original\_quaternion()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+original\+\_\+quaternion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{original\+Quaternion,  }\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{estimation\+Vector,  }\item[{const \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}} \&}]{transformation\+MatrixB }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}\label{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_world\_point\_covariance@{get\_world\_point\_covariance}}
+\index{get\_world\_point\_covariance@{get\_world\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{get\_world\_point\_covariance()}{get\_world\_point\_covariance()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{screen\+Point,  }\item[{const double}]{depth,  }\item[{const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \&}]{screen\+Point\+Error }\end{DoxyParamCaption})}
 
 
 
-Return a quaternion from an ideal parametrization estimation\+Vector. 
+Compute the associated Gaussian error of a screen point when it will be transformed to world point. 
 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}\label{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!log@{log}}
+\index{log@{log}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{log()}{log()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::log (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{message,  }\item[{const std\+::source\+\_\+location \&}]{location = {\ttfamily std\+:\+:source\+\_\+location\+:\+:current()} }\end{DoxyParamCaption})}
 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em original\+Quaternion} & Original position used to compute transformation\+MatrixB \\
-\hline
-\mbox{\texttt{ in}}  & {\em estimation\+Vector} & Estimated vector, optimized by levenberg marquardt, to turn back to a quaternion \\
-\hline
-\mbox{\texttt{ in}}  & {\em transformation\+MatrixB} & Transformation matrix used to transform estimation\+Vector back to a quaternion \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ac13081f91721c0f1cc6aa6cebc521301}\label{namespacergbd__slam_1_1utils_ac13081f91721c0f1cc6aa6cebc521301}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_weight@{get\_weight}}
-\index{get\_weight@{get\_weight}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_weight()}{get\_weight()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+weight (\begin{DoxyParamCaption}\item[{const double}]{error,  }\item[{const double}]{median\+Of\+Errors }\end{DoxyParamCaption})}
+Log an error line \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}\label{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!log\_error@{log\_error}}
+\index{log\_error@{log\_error}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{log\_error()}{log\_error()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::log\+\_\+error (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{message,  }\item[{const std\+::source\+\_\+location \&}]{location }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}\label{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream \& rgbd\+\_\+slam\+::utils\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&}]{pose }\end{DoxyParamCaption})}
 
-
-Compute a weight associated by this error, using a Hubert type loss. 
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ad466b2065539634e416f852610825df3}\label{namespacergbd__slam_1_1utils_ad466b2065539634e416f852610825df3}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}\label{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}}
 \index{screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{screen\_to\_world\_coordinates()}{screen\_to\_world\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const unsigned int}]{screenX,  }\item[{const unsigned int}]{screenY,  }\item[{const double}]{measuredZ,  }\item[{const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const double}]{screenX,  }\item[{const double}]{screenY,  }\item[{const double}]{measuredZ,  }\item[{const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}\label{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!world\_to\_screen\_coordinates@{world\_to\_screen\_coordinates}}

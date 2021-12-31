@@ -14,28 +14,46 @@
 \DoxyCodeLine{10 \textcolor{comment}{ *        Declare the most common types used in this program}}
 \DoxyCodeLine{11 \textcolor{comment}{ */}}
 \DoxyCodeLine{12 }
-\DoxyCodeLine{13 \textcolor{keyword}{typedef} Eigen::Vector2d \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}};}
-\DoxyCodeLine{14 \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 1> \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}};}
-\DoxyCodeLine{15 \textcolor{keyword}{typedef} Eigen::Vector4d \mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}};}
-\DoxyCodeLine{16 \textcolor{keyword}{typedef} Eigen::Matrix3d \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}};}
-\DoxyCodeLine{17 \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 4> \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}};}
-\DoxyCodeLine{18 \textcolor{keyword}{typedef} Eigen::Matrix<double, 4, 3> \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}};}
-\DoxyCodeLine{19 \textcolor{keyword}{typedef} Eigen::Matrix4d \mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}};}
-\DoxyCodeLine{20 \textcolor{keyword}{typedef} Eigen::Quaternion<double> \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}};}
-\DoxyCodeLine{21 }
-\DoxyCodeLine{22 \textcolor{keyword}{typedef} std::vector<vector2, Eigen::aligned\_allocator<vector2>> \mbox{\hyperlink{types_8hpp_a304acc7bbbd00d83957e9a7978a429a7}{vector2\_array}};}
-\DoxyCodeLine{23 \textcolor{keyword}{typedef} std::vector<vector3, Eigen::aligned\_allocator<vector3>> \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\_array}};}
-\DoxyCodeLine{24 \textcolor{keyword}{typedef} std::vector<vector4, Eigen::aligned\_allocator<vector4>> \mbox{\hyperlink{types_8hpp_a7efb1dae67822e8552e4a8348d205846}{vector4\_array}};}
-\DoxyCodeLine{25 \textcolor{keyword}{typedef} std::vector<matrix33, Eigen::aligned\_allocator<matrix33>> \mbox{\hyperlink{types_8hpp_aaf4224fc835744acce67bd9375d309bb}{matrix33\_array}};}
-\DoxyCodeLine{26 \textcolor{keyword}{typedef} std::vector<matrix34, Eigen::aligned\_allocator<matrix34>> \mbox{\hyperlink{types_8hpp_a2b51ff17a2de63ec227c31cf24ab3aab}{matrix34\_array}};}
-\DoxyCodeLine{27 \textcolor{keyword}{typedef} std::vector<matrix44, Eigen::aligned\_allocator<matrix44>> \mbox{\hyperlink{types_8hpp_a744b3504c936bad31d99956ef13ace8c}{matrix44\_array}};}
-\DoxyCodeLine{28 \textcolor{keyword}{typedef} std::vector<quaternion, Eigen::aligned\_allocator<quaternion>> \mbox{\hyperlink{types_8hpp_ae56cce0e28a34ac7f99c5dab8628ab3f}{quaternion\_array}};}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{30 \textcolor{comment}{// KeyPoint matching}}
-\DoxyCodeLine{31 \textcolor{keyword}{typedef} std::pair<vector3, vector3> \mbox{\hyperlink{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}{point\_pair}};}
-\DoxyCodeLine{32 \textcolor{keyword}{typedef} std::list<point\_pair> \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\_point\_container}};}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34 }
-\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{13 \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{types_8hpp_ae29dd89108990c60b90e1a0202df28ad}{EulerToRadian}} = M\_PI/180.0;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> \mbox{\hyperlink{types_8hpp_a10ce90b2e35cf0e1831e47f2dde3eece}{Matrixb}};}
+\DoxyCodeLine{16 \textcolor{keyword}{typedef} Eigen::Vector2d \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}};}
+\DoxyCodeLine{17 \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 1> \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}};}
+\DoxyCodeLine{18 \textcolor{keyword}{typedef} Eigen::Vector4d \mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}};}
+\DoxyCodeLine{19 \textcolor{keyword}{typedef} Eigen::Matrix3d \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}};}
+\DoxyCodeLine{20 \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 4> \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}};}
+\DoxyCodeLine{21 \textcolor{keyword}{typedef} Eigen::Matrix<double, 4, 3> \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}};}
+\DoxyCodeLine{22 \textcolor{keyword}{typedef} Eigen::Matrix4d \mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}};}
+\DoxyCodeLine{23 \textcolor{keyword}{typedef} Eigen::Quaternion<double> \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_euler_angles}{EulerAngles}}}
+\DoxyCodeLine{26 \{}
+\DoxyCodeLine{27     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_euler_angles_a4dc9e3ffc0285a52e2e1d26b43e270a6}{yaw}};}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_euler_angles_a2b3fff8a202b634470b2c816b9bd8da7}{pitch}};}
+\DoxyCodeLine{29     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_euler_angles_af13c61c45dc20d50bd491bd7cf47d160}{roll}};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \mbox{\hyperlink{struct_euler_angles_a21dc8b9e6a85feeedd03ea5c6c0eaf24}{EulerAngles}}() \{\};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \mbox{\hyperlink{struct_euler_angles_abbc1171c807c86092782b81147194008}{EulerAngles}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} p, \textcolor{keyword}{const} \textcolor{keywordtype}{double} r):}
+\DoxyCodeLine{34         \mbox{\hyperlink{struct_euler_angles_a4dc9e3ffc0285a52e2e1d26b43e270a6}{yaw}}(y),}
+\DoxyCodeLine{35         \mbox{\hyperlink{struct_euler_angles_a2b3fff8a202b634470b2c816b9bd8da7}{pitch}}(p),}
+\DoxyCodeLine{36         \mbox{\hyperlink{struct_euler_angles_af13c61c45dc20d50bd491bd7cf47d160}{roll}}(r)}
+\DoxyCodeLine{37     \{\};}
+\DoxyCodeLine{38 \};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{typedef} std::vector<vector2, Eigen::aligned\_allocator<vector2>> \mbox{\hyperlink{types_8hpp_a304acc7bbbd00d83957e9a7978a429a7}{vector2\_array}};}
+\DoxyCodeLine{41 \textcolor{keyword}{typedef} std::vector<vector3, Eigen::aligned\_allocator<vector3>> \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\_array}};}
+\DoxyCodeLine{42 \textcolor{keyword}{typedef} std::vector<vector4, Eigen::aligned\_allocator<vector4>> \mbox{\hyperlink{types_8hpp_a7efb1dae67822e8552e4a8348d205846}{vector4\_array}};}
+\DoxyCodeLine{43 \textcolor{keyword}{typedef} std::vector<matrix33, Eigen::aligned\_allocator<matrix33>> \mbox{\hyperlink{types_8hpp_aaf4224fc835744acce67bd9375d309bb}{matrix33\_array}};}
+\DoxyCodeLine{44 \textcolor{keyword}{typedef} std::vector<matrix34, Eigen::aligned\_allocator<matrix34>> \mbox{\hyperlink{types_8hpp_a2b51ff17a2de63ec227c31cf24ab3aab}{matrix34\_array}};}
+\DoxyCodeLine{45 \textcolor{keyword}{typedef} std::vector<matrix44, Eigen::aligned\_allocator<matrix44>> \mbox{\hyperlink{types_8hpp_a744b3504c936bad31d99956ef13ace8c}{matrix44\_array}};}
+\DoxyCodeLine{46 \textcolor{keyword}{typedef} std::vector<quaternion, Eigen::aligned\_allocator<quaternion>> \mbox{\hyperlink{types_8hpp_ae56cce0e28a34ac7f99c5dab8628ab3f}{quaternion\_array}};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{comment}{// KeyPoint matching}}
+\DoxyCodeLine{49 \textcolor{keyword}{typedef} std::pair<vector3, vector3> \mbox{\hyperlink{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}{point\_pair}};}
+\DoxyCodeLine{50 \textcolor{keyword}{typedef} std::list<point\_pair> \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\_point\_container}};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

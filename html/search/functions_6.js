@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['histogram_0',['Histogram',['../classrgbd__slam_1_1primitive_detection_1_1_histogram.html#af0eced94ef43b221b6157a303ac0097a',1,'rgbd_slam::primitiveDetection::Histogram']]]
+  ['histogram_0',['Histogram',['../classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a2c554b601e1418e56cb53973929d2274',1,'rgbd_slam::features::primitives::Histogram']]]
 ];

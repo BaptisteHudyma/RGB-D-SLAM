@@ -1,5 +1,5 @@
-\hypertarget{_pose_optimization_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\+Pose\+Optimization.cpp File Reference}
-\label{_pose_optimization_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/PoseOptimization.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/PoseOptimization.cpp}}
+\hypertarget{_pose_optimization_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\+Pose\+Optimization.cpp File Reference}
+\label{_pose_optimization_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/PoseOptimization.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/PoseOptimization.cpp}}
 {\ttfamily \#include \char`\"{}Pose\+Optimization.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Levenberg\+Marquard\+Functors.\+hpp\char`\"{}}\newline
@@ -10,5 +10,10 @@
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
-namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad61b8f2a51e35c2593c91b5781896c37}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::remove\+\_\+match\+\_\+outliers}} (const utils\+::\+Pose \&optimized\+Pose, const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \&matched\+Points)
+\begin{DoxyCompactList}\small\item\em Remove the outliers of the matched point container by excluding the 5\% of errors. \end{DoxyCompactList}\end{DoxyCompactItemize}
