@@ -9,11 +9,97 @@
 namespace rgbd_slam {
     namespace pose_optimization {
 
+        /**
+         * \brief Remove the outliers of the matched point container by excluding the 5% of errors
+         *
+         * \param[in] optimizedPose the pose obtained after one optimization
+         * \param[in] matchedPoints the original matched point container
+         *
+         * \return a matched point container without outliers
+         */
+        const match_point_container remove_match_outliers(const utils::Pose& optimizedPose, const match_point_container& matchedPoints)
+        {
+            std::vector<double> errorVector;
+            errorVector.reserve(matchedPoints.size());
+
+            double mean = 0;
+            const matrix34& newTransformationMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+            for(match_point_container::const_iterator pointIterator = matchedPoints.cbegin(); pointIterator != matchedPoints.cend(); ++pointIterator) {
+                const vector2& screenPoint = vector2(pointIterator->first.x(), pointIterator->first.y());
+                const vector3& worldPoint = pointIterator->second;
+
+                const vector2& projectedPoint = utils::world_to_screen_coordinates(worldPoint, newTransformationMatrix);
+                const double projectionError = (projectedPoint - screenPoint).norm();
+                mean += projectionError;
+                errorVector.push_back(projectionError);
+            }
+            mean /= errorVector.size();
+
+            double variance = 0;
+            for(const double& error : errorVector) 
+            {
+                variance += std::pow(error - mean, 2.0);
+            }
+            variance /= errorVector.size();
+            const double standardDeviation = sqrt(variance);
+
+            // standard threshold: 
+            const double stdError = standardDeviation * 2;  // 95% not outliers
+            const double highThresh = mean + stdError;
+            const double lowThresh = mean - stdError;
+
+            match_point_container newMatchedPoints;
+            size_t cnt = 0;
+            for(match_point_container::const_iterator pointIterator = matchedPoints.cbegin(); pointIterator != matchedPoints.cend(); ++pointIterator, ++cnt) {
+                if (errorVector[cnt] <= highThresh and errorVector[cnt] >= lowThresh)
+                {
+                    const vector3& screenPoint = pointIterator->first;
+                    const vector3& worldPoint = pointIterator->second;
+
+                    newMatchedPoints.emplace(newMatchedPoints.end(), screenPoint, worldPoint);
+                }
+            }
+
+            return newMatchedPoints;
+        }
+
         const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints) 
         {
-            const utils::Pose& newGlobalPose = get_optimized_global_pose(currentPose, matchedPoints);
+            // get absolute displacement error
+            const double maximumOptimizationRetroprojection = Parameters::get_maximum_optimization_retroprojection_error();
+            const size_t startPointCount = matchedPoints.size();
+            utils::Pose finalPose = currentPose;
+            match_point_container finalMatchedPoints = matchedPoints;
+            double errorOfSet = 0.0;
+            size_t iterationCount = 0;
+            do
+            {
+                ++iterationCount;
+                const utils::Pose& optimizedPose = get_optimized_global_pose(currentPose, finalMatchedPoints);
+                errorOfSet = (currentPose.get_position() - optimizedPose.get_position()).norm();
 
-            return newGlobalPose;
+                const match_point_container& newMatchedPoints = remove_match_outliers(optimizedPose, finalMatchedPoints);
+                if (newMatchedPoints.size() == finalMatchedPoints.size())
+                {
+                    //utils::log_error("No outliers found in original set, but optimization error is too great");
+                    break;
+                }
+                else if (newMatchedPoints.size() <= Parameters::get_minimum_point_count_for_optimization())
+                {
+                    //utils::log_error("Not enough points for pose optimization after outlier removal");
+                    break;
+                }
+                finalPose = optimizedPose;
+                finalMatchedPoints = newMatchedPoints;
+            } while (errorOfSet > maximumOptimizationRetroprojection);
+
+            //std::cout << "Final score is " << errorOfSet << " after " << iterationCount << " iterations (optimization with " << finalMatchedPoints.size() << "/" << startPointCount << " points)" << std::endl;
+            if (errorOfSet > maximumOptimizationRetroprojection)
+            {
+                utils::log_error("Optimization error is too great");
+                return currentPose;
+            }
+            return finalPose;
         }
 
 
