@@ -385,7 +385,7 @@ namespace rgbd_slam {
                 _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
 
                 // Update last keypoint struct
-                return Keypoint_Handler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance); ;
+                return Keypoint_Handler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance);
             }
 
 
@@ -474,12 +474,12 @@ namespace rgbd_slam {
                     if(statusContainer[i] != 1) {
                         continue;
                     }
-                    // check distance of the backpropagate point to the original point
+                    // check distance of the backpropagated point to the original point
                     if (cv::norm(lastKeypoints[keypointIndex] - backwardKeypoints[i]) > maxDistanceThreshold) {
                         continue;
                     }
 
-                    keypointStruct._keypoints.push_back(newKeypoints[keypointIndex]);
+                    keypointStruct._keypoints.push_back(forwardPoints[keypointIndex]);
                     keypointStruct._ids.push_back(lastKeypointsWithIds._ids[keypointIndex]);
                 }
                 return keypointStruct;
