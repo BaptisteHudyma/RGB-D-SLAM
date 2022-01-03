@@ -141,6 +141,9 @@ namespace primitives {
     };
 
 
+
+    typedef std::unique_ptr<Primitive> primitive_uniq_ptr;
+
 }
 }
 }

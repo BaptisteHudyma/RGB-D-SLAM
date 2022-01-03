@@ -10,7 +10,7 @@ namespace rgbd_slam {
         {
         }
 
-        match_point_container Local_Map::find_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
+        match_point_container Local_Map::find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
         {
             // will be used to detect new keypoints for the stagged map
             _isPointMatched.clear();
@@ -20,7 +20,7 @@ namespace rgbd_slam {
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
 
             // Try to find matches in local map
-            for (Map_Point& mapPoint : _localMap) 
+            for (Map_Point& mapPoint : _localPointMap) 
             {
                 int matchIndex = detectedKeypoint.get_tracking_match_index(mapPoint._id, _isPointMatched);
                 if (matchIndex < 0)
@@ -86,18 +86,18 @@ namespace rgbd_slam {
             const matrix34& camToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // add local map points
-            update_local_map(camToWorldMatrix, keypointObject);
+            update_local_keypoint_map(camToWorldMatrix, keypointObject);
 
             // add staged points to local map
-            update_staged(camToWorldMatrix, keypointObject);
+            update_staged_keypoints_map(camToWorldMatrix, keypointObject);
 
             // add local map points to global map
             update_local_to_global();
 
-            //std::cout << "local map: " << _localMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
+            //std::cout << "local map: " << _localPointMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
         }
 
-        void Local_Map::update_local_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Must update [2][2] with depth error
             matrix33 screenPointError {
@@ -108,8 +108,8 @@ namespace rgbd_slam {
             const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
 
             // Remove old map points
-            point_map_container::iterator pointMapIterator = _localMap.begin();
-            while(pointMapIterator != _localMap.end())
+            point_map_container::iterator pointMapIterator = _localPointMap.begin();
+            while(pointMapIterator != _localPointMap.end())
             {
                 bool shouldRemovePoint = false;
                 const int matchedPointIndex = pointMapIterator->_lastMatchedIndex;
@@ -143,7 +143,7 @@ namespace rgbd_slam {
 
                 if (shouldRemovePoint or pointMapIterator->is_lost()) {
                     // Remove useless point
-                    pointMapIterator = _localMap.erase(pointMapIterator);
+                    pointMapIterator = _localPointMap.erase(pointMapIterator);
                 }
                 else
                 {
@@ -154,7 +154,7 @@ namespace rgbd_slam {
 
         }
 
-        void Local_Map::update_staged(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_staged_keypoints_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
             const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
@@ -188,8 +188,8 @@ namespace rgbd_slam {
                 if (stagedPointIterator->should_add_to_local_map())
                 {
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
-                    _localMap.emplace(_localMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->_descriptor, stagedPointIterator->_id);
-                    _localMap.back()._screenCoordinates = stagedPointIterator->_screenCoordinates;
+                    _localPointMap.emplace(_localPointMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->_descriptor, stagedPointIterator->_id);
+                    _localPointMap.back()._screenCoordinates = stagedPointIterator->_screenCoordinates;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
                 else if (shouldRemovePoint or stagedPointIterator->should_remove_from_staged())
@@ -228,7 +228,7 @@ namespace rgbd_slam {
         {
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
 
-            const size_t numberOfNewKeypoints = _localMap.size() + _stagedPoints.size();
+            const size_t numberOfNewKeypoints = _localPointMap.size() + _stagedPoints.size();
 
             // initialize output structure
             features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
@@ -236,7 +236,7 @@ namespace rgbd_slam {
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
 
             // add map points with valid retroprojected coordinates
-            for (const Map_Point& point : _localMap)
+            for (const Map_Point& point : _localPointMap)
             {
                 if (point._screenCoordinates.x >= 0)
                 {
@@ -265,7 +265,7 @@ namespace rgbd_slam {
 
         void Local_Map::reset()
         {
-            _localMap.clear();
+            _localPointMap.clear();
             _stagedPoints.clear();
         }
 
@@ -273,7 +273,7 @@ namespace rgbd_slam {
         {
             const matrix34& worldToCamMtrx = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
-            for (const Map_Point& mapPoint : _localMap) {
+            for (const Map_Point& mapPoint : _localPointMap) {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx);
 
                 //Map Point are green 

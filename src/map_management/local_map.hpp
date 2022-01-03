@@ -9,6 +9,7 @@
 #include "types.hpp"
 #include "map_point.hpp"
 #include "KeyPointDetection.hpp"
+#include "PrimitiveDetection.hpp"
 #include "Pose.hpp"
 
 
@@ -30,21 +31,23 @@ namespace rgbd_slam {
                  *
                  * \return A container associating the map/staged points to detected key points
                  */
-                match_point_container find_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
+                match_point_container find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
+
+
 
                 /**
-                 * \brief Update the local and global map. Add new points to staged and map container. Compute the new tracked point vector
+                 * \brief Update the local and global map. Add new points to staged and map container
                  *
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
-                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
+                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
                  */
                 void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
-                  * \brief Return an object containing the tracked features 
-                  *
-                  * \param[in] pose The current pose of the observer
-                  */
+                 * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global ids 
+                 *
+                 * \param[in] pose The current pose of the observer
+                 */
                 const features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(const utils::Pose& pose) const;
 
                 /**
@@ -54,7 +57,7 @@ namespace rgbd_slam {
 
 
                 /**
-                 * \brief Compute a debug image
+                 * \brief Compute a debug image to display the keypoints & primitives
                  *
                  * \param[in] camPose Pose of the camera in world coordinates
                  * \param[in, out] debugImage Output image
@@ -65,20 +68,20 @@ namespace rgbd_slam {
             protected:
 
                 /**
-                 * \brief Update local map features 
+                 * \brief Update local keypoint map features 
                  *
                  * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
-                 * \brief Add previously uncertain features to the local map
+                 * \brief Add previously uncertain keypoint features to the local map
                  *
                  * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_staged_keypoints_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
@@ -90,17 +93,18 @@ namespace rgbd_slam {
                 typedef std::list<Map_Point> point_map_container;
                 // staged points container
                 typedef std::list<Staged_Point> staged_point_container;
+                // local shape primitive map container
+                typedef std::list<features::primitives::primitive_uniq_ptr> primitive_map_container; 
 
                 // Local map contains world points with a good confidence
-                point_map_container _localMap;
+                point_map_container _localPointMap;
                 // Staged points are potential new map points, waiting to confirm confidence
                 staged_point_container _stagedPoints;
-
                 // Hold unmatched detected point indexes, to add in the staged point container
                 std::vector<bool> _isPointMatched;
 
                 //local primitive map
-
+                primitive_map_container _localPrimitiveMap;
         };
 
     }

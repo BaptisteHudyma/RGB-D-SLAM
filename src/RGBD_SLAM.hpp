@@ -22,8 +22,7 @@ namespace rgbd_slam {
     class RGBD_SLAM {
         public:
             typedef std::vector<cv::Vec4f> line_vector;
-            typedef std::unique_ptr<features::primitives::Primitive> primitive_uniq_ptr;
-            typedef std::list<primitive_uniq_ptr> primitive_container; 
+            typedef std::list<features::primitives::primitive_uniq_ptr> primitive_container; 
 
             /**
              * \param[in] dataPath Path of the file that contains the camera intrinsics

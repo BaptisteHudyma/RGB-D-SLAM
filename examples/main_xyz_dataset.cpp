@@ -96,12 +96,12 @@ int main(int argc, char* argv[])
     rgbd_slam::Parameters::load_defaut();
     //start with identity pose
     rgbd_slam::utils::Pose pose;
-    const vector3 startingPosition(
+    const rgbd_slam::vector3 startingPosition(
             rgbd_slam::Parameters::get_starting_position_x(),
             rgbd_slam::Parameters::get_starting_position_y(),
             rgbd_slam::Parameters::get_starting_position_z()
             );
-    const quaternion startingRotation;
+    const rgbd_slam::quaternion startingRotation;
     pose.set_parameters(startingPosition, startingRotation);
 
 
