@@ -22,6 +22,8 @@ namespace rgbd_slam {
 namespace features {
 namespace primitives {
 
+    typedef std::list<primitive_uniq_ptr> primitive_container; 
+
     /**
       * \brief Main extraction class. Extracts shape primitives from an organized cloud of points
       */
@@ -34,7 +36,6 @@ namespace primitives {
             typedef std::unique_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
             typedef std::vector<plane_segment_unique_ptr> planes_ptr_vector; 
             typedef std::vector<cylinder_segment_unique_ptr> cylinders_ptr_vector; 
-            typedef std::list<std::unique_ptr<Primitive>> primitive_container; 
             typedef std::vector<uint> uint_vector;
 
         public:

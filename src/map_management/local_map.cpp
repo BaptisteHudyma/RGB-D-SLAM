@@ -10,7 +10,7 @@ namespace rgbd_slam {
         {
         }
 
-        matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
+        matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
         {
             // will be used to detect new keypoints for the stagged map
             _isPointMatched.clear();
@@ -80,6 +80,26 @@ namespace rgbd_slam {
             return matchedPoints;
         }
 
+        matches_containers::match_primitive_container Local_Map::find_primitive_matches(const utils::Pose& currentPose, const features::primitives::primitive_container& detectedPrimitives)
+        {
+            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
+
+            matches_containers::match_primitive_container matchedPrimitiveContainer;
+            for(const features::primitives::primitive_uniq_ptr& mapPrimitive : _localPrimitiveMap)
+            {
+                for(const features::primitives::primitive_uniq_ptr& shapePrimitive : detectedPrimitives) 
+                {
+                    if(mapPrimitive->is_similar(shapePrimitive)) 
+                    {
+                        matchedPrimitiveContainer.emplace(matchedPrimitiveContainer.end(), shapePrimitive->_normal, mapPrimitive->_normal);
+                        break;
+                    }
+                }
+            }
+
+            return matchedPrimitiveContainer;
+        }
+
 
         void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)
         {
@@ -102,8 +122,8 @@ namespace rgbd_slam {
             // Must update [2][2] with depth error
             matrix33 screenPointError {
                 {1.0/12.0, 0,        0},
-                {0,        1.0/12.0, 0},
-                {0,        0,        0},
+                    {0,        1.0/12.0, 0},
+                    {0,        0,        0},
             };
             const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
 

@@ -41,6 +41,7 @@ namespace primitives {
             uint get_id() const { return _id; };
             void set_id(const uint id) { _id = id; };
 
+            Eigen::Vector3d _normal;
 
         protected:
             /**
@@ -103,7 +104,6 @@ namespace primitives {
 
         private:
             double _radius;
-            Eigen::Vector3d _normal;
     };
 
     /**
@@ -136,7 +136,6 @@ namespace primitives {
 
         private:
             Eigen::Vector3d _mean;      //mean center point
-            Eigen::Vector3d _normal;    //normal of the plane
             double _d;     //fourth component of the plane parameters
     };
 

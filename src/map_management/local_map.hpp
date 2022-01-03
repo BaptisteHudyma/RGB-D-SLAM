@@ -32,8 +32,17 @@ namespace rgbd_slam {
                  *
                  * \return A container associating the map/staged points to detected key points
                  */
-                matches_containers::match_point_container find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
+                matches_containers::match_point_container find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
 
+                /**
+                 * \brief Compute the primitive matches
+                 *
+                 * \param[in] currentPose The current observer pose.
+                 * \param[in] detectedPrimitives The primitives (planes, cylinders, ...) detected in the image
+                 *
+                 * \return A container associating the map primitives to detected primitives
+                 */
+                matches_containers::match_primitive_container find_primitive_matches(const utils::Pose& currentPose, const features::primitives::primitive_container& detectedPrimitives);
 
 
                 /**
