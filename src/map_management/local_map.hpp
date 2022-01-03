@@ -7,6 +7,7 @@
 #include <opencv2/xfeatures2d.hpp>
 
 #include "types.hpp"
+#include "matches_containers.hpp"
 #include "map_point.hpp"
 #include "KeyPointDetection.hpp"
 #include "PrimitiveDetection.hpp"
@@ -31,7 +32,7 @@ namespace rgbd_slam {
                  *
                  * \return A container associating the map/staged points to detected key points
                  */
-                match_point_container find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
+                matches_containers::match_point_container find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
 
 
 

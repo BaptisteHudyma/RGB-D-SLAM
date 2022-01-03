@@ -122,7 +122,7 @@ namespace rgbd_slam {
 
 
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
+        Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
             Levenberg_Marquardt_Functor<double>(n, points.size()),
             _points(points),
             _rotation(worldRotation),
@@ -146,7 +146,7 @@ namespace rgbd_slam {
 
             double mean = 0;
             size_t pointIndex = 0;
-            for(match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
+            for(matches_containers::match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 // Compute distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
                 mean += distance / static_cast<double>(pointContainerSize);

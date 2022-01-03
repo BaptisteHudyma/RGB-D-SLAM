@@ -17,13 +17,13 @@ namespace rgbd_slam {
          *
          * \return the mean of the error vector
          */
-        double get_retroprojection_error_vector(const utils::Pose& optimizedPose, const match_point_container& matchedPoints, std::vector<double>& retroprojectionErrorContainer)
+        double get_retroprojection_error_vector(const utils::Pose& optimizedPose, const matches_containers::match_point_container& matchedPoints, std::vector<double>& retroprojectionErrorContainer)
         {
             retroprojectionErrorContainer.reserve(matchedPoints.size());
 
             double mean = 0;
             const matrix34& newTransformationMatrix = utils::compute_world_to_camera_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
-            for(match_point_container::const_iterator pointIterator = matchedPoints.cbegin(); pointIterator != matchedPoints.cend(); ++pointIterator) {
+            for(matches_containers::match_point_container::const_iterator pointIterator = matchedPoints.cbegin(); pointIterator != matchedPoints.cend(); ++pointIterator) {
                 const vector2& screenPoint = vector2(pointIterator->first.x(), pointIterator->first.y());
                 const vector3& worldPoint = pointIterator->second;
 
@@ -45,7 +45,7 @@ namespace rgbd_slam {
          *
          * \return a matched point container without outliers
          */
-        const match_point_container remove_match_outliers(const match_point_container& matchedPoints, const std::vector<double>& retroprojectionErrorContainer, const double retroprojectionErrorMean)
+        const matches_containers::match_point_container remove_match_outliers(const matches_containers::match_point_container& matchedPoints, const std::vector<double>& retroprojectionErrorContainer, const double retroprojectionErrorMean)
         {
             double variance = 0;
             for(const double& error : retroprojectionErrorContainer) 
@@ -60,9 +60,9 @@ namespace rgbd_slam {
             const double highThresh = retroprojectionErrorMean + stdError;
             const double lowThresh =  retroprojectionErrorMean - stdError;
 
-            match_point_container newMatchedPoints;
+            matches_containers::match_point_container newMatchedPoints;
             size_t cnt = 0;
-            for(match_point_container::const_iterator pointIterator = matchedPoints.cbegin(); pointIterator != matchedPoints.cend(); ++pointIterator, ++cnt) {
+            for(matches_containers::match_point_container::const_iterator pointIterator = matchedPoints.cbegin(); pointIterator != matchedPoints.cend(); ++pointIterator, ++cnt) {
                 if (retroprojectionErrorContainer[cnt] <= highThresh and retroprojectionErrorContainer[cnt] >= lowThresh)
                 {
                     const vector3& screenPoint = pointIterator->first;
@@ -75,7 +75,7 @@ namespace rgbd_slam {
             return newMatchedPoints;
         }
 
-        const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints) 
+        const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) 
         {
             // get absolute displacement error
             const double maximumOptimizationRetroprojection = Parameters::get_maximum_optimization_retroprojection_error();
@@ -83,7 +83,7 @@ namespace rgbd_slam {
             const size_t minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
 
             utils::Pose finalPose = currentPose;
-            match_point_container finalMatchedPoints = matchedPoints;
+            matches_containers::match_point_container finalMatchedPoints = matchedPoints;
             double errorOfSet = 0.0;
             size_t iterationCount = 0;
             while (iterationCount < maximumOptimizationReiteration)
@@ -95,7 +95,7 @@ namespace rgbd_slam {
                 const double meanOfErrorContainer = get_retroprojection_error_vector(currentPose, finalMatchedPoints, retroprojectionErrorContainer);
                 errorOfSet = meanOfErrorContainer;
 
-                const match_point_container& newMatchedPoints = remove_match_outliers(finalMatchedPoints, retroprojectionErrorContainer, meanOfErrorContainer);
+                const matches_containers::match_point_container& newMatchedPoints = remove_match_outliers(finalMatchedPoints, retroprojectionErrorContainer, meanOfErrorContainer);
 
                 finalPose = optimizedPose;
                 if (errorOfSet < maximumOptimizationRetroprojection)
@@ -126,7 +126,7 @@ namespace rgbd_slam {
         }
 
 
-        const utils::Pose Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints) 
+        const utils::Pose Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) 
         {
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();

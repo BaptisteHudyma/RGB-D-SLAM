@@ -4,6 +4,7 @@
 #include "PoseOptimization.hpp"
 #include "parameters.hpp"
 #include "utils.hpp"
+#include "matches_containers.hpp"
 
 #include "RGBD_SLAM.hpp"
 
@@ -197,7 +198,7 @@ namespace rgbd_slam {
 
         const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features(_currentPose);
         const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
-        const match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
+        const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
 
         if (_computeKeypointCount != 0)
         {

@@ -10,12 +10,12 @@ namespace rgbd_slam {
         {
         }
 
-        match_point_container Local_Map::find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
+        matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
         {
             // will be used to detect new keypoints for the stagged map
             _isPointMatched.clear();
             _isPointMatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
-            match_point_container matchedPoints; 
+            matches_containers::match_point_container matchedPoints; 
 
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
 
@@ -130,7 +130,8 @@ namespace rgbd_slam {
 
                     // update this map point errors & position
                     const double retroprojectionError = pointMapIterator->update_matched(newCoordinates);
-                    shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
+                    // TODO find a better way to remove map point ?
+                    //shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
                 }
                 else if (matchedPointIndex > 0 and matchedPointIndex >= keypointsSize)
                 {

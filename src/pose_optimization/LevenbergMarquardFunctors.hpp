@@ -2,6 +2,7 @@
 #define RGBDSLAM_UTILS_LM_FUNCTORS
 
 #include "types.hpp"
+#include "matches_containers.hpp"
 
 // types
 #include "map_point.hpp"
@@ -80,7 +81,7 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Global_Pose_Estimator(const size_t n, const match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
+            Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
 
             /**
              * \brief Return te distance between the map point and the it's matched point
@@ -102,7 +103,7 @@ namespace rgbd_slam {
             int operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const;
 
             private:
-            const match_point_container& _points; 
+            const matches_containers::match_point_container& _points; 
             const quaternion _rotation;
             const vector3 _position;
         };

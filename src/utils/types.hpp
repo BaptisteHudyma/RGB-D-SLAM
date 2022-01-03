@@ -45,11 +45,6 @@ namespace rgbd_slam {
     typedef std::vector<matrix34, Eigen::aligned_allocator<matrix34>> matrix34_array;
     typedef std::vector<matrix44, Eigen::aligned_allocator<matrix44>> matrix44_array;
     typedef std::vector<quaternion, Eigen::aligned_allocator<quaternion>> quaternion_array;
-
-    // KeyPoint matching
-    typedef std::pair<vector3, vector3> point_pair;
-    typedef std::list<point_pair> match_point_container;
-
 }
 
 #endif

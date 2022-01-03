@@ -3,6 +3,7 @@
 
 #include "Pose.hpp"
 #include "types.hpp"
+#include "matches_containers.hpp"
 
 namespace rgbd_slam {
     namespace pose_optimization {
@@ -18,7 +19,7 @@ namespace rgbd_slam {
                   *
                   * \return An optimized global pose
                   */
-                static const utils::Pose  compute_optimized_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints);
+                static const utils::Pose  compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints);
 
             private:
                 /**
@@ -29,7 +30,7 @@ namespace rgbd_slam {
                   *
                   * \return The estimated world translation & rotation of the camera pose 
                   */
-                static const utils::Pose get_optimized_global_pose(const utils::Pose& currentPose, const match_point_container& matchedPoints);
+                static const utils::Pose get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints);
         };
 
     }   /* pose_optimization */
