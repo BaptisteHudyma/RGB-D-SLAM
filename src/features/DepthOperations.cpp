@@ -2,6 +2,8 @@
 #include "parameters.hpp"
 #include "utils.hpp"
 
+#include <tbb/parallel_for.h>
+
 namespace rgbd_slam {
 namespace features {
 namespace primitives {
@@ -59,28 +61,29 @@ namespace primitives {
 
             cv::Mat outputDepth = cv::Mat::zeros(_height, _width, CV_32F);
             _cloudArray.setZero();
-            for(uint r = 0; r < _height; r++){
-                float* sx = _Xt.ptr<float>(r);
-                float* sy = _Yt.ptr<float>(r);
-                float* sz = depthImage.ptr<float>(r);
-                float* u_ptr = _U.ptr<float>(r);
-                float* v_ptr = _V.ptr<float>(r);
+            // parallel loop to speed up the process
+            tbb::parallel_for(uint(0), _height, [&](uint r){
+                    float* sx = _Xt.ptr<float>(r);
+                    float* sy = _Yt.ptr<float>(r);
+                    float* sz = depthImage.ptr<float>(r);
+                    float* u_ptr = _U.ptr<float>(r);
+                    float* v_ptr = _V.ptr<float>(r);
 
-                for(uint c = 0; c < _width; c++){
-                    float z = sz[c];
-                    float u = u_ptr[c];
-                    float v = v_ptr[c];
-                    if(z > zMin and u > 0 and v > 0 and u < _width and v < _height){
-                        //set transformed depth image
-                        outputDepth.at<float>(v, c) = z; 
-                        int id = floor(v) * _width + u;
-                        _cloudArray(id, 0) = sx[c];
-                        _cloudArray(id, 1) = sy[c];
-                        _cloudArray(id, 2) = z;
-
+                    for(uint c = 0; c < _width; c++){
+                        float z = sz[c];
+                        float u = u_ptr[c];
+                        float v = v_ptr[c];
+                        if(z > zMin and u > 0 and v > 0 and u < _width and v < _height){
+                            //set transformed depth image
+                            outputDepth.at<float>(v, c) = z; 
+                            int id = floor(v) * _width + u;
+                            _cloudArray(id, 0) = sx[c];
+                            _cloudArray(id, 1) = sy[c];
+                            _cloudArray(id, 2) = z;
+                        }
                     }
                 }
-            }
+            );
 
             //project cloud point by cells
             uint mxn = _width * _height;
