@@ -58,14 +58,13 @@ namespace rgbd_slam {
 
         // Pose Optimization
         _minimumPointForOptimization = 5;
-        _maximumPointPerFrame = 100;
         _optimizationMaximumIterations = 1024;
         _optimizationErrorPrecision = 0;
         _optimizationToleranceOfSolutionVectorNorm = 1e-4;//sqrt(DBL_EPSILON); // Smallest delta of doubles
         _optimizationToleranceOfVectorFunction = 1e-3;
         _optimizationToleranceOfErrorFunctionGradient = 0;
         _optimizationDiagonalStepBoundShift = 100;
-        _maximumRetroprojectionError = 10;
+        _maximumRetroprojectionError = 15;
         _maximumRetroprojectionReiteration = 3;
 
         _pointWeightThreshold = 1.345;
@@ -80,6 +79,7 @@ namespace rgbd_slam {
         _pointStagedAgeConfidence = 10;
         _pointMinimumConfidenceForMap = 0.9;
         _mapMaximumRetroprojectionError = 150;
+        _maximumPointPerFrame = 200;
 
         // Primitive extraction
         _primitiveMaximumCosAngle = cos(M_PI/10.0);

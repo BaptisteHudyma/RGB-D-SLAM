@@ -76,12 +76,13 @@ namespace rgbd_slam {
             const double cameraCY = Parameters::get_camera_1_center_y();
 
             const matrix33 jacobian {
-                {depth / cameraFX, 0.0, (screenPoint.x() - cameraCX) / cameraFX },
-                    {0.0, depth / cameraFY, (screenPoint.y() - cameraCY) / cameraFY },
-                    {0.0, 0.0, 1.0}
+                {depth / cameraFX, 0.0,              (screenPoint.x() - cameraCX) / cameraFX },
+                {0.0,              depth / cameraFY, (screenPoint.y() - cameraCY) / cameraFY },
+                {0.0,              0.0,              1.0}
             };
-
-            return jacobian * screenPointError * jacobian.transpose();
+            const matrix33 result = jacobian * screenPointError * jacobian.transpose();
+            //std::cout << result(2, 2) << " " << depth << std::endl;
+            return result;
         }
 
 

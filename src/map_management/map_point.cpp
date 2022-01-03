@@ -5,6 +5,8 @@
 namespace rgbd_slam {
     namespace map_management {
 
+        const double useOfNewPosition = 0.1;    //[0 ; 1] 0 will ignore the new value, 1 will replace the current value with the new one
+
         Point::Point (const vector3& coordinates, const cv::Mat& descriptor) :
             _coordinates(coordinates), 
             _descriptor(descriptor),
@@ -61,12 +63,12 @@ namespace rgbd_slam {
         double Staged_Point::update_matched(const vector3& newPointCoordinates)
         {
             _matchesCount += 1;
+            
             // TODO: update coordinates with error
+            _coordinates = newPointCoordinates * useOfNewPosition + _coordinates * (1 - useOfNewPosition);
 
-            return    
-                abs(newPointCoordinates.x() - _coordinates.x()) + 
-                abs(newPointCoordinates.y() - _coordinates.y()) +
-                abs(newPointCoordinates.z() - _coordinates.z());
+            const double startError = (_coordinates - newPointCoordinates).norm();
+            return startError;
         }
 
         bool Staged_Point::should_remove_from_staged() const
@@ -125,13 +127,12 @@ namespace rgbd_slam {
         {
             _failTrackingCount = 0;
             _age += 1;
-            // TODO: update coordinates with error
-            //_coordinates = newPointCoordinates;
 
-            return    
-                abs(newPointCoordinates.x() - _coordinates.x()) + 
-                abs(newPointCoordinates.y() - _coordinates.y()) +
-                abs(newPointCoordinates.z() - _coordinates.z());
+            // TODO: update coordinates with error
+            _coordinates = newPointCoordinates * useOfNewPosition + _coordinates * (1 - useOfNewPosition);
+
+            const double startError = (_coordinates - newPointCoordinates).norm();
+            return startError;
         }
 
 

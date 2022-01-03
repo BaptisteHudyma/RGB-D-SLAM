@@ -102,8 +102,8 @@ namespace rgbd_slam {
             // Must update [2][2] with depth error
             matrix33 screenPointError {
                 {1.0/12.0, 0,        0},
-                    {0,        1.0/12.0, 0},
-                    {0,        0,        0},
+                {0,        1.0/12.0, 0},
+                {0,        0,        0},
             };
             const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
 
@@ -124,8 +124,7 @@ namespace rgbd_slam {
 
                     const double pointDepthError = 0.00313 + 0.00116 * matchedPointDepth + 0.00052 * pow(matchedPointDepth, 2.0);
                     screenPointError(2, 2) = pointDepthError;
-                    //std::cout << utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, screenPointError) << std::endl;
-                    //std::cout << std::endl;
+                    utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, screenPointError);
 
                     pointMapIterator->_screenCoordinates = cv::Point2f(matchedPointCoordinates.x(), matchedPointCoordinates.y());
 
