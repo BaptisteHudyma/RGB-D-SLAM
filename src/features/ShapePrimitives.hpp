@@ -39,6 +39,7 @@ namespace primitives {
               * \brief Return this shape assigned id
               */
             uint get_id() const { return _id; };
+            void set_id(const uint id) { _id = id; };
 
 
         protected:
@@ -57,7 +58,7 @@ namespace primitives {
             double get_IOU(const std::unique_ptr<Primitive>& prim) const;
 
             //members
-            const uint _id;
+            uint _id;
             cv::Mat _shapeMask;
 
         private:

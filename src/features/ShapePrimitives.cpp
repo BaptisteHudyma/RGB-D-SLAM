@@ -5,7 +5,8 @@ namespace rgbd_slam {
 namespace features {
 namespace primitives {
 
-
+    const double minIoUToCOnsiderMatch = 0.2;  // IoU
+    const double minNormalDotDifference = 0.9;  // dot product of normals
     /*
      *
      *      PRIMITIVE
@@ -47,15 +48,17 @@ namespace primitives {
     }
 
     bool Cylinder::is_similar(const std::unique_ptr<Primitive>& prim) {
-        if(get_IOU(prim) < 0.2)
+        if(get_IOU(prim) < minIoUToCOnsiderMatch)
             return false;
 
         const Cylinder* cylinder = dynamic_cast<const Cylinder*>(prim.get());
         if(cylinder != nullptr) {
-            return std::abs( _normal.dot( cylinder->_normal ) ) > 0.95;
+            return std::abs( _normal.dot( cylinder->_normal ) ) > minNormalDotDifference;
         }
+        /*
         else    //plane overlaps cylinder
             return true;
+        */
         return false;
     }
 
@@ -79,12 +82,12 @@ namespace primitives {
     }
 
     bool Plane::is_similar(const std::unique_ptr<Primitive>& prim) {
-        if(get_IOU(prim) < 0.2)
+        if(get_IOU(prim) < minIoUToCOnsiderMatch)
             return false;
 
         const Plane* plane = dynamic_cast<const Plane*>(prim.get());
         if(plane != nullptr) {
-            return (_normal.dot(plane->_normal) + 1.0) / 2.0 > 0.95;
+            return (_normal.dot(plane->_normal) + 1.0) / 2.0 > minNormalDotDifference;
         }
         return false;
     }

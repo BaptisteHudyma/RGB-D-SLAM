@@ -69,7 +69,7 @@ namespace rgbd_slam {
                 setMaskTime = 0;
             }
 
-            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, int>& associatedIds, const double timeElapsed) {
+            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, uint>& associatedIds, const double timeElapsed) {
                 //apply masks on image
                 for(uint r = 0; r < _height; ++r){
                     const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
@@ -86,22 +86,16 @@ namespace rgbd_slam {
                             //there is a mask to display 
                             const uint primitiveIndex = static_cast<uint>(associatedIds.at(index));
                             if (colors.size() <= primitiveIndex) {
-                                utils::log("Id of primitive is greater than available colors");
+                                utils::log_error("Id of primitive is greater than available colors");
                             }
                             else
                             {
                                 outPtr[c] = colors[primitiveIndex] * 0.5 + rgbPtr[c] * 0.5;
                             }
                         }
+                        // else: not matched
                         else {
-                            //shape associated with nothing
-                            if (colors.size() <= static_cast<uint>(index)) {
-                                utils::log("Id of primitive is greater than available colors");
-                            }
-                            else
-                            {
-                                outPtr[c] = colors[index] * 0.2 + rgbPtr[c] * 0.8;
-                            }
+                            outPtr[c] = rgbPtr[c];
                         }
                     }
                 }
