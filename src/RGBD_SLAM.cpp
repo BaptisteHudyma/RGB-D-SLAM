@@ -10,7 +10,7 @@
 
 namespace rgbd_slam {
 
-    RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, const uint imageWidth, const uint imageHeight) :
+    RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, const utils::Pose &startPose, const uint imageWidth, const uint imageHeight) :
         _width(imageWidth),
         _height(imageHeight),
 
@@ -82,6 +82,7 @@ namespace rgbd_slam {
             }
 
             _computeKeypointCount = 0;
+            _currentPose = startPose;
         }
 
 
@@ -190,11 +191,10 @@ namespace rgbd_slam {
     const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage) 
     {
         //get a pose with the motion model
-        //utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
-        utils::Pose refinedPose = (_currentPose);
+        utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
         // Detect and match key points with local map points
-        const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) == 0;
+        const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency())== 0;
 
         const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features(_currentPose);
         const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);

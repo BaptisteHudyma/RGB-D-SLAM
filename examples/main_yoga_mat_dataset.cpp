@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <ctime>
 
 #include <opencv2/opencv.hpp>
 
@@ -6,6 +8,7 @@
 #include "Pose.hpp"
 #include "parameters.hpp"
 
+#include "utils.hpp"
 
 
 
@@ -101,24 +104,43 @@ int main(int argc, char* argv[]) {
     height = rgbImage.rows;
 
 
-    rgbd_slam::RGBD_SLAM RGBD_Slam (dataPath, width, height);
-
     //start with identity pose
+    rgbd_slam::Parameters::parse_file("");
     rgbd_slam::utils::Pose pose;
     const rgbd_slam::vector3 startingPosition(
             rgbd_slam::Parameters::get_starting_position_x(),
             rgbd_slam::Parameters::get_starting_position_y(),
             rgbd_slam::Parameters::get_starting_position_z()
             );
-    const rgbd_slam::quaternion startingRotation;
+    const rgbd_slam::EulerAngles startingRotationEuler(
+            rgbd_slam::Parameters::get_starting_rotation_x(),
+            rgbd_slam::Parameters::get_starting_rotation_y(),
+            rgbd_slam::Parameters::get_starting_rotation_z()
+            );
+    const rgbd_slam::quaternion& startingRotation = rgbd_slam::utils::get_quaternion_from_euler_angles(startingRotationEuler);
     pose.set_parameters(startingPosition, startingRotation);
 
+    rgbd_slam::RGBD_SLAM RGBD_Slam (dataPath, pose, width, height);
 
     //frame counters
     unsigned int totalFrameTreated = 0;
     unsigned int frameIndex = startIndex;   //current frame index count
 
     double meanTreatmentTime = 0;
+
+    std::time_t timeOfTheDay = std::time(0);
+    std::tm* gmtTime = std::gmtime(&timeOfTheDay);
+    std::string dateAndTime = 
+        std::to_string(1900 + gmtTime->tm_year) + "-" + 
+        std::to_string(1 + gmtTime->tm_mon) + "-" + 
+        std::to_string(gmtTime->tm_mday) + "_" + 
+        std::to_string(1 + gmtTime->tm_hour) + ":" + 
+        std::to_string(1 + gmtTime->tm_min) + ":" +
+        std::to_string(1 + gmtTime->tm_sec);
+    std::cout << dateAndTime << std::endl;
+    std::ofstream trajectoryFile;
+    trajectoryFile.open("traj_yoga_mat_" + dateAndTime + ".txt");
+    trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
 
     //stop condition
     bool runLoop = true;
@@ -153,7 +175,13 @@ int main(int argc, char* argv[]) {
         ++frameIndex;
 
         //std::cout << "\x1B[2J\x1B[H" << pose << std::endl;
+        const rgbd_slam::vector3& position = pose.get_position();
+        const rgbd_slam::quaternion& rotation = pose.get_orientation_quaternion();
+        const rgbd_slam::EulerAngles& rotationEuler = rgbd_slam::utils::get_euler_angles_from_quaternion(rotation);
+        trajectoryFile << position.x() << "," << position.y() << "," << position.z() << ",";
+        trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl; 
     }
+    trajectoryFile.close();
 
     std::cout << std::endl;
     std::cout << "End pose : " << pose << std::endl;

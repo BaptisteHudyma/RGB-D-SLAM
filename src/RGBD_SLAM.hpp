@@ -26,12 +26,13 @@ namespace rgbd_slam {
 
             /**
              * \param[in] dataPath Path of the file that contains the camera intrinsics
+             * \param[in] startPose the initial pose
              * \param[in] imageWidth The width of the depth images (fixed)
              * \param[in] imageHeight The height of the depth image (fixed)
              * \param[in] minHessian Minimum Hessian parameter for point detection
              * \param[in] maxMatchDistance Maximum distance between the two closest point matches candidates (0 - 1)
              */
-            RGBD_SLAM(const std::stringstream& dataPath, const uint imageWidth = 640, const uint imageHeight = 480);
+            RGBD_SLAM(const std::stringstream& dataPath, const utils::Pose &startPose, const uint imageWidth = 640, const uint imageHeight = 480);
 
             /**
              * \brief Estimates a new pose from the given images
