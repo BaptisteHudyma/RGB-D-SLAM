@@ -37,14 +37,52 @@ namespace rgbd_slam {
         };
 
         /**
-          * \brief Concurrent for a map point
-          */
-        class Staged_Point
+         * \brief Prepare the basic functions for a staged/map point
+         */
+        struct IMap_Point_With_Tracking
             : public Point
         {
+            IMap_Point_With_Tracking(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
+            IMap_Point_With_Tracking(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
+            /**
+             * \brief Compute a confidence in this point (-1, 1)
+             */
+            virtual double get_confidence() const =  0;
+
+            /**
+             * \brief Call when this point was matched to another point
+             */
+            virtual double update_matched(const vector3& newPointCoordinates, const matrix33& covariance) = 0;
+
+            /**
+             * \brief Call when this point was not matched to anything
+             */
+            virtual void update_unmatched(int removeNMatches = 1) = 0;
+
+            const matrix33 get_covariance_matrix() { return _covariance; };
+
+            protected:
+            
+            /**
+              * \brief update the current point by tracking with a kalman filter. Will update the point position & covariance
+              * \return The distance between the new position ans the previous one
+              */
+            double track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance);
+
+            private:
+            // covariance matrix
+           matrix33 _covariance; 
+        };
+
+        /**
+         * \brief Concurrent for a map point
+         */
+        class Staged_Point
+            : public IMap_Point_With_Tracking
+        {
             public:
-                Staged_Point(const vector3& coordinates, const cv::Mat& descriptor);
-                Staged_Point(const vector3& coordinates, const cv::Mat& descriptor, const size_t id);
+                Staged_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
+                Staged_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
 
                 // Count the number of times his points was matched
                 int _matchesCount;
@@ -55,19 +93,19 @@ namespace rgbd_slam {
                 bool should_add_to_local_map() const;
 
                 /**
-                  * \brief True if this staged point should not be added to local map
-                  */
+                 * \brief True if this staged point should not be added to local map
+                 */
                 bool should_remove_from_staged() const;
 
                 /**
-                  * \brief Call when this point was not matched to anything
-                  */
-                void update_unmatched(int removeNMatches = 1);
+                 * \brief Call when this point was not matched to anything
+                 */
+                void update_unmatched(int removeNMatches = 1) override;
 
                 /**
-                  * \brief Call when this point was matched to another point
-                  */
-                double update_matched(const vector3& newPointCoordinates);
+                 * \brief Call when this point was matched to another point
+                 */
+                double update_matched(const vector3& newPointCoordinates, const matrix33& covariance) override;
 
                 int _lastMatchedIndex;
             private:
@@ -85,12 +123,12 @@ namespace rgbd_slam {
          * \brief A map point structure, containing all the necessary informations to identify a map point
          */
         class Map_Point 
-            : public Point
+            : public IMap_Point_With_Tracking 
         {
 
             public:
-                Map_Point(const vector3& coordinates, const cv::Mat& descriptor);
-                Map_Point(const vector3& coordinates, const cv::Mat& descriptor, const size_t id);
+                Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
+                Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
 
 
                 /**
@@ -101,12 +139,12 @@ namespace rgbd_slam {
                 /**
                  * \brief Update this point without it being detected/matched
                  */
-                void update_unmatched();
+                void update_unmatched(int removeNMatches = 1) override;
 
                 /**
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
-                double update_matched(const vector3& newPointCoordinates);
+                double update_matched(const vector3& newPointCoordinates, const matrix33& covariance) override;
 
                 int get_age() const {
                     return _age;
@@ -116,8 +154,8 @@ namespace rgbd_slam {
 
             protected:
                 /**
-                  * \brief Compute a confidence score (-1, 1)
-                  */
+                 * \brief Compute a confidence score (-1, 1)
+                 */
                 double get_confidence() const; 
 
             private:

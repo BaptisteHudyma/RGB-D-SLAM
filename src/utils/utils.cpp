@@ -68,7 +68,7 @@ namespace rgbd_slam {
             return worldToCamMtrx;
         }
 
-        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointError)
+        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -78,11 +78,9 @@ namespace rgbd_slam {
             const matrix33 jacobian {
                 {depth / cameraFX, 0.0,              (screenPoint.x() - cameraCX) / cameraFX },
                 {0.0,              depth / cameraFY, (screenPoint.y() - cameraCY) / cameraFY },
-                {0.0,              0.0,              1.0}
+                {0.0,              0.0,              1}
             };
-            const matrix33 result = jacobian * screenPointError * jacobian.transpose();
-            //std::cout << result(2, 2) << " " << depth << std::endl;
-            return result;
+            return jacobian * screenPointCovariance * jacobian.transpose();
         }
 
 

@@ -6,6 +6,27 @@
 namespace rgbd_slam {
     namespace map_management {
 
+        const double MIN_DEPTH_DISTANCE = 40;   // 40 millimieters is the camera minimum detection distance
+
+
+        matrix33 get_screen_point_covariance(const double depth) 
+        {
+            // Quadratic error model (uses depth as meters)
+            const double depthMeters = depth / 1000;
+            // If depth is less than the min distance, covariance is set to a lot
+            const double depthVariance = (depth > MIN_DEPTH_DISTANCE) ? 1000 * std::max(0.0, -5.8e-4 + 7.4e-4 * depthMeters + 2.73e-3 * pow(depthMeters, 2.0)) : 1000.0;
+
+            // TODO xy variance should also depend on the placement of the pixel in x and y
+            const double xyVariance = 0.25; // 0.5 pixel error
+
+            matrix33 screenPointCovariance {
+                {xyVariance, 0,          0},
+                    {0,          xyVariance, 0},
+                    {0,          0,          depthVariance * depthVariance},
+            };
+            return screenPointCovariance;
+        }
+
         Local_Map::Local_Map()
         {
         }
@@ -119,39 +140,41 @@ namespace rgbd_slam {
 
         void Local_Map::update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
-            // Must update [2][2] with depth error
-            matrix33 screenPointError {
-                {1.0/12.0, 0,        0},
-                    {0,        1.0/12.0, 0},
-                    {0,        0,        0},
-            };
             const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
 
             // Remove old map points
             point_map_container::iterator pointMapIterator = _localPointMap.begin();
+            const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
+
             while(pointMapIterator != _localPointMap.end())
             {
+                assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
                 bool shouldRemovePoint = false;
                 const int matchedPointIndex = pointMapIterator->_lastMatchedIndex;
-                const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
                 if (matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
                     // get match coordinates, transform them to world coordinates
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
                     const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
 
-                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
+                    if(matchedPointDepth > MIN_DEPTH_DISTANCE)
+                    {
+                        // Temporary: close points cannot be reliably maintained
 
-                    const double pointDepthError = 0.00313 + 0.00116 * matchedPointDepth + 0.00052 * pow(matchedPointDepth, 2.0);
-                    screenPointError(2, 2) = pointDepthError;
-                    utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, screenPointError);
+                        const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
 
-                    pointMapIterator->_screenCoordinates = cv::Point2f(matchedPointCoordinates.x(), matchedPointCoordinates.y());
+                        pointMapIterator->_screenCoordinates = cv::Point2f(matchedPointCoordinates.x(), matchedPointCoordinates.y());
 
-                    // update this map point errors & position
-                    const double retroprojectionError = pointMapIterator->update_matched(newCoordinates);
-                    // TODO find a better way to remove map point ?
-                    //shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
+                        const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
+                        // update this map point errors & position
+                        const double retroprojectionError = pointMapIterator->update_matched(newCoordinates, worldPointCovariance);
+
+                        // TODO find a better way to remove map point
+                        //shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
+                    }
+                    else
+                        // TODO remove this when close points make sense
+                        pointMapIterator->update_unmatched();
                 }
                 else if (matchedPointIndex > 0 and matchedPointIndex >= keypointsSize)
                 {
@@ -180,22 +203,36 @@ namespace rgbd_slam {
             // Add correct staged points to local map
             const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
+            const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
+
             while(stagedPointIterator != _stagedPoints.end())
             {
+                assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
                 bool shouldRemovePoint = false;
                 const int matchedPointIndex = stagedPointIterator->_lastMatchedIndex;
-                const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
                 if (matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
                     // get match coordinates, transform them to world coordinates
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
-                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), keypointObject.get_depth(matchedPointIndex), camToWorldMatrix);
+                    const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
 
-                    stagedPointIterator->_screenCoordinates = cv::Point2f(matchedPointCoordinates.x(), matchedPointCoordinates.y());
+                    if(matchedPointDepth > MIN_DEPTH_DISTANCE)
+                    {
+                        // Temporary: close points cannot be reliably maintained
 
-                    // update this map point errors & position
-                    const double retroprojectionError = stagedPointIterator->update_matched(newCoordinates);
-                    shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
+                        const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
+
+                        stagedPointIterator->_screenCoordinates = cv::Point2f(matchedPointCoordinates.x(), matchedPointCoordinates.y());
+
+                        const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
+
+                        // update this map point errors & position
+                        const double retroprojectionError = stagedPointIterator->update_matched(newCoordinates, worldPointCovariance);
+                        shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
+                    }
+                    else
+                        // TODO remove this when close points make sense
+                        stagedPointIterator->update_unmatched();
                 }
                 else if (matchedPointIndex > 0 and matchedPointIndex >= keypointsSize)
                 {
@@ -209,7 +246,7 @@ namespace rgbd_slam {
                 if (stagedPointIterator->should_add_to_local_map())
                 {
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
-                    _localPointMap.emplace(_localPointMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->_descriptor, stagedPointIterator->_id);
+                    _localPointMap.emplace(_localPointMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
                     _localPointMap.back()._screenCoordinates = stagedPointIterator->_screenCoordinates;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
@@ -231,7 +268,7 @@ namespace rgbd_slam {
             {
                 if (not _isPointMatched[i]) {
                     const double depth = keypointObject.get_depth(i);
-                    if (depth <= 0)
+                    if (depth <= MIN_DEPTH_DISTANCE)
                     {
                         // TODO handle 2D features
                         continue;
@@ -239,7 +276,9 @@ namespace rgbd_slam {
 
                     const vector2& screenPoint = keypointObject.get_keypoint(i);
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, camToWorldMatrix);
-                    _stagedPoints.emplace(_stagedPoints.end(), worldPoint, keypointObject.get_descriptor(i));
+
+                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(depth));
+                    _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
                     _stagedPoints.back()._screenCoordinates = cv::Point2f(screenPoint.x(), screenPoint.y());
                 }
             }

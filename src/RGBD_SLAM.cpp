@@ -26,9 +26,8 @@ namespace rgbd_slam {
                 Parameters::load_defaut();
             }
             // Get intrinsics parameters
-            std::stringstream calibPath, calibYAMLPath;
+            std::stringstream calibPath;
             calibPath << dataPath.str() << "calib_params.xml";
-            calibYAMLPath << dataPath.str() << "calib_params.yaml";
             std::string finalPath = calibPath.str();
 
             // primitive connected graph creator
@@ -88,6 +87,11 @@ namespace rgbd_slam {
 
     const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
     {
+        assert(inputDepthImage.rows == _height);
+        assert(inputDepthImage.cols == _width);
+        assert(inputRgbImage.rows == _height);
+        assert(inputRgbImage.cols == _width);
+
         cv::Mat depthImage = inputDepthImage.clone();
         cv::Mat rgbImage = inputRgbImage.clone();
 
