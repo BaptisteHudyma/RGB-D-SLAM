@@ -6,15 +6,15 @@
 namespace rgbd_slam {
     namespace map_management {
 
-        const double MIN_DEPTH_DISTANCE = 40;   // 40 millimieters is the camera minimum detection distance
+        const double MIN_DEPTH_DISTANCE = 40;   // 40 millimeters is the camera minimum detection distance
 
 
         matrix33 get_screen_point_covariance(const double depth) 
         {
             // Quadratic error model (uses depth as meters)
             const double depthMeters = depth / 1000;
-            // If depth is less than the min distance, covariance is set to a lot
-            const double depthVariance = (depth > MIN_DEPTH_DISTANCE) ? 1000 * std::max(0.0, -5.8e-4 + 7.4e-4 * depthMeters + 2.73e-3 * pow(depthMeters, 2.0)) : 1000.0;
+            // If depth is less than the min distance, covariance is set to a high value
+            const double depthVariance = (depth > MIN_DEPTH_DISTANCE) ? std::max(0.0, -0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0;
 
             // TODO xy variance should also depend on the placement of the pixel in x and y
             const double xyVariance = 0.25; // 0.5 pixel error
@@ -52,7 +52,7 @@ namespace rgbd_slam {
 
                 if (matchIndex < 0) {
                     //unmatched point
-                    mapPoint._lastMatchedIndex = -1;
+                    mapPoint._lastMatchedIndex = UNMATCHED_POINT_INDEX;
                 }
                 else if (detectedKeypoint.get_depth(matchIndex) <= 0) {
                     // 2D point, still matched
@@ -81,7 +81,7 @@ namespace rgbd_slam {
 
                 if (matchIndex < 0) {
                     //unmatched point
-                    stagedPoint._lastMatchedIndex = -1;
+                    stagedPoint._lastMatchedIndex = UNMATCHED_POINT_INDEX;
                 }
                 else if (detectedKeypoint.get_depth(matchIndex) <= 0) {
                     // 2D point, still matched
@@ -151,7 +151,7 @@ namespace rgbd_slam {
                 assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
                 bool shouldRemovePoint = false;
                 const int matchedPointIndex = pointMapIterator->_lastMatchedIndex;
-                if (matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
+                if (matchedPointIndex != UNMATCHED_POINT_INDEX and matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
                     // get match coordinates, transform them to world coordinates
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
@@ -176,7 +176,7 @@ namespace rgbd_slam {
                         // TODO remove this when close points make sense
                         pointMapIterator->update_unmatched();
                 }
-                else if (matchedPointIndex > 0 and matchedPointIndex >= keypointsSize)
+                else if (matchedPointIndex != UNMATCHED_POINT_INDEX)
                 {
                     utils::log_error("Match point index is out of bounds of keypointObject");
                 }
@@ -210,7 +210,7 @@ namespace rgbd_slam {
                 assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
                 bool shouldRemovePoint = false;
                 const int matchedPointIndex = stagedPointIterator->_lastMatchedIndex;
-                if (matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
+                if (matchedPointIndex != UNMATCHED_POINT_INDEX and matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
                     // get match coordinates, transform them to world coordinates
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
@@ -234,7 +234,7 @@ namespace rgbd_slam {
                         // TODO remove this when close points make sense
                         stagedPointIterator->update_unmatched();
                 }
-                else if (matchedPointIndex > 0 and matchedPointIndex >= keypointsSize)
+                else if (matchedPointIndex != UNMATCHED_POINT_INDEX)
                 {
                     utils::log_error("Match point index is out of bounds of keypointObject");
                 }
@@ -298,7 +298,7 @@ namespace rgbd_slam {
             // add map points with valid retroprojected coordinates
             for (const Map_Point& point : _localPointMap)
             {
-                if (point._screenCoordinates.x >= 0)
+                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX and point._screenCoordinates.x >= 0)
                 {
                     keypointsWithIds._keypoints.push_back(point._screenCoordinates);
                     keypointsWithIds._ids.push_back(point._id);
@@ -307,7 +307,7 @@ namespace rgbd_slam {
             // add staged points with valid retroprojected coordinates
             for (const Staged_Point& point : _stagedPoints)
             {
-                if (point._screenCoordinates.x >= 0)
+                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX and point._screenCoordinates.x >= 0)
                 {
                     keypointsWithIds._keypoints.push_back(point._screenCoordinates);
                     keypointsWithIds._ids.push_back(point._id);
@@ -337,7 +337,7 @@ namespace rgbd_slam {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx);
 
                 //Map Point are green 
-                if (mapPoint._lastMatchedIndex < 0)
+                if (mapPoint._lastMatchedIndex == UNMATCHED_POINT_INDEX)
                 {
                     cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 128, 0), 1);
                 }
@@ -350,7 +350,7 @@ namespace rgbd_slam {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMtrx);
 
                 //Staged point are yellow 
-                if (stagedPoint._lastMatchedIndex < 0)
+                if (stagedPoint._lastMatchedIndex == UNMATCHED_POINT_INDEX)
                 {
                     cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 100, 200), 1);
                 }

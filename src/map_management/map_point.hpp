@@ -10,6 +10,8 @@
 namespace rgbd_slam {
     namespace map_management {
 
+        const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
+        const int UNMATCHED_POINT_INDEX = -1;      // Id of a unmatched point
 
         /**
          * \brief Basic keypoint class 

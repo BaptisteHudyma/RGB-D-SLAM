@@ -6,8 +6,6 @@
 namespace rgbd_slam {
     namespace map_management {
 
-        const double useOfNewPosition = 0.1;    //[0 ; 1] 0 will ignore the new value, 1 will replace the current value with the new one
-
         Point::Point (const vector3& coordinates, const cv::Mat& descriptor) :
             _coordinates(coordinates), 
             _descriptor(descriptor),
@@ -22,6 +20,7 @@ namespace rgbd_slam {
             _descriptor(descriptor),
             _id(id)
         {
+            assert(id != INVALID_POINT_UNIQ_ID);
             _screenCoordinates = cv::Point2f(-1, -1);
         }
 
@@ -42,14 +41,20 @@ namespace rgbd_slam {
         }
         double IMap_Point_With_Tracking::track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance)
         {
+            // Use a kalman filter to estimate this point position
             const matrix33& identity = matrix33::Identity(); 
             const matrix33 kalmanGain = _covariance * (_covariance + newPointCovariance).inverse();
 
-            _coordinates = _coordinates + (kalmanGain * (newPointCoordinates - _coordinates));
-            const matrix33 invGain = identity - kalmanGain;
-            _covariance = (invGain * _covariance * invGain.transpose()) + (kalmanGain * newPointCovariance * kalmanGain.transpose());
+            const vector3 newPosition = _coordinates + (kalmanGain * (newPointCoordinates - _coordinates));
+            const double score = (_coordinates - newPosition).norm();
 
-            return (_coordinates - newPointCoordinates).norm();
+            const matrix33 invGain = identity - kalmanGain;
+
+            // update this map point
+            _covariance = (invGain * _covariance * invGain.transpose()) + (kalmanGain * newPointCovariance * kalmanGain.transpose());
+            _coordinates = newPosition;
+
+            return score; 
         }
 
 
@@ -61,13 +66,13 @@ namespace rgbd_slam {
             : IMap_Point_With_Tracking(coordinates, covariance, descriptor)
         {
             _matchesCount = 0; 
-            _lastMatchedIndex = -1;
+            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
         Staged_Point::Staged_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
             : IMap_Point_With_Tracking(coordinates, covariance, descriptor, id)
         {
             _matchesCount = 0; 
-            _lastMatchedIndex = -1;
+            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
 
         double Staged_Point::get_confidence() const 
@@ -110,14 +115,14 @@ namespace rgbd_slam {
         {
             _age = 0;
             _failTrackingCount = 0;
-            _lastMatchedIndex = -1;
+            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
         Map_Point::Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) 
             : IMap_Point_With_Tracking(coordinates, covariance, descriptor, id)
         {
             _age = 0;
             _failTrackingCount = 0;
-            _lastMatchedIndex = -1;
+            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
 
         double Map_Point::get_confidence() const
