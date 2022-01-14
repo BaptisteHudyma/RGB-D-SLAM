@@ -19,7 +19,6 @@ namespace rgbd_slam {
         struct Point {
             // world coordinates
             vector3 _coordinates;
-            cv::Point2f _screenCoordinates;
 
             // Gaussian uncertainty in 3D
             vector3 _coordinateUncertainty;

@@ -163,8 +163,6 @@ namespace rgbd_slam {
 
                         const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
 
-                        pointMapIterator->_screenCoordinates = cv::Point2f(matchedPointCoordinates.x(), matchedPointCoordinates.y());
-
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
                         // update this map point errors & position
                         const double retroprojectionError = pointMapIterator->update_matched(newCoordinates, worldPointCovariance);
@@ -222,8 +220,6 @@ namespace rgbd_slam {
 
                         const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
 
-                        stagedPointIterator->_screenCoordinates = cv::Point2f(matchedPointCoordinates.x(), matchedPointCoordinates.y());
-
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
 
                         // update this map point errors & position
@@ -247,7 +243,6 @@ namespace rgbd_slam {
                 {
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
                     _localPointMap.emplace(_localPointMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
-                    _localPointMap.back()._screenCoordinates = stagedPointIterator->_screenCoordinates;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
                 else if (shouldRemovePoint or stagedPointIterator->should_remove_from_staged())
@@ -279,7 +274,6 @@ namespace rgbd_slam {
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(depth));
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
-                    _stagedPoints.back()._screenCoordinates = cv::Point2f(screenPoint.x(), screenPoint.y());
                 }
             }
         }
@@ -298,18 +292,20 @@ namespace rgbd_slam {
             // add map points with valid retroprojected coordinates
             for (const Map_Point& point : _localPointMap)
             {
-                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX and point._screenCoordinates.x >= 0)
+                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX)
                 {
-                    keypointsWithIds._keypoints.push_back(point._screenCoordinates);
+                    const vector2& screenCoordinates = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
+                    keypointsWithIds._keypoints.push_back(cv::Point2f(screenCoordinates.x(), screenCoordinates.y()));
                     keypointsWithIds._ids.push_back(point._id);
                 }
             }
             // add staged points with valid retroprojected coordinates
             for (const Staged_Point& point : _stagedPoints)
             {
-                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX and point._screenCoordinates.x >= 0)
+                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX)
                 {
-                    keypointsWithIds._keypoints.push_back(point._screenCoordinates);
+                    const vector2& screenCoordinates = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
+                    keypointsWithIds._keypoints.push_back(cv::Point2f(screenCoordinates.x(), screenCoordinates.y()));
                     keypointsWithIds._ids.push_back(point._id);
                 }
             }
