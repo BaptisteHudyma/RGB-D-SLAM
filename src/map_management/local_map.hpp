@@ -78,6 +78,27 @@ namespace rgbd_slam {
             protected:
 
                 /**
+                 * \brief Compute a match for a given point, and update this point match index. It will update the _isPointMatched object if a point is matched
+                 *
+                 * \param[in, out] point A map point that we want to match to detected points
+                 * \param[in] detectedKeypoint An object to handle all detected points in an image
+                 * \param[in] worldToCamMatrix A matrix to transform a world point to a camera point
+                 * \param[int, out] matchedPoints A container associating the detected to the map points
+                 *
+                 * \return A boolean indicating if this point was matched or not
+                 */
+                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix34& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
+
+                /**
+                  * \brief Update the Matched/Unmatched status of a map point
+                  *
+                  * \param[in, out] mapPoint the map point to update
+                  * \param[in] keypointObject An object to handle all detected points in an image
+                  * \param[in] camToWorldMatrix A transformation matrix to convert a camera point to a world point
+                  */
+                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& camToWorldMatrix);
+
+                /**
                  * \brief Update local keypoint map features 
                  *
                  * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)

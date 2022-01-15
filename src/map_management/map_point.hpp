@@ -62,6 +62,8 @@ namespace rgbd_slam {
 
             const matrix33 get_covariance_matrix() { return _covariance; };
 
+            int _lastMatchedIndex;
+
             protected:
             
             /**
@@ -108,7 +110,6 @@ namespace rgbd_slam {
                  */
                 double update_matched(const vector3& newPointCoordinates, const matrix33& covariance) override;
 
-                int _lastMatchedIndex;
             private:
                 /**
                  * \brief Compute a confidence in this point (-1, 1)
@@ -150,8 +151,6 @@ namespace rgbd_slam {
                 int get_age() const {
                     return _age;
                 }
-
-                int _lastMatchedIndex;
 
             protected:
                 /**

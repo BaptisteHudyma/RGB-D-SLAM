@@ -8,7 +8,13 @@ namespace rgbd_slam {
 
         const double MIN_DEPTH_DISTANCE = 40;   // 40 millimeters is the camera minimum detection distance
 
+        /**
+          * LOCAL UTILS FUNCTIONS
+          */
 
+        /**
+          * \brief compute a covariance matrix for a point associated with a depth measurement
+          */
         matrix33 get_screen_point_covariance(const double depth) 
         {
             // Quadratic error model (uses depth as meters)
@@ -27,8 +33,57 @@ namespace rgbd_slam {
             return screenPointCovariance;
         }
 
+
+        /**
+          * \brief My add a point to the tracked feature object, used to add optical flow tracking
+          */
+        void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, const matrix34& worldToCamMatrix, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
+        {
+            if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
+            {
+                const vector2& screenCoordinates = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMatrix);
+                keypointsWithIds._keypoints.push_back(cv::Point2f(screenCoordinates.x(), screenCoordinates.y()));
+                keypointsWithIds._ids.push_back(mapPoint._id);
+            }
+        }
+
+        /**
+          * LOCAL MAP MEMBERS
+          */
+
         Local_Map::Local_Map()
         {
+        }
+
+        bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix34& worldToCamMatrix, matches_containers::match_point_container& matchedPoints)
+        {
+            int matchIndex = detectedKeypoint.get_tracking_match_index(point._id, _isPointMatched);
+            if (matchIndex < 0)
+            {
+                const vector2& projectedMapPoint = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
+                matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
+            }
+
+            if (matchIndex < 0) {
+                //unmatched point
+                point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+            }
+            else if (detectedKeypoint.get_depth(matchIndex) <= 0) {
+                // 2D point, still matched
+                _isPointMatched[matchIndex] = true;
+                point._lastMatchedIndex = matchIndex;
+                return true;
+            }
+            else {
+                _isPointMatched[matchIndex] = true;
+                point._lastMatchedIndex = matchIndex;
+                const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
+                const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), detectedKeypoint.get_depth(matchIndex));
+
+                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, point._coordinates);
+                return true;
+            }
+            return false;
         }
 
         matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
@@ -43,59 +98,13 @@ namespace rgbd_slam {
             // Try to find matches in local map
             for (Map_Point& mapPoint : _localPointMap) 
             {
-                int matchIndex = detectedKeypoint.get_tracking_match_index(mapPoint._id, _isPointMatched);
-                if (matchIndex < 0)
-                {
-                    const vector2& projectedMapPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMatrix);
-                    matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, mapPoint._descriptor, _isPointMatched);
-                }
-
-                if (matchIndex < 0) {
-                    //unmatched point
-                    mapPoint._lastMatchedIndex = UNMATCHED_POINT_INDEX;
-                }
-                else if (detectedKeypoint.get_depth(matchIndex) <= 0) {
-                    // 2D point, still matched
-                    _isPointMatched[matchIndex] = true;
-                    mapPoint._lastMatchedIndex = matchIndex;
-                }
-                else {
-                    _isPointMatched[matchIndex] = true;
-                    mapPoint._lastMatchedIndex = matchIndex;
-                    const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
-                    const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), detectedKeypoint.get_depth(matchIndex));
-
-                    matchedPoints.emplace(matchedPoints.end(), screen3DPoint, mapPoint._coordinates);
-                }
+                find_match(mapPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
             }
 
             // Try to find matches in staged points
             for(Staged_Point& stagedPoint : _stagedPoints)
             {
-                int matchIndex = detectedKeypoint.get_tracking_match_index(stagedPoint._id, _isPointMatched);
-                if (matchIndex < 0)
-                {
-                    const vector2& projectedStagedPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMatrix);
-                    matchIndex = detectedKeypoint.get_match_index(projectedStagedPoint, stagedPoint._descriptor, _isPointMatched);
-                }
-
-                if (matchIndex < 0) {
-                    //unmatched point
-                    stagedPoint._lastMatchedIndex = UNMATCHED_POINT_INDEX;
-                }
-                else if (detectedKeypoint.get_depth(matchIndex) <= MIN_DEPTH_DISTANCE) {
-                    // 2D point, still matched
-                    _isPointMatched[matchIndex] = true;
-                    stagedPoint._lastMatchedIndex = matchIndex;
-                }
-                else {
-                    _isPointMatched[matchIndex] = true;
-                    stagedPoint._lastMatchedIndex = matchIndex;
-                    const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
-                    const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), detectedKeypoint.get_depth(matchIndex));
-
-                    matchedPoints.emplace(matchedPoints.end(), screen3DPoint, stagedPoint._coordinates);
-                }
+                find_match(stagedPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
             }
 
             return matchedPoints;
@@ -138,17 +147,13 @@ namespace rgbd_slam {
             //std::cout << "local map: " << _localPointMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
         }
 
-        void Local_Map::update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& camToWorldMatrix)
         {
-            // Remove old map points
-            point_map_container::iterator pointMapIterator = _localPointMap.begin();
-            const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
-
-            while(pointMapIterator != _localPointMap.end())
+            const int matchedPointIndex = mapPoint._lastMatchedIndex;
+            if (matchedPointIndex != UNMATCHED_POINT_INDEX)
             {
-                assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
-                const int matchedPointIndex = pointMapIterator->_lastMatchedIndex;
-                if (matchedPointIndex != UNMATCHED_POINT_INDEX and matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
+                const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
+                if (matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
                     // get match coordinates, transform them to world coordinates
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
@@ -156,26 +161,34 @@ namespace rgbd_slam {
 
                     if(matchedPointDepth > MIN_DEPTH_DISTANCE)
                     {
-                        // Temporary: close points cannot be reliably maintained
-
+                        // TODO: close points cannot be reliably maintained
                         const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
 
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
                         // update this map point errors & position
-                        pointMapIterator->update_matched(newCoordinates, worldPointCovariance);
+                        mapPoint.update_matched(newCoordinates, worldPointCovariance);
+
+                        return;
                     }
-                    else
-                        // TODO remove this when close points make sense
-                        pointMapIterator->update_unmatched();
-                }
-                else if (matchedPointIndex != UNMATCHED_POINT_INDEX)
-                {
-                    utils::log_error("Match point index is out of bounds of keypointObject");
                 }
                 else
                 {
-                    pointMapIterator->update_unmatched();
+                    utils::log_error("Match point index is out of bounds of keypointObject");
                 }
+            }
+
+            // point is unmatched
+            mapPoint.update_unmatched();
+        }
+
+        void Local_Map::update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        {
+            // Remove old map points
+            point_map_container::iterator pointMapIterator = _localPointMap.begin();
+            while(pointMapIterator != _localPointMap.end())
+            {
+                // Update the matched/unmatched status
+                update_point_match_status(*pointMapIterator, keypointObject, camToWorldMatrix);
 
                 if (pointMapIterator->is_lost()) {
                     // Remove useless point
@@ -194,40 +207,10 @@ namespace rgbd_slam {
         {
             // Add correct staged points to local map
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
-            const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
             while(stagedPointIterator != _stagedPoints.end())
             {
-                assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
-                const int matchedPointIndex = stagedPointIterator->_lastMatchedIndex;
-                if (matchedPointIndex != UNMATCHED_POINT_INDEX and matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
-                {
-                    // get match coordinates, transform them to world coordinates
-                    const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
-                    const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
-
-                    if(matchedPointDepth > MIN_DEPTH_DISTANCE)
-                    {
-                        // Temporary: close points cannot be reliably maintained
-
-                        const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
-
-                        const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
-
-                        // update this map point errors & position
-                        stagedPointIterator->update_matched(newCoordinates, worldPointCovariance);
-                    }
-                    else
-                        // TODO remove this when close points make sense
-                        stagedPointIterator->update_unmatched();
-                }
-                else if (matchedPointIndex != UNMATCHED_POINT_INDEX)
-                {
-                    utils::log_error("Match point index is out of bounds of keypointObject");
-                }
-                else
-                {
-                    stagedPointIterator->update_unmatched();
-                }
+                // Update the matched/unmatched status
+                update_point_match_status(*stagedPointIterator, keypointObject, camToWorldMatrix);
 
                 if (stagedPointIterator->should_add_to_local_map())
                 {
@@ -269,6 +252,7 @@ namespace rgbd_slam {
             }
         }
 
+
         const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& pose) const
         {
             const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
@@ -283,22 +267,12 @@ namespace rgbd_slam {
             // add map points with valid retroprojected coordinates
             for (const Map_Point& point : _localPointMap)
             {
-                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX)
-                {
-                    const vector2& screenCoordinates = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
-                    keypointsWithIds._keypoints.push_back(cv::Point2f(screenCoordinates.x(), screenCoordinates.y()));
-                    keypointsWithIds._ids.push_back(point._id);
-                }
+                add_point_to_tracked_features(point, worldToCamMatrix, keypointsWithIds);
             }
             // add staged points with valid retroprojected coordinates
             for (const Staged_Point& point : _stagedPoints)
             {
-                if (point._lastMatchedIndex != UNMATCHED_POINT_INDEX)
-                {
-                    const vector2& screenCoordinates = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
-                    keypointsWithIds._keypoints.push_back(cv::Point2f(screenCoordinates.x(), screenCoordinates.y()));
-                    keypointsWithIds._ids.push_back(point._id);
-                }
+                add_point_to_tracked_features(point, worldToCamMatrix, keypointsWithIds);
             }
             return keypointsWithIds;
         }
