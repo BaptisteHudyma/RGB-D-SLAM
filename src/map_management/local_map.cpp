@@ -83,7 +83,7 @@ namespace rgbd_slam {
                     //unmatched point
                     stagedPoint._lastMatchedIndex = UNMATCHED_POINT_INDEX;
                 }
-                else if (detectedKeypoint.get_depth(matchIndex) <= 0) {
+                else if (detectedKeypoint.get_depth(matchIndex) <= MIN_DEPTH_DISTANCE) {
                     // 2D point, still matched
                     _isPointMatched[matchIndex] = true;
                     stagedPoint._lastMatchedIndex = matchIndex;
@@ -140,8 +140,6 @@ namespace rgbd_slam {
 
         void Local_Map::update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
-            const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
-
             // Remove old map points
             point_map_container::iterator pointMapIterator = _localPointMap.begin();
             const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
@@ -149,7 +147,6 @@ namespace rgbd_slam {
             while(pointMapIterator != _localPointMap.end())
             {
                 assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
-                bool shouldRemovePoint = false;
                 const int matchedPointIndex = pointMapIterator->_lastMatchedIndex;
                 if (matchedPointIndex != UNMATCHED_POINT_INDEX and matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
@@ -165,10 +162,7 @@ namespace rgbd_slam {
 
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
                         // update this map point errors & position
-                        const double retroprojectionError = pointMapIterator->update_matched(newCoordinates, worldPointCovariance);
-
-                        // TODO find a better way to remove map point
-                        //shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
+                        pointMapIterator->update_matched(newCoordinates, worldPointCovariance);
                     }
                     else
                         // TODO remove this when close points make sense
@@ -183,7 +177,7 @@ namespace rgbd_slam {
                     pointMapIterator->update_unmatched();
                 }
 
-                if (shouldRemovePoint or pointMapIterator->is_lost()) {
+                if (pointMapIterator->is_lost()) {
                     // Remove useless point
                     pointMapIterator = _localPointMap.erase(pointMapIterator);
                 }
@@ -199,14 +193,11 @@ namespace rgbd_slam {
         void Local_Map::update_staged_keypoints_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
-            const double pointMaxRetroprojectionError = Parameters::get_maximum_map_retroprojection_error();
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
             const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
-
             while(stagedPointIterator != _stagedPoints.end())
             {
                 assert(keypointsSize == static_cast<int>(keypointObject.get_keypoint_count()));
-                bool shouldRemovePoint = false;
                 const int matchedPointIndex = stagedPointIterator->_lastMatchedIndex;
                 if (matchedPointIndex != UNMATCHED_POINT_INDEX and matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
@@ -223,8 +214,7 @@ namespace rgbd_slam {
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
 
                         // update this map point errors & position
-                        const double retroprojectionError = stagedPointIterator->update_matched(newCoordinates, worldPointCovariance);
-                        shouldRemovePoint = (retroprojectionError > pointMaxRetroprojectionError);
+                        stagedPointIterator->update_matched(newCoordinates, worldPointCovariance);
                     }
                     else
                         // TODO remove this when close points make sense
@@ -243,9 +233,10 @@ namespace rgbd_slam {
                 {
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
                     _localPointMap.emplace(_localPointMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
+                    _localPointMap.back()._lastMatchedIndex = stagedPointIterator->_lastMatchedIndex;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
-                else if (shouldRemovePoint or stagedPointIterator->should_remove_from_staged())
+                else if (stagedPointIterator->should_remove_from_staged())
                 {
                     // Remove from staged points
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
@@ -309,7 +300,6 @@ namespace rgbd_slam {
                     keypointsWithIds._ids.push_back(point._id);
                 }
             }
-
             return keypointsWithIds;
         }
 
