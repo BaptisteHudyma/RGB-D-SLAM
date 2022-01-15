@@ -87,10 +87,10 @@ namespace rgbd_slam {
 
     const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
     {
-        assert(inputDepthImage.rows == _height);
-        assert(inputDepthImage.cols == _width);
-        assert(inputRgbImage.rows == _height);
-        assert(inputRgbImage.cols == _width);
+        assert(static_cast<size_t>(inputDepthImage.rows) == _height);
+        assert(static_cast<size_t>(inputDepthImage.cols) == _width);
+        assert(static_cast<size_t>(inputRgbImage.rows) == _height);
+        assert(static_cast<size_t>(inputRgbImage.cols) == _width);
 
         cv::Mat depthImage = inputDepthImage.clone();
         cv::Mat rgbImage = inputRgbImage.clone();

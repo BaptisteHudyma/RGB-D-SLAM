@@ -53,22 +53,24 @@ namespace rgbd_slam {
 
         Local_Map::Local_Map()
         {
+            // Check constants
+            assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
         }
 
         bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix34& worldToCamMatrix, matches_containers::match_point_container& matchedPoints)
         {
             int matchIndex = detectedKeypoint.get_tracking_match_index(point._id, _isPointMatched);
-            if (matchIndex < 0)
+            if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
             {
                 const vector2& projectedMapPoint = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
                 matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
             }
 
-            if (matchIndex < 0) {
+            if (matchIndex == features::keypoints::INVALID_MATCH_INDEX) {
                 //unmatched point
                 point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
             }
-            else if (detectedKeypoint.get_depth(matchIndex) <= 0) {
+            else if (detectedKeypoint.get_depth(matchIndex) <= MIN_DEPTH_DISTANCE) {
                 // 2D point, still matched
                 _isPointMatched[matchIndex] = true;
                 point._lastMatchedIndex = matchIndex;

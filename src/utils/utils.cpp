@@ -26,12 +26,11 @@ namespace rgbd_slam {
 
         const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
         {
-            const double depthMillimeters = measuredZ;
-            const double x = (screenX - Parameters::get_camera_1_center_x()) * depthMillimeters / Parameters::get_camera_1_focal_x();
-            const double y = (screenY - Parameters::get_camera_1_center_y()) * depthMillimeters / Parameters::get_camera_1_focal_y();
+            const double x = (screenX - Parameters::get_camera_1_center_x()) * measuredZ / Parameters::get_camera_1_focal_x();
+            const double y = (screenY - Parameters::get_camera_1_center_y()) * measuredZ / Parameters::get_camera_1_focal_y();
 
             vector4 worldPoint;
-            worldPoint << x, y, depthMillimeters, 1.0;
+            worldPoint << x, y, measuredZ, 1.0;
             return cameraToWorldMatrix * worldPoint;
         }
 
@@ -74,6 +73,9 @@ namespace rgbd_slam {
             const double cameraFY = Parameters::get_camera_1_focal_y();
             const double cameraCX = Parameters::get_camera_1_center_x();
             const double cameraCY = Parameters::get_camera_1_center_y();
+
+            assert(cameraFX > 0);
+            assert(cameraFY > 0);
 
             const matrix33 jacobian {
                 {depth / cameraFX, 0.0,              (screenPoint.x() - cameraCX) / cameraFX },

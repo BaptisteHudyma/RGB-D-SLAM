@@ -11,14 +11,17 @@ const float BORDER_SIZE = 1.; // Border of an image, in which points will be ign
 namespace rgbd_slam {
     namespace features {
         namespace keypoints {
-
+            
             /**
-             * \brief checks if a point is in an image, with border
+             * \brief checks if a point is in an image, a with border
              */
             bool is_in_border(const cv::Point2f &pt, const cv::Mat &im) 
             {
-
-                return BORDER_SIZE <= pt.x && pt.x < im.cols - BORDER_SIZE && BORDER_SIZE <= pt.y && pt.y < im.rows - BORDER_SIZE;
+                return 
+                    BORDER_SIZE <= pt.x and
+                    BORDER_SIZE <= pt.y and
+                    pt.x < im.cols - BORDER_SIZE and
+                    pt.y < im.rows - BORDER_SIZE;
             } 
 
 
@@ -115,8 +118,8 @@ namespace rgbd_slam {
             {
                 const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 const int_pair cellCoordinates(
-                        std::max(0.0, std::min(floor(pointToPlace.y() / cellSize), _cellCountY - 1.0)),
-                        std::max(0.0, std::min(floor(pointToPlace.x() / cellSize), _cellCountX - 1.0))
+                        std::clamp(floor(pointToPlace.y() / cellSize), 0.0, _cellCountY - 1.0),
+                        std::clamp(floor(pointToPlace.x() / cellSize), 0.0, _cellCountX - 1.0)
                         );
                 return cellCoordinates;
             }
@@ -162,10 +165,10 @@ namespace rgbd_slam {
             int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const
             {
                 if (_keypoints.size() <= 0)
-                    return -1;
+                    return INVALID_MATCH_INDEX;
 
                 // search if the keypoint id is in the detected points
-                if (mapPointId > 0)
+                if (mapPointId != INVALID_MAP_POINT_ID)
                 {
                     // return the match if it's the case
                     intToIntContainer::const_iterator uniqueIndexIterator = _uniqueIdsToKeypointIndex.find(mapPointId);
@@ -173,16 +176,16 @@ namespace rgbd_slam {
                         return static_cast<int>(uniqueIndexIterator->second);
                     }
                 }
-                return -1;
+                return INVALID_MATCH_INDEX;
             }
 
             int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId, const std::vector<bool>& isKeyPointMatchedContainer) const
             {
                 assert(isKeyPointMatchedContainer.size() == _keypoints.size());
 
-                if (mapPointId > 0) {
+                if (mapPointId != INVALID_MAP_POINT_ID) {
                     const int trackingIndex = get_tracking_match_index(mapPointId);
-                    if (trackingIndex >= 0)
+                    if (trackingIndex != INVALID_MATCH_INDEX)
                     {
                         if (!isKeyPointMatchedContainer[trackingIndex]) {
                             return trackingIndex;
@@ -193,7 +196,7 @@ namespace rgbd_slam {
                         }
                     }
                 }
-                return -1;
+                return INVALID_MATCH_INDEX;
             }
 
             int Keypoint_Handler::get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
@@ -201,7 +204,7 @@ namespace rgbd_slam {
                 assert(isKeyPointMatchedContainer.size() == _keypoints.size());
                 // cannot compute matches without a match or descriptors
                 if (_keypoints.size() <= 0 or _descriptors.rows <= 0)
-                    return -1;
+                    return INVALID_MATCH_INDEX;
 
                 // check descriptor dimensions
                 assert(mapPointDescriptor.cols == _descriptors.cols);
@@ -219,13 +222,13 @@ namespace rgbd_slam {
                         int id = match[0].trainIdx;
                         return id;   //this frame key point
                     }
-                    return -1;
+                    return INVALID_MATCH_INDEX;
                 }
                 else if (knnMatches[0].size() == 1) {
                     int id = knnMatches[0][0].trainIdx;
                     return id;   //this frame key point
                 }
-                return -1;
+                return INVALID_MATCH_INDEX;
             }
 
 

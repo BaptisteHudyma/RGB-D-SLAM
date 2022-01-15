@@ -23,7 +23,7 @@ namespace rgbd_slam {
          *
          * \param[in] screenX X coordinates of the 2D point (double because we can have sub pixel accuracy)
          * \param[in] screenY Y coordinates of the 2D point (double because we can have sub pixel accuracy)
-         * \param[in] measuredZ Measured z depth of the point, in meters
+         * \param[in] measuredZ Measured z depth of the point, in millimeters
          * \param[in] cameraToWorldMatrix Matrix to transform local to world coordinates
          *
          * \return A 3D point in frame coordinates

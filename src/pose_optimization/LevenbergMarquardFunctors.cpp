@@ -22,9 +22,7 @@ namespace rgbd_slam {
         }
         double get_distance_squared(const vector2& pointA, const vector2& pointB) 
         { 
-            return 
-                pow(pointA.x() - pointB.x(), 2.0) + 
-                pow(pointA.y() - pointB.y(), 2.0);
+            return (pointA - pointB).norm();
         }
 
         /**
@@ -37,27 +35,36 @@ namespace rgbd_slam {
          */
         double get_generalized_loss_estimator(const double error, const double alpha = 1, const double scale = 1)
         {
+            assert(scale > 0);
+
             const double scaledSquaredError = (error * error) / (scale * scale);
 
+            // ]2, oo[
             if (alpha > 2)
             {
                 const double internalTerm = scaledSquaredError / abs(alpha - 2) + 1;
                 return (abs(alpha - 2) / alpha) * ( pow(internalTerm, alpha / 2.0) - 1);
             }
-            if (alpha <= 2 and alpha > 0)
+            // ]0, 2]
+            else if (alpha <= 2 and alpha > 0)
             {
                 return 0.5 * scaledSquaredError;
             }
+            // ]-100, 0]
             else if (alpha <= 0 and alpha > -100)
             {
                 return log(0.5 * scaledSquaredError + 1);
             }
+            // ]-oo, -100]
             else 
             {
                 return 1 - exp( -0.5 * scaledSquaredError);
             }
         }
 
+        /**
+         * \brief Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-Marquardt algorithm
+         */
         vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
         {
             // forcing positive "w" to work from 0 to PI
@@ -77,6 +84,9 @@ namespace rgbd_slam {
             }
         }
 
+        /**
+         * \brief Compute a quaternion from it's scaled axis representation
+         */
         quaternion get_quaternion_from_scale_axis_coefficients(const vector3 optimizationCoefficients)
         {
             const double a = optimizationCoefficients.norm();
@@ -85,90 +95,71 @@ namespace rgbd_slam {
             return quaternion(cos(ha), optimizationCoefficients.x() * scale, optimizationCoefficients.y() * scale, optimizationCoefficients.z() * scale);
         }
 
-
-        double sinc(double x)
-        {
-            return (x == 0) ? 1 : (sin(x) / x);
-        }
-
-        quaternion get_quaternion_exponential(const quaternion& quat)
-        {
-            const double a = quat.vec().norm();
-            const double expW = exp(quat.w());
-            if (a == 0)
-            {
-                return quaternion(expW, 0, 0, 0);
-            }
-            quaternion res;
-            res.w() = expW * cos(a);
-            res.vec() = expW * sinc(a) * quat.vec();
-            return res;
-        }
-
-        quaternion get_quaternion_logarithm(const quaternion& quat)
-        {
-            const double expW = quat.norm();
-            const double w = log(expW);
-            const double a = acos(quat.w() / expW);
-            if (a == 0)
-            {
-                return quaternion(w, 0, 0, 0);
-            }
-            quaternion res;
-            res.w() = w;
-            res.vec() = quat.vec() / expW / (sin(a) / a);
-            return res;
-        }
-
-
+        /**
+         * GLOBAL POSE ESTIMATOR members
+         */
 
         Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
             Levenberg_Marquardt_Functor<double>(n, points.size()),
             _points(points),
             _rotation(worldRotation),
-            _position(worldPosition)
+            _position(worldPosition),
+            _pointErrorMultiplier( sqrt(Parameters::get_point_error_multiplier() / static_cast<double>(points.size())) ),
+            _lossScale(Parameters::get_point_loss_scale()),
+            _lossAlpha(Parameters::get_point_loss_alpha())
         {
+            assert(_lossScale > 0);
+            assert(_pointErrorMultiplier > 0);
+            assert(_points.size() > 0);
         }
 
         // Implementation of the objective function
         int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
         {
+            assert(_points.size() > 0);
+            assert(x.size() == 6);
+            assert(static_cast<size_t>(fvec.size()) == _points.size());
+
+            // Get the new estimated pose
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
             const vector3 translation(x(0), x(1), x(2));
 
-            const size_t pointContainerSize = _points.size();
-
-            const double sqrtOfErrorMultiplier = sqrt(Parameters::get_point_error_multiplier() / static_cast<double>(pointContainerSize));
-            const double lossAlpha = Parameters::get_point_loss_alpha();
-            const double lossScale = Parameters::get_point_loss_scale();
-
             const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+            double meanOfDistances = 0;
+            size_t pointIndex = 0;  // index of the match being treated
 
-            double mean = 0;
-            size_t pointIndex = 0;
+            // Compute retroprojection distances
             for(matches_containers::match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
-                // Compute distance
+                // Compute retroprojected distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
-                mean += distance / static_cast<double>(pointContainerSize);
+                meanOfDistances += distance; 
                 fvec(pointIndex) = distance;
             }
 
-            for(size_t i = 0; i < pointContainerSize; ++i)
+            const size_t pointContainerSize = _points.size();
+            meanOfDistances /= static_cast<double>(pointContainerSize);
+
+            // If the mean of distance is 0, no need to continue 
+            if (meanOfDistances > 0)
             {
-                // distance squared divided by mean of all distances
-                const double distance = (fvec(i) * fvec(i)) / mean;
+                // Compute distance scores
+                for(size_t i = 0; i < pointContainerSize; ++i)
+                {
+                    // distance squared divided by mean of all distances
+                    const double distance = (fvec(i) * fvec(i)) / meanOfDistances;
 
-                // Pass it to loss function
-                const double weightedLoss = get_generalized_loss_estimator(distance, lossAlpha, lossScale);
+                    // Pass it to loss function
+                    const double weightedLoss = get_generalized_loss_estimator(distance, _lossAlpha, _lossScale);
 
-                // Compute the final error
-                fvec(i) = sqrtOfErrorMultiplier * weightedLoss; 
+                    // Compute the final error
+                    fvec(i) = _pointErrorMultiplier * weightedLoss; 
+                }
             }
             return 0;
         }
 
-        
-        
+
+
         double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
         {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
@@ -177,24 +168,26 @@ namespace rgbd_slam {
             return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
         }
         /*
-        double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
-        {
-            const vector2& mapPointAs2D = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix);
-            const vector3 mapPointAs3D(mapPointAs2D.x(), mapPointAs2D.y(), mapPoint.z());
+           double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
+           {
+           const vector2& mapPointAs2D = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix);
+           const vector3 mapPointAs3D(mapPointAs2D.x(), mapPointAs2D.y(), mapPoint.z());
 
-            return get_distance_manhattan(matchedPoint, mapPointAs3D);
-        }
-        */
+           return get_distance_manhattan(matchedPoint, mapPointAs3D);
+           }
+         */
         /*
-        double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) const
-        {
-            const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
+           double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) const
+           {
+           const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
 
-            return get_distance_manhattan(matchedPointAs3D, mapPoint);
-        }
-        */
+           return get_distance_manhattan(matchedPointAs3D, mapPoint);
+           }
+         */
 
-
+        /**
+          * \brief Return a string corresponding to the end status of the optimization
+          */
         const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) 
         {
             switch(status) {

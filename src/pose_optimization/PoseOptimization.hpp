@@ -12,7 +12,7 @@ namespace rgbd_slam {
         {
             public:
                 /**
-                  * \brief Compute a new observer global pose, to replace the current estimated pose
+                  * \brief Compute a new observer global pose, to replace the current estimated pose. This function can relaunch optimization as needed to insure that the result is correct
                   *
                   * \param[in] currentPose Last observer optimized pose
                   * \param[in] matchedPoints Object containing the match between observed screen points and reliable map & futur map points 
@@ -23,7 +23,7 @@ namespace rgbd_slam {
 
             private:
                 /**
-                  * \brief Optimize a global pose (orientation/translation) of the observer
+                  * \brief Optimize a global pose (orientation/translation) of the observer, given a match set
 *
                   * \param[in] currentPose Last observer optimized pose
                   * \param[in] matchedPoints Object containing the match between observed screen points and reliable map & futur map points 

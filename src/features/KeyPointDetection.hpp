@@ -12,6 +12,8 @@ namespace rgbd_slam {
     namespace features {
         namespace keypoints {
 
+            const size_t INVALID_MAP_POINT_ID = 0;  // should be the same as INVALID_POINT_UNIQ_ID in map_point.hpp
+            const int INVALID_MATCH_INDEX = -1;
 
             /**
              * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map
