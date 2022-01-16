@@ -21,7 +21,7 @@ namespace rgbd_slam {
                   */
                 static const utils::Pose  compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints);
 
-            private:
+            //private:
                 /**
                   * \brief Optimize a global pose (orientation/translation) of the observer, given a match set
 *

@@ -10,6 +10,118 @@ namespace rgbd_slam {
     namespace pose_optimization {
 
         /**
+         * \brief Compute the retroprojection distance between a mapPoint and  a cameraPoint
+         */
+        double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix)
+        {
+            const vector3& worldPoint = utils::screen_to_world_coordinates(matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
+            return (mapPoint - worldPoint).norm();
+        }
+
+        /**
+         * \brief Return a random subset of matches, of size n
+         */
+        matches_containers::match_point_container get_n_random_matches(const matches_containers::match_point_container& matchedPoints, const uint n)
+        {
+            const size_t maxIndex = matchedPoints.size();
+            assert(n < maxIndex);
+
+            matches_containers::match_point_container selectedMatches;
+            std::set<size_t> usedIndexes;
+
+            // get a random subset of indexes
+            while(usedIndexes.size() < n)
+            {
+                const uint index = rand() % maxIndex;
+                if (not usedIndexes.contains(index))
+                {
+                    usedIndexes.insert(index);
+                }
+            }
+
+            // get the corresponding matches
+            for(const size_t& index : usedIndexes)
+            {
+                matches_containers::match_point_container::const_iterator it = matchedPoints.cbegin();
+                std::advance(it, index);
+
+                selectedMatches.insert(selectedMatches.begin(), *it);
+            }
+            return selectedMatches;
+        }
+
+        /**
+         * \brief Compute a score on a matchedPoint dataset, for a given pose
+         */
+        double get_pose_score(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints)
+        {
+            const matrix34& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
+            double score = 0;
+            for (const matches_containers::point_pair& match : matchedPoints)
+            {
+                score += get_distance_to_point(match.second, match.first, transformationMatrix);
+            }
+            return score / matchedPoints.size();
+        }
+
+        /**
+         * \brief Compute an optimized pose, using a RANSAC methodology
+         */
+        utils::Pose compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) {
+            const uint minimumPointsForOptimization = 5;    // Selected set of random points
+            const uint maxIterations = 50;                  // max RANSAC iterations
+            const double threshold = 50;                     // minimum retroprojection error to consider a match as an inlier (in millimeters)
+            const double acceptableMinimumScore = 10;       // RANSAC will stop if this mean score is reached
+            const uint matchedPointSize = matchedPoints.size();
+            const uint minimumPointsForEvaluation = 0.4 * matchedPointSize; // minimum number of points before considering a global optimization
+
+            double minScore = 10000000;
+            utils::Pose bestPose = currentPose;
+            size_t finalSetSize = matchedPointSize;
+
+            uint iteration = 0; 
+            while(iteration < maxIterations)
+            {
+                const matches_containers::match_point_container& selectedMatches = get_n_random_matches(matchedPoints, minimumPointsForOptimization);
+                const utils::Pose& pose = Pose_Optimization::get_optimized_global_pose(currentPose, matchedPoints);
+
+                const matrix34& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
+
+                // Select inliers by retroprojection threshold
+                matches_containers::match_point_container inliersContainer;
+                for (const matches_containers::point_pair& match : matchedPoints)
+                {
+                    if (get_distance_to_point(match.second, match.first, transformationMatrix) < threshold)
+                    {
+                        inliersContainer.insert(inliersContainer.end(), match);
+                    }
+                }
+
+                // if inlier count is good enought, try a global optimization
+                if (inliersContainer.size() > minimumPointsForOptimization and inliersContainer.size() >= minimumPointsForEvaluation)
+                {
+                    const utils::Pose& newPose = Pose_Optimization::get_optimized_global_pose(pose, inliersContainer);
+                    const double poseScore = get_pose_score(newPose, inliersContainer);
+                    if (poseScore < minScore)
+                    {
+                        minScore = poseScore;
+                        bestPose = newPose;
+                        finalSetSize = inliersContainer.size();
+
+                        if (poseScore <= acceptableMinimumScore)
+                            // We can stop here, the optimization is pretty good
+                            break;
+                    }
+                }
+                ++iteration;
+            }
+
+            if (matchedPointSize != finalSetSize)
+                std::cout << matchedPointSize << " " <<  finalSetSize << std::endl;
+            return bestPose;
+        }
+
+        /**
          *
          * \param[in] optimizedPose the pose obtained after one optimization
          * \param[in] matchedPoints the original matched point container
