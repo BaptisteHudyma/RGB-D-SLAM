@@ -320,12 +320,13 @@ namespace rgbd_slam {
                 const uint maximumPointsForLocalMap = Parameters::get_maximum_point_count_per_frame();
                 const double maximumMatchDistance = Parameters::get_maximum_match_distance();
 
-                const cv::Size pyramidSize = cv::Size(pyramidWindowSize, pyramidWindowSize);   // must be bigger than the size used in calcOpticalFlow
+                const cv::Size pyramidSize = cv::Size(pyramidWindowSize, pyramidWindowSize);   // must be >= than the size used in calcOpticalFlow
 
                 // build pyramid
                 std::vector<cv::Mat> newImagePyramide;
                 cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
-                if (_lastFramePyramide.size() > 0)
+                // TODO: when the optical flow will not show so much drift, maybe we could remove the tracked keypoint redetection
+                if (not forceKeypointDetection and _lastFramePyramide.size() > 0)
                 {
                     if (lastKeypointsWithIds._keypoints.size() > 0) {
                         newKeypointsObject = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance);
@@ -340,7 +341,8 @@ namespace rgbd_slam {
                 //else: No optical flow for the first frame
                 _lastFramePyramide = newImagePyramide;
 
-                assert(newKeypointsObject._keypoints.size() == newKeypointsObject._ids.size());
+                const size_t opticalFlowTrackedPointCount = newKeypointsObject._keypoints.size();
+                assert(opticalFlowTrackedPointCount == newKeypointsObject._ids.size());
 
                 /*
                  * KEY POINT DETECTION
@@ -349,8 +351,8 @@ namespace rgbd_slam {
 
                 // detect keypoint if: it is requested OR not enough points were detected
                 std::vector<cv::Point2f> detectedKeypoints;
-                const bool shouldDetectKeypoints = forceKeypointDetection or newKeypointsObject._keypoints.size() < minimumPointsForOptimization;
-                if (shouldDetectKeypoints and newKeypointsObject._keypoints.size() < maximumPointsForLocalMap)
+                const bool shouldDetectKeypoints = opticalFlowTrackedPointCount < minimumPointsForOptimization and opticalFlowTrackedPointCount < maximumPointsForLocalMap;
+                if (forceKeypointDetection or shouldDetectKeypoints)
                 {
                     // create a mask at current keypoint location
                     const cv::Mat& keypointMask = compute_key_point_mask(grayImage.size(), newKeypointsObject._keypoints);

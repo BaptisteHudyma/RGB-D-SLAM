@@ -6,24 +6,33 @@
 namespace rgbd_slam {
     namespace map_management {
 
-        const double MIN_DEPTH_DISTANCE = 40;   // 40 millimeters is the camera minimum detection distance
+        const double MIN_DEPTH_DISTANCE = 40;   // M millimeters is the depth camera minimum reliable distance
+        const double MAX_DEPTH_DISTANCE = 6000; // N meters is the depth camera maximum reliable distance
 
         /**
-          * LOCAL UTILS FUNCTIONS
-          */
+         * LOCAL UTILS FUNCTIONS
+         */
 
         /**
-          * \brief compute a covariance matrix for a point associated with a depth measurement
-          */
+         * \brief checks the depth validity of a measurement
+         */
+        bool is_depth_valid(const double depth)
+        {
+            return (depth >= MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
+        }
+
+        /**
+         * \brief compute a covariance matrix for a point associated with a depth measurement
+         */
         matrix33 get_screen_point_covariance(const double depth) 
         {
             // Quadratic error model (uses depth as meters)
             const double depthMeters = depth / 1000;
             // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = (depth > MIN_DEPTH_DISTANCE) ? std::max(0.0, -0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0;
+            const double depthVariance = is_depth_valid(depth) ? std::max(0.0, -0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0;
 
             // TODO xy variance should also depend on the placement of the pixel in x and y
-            const double xyVariance = 0.25; // 0.5 pixel error
+            const double xyVariance = pow(0.1, 2.0);
 
             matrix33 screenPointCovariance {
                 {xyVariance, 0,          0},
@@ -35,21 +44,21 @@ namespace rgbd_slam {
 
 
         /**
-          * \brief My add a point to the tracked feature object, used to add optical flow tracking
-          */
-        void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, const matrix34& worldToCamMatrix, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
+         * \brief My add a point to the tracked feature object, used to add optical flow tracking
+         */
+        void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
         {
             if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
             {
-                const vector2& screenCoordinates = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMatrix);
-                keypointsWithIds._keypoints.push_back(cv::Point2f(screenCoordinates.x(), screenCoordinates.y()));
+                // use previously known screen coordinates
+                keypointsWithIds._keypoints.push_back(cv::Point2f(mapPoint._screenCoordinates.x(), mapPoint._screenCoordinates.y()));
                 keypointsWithIds._ids.push_back(mapPoint._id);
             }
         }
 
         /**
-          * LOCAL MAP MEMBERS
-          */
+         * LOCAL MAP MEMBERS
+         */
 
         Local_Map::Local_Map()
         {
@@ -69,20 +78,31 @@ namespace rgbd_slam {
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX) {
                 //unmatched point
                 point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+                return false;
             }
-            else if (detectedKeypoint.get_depth(matchIndex) <= MIN_DEPTH_DISTANCE) {
-                // 2D point, still matched
+            
+            const double screenPointDepth = detectedKeypoint.get_depth(matchIndex);
+            if (is_depth_valid(screenPointDepth) ) {
+                // points with depth measurement
                 _isPointMatched[matchIndex] = true;
+
+                const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
+
+                // update index and screen coordinates 
                 point._lastMatchedIndex = matchIndex;
+                point._screenCoordinates << screenPoint, screenPointDepth;
+
+                const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), screenPointDepth);
+                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, point._coordinates);
                 return true;
             }
             else {
+                // 2D point
                 _isPointMatched[matchIndex] = true;
-                point._lastMatchedIndex = matchIndex;
-                const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
-                const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), detectedKeypoint.get_depth(matchIndex));
 
-                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, point._coordinates);
+                // update index and screen coordinates 
+                point._lastMatchedIndex = matchIndex;
+                point._screenCoordinates << detectedKeypoint.get_keypoint(matchIndex), 0;
                 return true;
             }
             return false;
@@ -161,16 +181,27 @@ namespace rgbd_slam {
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
                     const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
 
-                    if(matchedPointDepth > MIN_DEPTH_DISTANCE)
+                    if(is_depth_valid(matchedPointDepth))
                     {
-                        // TODO: close points cannot be reliably maintained
+                        // transform screen point to world point
                         const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
-
+                        // get a measure of the estimated variance of the new world point
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
+                        // TODO update the variances with the pose variance
+
                         // update this map point errors & position
                         mapPoint.update_matched(newCoordinates, worldPointCovariance);
 
+                        // If a new descriptor is available, update it
+                        if (keypointObject.is_descriptor_computed(matchedPointIndex))
+                            mapPoint._descriptor = keypointObject.get_descriptor(matchedPointIndex);
+
+                        // End of the function
                         return;
+                    }
+                    else
+                    {
+                        // TODO: 2D points should be reliably maintained
                     }
                 }
                 else
@@ -185,7 +216,6 @@ namespace rgbd_slam {
 
         void Local_Map::update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
-            // Remove old map points
             point_map_container::iterator pointMapIterator = _localPointMap.begin();
             while(pointMapIterator != _localPointMap.end())
             {
@@ -201,8 +231,6 @@ namespace rgbd_slam {
                     ++pointMapIterator;
                 }
             }
-
-
         }
 
         void Local_Map::update_staged_keypoints_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
@@ -219,6 +247,7 @@ namespace rgbd_slam {
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
                     _localPointMap.emplace(_localPointMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
                     _localPointMap.back()._lastMatchedIndex = stagedPointIterator->_lastMatchedIndex;
+                    _localPointMap.back()._screenCoordinates = stagedPointIterator->_screenCoordinates;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
                 else if (stagedPointIterator->should_remove_from_staged())
@@ -239,7 +268,7 @@ namespace rgbd_slam {
             {
                 if (not _isPointMatched[i]) {
                     const double depth = keypointObject.get_depth(i);
-                    if (depth <= MIN_DEPTH_DISTANCE)
+                    if (not is_depth_valid(depth))
                     {
                         // TODO handle 2D features
                         continue;
@@ -269,12 +298,12 @@ namespace rgbd_slam {
             // add map points with valid retroprojected coordinates
             for (const Map_Point& point : _localPointMap)
             {
-                add_point_to_tracked_features(point, worldToCamMatrix, keypointsWithIds);
+                add_point_to_tracked_features(point, keypointsWithIds);
             }
             // add staged points with valid retroprojected coordinates
             for (const Staged_Point& point : _stagedPoints)
             {
-                add_point_to_tracked_features(point, worldToCamMatrix, keypointsWithIds);
+                add_point_to_tracked_features(point, keypointsWithIds);
             }
             return keypointsWithIds;
         }
@@ -299,11 +328,7 @@ namespace rgbd_slam {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx);
 
                 //Map Point are green 
-                if (mapPoint._lastMatchedIndex == UNMATCHED_POINT_INDEX)
-                {
-                    cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 128, 0), 1);
-                }
-                else
+                if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
                 {
                     cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 255, 0), 1);
                 }
@@ -312,11 +337,7 @@ namespace rgbd_slam {
                 const vector2& screenPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMtrx);
 
                 //Staged point are yellow 
-                if (stagedPoint._lastMatchedIndex == UNMATCHED_POINT_INDEX)
-                {
-                    cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 100, 200), 1);
-                }
-                else
+                if (stagedPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
                 {
                     cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 200, 200), 1);
                 }

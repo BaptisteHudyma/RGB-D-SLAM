@@ -81,6 +81,11 @@ namespace rgbd_slam {
                         return _keypoints[index];
                     }
 
+                    bool is_descriptor_computed(const unsigned int index) const
+                    {
+                        return index < static_cast<unsigned int>(_descriptors.rows);
+                    }
+
                     const cv::Mat get_descriptor(const unsigned int index) const
                     {
                         assert(index < static_cast<unsigned int>(_descriptors.rows));

@@ -54,7 +54,7 @@ namespace rgbd_slam {
         _opticalFlowPyramidWindowSize = 25;
         _opticalFlowMaxError = 35;      // error in pixel after which a point is rejected
         _opticalFlowMaxDistance = 100;  // distance in pixel after which a point is rejected
-        _keypointMaskDiameter = 30;     // do not detect points inside an area of this size (pixels) around existing keypoints
+        _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
         _minimumPointForOptimization = 5;

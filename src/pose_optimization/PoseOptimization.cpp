@@ -194,6 +194,7 @@ namespace rgbd_slam {
 
         const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) 
         {
+            //return compute_pose_with_ransac(currentPose, matchedPoints);
             assert(matchedPoints.size() > 0);
 
             // get absolute displacement error
