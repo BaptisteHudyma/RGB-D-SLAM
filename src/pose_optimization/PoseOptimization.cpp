@@ -26,22 +26,11 @@ namespace rgbd_slam {
             const size_t maxIndex = matchedPoints.size();
             assert(n < maxIndex);
 
-            matches_containers::match_point_container selectedMatches;
-            std::set<size_t> usedIndexes;
-
             // get a random subset of indexes
-            while(usedIndexes.size() < n)
+            matches_containers::match_point_container selectedMatches;
+            while(selectedMatches.size() < n)
             {
                 const uint index = rand() % maxIndex;
-                if (not usedIndexes.contains(index))
-                {
-                    usedIndexes.insert(index);
-                }
-            }
-
-            // get the corresponding matches
-            for(const size_t& index : usedIndexes)
-            {
                 matches_containers::match_point_container::const_iterator it = matchedPoints.cbegin();
                 std::advance(it, index);
 
@@ -51,36 +40,21 @@ namespace rgbd_slam {
         }
 
         /**
-         * \brief Compute a score on a matchedPoint dataset, for a given pose
-         */
-        double get_pose_score(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints)
-        {
-            const matrix34& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
-            double score = 0;
-            for (const matches_containers::point_pair& match : matchedPoints)
-            {
-                score += get_distance_to_point(match.second, match.first, transformationMatrix);
-            }
-            return score / matchedPoints.size();
-        }
-
-        /**
          * \brief Compute an optimized pose, using a RANSAC methodology
          */
-        utils::Pose compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) {
+        utils::Pose compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) 
+        {
             const uint minimumPointsForOptimization = 5;    // Selected set of random points
-            const uint maxIterations = 50;                  // max RANSAC iterations
+            const uint maxIterations = 200;                  // max RANSAC iterations
             const double threshold = 50;                     // minimum retroprojection error to consider a match as an inlier (in millimeters)
-            const double acceptableMinimumScore = 10;       // RANSAC will stop if this mean score is reached
             const uint matchedPointSize = matchedPoints.size();
-            const uint minimumPointsForEvaluation = 0.4 * matchedPointSize; // minimum number of points before considering a global optimization
+            const double acceptableMinimumScore = matchedPointSize * 0.9;       // RANSAC will stop if this mean score is reached
 
-            double minScore = 10000000;
+            matches_containers::match_point_container inliers;
             utils::Pose bestPose = currentPose;
-            size_t finalSetSize = matchedPointSize;
 
-            uint iteration = 0; 
-            while(iteration < maxIterations)
+            uint iteration = 0;
+            for(; iteration < maxIterations; ++iteration)
             {
                 const matches_containers::match_point_container& selectedMatches = get_n_random_matches(matchedPoints, minimumPointsForOptimization);
                 const utils::Pose& pose = Pose_Optimization::get_optimized_global_pose(currentPose, matchedPoints);
@@ -98,27 +72,27 @@ namespace rgbd_slam {
                 }
 
                 // if inlier count is good enought, try a global optimization
-                if (inliersContainer.size() > minimumPointsForOptimization and inliersContainer.size() >= minimumPointsForEvaluation)
+                if (inliersContainer.size() >= minimumPointsForOptimization)
                 {
-                    const utils::Pose& newPose = Pose_Optimization::get_optimized_global_pose(pose, inliersContainer);
-                    const double poseScore = get_pose_score(newPose, inliersContainer);
-                    if (poseScore < minScore)
+                    if (inliersContainer.size() > inliers.size())
                     {
-                        minScore = poseScore;
-                        bestPose = newPose;
-                        finalSetSize = inliersContainer.size();
+                        bestPose = pose;
+                        inliers.swap(inliersContainer);
 
-                        if (poseScore <= acceptableMinimumScore)
+                        if (inliers.size() >= acceptableMinimumScore)
                             // We can stop here, the optimization is pretty good
                             break;
                     }
                 }
-                ++iteration;
             }
 
-            if (matchedPointSize != finalSetSize)
-                std::cout << matchedPointSize << " " <<  finalSetSize << std::endl;
-            return bestPose;
+            if (matchedPointSize != inliers.size())
+                std::cout << iteration << " " << matchedPointSize << " " <<  inliers.size() << std::endl;
+
+            if (inliers.size() < minimumPointsForOptimization)
+                // error case
+                return currentPose;
+            return Pose_Optimization::get_optimized_global_pose(bestPose, inliers);
         }
 
         /**
@@ -143,10 +117,14 @@ namespace rgbd_slam {
                 const vector2& screenPoint = vector2(pointIterator->first.x(), pointIterator->first.y());
                 const vector3& worldPoint = pointIterator->second;
 
-                const vector2& projectedPoint = utils::world_to_screen_coordinates(worldPoint, newTransformationMatrix);
-                const double projectionError = (projectedPoint - screenPoint).norm();
-                sumOfErrors += projectionError;
-                retroprojectionErrorContainer.push_back(projectionError);
+                vector2 projectedPoint;
+                const bool isScreenCoordinatesValid = utils::world_to_screen_coordinates(worldPoint, newTransformationMatrix, projectedPoint);
+                if (isScreenCoordinatesValid)
+                {
+                    const double projectionError = (projectedPoint - screenPoint).norm();
+                    sumOfErrors += projectionError;
+                    retroprojectionErrorContainer.push_back(projectionError);
+                }
             }
             return sumOfErrors / matchedPoints.size();
         }
@@ -195,7 +173,7 @@ namespace rgbd_slam {
         const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) 
         {
             //return compute_pose_with_ransac(currentPose, matchedPoints);
-            assert(matchedPoints.size() > 0);
+            //assert(matchedPoints.size() > 0);
 
             // get absolute displacement error
             const double maximumOptimizationRetroprojection = Parameters::get_maximum_optimization_retroprojection_error();
