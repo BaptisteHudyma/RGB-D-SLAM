@@ -36,10 +36,11 @@ namespace rgbd_slam {
          *
          * \param[in] position3D Coordinates of the detected point (world coordinates)
          * \param[in] worldToCameraMatrix Matrix to transform the world to a local coordinate system
+         * \param[out] screenCoordinates The point screen coordinates, if the function returned true
          *
-         * \return The position of the point in screen coordinates
+         * \return True if the screen position is valid
          */
-        const vector2 world_to_screen_coordinates(const vector3& position3D, const matrix34& worldToCameraMatrix);
+        bool world_to_screen_coordinates(const vector3& position3D, const matrix34& worldToCameraMatrix, vector2& screenCoordinates);
 
 
         /**

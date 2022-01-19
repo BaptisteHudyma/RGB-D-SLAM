@@ -71,8 +71,10 @@ namespace rgbd_slam {
             int matchIndex = detectedKeypoint.get_tracking_match_index(point._id, _isPointMatched);
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
             {
-                const vector2& projectedMapPoint = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix);
-                matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
+                vector2 projectedMapPoint;
+                const bool isScreenCoordinatesValid = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix, projectedMapPoint);
+                if (isScreenCoordinatesValid)
+                    matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
             }
 
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX) {
@@ -325,19 +327,21 @@ namespace rgbd_slam {
             const matrix34& worldToCamMtrx = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
             for (const Map_Point& mapPoint : _localPointMap) {
-                const vector2& screenPoint = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx);
+                vector2 screenPoint; 
+                const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx, screenPoint);
 
                 //Map Point are green 
-                if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
+                if (isCoordinatesValid and mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
                 {
                     cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 255, 0), 1);
                 }
             }
             for (const Staged_Point& stagedPoint : _stagedPoints) {
-                const vector2& screenPoint = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMtrx);
+                vector2 screenPoint;
+                const bool isCoordinatesValid = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMtrx, screenPoint);
 
                 //Staged point are yellow 
-                if (stagedPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
+                if (isCoordinatesValid and stagedPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
                 {
                     cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 200, 200), 1);
                 }

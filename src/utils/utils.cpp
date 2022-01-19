@@ -34,21 +34,22 @@ namespace rgbd_slam {
             return cameraToWorldMatrix * worldPoint;
         }
 
-        const vector2 world_to_screen_coordinates(const vector3& position3D, const matrix34& worldToCameraMatrix)
+        bool world_to_screen_coordinates(const vector3& position3D, const matrix34& worldToCameraMatrix, vector2& screenCoordinates)
         {
             vector4 ptH;
             ptH << position3D, 1.0;
             const vector3& point3D = (worldToCameraMatrix * ptH); 
 
             if (point3D.z() <= 0) {
-                return vector2(0.0, 0.0);
+                return false;
             }
 
             const double inverseDepth  = 1.0 / point3D.z();
             const double screenX = Parameters::get_camera_1_focal_x() * point3D.x() * inverseDepth + Parameters::get_camera_1_center_x();
             const double screenY = Parameters::get_camera_1_focal_y() * point3D.y() * inverseDepth + Parameters::get_camera_1_center_y();
 
-            return vector2(screenX, screenY);
+            screenCoordinates = vector2(screenX, screenY);
+            return true;
         }
 
         const matrix34 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)

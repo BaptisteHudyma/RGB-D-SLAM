@@ -24,6 +24,10 @@ namespace rgbd_slam {
         { 
             return (pointA - pointB).norm();
         }
+        double get_distance_squared(const vector3& pointA, const vector3& pointB) 
+        { 
+            return (pointA - pointB).norm();
+        }
 
         /**
          * \brief Implementation of "A General and Adaptive Robust Loss Function" (2019)
@@ -132,6 +136,8 @@ namespace rgbd_slam {
             for(matches_containers::match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 // Compute retroprojected distance
                 const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
+                assert(distance >= 0);
+
                 meanOfDistances += distance; 
                 fvec(pointIndex) = distance;
             }
@@ -140,6 +146,7 @@ namespace rgbd_slam {
             meanOfDistances /= static_cast<double>(pointContainerSize);
 
             // If the mean of distance is 0, no need to continue 
+            assert(meanOfDistances >= 0);
             if (meanOfDistances > 0)
             {
                 // Compute distance scores
@@ -158,22 +165,29 @@ namespace rgbd_slam {
             return 0;
         }
 
-
-
         double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
         {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
-            const vector2& mapPointAs2D = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix);
-
-            return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
+            vector2 mapPointAs2D; 
+            const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix, mapPointAs2D);
+            if(isCoordinatesValid)
+                return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
+            // randomly high number
+            return 10000;
         }
+
         /*
            double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
            {
-           const vector2& mapPointAs2D = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix);
+           vector2 mapPointAs2D;
+           const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix, mapPointAs2D);
+           if (isCoordinatesValid)
+           {
            const vector3 mapPointAs3D(mapPointAs2D.x(), mapPointAs2D.y(), mapPoint.z());
 
            return get_distance_manhattan(matchedPoint, mapPointAs3D);
+           }
+           return 10000;
            }
          */
         /*
@@ -185,9 +199,10 @@ namespace rgbd_slam {
            }
          */
 
+
         /**
-          * \brief Return a string corresponding to the end status of the optimization
-          */
+         * \brief Return a string corresponding to the end status of the optimization
+         */
         const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) 
         {
             switch(status) {

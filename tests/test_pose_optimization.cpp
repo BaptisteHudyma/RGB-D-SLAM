@@ -63,12 +63,16 @@ namespace rgbd_slam {
             // world coordinates
             const vector3 worldPointStart(point.x, point.y, point.z);
             //
-            const vector2& transformedPoint = utils::world_to_screen_coordinates(worldPointStart, W2CtransformationMatrix);
-            // screen coordinates
-            const vector3 screenPointEnd(transformedPoint.x(), transformedPoint.y(), worldPointStart.z());
+            vector2 transformedPoint; 
+            const bool isScreenCoordinatesValid = utils::world_to_screen_coordinates(worldPointStart, W2CtransformationMatrix, transformedPoint);
+            if (isScreenCoordinatesValid)
+            {
+                // screen coordinates
+                const vector3 screenPointEnd(transformedPoint.x(), transformedPoint.y(), worldPointStart.z());
 
-            const matches_containers::point_pair matched(screenPointEnd, worldPointStart);
-            matchedPoints.push_back(matched);
+                const matches_containers::point_pair matched(screenPointEnd, worldPointStart);
+                matchedPoints.push_back(matched);
+            }
         }
         return matchedPoints;
     }
@@ -144,7 +148,7 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-        
+
         // True End pose
         const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
         const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
@@ -200,7 +204,7 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-        
+
         // True End pose
         const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
         const EulerAngles trueEulerAngles(END_ROTATION, END_ROTATION, END_ROTATION);
@@ -262,7 +266,7 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-        
+
         // True End pose
         const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
         const EulerAngles trueEulerAngles(0, 0, 0);
@@ -376,7 +380,7 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-        
+
         // True End pose
         const vector3 truePosition(0, 0, 0);
         const EulerAngles trueEulerAngles(0, END_ROTATION, 0);
@@ -582,7 +586,7 @@ namespace rgbd_slam {
         {
             Parameters::load_defaut();
         }
-        
+
         // True End pose
         const vector3 truePosition(0, 0, 0);
         const EulerAngles trueEulerAngles(0, END_ROTATION, 0);
