@@ -11,7 +11,7 @@ const float BORDER_SIZE = 1.; // Border of an image, in which points will be ign
 namespace rgbd_slam {
     namespace features {
         namespace keypoints {
-            
+
             /**
              * \brief checks if a point is in an image, a with border
              */
@@ -23,6 +23,23 @@ namespace rgbd_slam {
                     pt.x < im.cols - BORDER_SIZE and
                     pt.y < im.rows - BORDER_SIZE;
             } 
+
+            /**
+              * \brief Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth with the surrounding points to prevent invalid depth on edges
+              *
+              */
+            float get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates)
+            {
+                if (is_in_border(depthCoordinates, depthImage)) 
+                {
+                    const float border = 2;
+                    const cv::Mat roi(depthImage(cv::Rect(depthCoordinates.x - border, depthCoordinates.y - border, border * 2, border * 2)));
+                    double min, max;
+                    cv::minMaxLoc(roi, &min, &max);
+                    return min;
+                }
+                return 0;
+            }
 
 
             Keypoint_Handler::Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance) :
@@ -46,8 +63,6 @@ namespace rgbd_slam {
                 _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
 
                 // Fill depth values, add points to image boxes
-                cv::Rect depthImageBoundaries(cv::Point(), depthImage.size());
-
                 const unsigned int allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
                 _depths = std::vector<double>(allKeypointSize, 0.0);
                 _keypoints = std::vector<vector2>(allKeypointSize);
@@ -63,10 +78,8 @@ namespace rgbd_slam {
                     const unsigned int searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
                     _searchSpaceIndexContainer[searchSpaceIndex].push_back(pointIndex);
 
-                    if (depthImageBoundaries.contains(pt)) {
-                        // Depths are in millimeters
-                        _depths[pointIndex] = (depthImage.at<const float>(pt.y, pt.x));
-                    }
+                    // Depths are in millimeters, will be 0 if coordinates are invalid
+                    _depths[pointIndex] = get_depth_approximation(depthImage, pt);
                 }
 
 
@@ -95,10 +108,8 @@ namespace rgbd_slam {
 
                     _keypoints[newKeypointIndex] = vectorKeypoint; 
 
-                    if (depthImageBoundaries.contains(pt)) {
-                        // Depths are in millimeters
-                        _depths[newKeypointIndex] = (depthImage.at<const float>(pt.y, pt.x));
-                    }
+                    // Depths are in millimeters, will be 0 if coordinates are invalid
+                    _depths[newKeypointIndex] = get_depth_approximation(depthImage, pt);
                 }
             }
 

@@ -77,13 +77,17 @@ namespace rgbd_slam {
 
             assert(cameraFX > 0);
             assert(cameraFY > 0);
+            assert(cameraCX > 0);
+            assert(cameraCY > 0);
 
+            // Jacobian of the screen to world function. Use absolutes to prevent negative variances
             const matrix33 jacobian {
-                {depth / cameraFX, 0.0,              (screenPoint.x() - cameraCX) / cameraFX },
-                {0.0,              depth / cameraFY, (screenPoint.y() - cameraCY) / cameraFY },
+                {depth / cameraFX, 0.0,              abs(screenPoint.x() - cameraCX) / cameraFX },
+                {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
                 {0.0,              0.0,              1}
             };
-            return jacobian * screenPointCovariance * jacobian.transpose();
+            const matrix33& worldPointCovariance = jacobian * screenPointCovariance * jacobian.transpose();
+            return worldPointCovariance;
         }
 
 
