@@ -24,7 +24,7 @@ namespace rgbd_slam {
         matches_containers::match_point_container get_n_random_matches(const matches_containers::match_point_container& matchedPoints, const uint n)
         {
             const size_t maxIndex = matchedPoints.size();
-            assert(n < maxIndex);
+            assert(n <= maxIndex);
 
             // get a random subset of indexes
             matches_containers::match_point_container selectedMatches;
@@ -43,7 +43,8 @@ namespace rgbd_slam {
         {
             const uint minimumPointsForOptimization = 3;    // Selected set of random points
             const uint maxIterations = Parameters::get_maximum_ransac_iterations();
-            double threshold = 10;                   // minimum retroprojection error to consider a match as an inlier (in millimeters)
+            const double maxThreshold = 200;   // maximum inlier threshold (in millimeters)
+            double threshold = 1;       // minimum retroprojection error to consider a match as an inlier (in millimeters)
             const uint matchedPointSize = matchedPoints.size();
             const double acceptableMinimumScore = matchedPointSize * 0.9;       // RANSAC will stop if this mean score is reached
 
@@ -76,12 +77,12 @@ namespace rgbd_slam {
                         // We can stop here, the optimization is pretty good
                         break;
                 }
-                else
+                else if (iteration % 5 and threshold < maxThreshold)
                     // augment the error threshold
                     threshold += 10;
             }
 
-            //std::cout << iteration << " " << matchedPointSize << " " <<  inlierMatchedPoints.size() << std::endl;
+            //std::cout << iteration << " " << matchedPointSize << " " <<  inlierMatchedPoints.size() << " threshold is " << threshold << std::endl;
             if (inlierMatchedPoints.size() < minimumPointsForOptimization)
             {
                 utils::log_error("Could not find a transformation with enough inliers");
