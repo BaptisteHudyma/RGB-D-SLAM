@@ -37,11 +37,11 @@ namespace rgbd_slam {
         point_container pointContainer;
         pointContainer.reserve(pow(numberOfPointsByLine, 3));
 
-        for(unsigned int cubePlaneIndex = 0; cubePlaneIndex < numberOfPointsByLine; ++cubePlaneIndex)
+        for(unsigned int cubePlaneIndex = 0; cubePlaneIndex <= numberOfPointsByLine; ++cubePlaneIndex)
         {
-            for(unsigned int cubeLineIndex = 0; cubeLineIndex < numberOfPointsByLine; ++cubeLineIndex)
+            for(unsigned int cubeLineIndex = 0; cubeLineIndex <= numberOfPointsByLine; ++cubeLineIndex)
             {
-                for(unsigned int cubeColumnIndex = 0; cubeColumnIndex < numberOfPointsByLine; ++cubeColumnIndex)
+                for(unsigned int cubeColumnIndex = 0; cubeColumnIndex <= numberOfPointsByLine; ++cubeColumnIndex)
                 {
                     Point cubePoint;
                     cubePoint.x = CUBE_START_X + cubePlaneIndex  * numberOfPointsByLineDouble;
@@ -58,6 +58,7 @@ namespace rgbd_slam {
     const matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error)
     {
         const matrix34& W2CtransformationMatrix = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
+        uint invalidPointsCounter = 0;
 
         matches_containers::match_point_container matchedPoints;
         for (const Point point : get_cube_points(NUMBER_OF_POINTS_IN_CUBE))
@@ -75,6 +76,14 @@ namespace rgbd_slam {
                 const matches_containers::point_pair matched(screenPointEnd, worldPointStart);
                 matchedPoints.push_back(matched);
             }
+            else
+            {
+                ++invalidPointsCounter;
+            }
+        }
+        if (invalidPointsCounter != 0)
+        {
+            utils::log_error("The chosen transformation is not valid, as some points hand up behind the camera");
         }
         return matchedPoints;
     }
