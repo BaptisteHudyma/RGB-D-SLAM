@@ -1,5 +1,5 @@
-#ifndef POSE_CONTAINER_HPP
-#define POSE_CONTAINER_HPP
+#ifndef RGBDSLAM_UTILS_POSE_HPP
+#define RGBDSLAM_UTILS_POSE_HPP
 
 #include "types.hpp"
 

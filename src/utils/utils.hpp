@@ -1,5 +1,5 @@
-#ifndef UTILS_FUNCTIONS_HPP
-#define UTILS_FUNCTIONS_HPP
+#ifndef RGBDSLAM_UTILS_UTILS_HPP
+#define RGBDSLAM_UTILS_UTILS_HPP
 
 #include "types.hpp"
 

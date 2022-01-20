@@ -1,5 +1,5 @@
-#ifndef MOTION_MODEL_HPP
-#define MOTION_MODEL_HPP
+#ifndef RGBDSLAM_UTILS_MOTIONMODEL_HPP
+#define RGBDSLAM_UTILS_MOTIONMODEL_HPP
 
 #include "types.hpp"
 #include "Pose.hpp"

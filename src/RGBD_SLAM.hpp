@@ -1,5 +1,5 @@
-#ifndef POINTS_TRACKING_HPP
-#define POINTS_TRACKING_HPP
+#ifndef RGBDSLAM_RGBDSLAM_HPP
+#define RGBDSLAM_RGBDSLAM_HPP
 
 
 #include <opencv2/line_descriptor.hpp>

@@ -100,7 +100,6 @@ add_library(poseOptimization SHARED
     )
 
 add_library(utils SHARED
-    ${UTILS}/parameters.cpp
     ${UTILS}/utils.cpp
     ${UTILS}/Pose.cpp
     ${UTILS}/MotionModel.cpp
@@ -108,6 +107,7 @@ add_library(utils SHARED
     )
 
 add_library(${PROJECT_NAME} SHARED
+    ${SRC}/parameters.cpp
     ${SRC}/RGBD_SLAM.cpp
     )
 

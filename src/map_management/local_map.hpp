@@ -1,5 +1,5 @@
-#ifndef SLAM_LOCAL_MAP_HPP
-#define SLAM_LOCAL_MAP_HPP 
+#ifndef RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
+#define RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
 
 #include <list>
 #include <vector>

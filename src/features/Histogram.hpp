@@ -1,5 +1,5 @@
-#ifndef HISTOGRAM_H
-#define HISTOGRAM_H
+#ifndef RGBDSLAM_FEATURES_PRIMITIVES_HISTOGRAM_HPP
+#define RGBDSLAM_FEATURES_PRIMITIVES_HISTOGRAM_HPP
 
 #include <Eigen/Dense>
 #include <vector>

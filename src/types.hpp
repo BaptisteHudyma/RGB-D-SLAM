@@ -1,5 +1,5 @@
-#ifndef TYPE_DEFINITION_HPP
-#define TYPE_DEFINITION_HPP
+#ifndef RGBDSLAM_TYPES_HPP
+#define RGBDSLAM_TYPES_HPP 
 
 
 #include <Eigen/StdVector>
