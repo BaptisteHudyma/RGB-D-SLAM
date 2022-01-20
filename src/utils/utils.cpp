@@ -1,8 +1,11 @@
 #include "utils.hpp"
 
 #include "parameters.hpp"
+
+#include <Eigen/Dense>
 #include <cmath>
 #include <filesystem>
+#include <iostream>
 
 namespace rgbd_slam {
     namespace utils {
@@ -83,8 +86,8 @@ namespace rgbd_slam {
             // Jacobian of the screen to world function. Use absolutes to prevent negative variances
             const matrix33 jacobian {
                 {depth / cameraFX, 0.0,              abs(screenPoint.x() - cameraCX) / cameraFX },
-                {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
-                {0.0,              0.0,              1}
+                    {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
+                    {0.0,              0.0,              1}
             };
             const matrix33& worldPointCovariance = jacobian * screenPointCovariance * jacobian.transpose();
             return worldPointCovariance;
@@ -130,6 +133,7 @@ namespace rgbd_slam {
 
             return eulerAngles;
         }
+
 
     }
 }

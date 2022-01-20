@@ -2,9 +2,7 @@
 #define UTILS_FUNCTIONS_HPP
 
 #include "types.hpp"
-#include "Pose.hpp"
 
-#include <iostream>
 #include <string_view>
 #include <source_location>
 

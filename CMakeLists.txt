@@ -104,6 +104,7 @@ add_library(utils SHARED
     ${UTILS}/utils.cpp
     ${UTILS}/Pose.cpp
     ${UTILS}/MotionModel.cpp
+    ${UTILS}/triangulation.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED
