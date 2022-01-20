@@ -135,7 +135,7 @@ namespace rgbd_slam {
             // Compute retroprojection distances
             for(matches_containers::match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 // Compute retroprojected distance
-                const double distance = get_distance_to_point(pointIterator->second, pointIterator->first, transformationMatrix);
+                const double distance = get_2D_to_3D_distance(pointIterator->second, pointIterator->first, transformationMatrix);
                 assert(distance >= 0);
 
                 meanOfDistances += distance; 
@@ -165,39 +165,23 @@ namespace rgbd_slam {
             return 0;
         }
 
-        double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
+        double Global_Pose_Estimator::get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
         {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
             vector2 mapPointAs2D; 
             const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix, mapPointAs2D);
             if(isCoordinatesValid)
                 return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
-            // randomly high number
-            return 10000;
+            // high number
+            return std::numeric_limits<double>::max();
         }
 
-        /*
-           double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
-           {
-           vector2 mapPointAs2D;
-           const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix, mapPointAs2D);
-           if (isCoordinatesValid)
-           {
-           const vector3 mapPointAs3D(mapPointAs2D.x(), mapPointAs2D.y(), mapPoint.z());
+        double Global_Pose_Estimator::get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) const
+        {
+            const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
 
-           return get_distance_manhattan(matchedPoint, mapPointAs3D);
-           }
-           return 10000;
-           }
-         */
-        /*
-           double Global_Pose_Estimator::get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) const
-           {
-           const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
-
-           return get_distance_manhattan(matchedPointAs3D, mapPoint);
-           }
-         */
+            return get_distance_manhattan(matchedPointAs3D, mapPoint);
+        }
 
 
         /**

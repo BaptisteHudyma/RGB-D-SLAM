@@ -58,7 +58,7 @@ namespace rgbd_slam {
                  *
                  * \param[in] pose The current pose of the observer
                  */
-                const features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(const utils::Pose& pose) const;
+                const features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features() const;
 
                 /**
                  * \brief Hard clean the local and staged map

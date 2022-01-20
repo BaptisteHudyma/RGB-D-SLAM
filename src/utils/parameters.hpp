@@ -49,8 +49,7 @@ namespace rgbd_slam {
             static double get_optimization_ftol() { return _optimizationToleranceOfVectorFunction; };
             static double get_optimization_gtol() { return _optimizationToleranceOfErrorFunctionGradient; };
             static double get_optimization_factor() { return _optimizationDiagonalStepBoundShift; };
-            static double get_maximum_optimization_retroprojection_error() { return _maximumRetroprojectionError; };
-            static size_t get_maximum_optimization_reiteration() { return _maximumRetroprojectionReiteration; };
+            static size_t get_maximum_ransac_iterations() { return _maximumOptimizationRANSACiterations; };
 
             static double get_point_weight_threshold() { return _pointWeightThreshold; };
             static double get_point_weight_coefficient() { return _pointWeightCoefficient; };
@@ -139,8 +138,7 @@ namespace rgbd_slam {
             inline static double _optimizationErrorPrecision;                   // error precision
 
             inline static uint _optimizationMaximumIterations;              // Max iteration of the Levenberg Marquart optimisation
-            inline static double _maximumRetroprojectionError;              // maximum projection error over which we will remove outliers et restart optimization in pixels
-            inline static size_t _maximumRetroprojectionReiteration;        // Maximum times that we will relaunch the optimization process before stopping
+            inline static double _maximumOptimizationRANSACiterations;      // maximum iterations of RANSAC algorithm for pose optimisation
 
             inline static double _pointWeightThreshold;
             inline static double _pointWeightCoefficient;

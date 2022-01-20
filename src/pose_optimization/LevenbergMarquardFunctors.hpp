@@ -84,7 +84,7 @@ namespace rgbd_slam {
             Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
 
             /**
-             * \brief Return te distance between the map point and the it's matched point
+             * \brief Return te distance between the map point projected to screen space and the it's matched screen point
              *
              * \param[in] mapPoint The map point in 3D world coordinates
              * \param[in] matchedPoint The detected & matched point, in 3D screen coordinates
@@ -92,7 +92,18 @@ namespace rgbd_slam {
              *
              * \return The 2D screen distance between those two points
              */
-            double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const;
+            double get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const;
+
+            /**
+             * \brief Return te 3D distance between the map point and the it's matched screen point projected to world space
+             *
+             * \param[in] mapPoint The map point in 3D world coordinates
+             * \param[in] matchedPoint The detected & matched point, in 3D screen coordinates
+             * \param[in] worldToCamMatrix The matrix to make a transformation from world coordinates to screen coordinates
+             *
+             * \return The 3D screen distance between those two points
+             */
+            double get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) const;
 
             /**
              * \brief Implementation of the objective function

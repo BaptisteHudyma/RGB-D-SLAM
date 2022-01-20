@@ -286,10 +286,8 @@ namespace rgbd_slam {
         }
 
 
-        const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& pose) const
+        const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features() const
         {
-            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
-
             const size_t numberOfNewKeypoints = _localPointMap.size() + _stagedPoints.size();
 
             // initialize output structure

@@ -64,8 +64,7 @@ namespace rgbd_slam {
         _optimizationToleranceOfVectorFunction = 1e-3;
         _optimizationToleranceOfErrorFunctionGradient = 0;
         _optimizationDiagonalStepBoundShift = 100;
-        _maximumRetroprojectionError = 15;
-        _maximumRetroprojectionReiteration = 3;
+        _maximumOptimizationRANSACiterations = 200;
 
         _pointWeightThreshold = 1.345;
         _pointWeightCoefficient = 1.4826;
