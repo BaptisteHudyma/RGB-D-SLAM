@@ -1,6 +1,7 @@
 #include "local_map.hpp"
 
 #include "parameters.hpp"
+#include "triangulation.hpp"
 #include "utils.hpp"
 
 namespace rgbd_slam {
@@ -18,7 +19,7 @@ namespace rgbd_slam {
          */
         bool is_depth_valid(const double depth)
         {
-            return (depth >= MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
+            return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
         }
 
         /**
@@ -155,15 +156,16 @@ namespace rgbd_slam {
         }
 
 
-        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)
         {
-            const matrix34& camToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+            const matrix34& previousCameraToWorldMatrix = utils::compute_camera_to_world_transform(previousPose.get_orientation_quaternion(), previousPose.get_position());
+            const matrix34& cameraToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // add local map points
-            update_local_keypoint_map(camToWorldMatrix, keypointObject);
+            update_local_keypoint_map(previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
 
             // add staged points to local map
-            update_staged_keypoints_map(camToWorldMatrix, keypointObject);
+            update_staged_keypoints_map(previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
 
             // add local map points to global map
             update_local_to_global();
@@ -171,7 +173,7 @@ namespace rgbd_slam {
             //std::cout << "local map: " << _localPointMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
         }
 
-        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& camToWorldMatrix)
+        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix)
         {
             const int matchedPointIndex = mapPoint._lastMatchedIndex;
             if (matchedPointIndex != UNMATCHED_POINT_INDEX)
@@ -186,7 +188,7 @@ namespace rgbd_slam {
                     if(is_depth_valid(matchedPointDepth))
                     {
                         // transform screen point to world point
-                        const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, camToWorldMatrix);
+                        const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
                         // get a measure of the estimated variance of the new world point
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
                         // TODO update the variances with the pose variance
@@ -203,7 +205,34 @@ namespace rgbd_slam {
                     }
                     else
                     {
-                        // TODO: 2D points should be reliably maintained
+#if 0
+                        // inefficient...
+                        const matrix34& worldToCameraMatrix = utils::compute_world_to_camera_transform(previousCameraToWorldMatrix);
+                        vector2 previousPointScreenCoordinates;
+                        const bool isTransformationValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, previousPointScreenCoordinates);
+                        if (isTransformationValid)
+                        {
+                            vector3 triangulatedPoint;
+                            const bool isTriangulationValid = utils::Triangulation::triangulate(previousCameraToWorldMatrix, cameraToWorldMatrix, previousPointScreenCoordinates, matchedPointCoordinates, triangulatedPoint);
+                            // update the match
+                            if (isTriangulationValid)
+                            {
+                                //std::cout << "udpate with triangulation " << triangulatedPoint.transpose() << " " << mapPoint._coordinates.transpose() << std::endl;
+                                // get a measure of the estimated variance of the new world point
+                                //const matrix33& worldPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
+                                const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
+                                // TODO update the variances with the pose variance
+
+                                // update this map point errors & position
+                                mapPoint.update_matched(triangulatedPoint, worldPointCovariance);
+
+                                // If a new descriptor is available, update it
+                                if (keypointObject.is_descriptor_computed(matchedPointIndex))
+                                    mapPoint._descriptor = keypointObject.get_descriptor(matchedPointIndex);
+                                return;
+                            }
+                        }
+#endif
                     }
                 }
                 else
@@ -216,13 +245,13 @@ namespace rgbd_slam {
             mapPoint.update_unmatched();
         }
 
-        void Local_Map::update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_local_keypoint_map(const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             point_map_container::iterator pointMapIterator = _localPointMap.begin();
             while(pointMapIterator != _localPointMap.end())
             {
                 // Update the matched/unmatched status
-                update_point_match_status(*pointMapIterator, keypointObject, camToWorldMatrix);
+                update_point_match_status(*pointMapIterator, keypointObject, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (pointMapIterator->is_lost()) {
                     // Remove useless point
@@ -235,14 +264,14 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::update_staged_keypoints_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_staged_keypoints_map(const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
             while(stagedPointIterator != _stagedPoints.end())
             {
                 // Update the matched/unmatched status
-                update_point_match_status(*stagedPointIterator, keypointObject, camToWorldMatrix);
+                update_point_match_status(*stagedPointIterator, keypointObject, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (stagedPointIterator->should_add_to_local_map())
                 {
@@ -272,12 +301,11 @@ namespace rgbd_slam {
                     const double depth = keypointObject.get_depth(i);
                     if (not is_depth_valid(depth))
                     {
-                        // TODO handle 2D features
                         continue;
                     }
 
                     const vector2& screenPoint = keypointObject.get_keypoint(i);
-                    const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, camToWorldMatrix);
+                    const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorldMatrix);
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(depth));
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));

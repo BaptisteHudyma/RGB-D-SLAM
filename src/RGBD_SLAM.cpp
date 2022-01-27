@@ -226,7 +226,7 @@ namespace rgbd_slam {
         _computeKeypointCount += 1;
 
         // Update local map
-        _localMap->update(refinedPose, keypointObject);
+        _localMap->update(_currentPose, refinedPose, keypointObject);
 
         return refinedPose;
     }

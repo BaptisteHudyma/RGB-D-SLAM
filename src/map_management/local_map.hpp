@@ -48,10 +48,11 @@ namespace rgbd_slam {
                 /**
                  * \brief Update the local and global map. Add new points to staged and map container
                  *
+                 * \param[in] previousPose The clean true pose of the observer, before the new measurements
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
                  */
-                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global ids 
@@ -94,25 +95,28 @@ namespace rgbd_slam {
                   *
                   * \param[in, out] mapPoint the map point to update
                   * \param[in] keypointObject An object to handle all detected points in an image
-                  * \param[in] camToWorldMatrix A transformation matrix to convert a camera point to a world point
+                  * \param[in] previousCameraToWorldMatrix A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
+                  * \param[in] cameraToWorldMatrix A transformation matrix to convert a camera point to a world point
                   */
-                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& camToWorldMatrix);
+                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix);
 
                 /**
                  * \brief Update local keypoint map features 
                  *
-                 * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
+                 * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
+                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_keypoint_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const matrix34& previousCamToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
                  *
-                 * \param[in] camToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz)
+                 * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization
+                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged_keypoints_map(const matrix34& camToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_staged_keypoints_map(const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features

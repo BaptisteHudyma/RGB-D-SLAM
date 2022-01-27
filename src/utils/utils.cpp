@@ -71,6 +71,18 @@ namespace rgbd_slam {
             return worldToCamMtrx;
         }
 
+        const matrix34 compute_world_to_camera_transform(const matrix34& cameraToWorldMatrix)
+        {
+            const matrix33& rotationMatrix = cameraToWorldMatrix.block<3, 3>(0, 0);
+            const vector3& position = cameraToWorldMatrix.block<3, 1>(0, 3);
+        
+            const matrix33& worldToCamRotMtrx = rotationMatrix.transpose();
+            const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * (position);
+            matrix34 worldToCamMtrx;
+            worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
+            return worldToCamMtrx;
+        }
+
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
