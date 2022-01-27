@@ -40,6 +40,10 @@ namespace rgbd_slam {
             static double get_camera_2_rotation_y() { return _camera2RotationY; };
             static double get_camera_2_rotation_z() { return _camera2RotationZ; };
 
+            // Primitives matching
+            static double get_minimum_iou_for_match() { return _minimumIOUToConsiderMatch; };
+            static double get_minimum_normals_dot_difference() { return _minimumNormalsDotDifference; };
+
             // Optimisation parameters
             static uint get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
             static uint get_maximum_point_count_per_frame() { return _maximumPointPerFrame; };
@@ -126,6 +130,10 @@ namespace rgbd_slam {
             inline static double _camera2RotationX;
             inline static double _camera2RotationY;
             inline static double _camera2RotationZ;
+
+            // primitive matching
+            inline static double _minimumIOUToConsiderMatch;    // Inter over Union of the two primitive masks, to consider a primitive match
+            inline static double _minimumNormalsDotDifference;  // Minimum score of the normals of the two primitives (0 to 1)
 
             // Position optimization
             inline static uint _minimumPointForOptimization;    // Minimum points to launch optimization

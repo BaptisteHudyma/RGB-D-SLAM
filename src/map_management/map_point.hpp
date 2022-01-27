@@ -16,7 +16,8 @@ namespace rgbd_slam {
         /**
          * \brief Basic keypoint class 
          */
-        struct Point {
+        struct Point 
+        {
             // world coordinates
             vector3 _coordinates;
             vector3 _screenCoordinates;
