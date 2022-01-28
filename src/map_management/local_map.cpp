@@ -156,7 +156,7 @@ namespace rgbd_slam {
         }
 
 
-        void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)//, const features::primitives::)
         {
             const matrix34& previousCameraToWorldMatrix = utils::compute_camera_to_world_transform(previousPose.get_orientation_quaternion(), previousPose.get_position());
             const matrix34& cameraToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
@@ -166,6 +166,9 @@ namespace rgbd_slam {
 
             // add staged points to local map
             update_staged_keypoints_map(previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
+
+            // add primitives to local map
+            //update_local_primitive_map(cameraToWorldMatrix, );
 
             // add local map points to global map
             update_local_to_global();
@@ -309,6 +312,9 @@ namespace rgbd_slam {
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(depth));
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
+                    _stagedPoints.back()._screenCoordinates << screenPoint, depth;
+                    // This id is to unsure the tracking of this staged point for it's first detection
+                    _stagedPoints.back()._lastMatchedIndex = 0;
                 }
             }
         }
@@ -348,35 +354,30 @@ namespace rgbd_slam {
             _stagedPoints.clear();
         }
 
-        void Local_Map::get_debug_image(const utils::Pose& camPose, cv::Mat& debugImage)  const
+        void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix34& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const
         {
-            const matrix34& worldToCamMtrx = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
+            if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
+            {
+                vector2 screenPoint; 
+                const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, screenPoint);
 
-            for (const Map_Point& mapPoint : _localPointMap) {
-                if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
+                //Map Point are green 
+                if (isCoordinatesValid)
                 {
-                    vector2 screenPoint; 
-                    const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCamMtrx, screenPoint);
-
-                    //Map Point are green 
-                    if (isCoordinatesValid)
-                    {
-                        cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 255, 0), 1);
-                    }
+                    cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, pointColor, 1);
                 }
             }
-            for (const Staged_Point& stagedPoint : _stagedPoints) {
-                if (stagedPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
-                {
-                    vector2 screenPoint;
-                    const bool isCoordinatesValid = utils::world_to_screen_coordinates(stagedPoint._coordinates, worldToCamMtrx, screenPoint);
+        }
 
-                    //Staged point are yellow 
-                    if (isCoordinatesValid)
-                    {
-                        cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, cv::Scalar(0, 200, 200), 1);
-                    }
-                }
+        void Local_Map::get_debug_image(const utils::Pose& camPose, cv::Mat& debugImage)  const
+        {
+            const matrix34& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
+
+            for (const Map_Point& mapPoint : _localPointMap) {
+                draw_point_on_image(mapPoint, worldToCamMatrix, cv::Scalar(0, 255, 0), debugImage);
+            }
+            for (const Staged_Point& stagedPoint : _stagedPoints) {
+                draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 200), debugImage);
             }
         }
 

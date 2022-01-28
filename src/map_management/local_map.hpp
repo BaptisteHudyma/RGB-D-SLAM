@@ -73,8 +73,8 @@ namespace rgbd_slam {
                  * \param[in] camPose Pose of the camera in world coordinates
                  * \param[in, out] debugImage Output image
                  */
-
                 void get_debug_image(const utils::Pose& camPose, cv::Mat& debugImage) const;
+
 
             protected:
 
@@ -123,6 +123,17 @@ namespace rgbd_slam {
                  */
                 void update_local_to_global();
 
+
+                /**
+                  * \brief Draw a given map point on the given debug image
+                  *
+                  * \param[in] mapPoint The 3D world point
+                  * \param[in] worldToCamMatrix A matrix to transforme a world point to a camera point
+                  * \param[in] pointColor The color of the point to draw
+                  * \param[out] debugImage The image to draw the points modify
+                  */
+                void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix34& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const;
+
             private:
                 // local map point container
                 typedef std::list<Map_Point> point_map_container;
@@ -140,6 +151,7 @@ namespace rgbd_slam {
 
                 //local primitive map
                 primitive_map_container _localPrimitiveMap;
+                std::map<int, uint> _previousPrimitiveAssociation;
         };
 
     }

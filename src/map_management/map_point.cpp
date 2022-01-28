@@ -30,13 +30,15 @@ namespace rgbd_slam {
             : Point(coordinates, descriptor),
             _covariance(covariance)
         {
+            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
             : Point(coordinates, descriptor, id),
             _covariance(covariance)
         {
-
+            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
+
         double IMap_Point_With_Tracking::track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance)
         {
             // Use a kalman filter to estimate this point position
