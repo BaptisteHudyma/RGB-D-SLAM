@@ -16,10 +16,11 @@ namespace rgbd_slam {
                  *
                  * \param[in] currentPose Last observer optimized pose
                  * \param[in] matchedPoints Object containing the match between observed screen points and reliable map & futur map points 
+                 * \param[out] optimizedPose The estimated world translation & rotation of the camera pose, if the function returned true
                  *
-                 * \return An optimized global pose
+                 * \return True if a valid pose was computed 
                  */
-                static const utils::Pose  compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints);
+                static bool compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose); 
 
             private:
                 /**
@@ -27,10 +28,11 @@ namespace rgbd_slam {
                  *
                  * \param[in] currentPose Last observer optimized pose
                  * \param[in] matchedPoints Object containing the match between observed screen points and reliable map & futur map points 
+                 * \param[out] optimizedPose The estimated world translation & rotation of the camera pose, if the function returned true
                  *
-                 * \return The estimated world translation & rotation of the camera pose 
+                 * \return True if a valid pose was computed 
                  */
-                static const utils::Pose get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints);
+                static bool get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose);
 
 
                 /**
@@ -41,7 +43,7 @@ namespace rgbd_slam {
                  * \param[out] finalPose The optimized pose, valid if the function returned true
                  * \param[out] inlierMatchedPoints The inlier matched point for the finalPose. Valid i the function returned true
                  *
-                 * \return True if a valid transformation and inliers were found
+                 * \return True if a valid pose and inliers were found
                  */
                 static bool compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& inlierMatchedPoints); 
         };

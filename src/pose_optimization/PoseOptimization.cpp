@@ -12,7 +12,7 @@ namespace rgbd_slam {
         /**
          * \brief Compute the retroprojection distance between a mapPoint and  a cameraPoint
          */
-        double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix)
+        double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) 
         {
             const vector3& worldPoint = utils::screen_to_world_coordinates(matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
             return (mapPoint - worldPoint).norm();
@@ -53,7 +53,10 @@ namespace rgbd_slam {
             {
                 const matches_containers::match_point_container& selectedMatches = get_n_random_matches(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
-                const utils::Pose& pose = Pose_Optimization::get_optimized_global_pose(currentPose, matchedPoints);
+                utils::Pose pose; 
+                const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(currentPose, matchedPoints, pose);
+                if (not isPoseValid)
+                    continue;
 
                 const matrix34& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
 
@@ -90,11 +93,10 @@ namespace rgbd_slam {
                 return false;
             }
 
-            finalPose = Pose_Optimization::get_optimized_global_pose(finalPose, inlierMatchedPoints);
-            return true;
+            return Pose_Optimization::get_optimized_global_pose(finalPose, inlierMatchedPoints, finalPose);
         }
 
-        const utils::Pose Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) 
+        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
         {
             utils::Pose newPose;
             matches_containers::match_point_container matchPointInliers;
@@ -103,16 +105,16 @@ namespace rgbd_slam {
             if (isPoseValid)
             {
                 // compute pose covariance matrix
-
-                return newPose;
+                optimizedPose = newPose;
+                return true;
             }
 
-            // error in transformation optimisation, return the input pose
-            return currentPose;
+            // error in transformation optimisation
+            return false;
         }
 
 
-        const utils::Pose Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints) 
+        bool Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
         {
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();
@@ -177,10 +179,12 @@ namespace rgbd_slam {
                 // Error: reached end of minimization without reaching a minimum
                 const std::string message = get_human_readable_end_message(endStatus);
                 utils::log("Failed to converge with " + std::to_string(matchedPoints.size()) + " points | Status " + message);
+                return false;
             }
 
             // Update refined pose with optimized pose
-            return utils::Pose(endPosition, endRotation);
+            optimizedPose = utils::Pose(endPosition, endRotation);
+            return true;
         }
 
     }   /* pose_optimization*/

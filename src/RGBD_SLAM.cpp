@@ -188,7 +188,7 @@ namespace rgbd_slam {
             _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, debugImage, _previousAssociatedIds, elapsedTime);
         }
 
-        _localMap->get_debug_image(camPose, debugImage); 
+        _localMap->get_debug_image(camPose, false, debugImage); 
     }
 
 
@@ -204,12 +204,19 @@ namespace rgbd_slam {
         const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
         const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
 
+        bool shouldUpdateMap = true;
         if (_computeKeypointCount != 0)
         {
             if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
                 // Enough matches to optimize
                 // Optimize refined pose
-                refinedPose = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints);
+                utils::Pose optimizedPose;
+                shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, optimizedPose);
+                if (shouldUpdateMap)
+                {
+                    refinedPose = optimizedPose;
+                }
+                // else the refined pose will follow the motion model
             }
             else
             {
@@ -225,8 +232,9 @@ namespace rgbd_slam {
         }
         _computeKeypointCount += 1;
 
-        // Update local map
-        _localMap->update(_currentPose, refinedPose, keypointObject);
+        // Update local map if a valid transformation was found
+        if (shouldUpdateMap)
+            _localMap->update(_currentPose, refinedPose, keypointObject);
 
         return refinedPose;
     }

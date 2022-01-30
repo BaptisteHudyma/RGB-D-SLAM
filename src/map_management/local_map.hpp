@@ -71,9 +71,10 @@ namespace rgbd_slam {
                  * \brief Compute a debug image to display the keypoints & primitives
                  *
                  * \param[in] camPose Pose of the camera in world coordinates
+                 * \param[in] shouldDisplayStaged If true, will also display the content of the staged keypoint map
                  * \param[in, out] debugImage Output image
                  */
-                void get_debug_image(const utils::Pose& camPose, cv::Mat& debugImage) const;
+                void get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, cv::Mat& debugImage) const;
 
 
             protected:
@@ -91,13 +92,13 @@ namespace rgbd_slam {
                 bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix34& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
 
                 /**
-                  * \brief Update the Matched/Unmatched status of a map point
-                  *
-                  * \param[in, out] mapPoint the map point to update
-                  * \param[in] keypointObject An object to handle all detected points in an image
-                  * \param[in] previousCameraToWorldMatrix A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
-                  * \param[in] cameraToWorldMatrix A transformation matrix to convert a camera point to a world point
-                  */
+                 * \brief Update the Matched/Unmatched status of a map point
+                 *
+                 * \param[in, out] mapPoint the map point to update
+                 * \param[in] keypointObject An object to handle all detected points in an image
+                 * \param[in] previousCameraToWorldMatrix A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
+                 * \param[in] cameraToWorldMatrix A transformation matrix to convert a camera point to a world point
+                 */
                 void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix);
 
                 /**
@@ -119,19 +120,27 @@ namespace rgbd_slam {
                 void update_staged_keypoints_map(const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
+                 * \brief Add unmatched detected points to the staged map
+                 *
+                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
+                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
+                 */
+                void add_umatched_keypoints_to_staged_map(const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+
+                /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
                  */
                 void update_local_to_global();
 
 
                 /**
-                  * \brief Draw a given map point on the given debug image
-                  *
-                  * \param[in] mapPoint The 3D world point
-                  * \param[in] worldToCamMatrix A matrix to transforme a world point to a camera point
-                  * \param[in] pointColor The color of the point to draw
-                  * \param[out] debugImage The image to draw the points modify
-                  */
+                 * \brief Draw a given map point on the given debug image
+                 *
+                 * \param[in] mapPoint The 3D world point
+                 * \param[in] worldToCamMatrix A matrix to transforme a world point to a camera point
+                 * \param[in] pointColor The color of the point to draw
+                 * \param[out] debugImage The image to draw the points modify
+                 */
                 void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix34& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const;
 
             private:

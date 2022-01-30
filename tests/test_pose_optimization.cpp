@@ -100,7 +100,8 @@ namespace rgbd_slam {
     void run_test_optimization(const matches_containers::match_point_container& matchedPoints, const utils::Pose& trueEndPose, const utils::Pose& initialPoseGuess)
     {
         // Compute end pose
-        const utils::Pose endPose = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints);
+        utils::Pose endPose; 
+        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, endPose);
 
         const double approxPositionError = 1;  // mm
         const double approxRotationError = 0.1 * EulerToRadian;   // 0.1 degree
