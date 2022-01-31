@@ -125,7 +125,7 @@ namespace rgbd_slam {
 
 
         //associate primitives
-        std::map<int, uint> associatedIds;
+        std::unordered_map<int, uint> associatedIds;
         if(not _previousFramePrimitives.empty()) {
             //find matches between consecutive images
             //compare normals, superposed area (and colors ?)

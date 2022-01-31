@@ -160,7 +160,7 @@ namespace rgbd_slam {
 
                 //local primitive map
                 primitive_map_container _localPrimitiveMap;
-                std::map<int, uint> _previousPrimitiveAssociation;
+                std::unordered_map<int, uint> _previousPrimitiveAssociation;
         };
 
     }

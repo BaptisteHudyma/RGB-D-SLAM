@@ -72,7 +72,7 @@ namespace primitives {
              * \param[in] elapsedTime The time elapsed since last frame. Used to display fps
              * \param[in] associatedIds A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders
              */
-            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, uint>& associatedIds, const double elapsedTime=0);
+            void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::unordered_map<int, uint>& associatedIds, const double elapsedTime=0);
 
 
             ~Primitive_Detection();

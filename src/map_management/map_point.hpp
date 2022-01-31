@@ -173,7 +173,7 @@ namespace rgbd_slam {
     typedef std::list<map_management::Point> point_container;
     typedef std::pair<map_management::Point, map_management::Point> map_point_pair;
     typedef std::list<map_point_pair> matched_point_container;
-    typedef std::map<unsigned int, map_management::Point> point_map;
+    typedef std::unordered_map<unsigned int, map_management::Point> point_map;
 
 } /* rgbd_slam */
 

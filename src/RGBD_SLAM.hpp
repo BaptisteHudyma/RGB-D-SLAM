@@ -96,7 +96,7 @@ namespace rgbd_slam {
             //keep track of the primitives tracked last frame
             primitive_container _previousFramePrimitives;
 
-            std::map<int, uint> _previousAssociatedIds;
+            std::unordered_map<int, uint> _previousAssociatedIds;
 
             utils::Pose _currentPose;
             utils::Motion_Model _motionModel;

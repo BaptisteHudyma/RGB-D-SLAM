@@ -69,7 +69,7 @@ namespace rgbd_slam {
                 setMaskTime = 0;
             }
 
-            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::map<int, uint>& associatedIds, const double timeElapsed) {
+            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::unordered_map<int, uint>& associatedIds, const double timeElapsed) {
                 //apply masks on image
                 for(uint r = 0; r < _height; ++r){
                     const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
