@@ -2,28 +2,32 @@
 \label{_pose_optimization_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/PoseOptimization.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/PoseOptimization.hpp}}
 \mbox{\hyperlink{_pose_optimization_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_POSE\_OPTIMIZATION\_HPP}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_POSE\_OPTIMIZATION\_HPP}}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_POSEOPTIMIZATION\_POSEOPTIMIZATION\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_POSEOPTIMIZATION\_POSEOPTIMIZATION\_HPP}}
 \DoxyCodeLine{3 }
 \DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_pose_8hpp}{Pose.hpp}}"{}}}
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
-\DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{8     \textcolor{keyword}{namespace }pose\_optimization \{}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{10         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}{Pose\_Optimization}}}
-\DoxyCodeLine{11         \{}
-\DoxyCodeLine{12             \textcolor{keyword}{public}:}
-\DoxyCodeLine{21                 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}  \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a79b32e5aa77704bfb3d53676561192df}{compute\_optimized\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& currentPose, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\_point\_container}}\& matchedPoints);}
-\DoxyCodeLine{22 }
-\DoxyCodeLine{23             \textcolor{keyword}{private}:}
-\DoxyCodeLine{32                 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} get\_optimized\_global\_pose(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& currentPose, \textcolor{keyword}{const} \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\_point\_container}}\& matchedPoints);}
-\DoxyCodeLine{33         \};}
-\DoxyCodeLine{34 }
-\DoxyCodeLine{35     \}   \textcolor{comment}{/* pose\_optimization */}}
-\DoxyCodeLine{36 \}   \textcolor{comment}{/* rgbd\_slam */}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{matches__containers_8hpp}{matches\_containers.hpp}}"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{9     \textcolor{keyword}{namespace }pose\_optimization \{}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}{Pose\_Optimization}}}
+\DoxyCodeLine{12         \{}
+\DoxyCodeLine{13             \textcolor{keyword}{public}:}
+\DoxyCodeLine{23                 \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a008488e605b46f090d13b0bc8a16a135}{compute\_optimized\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& currentPose, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\_containers::match\_point\_container}}\& matchedPoints, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& optimizedPose); }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25             \textcolor{keyword}{private}:}
+\DoxyCodeLine{35                 \textcolor{keyword}{static} \textcolor{keywordtype}{bool} get\_optimized\_global\_pose(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& currentPose, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\_containers::match\_point\_container}}\& matchedPoints, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& optimizedPose);}
+\DoxyCodeLine{36 }
 \DoxyCodeLine{37 }
-\DoxyCodeLine{38 }
-\DoxyCodeLine{39 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{48                 \textcolor{keyword}{static} \textcolor{keywordtype}{bool} compute\_pose\_with\_ransac(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& currentPose, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\_containers::match\_point\_container}}\& matchedPoints, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& finalPose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\_containers::match\_point\_container}}\& inlierMatchedPoints); }
+\DoxyCodeLine{49         \};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51     \}   \textcolor{comment}{/* pose\_optimization */}}
+\DoxyCodeLine{52 \}   \textcolor{comment}{/* rgbd\_slam */}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

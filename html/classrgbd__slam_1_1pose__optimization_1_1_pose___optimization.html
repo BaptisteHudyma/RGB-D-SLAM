@@ -78,13 +78,13 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a79b32e5aa77704bfb3d53676561192df"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a79b32e5aa77704bfb3d53676561192df">compute_optimized_pose</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;currentPose, const <a class="el" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a> &amp;matchedPoints)</td></tr>
-<tr class="memdesc:a79b32e5aa77704bfb3d53676561192df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a new observer global pose, to replace the current estimated pose.  <a href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a79b32e5aa77704bfb3d53676561192df">More...</a><br /></td></tr>
-<tr class="separator:a79b32e5aa77704bfb3d53676561192df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a008488e605b46f090d13b0bc8a16a135"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a008488e605b46f090d13b0bc8a16a135">compute_optimized_pose</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;currentPose, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;matchedPoints, <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;optimizedPose)</td></tr>
+<tr class="memdesc:a008488e605b46f090d13b0bc8a16a135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a new observer global pose, to replace the current estimated pose.  <a href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a008488e605b46f090d13b0bc8a16a135">More...</a><br /></td></tr>
+<tr class="separator:a008488e605b46f090d13b0bc8a16a135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a79b32e5aa77704bfb3d53676561192df" name="a79b32e5aa77704bfb3d53676561192df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79b32e5aa77704bfb3d53676561192df">&#9670;&nbsp;</a></span>compute_optimized_pose()</h2>
+<a id="a008488e605b46f090d13b0bc8a16a135" name="a008488e605b46f090d13b0bc8a16a135"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a008488e605b46f090d13b0bc8a16a135">&#9670;&nbsp;</a></span>compute_optimized_pose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -93,7 +93,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> rgbd_slam::pose_optimization::Pose_Optimization::compute_optimized_pose </td>
+          <td class="memname">bool rgbd_slam::pose_optimization::Pose_Optimization::compute_optimized_pose </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
           <td class="paramname"><em>currentPose</em>, </td>
@@ -101,8 +101,14 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>matchedPoints</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>matchedPoints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
+          <td class="paramname"><em>optimizedPose</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -121,11 +127,12 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">currentPose</td><td>Last observer optimized pose </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoints</td><td>Object containing the match between observed screen points and reliable map &amp; futur map points</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoints</td><td>Object containing the match between observed screen points and reliable map &amp; futur map points </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">optimizedPose</td><td>The estimated world translation &amp; rotation of the camera pose, if the function returned true</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An optimized global pose </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if a valid pose was computed </dd></dl>
 
 </div>
 </div>

@@ -1,0 +1,58 @@
+\hypertarget{classrgbd__slam_1_1utils_1_1_triangulation}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Triangulation Class Reference}
+\label{classrgbd__slam_1_1utils_1_1_triangulation}\index{rgbd\_slam::utils::Triangulation@{rgbd\_slam::utils::Triangulation}}
+
+
+{\ttfamily \#include $<$triangulation.\+hpp$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation_a84eccfcde046289c5c19c83d6433f807}{triangulate}} (const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&current\+World\+To\+Camera\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&new\+World\+To\+Camera\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point2\+Da, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point2\+Db, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&triangulated\+Point)
+\begin{DoxyCompactList}\small\item\em Triangulate a world point from two successive 2D matches, with an already known pose. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation_ac4b5d4f83c1def50857b591a0c8dd4dc}{get\+\_\+supposed\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose, const double baseline\+Pose\+Supposition)
+\begin{DoxyCompactList}\small\item\em Return a weak supposition of a new pose, from an optimized pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_triangulation_ac4b5d4f83c1def50857b591a0c8dd4dc}\label{classrgbd__slam_1_1utils_1_1_triangulation_ac4b5d4f83c1def50857b591a0c8dd4dc}} 
+\index{rgbd\_slam::utils::Triangulation@{rgbd\_slam::utils::Triangulation}!get\_supposed\_pose@{get\_supposed\_pose}}
+\index{get\_supposed\_pose@{get\_supposed\_pose}!rgbd\_slam::utils::Triangulation@{rgbd\_slam::utils::Triangulation}}
+\doxysubsubsection{\texorpdfstring{get\_supposed\_pose()}{get\_supposed\_pose()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} rgbd\+\_\+slam\+::utils\+::\+Triangulation\+::get\+\_\+supposed\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{pose,  }\item[{const double}]{baseline\+Pose\+Supposition }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Return a weak supposition of a new pose, from an optimized pose. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_triangulation_a84eccfcde046289c5c19c83d6433f807}\label{classrgbd__slam_1_1utils_1_1_triangulation_a84eccfcde046289c5c19c83d6433f807}} 
+\index{rgbd\_slam::utils::Triangulation@{rgbd\_slam::utils::Triangulation}!triangulate@{triangulate}}
+\index{triangulate@{triangulate}!rgbd\_slam::utils::Triangulation@{rgbd\_slam::utils::Triangulation}}
+\doxysubsubsection{\texorpdfstring{triangulate()}{triangulate()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Triangulation\+::triangulate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{current\+World\+To\+Camera\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{new\+World\+To\+Camera\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point2\+Da,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point2\+Db,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{triangulated\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Triangulate a world point from two successive 2D matches, with an already known pose. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em current\+World\+To\+Camera\+Matrix} & The world to camera transform matrix of the current optimised pose of the observer \\
+\hline
+\mbox{\texttt{ in}}  & {\em new\+World\+To\+Camera\+Matrix} & The world to camera transform matrix of the new observer pose, already optimized \\
+\hline
+\mbox{\texttt{ in}}  & {\em point2\+Da} & A 2D point observed with the reference pose \\
+\hline
+\mbox{\texttt{ in}}  & {\em point2\+Db} & A 2D point, observed with the new pose, matched with point2\+Da \\
+\hline
+\mbox{\texttt{ out}}  & {\em triangulated\+Point} & The 3D world point, if this function returned true\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True is the triangulation was successful 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{triangulation_8hpp}{triangulation.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{triangulation_8cpp}{triangulation.\+cpp}}\end{DoxyCompactItemize}

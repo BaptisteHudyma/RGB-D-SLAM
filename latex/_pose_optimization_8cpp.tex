@@ -15,5 +15,7 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad61b8f2a51e35c2593c91b5781896c37}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::remove\+\_\+match\+\_\+outliers}} (const utils\+::\+Pose \&optimized\+Pose, const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \&matched\+Points)
-\begin{DoxyCompactList}\small\item\em Remove the outliers of the matched point container by excluding the 5\% of errors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a609ad2d1991285f52d6d86a1de1ff78a}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+to\+\_\+point}} (const vector3 \&map\+Point, const vector3 \&matched\+Point, const matrix34 \&cam\+To\+World\+Matrix)
+\begin{DoxyCompactList}\small\item\em Compute the retroprojection distance between a map\+Point and a camera\+Point. \end{DoxyCompactList}\item 
+matches\+\_\+containers\+::match\+\_\+point\+\_\+container \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+n\+\_\+random\+\_\+matches}} (const matches\+\_\+containers\+::match\+\_\+point\+\_\+container \&matched\+Points, const uint n)
+\begin{DoxyCompactList}\small\item\em Return a random subset of matches, of size n. \end{DoxyCompactList}\end{DoxyCompactItemize}

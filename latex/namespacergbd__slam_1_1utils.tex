@@ -6,7 +6,9 @@
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model}{Motion\+\_\+\+Model}}
 \begin{DoxyCompactList}\small\item\em Dead reckoning class\+: guess next pose using a motion model. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}
-\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation}{Triangulation}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
@@ -21,19 +23,21 @@ void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3fe
 \item 
 void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{log\+\_\+error}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
 \item 
-const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&camera\+To\+World\+Matrix)
+const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&camera\+To\+World\+Matrix)
 \item 
-const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}{world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position3D, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&world\+To\+Camera\+Matrix)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}{world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position3D, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&world\+To\+Camera\+Matrix, \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Coordinates)
 \begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&rotation, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position)
+const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&rotation, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position)
+const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \&screen\+Point\+Error)
+const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&camera\+To\+World\+Matrix)
+\item 
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&screen\+Point\+Error)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \&euler\+Angles)
+const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles)
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
+const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
 \begin{DoxyCompactList}\small\item\em Compute euler angles from a given quaternion. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -51,17 +55,23 @@ const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{nam
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}}
 \index{compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{compute\_camera\_to\_world\_transform()}{compute\_camera\_to\_world\_transform()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position }\end{DoxyParamCaption})}
 
 
 
 Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) 
 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}\label{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}
+\index{compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{compute\_world\_to\_camera\_transform()}{compute\_world\_to\_camera\_transform()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}\label{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}
 \index{compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{compute\_world\_to\_camera\_transform()}{compute\_world\_to\_camera\_transform()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{compute\_world\_to\_camera\_transform()}{compute\_world\_to\_camera\_transform()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position }\end{DoxyParamCaption})}
 
 
 
@@ -71,7 +81,7 @@ Given a camera pose, returns a transformation matrix to convert a world point (x
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_euler\_angles\_from\_quaternion@{get\_euler\_angles\_from\_quaternion}}
 \index{get\_euler\_angles\_from\_quaternion@{get\_euler\_angles\_from\_quaternion}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_euler\_angles\_from\_quaternion()}{get\_euler\_angles\_from\_quaternion()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} rgbd\+\_\+slam\+::utils\+::get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} rgbd\+\_\+slam\+::utils\+::get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
 
 
 
@@ -81,7 +91,7 @@ Compute euler angles from a given quaternion.
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_quaternion\_from\_euler\_angles@{get\_quaternion\_from\_euler\_angles}}
 \index{get\_quaternion\_from\_euler\_angles@{get\_quaternion\_from\_euler\_angles}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_quaternion\_from\_euler\_angles()}{get\_quaternion\_from\_euler\_angles()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \&}]{euler\+Angles }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&}]{euler\+Angles }\end{DoxyParamCaption})}
 
 
 
@@ -91,7 +101,7 @@ Compute a quaternion from the given euler angles, in radians.
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_world\_point\_covariance@{get\_world\_point\_covariance}}
 \index{get\_world\_point\_covariance@{get\_world\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_world\_point\_covariance()}{get\_world\_point\_covariance()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{screen\+Point,  }\item[{const double}]{depth,  }\item[{const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \&}]{screen\+Point\+Error }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{screen\+Point,  }\item[{const double}]{depth,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{screen\+Point\+Covariance }\end{DoxyParamCaption})}
 
 
 
@@ -119,13 +129,13 @@ Log an error line \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a4bf8393963e8b
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}}
 \index{screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{screen\_to\_world\_coordinates()}{screen\_to\_world\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const double}]{screenX,  }\item[{const double}]{screenY,  }\item[{const double}]{measuredZ,  }\item[{const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const double}]{screenX,  }\item[{const double}]{screenY,  }\item[{const double}]{measuredZ,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}\label{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}\label{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!world\_to\_screen\_coordinates@{world\_to\_screen\_coordinates}}
 \index{world\_to\_screen\_coordinates@{world\_to\_screen\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{world\_to\_screen\_coordinates()}{world\_to\_screen\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{position3D,  }\item[{const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&}]{world\+To\+Camera\+Matrix }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position3D,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{world\+To\+Camera\+Matrix,  }\item[{\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{screen\+Coordinates }\end{DoxyParamCaption})}
 
 
 
@@ -135,9 +145,11 @@ Transform a point from world to screen coordinate system.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em position3D} & Coordinates of the detected point (world coordinates) \\
 \hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera\+Matrix} & Matrix to transform the world to a local coordinate system\\
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera\+Matrix} & Matrix to transform the world to a local coordinate system \\
+\hline
+\mbox{\texttt{ out}}  & {\em screen\+Coordinates} & The point screen coordinates, if the function returned true\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The position of the point in screen coordinates 
+True if the screen position is valid 
 \end{DoxyReturn}

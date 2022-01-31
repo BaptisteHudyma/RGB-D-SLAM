@@ -14,28 +14,30 @@ class \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimiza
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a70715953a0c8c4bad83b0d41d80c9ce3}{get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointA, const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointB)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a70715953a0c8c4bad83b0d41d80c9ce3}{get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointB)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}{get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&pointA, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&pointB)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}{get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointB)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}{get\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointA, const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&pointB)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}{get\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a68a39fcaa10cd8b4fb2c7b29b3842c92}{get\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointB)
 \item 
 double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}{get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
 \begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
-\begin{DoxyCompactList}\small\item\em Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) \end{DoxyCompactList}\item 
-\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aeee6808d772dc72ceac7fd61a3564eca}{get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} optimization\+Coefficients)
-\begin{DoxyCompactList}\small\item\em Compute a quaternion from the Lie projection (Scaled Axis representation) \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a43746126908c987c1010d692700b43e7}{sinc}} (double x)
-\item 
-\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}{get\+\_\+quaternion\+\_\+exponential}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
-\item 
-\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}{get\+\_\+quaternion\+\_\+logarithm}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
-\item 
+\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
+\begin{DoxyCompactList}\small\item\em Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aeee6808d772dc72ceac7fd61a3564eca}{get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} optimization\+Coefficients)
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from it\textquotesingle{}s scaled axis representation. \end{DoxyCompactList}\item 
 const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
-\begin{DoxyCompactList}\small\item\em Use for debug. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad61b8f2a51e35c2593c91b5781896c37}{remove\+\_\+match\+\_\+outliers}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&optimized\+Pose, const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \&matched\+Points)
-\begin{DoxyCompactList}\small\item\em Remove the outliers of the matched point container by excluding the 5\% of errors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}{get\+\_\+quaternion\+\_\+exponential}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}{get\+\_\+quaternion\+\_\+logarithm}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a609ad2d1991285f52d6d86a1de1ff78a}{get\+\_\+distance\+\_\+to\+\_\+point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&cam\+To\+World\+Matrix)
+\begin{DoxyCompactList}\small\item\em Compute the retroprojection distance between a map\+Point and a camera\+Point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}{get\+\_\+n\+\_\+random\+\_\+matches}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, const uint n)
+\begin{DoxyCompactList}\small\item\em Return a random subset of matches, of size n. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
@@ -43,19 +45,35 @@ const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_manhattan@{get\_distance\_manhattan}}
 \index{get\_distance\_manhattan@{get\_distance\_manhattan}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{pointB }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointB }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}\label{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_manhattan@{get\_distance\_manhattan}}
 \index{get\_distance\_manhattan@{get\_distance\_manhattan}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&}]{pointB }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointB }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}\label{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_squared@{get\_distance\_squared}}
 \index{get\_distance\_squared@{get\_distance\_squared}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&}]{pointB }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointB }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a68a39fcaa10cd8b4fb2c7b29b3842c92}\label{namespacergbd__slam_1_1pose__optimization_a68a39fcaa10cd8b4fb2c7b29b3842c92}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_squared@{get\_distance\_squared}}
+\index{get\_distance\_squared@{get\_distance\_squared}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointB }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a609ad2d1991285f52d6d86a1de1ff78a}\label{namespacergbd__slam_1_1pose__optimization_a609ad2d1991285f52d6d86a1de1ff78a}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_to\_point@{get\_distance\_to\_point}}
+\index{get\_distance\_to\_point@{get\_distance\_to\_point}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_distance\_to\_point()}{get\_distance\_to\_point()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+to\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{cam\+To\+World\+Matrix }\end{DoxyParamCaption})}
+
+
+
+Compute the retroprojection distance between a map\+Point and a camera\+Point. 
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}\label{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_generalized\_loss\_estimator@{get\_generalized\_loss\_estimator}}
@@ -71,11 +89,14 @@ Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em error} & The error to pass to the loss function \\
 \hline
-\mbox{\texttt{ in}}  & {\em apha} & The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == -\/ infinity is Welsch loss \\
+\mbox{\texttt{ in}}  & {\em alpha} & The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == -\/ infinity is Welsch loss \\
 \hline
-\mbox{\texttt{ in}}  & {\em scale} & Standard deviation of the error, as a scale parameter \\
+\mbox{\texttt{ in}}  & {\em scale} & Standard deviation of the error, as a scale parameter\\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A weight for the current error 
+\end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}\label{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}}
 \index{get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -84,66 +105,53 @@ Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\
 
 
 
-Use for debug. 
+Return a string corresponding to the end status of the optimization. 
+
+Use for debug.
 
 \begin{DoxyReturn}{Returns}
 Returns a string with the human readable version of Eigen Levenberg\+Marquardt output status 
 \end{DoxyReturn}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}\label{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_n\_random\_matches@{get\_n\_random\_matches}}
+\index{get\_n\_random\_matches@{get\_n\_random\_matches}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_n\_random\_matches()}{get\_n\_random\_matches()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+n\+\_\+random\+\_\+matches (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points,  }\item[{const uint}]{n }\end{DoxyParamCaption})}
+
+
+
+Return a random subset of matches, of size n. 
+
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}\label{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_exponential@{get\_quaternion\_exponential}}
 \index{get\_quaternion\_exponential@{get\_quaternion\_exponential}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_quaternion\_exponential()}{get\_quaternion\_exponential()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+exponential (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+exponential (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_aeee6808d772dc72ceac7fd61a3564eca}\label{namespacergbd__slam_1_1pose__optimization_aeee6808d772dc72ceac7fd61a3564eca}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_from\_scale\_axis\_coefficients@{get\_quaternion\_from\_scale\_axis\_coefficients}}
 \index{get\_quaternion\_from\_scale\_axis\_coefficients@{get\_quaternion\_from\_scale\_axis\_coefficients}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_quaternion\_from\_scale\_axis\_coefficients()}{get\_quaternion\_from\_scale\_axis\_coefficients()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}}]{optimization\+Coefficients }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}}]{optimization\+Coefficients }\end{DoxyParamCaption})}
 
 
 
-Compute a quaternion from the Lie projection (Scaled Axis representation) 
+Compute a quaternion from it\textquotesingle{}s scaled axis representation. 
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}\label{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}} 
+Compute a quaternion from the Lie projection (Scaled Axis representation) \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}\label{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_logarithm@{get\_quaternion\_logarithm}}
 \index{get\_quaternion\_logarithm@{get\_quaternion\_logarithm}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_quaternion\_logarithm()}{get\_quaternion\_logarithm()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+logarithm (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+logarithm (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}\label{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}}
 \index{get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_scaled\_axis\_coefficients\_from\_quaternion()}{get\_scaled\_axis\_coefficients\_from\_quaternion()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
 
 
+
+Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. 
 
 Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) 
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ad61b8f2a51e35c2593c91b5781896c37}\label{namespacergbd__slam_1_1pose__optimization_ad61b8f2a51e35c2593c91b5781896c37}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!remove\_match\_outliers@{remove\_match\_outliers}}
-\index{remove\_match\_outliers@{remove\_match\_outliers}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{remove\_match\_outliers()}{remove\_match\_outliers()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::remove\+\_\+match\+\_\+outliers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{optimized\+Pose,  }\item[{const \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}} \&}]{matched\+Points }\end{DoxyParamCaption})}
-
-
-
-Remove the outliers of the matched point container by excluding the 5\% of errors. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em optimized\+Pose} & the pose obtained after one optimization \\
-\hline
-\mbox{\texttt{ in}}  & {\em matched\+Points} & the original matched point container\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-a matched point container without outliers 
-\end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a43746126908c987c1010d692700b43e7}\label{namespacergbd__slam_1_1pose__optimization_a43746126908c987c1010d692700b43e7}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!sinc@{sinc}}
-\index{sinc@{sinc}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{sinc()}{sinc()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::sinc (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})}
-

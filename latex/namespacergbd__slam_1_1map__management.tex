@@ -3,6 +3,8 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}
+\begin{DoxyCompactList}\small\item\em Prepare the basic functions for a staged/map point. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map}{Local\+\_\+\+Map}}
 \begin{DoxyCompactList}\small\item\em Maintain a local map around the camera. Can return matched features, and update the global map when features are estimated to be reliable. For now we dont have a global map. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{Map\+\_\+\+Point}}
@@ -11,3 +13,83 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}}
 \begin{DoxyCompactList}\small\item\em Basic keypoint class. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point}{Staged\+\_\+\+Point}}
 \begin{DoxyCompactList}\small\item\em Concurrent for a map point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a8d618e9f3d453c2c6f52fd7298a0743a}{is\+\_\+depth\+\_\+valid}} (const double depth)
+\begin{DoxyCompactList}\small\item\em checks the depth validity of a measurement \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a4f0dc79963431686f04556b2abf79074}{get\+\_\+screen\+\_\+point\+\_\+covariance}} (const double depth)
+\begin{DoxyCompactList}\small\item\em compute a covariance matrix for a point associated with a depth measurement \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aa9d854ab517611e578813e309aa66ed8}{add\+\_\+point\+\_\+to\+\_\+tracked\+\_\+features}} (const \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&map\+Point, \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct}} \&keypoints\+With\+Ids)
+\begin{DoxyCompactList}\small\item\em My add a point to the tracked feature object, used to add optical flow tracking. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const double \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a37c5d6ae09aa12e7d554fa2fcfe1991a}{MIN\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 40
+\item 
+const double \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1bb27dd2e94061ad6907d9a1a4c3701e}{MAX\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 6000
+\item 
+const size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad715b0460102980c8d6fcaa81b1107d3}{INVALID\+\_\+\+POINT\+\_\+\+UNIQ\+\_\+\+ID}} = 0
+\item 
+const int \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ac4b9445dc894687f9645da2c1d7fb3df}{UNMATCHED\+\_\+\+POINT\+\_\+\+INDEX}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_aa9d854ab517611e578813e309aa66ed8}\label{namespacergbd__slam_1_1map__management_aa9d854ab517611e578813e309aa66ed8}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!add\_point\_to\_tracked\_features@{add\_point\_to\_tracked\_features}}
+\index{add\_point\_to\_tracked\_features@{add\_point\_to\_tracked\_features}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{add\_point\_to\_tracked\_features()}{add\_point\_to\_tracked\_features()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::add\+\_\+point\+\_\+to\+\_\+tracked\+\_\+features (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&}]{map\+Point,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct}} \&}]{keypoints\+With\+Ids }\end{DoxyParamCaption})}
+
+
+
+My add a point to the tracked feature object, used to add optical flow tracking. 
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_a4f0dc79963431686f04556b2abf79074}\label{namespacergbd__slam_1_1map__management_a4f0dc79963431686f04556b2abf79074}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!get\_screen\_point\_covariance@{get\_screen\_point\_covariance}}
+\index{get\_screen\_point\_covariance@{get\_screen\_point\_covariance}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{get\_screen\_point\_covariance()}{get\_screen\_point\_covariance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::map\+\_\+management\+::get\+\_\+screen\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const double}]{depth }\end{DoxyParamCaption})}
+
+
+
+compute a covariance matrix for a point associated with a depth measurement 
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_a8d618e9f3d453c2c6f52fd7298a0743a}\label{namespacergbd__slam_1_1map__management_a8d618e9f3d453c2c6f52fd7298a0743a}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!is\_depth\_valid@{is\_depth\_valid}}
+\index{is\_depth\_valid@{is\_depth\_valid}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{is\_depth\_valid()}{is\_depth\_valid()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::is\+\_\+depth\+\_\+valid (\begin{DoxyParamCaption}\item[{const double}]{depth }\end{DoxyParamCaption})}
+
+
+
+checks the depth validity of a measurement 
+
+LOCAL UTILS FUNCTIONS 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_ad715b0460102980c8d6fcaa81b1107d3}\label{namespacergbd__slam_1_1map__management_ad715b0460102980c8d6fcaa81b1107d3}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!INVALID\_POINT\_UNIQ\_ID@{INVALID\_POINT\_UNIQ\_ID}}
+\index{INVALID\_POINT\_UNIQ\_ID@{INVALID\_POINT\_UNIQ\_ID}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{INVALID\_POINT\_UNIQ\_ID}{INVALID\_POINT\_UNIQ\_ID}}
+{\footnotesize\ttfamily const size\+\_\+t rgbd\+\_\+slam\+::map\+\_\+management\+::\+INVALID\+\_\+\+POINT\+\_\+\+UNIQ\+\_\+\+ID = 0}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_a1bb27dd2e94061ad6907d9a1a4c3701e}\label{namespacergbd__slam_1_1map__management_a1bb27dd2e94061ad6907d9a1a4c3701e}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!MAX\_DEPTH\_DISTANCE@{MAX\_DEPTH\_DISTANCE}}
+\index{MAX\_DEPTH\_DISTANCE@{MAX\_DEPTH\_DISTANCE}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{MAX\_DEPTH\_DISTANCE}{MAX\_DEPTH\_DISTANCE}}
+{\footnotesize\ttfamily const double rgbd\+\_\+slam\+::map\+\_\+management\+::\+MAX\+\_\+\+DEPTH\+\_\+\+DISTANCE = 6000}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_a37c5d6ae09aa12e7d554fa2fcfe1991a}\label{namespacergbd__slam_1_1map__management_a37c5d6ae09aa12e7d554fa2fcfe1991a}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!MIN\_DEPTH\_DISTANCE@{MIN\_DEPTH\_DISTANCE}}
+\index{MIN\_DEPTH\_DISTANCE@{MIN\_DEPTH\_DISTANCE}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{MIN\_DEPTH\_DISTANCE}{MIN\_DEPTH\_DISTANCE}}
+{\footnotesize\ttfamily const double rgbd\+\_\+slam\+::map\+\_\+management\+::\+MIN\+\_\+\+DEPTH\+\_\+\+DISTANCE = 40}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_ac4b9445dc894687f9645da2c1d7fb3df}\label{namespacergbd__slam_1_1map__management_ac4b9445dc894687f9645da2c1d7fb3df}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!UNMATCHED\_POINT\_INDEX@{UNMATCHED\_POINT\_INDEX}}
+\index{UNMATCHED\_POINT\_INDEX@{UNMATCHED\_POINT\_INDEX}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{UNMATCHED\_POINT\_INDEX}{UNMATCHED\_POINT\_INDEX}}
+{\footnotesize\ttfamily const int rgbd\+\_\+slam\+::map\+\_\+management\+::\+UNMATCHED\+\_\+\+POINT\+\_\+\+INDEX = -\/1}
+

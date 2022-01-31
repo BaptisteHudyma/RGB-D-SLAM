@@ -23,7 +23,7 @@ Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Plane\+:\beg
 virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a66e77ae84ff5929262109109d893f0b6}{is\+\_\+similar}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} $>$ \&prim) override
 \begin{DoxyCompactList}\small\item\em Get the similarity of two planes, based on normal direction. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6592806aa5bd56b382a36f125581035f}{get\+\_\+distance}} (const Eigen\+::\+Vector3d \&point) override
-\begin{DoxyCompactList}\small\item\em Get the distance of a point to the primitive. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
 
@@ -59,19 +59,7 @@ Construct a plane object.
 \doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
 {\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
-
-
-Get the distance of a point to the primitive. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em point} & 3D Point to compute distance to\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-The signed distance of the point to the shape, 0 if the point is on the shape 
-\end{DoxyReturn}
-
+Return the distance of this primitive to a point 
 
 Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a471b0ff8f7657a1f658d6640d145504e}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
 

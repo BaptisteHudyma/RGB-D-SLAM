@@ -28,9 +28,25 @@ var menudata={children:[
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[
-{text:"All",url:"namespacemembers.html"},
+{text:"All",url:"namespacemembers.html",children:[
+{text:"a",url:"namespacemembers.html#index_a"},
+{text:"c",url:"namespacemembers.html#index_c"},
+{text:"e",url:"namespacemembers.html#index_e"},
+{text:"g",url:"namespacemembers.html#index_g"},
+{text:"i",url:"namespacemembers.html#index_i"},
+{text:"l",url:"namespacemembers.html#index_l"},
+{text:"m",url:"namespacemembers.html#index_m"},
+{text:"o",url:"namespacemembers.html#index_o"},
+{text:"p",url:"namespacemembers.html#index_p"},
+{text:"q",url:"namespacemembers.html#index_q"},
+{text:"s",url:"namespacemembers.html#index_s"},
+{text:"u",url:"namespacemembers.html#index_u"},
+{text:"v",url:"namespacemembers.html#index_v"},
+{text:"w",url:"namespacemembers.html#index_w"}]},
 {text:"Functions",url:"namespacemembers_func.html"},
-{text:"Typedefs",url:"namespacemembers_type.html"}]}]},
+{text:"Variables",url:"namespacemembers_vars.html"},
+{text:"Typedefs",url:"namespacemembers_type.html"},
+{text:"Enumerations",url:"namespacemembers_enum.html"}]}]},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},
@@ -87,5 +103,4 @@ var menudata={children:[
 {text:"File Members",url:"globals.html",children:[
 {text:"All",url:"globals.html"},
 {text:"Variables",url:"globals_vars.html"},
-{text:"Typedefs",url:"globals_type.html"},
 {text:"Macros",url:"globals_defs.html"}]}]}]}

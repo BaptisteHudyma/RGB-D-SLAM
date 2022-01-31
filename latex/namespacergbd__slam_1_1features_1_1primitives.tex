@@ -19,3 +19,60 @@ class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{
 \begin{DoxyCompactList}\small\item\em A base class used to compute the tracking analysis. It is a pure virtual class. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{Primitive\+\_\+\+Detection}}
 \begin{DoxyCompactList}\small\item\em Main extraction class. Extracts shape primitives from an organized cloud of points. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}{primitive\+\_\+uniq\+\_\+ptr}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}{primitive\+\_\+container}}
+\item 
+typedef std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}{primitive\+\_\+uniq\+\_\+ptr}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{Primitive\+Type}} \{ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a4bbb8f967da6d1a610596d7257179c2b}{Invalid}}
+, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a0d3adee051531c15b3509b4d4d75ce7b}{Plane}}
+, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a2ec2c2961c7ce5a114d969c1f562a563}{Cylinder}}
+ \}
+\begin{DoxyCompactList}\small\item\em A type class for faster conversions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}\label{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!primitive\_container@{primitive\_container}}
+\index{primitive\_container@{primitive\_container}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{primitive\_container}{primitive\_container}}
+{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}{primitive\+\_\+uniq\+\_\+ptr}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}{rgbd\+\_\+slam\+::features\+::primitives\+::primitive\+\_\+container}}}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}\label{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!primitive\_uniq\_ptr@{primitive\_uniq\_ptr}}
+\index{primitive\_uniq\_ptr@{primitive\_uniq\_ptr}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{primitive\_uniq\_ptr}{primitive\_uniq\_ptr}}
+{\footnotesize\ttfamily typedef std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}{rgbd\+\_\+slam\+::features\+::primitives\+::primitive\+\_\+uniq\+\_\+ptr}}}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}\label{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!PrimitiveType@{PrimitiveType}}
+\index{PrimitiveType@{PrimitiveType}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{PrimitiveType}{PrimitiveType}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+A type class for faster conversions. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Invalid@{Invalid}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!Invalid@{Invalid}}}\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a4bbb8f967da6d1a610596d7257179c2b}\label{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a4bbb8f967da6d1a610596d7257179c2b}} 
+Invalid&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Plane@{Plane}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!Plane@{Plane}}}\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a0d3adee051531c15b3509b4d4d75ce7b}\label{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a0d3adee051531c15b3509b4d4d75ce7b}} 
+Plane&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Cylinder@{Cylinder}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!Cylinder@{Cylinder}}}\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a2ec2c2961c7ce5a114d969c1f562a563}\label{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a2ec2c2961c7ce5a114d969c1f562a563}} 
+Cylinder&\\
+\hline
+
+\end{DoxyEnumFields}

@@ -124,6 +124,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ae61750b1e71287962ecf1ed833ba92e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae99ae2aaae91543f64722344e7f2456f"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#ae99ae2aaae91543f64722344e7f2456f">get_camera_2_rotation_z</a> ()</td></tr>
 <tr class="separator:ae99ae2aaae91543f64722344e7f2456f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8746de6726b0246850de3f2dad61d15f"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#a8746de6726b0246850de3f2dad61d15f">get_minimum_iou_for_match</a> ()</td></tr>
+<tr class="separator:a8746de6726b0246850de3f2dad61d15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc5cbafbc854fb6d0c8e77713499581"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#a3cc5cbafbc854fb6d0c8e77713499581">get_minimum_normals_dot_difference</a> ()</td></tr>
+<tr class="separator:a3cc5cbafbc854fb6d0c8e77713499581"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a850e679de0ef3b2dae619828b4c41643"><td class="memItemLeft" align="right" valign="top">static uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#a850e679de0ef3b2dae619828b4c41643">get_minimum_point_count_for_optimization</a> ()</td></tr>
 <tr class="separator:a850e679de0ef3b2dae619828b4c41643"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5b80f8f279de2bcc308b3375a2df6d2"><td class="memItemLeft" align="right" valign="top">static uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#ad5b80f8f279de2bcc308b3375a2df6d2">get_maximum_point_count_per_frame</a> ()</td></tr>
@@ -140,8 +144,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a82042da110892f0cb0fe14c146e10180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a213e6dbf97dcabf42fea5dd00ed80ebe"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#a213e6dbf97dcabf42fea5dd00ed80ebe">get_optimization_factor</a> ()</td></tr>
 <tr class="separator:a213e6dbf97dcabf42fea5dd00ed80ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f9c07e7a672b8dee2299ae34d1218de"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#a2f9c07e7a672b8dee2299ae34d1218de">get_maximum_optimization_retroprojection_error</a> ()</td></tr>
-<tr class="separator:a2f9c07e7a672b8dee2299ae34d1218de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacd4c2d6f0d528701ca97117bb3ecdd9"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#aacd4c2d6f0d528701ca97117bb3ecdd9">get_maximum_ransac_iterations</a> ()</td></tr>
+<tr class="separator:aacd4c2d6f0d528701ca97117bb3ecdd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8999c927c494468dcf8eb172b54e5795"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#a8999c927c494468dcf8eb172b54e5795">get_maximum_retroprojection_error</a> ()</td></tr>
+<tr class="separator:a8999c927c494468dcf8eb172b54e5795"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad86267a6f3abea8952163d472ee119e0"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#ad86267a6f3abea8952163d472ee119e0">get_point_weight_threshold</a> ()</td></tr>
 <tr class="separator:ad86267a6f3abea8952163d472ee119e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb7a350f0222cfcb8c826bddd3d949ea"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html#afb7a350f0222cfcb8c826bddd3d949ea">get_point_weight_coefficient</a> ()</td></tr>
@@ -856,31 +862,6 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f9c07e7a672b8dee2299ae34d1218de" name="a2f9c07e7a672b8dee2299ae34d1218de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f9c07e7a672b8dee2299ae34d1218de">&#9670;&nbsp;</a></span>get_maximum_optimization_retroprojection_error()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static double rgbd_slam::Parameters::get_maximum_optimization_retroprojection_error </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a64cfd1bf21c68ee4ddb7d30610306d45" name="a64cfd1bf21c68ee4ddb7d30610306d45"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64cfd1bf21c68ee4ddb7d30610306d45">&#9670;&nbsp;</a></span>get_maximum_plane_match_angle()</h2>
 
@@ -917,6 +898,56 @@ Static Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">static uint rgbd_slam::Parameters::get_maximum_point_count_per_frame </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aacd4c2d6f0d528701ca97117bb3ecdd9" name="aacd4c2d6f0d528701ca97117bb3ecdd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacd4c2d6f0d528701ca97117bb3ecdd9">&#9670;&nbsp;</a></span>get_maximum_ransac_iterations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static size_t rgbd_slam::Parameters::get_maximum_ransac_iterations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8999c927c494468dcf8eb172b54e5795" name="a8999c927c494468dcf8eb172b54e5795"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8999c927c494468dcf8eb172b54e5795">&#9670;&nbsp;</a></span>get_maximum_retroprojection_error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double rgbd_slam::Parameters::get_maximum_retroprojection_error </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1017,6 +1048,56 @@ Static Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">static uint rgbd_slam::Parameters::get_minimum_hessian </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8746de6726b0246850de3f2dad61d15f" name="a8746de6726b0246850de3f2dad61d15f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8746de6726b0246850de3f2dad61d15f">&#9670;&nbsp;</a></span>get_minimum_iou_for_match()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double rgbd_slam::Parameters::get_minimum_iou_for_match </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cc5cbafbc854fb6d0c8e77713499581" name="a3cc5cbafbc854fb6d0c8e77713499581"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cc5cbafbc854fb6d0c8e77713499581">&#9670;&nbsp;</a></span>get_minimum_normals_dot_difference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double rgbd_slam::Parameters::get_minimum_normals_dot_difference </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1783,8 +1864,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/<a class="el" href="parameters_8cpp.html">parameters.cpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/<a class="el" href="parameters_8cpp.html">parameters.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

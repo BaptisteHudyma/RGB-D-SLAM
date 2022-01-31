@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['valuesatcompiletime_0',['ValuesAtCompileTime',['../structrgbd__slam_1_1utils_1_1_levenberg___marquard___functor.html#a35cd7fe11abf564965162ff8dd2999b0aa7e53ae1e52ea1e30c2832cff0084db5',1,'rgbd_slam::utils::Levenberg_Marquard_Functor']]]
+  ['plane_0',['Plane',['../namespacergbd__slam_1_1features_1_1primitives.html#a9536701fa588803b6da36eaf6b25d741a0d3adee051531c15b3509b4d4d75ce7b',1,'rgbd_slam::features::primitives']]]
 ];

@@ -70,8 +70,8 @@ $(function() {
   <div class="headertitle"><div class="title">MotionModel.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="_motion_model_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef MOTION_MODEL_HPP</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define MOTION_MODEL_HPP</span></div>
+<a href="_motion_model_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef RGBDSLAM_UTILS_MOTIONMODEL_HPP</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define RGBDSLAM_UTILS_MOTIONMODEL_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="types_8hpp.html">types.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="_pose_8hpp.html">Pose.hpp</a>&quot;</span></div>
@@ -97,13 +97,13 @@ $(function() {
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                <span class="comment">// Last known rotation quaternion estimated by the motion model (set by update_model)</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                <a class="code hl_typedef" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> _lastQ;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                <a class="code hl_typedef" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> _lastQ;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                <span class="comment">// Last computed angular velocity</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                <a class="code hl_typedef" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> _angularVelocity;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                <a class="code hl_typedef" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> _angularVelocity;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                <span class="comment">// Last known translation estimated by the motion model (set by update_model)</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                <a class="code hl_typedef" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> _lastPosition;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                <a class="code hl_typedef" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> _lastPosition;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="comment">// Last computed linear velocity</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                <a class="code hl_typedef" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> _linearVelocity;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                <a class="code hl_typedef" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> _linearVelocity;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    };</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
@@ -118,9 +118,9 @@ $(function() {
 <div class="ttc" id="aclassrgbd__slam_1_1utils_1_1_motion___model_html_ad46746162eb145a3944dc1156088bad3"><div class="ttname"><a href="classrgbd__slam_1_1utils_1_1_motion___model.html#ad46746162eb145a3944dc1156088bad3">rgbd_slam::utils::Motion_Model::predict_next_pose</a></div><div class="ttdeci">const Pose predict_next_pose(const Pose &amp;currentPose) const</div><div class="ttdoc">Predicts next pose with motion model (dead reckoning)</div><div class="ttdef"><b>Definition:</b> MotionModel.cpp:22</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1utils_1_1_pose_html"><div class="ttname"><a href="classrgbd__slam_1_1utils_1_1_pose.html">rgbd_slam::utils::Pose</a></div><div class="ttdoc">Store a position.</div><div class="ttdef"><b>Definition:</b> Pose.hpp:15</div></div>
 <div class="ttc" id="anamespacergbd__slam_html"><div class="ttname"><a href="namespacergbd__slam.html">rgbd_slam</a></div><div class="ttdef"><b>Definition:</b> CylinderSegment.cpp:5</div></div>
+<div class="ttc" id="anamespacergbd__slam_html_a078420ee4217ebf095ba100570679827"><div class="ttname"><a href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">rgbd_slam::quaternion</a></div><div class="ttdeci">Eigen::Quaternion&lt; double &gt; quaternion</div><div class="ttdef"><b>Definition:</b> types.hpp:24</div></div>
+<div class="ttc" id="anamespacergbd__slam_html_a1c642e1c4dfceaa8c7409331bfc10b6b"><div class="ttname"><a href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">rgbd_slam::vector3</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 3, 1 &gt; vector3</div><div class="ttdef"><b>Definition:</b> types.hpp:18</div></div>
 <div class="ttc" id="atypes_8hpp_html"><div class="ttname"><a href="types_8hpp.html">types.hpp</a></div></div>
-<div class="ttc" id="atypes_8hpp_html_a70724cdce9ae7ed0f7a4b77d8cc46cc3"><div class="ttname"><a href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 3, 1 &gt; vector3</div><div class="ttdef"><b>Definition:</b> types.hpp:17</div></div>
-<div class="ttc" id="atypes_8hpp_html_abf841a3135c71ab86a2c78affd91d0e7"><div class="ttname"><a href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a></div><div class="ttdeci">Eigen::Quaternion&lt; double &gt; quaternion</div><div class="ttdef"><b>Definition:</b> types.hpp:23</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -106,13 +106,17 @@ Compute the current frame keypoints from optical flow. There is need for matchin
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em image\+Previous\+The} & input (previous) image to treat, ad a pyramide \\
+\mbox{\texttt{ in}}  & {\em image\+Previous\+Pyramide} & The pyramid representation of the previous image \\
 \hline
-\mbox{\texttt{ in}}  & {\em image\+Current} & The input (current) image to treat, as a pyramide \\
+\mbox{\texttt{ in}}  & {\em image\+Current\+Pyramide} & The pyramid representation of the current image to analyze \\
 \hline
-\mbox{\texttt{ in}}  & {\em keypoints\+Previous} & The keypoints detected in image\+Previous \\
+\mbox{\texttt{ in}}  & {\em last\+Keypoints\+With\+Ids} & The keypoints detected in image\+Previous \\
 \hline
-\mbox{\texttt{ in}}  & {\em error\+Threshold} & an error Threshold, in pixels \\
+\mbox{\texttt{ in}}  & {\em pyramid\+Depth} & The chosen depth of the image pyramids \\
+\hline
+\mbox{\texttt{ in}}  & {\em window\+Size} & The chosen size of the optical flow window \\
+\hline
+\mbox{\texttt{ in}}  & {\em error\+Threshold} & an error Threshold for optical flow, in pixels \\
 \hline
 \mbox{\texttt{ in}}  & {\em max\+Distance\+Threshold} & a distance threshold, in pixels \\
 \hline

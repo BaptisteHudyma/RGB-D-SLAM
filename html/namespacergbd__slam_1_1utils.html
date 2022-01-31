@@ -83,6 +83,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store a position.  <a href="classrgbd__slam_1_1utils_1_1_pose.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_triangulation.html">Triangulation</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -97,24 +99,26 @@ Functions</h2></td></tr>
 <tr class="separator:a70ca427c71b64180b3a0140cf3feca05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bf8393963e8bf65bc8cb135f43b0b0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a4bf8393963e8bf65bc8cb135f43b0b0a">log_error</a> (std::string_view message, const std::source_location &amp;location)</td></tr>
 <tr class="separator:a4bf8393963e8bf65bc8cb135f43b0b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44c96391245109bd6cdabf988a3ee092"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a44c96391245109bd6cdabf988a3ee092">screen_to_world_coordinates</a> (const double screenX, const double screenY, const double measuredZ, const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> &amp;cameraToWorldMatrix)</td></tr>
+<tr class="memitem:a44c96391245109bd6cdabf988a3ee092"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a44c96391245109bd6cdabf988a3ee092">screen_to_world_coordinates</a> (const double screenX, const double screenY, const double measuredZ, const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;cameraToWorldMatrix)</td></tr>
 <tr class="separator:a44c96391245109bd6cdabf988a3ee092"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20b263844ed76f0f57d68fc9ce62c27a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a20b263844ed76f0f57d68fc9ce62c27a">world_to_screen_coordinates</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;position3D, const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> &amp;worldToCameraMatrix)</td></tr>
-<tr class="memdesc:a20b263844ed76f0f57d68fc9ce62c27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a point from world to screen coordinate system.  <a href="namespacergbd__slam_1_1utils.html#a20b263844ed76f0f57d68fc9ce62c27a">More...</a><br /></td></tr>
-<tr class="separator:a20b263844ed76f0f57d68fc9ce62c27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e272e0bd94f09e8360a964103485776"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a9e272e0bd94f09e8360a964103485776">compute_camera_to_world_transform</a> (const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;rotation, const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;position)</td></tr>
+<tr class="memitem:aed2388e7883381f18bd0a5acfaf77c32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#aed2388e7883381f18bd0a5acfaf77c32">world_to_screen_coordinates</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position3D, const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;worldToCameraMatrix, <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenCoordinates)</td></tr>
+<tr class="memdesc:aed2388e7883381f18bd0a5acfaf77c32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a point from world to screen coordinate system.  <a href="namespacergbd__slam_1_1utils.html#aed2388e7883381f18bd0a5acfaf77c32">More...</a><br /></td></tr>
+<tr class="separator:aed2388e7883381f18bd0a5acfaf77c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e272e0bd94f09e8360a964103485776"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a9e272e0bd94f09e8360a964103485776">compute_camera_to_world_transform</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position)</td></tr>
 <tr class="memdesc:a9e272e0bd94f09e8360a964103485776"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz)  <a href="namespacergbd__slam_1_1utils.html#a9e272e0bd94f09e8360a964103485776">More...</a><br /></td></tr>
 <tr class="separator:a9e272e0bd94f09e8360a964103485776"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28578e2a6faeee85b26e97663b1e2b2d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a28578e2a6faeee85b26e97663b1e2b2d">compute_world_to_camera_transform</a> (const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;rotation, const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;position)</td></tr>
+<tr class="memitem:a28578e2a6faeee85b26e97663b1e2b2d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a28578e2a6faeee85b26e97663b1e2b2d">compute_world_to_camera_transform</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position)</td></tr>
 <tr class="memdesc:a28578e2a6faeee85b26e97663b1e2b2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd)  <a href="namespacergbd__slam_1_1utils.html#a28578e2a6faeee85b26e97663b1e2b2d">More...</a><br /></td></tr>
 <tr class="separator:a28578e2a6faeee85b26e97663b1e2b2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92ee6dfe0c19ceff485e5506541d676b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="types_8hpp.html#a751ce357da6646262debecc0de7f028f">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a92ee6dfe0c19ceff485e5506541d676b">get_world_point_covariance</a> (const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;screenPoint, const double depth, const <a class="el" href="types_8hpp.html#a751ce357da6646262debecc0de7f028f">matrix33</a> &amp;screenPointError)</td></tr>
+<tr class="memitem:a2a8f6f95de5202a449e7c09b69833615"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a2a8f6f95de5202a449e7c09b69833615">compute_world_to_camera_transform</a> (const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;cameraToWorldMatrix)</td></tr>
+<tr class="separator:a2a8f6f95de5202a449e7c09b69833615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ee6dfe0c19ceff485e5506541d676b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a92ee6dfe0c19ceff485e5506541d676b">get_world_point_covariance</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenPoint, const double depth, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;screenPointError)</td></tr>
 <tr class="memdesc:a92ee6dfe0c19ceff485e5506541d676b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point.  <a href="namespacergbd__slam_1_1utils.html#a92ee6dfe0c19ceff485e5506541d676b">More...</a><br /></td></tr>
 <tr class="separator:a92ee6dfe0c19ceff485e5506541d676b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a689f666ff207fba3031e7f371e2d0a5a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a689f666ff207fba3031e7f371e2d0a5a">get_quaternion_from_euler_angles</a> (const <a class="el" href="struct_euler_angles.html">EulerAngles</a> &amp;eulerAngles)</td></tr>
+<tr class="memitem:a689f666ff207fba3031e7f371e2d0a5a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a689f666ff207fba3031e7f371e2d0a5a">get_quaternion_from_euler_angles</a> (const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a> &amp;eulerAngles)</td></tr>
 <tr class="memdesc:a689f666ff207fba3031e7f371e2d0a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from the given euler angles, in radians.  <a href="namespacergbd__slam_1_1utils.html#a689f666ff207fba3031e7f371e2d0a5a">More...</a><br /></td></tr>
 <tr class="separator:a689f666ff207fba3031e7f371e2d0a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a995cd2edc48202cf14bce574a152b0ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_euler_angles.html">EulerAngles</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a995cd2edc48202cf14bce574a152b0ce">get_euler_angles_from_quaternion</a> (const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;quat)</td></tr>
+<tr class="memitem:a995cd2edc48202cf14bce574a152b0ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a995cd2edc48202cf14bce574a152b0ce">get_euler_angles_from_quaternion</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;quat)</td></tr>
 <tr class="memdesc:a995cd2edc48202cf14bce574a152b0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute euler angles from a given quaternion.  <a href="namespacergbd__slam_1_1utils.html#a995cd2edc48202cf14bce574a152b0ce">More...</a><br /></td></tr>
 <tr class="separator:a995cd2edc48202cf14bce574a152b0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -141,15 +145,15 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> rgbd_slam::utils::compute_camera_to_world_transform </td>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> rgbd_slam::utils::compute_camera_to_world_transform </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>position</em>&#160;</td>
         </tr>
         <tr>
@@ -164,22 +168,40 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a28578e2a6faeee85b26e97663b1e2b2d" name="a28578e2a6faeee85b26e97663b1e2b2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28578e2a6faeee85b26e97663b1e2b2d">&#9670;&nbsp;</a></span>compute_world_to_camera_transform()</h2>
+<a id="a2a8f6f95de5202a449e7c09b69833615" name="a2a8f6f95de5202a449e7c09b69833615"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a8f6f95de5202a449e7c09b69833615">&#9670;&nbsp;</a></span>compute_world_to_camera_transform() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> rgbd_slam::utils::compute_world_to_camera_transform </td>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> rgbd_slam::utils::compute_world_to_camera_transform </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorldMatrix</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a28578e2a6faeee85b26e97663b1e2b2d" name="a28578e2a6faeee85b26e97663b1e2b2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28578e2a6faeee85b26e97663b1e2b2d">&#9670;&nbsp;</a></span>compute_world_to_camera_transform() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> rgbd_slam::utils::compute_world_to_camera_transform </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>position</em>&#160;</td>
         </tr>
         <tr>
@@ -201,9 +223,9 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="struct_euler_angles.html">EulerAngles</a> rgbd_slam::utils::get_euler_angles_from_quaternion </td>
+          <td class="memname">const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a> rgbd_slam::utils::get_euler_angles_from_quaternion </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
           <td class="paramname"><em>quat</em></td><td>)</td>
           <td></td>
         </tr>
@@ -221,9 +243,9 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> rgbd_slam::utils::get_quaternion_from_euler_angles </td>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> rgbd_slam::utils::get_quaternion_from_euler_angles </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="struct_euler_angles.html">EulerAngles</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a> &amp;&#160;</td>
           <td class="paramname"><em>eulerAngles</em></td><td>)</td>
           <td></td>
         </tr>
@@ -241,9 +263,9 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="types_8hpp.html#a751ce357da6646262debecc0de7f028f">matrix33</a> rgbd_slam::utils::get_world_point_covariance </td>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::utils::get_world_point_covariance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
           <td class="paramname"><em>screenPoint</em>, </td>
         </tr>
         <tr>
@@ -255,8 +277,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a751ce357da6646262debecc0de7f028f">matrix33</a> &amp;&#160;</td>
-          <td class="paramname"><em>screenPointError</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>screenPointCovariance</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -362,7 +384,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> rgbd_slam::utils::screen_to_world_coordinates </td>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> rgbd_slam::utils::screen_to_world_coordinates </td>
           <td>(</td>
           <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>screenX</em>, </td>
@@ -382,7 +404,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;&#160;</td>
           <td class="paramname"><em>cameraToWorldMatrix</em>&#160;</td>
         </tr>
         <tr>
@@ -395,23 +417,29 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a20b263844ed76f0f57d68fc9ce62c27a" name="a20b263844ed76f0f57d68fc9ce62c27a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20b263844ed76f0f57d68fc9ce62c27a">&#9670;&nbsp;</a></span>world_to_screen_coordinates()</h2>
+<a id="aed2388e7883381f18bd0a5acfaf77c32" name="aed2388e7883381f18bd0a5acfaf77c32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed2388e7883381f18bd0a5acfaf77c32">&#9670;&nbsp;</a></span>world_to_screen_coordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="types_8hpp.html#a9d9244382b2ab23c5d4fdb9c93b2d3fe">vector2</a> rgbd_slam::utils::world_to_screen_coordinates </td>
+          <td class="memname">bool rgbd_slam::utils::world_to_screen_coordinates </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>position3D</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldToCameraMatrix</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldToCameraMatrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
+          <td class="paramname"><em>screenCoordinates</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -425,11 +453,12 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">position3D</td><td>Coordinates of the detected point (world coordinates) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCameraMatrix</td><td>Matrix to transform the world to a local coordinate system</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCameraMatrix</td><td>Matrix to transform the world to a local coordinate system </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">screenCoordinates</td><td>The point screen coordinates, if the function returned true</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The position of the point in screen coordinates </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the screen position is valid </dd></dl>
 
 </div>
 </div>

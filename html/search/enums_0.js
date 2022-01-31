@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['estate_0',['eState',['../classrgbd__slam_1_1pose_estimation_1_1_r_g_b___s_l_a_m.html#a2d31fbcd1a10dc1af58789cb3431a1fe',1,'rgbd_slam::poseEstimation::RGB_SLAM']]]
+  ['primitivetype_0',['PrimitiveType',['../namespacergbd__slam_1_1features_1_1primitives.html#a9536701fa588803b6da36eaf6b25d741',1,'rgbd_slam::features::primitives']]]
 ];

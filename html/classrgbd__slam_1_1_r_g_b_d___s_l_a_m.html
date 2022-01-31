@@ -82,15 +82,13 @@ $(function() {
 Public Types</h2></td></tr>
 <tr class="memitem:a994e8053356d67ca9ea175e59149dfdc"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; cv::Vec4f &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a994e8053356d67ca9ea175e59149dfdc">line_vector</a></td></tr>
 <tr class="separator:a994e8053356d67ca9ea175e59149dfdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a660c497b911a40db76ef501700ded9b6"><td class="memItemLeft" align="right" valign="top">typedef std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">features::primitives::Primitive</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">primitive_uniq_ptr</a></td></tr>
-<tr class="separator:a660c497b911a40db76ef501700ded9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac22a34ff01a2439c6e8796ed2e723b2e"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">primitive_uniq_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac22a34ff01a2439c6e8796ed2e723b2e">primitive_container</a></td></tr>
-<tr class="separator:ac22a34ff01a2439c6e8796ed2e723b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48b685178aa025b06d44ffb4b6ae466a"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#aae58d36ef7ede2c0c0baa7a6a6e366a1">features::primitives::primitive_uniq_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a48b685178aa025b06d44ffb4b6ae466a">primitive_container</a></td></tr>
+<tr class="separator:a48b685178aa025b06d44ffb4b6ae466a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa034a580e25b83903a9efb4b27a3e7c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#aa034a580e25b83903a9efb4b27a3e7c6">RGBD_SLAM</a> (const std::stringstream &amp;dataPath, const uint imageWidth=640, const uint imageHeight=480)</td></tr>
-<tr class="separator:aa034a580e25b83903a9efb4b27a3e7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a480712bf75bc2de29c4e947297e901b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a480712bf75bc2de29c4e947297e901b9">RGBD_SLAM</a> (const std::stringstream &amp;dataPath, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;startPose, const uint imageWidth=640, const uint imageHeight=480)</td></tr>
+<tr class="separator:a480712bf75bc2de29c4e947297e901b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0c846a941da735a65e6f7b40fc7618a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac0c846a941da735a65e6f7b40fc7618a">track</a> (const cv::Mat &amp;rgbImage, const cv::Mat &amp;depthImage, bool detectLines=false)</td></tr>
 <tr class="memdesc:ac0c846a941da735a65e6f7b40fc7618a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates a new pose from the given images.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac0c846a941da735a65e6f7b40fc7618a">More...</a><br /></td></tr>
 <tr class="separator:ac0c846a941da735a65e6f7b40fc7618a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,28 +124,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac22a34ff01a2439c6e8796ed2e723b2e" name="ac22a34ff01a2439c6e8796ed2e723b2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac22a34ff01a2439c6e8796ed2e723b2e">&#9670;&nbsp;</a></span>primitive_container</h2>
+<a id="a48b685178aa025b06d44ffb4b6ae466a" name="a48b685178aa025b06d44ffb4b6ae466a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48b685178aa025b06d44ffb4b6ae466a">&#9670;&nbsp;</a></span>primitive_container</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::list&lt;<a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">primitive_uniq_ptr</a>&gt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#ac22a34ff01a2439c6e8796ed2e723b2e">rgbd_slam::RGBD_SLAM::primitive_container</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a660c497b911a40db76ef501700ded9b6" name="a660c497b911a40db76ef501700ded9b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a660c497b911a40db76ef501700ded9b6">&#9670;&nbsp;</a></span>primitive_uniq_ptr</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::unique_ptr&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">features::primitives::Primitive</a>&gt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a660c497b911a40db76ef501700ded9b6">rgbd_slam::RGBD_SLAM::primitive_uniq_ptr</a></td>
+          <td class="memname">typedef std::list&lt;<a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#aae58d36ef7ede2c0c0baa7a6a6e366a1">features::primitives::primitive_uniq_ptr</a>&gt; <a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a48b685178aa025b06d44ffb4b6ae466a">rgbd_slam::RGBD_SLAM::primitive_container</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -155,8 +139,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa034a580e25b83903a9efb4b27a3e7c6" name="aa034a580e25b83903a9efb4b27a3e7c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa034a580e25b83903a9efb4b27a3e7c6">&#9670;&nbsp;</a></span>RGBD_SLAM()</h2>
+<a id="a480712bf75bc2de29c4e947297e901b9" name="a480712bf75bc2de29c4e947297e901b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a480712bf75bc2de29c4e947297e901b9">&#9670;&nbsp;</a></span>RGBD_SLAM()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,6 +150,12 @@ Protected Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const std::stringstream &amp;&#160;</td>
           <td class="paramname"><em>dataPath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
+          <td class="paramname"><em>startPose</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -189,10 +179,9 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">dataPath</td><td>Path of the file that contains the camera intrinsics </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">startPose</td><td>the initial pose </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">imageWidth</td><td>The width of the depth images (fixed) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">imageHeight</td><td>The height of the depth image (fixed) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">minHessian</td><td>Minimum Hessian parameter for point detection </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">maxMatchDistance</td><td>Maximum distance between the two closest point matches candidates (0 - 1) </td></tr>
   </table>
   </dd>
 </dl>
@@ -335,6 +324,7 @@ Protected Member Functions</h2></td></tr>
 <p>Compute a debug image. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">camPose</td><td>Current pose of the observer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">originalRGB</td><td>Raw rgb image. Will be used as a base for the final image </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">debugImage</td><td>Output image </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">elapsedTime</td><td>Time since the last call (used for FPS count) </td></tr>

@@ -333,10 +333,12 @@ Protected Member Functions</h2></td></tr>
 <p>Compute the current frame keypoints from optical flow. There is need for matching with this configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">imagePreviousThe</td><td>input (previous) image to treat, ad a pyramide </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">imageCurrent</td><td>The input (current) image to treat, as a pyramide </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">keypointsPrevious</td><td>The keypoints detected in imagePrevious </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">errorThreshold</td><td>an error Threshold, in pixels </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imagePreviousPyramide</td><td>The pyramid representation of the previous image </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">imageCurrentPyramide</td><td>The pyramid representation of the current image to analyze </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lastKeypointsWithIds</td><td>The keypoints detected in imagePrevious </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pyramidDepth</td><td>The chosen depth of the image pyramids </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">windowSize</td><td>The chosen size of the optical flow window </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">errorThreshold</td><td>an error Threshold for optical flow, in pixels </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">maxDistanceThreshold</td><td>a distance threshold, in pixels </td></tr>
   </table>
   </dd>

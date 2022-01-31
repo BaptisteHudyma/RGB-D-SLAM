@@ -67,7 +67,8 @@ $(function() {
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -78,6 +79,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacergbd__slam_1_1map__management"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html">map_management</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacergbd__slam_1_1matches__containers"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1matches__containers.html">matches_containers</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacergbd__slam_1_1pose__optimization"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html">pose_optimization</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacergbd__slam_1_1utils"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html">utils</a></td></tr>
@@ -85,6 +88,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_parameters.html">Parameters</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html">RGBD_SLAM</a></td></tr>
@@ -100,11 +105,48 @@ Typedefs</h2></td></tr>
 <tr class="separator:acb92efd792d97b44c1f403017ac54de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabf57974b523109882f55bf41bffdfda"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; unsigned int, <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#aabf57974b523109882f55bf41bffdfda">point_map</a></td></tr>
 <tr class="separator:aabf57974b523109882f55bf41bffdfda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fe13c1b6f4e20bd00b1d8c76d6fcc53"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; bool, Eigen::Dynamic, Eigen::Dynamic &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">Matrixb</a></td></tr>
+<tr class="separator:a0fe13c1b6f4e20bd00b1d8c76d6fcc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbfe158267b4d08e84815de6e0fc4cda"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Vector2d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a></td></tr>
+<tr class="separator:acbfe158267b4d08e84815de6e0fc4cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c642e1c4dfceaa8c7409331bfc10b6b"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 3, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a></td></tr>
+<tr class="separator:a1c642e1c4dfceaa8c7409331bfc10b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cbcd8eb5bdfc3609954483b8c18b675"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Vector4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a></td></tr>
+<tr class="separator:a5cbcd8eb5bdfc3609954483b8c18b675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2877fc3a278a20d5132bcd38e12faf69"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a></td></tr>
+<tr class="separator:a2877fc3a278a20d5132bcd38e12faf69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae454c342bc3dc5ead4e6c1df65e3fd84"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 3, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a></td></tr>
+<tr class="separator:ae454c342bc3dc5ead4e6c1df65e3fd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a823edbcbe45c6e21187073ad28cd0370"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, 4, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a823edbcbe45c6e21187073ad28cd0370">matrix43</a></td></tr>
+<tr class="separator:a823edbcbe45c6e21187073ad28cd0370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c5100025d8dbfb05b957c61197cc83a"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a></td></tr>
+<tr class="separator:a4c5100025d8dbfb05b957c61197cc83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078420ee4217ebf095ba100570679827"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Quaternion&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a></td></tr>
+<tr class="separator:a078420ee4217ebf095ba100570679827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b66e7867022ae4b53985ba9450e474e"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a0b66e7867022ae4b53985ba9450e474e">vector2_array</a></td></tr>
+<tr class="separator:a0b66e7867022ae4b53985ba9450e474e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a713466135b1565de6e4a12c6694602"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a0a713466135b1565de6e4a12c6694602">vector3_array</a></td></tr>
+<tr class="separator:a0a713466135b1565de6e4a12c6694602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77358cd59b28d1d48c7e92673901b441"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a77358cd59b28d1d48c7e92673901b441">vector4_array</a></td></tr>
+<tr class="separator:a77358cd59b28d1d48c7e92673901b441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3e01af67e7bdde27079ebeff7396f0a"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#ae3e01af67e7bdde27079ebeff7396f0a">matrix33_array</a></td></tr>
+<tr class="separator:ae3e01af67e7bdde27079ebeff7396f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8290c9f86a96c5d71d6ef705da159c59"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a8290c9f86a96c5d71d6ef705da159c59">matrix34_array</a></td></tr>
+<tr class="separator:a8290c9f86a96c5d71d6ef705da159c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5effc51202e8cb5888424d66181defe7"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a5effc51202e8cb5888424d66181defe7">matrix44_array</a></td></tr>
+<tr class="separator:a5effc51202e8cb5888424d66181defe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedd5d1127d1b0a60afd67a8cc985e6b9"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#aedd5d1127d1b0a60afd67a8cc985e6b9">quaternion_array</a></td></tr>
+<tr class="separator:aedd5d1127d1b0a60afd67a8cc985e6b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a9ea2d91bb44d771590c65ee304863542"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a9ea2d91bb44d771590c65ee304863542">get_percent_of_elapsed_time</a> (double treatmentTime, double totalTimeElapsed)</td></tr>
 <tr class="separator:a9ea2d91bb44d771590c65ee304863542"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a377c6ad409881df230ffac24f94ec9c9"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a377c6ad409881df230ffac24f94ec9c9">EulerToRadian</a> = M_PI/180.0</td></tr>
+<tr class="separator:a377c6ad409881df230ffac24f94ec9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a90bbc9699481bccb75546e08a112d64d" name="a90bbc9699481bccb75546e08a112d64d"></a>
@@ -129,6 +171,118 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">typedef std::list&lt;<a class="el" href="namespacergbd__slam.html#a90bbc9699481bccb75546e08a112d64d">map_point_pair</a>&gt; <a class="el" href="namespacergbd__slam.html#acb92efd792d97b44c1f403017ac54de9">rgbd_slam::matched_point_container</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2877fc3a278a20d5132bcd38e12faf69" name="a2877fc3a278a20d5132bcd38e12faf69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2877fc3a278a20d5132bcd38e12faf69">&#9670;&nbsp;</a></span>matrix33</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Matrix3d <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">rgbd_slam::matrix33</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae3e01af67e7bdde27079ebeff7396f0a" name="ae3e01af67e7bdde27079ebeff7396f0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3e01af67e7bdde27079ebeff7396f0a">&#9670;&nbsp;</a></span>matrix33_array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&gt; &gt; <a class="el" href="namespacergbd__slam.html#ae3e01af67e7bdde27079ebeff7396f0a">rgbd_slam::matrix33_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae454c342bc3dc5ead4e6c1df65e3fd84" name="ae454c342bc3dc5ead4e6c1df65e3fd84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae454c342bc3dc5ead4e6c1df65e3fd84">&#9670;&nbsp;</a></span>matrix34</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Matrix&lt;double, 3, 4&gt; <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">rgbd_slam::matrix34</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8290c9f86a96c5d71d6ef705da159c59" name="a8290c9f86a96c5d71d6ef705da159c59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8290c9f86a96c5d71d6ef705da159c59">&#9670;&nbsp;</a></span>matrix34_array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a>&gt; &gt; <a class="el" href="namespacergbd__slam.html#a8290c9f86a96c5d71d6ef705da159c59">rgbd_slam::matrix34_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a823edbcbe45c6e21187073ad28cd0370" name="a823edbcbe45c6e21187073ad28cd0370"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a823edbcbe45c6e21187073ad28cd0370">&#9670;&nbsp;</a></span>matrix43</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Matrix&lt;double, 4, 3&gt; <a class="el" href="namespacergbd__slam.html#a823edbcbe45c6e21187073ad28cd0370">rgbd_slam::matrix43</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4c5100025d8dbfb05b957c61197cc83a" name="a4c5100025d8dbfb05b957c61197cc83a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c5100025d8dbfb05b957c61197cc83a">&#9670;&nbsp;</a></span>matrix44</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Matrix4d <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">rgbd_slam::matrix44</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5effc51202e8cb5888424d66181defe7" name="a5effc51202e8cb5888424d66181defe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5effc51202e8cb5888424d66181defe7">&#9670;&nbsp;</a></span>matrix44_array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a>&gt; &gt; <a class="el" href="namespacergbd__slam.html#a5effc51202e8cb5888424d66181defe7">rgbd_slam::matrix44_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0fe13c1b6f4e20bd00b1d8c76d6fcc53" name="a0fe13c1b6f4e20bd00b1d8c76d6fcc53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">&#9670;&nbsp;</a></span>Matrixb</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Matrix&lt;bool, Eigen::Dynamic, Eigen::Dynamic&gt; <a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">rgbd_slam::Matrixb</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -163,6 +317,118 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a078420ee4217ebf095ba100570679827" name="a078420ee4217ebf095ba100570679827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078420ee4217ebf095ba100570679827">&#9670;&nbsp;</a></span>quaternion</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Quaternion&lt;double&gt; <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">rgbd_slam::quaternion</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aedd5d1127d1b0a60afd67a8cc985e6b9" name="aedd5d1127d1b0a60afd67a8cc985e6b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedd5d1127d1b0a60afd67a8cc985e6b9">&#9670;&nbsp;</a></span>quaternion_array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&gt; &gt; <a class="el" href="namespacergbd__slam.html#aedd5d1127d1b0a60afd67a8cc985e6b9">rgbd_slam::quaternion_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acbfe158267b4d08e84815de6e0fc4cda" name="acbfe158267b4d08e84815de6e0fc4cda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbfe158267b4d08e84815de6e0fc4cda">&#9670;&nbsp;</a></span>vector2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Vector2d <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">rgbd_slam::vector2</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0b66e7867022ae4b53985ba9450e474e" name="a0b66e7867022ae4b53985ba9450e474e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b66e7867022ae4b53985ba9450e474e">&#9670;&nbsp;</a></span>vector2_array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a>&gt; &gt; <a class="el" href="namespacergbd__slam.html#a0b66e7867022ae4b53985ba9450e474e">rgbd_slam::vector2_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c642e1c4dfceaa8c7409331bfc10b6b" name="a1c642e1c4dfceaa8c7409331bfc10b6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c642e1c4dfceaa8c7409331bfc10b6b">&#9670;&nbsp;</a></span>vector3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Matrix&lt;double, 3, 1&gt; <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">rgbd_slam::vector3</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0a713466135b1565de6e4a12c6694602" name="a0a713466135b1565de6e4a12c6694602"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a713466135b1565de6e4a12c6694602">&#9670;&nbsp;</a></span>vector3_array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&gt; &gt; <a class="el" href="namespacergbd__slam.html#a0a713466135b1565de6e4a12c6694602">rgbd_slam::vector3_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5cbcd8eb5bdfc3609954483b8c18b675" name="a5cbcd8eb5bdfc3609954483b8c18b675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cbcd8eb5bdfc3609954483b8c18b675">&#9670;&nbsp;</a></span>vector4</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Eigen::Vector4d <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">rgbd_slam::vector4</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a77358cd59b28d1d48c7e92673901b441" name="a77358cd59b28d1d48c7e92673901b441"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77358cd59b28d1d48c7e92673901b441">&#9670;&nbsp;</a></span>vector4_array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a>, Eigen::aligned_allocator&lt;<a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a>&gt; &gt; <a class="el" href="namespacergbd__slam.html#a77358cd59b28d1d48c7e92673901b441">rgbd_slam::vector4_array</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a9ea2d91bb44d771590c65ee304863542" name="a9ea2d91bb44d771590c65ee304863542"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ea2d91bb44d771590c65ee304863542">&#9670;&nbsp;</a></span>get_percent_of_elapsed_time()</h2>
@@ -186,6 +452,21 @@ Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a377c6ad409881df230ffac24f94ec9c9" name="a377c6ad409881df230ffac24f94ec9c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a377c6ad409881df230ffac24f94ec9c9">&#9670;&nbsp;</a></span>EulerToRadian</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double rgbd_slam::EulerToRadian = M_PI/180.0</td>
         </tr>
       </table>
 </div><div class="memdoc">

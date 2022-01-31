@@ -2,8 +2,10 @@
 \label{utils_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/utils.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/utils.cpp}}
 {\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
 {\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -18,17 +20,19 @@ void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3fe
 \item 
 void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{rgbd\+\_\+slam\+::utils\+::log\+\_\+error}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
 \item 
-const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&camera\+To\+World\+Matrix)
+const vector3 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const matrix34 \&camera\+To\+World\+Matrix)
 \item 
-const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a20b263844ed76f0f57d68fc9ce62c27a}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position3D, const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \&world\+To\+Camera\+Matrix)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const vector3 \&position3D, const matrix34 \&world\+To\+Camera\+Matrix, vector2 \&screen\+Coordinates)
 \begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&rotation, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position)
+const matrix34 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&rotation, const \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} \&position)
+const matrix34 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} \&screen\+Point\+Error)
+const matrix34 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const matrix34 \&camera\+To\+World\+Matrix)
+\item 
+const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const vector2 \&screen\+Point, const double depth, const matrix33 \&screen\+Point\+Error)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \&euler\+Angles)
+const quaternion \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const Euler\+Angles \&euler\+Angles)
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{rgbd\+\_\+slam\+::utils\+::get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} \&quat)
+const Euler\+Angles \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{rgbd\+\_\+slam\+::utils\+::get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const quaternion \&quat)
 \begin{DoxyCompactList}\small\item\em Compute euler angles from a given quaternion. \end{DoxyCompactList}\end{DoxyCompactItemize}

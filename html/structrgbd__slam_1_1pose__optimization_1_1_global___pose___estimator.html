@@ -90,11 +90,14 @@ Inheritance diagram for rgbd_slam::pose_optimization::Global_Pose_Estimator:</di
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aea6507a4b2abe087363f1f6741bcacb3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#aea6507a4b2abe087363f1f6741bcacb3">Global_Pose_Estimator</a> (const size_t n, const <a class="el" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a> &amp;points, const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;worldPosition, const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;worldRotation)</td></tr>
-<tr class="separator:aea6507a4b2abe087363f1f6741bcacb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42e7ebdf52c00d6ce6a3badd509e1531"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a42e7ebdf52c00d6ce6a3badd509e1531">get_distance_to_point</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;mapPoint, const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;matchedPoint, const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> &amp;worldToCamMatrix) const</td></tr>
-<tr class="memdesc:a42e7ebdf52c00d6ce6a3badd509e1531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return te distance between the map point and the it's matched point.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a42e7ebdf52c00d6ce6a3badd509e1531">More...</a><br /></td></tr>
-<tr class="separator:a42e7ebdf52c00d6ce6a3badd509e1531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fcc96ee2aeb8832ffbf9c2187890622"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1fcc96ee2aeb8832ffbf9c2187890622">Global_Pose_Estimator</a> (const size_t n, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;points, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;worldPosition, const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;worldRotation)</td></tr>
+<tr class="separator:a1fcc96ee2aeb8832ffbf9c2187890622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1fcc3abd892876c4631afe43e7b79dc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#ae1fcc3abd892876c4631afe43e7b79dc">get_2D_to_3D_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;matchedPoint, const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;worldToCamMatrix) const</td></tr>
+<tr class="memdesc:ae1fcc3abd892876c4631afe43e7b79dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return te distance between the map point projected to screen space and the it's matched screen point.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#ae1fcc3abd892876c4631afe43e7b79dc">More...</a><br /></td></tr>
+<tr class="separator:ae1fcc3abd892876c4631afe43e7b79dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca0d41f87de3d465768caf5b8815a28f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#aca0d41f87de3d465768caf5b8815a28f">get_3D_to_3D_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;matchedPoint, const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;camToWorldMatrix) const</td></tr>
+<tr class="memdesc:aca0d41f87de3d465768caf5b8815a28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return te 3D distance between the map point and the it's matched screen point projected to world space.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#aca0d41f87de3d465768caf5b8815a28f">More...</a><br /></td></tr>
+<tr class="separator:aca0d41f87de3d465768caf5b8815a28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1413e702e0a1c579b72e20a2901d0679"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1413e702e0a1c579b72e20a2901d0679">operator()</a> (const Eigen::VectorXd &amp;x, Eigen::VectorXd &amp;fvec) const</td></tr>
 <tr class="memdesc:a1413e702e0a1c579b72e20a2901d0679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the objective function.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1413e702e0a1c579b72e20a2901d0679">More...</a><br /></td></tr>
 <tr class="separator:a1413e702e0a1c579b72e20a2901d0679"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,8 +131,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aea6507a4b2abe087363f1f6741bcacb3" name="aea6507a4b2abe087363f1f6741bcacb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea6507a4b2abe087363f1f6741bcacb3">&#9670;&nbsp;</a></span>Global_Pose_Estimator()</h2>
+<a id="a1fcc96ee2aeb8832ffbf9c2187890622" name="a1fcc96ee2aeb8832ffbf9c2187890622"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fcc96ee2aeb8832ffbf9c2187890622">&#9670;&nbsp;</a></span>Global_Pose_Estimator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,19 +146,19 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#aea7e50cc70a6901989c6e6d8980201d8">match_point_container</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;&#160;</td>
           <td class="paramname"><em>points</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>worldPosition</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#abf841a3135c71ab86a2c78affd91d0e7">quaternion</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
           <td class="paramname"><em>worldRotation</em>&#160;</td>
         </tr>
         <tr>
@@ -170,36 +173,37 @@ Additional Inherited Members</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>Number of input parameters </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">points</td><td>Matched 2D (screen) to 3D (world) points </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">worldPosition</td><td>Position of the observer in the world </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldRotation</td><td>Orientation of the observer in the world </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldRotation</td><td>Orientation of the observer in the world</td></tr>
   </table>
   </dd>
 </dl>
+<p>GLOBAL POSE ESTIMATOR members </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a42e7ebdf52c00d6ce6a3badd509e1531" name="a42e7ebdf52c00d6ce6a3badd509e1531"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42e7ebdf52c00d6ce6a3badd509e1531">&#9670;&nbsp;</a></span>get_distance_to_point()</h2>
+<a id="ae1fcc3abd892876c4631afe43e7b79dc" name="ae1fcc3abd892876c4631afe43e7b79dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1fcc3abd892876c4631afe43e7b79dc">&#9670;&nbsp;</a></span>get_2D_to_3D_distance()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double rgbd_slam::pose_optimization::Global_Pose_Estimator::get_distance_to_point </td>
+          <td class="memname">double rgbd_slam::pose_optimization::Global_Pose_Estimator::get_2D_to_3D_distance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>mapPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>matchedPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a84c99027d02b7296d696d9e59dba76a4">matrix34</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;&#160;</td>
           <td class="paramname"><em>worldToCamMatrix</em>&#160;</td>
         </tr>
         <tr>
@@ -210,7 +214,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return te distance between the map point and the it's matched point. </p>
+<p>Return te distance between the map point projected to screen space and the it's matched screen point. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">mapPoint</td><td>The map point in 3D world coordinates </td></tr>
@@ -220,6 +224,51 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The 2D screen distance between those two points </dd></dl>
+
+</div>
+</div>
+<a id="aca0d41f87de3d465768caf5b8815a28f" name="aca0d41f87de3d465768caf5b8815a28f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca0d41f87de3d465768caf5b8815a28f">&#9670;&nbsp;</a></span>get_3D_to_3D_distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rgbd_slam::pose_optimization::Global_Pose_Estimator::get_3D_to_3D_distance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>mapPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>matchedPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84">matrix34</a> &amp;&#160;</td>
+          <td class="paramname"><em>camToWorldMatrix</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return te 3D distance between the map point and the it's matched screen point projected to world space. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mapPoint</td><td>The map point in 3D world coordinates </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoint</td><td>The detected &amp; matched point, in 3D screen coordinates </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">camToWorldMatrix</td><td>The matrix to make a transformation from screen coordinates to world coordinates</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 3D screen distance between those two points </dd></dl>
 
 </div>
 </div>

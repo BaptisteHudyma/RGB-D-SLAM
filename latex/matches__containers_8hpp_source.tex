@@ -1,0 +1,29 @@
+\hypertarget{matches__containers_8hpp_source}{}\doxysection{matches\+\_\+containers.\+hpp}
+\label{matches__containers_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/matches\_containers.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/matches\_containers.hpp}}
+\mbox{\hyperlink{matches__containers_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_MATCHESCONTAINERS\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_MATCHESCONTAINERS\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{7     \textcolor{keyword}{namespace }matches\_containers \{}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9         \textcolor{comment}{// KeyPoint matching: contains :}}
+\DoxyCodeLine{10         \textcolor{comment}{//      -\/ the coordinates of the detected point in screen space}}
+\DoxyCodeLine{11         \textcolor{comment}{//      -\/ the coordinates of the matched point in world space}}
+\DoxyCodeLine{12         \textcolor{keyword}{typedef} std::pair<vector3, vector3> \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_acfcb2d1b1095bee29cc7925115bbbd18}{point\_pair}};}
+\DoxyCodeLine{13         \textcolor{keyword}{typedef} std::list<point\_pair> \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{match\_point\_container}};}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15         \textcolor{comment}{// Primitive matching: contains :}}
+\DoxyCodeLine{16         \textcolor{comment}{//      -\/ the normal vector of the primitive in screen space}}
+\DoxyCodeLine{17         \textcolor{comment}{//      -\/ the normal vector of the primitive in world space}}
+\DoxyCodeLine{18         \textcolor{keyword}{typedef} std::pair<vector3, vector3> \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}{primitive\_pair}};}
+\DoxyCodeLine{19         \textcolor{keyword}{typedef} std::list<primitive\_pair> \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{match\_primitive\_container}};}
+\DoxyCodeLine{20     \}}
+\DoxyCodeLine{21 \}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

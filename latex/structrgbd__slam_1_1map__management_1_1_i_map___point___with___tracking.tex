@@ -1,0 +1,140 @@
+\hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{}\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking Struct Reference}
+\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+
+
+Prepare the basic functions for a staged/map point.  
+
+
+
+
+{\ttfamily \#include $<$map\+\_\+point.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.470588cm]{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a8b24c884f80d428db51752fc740eace7}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_ae34db9ecde0b95febc70b7c589bdfd75}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor, const size\+\_\+t id)
+\item 
+virtual double \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a858f10fd0a6661b1d434e82dfa1f6d68}{get\+\_\+confidence}} () const =0
+\begin{DoxyCompactList}\small\item\em Compute a confidence in this point (-\/1, 1) \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a6dac46e7bd635ca1c3f2f9798feb73c7}{update\+\_\+matched}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&new\+Point\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance)=0
+\begin{DoxyCompactList}\small\item\em Call when this point was matched to another point. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa2627b0500cbeff88570ad7017153465}{update\+\_\+unmatched}} (int remove\+NMatches=1)=0
+\begin{DoxyCompactList}\small\item\em Call when this point was not matched to anything. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a9122dd694648a7f56d3a9d80be0320fc}{get\+\_\+covariance\+\_\+matrix}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa81f3998f97f5d86a34570722204e909}{\+\_\+last\+Matched\+Index}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_acb0b13b394f349fbc9695dd92affc738}{track\+\_\+point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&new\+Point\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&new\+Point\+Covariance)
+\begin{DoxyCompactList}\small\item\em update the current point by tracking with a kalman filter. Will update the point position \& covariance \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Prepare the basic functions for a staged/map point. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a8b24c884f80d428db51752fc740eace7}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a8b24c884f80d428db51752fc740eace7}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!IMap\_Point\_With\_Tracking@{IMap\_Point\_With\_Tracking}}
+\index{IMap\_Point\_With\_Tracking@{IMap\_Point\_With\_Tracking}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{IMap\_Point\_With\_Tracking()}{IMap\_Point\_With\_Tracking()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+
+Tracked point \mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_ae34db9ecde0b95febc70b7c589bdfd75}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_ae34db9ecde0b95febc70b7c589bdfd75}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!IMap\_Point\_With\_Tracking@{IMap\_Point\_With\_Tracking}}
+\index{IMap\_Point\_With\_Tracking@{IMap\_Point\_With\_Tracking}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{IMap\_Point\_With\_Tracking()}{IMap\_Point\_With\_Tracking()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor,  }\item[{const size\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a858f10fd0a6661b1d434e82dfa1f6d68}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a858f10fd0a6661b1d434e82dfa1f6d68}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!get\_confidence@{get\_confidence}}
+\index{get\_confidence@{get\_confidence}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{get\_confidence()}{get\_confidence()}}
+{\footnotesize\ttfamily virtual double rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::get\+\_\+confidence (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Compute a confidence in this point (-\/1, 1) 
+
+
+
+Implemented in \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a7387929b17b1503f75210ff184efaa13}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point}}.
+
+\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a9122dd694648a7f56d3a9d80be0320fc}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a9122dd694648a7f56d3a9d80be0320fc}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!get\_covariance\_matrix@{get\_covariance\_matrix}}
+\index{get\_covariance\_matrix@{get\_covariance\_matrix}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{get\_covariance\_matrix()}{get\_covariance\_matrix()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::get\+\_\+covariance\+\_\+matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_acb0b13b394f349fbc9695dd92affc738}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_acb0b13b394f349fbc9695dd92affc738}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!track\_point@{track\_point}}
+\index{track\_point@{track\_point}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{track\_point()}{track\_point()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::track\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{new\+Point\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{new\+Point\+Covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+update the current point by tracking with a kalman filter. Will update the point position \& covariance 
+
+\begin{DoxyReturn}{Returns}
+The distance between the new position ans the previous one 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a6dac46e7bd635ca1c3f2f9798feb73c7}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a6dac46e7bd635ca1c3f2f9798feb73c7}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!update\_matched@{update\_matched}}
+\index{update\_matched@{update\_matched}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{update\_matched()}{update\_matched()}}
+{\footnotesize\ttfamily virtual double rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::update\+\_\+matched (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{new\+Point\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Call when this point was matched to another point. 
+
+
+
+Implemented in \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a6c21ed525c2f98bc47f98ce704f62cb7}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point}}, and \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad71e7f37511fa245cbc69254b8c9cde2}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point}}.
+
+\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa2627b0500cbeff88570ad7017153465}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa2627b0500cbeff88570ad7017153465}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!update\_unmatched@{update\_unmatched}}
+\index{update\_unmatched@{update\_unmatched}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{update\_unmatched()}{update\_unmatched()}}
+{\footnotesize\ttfamily virtual void rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::update\+\_\+unmatched (\begin{DoxyParamCaption}\item[{int}]{remove\+NMatches = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Call when this point was not matched to anything. 
+
+
+
+Implemented in \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_ac9b2b8aed6f7cb409b8baf6afd48d875}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point}}, and \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ac295737d57b95dfcb00645ff3be3e597}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa81f3998f97f5d86a34570722204e909}\label{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa81f3998f97f5d86a34570722204e909}} 
+\index{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}!\_lastMatchedIndex@{\_lastMatchedIndex}}
+\index{\_lastMatchedIndex@{\_lastMatchedIndex}!rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking@{rgbd\_slam::map\_management::IMap\_Point\_With\_Tracking}}
+\doxysubsubsection{\texorpdfstring{\_lastMatchedIndex}{\_lastMatchedIndex}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking\+::\+\_\+last\+Matched\+Index}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8hpp}{map\+\_\+point.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8cpp}{map\+\_\+point.\+cpp}}\end{DoxyCompactItemize}

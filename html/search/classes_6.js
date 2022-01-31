@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['levenberg_5fmarquardt_5ffunctor_0',['Levenberg_Marquardt_Functor',['../structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html',1,'rgbd_slam::pose_optimization']]],
-  ['levenberg_5fmarquardt_5ffunctor_3c_20double_20_3e_1',['Levenberg_Marquardt_Functor&lt; double &gt;',['../structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html',1,'rgbd_slam::pose_optimization']]],
-  ['local_5fmap_2',['Local_Map',['../classrgbd__slam_1_1map__management_1_1_local___map.html',1,'rgbd_slam::map_management']]]
+  ['key_5fpoint_5fextraction_0',['Key_Point_Extraction',['../classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html',1,'rgbd_slam::features::keypoints']]],
+  ['keypoint_5fhandler_1',['Keypoint_Handler',['../classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html',1,'rgbd_slam::features::keypoints']]],
+  ['keypointswithidstruct_2',['KeypointsWithIdStruct',['../structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html',1,'rgbd_slam::features::keypoints']]]
 ];

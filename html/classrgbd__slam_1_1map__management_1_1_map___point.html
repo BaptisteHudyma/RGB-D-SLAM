@@ -69,7 +69,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1map__management_1_1_map___point-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::map_management::Map_Point Class Reference</div></div>
@@ -86,57 +85,65 @@ Inheritance diagram for rgbd_slam::map_management::Map_Point:</div>
  <div class="center">
   <img src="classrgbd__slam_1_1map__management_1_1_map___point.png" usemap="#rgbd_5Fslam::map_5Fmanagement::Map_5FPoint_map" alt=""/>
   <map id="rgbd_5Fslam::map_5Fmanagement::Map_5FPoint_map" name="rgbd_5Fslam::map_5Fmanagement::Map_5FPoint_map">
-<area href="structrgbd__slam_1_1map__management_1_1_point.html" title="Basic keypoint class." alt="rgbd_slam::map_management::Point" shape="rect" coords="0,0,242,24"/>
+<area href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html" title="Prepare the basic functions for a staged/map point." alt="rgbd_slam::map_management::IMap_Point_With_Tracking" shape="rect" coords="0,56,332,80"/>
+<area href="structrgbd__slam_1_1map__management_1_1_point.html" title="Basic keypoint class." alt="rgbd_slam::map_management::Point" shape="rect" coords="0,0,332,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1941365edaadf27b81ba8d71080da5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#ae1941365edaadf27b81ba8d71080da5d">Map_Point</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;coordinates, const cv::Mat &amp;descriptor)</td></tr>
-<tr class="separator:ae1941365edaadf27b81ba8d71080da5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d6b21bc3641257b381e38a7c3b4ef87"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#a3d6b21bc3641257b381e38a7c3b4ef87">Map_Point</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;coordinates, const cv::Mat &amp;descriptor, const size_t id)</td></tr>
-<tr class="separator:a3d6b21bc3641257b381e38a7c3b4ef87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b28a516e3b8419ac4177a184291c0a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#a4b28a516e3b8419ac4177a184291c0a6">Map_Point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;coordinates, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;covariance, const cv::Mat &amp;descriptor)</td></tr>
+<tr class="separator:a4b28a516e3b8419ac4177a184291c0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab067b8f83a13aebda7d216dd9f4f246c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#ab067b8f83a13aebda7d216dd9f4f246c">Map_Point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;coordinates, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;covariance, const cv::Mat &amp;descriptor, const size_t id)</td></tr>
+<tr class="separator:ab067b8f83a13aebda7d216dd9f4f246c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad492ba9b9000d85b97cbb18bc2f11c52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#ad492ba9b9000d85b97cbb18bc2f11c52">is_lost</a> () const</td></tr>
 <tr class="memdesc:ad492ba9b9000d85b97cbb18bc2f11c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">True is this point is lost : should be removed from local map. Should be used only for map points.  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#ad492ba9b9000d85b97cbb18bc2f11c52">More...</a><br /></td></tr>
 <tr class="separator:ad492ba9b9000d85b97cbb18bc2f11c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e2a117a881bcfead6b40aae86e749ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#a0e2a117a881bcfead6b40aae86e749ec">update_unmatched</a> ()</td></tr>
-<tr class="memdesc:a0e2a117a881bcfead6b40aae86e749ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this point without it being detected/matched.  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#a0e2a117a881bcfead6b40aae86e749ec">More...</a><br /></td></tr>
-<tr class="separator:a0e2a117a881bcfead6b40aae86e749ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e1bd7580c668df8217aee1e09c103b5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#a7e1bd7580c668df8217aee1e09c103b5">update_matched</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;newPointCoordinates)</td></tr>
-<tr class="memdesc:a7e1bd7580c668df8217aee1e09c103b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this map point with the given informations: it is matched with another point.  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#a7e1bd7580c668df8217aee1e09c103b5">More...</a><br /></td></tr>
-<tr class="separator:a7e1bd7580c668df8217aee1e09c103b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac295737d57b95dfcb00645ff3be3e597"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#ac295737d57b95dfcb00645ff3be3e597">update_unmatched</a> (int removeNMatches=1) override</td></tr>
+<tr class="memdesc:ac295737d57b95dfcb00645ff3be3e597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this point without it being detected/matched.  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#ac295737d57b95dfcb00645ff3be3e597">More...</a><br /></td></tr>
+<tr class="separator:ac295737d57b95dfcb00645ff3be3e597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad71e7f37511fa245cbc69254b8c9cde2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#ad71e7f37511fa245cbc69254b8c9cde2">update_matched</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;newPointCoordinates, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;covariance) override</td></tr>
+<tr class="memdesc:ad71e7f37511fa245cbc69254b8c9cde2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this map point with the given informations: it is matched with another point.  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#ad71e7f37511fa245cbc69254b8c9cde2">More...</a><br /></td></tr>
+<tr class="separator:ad71e7f37511fa245cbc69254b8c9cde2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78264c7d69160b1838f7e454ccdd6a2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#a78264c7d69160b1838f7e454ccdd6a2f">get_age</a> () const</td></tr>
 <tr class="separator:a78264c7d69160b1838f7e454ccdd6a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ab5e6b7e8dae1ee564807c9eb2cbb74b0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#ab5e6b7e8dae1ee564807c9eb2cbb74b0">_lastMatchedIndex</a></td></tr>
-<tr class="separator:ab5e6b7e8dae1ee564807c9eb2cbb74b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structrgbd__slam_1_1map__management_1_1_point')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">rgbd_slam::map_management::Point</a></td></tr>
-<tr class="memitem:ac2682cd3df4a66c4a25c4275c8acab54 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#ac2682cd3df4a66c4a25c4275c8acab54">_coordinates</a></td></tr>
-<tr class="separator:ac2682cd3df4a66c4a25c4275c8acab54 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72ded2c3f0b23645fc5e830da918caf3 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">cv::Point2f&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a72ded2c3f0b23645fc5e830da918caf3">_screenCoordinates</a></td></tr>
-<tr class="separator:a72ded2c3f0b23645fc5e830da918caf3 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa913c6bd75bdf9a25727541b92e1a27d inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#aa913c6bd75bdf9a25727541b92e1a27d">_coordinateUncertainty</a></td></tr>
-<tr class="separator:aa913c6bd75bdf9a25727541b92e1a27d inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb78f641c06c5c7ad59b03bc4cebed47 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#acb78f641c06c5c7ad59b03bc4cebed47">_descriptor</a></td></tr>
-<tr class="separator:acb78f641c06c5c7ad59b03bc4cebed47 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46b70bcf21a3209e077989ca4559d8e8 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a46b70bcf21a3209e077989ca4559d8e8">_id</a></td></tr>
-<tr class="separator:a46b70bcf21a3209e077989ca4559d8e8 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">rgbd_slam::map_management::IMap_Point_With_Tracking</a></td></tr>
+<tr class="memitem:a8b24c884f80d428db51752fc740eace7 inherit pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#a8b24c884f80d428db51752fc740eace7">IMap_Point_With_Tracking</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;coordinates, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;covariance, const cv::Mat &amp;descriptor)</td></tr>
+<tr class="separator:a8b24c884f80d428db51752fc740eace7 inherit pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae34db9ecde0b95febc70b7c589bdfd75 inherit pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#ae34db9ecde0b95febc70b7c589bdfd75">IMap_Point_With_Tracking</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;coordinates, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;covariance, const cv::Mat &amp;descriptor, const size_t id)</td></tr>
+<tr class="separator:ae34db9ecde0b95febc70b7c589bdfd75 inherit pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9122dd694648a7f56d3a9d80be0320fc inherit pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#a9122dd694648a7f56d3a9d80be0320fc">get_covariance_matrix</a> ()</td></tr>
+<tr class="separator:a9122dd694648a7f56d3a9d80be0320fc inherit pub_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a7387929b17b1503f75210ff184efaa13"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html#a7387929b17b1503f75210ff184efaa13">get_confidence</a> () const</td></tr>
 <tr class="memdesc:a7387929b17b1503f75210ff184efaa13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a confidence score (-1, 1)  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#a7387929b17b1503f75210ff184efaa13">More...</a><br /></td></tr>
 <tr class="separator:a7387929b17b1503f75210ff184efaa13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">rgbd_slam::map_management::IMap_Point_With_Tracking</a></td></tr>
+<tr class="memitem:acb0b13b394f349fbc9695dd92affc738 inherit pro_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#acb0b13b394f349fbc9695dd92affc738">track_point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;newPointCoordinates, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;newPointCovariance)</td></tr>
+<tr class="memdesc:acb0b13b394f349fbc9695dd92affc738 inherit pro_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="mdescLeft">&#160;</td><td class="mdescRight">update the current point by tracking with a kalman filter. Will update the point position &amp; covariance  <a href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#acb0b13b394f349fbc9695dd92affc738">More...</a><br /></td></tr>
+<tr class="separator:acb0b13b394f349fbc9695dd92affc738 inherit pro_methods_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structrgbd__slam_1_1map__management_1_1_point')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">rgbd_slam::map_management::Point</a></td></tr>
-<tr class="memitem:ad10397c518c35773877ede14306f1a7e inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#ad10397c518c35773877ede14306f1a7e">Point</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;coordinates, const cv::Mat &amp;descriptor)</td></tr>
+<tr class="memitem:ad10397c518c35773877ede14306f1a7e inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#ad10397c518c35773877ede14306f1a7e">Point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;coordinates, const cv::Mat &amp;descriptor)</td></tr>
 <tr class="separator:ad10397c518c35773877ede14306f1a7e inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d24d2236b77952fd881929ee4a75e8b inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a6d24d2236b77952fd881929ee4a75e8b">Point</a> (const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;coordinates, const cv::Mat &amp;descriptor, const size_t id)</td></tr>
+<tr class="memitem:a6d24d2236b77952fd881929ee4a75e8b inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a6d24d2236b77952fd881929ee4a75e8b">Point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;coordinates, const cv::Mat &amp;descriptor, const size_t id)</td></tr>
 <tr class="separator:a6d24d2236b77952fd881929ee4a75e8b inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">rgbd_slam::map_management::IMap_Point_With_Tracking</a></td></tr>
+<tr class="memitem:aa81f3998f97f5d86a34570722204e909 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#aa81f3998f97f5d86a34570722204e909">_lastMatchedIndex</a></td></tr>
+<tr class="separator:aa81f3998f97f5d86a34570722204e909 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structrgbd__slam_1_1map__management_1_1_point')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">rgbd_slam::map_management::Point</a></td></tr>
+<tr class="memitem:ac2682cd3df4a66c4a25c4275c8acab54 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#ac2682cd3df4a66c4a25c4275c8acab54">_coordinates</a></td></tr>
+<tr class="separator:ac2682cd3df4a66c4a25c4275c8acab54 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d97d16831938a05e87b1191a7eb92ba inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a1d97d16831938a05e87b1191a7eb92ba">_screenCoordinates</a></td></tr>
+<tr class="separator:a1d97d16831938a05e87b1191a7eb92ba inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb78f641c06c5c7ad59b03bc4cebed47 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#acb78f641c06c5c7ad59b03bc4cebed47">_descriptor</a></td></tr>
+<tr class="separator:acb78f641c06c5c7ad59b03bc4cebed47 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46b70bcf21a3209e077989ca4559d8e8 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a46b70bcf21a3209e077989ca4559d8e8">_id</a></td></tr>
+<tr class="separator:a46b70bcf21a3209e077989ca4559d8e8 inherit pub_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_attribs_structrgbd__slam_1_1map__management_1_1_point"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_structrgbd__slam_1_1map__management_1_1_point')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">rgbd_slam::map_management::Point</a></td></tr>
 <tr class="memitem:a2ae8c3099aa67ce9925cc448c8cbfa56 inherit pro_static_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a2ae8c3099aa67ce9925cc448c8cbfa56">_currentPointId</a> = 1</td></tr>
 <tr class="separator:a2ae8c3099aa67ce9925cc448c8cbfa56 inherit pro_static_attribs_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,8 +151,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A map point structure, containing all the necessary informations to identify a map point. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae1941365edaadf27b81ba8d71080da5d" name="ae1941365edaadf27b81ba8d71080da5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1941365edaadf27b81ba8d71080da5d">&#9670;&nbsp;</a></span>Map_Point() <span class="overload">[1/2]</span></h2>
+<a id="a4b28a516e3b8419ac4177a184291c0a6" name="a4b28a516e3b8419ac4177a184291c0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b28a516e3b8419ac4177a184291c0a6">&#9670;&nbsp;</a></span>Map_Point() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,8 +160,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::map_management::Map_Point::Map_Point </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>coordinates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>covariance</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -173,8 +186,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a3d6b21bc3641257b381e38a7c3b4ef87" name="a3d6b21bc3641257b381e38a7c3b4ef87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d6b21bc3641257b381e38a7c3b4ef87">&#9670;&nbsp;</a></span>Map_Point() <span class="overload">[2/2]</span></h2>
+<a id="ab067b8f83a13aebda7d216dd9f4f246c" name="ab067b8f83a13aebda7d216dd9f4f246c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab067b8f83a13aebda7d216dd9f4f246c">&#9670;&nbsp;</a></span>Map_Point() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,8 +195,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::map_management::Map_Point::Map_Point </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
           <td class="paramname"><em>coordinates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>covariance</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -251,12 +270,14 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Compute a confidence score (-1, 1) </p>
+
+<p>Implements <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#a858f10fd0a6661b1d434e82dfa1f6d68">rgbd_slam::map_management::IMap_Point_With_Tracking</a>.</p>
 
 </div>
 </div>
@@ -279,57 +300,73 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a7e1bd7580c668df8217aee1e09c103b5" name="a7e1bd7580c668df8217aee1e09c103b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e1bd7580c668df8217aee1e09c103b5">&#9670;&nbsp;</a></span>update_matched()</h2>
+<a id="ad71e7f37511fa245cbc69254b8c9cde2" name="ad71e7f37511fa245cbc69254b8c9cde2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad71e7f37511fa245cbc69254b8c9cde2">&#9670;&nbsp;</a></span>update_matched()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double rgbd_slam::map_management::Map_Point::update_matched </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="types_8hpp.html#a70724cdce9ae7ed0f7a4b77d8cc46cc3">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>newPointCoordinates</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>newPointCoordinates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>covariance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Update this map point with the given informations: it is matched with another point. </p>
 
+<p>Implements <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#a6dac46e7bd635ca1c3f2f9798feb73c7">rgbd_slam::map_management::IMap_Point_With_Tracking</a>.</p>
+
 </div>
 </div>
-<a id="a0e2a117a881bcfead6b40aae86e749ec" name="a0e2a117a881bcfead6b40aae86e749ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e2a117a881bcfead6b40aae86e749ec">&#9670;&nbsp;</a></span>update_unmatched()</h2>
+<a id="ac295737d57b95dfcb00645ff3be3e597" name="ac295737d57b95dfcb00645ff3be3e597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac295737d57b95dfcb00645ff3be3e597">&#9670;&nbsp;</a></span>update_unmatched()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void rgbd_slam::map_management::Map_Point::update_unmatched </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>removeNMatches</em> = <code>1</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Update this point without it being detected/matched. </p>
 
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab5e6b7e8dae1ee564807c9eb2cbb74b0" name="ab5e6b7e8dae1ee564807c9eb2cbb74b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5e6b7e8dae1ee564807c9eb2cbb74b0">&#9670;&nbsp;</a></span>_lastMatchedIndex</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int rgbd_slam::map_management::Map_Point::_lastMatchedIndex</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Implements <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#aa2627b0500cbeff88570ad7017153465">rgbd_slam::map_management::IMap_Point_With_Tracking</a>.</p>
 
 </div>
 </div>

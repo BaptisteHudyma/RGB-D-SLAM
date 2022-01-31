@@ -1,174 +1,55 @@
-\hypertarget{types_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/types.hpp File Reference}
-\label{types_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/types.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/types.hpp}}
+\hypertarget{types_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/types.hpp File Reference}
+\label{types_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/types.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/types.hpp}}
 {\ttfamily \#include $<$Eigen/\+Std\+Vector$>$}\newline
 {\ttfamily \#include $<$map$>$}\newline
 {\ttfamily \#include $<$list$>$}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{struct_euler_angles}{Euler\+Angles}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{rgbd\+\_\+slam\+::\+Euler\+Angles}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef Eigen\+::\+Matrix$<$ bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic $>$ \mbox{\hyperlink{types_8hpp_a10ce90b2e35cf0e1831e47f2dde3eece}{Matrixb}}
+typedef Eigen\+::\+Matrix$<$ bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic $>$ \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{rgbd\+\_\+slam\+::\+Matrixb}}
 \item 
-typedef Eigen\+::\+Vector2d \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}}
+typedef Eigen\+::\+Vector2d \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{rgbd\+\_\+slam\+::vector2}}
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 3, 1 $>$ \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}
+typedef Eigen\+::\+Matrix$<$ double, 3, 1 $>$ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{rgbd\+\_\+slam\+::vector3}}
 \item 
-typedef Eigen\+::\+Vector4d \mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}}
+typedef Eigen\+::\+Vector4d \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{rgbd\+\_\+slam\+::vector4}}
 \item 
-typedef Eigen\+::\+Matrix3d \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}}
+typedef Eigen\+::\+Matrix3d \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{rgbd\+\_\+slam\+::matrix33}}
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 3, 4 $>$ \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}
+typedef Eigen\+::\+Matrix$<$ double, 3, 4 $>$ \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{rgbd\+\_\+slam\+::matrix34}}
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 4, 3 $>$ \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}}
+typedef Eigen\+::\+Matrix$<$ double, 4, 3 $>$ \mbox{\hyperlink{namespacergbd__slam_a823edbcbe45c6e21187073ad28cd0370}{rgbd\+\_\+slam\+::matrix43}}
 \item 
-typedef Eigen\+::\+Matrix4d \mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}}
+typedef Eigen\+::\+Matrix4d \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{rgbd\+\_\+slam\+::matrix44}}
 \item 
-typedef Eigen\+::\+Quaternion$<$ double $>$ \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}
+typedef Eigen\+::\+Quaternion$<$ double $>$ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{rgbd\+\_\+slam\+::quaternion}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}} $>$ $>$ \mbox{\hyperlink{types_8hpp_a304acc7bbbd00d83957e9a7978a429a7}{vector2\+\_\+array}}
+typedef std\+::vector$<$ vector2, Eigen\+::aligned\+\_\+allocator$<$ vector2 $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_a0b66e7867022ae4b53985ba9450e474e}{rgbd\+\_\+slam\+::vector2\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} $>$ $>$ \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\+\_\+array}}
+typedef std\+::vector$<$ vector3, Eigen\+::aligned\+\_\+allocator$<$ vector3 $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_a0a713466135b1565de6e4a12c6694602}{rgbd\+\_\+slam\+::vector3\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}} $>$ $>$ \mbox{\hyperlink{types_8hpp_a7efb1dae67822e8552e4a8348d205846}{vector4\+\_\+array}}
+typedef std\+::vector$<$ vector4, Eigen\+::aligned\+\_\+allocator$<$ vector4 $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_a77358cd59b28d1d48c7e92673901b441}{rgbd\+\_\+slam\+::vector4\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}} $>$ $>$ \mbox{\hyperlink{types_8hpp_aaf4224fc835744acce67bd9375d309bb}{matrix33\+\_\+array}}
+typedef std\+::vector$<$ matrix33, Eigen\+::aligned\+\_\+allocator$<$ matrix33 $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_ae3e01af67e7bdde27079ebeff7396f0a}{rgbd\+\_\+slam\+::matrix33\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}} $>$ $>$ \mbox{\hyperlink{types_8hpp_a2b51ff17a2de63ec227c31cf24ab3aab}{matrix34\+\_\+array}}
+typedef std\+::vector$<$ matrix34, Eigen\+::aligned\+\_\+allocator$<$ matrix34 $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_a8290c9f86a96c5d71d6ef705da159c59}{rgbd\+\_\+slam\+::matrix34\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}} $>$ $>$ \mbox{\hyperlink{types_8hpp_a744b3504c936bad31d99956ef13ace8c}{matrix44\+\_\+array}}
+typedef std\+::vector$<$ matrix44, Eigen\+::aligned\+\_\+allocator$<$ matrix44 $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_a5effc51202e8cb5888424d66181defe7}{rgbd\+\_\+slam\+::matrix44\+\_\+array}}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}} $>$ $>$ \mbox{\hyperlink{types_8hpp_ae56cce0e28a34ac7f99c5dab8628ab3f}{quaternion\+\_\+array}}
-\item 
-typedef std\+::pair$<$ \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}, \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}} $>$ \mbox{\hyperlink{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}{point\+\_\+pair}}
-\item 
-typedef std\+::list$<$ \mbox{\hyperlink{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}{point\+\_\+pair}} $>$ \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}}
+typedef std\+::vector$<$ quaternion, Eigen\+::aligned\+\_\+allocator$<$ quaternion $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_aedd5d1127d1b0a60afd67a8cc985e6b9}{rgbd\+\_\+slam\+::quaternion\+\_\+array}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const double \mbox{\hyperlink{types_8hpp_ae29dd89108990c60b90e1a0202df28ad}{Euler\+To\+Radian}} = M\+\_\+\+PI/180.\+0
+const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}{rgbd\+\_\+slam\+::\+Euler\+To\+Radian}} = M\+\_\+\+PI/180.\+0
 \end{DoxyCompactItemize}
-
-
-\doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}\label{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}} 
-\index{types.hpp@{types.hpp}!match\_point\_container@{match\_point\_container}}
-\index{match\_point\_container@{match\_point\_container}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{match\_point\_container}{match\_point\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}{point\+\_\+pair}}$>$ \mbox{\hyperlink{types_8hpp_aea7e50cc70a6901989c6e6d8980201d8}{match\+\_\+point\+\_\+container}}}
-
-\mbox{\Hypertarget{types_8hpp_a751ce357da6646262debecc0de7f028f}\label{types_8hpp_a751ce357da6646262debecc0de7f028f}} 
-\index{types.hpp@{types.hpp}!matrix33@{matrix33}}
-\index{matrix33@{matrix33}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{matrix33}{matrix33}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix3d \mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}}}
-
-\mbox{\Hypertarget{types_8hpp_aaf4224fc835744acce67bd9375d309bb}\label{types_8hpp_aaf4224fc835744acce67bd9375d309bb}} 
-\index{types.hpp@{types.hpp}!matrix33\_array@{matrix33\_array}}
-\index{matrix33\_array@{matrix33\_array}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{matrix33\_array}{matrix33\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{types_8hpp_a751ce357da6646262debecc0de7f028f}{matrix33}}$>$ $>$ \mbox{\hyperlink{types_8hpp_aaf4224fc835744acce67bd9375d309bb}{matrix33\+\_\+array}}}
-
-\mbox{\Hypertarget{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}\label{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}} 
-\index{types.hpp@{types.hpp}!matrix34@{matrix34}}
-\index{matrix34@{matrix34}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{matrix34}{matrix34}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 3, 4$>$ \mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}}
-
-\mbox{\Hypertarget{types_8hpp_a2b51ff17a2de63ec227c31cf24ab3aab}\label{types_8hpp_a2b51ff17a2de63ec227c31cf24ab3aab}} 
-\index{types.hpp@{types.hpp}!matrix34\_array@{matrix34\_array}}
-\index{matrix34\_array@{matrix34\_array}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{matrix34\_array}{matrix34\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{types_8hpp_a84c99027d02b7296d696d9e59dba76a4}{matrix34}}$>$ $>$ \mbox{\hyperlink{types_8hpp_a2b51ff17a2de63ec227c31cf24ab3aab}{matrix34\+\_\+array}}}
-
-\mbox{\Hypertarget{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}\label{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}} 
-\index{types.hpp@{types.hpp}!matrix43@{matrix43}}
-\index{matrix43@{matrix43}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{matrix43}{matrix43}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 4, 3$>$ \mbox{\hyperlink{types_8hpp_a0866cfdd932fef4a103f4634636b90ed}{matrix43}}}
-
-\mbox{\Hypertarget{types_8hpp_a533ca594c9517fb869a28306ee1022a8}\label{types_8hpp_a533ca594c9517fb869a28306ee1022a8}} 
-\index{types.hpp@{types.hpp}!matrix44@{matrix44}}
-\index{matrix44@{matrix44}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{matrix44}{matrix44}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix4d \mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}}}
-
-\mbox{\Hypertarget{types_8hpp_a744b3504c936bad31d99956ef13ace8c}\label{types_8hpp_a744b3504c936bad31d99956ef13ace8c}} 
-\index{types.hpp@{types.hpp}!matrix44\_array@{matrix44\_array}}
-\index{matrix44\_array@{matrix44\_array}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{matrix44\_array}{matrix44\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{types_8hpp_a533ca594c9517fb869a28306ee1022a8}{matrix44}}$>$ $>$ \mbox{\hyperlink{types_8hpp_a744b3504c936bad31d99956ef13ace8c}{matrix44\+\_\+array}}}
-
-\mbox{\Hypertarget{types_8hpp_a10ce90b2e35cf0e1831e47f2dde3eece}\label{types_8hpp_a10ce90b2e35cf0e1831e47f2dde3eece}} 
-\index{types.hpp@{types.hpp}!Matrixb@{Matrixb}}
-\index{Matrixb@{Matrixb}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{Matrixb}{Matrixb}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic$>$ \mbox{\hyperlink{types_8hpp_a10ce90b2e35cf0e1831e47f2dde3eece}{Matrixb}}}
-
-\mbox{\Hypertarget{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}\label{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}} 
-\index{types.hpp@{types.hpp}!point\_pair@{point\_pair}}
-\index{point\_pair@{point\_pair}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{point\_pair}{point\_pair}}
-{\footnotesize\ttfamily typedef std\+::pair$<$\mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}, \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}$>$ \mbox{\hyperlink{types_8hpp_aeb419a5e7dfc9486ab8f7a5a097fe7b0}{point\+\_\+pair}}}
-
-\mbox{\Hypertarget{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}\label{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}} 
-\index{types.hpp@{types.hpp}!quaternion@{quaternion}}
-\index{quaternion@{quaternion}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{quaternion}{quaternion}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Quaternion$<$double$>$ \mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}}
-
-\mbox{\Hypertarget{types_8hpp_ae56cce0e28a34ac7f99c5dab8628ab3f}\label{types_8hpp_ae56cce0e28a34ac7f99c5dab8628ab3f}} 
-\index{types.hpp@{types.hpp}!quaternion\_array@{quaternion\_array}}
-\index{quaternion\_array@{quaternion\_array}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{quaternion\_array}{quaternion\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{types_8hpp_abf841a3135c71ab86a2c78affd91d0e7}{quaternion}}$>$ $>$ \mbox{\hyperlink{types_8hpp_ae56cce0e28a34ac7f99c5dab8628ab3f}{quaternion\+\_\+array}}}
-
-\mbox{\Hypertarget{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}\label{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}} 
-\index{types.hpp@{types.hpp}!vector2@{vector2}}
-\index{vector2@{vector2}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{vector2}{vector2}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Vector2d \mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}}}
-
-\mbox{\Hypertarget{types_8hpp_a304acc7bbbd00d83957e9a7978a429a7}\label{types_8hpp_a304acc7bbbd00d83957e9a7978a429a7}} 
-\index{types.hpp@{types.hpp}!vector2\_array@{vector2\_array}}
-\index{vector2\_array@{vector2\_array}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{vector2\_array}{vector2\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{types_8hpp_a9d9244382b2ab23c5d4fdb9c93b2d3fe}{vector2}}$>$ $>$ \mbox{\hyperlink{types_8hpp_a304acc7bbbd00d83957e9a7978a429a7}{vector2\+\_\+array}}}
-
-\mbox{\Hypertarget{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}\label{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}} 
-\index{types.hpp@{types.hpp}!vector3@{vector3}}
-\index{vector3@{vector3}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{vector3}{vector3}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 3, 1$>$ \mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}}
-
-\mbox{\Hypertarget{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}\label{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}} 
-\index{types.hpp@{types.hpp}!vector3\_array@{vector3\_array}}
-\index{vector3\_array@{vector3\_array}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{vector3\_array}{vector3\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{types_8hpp_a70724cdce9ae7ed0f7a4b77d8cc46cc3}{vector3}}$>$ $>$ \mbox{\hyperlink{types_8hpp_a0d74df0e5a040fab5f656ccb3318783f}{vector3\+\_\+array}}}
-
-\mbox{\Hypertarget{types_8hpp_af901fb9f3d109e3b2973102452bc821e}\label{types_8hpp_af901fb9f3d109e3b2973102452bc821e}} 
-\index{types.hpp@{types.hpp}!vector4@{vector4}}
-\index{vector4@{vector4}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{vector4}{vector4}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Vector4d \mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}}}
-
-\mbox{\Hypertarget{types_8hpp_a7efb1dae67822e8552e4a8348d205846}\label{types_8hpp_a7efb1dae67822e8552e4a8348d205846}} 
-\index{types.hpp@{types.hpp}!vector4\_array@{vector4\_array}}
-\index{vector4\_array@{vector4\_array}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{vector4\_array}{vector4\_array}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{types_8hpp_af901fb9f3d109e3b2973102452bc821e}{vector4}}$>$ $>$ \mbox{\hyperlink{types_8hpp_a7efb1dae67822e8552e4a8348d205846}{vector4\+\_\+array}}}
-
-
-
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{types_8hpp_ae29dd89108990c60b90e1a0202df28ad}\label{types_8hpp_ae29dd89108990c60b90e1a0202df28ad}} 
-\index{types.hpp@{types.hpp}!EulerToRadian@{EulerToRadian}}
-\index{EulerToRadian@{EulerToRadian}!types.hpp@{types.hpp}}
-\doxysubsubsection{\texorpdfstring{EulerToRadian}{EulerToRadian}}
-{\footnotesize\ttfamily const double Euler\+To\+Radian = M\+\_\+\+PI/180.\+0}
-

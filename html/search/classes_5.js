@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['key_5fpoint_5fextraction_0',['Key_Point_Extraction',['../classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html',1,'rgbd_slam::features::keypoints']]],
-  ['keypoint_5fhandler_1',['Keypoint_Handler',['../classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html',1,'rgbd_slam::features::keypoints']]],
-  ['keypointswithidstruct_2',['KeypointsWithIdStruct',['../structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html',1,'rgbd_slam::features::keypoints']]]
+  ['imap_5fpoint_5fwith_5ftracking_0',['IMap_Point_With_Tracking',['../structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html',1,'rgbd_slam::map_management']]]
 ];

@@ -9,14 +9,12 @@
 \item 
 typedef std\+::vector$<$ cv\+::\+Vec4f $>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a994e8053356d67ca9ea175e59149dfdc}{line\+\_\+vector}}
 \item 
-typedef std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{features\+::primitives\+::\+Primitive}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a660c497b911a40db76ef501700ded9b6}{primitive\+\_\+uniq\+\_\+ptr}}
-\item 
-typedef std\+::list$<$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a660c497b911a40db76ef501700ded9b6}{primitive\+\_\+uniq\+\_\+ptr}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac22a34ff01a2439c6e8796ed2e723b2e}{primitive\+\_\+container}}
+typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}{features\+::primitives\+::primitive\+\_\+uniq\+\_\+ptr}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a48b685178aa025b06d44ffb4b6ae466a}{primitive\+\_\+container}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_aa034a580e25b83903a9efb4b27a3e7c6}{RGBD\+\_\+\+SLAM}} (const std\+::stringstream \&data\+Path, const uint image\+Width=640, const uint image\+Height=480)
+\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a480712bf75bc2de29c4e947297e901b9}{RGBD\+\_\+\+SLAM}} (const std\+::stringstream \&data\+Path, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&start\+Pose, const uint image\+Width=640, const uint image\+Height=480)
 \item 
 const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac0c846a941da735a65e6f7b40fc7618a}{track}} (const cv\+::\+Mat \&rgb\+Image, const cv\+::\+Mat \&depth\+Image, bool detect\+Lines=false)
 \begin{DoxyCompactList}\small\item\em Estimates a new pose from the given images. \end{DoxyCompactList}\item 
@@ -42,38 +40,30 @@ void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b
 \doxysubsubsection{\texorpdfstring{line\_vector}{line\_vector}}
 {\footnotesize\ttfamily typedef std\+::vector$<$cv\+::\+Vec4f$>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a994e8053356d67ca9ea175e59149dfdc}{rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::line\+\_\+vector}}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac22a34ff01a2439c6e8796ed2e723b2e}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac22a34ff01a2439c6e8796ed2e723b2e}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a48b685178aa025b06d44ffb4b6ae466a}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a48b685178aa025b06d44ffb4b6ae466a}} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!primitive\_container@{primitive\_container}}
 \index{primitive\_container@{primitive\_container}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{primitive\_container}{primitive\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a660c497b911a40db76ef501700ded9b6}{primitive\+\_\+uniq\+\_\+ptr}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac22a34ff01a2439c6e8796ed2e723b2e}{rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::primitive\+\_\+container}}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a660c497b911a40db76ef501700ded9b6}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a660c497b911a40db76ef501700ded9b6}} 
-\index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!primitive\_uniq\_ptr@{primitive\_uniq\_ptr}}
-\index{primitive\_uniq\_ptr@{primitive\_uniq\_ptr}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
-\doxysubsubsection{\texorpdfstring{primitive\_uniq\_ptr}{primitive\_uniq\_ptr}}
-{\footnotesize\ttfamily typedef std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{features\+::primitives\+::\+Primitive}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a660c497b911a40db76ef501700ded9b6}{rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::primitive\+\_\+uniq\+\_\+ptr}}}
+{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}{features\+::primitives\+::primitive\+\_\+uniq\+\_\+ptr}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a48b685178aa025b06d44ffb4b6ae466a}{rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::primitive\+\_\+container}}}
 
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_aa034a580e25b83903a9efb4b27a3e7c6}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_aa034a580e25b83903a9efb4b27a3e7c6}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a480712bf75bc2de29c4e947297e901b9}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a480712bf75bc2de29c4e947297e901b9}} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!RGBD\_SLAM@{RGBD\_SLAM}}
 \index{RGBD\_SLAM@{RGBD\_SLAM}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{RGBD\_SLAM()}{RGBD\_SLAM()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const std\+::stringstream \&}]{data\+Path,  }\item[{const uint}]{image\+Width = {\ttfamily 640},  }\item[{const uint}]{image\+Height = {\ttfamily 480} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const std\+::stringstream \&}]{data\+Path,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{start\+Pose,  }\item[{const uint}]{image\+Width = {\ttfamily 640},  }\item[{const uint}]{image\+Height = {\ttfamily 480} }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em data\+Path} & Path of the file that contains the camera intrinsics \\
 \hline
+\mbox{\texttt{ in}}  & {\em start\+Pose} & the initial pose \\
+\hline
 \mbox{\texttt{ in}}  & {\em image\+Width} & The width of the depth images (fixed) \\
 \hline
 \mbox{\texttt{ in}}  & {\em image\+Height} & The height of the depth image (fixed) \\
-\hline
-\mbox{\texttt{ in}}  & {\em min\+Hessian} & Minimum Hessian parameter for point detection \\
-\hline
-\mbox{\texttt{ in}}  & {\em max\+Match\+Distance} & Maximum distance between the two closest point matches candidates (0 -\/ 1) \\
 \hline
 \end{DoxyParams}
 
@@ -117,6 +107,8 @@ Compute a debug image.
 
 
 \begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cam\+Pose} & Current pose of the observer \\
+\hline
 \mbox{\texttt{ in}}  & {\em original\+RGB} & Raw rgb image. Will be used as a base for the final image \\
 \hline
 \mbox{\texttt{ out}}  & {\em debug\+Image} & Output image \\

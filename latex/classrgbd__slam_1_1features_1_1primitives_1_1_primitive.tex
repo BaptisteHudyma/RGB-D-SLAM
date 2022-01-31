@@ -24,8 +24,17 @@ virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_pr
 \begin{DoxyCompactList}\small\item\em Get the distance of a point to the primitive. \end{DoxyCompactList}\item 
 virtual \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a8d095166c9fce31468d141ae07cc38f9}{$\sim$\+Primitive}} ()
 \item 
+\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{Primitive\+Type}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_aeb538a1ce85a9cabe9a7b63b9f297b13}{get\+\_\+primitive\+\_\+type}} () const
+\begin{DoxyCompactList}\small\item\em return the type of primitive that this object represents \end{DoxyCompactList}\item 
 uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a3276e6ceeb3acdb1026d2321d5e1db33}{get\+\_\+id}} () const
-\begin{DoxyCompactList}\small\item\em Return this shape assigned id. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Return this shape assigned id. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6e68351289ffa71627e206144f9fdda4}{set\+\_\+id}} (const uint id)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Eigen\+::\+Vector3d \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a53157bfb8166ad237fe7d3a03b7c8727}{\+\_\+normal}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -36,9 +45,11 @@ double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_
 \doxysubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-const uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a24edb776b2ccc9c46ddca7c08e1a23cf}{\+\_\+id}}
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6e9dc0aef9db5ea8162c6bf8a31c422c}{\+\_\+id}}
 \item 
 cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a59e1eb452738a0e25b06b0f44edf9fde}{\+\_\+shape\+Mask}}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{Primitive\+Type}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ae33b300ad292c6a9e2effb274f23bfe9}{\+\_\+primitive\+Type}}
 \end{DoxyCompactItemize}
 
 
@@ -115,6 +126,16 @@ Compute the Inter over Union factor of two masks.
 \begin{DoxyReturn}{Returns}
 A number between 0 and 1, indicating the IoU 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_aeb538a1ce85a9cabe9a7b63b9f297b13}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_aeb538a1ce85a9cabe9a7b63b9f297b13}} 
+\index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!get\_primitive\_type@{get\_primitive\_type}}
+\index{get\_primitive\_type@{get\_primitive\_type}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
+\doxysubsubsection{\texorpdfstring{get\_primitive\_type()}{get\_primitive\_type()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{Primitive\+Type}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::get\+\_\+primitive\+\_\+type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return the type of primitive that this object represents 
+
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a07e7678584cd03660df651b28d0f03ae}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a07e7678584cd03660df651b28d0f03ae}} 
 \index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!is\_similar@{is\_similar}}
 \index{is\_similar@{is\_similar}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
@@ -132,14 +153,32 @@ A double between 0 and 1, with 1 indicating identical primitives
 
 Implemented in \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder}}, and \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a66e77ae84ff5929262109109d893f0b6}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane}}.
 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6e68351289ffa71627e206144f9fdda4}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6e68351289ffa71627e206144f9fdda4}} 
+\index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!set\_id@{set\_id}}
+\index{set\_id@{set\_id}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
+\doxysubsubsection{\texorpdfstring{set\_id()}{set\_id()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::set\+\_\+id (\begin{DoxyParamCaption}\item[{const uint}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a24edb776b2ccc9c46ddca7c08e1a23cf}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a24edb776b2ccc9c46ddca7c08e1a23cf}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6e9dc0aef9db5ea8162c6bf8a31c422c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6e9dc0aef9db5ea8162c6bf8a31c422c}} 
 \index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!\_id@{\_id}}
 \index{\_id@{\_id}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
 \doxysubsubsection{\texorpdfstring{\_id}{\_id}}
-{\footnotesize\ttfamily const uint rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::\+\_\+id\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::\+\_\+id\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a53157bfb8166ad237fe7d3a03b7c8727}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a53157bfb8166ad237fe7d3a03b7c8727}} 
+\index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!\_normal@{\_normal}}
+\index{\_normal@{\_normal}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
+\doxysubsubsection{\texorpdfstring{\_normal}{\_normal}}
+{\footnotesize\ttfamily Eigen\+::\+Vector3d rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::\+\_\+normal}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ae33b300ad292c6a9e2effb274f23bfe9}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ae33b300ad292c6a9e2effb274f23bfe9}} 
+\index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!\_primitiveType@{\_primitiveType}}
+\index{\_primitiveType@{\_primitiveType}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
+\doxysubsubsection{\texorpdfstring{\_primitiveType}{\_primitiveType}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{Primitive\+Type}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::\+\_\+primitive\+Type\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a59e1eb452738a0e25b06b0f44edf9fde}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a59e1eb452738a0e25b06b0f44edf9fde}} 
 \index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!\_shapeMask@{\_shapeMask}}

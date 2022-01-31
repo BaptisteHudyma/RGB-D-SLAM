@@ -53,6 +53,10 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae61750b1e71287962
 \item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae99ae2aaae91543f64722344e7f2456f}{get\+\_\+camera\+\_\+2\+\_\+rotation\+\_\+z}} ()
 \item 
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a8746de6726b0246850de3f2dad61d15f}{get\+\_\+minimum\+\_\+iou\+\_\+for\+\_\+match}} ()
+\item 
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3cc5cbafbc854fb6d0c8e77713499581}{get\+\_\+minimum\+\_\+normals\+\_\+dot\+\_\+difference}} ()
+\item 
 static uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a850e679de0ef3b2dae619828b4c41643}{get\+\_\+minimum\+\_\+point\+\_\+count\+\_\+for\+\_\+optimization}} ()
 \item 
 static uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ad5b80f8f279de2bcc308b3375a2df6d2}{get\+\_\+maximum\+\_\+point\+\_\+count\+\_\+per\+\_\+frame}} ()
@@ -69,7 +73,9 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a82042da110892f0cb
 \item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a213e6dbf97dcabf42fea5dd00ed80ebe}{get\+\_\+optimization\+\_\+factor}} ()
 \item 
-static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a2f9c07e7a672b8dee2299ae34d1218de}{get\+\_\+maximum\+\_\+optimization\+\_\+retroprojection\+\_\+error}} ()
+static size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}{get\+\_\+maximum\+\_\+ransac\+\_\+iterations}} ()
+\item 
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a8999c927c494468dcf8eb172b54e5795}{get\+\_\+maximum\+\_\+retroprojection\+\_\+error}} ()
 \item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ad86267a6f3abea8952163d472ee119e0}{get\+\_\+point\+\_\+weight\+\_\+threshold}} ()
 \item 
@@ -292,12 +298,6 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 \doxysubsubsection{\texorpdfstring{get\_maximum\_merge\_distance()}{get\_maximum\_merge\_distance()}}
 {\footnotesize\ttfamily static float rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+maximum\+\_\+merge\+\_\+distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a2f9c07e7a672b8dee2299ae34d1218de}\label{classrgbd__slam_1_1_parameters_a2f9c07e7a672b8dee2299ae34d1218de}} 
-\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_maximum\_optimization\_retroprojection\_error@{get\_maximum\_optimization\_retroprojection\_error}}
-\index{get\_maximum\_optimization\_retroprojection\_error@{get\_maximum\_optimization\_retroprojection\_error}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
-\doxysubsubsection{\texorpdfstring{get\_maximum\_optimization\_retroprojection\_error()}{get\_maximum\_optimization\_retroprojection\_error()}}
-{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+maximum\+\_\+optimization\+\_\+retroprojection\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
-
 \mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a64cfd1bf21c68ee4ddb7d30610306d45}\label{classrgbd__slam_1_1_parameters_a64cfd1bf21c68ee4ddb7d30610306d45}} 
 \index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_maximum\_plane\_match\_angle@{get\_maximum\_plane\_match\_angle}}
 \index{get\_maximum\_plane\_match\_angle@{get\_maximum\_plane\_match\_angle}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
@@ -309,6 +309,18 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 \index{get\_maximum\_point\_count\_per\_frame@{get\_maximum\_point\_count\_per\_frame}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
 \doxysubsubsection{\texorpdfstring{get\_maximum\_point\_count\_per\_frame()}{get\_maximum\_point\_count\_per\_frame()}}
 {\footnotesize\ttfamily static uint rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+maximum\+\_\+point\+\_\+count\+\_\+per\+\_\+frame (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}\label{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_maximum\_ransac\_iterations@{get\_maximum\_ransac\_iterations}}
+\index{get\_maximum\_ransac\_iterations@{get\_maximum\_ransac\_iterations}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_maximum\_ransac\_iterations()}{get\_maximum\_ransac\_iterations()}}
+{\footnotesize\ttfamily static size\+\_\+t rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+maximum\+\_\+ransac\+\_\+iterations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a8999c927c494468dcf8eb172b54e5795}\label{classrgbd__slam_1_1_parameters_a8999c927c494468dcf8eb172b54e5795}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_maximum\_retroprojection\_error@{get\_maximum\_retroprojection\_error}}
+\index{get\_maximum\_retroprojection\_error@{get\_maximum\_retroprojection\_error}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_maximum\_retroprojection\_error()}{get\_maximum\_retroprojection\_error()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+maximum\+\_\+retroprojection\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a3be7111a9c245fdc4330d26da4193b6d}\label{classrgbd__slam_1_1_parameters_a3be7111a9c245fdc4330d26da4193b6d}} 
 \index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_maximum\_unmatched\_before\_removal@{get\_maximum\_unmatched\_before\_removal}}
@@ -333,6 +345,18 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 \index{get\_minimum\_hessian@{get\_minimum\_hessian}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
 \doxysubsubsection{\texorpdfstring{get\_minimum\_hessian()}{get\_minimum\_hessian()}}
 {\footnotesize\ttfamily static uint rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+minimum\+\_\+hessian (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a8746de6726b0246850de3f2dad61d15f}\label{classrgbd__slam_1_1_parameters_a8746de6726b0246850de3f2dad61d15f}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_minimum\_iou\_for\_match@{get\_minimum\_iou\_for\_match}}
+\index{get\_minimum\_iou\_for\_match@{get\_minimum\_iou\_for\_match}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_minimum\_iou\_for\_match()}{get\_minimum\_iou\_for\_match()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+minimum\+\_\+iou\+\_\+for\+\_\+match (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a3cc5cbafbc854fb6d0c8e77713499581}\label{classrgbd__slam_1_1_parameters_a3cc5cbafbc854fb6d0c8e77713499581}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_minimum\_normals\_dot\_difference@{get\_minimum\_normals\_dot\_difference}}
+\index{get\_minimum\_normals\_dot\_difference@{get\_minimum\_normals\_dot\_difference}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_minimum\_normals\_dot\_difference()}{get\_minimum\_normals\_dot\_difference()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+minimum\+\_\+normals\+\_\+dot\+\_\+difference (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a80a20ace688d1e4d19ba03485ace3c40}\label{classrgbd__slam_1_1_parameters_a80a20ace688d1e4d19ba03485ace3c40}} 
 \index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_minimum\_plane\_seed\_count@{get\_minimum\_plane\_seed\_count}}
@@ -518,5 +542,5 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{parameters_8hpp}{parameters.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{parameters_8cpp}{parameters.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/\mbox{\hyperlink{parameters_8hpp}{parameters.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/\mbox{\hyperlink{parameters_8cpp}{parameters.\+cpp}}\end{DoxyCompactItemize}
