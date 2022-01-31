@@ -4,6 +4,7 @@
 #include <Eigen/Dense>
 #include <memory>
 #include "PlaneSegment.hpp"
+#include "types.hpp"
 
 
 namespace rgbd_slam {
@@ -61,7 +62,7 @@ namespace primitives {
             /**
              * \brief Compute the signed distance from a plane to a point
              */
-            double get_signed_distance(const Eigen::Vector3d& point);
+            double get_signed_distance(const vector3& point);
 
             /**
              * \brief Fit a plane to the contained points using PCA
@@ -77,8 +78,8 @@ namespace primitives {
 
         public: //getters
                 double get_MSE() const { return _MSE; };
-                const Eigen::Vector3d& get_normal() const { return _normal; };
-                const Eigen::Vector3d& get_mean() const { return _mean; };
+                const vector3& get_normal() const { return _normal; };
+                const vector3& get_mean() const { return _mean; };
                 double get_plane_d() const { return _d; };
                 bool is_planar() const { return _isPlanar; };
                 double get_score() const { return _score; };
@@ -97,8 +98,8 @@ namespace primitives {
                 double _MSE;     //plane fitting mean square error
                 bool _isPlanar;  //true if node represent a correct node, false: ignore node while mapping
 
-                Eigen::Vector3d _mean;     //mean point of all points in node
-                Eigen::Vector3d _normal;   //fitted plane normal
+                vector3 _mean;     //mean point of all points in node
+                vector3 _normal;   //fitted plane normal
                 double _d;           //fitted plane d param (ax + by + xz + d)
 
         private:

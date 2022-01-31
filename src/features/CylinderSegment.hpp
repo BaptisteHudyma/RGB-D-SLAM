@@ -2,9 +2,11 @@
 #define RGBDSLAM_FEATURES_PRIMITIVES_CYLINDERSEGMENT_HPP 
 
 #include "PlaneSegment.hpp"
+
 #include <vector>
 #include <memory>
 #include <Eigen/Dense>
+#include "types.hpp"
 
 
 namespace rgbd_slam {
@@ -49,7 +51,7 @@ namespace primitives {
              *
              * \return The signed distance between the point and cylinder surface
              */
-            double distance(const Eigen::Vector3d& point);
+            double distance(const vector3& point);
 
             ~Cylinder_Segment();
 
@@ -93,14 +95,14 @@ namespace primitives {
                  * \param[in] index The index of the cylinder part to search
                  *
                  */
-                const Eigen::Vector3d& get_axis1_point(const uint index) const;
+                const vector3& get_axis1_point(const uint index) const;
 
                 /**
                  *
                  * \param[in] index The index of the cylinder part to search
                  *
                  */
-                const Eigen::Vector3d& get_axis2_point(const uint index) const;
+                const vector3& get_axis2_point(const uint index) const;
 
                 /**
                  * \brief Return the normal of a portion of this cylinder segement
@@ -130,7 +132,7 @@ namespace primitives {
                  *
                  *
                  */
-                const Eigen::Vector3d get_normal() const;
+                const vector3 get_normal() const;
 
 
 
@@ -138,16 +140,13 @@ namespace primitives {
                 double distance(const Eigen::Vector3d& point, const uint segmentId);
 
         private:
-                typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>  MatrixXb;
-                typedef std::vector<Eigen::Vector3d> vec3d_vector;
-
-                Eigen::Vector3d _axis;
+                vector3 _axis;
 
                 std::vector<Eigen::MatrixXd> _centers;
-                vec3d_vector _pointsAxis1;
-                vec3d_vector _pointsAxis2;
+                vector3_vector _pointsAxis1;
+                vector3_vector _pointsAxis2;
                 std::vector<double> _normalsAxis1Axis2;
-                std::vector<MatrixXb> _inliers;
+                std::vector<Matrixb> _inliers;
 
                 std::vector<double> _MSE;
                 std::vector<double> _radius;

@@ -1,12 +1,13 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVES_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVES_HPP 
 
+//cv:Mat
+#include <opencv2/opencv.hpp>
+
 #include "PlaneSegment.hpp"
 #include "CylinderSegment.hpp"
 
-#include <opencv2/opencv.hpp>
-#include <Eigen/Dense>
-
+#include "types.hpp"
 
 namespace rgbd_slam {
     namespace features {
@@ -42,7 +43,7 @@ namespace rgbd_slam {
 
                      * \return The signed distance of the point to the shape, 0 if the point is on the shape
                      */
-                    virtual double get_distance(const Eigen::Vector3d& point) = 0;
+                    virtual double get_distance(const vector3& point) = 0;
 
                     virtual ~Primitive() {};
 
@@ -57,7 +58,7 @@ namespace rgbd_slam {
                     uint get_id() const { return _id; };
                     void set_id(const uint id) { _id = id; };
 
-                    Eigen::Vector3d _normal;
+                    vector3 _normal;
 
                 protected:
                     /**
@@ -114,7 +115,7 @@ namespace rgbd_slam {
                      *
                      * \return The signed distance of the point to the surface, 0 if the point is on the surface, and < 0 if the point is inside the cylinder
                      */
-                    virtual double get_distance(const Eigen::Vector3d& point) override;
+                    virtual double get_distance(const vector3& point) override;
 
                 protected:
 
@@ -150,11 +151,11 @@ namespace rgbd_slam {
                     /**
                       * Return the distance of this primitive to a point
                       */
-                    virtual double get_distance(const Eigen::Vector3d& point) override;
+                    virtual double get_distance(const vector3& point) override;
 
                     double _d;     //fourth component of the plane parameters
                 private:
-                    Eigen::Vector3d _mean;      //mean center point
+                    vector3 _mean;      //mean center point
             };
 
 

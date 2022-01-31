@@ -154,7 +154,7 @@ namespace primitives {
              * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
              * \param[in] seedPlaneD D component of the plane to grow from
              */
-            void region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD);
+            void region_growing(const unsigned short x, const unsigned short y, const vector3& seedPlaneNormal, const double seedPlaneD);
 
             /**
              * \brief Fill an association matrix that links connected plane components

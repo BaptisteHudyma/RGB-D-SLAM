@@ -252,12 +252,12 @@ namespace rgbd_slam {
                 Eigen::MatrixXd histBins(_totalCellCount, 2);
                 for(uint cellId = 0; cellId < _totalCellCount; ++cellId) {  
                     if(_planeGrid[cellId]->is_planar()) {
-                        const Eigen::Vector3d& planeNormal = _planeGrid[cellId]->get_normal();
-                        const double nx = planeNormal[0];
-                        const double ny = planeNormal[1];
+                        const vector3& planeNormal = _planeGrid[cellId]->get_normal();
+                        const double nx = planeNormal.x();
+                        const double ny = planeNormal.y();
 
                         double projNormal = 1 / sqrt(nx * nx + ny * ny);
-                        histBins(cellId, 0) = acos( -planeNormal[2] );  //acos(normal.z)
+                        histBins(cellId, 0) = acos( -planeNormal.z());
                         histBins(cellId, 1) = atan2(nx * projNormal, ny * projNormal);
                         remainingPlanarCells += 1;
                         _unassignedMask[cellId] = true; 
@@ -397,15 +397,15 @@ namespace rgbd_slam {
                     uint planeId = planeMergeLabels[r];
                     bool planeWasExpanded = false;
                     const plane_segment_unique_ptr& testPlane = _planeSegments[planeId];
-                    const Eigen::Vector3d& testPlaneNormal = testPlane->get_normal();
+                    const vector3& testPlaneNormal = testPlane->get_normal();
 
                     for(uint c = r+1; c < planesAssocMat.cols(); ++c) {
                         if(planesAssocMat(r, c)) {
                             const plane_segment_unique_ptr& mergePlane = _planeSegments[c];
-                            const Eigen::Vector3d& mergePlaneNormal = mergePlane->get_normal();
+                            const vector3& mergePlaneNormal = mergePlane->get_normal();
                             double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
 
-                            const Eigen::Vector3d& mergePlaneMean = mergePlane->get_mean();
+                            const vector3& mergePlaneMean = mergePlane->get_mean();
                             double distance = pow(
                                     testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d()
                                     , 2);
@@ -454,10 +454,10 @@ namespace rgbd_slam {
 
 
                     uchar planeNr = (unsigned char)primitiveSegments.size();
-                    const Eigen::Vector3d& planeNormal = _planeSegments[i]->get_normal();
-                    float nx = planeNormal[0];
-                    float ny = planeNormal[1];
-                    float nz = planeNormal[2];
+                    const vector3& planeNormal = _planeSegments[i]->get_normal();
+                    float nx = planeNormal.x();
+                    float ny = planeNormal.y();
+                    float nz = planeNormal.z();
                     float d = _planeSegments[i]->get_plane_d();
                     //TODO: better distance metric
                     float maxDist = 9 * _planeSegments[i]->get_MSE();
@@ -530,8 +530,8 @@ namespace rgbd_slam {
 
 
                     // Get variables needed for point-surface distance computation
-                    const Eigen::Vector3d P2 = cylinderSegRef->get_axis2_point(subRegId);
-                    const Eigen::Vector3d P1P2 = P2 - cylinderSegRef->get_axis1_point(subRegId);
+                    const vector3& P2 = cylinderSegRef->get_axis2_point(subRegId);
+                    const vector3& P1P2 = P2 - cylinderSegRef->get_axis1_point(subRegId);
                     double P1P2Normal = cylinderSegRef->get_axis_normal(subRegId);
                     double radius = cylinderSegRef->get_radius(subRegId);
                     double maxDist = 9 * cylinderSegRef->get_MSE_at(subRegId);
@@ -545,8 +545,8 @@ namespace rgbd_slam {
                             if(rowPtr[cellC] > 0){
                                 // Update cells
                                 for(uint pt = offset, j = 0; pt < nextOffset; pt++, j++) {
-                                    Eigen::Vector3d point = depthCloudArray.row(pt).cast<double>();
-                                    if(point(2) > 0){
+                                    const vector3& point = depthCloudArray.row(pt).cast<double>();
+                                    if(point.z() > 0){
                                         double dist = pow(P1P2.cross(point - P2).norm() / P1P2Normal - radius, 2);
                                         if(dist < maxDist and dist < _distancesStacked[pt]){ 
                                             _distancesStacked[pt] = dist;
@@ -623,7 +623,7 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::region_growing(const unsigned short x, const unsigned short y, const Eigen::Vector3d& seedPlaneNormal, const double seedPlaneD) {
+            void Primitive_Detection::region_growing(const unsigned short x, const unsigned short y, const vector3& seedPlaneNormal, const double seedPlaneD) {
                 uint index = x + _horizontalCellsCount * y;
                 if (index >= _totalCellCount or 
                         not _unassignedMask[index] or _activationMap[index]) {
@@ -631,8 +631,8 @@ namespace rgbd_slam {
                     return;
                 }
 
-                const Eigen::Vector3d& secPlaneNormal = _planeGrid[index]->get_normal();
-                const Eigen::Vector3d& secPlaneMean = _planeGrid[index]->get_mean();
+                const vector3& secPlaneNormal = _planeGrid[index]->get_normal();
+                const vector3& secPlaneMean = _planeGrid[index]->get_mean();
                 const double& secPlaneD = _planeGrid[index]->get_plane_d();
 
                 if (

@@ -38,13 +38,13 @@ namespace rgbd_slam {
         {};
     };
 
-    typedef std::vector<vector2, Eigen::aligned_allocator<vector2>> vector2_array;
-    typedef std::vector<vector3, Eigen::aligned_allocator<vector3>> vector3_array;
-    typedef std::vector<vector4, Eigen::aligned_allocator<vector4>> vector4_array;
-    typedef std::vector<matrix33, Eigen::aligned_allocator<matrix33>> matrix33_array;
-    typedef std::vector<matrix34, Eigen::aligned_allocator<matrix34>> matrix34_array;
-    typedef std::vector<matrix44, Eigen::aligned_allocator<matrix44>> matrix44_array;
-    typedef std::vector<quaternion, Eigen::aligned_allocator<quaternion>> quaternion_array;
+    typedef std::vector<vector2, Eigen::aligned_allocator<vector2>> vector2_vector;
+    typedef std::vector<vector3, Eigen::aligned_allocator<vector3>> vector3_vector;
+    typedef std::vector<vector4, Eigen::aligned_allocator<vector4>> vector4_vector;
+    typedef std::vector<matrix33, Eigen::aligned_allocator<matrix33>> matrix33_vector;
+    typedef std::vector<matrix34, Eigen::aligned_allocator<matrix34>> matrix34_vector;
+    typedef std::vector<matrix44, Eigen::aligned_allocator<matrix44>> matrix44_vector;
+    typedef std::vector<quaternion, Eigen::aligned_allocator<quaternion>> quaternion_vector;
 }
 
 #endif

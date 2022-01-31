@@ -52,7 +52,7 @@ namespace primitives {
         uint offset = cellId * _ptsPerCellCount;
 
         //get z of depth points
-        const Eigen::MatrixXf Z_matrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
+        const Eigen::MatrixXf& Z_matrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
 
         // Check nbr of missing depth points
         _pointCount =  (Z_matrix.array() > 0).count();
@@ -62,8 +62,8 @@ namespace primitives {
         }
 
         //get points x and y coords
-        const Eigen::MatrixXf X_matrix = depthCloudArray.block(offset, 0, _ptsPerCellCount, 1);
-        const Eigen::MatrixXf Y_matrix = depthCloudArray.block(offset, 1, _ptsPerCellCount, 1);
+        const Eigen::MatrixXf& X_matrix = depthCloudArray.block(offset, 0, _ptsPerCellCount, 1);
+        const Eigen::MatrixXf& Y_matrix = depthCloudArray.block(offset, 1, _ptsPerCellCount, 1);
 
         // Check for discontinuities using cross search
         //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
@@ -169,7 +169,7 @@ namespace primitives {
     void Plane_Segment::fit_plane() {
         const double oneOverCount = 1.0 / (double)_pointCount;
         //fit a plane to the stored points
-        _mean = Eigen::Vector3d(_Sx, _Sy, _Sz);
+        _mean = vector3(_Sx, _Sy, _Sz);
         _mean *= oneOverCount;
 
         // Expressing covariance as E[PP^t] + E[P]*E[P^T]
@@ -249,7 +249,7 @@ namespace primitives {
             _normal[2] * (point[2] - _mean[2]); 
     }
 
-    double Plane_Segment::get_signed_distance(const Eigen::Vector3d& point) {
+    double Plane_Segment::get_signed_distance(const vector3& point) {
         return _normal.dot(point - _mean);
     }
 

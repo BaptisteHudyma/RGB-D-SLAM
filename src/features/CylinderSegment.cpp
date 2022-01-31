@@ -7,7 +7,6 @@ namespace features {
 namespace primitives {
 
     using namespace std;
-    using namespace Eigen;
 
     Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId) {
         //copy stored data
@@ -61,8 +60,8 @@ namespace primitives {
         int j = 0;
         for(uint i = 0; i < samplesCount; i++){
             if (activatedMask[i]){
-                const Vector3d& planeNormal = planeGrid[i]->get_normal();
-                const Vector3d& planeMean = planeGrid[i]->get_mean();
+                const vector3& planeNormal = planeGrid[i]->get_normal();
+                const vector3& planeMean = planeGrid[i]->get_mean();
                 N(0, j) = planeNormal[0];
                 N(1, j) = planeNormal[1];
                 N(2, j) = planeNormal[2];
@@ -76,7 +75,7 @@ namespace primitives {
         // Concatenate [N -N]
         for(uint i = 0; i < samplesCount; i++){
             if (activatedMask[i]){
-                const Vector3d& planeNormal = planeGrid[i]->get_normal();
+                const vector3& planeNormal = planeGrid[i]->get_normal();
                 N(0, j) = -planeNormal[0];
                 N(1, j) = -planeNormal[1];
                 N(2, j) = -planeNormal[2];
@@ -88,8 +87,8 @@ namespace primitives {
         Eigen::MatrixXd cov = (N * N.adjoint()) / static_cast<double>(N.cols() - 1);
 
         // PCA using QR decomposition for symmetric matrices
-        Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> es(cov);
-        Eigen::Vector3d S = es.eigenvalues();
+        Eigen::SelfAdjointEigenSolver<matrix33> es(cov);
+        const vector3& S = es.eigenvalues();
         double score = S(2)/S(0);
 
         // Checkpoint 1
@@ -97,7 +96,7 @@ namespace primitives {
             return;
         }
 
-        Eigen::Vector3d vec = es.eigenvectors().col(0);
+        const vector3& vec = es.eigenvectors().col(0);
         _axis[0] = vec(0); 
         _axis[1] = vec(1); 
         _axis[2] = vec(2);
@@ -107,17 +106,17 @@ namespace primitives {
         Eigen::MatrixXd PProj(3, _cellActivatedCount);
 
         // Projection to plane: P' = P-theta*<P.theta>
-        Eigen::MatrixXd PDotTheta = vec.transpose() * P;
+        const Eigen::MatrixXd& PDotTheta = vec.transpose() * P;
         PProj.row(0) = P.row(0) - PDotTheta * vec(0);
         PProj.row(1) = P.row(1) - PDotTheta * vec(1);
         PProj.row(2) = P.row(2) - PDotTheta * vec(2);
-        Eigen::MatrixXd NDotTheta = vec.transpose() * N;
+        const Eigen::MatrixXd& NDotTheta = vec.transpose() * N;
         N.row(0) -= NDotTheta * vec(0);
         N.row(1) -= NDotTheta * vec(1);
         N.row(2) -= NDotTheta * vec(2);
 
         // Normalize projected normals
-        Eigen::MatrixXd normalsNorm = N.colwise().norm();
+        const Eigen::MatrixXd& normalsNorm = N.colwise().norm();
         N.row(0) = N.row(0).array() / normalsNorm.array();
         N.row(1) = N.row(1).array() / normalsNorm.array();
         N.row(2) = N.row(2).array() / normalsNorm.array();
@@ -128,7 +127,7 @@ namespace primitives {
         float K = log(1 - pSuccess) / log(1 - pow(w, 3));
 
         int mLeft = _cellActivatedCount;
-        MatrixXb idsLeftMask(1, _cellActivatedCount);
+        Matrixb idsLeftMask(1, _cellActivatedCount);
 
         vector<int> idsLeft;
         for(uint i = 0; i < _cellActivatedCount; i++){
@@ -139,8 +138,8 @@ namespace primitives {
         while(mLeft > 5 and mLeft > 0.1 * _cellActivatedCount){
             Eigen::MatrixXd A, center, e1, e2;
             Eigen::MatrixXd D(1, _cellActivatedCount);
-            MatrixXb I(1, _cellActivatedCount);
-            MatrixXb IFinal(1, _cellActivatedCount);
+            Matrixb I(1, _cellActivatedCount);
+            Matrixb IFinal(1, _cellActivatedCount);
             double minHypothesisDist = maximumSqrtDistance * mLeft;
             int inliersAcceptedCount = 0.9 * mLeft;
             int maxInliersCount = 0;
@@ -260,11 +259,11 @@ namespace primitives {
             _inliers.push_back(IFinal);
 
             // Save points on axis
-            Eigen::Vector3d P1d = center;
-            Eigen::Vector3d P2d = center + vec;
+            const vector3& P1d = center;
+            const vector3& P2d = center + vec;
             double P1P2d = (P2d - P1d).norm();
             // Use point-to-line distances (same as cylinder distances)
-            Eigen::Vector3d P3;
+            vector3 P3;
             for(uint i = 0; i < _cellActivatedCount; i++){
                 if(IFinal(i)) {
                     P3 = P.block<3,1>(0, i);
@@ -289,9 +288,9 @@ namespace primitives {
         }
     }
 
-    double Cylinder_Segment::distance(const Eigen::Vector3d& point) {
+    double Cylinder_Segment::distance(const vector3& point) {
         double minDist = this->distance(point, 0);
-        for(vec3d_vector::size_type i = 1; i < _pointsAxis1.size(); i++) {
+        for(vector3_vector::size_type i = 1; i < _pointsAxis1.size(); i++) {
             double nd = this->distance(point, i);
             if (minDist > nd)
                 minDist = nd;
@@ -299,7 +298,7 @@ namespace primitives {
         return minDist;
     }
 
-    double Cylinder_Segment::distance(const Eigen::Vector3d& point, const uint id) {
+    double Cylinder_Segment::distance(const vector3& point, const uint id) {
         return (
                 (_pointsAxis2[id] - _pointsAxis1[id]).cross(
                     point - _pointsAxis2[id]
@@ -342,7 +341,7 @@ namespace primitives {
         return _local2globalMap[index]; 
     }
 
-    const Eigen::Vector3d& Cylinder_Segment::get_axis1_point(const uint index) const { 
+    const vector3& Cylinder_Segment::get_axis1_point(const uint index) const { 
         if(index >= _pointsAxis1.size()) {
             utils::log_error("get_axis_1 required index over axis1 vector size");
             exit(-1);
@@ -350,7 +349,7 @@ namespace primitives {
         return _pointsAxis1[index];
     }
 
-    const Eigen::Vector3d& Cylinder_Segment::get_axis2_point(const uint index) const {
+    const vector3& Cylinder_Segment::get_axis2_point(const uint index) const {
         if(index >= _pointsAxis2.size()) {
             utils::log_error("get_axis_2 required index over axis2 size");
             exit(-1);
@@ -378,7 +377,7 @@ namespace primitives {
         return std::abs( _axis[0] * other._axis[0] + _axis[1] * other._axis[1] + _axis[2] * other._axis[2]  );
     }
 
-    const Eigen::Vector3d Cylinder_Segment::get_normal() const {
+    const vector3 Cylinder_Segment::get_normal() const {
         return _axis;
     }
 

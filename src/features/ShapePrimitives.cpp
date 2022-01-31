@@ -86,7 +86,7 @@ namespace rgbd_slam {
                 return false;
             }
 
-            double Cylinder::get_distance(const Eigen::Vector3d& point) {
+            double Cylinder::get_distance(const vector3& point) {
                 //TODO implement
                 utils::log_error("Error: get_point_distance is not implemented for Cylinder objects");
                 return 0;
@@ -140,7 +140,7 @@ namespace rgbd_slam {
                 return false;
             }
 
-            double Plane::get_distance(const Eigen::Vector3d& point) {
+            double Plane::get_distance(const vector3& point) {
                 return 
                     _normal[0] * (point[0] - _mean[0]) + 
                     _normal[1] * (point[1] - _mean[1]) + 
