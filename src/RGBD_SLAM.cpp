@@ -204,6 +204,7 @@ namespace rgbd_slam {
         const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
         const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
 
+        // the map will be updated only if a valid pose is found
         bool shouldUpdateMap = true;
         if (_computeKeypointCount != 0)
         {

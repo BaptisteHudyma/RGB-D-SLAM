@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+// check file existence
+#include <sys/stat.h>
 
 #include <opencv2/opencv.hpp>
 
@@ -32,36 +34,51 @@ void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiv
     }
 }
 
-/*
- * Load rgb and depth images from the folder dataPath at index imageIndex
- *
- * returns true is load is successful, else return false
+/**
+ * \brief checks the existence of a file (from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c)
  */
-bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage, cv::Mat& depthImage) {
+inline bool is_file_valid (const std::string& fileName) {
+    struct stat buffer;
+    return (stat (fileName.c_str(), &buffer) == 0);
+}
+
+/**
+ * \brief Load rgb and depth images from the folder dataPath at index imageIndex
+ *
+ * \return true is load is successful, else return false
+ */
+bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage, cv::Mat& depthImage) 
+{
     std::stringstream depthImagePath, rgbImgPath;
     rgbImgPath << dataPath.str() << "rgb_"<< imageIndex <<".png";
     depthImagePath << dataPath.str() << "depth_" << imageIndex << ".png";
 
-    rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
-    depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
-    depthImage.convertTo(depthImage, CV_32F);
+    if (is_file_valid(rgbImgPath.str()) and is_file_valid(depthImagePath.str()))
+    {
 
-    //check if images exists
-    return depthImage.data and rgbImage.data;
+        rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
+        depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
+        depthImage.convertTo(depthImage, CV_32F);
+
+        //check if images exists
+        return depthImage.data and rgbImage.data;
+    }
+    return false;
 }
 
-bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& useLineDetection, bool& useFrameOdometry, int& startIndex, unsigned int& jumpImages) {
+bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
+{
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
         "{p primitive     |  1   | display primitive masks }"
         "{l lines         |  0   | Detect lines }"
-        "{o odometry      |  0   | Use frame odometry }"
         "{i index         |  0   | First image to parse   }"
         "{j jump          |  0   | Only take every j image into consideration   }"
+        "{s save          |  0   | Should save all the pose to a file }"
         ;
 
     cv::CommandLineParser parser(argc, argv, keys);
-    parser.about("RGBD SLam v0");
+    parser.about("RGBD Slam v0");
 
     if (parser.has("help")) {
         parser.printMessage();
@@ -70,9 +87,9 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& use
 
     showPrimitiveMasks = parser.get<bool>("p");
     useLineDetection = parser.get<bool>("l");
-    useFrameOdometry = parser.get<bool>("o");
     startIndex = parser.get<int>("i");
     jumpImages = parser.get<unsigned int>("j");
+    shouldSavePoses = parser.get<bool>("s");
 
     if(not parser.check()) {
         std::cout << "RGBD SLAM: Some parameters are missing: call with -h to get the list of parameters";
@@ -85,11 +102,11 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& use
 
 int main(int argc, char* argv[]) {
     std::stringstream dataPath("../data/tunnel/");
-    bool showPrimitiveMasks, useLineDetection, useFrameOdometry;
+    bool showPrimitiveMasks, useLineDetection, shouldSavePoses;
     int startIndex;
     unsigned int jumpFrames = 0;
 
-    if (not parse_parameters(argc, argv, showPrimitiveMasks, useLineDetection, useFrameOdometry, startIndex, jumpFrames)) {
+    if (not parse_parameters(argc, argv, showPrimitiveMasks, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
 
@@ -102,7 +119,6 @@ int main(int argc, char* argv[]) {
 
     width = rgbImage.cols;
     height = rgbImage.rows;
-
 
 
     //start with identity pose
@@ -126,22 +142,25 @@ int main(int argc, char* argv[]) {
     //frame counters
     unsigned int totalFrameTreated = 0;
     unsigned int frameIndex = startIndex;   //current frame index count
-    
+
     double meanTreatmentTime = 0;
 
-    std::time_t timeOfTheDay = std::time(0);
-    std::tm* gmtTime = std::gmtime(&timeOfTheDay);
-    std::string dateAndTime = 
-        std::to_string(1900 + gmtTime->tm_year) + "-" + 
-        std::to_string(1 + gmtTime->tm_mon) + "-" + 
-        std::to_string(gmtTime->tm_mday) + "_" + 
-        std::to_string(1 + gmtTime->tm_hour) + ":" + 
-        std::to_string(1 + gmtTime->tm_min) + ":" +
-        std::to_string(1 + gmtTime->tm_sec);
-    std::cout << dateAndTime << std::endl;
     std::ofstream trajectoryFile;
-    trajectoryFile.open("traj_tunnel_mat_" + dateAndTime + ".txt");
-    trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
+    if (shouldSavePoses)
+    {
+        std::time_t timeOfTheDay = std::time(0);
+        std::tm* gmtTime = std::gmtime(&timeOfTheDay);
+        std::string dateAndTime = 
+            std::to_string(1900 + gmtTime->tm_year) + "-" + 
+            std::to_string(1 + gmtTime->tm_mon) + "-" + 
+            std::to_string(gmtTime->tm_mday) + "_" + 
+            std::to_string(1 + gmtTime->tm_hour) + ":" + 
+            std::to_string(1 + gmtTime->tm_min) + ":" +
+            std::to_string(1 + gmtTime->tm_sec);
+        std::cout << dateAndTime << std::endl;
+        trajectoryFile.open("traj_tunnel_mat_" + dateAndTime + ".txt");
+        trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
+    }
 
     //stop condition
     bool runLoop = true;
@@ -175,14 +194,18 @@ int main(int argc, char* argv[]) {
         ++totalFrameTreated;
         ++frameIndex;
 
-        //std::cout << "\x1B[2J\x1B[H" << pose << std::endl;
-        const rgbd_slam::vector3& position = pose.get_position();
-        const rgbd_slam::quaternion& rotation = pose.get_orientation_quaternion();
-        const rgbd_slam::EulerAngles& rotationEuler = rgbd_slam::utils::get_euler_angles_from_quaternion(rotation);
-        trajectoryFile << position.x() << "," << position.y() << "," << position.z() << ",";
-        trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl; 
+        if (shouldSavePoses)
+        {
+            //std::cout << "\x1B[2J\x1B[H" << pose << std::endl;
+            const rgbd_slam::vector3& position = pose.get_position();
+            const rgbd_slam::quaternion& rotation = pose.get_orientation_quaternion();
+            const rgbd_slam::EulerAngles& rotationEuler = rgbd_slam::utils::get_euler_angles_from_quaternion(rotation);
+            trajectoryFile << position.x() << "," << position.y() << "," << position.z() << ",";
+            trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl; 
+        }
     }
-    trajectoryFile.close();
+    if (shouldSavePoses)
+        trajectoryFile.close();
 
     std::cout << std::endl;
     std::cout << "End pose : " << pose << std::endl;
