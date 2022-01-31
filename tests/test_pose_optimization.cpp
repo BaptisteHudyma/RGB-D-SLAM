@@ -16,7 +16,7 @@ namespace rgbd_slam {
     const double END_POSITION = 10;
     const double END_ROTATION_YAW = 45 * EulerToRadian;    // [-180, 180] degrees
     const double END_ROTATION_PITCH = 45 * EulerToRadian;  // [-90, 90] degrees
-    const double END_ROTATION_ROLL = 20 * EulerToRadian;   // [-90, 90] degrees
+    const double END_ROTATION_ROLL = 20 * EulerToRadian;   // [-180, 180] degrees
 
     const double GOOD_GUESS = 0.9;
     const double MEDIUM_GUESS = 0.5;
@@ -102,6 +102,9 @@ namespace rgbd_slam {
         // Compute end pose
         utils::Pose endPose; 
         const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, endPose);
+
+        if (not isPoseValid)
+            FAIL();
 
         const double approxPositionError = 1;  // mm
         const double approxRotationError = 0.1 * EulerToRadian;   // 0.1 degree
