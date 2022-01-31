@@ -29,8 +29,6 @@ namespace rgbd_slam {
              * \param[in] startPose the initial pose
              * \param[in] imageWidth The width of the depth images (fixed)
              * \param[in] imageHeight The height of the depth image (fixed)
-             * \param[in] minHessian Minimum Hessian parameter for point detection
-             * \param[in] maxMatchDistance Maximum distance between the two closest point matches candidates (0 - 1)
              */
             RGBD_SLAM(const std::stringstream& dataPath, const utils::Pose &startPose, const uint imageWidth = 640, const uint imageHeight = 480);
 
@@ -48,6 +46,7 @@ namespace rgbd_slam {
             /**
              * \brief Compute a debug image
              *
+             * \param[in] camPose Current pose of the observer
              * \param[in] originalRGB Raw rgb image. Will be used as a base for the final image
              * \param[out] debugImage Output image
              * \param[in] elapsedTime Time since the last call (used for FPS count)

@@ -99,7 +99,7 @@ namespace rgbd_slam {
              *
              * \param[in] mapPoint The map point in 3D world coordinates
              * \param[in] matchedPoint The detected & matched point, in 3D screen coordinates
-             * \param[in] worldToCamMatrix The matrix to make a transformation from world coordinates to screen coordinates
+             * \param[in] camToWorldMatrix The matrix to make a transformation from screen coordinates to world coordinates
              *
              * \return The 3D screen distance between those two points
              */
@@ -117,7 +117,7 @@ namespace rgbd_slam {
             const matches_containers::match_point_container& _points; 
             const quaternion _rotation;
             const vector3 _position;
-            
+
             // Error function parameters
             const double _pointErrorMultiplier;
             const double _lossScale;

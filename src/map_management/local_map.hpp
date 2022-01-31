@@ -85,7 +85,7 @@ namespace rgbd_slam {
                  * \param[in, out] point A map point that we want to match to detected points
                  * \param[in] detectedKeypoint An object to handle all detected points in an image
                  * \param[in] worldToCamMatrix A matrix to transform a world point to a camera point
-                 * \param[int, out] matchedPoints A container associating the detected to the map points
+                 * \param[in, out] matchedPoints A container associating the detected to the map points
                  *
                  * \return A boolean indicating if this point was matched or not
                  */
@@ -108,7 +108,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_keypoint_map(const matrix34& previousCamToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
@@ -137,7 +137,7 @@ namespace rgbd_slam {
                  * \brief Draw a given map point on the given debug image
                  *
                  * \param[in] mapPoint The 3D world point
-                 * \param[in] worldToCamMatrix A matrix to transforme a world point to a camera point
+                 * \param[in] worldToCameraMatrix A matrix to transforme a world point to a camera point
                  * \param[in] pointColor The color of the point to draw
                  * \param[out] debugImage The image to draw the points modify
                  */

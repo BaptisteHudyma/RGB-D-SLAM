@@ -34,8 +34,10 @@ namespace rgbd_slam {
          * By Jonathan T. Barron
          *
          * \param[in] error The error to pass to the loss function
-         * \param[in] apha The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == - infinity is Welsch loss
+         * \param[in] alpha The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == - infinity is Welsch loss
          * \param[in] scale Standard deviation of the error, as a scale parameter
+         *
+         * \return A weight for the current error
          */
         double get_generalized_loss_estimator(const double error, const double alpha = 1, const double scale = 1)
         {

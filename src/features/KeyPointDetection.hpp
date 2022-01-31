@@ -30,6 +30,10 @@ namespace rgbd_slam {
             {
                 public:
                     /**
+                     * \param[in] inKeypoints New keypoints detected, no tracking informations
+                     * \param[in] inDescriptors Descriptors of the new keypoints
+                     * \param[in] lastKeypointsWithIds Keypoints tracked with optical flow, and their matching ids
+                     * \param[in] depthImage The depth image in which those keypoints were detected
                      * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
                      */
                     Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance = 0.7);
@@ -39,7 +43,7 @@ namespace rgbd_slam {
                      *
                      * \param[in] mapPointId The unique id that we want to check
                      * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched 
-*
+                     *
                      * \return the index of the tracked point in _keypoints, or -1 if no match was found
                      */
                     int get_tracking_match_index(const size_t mapPointId, const std::vector<bool>& isKeyPointMatchedContainer) const;
@@ -48,7 +52,6 @@ namespace rgbd_slam {
                     /**
                      * \brief get an index corresponding to the index of the point matches.
                      *
-                     * \param[in] maoPointId The unique id of the point to match
                      * \param[in] projectedMapPoint A 2D map point to match 
                      * \param[in] mapPointDescriptor The descriptor of this map point
                      * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched 
@@ -189,10 +192,12 @@ namespace rgbd_slam {
                     /**
                      * \brief Compute the current frame keypoints from optical flow. There is need for matching with this configuration
                      *
-                     * \param[in] imagePreviousThe input (previous) image to treat, ad a pyramide
-                     * \param[in] imageCurrent The input (current) image to treat, as a pyramide
-                     * \param[in] keypointsPrevious The keypoints detected in imagePrevious
-                     * \param[in] errorThreshold an error Threshold, in pixels
+                     * \param[in] imagePreviousPyramide The pyramid representation of the previous image
+                     * \param[in] imageCurrentPyramide The pyramid representation of the current image to analyze
+                     * \param[in] lastKeypointsWithIds The keypoints detected in imagePrevious
+                     * \param[in] pyramidDepth The chosen depth of the image pyramids
+                     * \param[in] windowSize The chosen size of the optical flow window 
+                     * \param[in] errorThreshold an error Threshold for optical flow, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
                      */
                     KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold) const;
