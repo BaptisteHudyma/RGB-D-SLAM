@@ -89,7 +89,7 @@ namespace rgbd_slam {
                  *
                  * \return A boolean indicating if this point was matched or not
                  */
-                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix34& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
+                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
@@ -99,7 +99,7 @@ namespace rgbd_slam {
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
                  * \param[in] cameraToWorldMatrix A transformation matrix to convert a camera point to a world point
                  */
-                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix);
+                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix);
 
                 /**
                  * \brief Update local keypoint map features 
@@ -108,7 +108,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_keypoint_map(const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
@@ -117,7 +117,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged_keypoints_map(const matrix34& previousCameraToWorldMatrix, const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_staged_keypoints_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Add unmatched detected points to the staged map
@@ -125,7 +125,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void add_umatched_keypoints_to_staged_map(const matrix34& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void add_umatched_keypoints_to_staged_map(const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
@@ -141,7 +141,7 @@ namespace rgbd_slam {
                  * \param[in] pointColor The color of the point to draw
                  * \param[out] debugImage The image to draw the points modify
                  */
-                void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix34& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const;
+                void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const;
 
             private:
                 // local map point container

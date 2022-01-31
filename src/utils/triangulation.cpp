@@ -13,7 +13,7 @@ namespace rgbd_slam {
             return utils::Pose(newPosition, pose.get_orientation_quaternion());
         }
 
-        bool Triangulation::is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const matrix34& worldToCameraMatrix, const double& maximumRetroprojectionError)
+        bool Triangulation::is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const matrix44& worldToCameraMatrix, const double& maximumRetroprojectionError)
         {
             vector2 projectedScreenPoint;
             const bool isRetroprojectionValid = utils::world_to_screen_coordinates(worldPoint, worldToCameraMatrix, projectedScreenPoint);
@@ -27,7 +27,7 @@ namespace rgbd_slam {
             return (retroprojectionError > maximumRetroprojectionError);
         }
 
-        bool Triangulation::triangulate(const matrix34& currentWorldToCameraMatrix, const matrix34& newWorldToCameraMatrix, const vector2& point2Da, const vector2& point2Db, vector3& triangulatedPoint) 
+        bool Triangulation::triangulate(const matrix44& currentWorldToCameraMatrix, const matrix44& newWorldToCameraMatrix, const vector2& point2Da, const vector2& point2Db, vector3& triangulatedPoint) 
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();

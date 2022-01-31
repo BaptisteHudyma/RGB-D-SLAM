@@ -57,7 +57,7 @@ namespace rgbd_slam {
 
     const matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error)
     {
-        const matrix34& W2CtransformationMatrix = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
+        const matrix44& W2CtransformationMatrix = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
         uint invalidPointsCounter = 0;
 
         matches_containers::match_point_container matchedPoints;

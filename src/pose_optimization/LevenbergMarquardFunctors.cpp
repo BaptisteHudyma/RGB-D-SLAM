@@ -130,7 +130,7 @@ namespace rgbd_slam {
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
             const vector3 translation(x(0), x(1), x(2));
 
-            const matrix34& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+            const matrix44& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
             double meanOfDistances = 0;
             size_t pointIndex = 0;  // index of the match being treated
 
@@ -167,7 +167,7 @@ namespace rgbd_slam {
             return 0;
         }
 
-        double Global_Pose_Estimator::get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& worldToCamMatrix) const
+        double Global_Pose_Estimator::get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& worldToCamMatrix) const
         {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
             vector2 mapPointAs2D; 
@@ -178,7 +178,7 @@ namespace rgbd_slam {
             return std::numeric_limits<double>::max();
         }
 
-        double Global_Pose_Estimator::get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) const
+        double Global_Pose_Estimator::get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& camToWorldMatrix) const
         {
             const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
 

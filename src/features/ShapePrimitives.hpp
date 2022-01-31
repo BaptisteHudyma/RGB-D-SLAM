@@ -152,9 +152,9 @@ namespace rgbd_slam {
                       */
                     virtual double get_distance(const Eigen::Vector3d& point) override;
 
+                    double _d;     //fourth component of the plane parameters
                 private:
                     Eigen::Vector3d _mean;      //mean center point
-                    double _d;     //fourth component of the plane parameters
             };
 
 

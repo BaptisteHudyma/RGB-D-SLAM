@@ -12,7 +12,7 @@ namespace rgbd_slam {
         /**
          * \brief Compute the retroprojection distance between a mapPoint and  a cameraPoint
          */
-        double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix34& camToWorldMatrix) 
+        double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& camToWorldMatrix) 
         {
             const vector3& worldPoint = utils::screen_to_world_coordinates(matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
             return (mapPoint - worldPoint).norm();
@@ -58,7 +58,7 @@ namespace rgbd_slam {
                 if (not isPoseValid)
                     continue;
 
-                const matrix34& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
+                const matrix44& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
 
                 // Select inliers by retroprojection threshold
                 matches_containers::match_point_container potentialInliersContainer;

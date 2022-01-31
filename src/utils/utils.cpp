@@ -27,21 +27,26 @@ namespace rgbd_slam {
                 << message << std::endl;
         }
 
-        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix34& cameraToWorldMatrix) 
+        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix44& cameraToWorldMatrix) 
         {
             const double x = (screenX - Parameters::get_camera_1_center_x()) * measuredZ / Parameters::get_camera_1_focal_x();
             const double y = (screenY - Parameters::get_camera_1_center_y()) * measuredZ / Parameters::get_camera_1_focal_y();
 
             vector4 worldPoint;
             worldPoint << x, y, measuredZ, 1.0;
-            return cameraToWorldMatrix * worldPoint;
+            return screen_to_world_coordinates(worldPoint, cameraToWorldMatrix).head<3>();
         }
 
-        bool world_to_screen_coordinates(const vector3& position3D, const matrix34& worldToCameraMatrix, vector2& screenCoordinates)
+        const vector4 screen_to_world_coordinates(const vector4& vector4d, const matrix44& screenToWorldMatrix)
+        {
+            return screenToWorldMatrix * vector4d;
+        }
+
+        bool world_to_screen_coordinates(const vector3& position3D, const matrix44& worldToCameraMatrix, vector2& screenCoordinates)
         {
             vector4 ptH;
             ptH << position3D, 1.0;
-            const vector3& point3D = (worldToCameraMatrix * ptH); 
+            const vector3& point3D = world_to_screen_coordinates(ptH, worldToCameraMatrix).head<3>(); 
 
             if (point3D.z() <= 0) {
                 return false;
@@ -55,32 +60,26 @@ namespace rgbd_slam {
             return true;
         }
 
-        const matrix34 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
+        const vector4 world_to_screen_coordinates(const vector4& vector4, const matrix44& worldToCameraMatrix)
         {
-            matrix34 cameraToWorldMatrix;
-            cameraToWorldMatrix << rotation.toRotationMatrix(), (position);
+            return worldToCameraMatrix * vector4;
+        }
+
+        const matrix44 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
+        {
+            matrix44 cameraToWorldMatrix;
+            cameraToWorldMatrix << rotation.toRotationMatrix(), position,  0, 0, 0, 1;
             return cameraToWorldMatrix;
         }
 
-        const matrix34 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
+        const matrix44 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
         {
-            const matrix33& worldToCamRotMtrx = (rotation.toRotationMatrix()).transpose();
-            const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * (position);
-            matrix34 worldToCamMtrx;
-            worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
-            return worldToCamMtrx;
+            return compute_world_to_camera_transform(compute_camera_to_world_transform(rotation, position));
         }
 
-        const matrix34 compute_world_to_camera_transform(const matrix34& cameraToWorldMatrix)
+        const matrix44 compute_world_to_camera_transform(const matrix44& cameraToWorldMatrix)
         {
-            const matrix33& rotationMatrix = cameraToWorldMatrix.block<3, 3>(0, 0);
-            const vector3& position = cameraToWorldMatrix.block<3, 1>(0, 3);
-        
-            const matrix33& worldToCamRotMtrx = rotationMatrix.transpose();
-            const vector3& worldToCamTranslation = (-worldToCamRotMtrx) * (position);
-            matrix34 worldToCamMtrx;
-            worldToCamMtrx << worldToCamRotMtrx, worldToCamTranslation;
-            return worldToCamMtrx;
+            return cameraToWorldMatrix.inverse();
         }
 
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)
