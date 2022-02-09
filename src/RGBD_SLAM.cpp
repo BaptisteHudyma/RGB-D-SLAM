@@ -50,8 +50,8 @@ namespace rgbd_slam {
 
             //plane/cylinder finder
             _primitiveDetector = new features::primitives::Primitive_Detection(
-                    _height,
                     _width,
+                    _height,
                     Parameters::get_depth_map_patch_size(),
                     Parameters::get_maximum_plane_match_angle(),
                     Parameters::get_maximum_merge_distance(),

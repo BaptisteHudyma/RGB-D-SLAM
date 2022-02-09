@@ -16,7 +16,7 @@ namespace primitives {
             /**
               * \param[in] binPerCoordCount Size of a bin, in pixels
               */
-            Histogram(const uint binPerCoordCount);
+            explicit Histogram(const uint binPerCoordCount);
 
             /**
               * \brief Initialise the histogram 
@@ -29,9 +29,9 @@ namespace primitives {
             /**
               * \brief Return the points in the bin containing the most points
               *
-              * \param[out] pointsIDs Container storing the points in the biggest bin
+              * \param[out] pointsIds Container storing the points in the biggest bin
               */
-            void get_points_from_most_frequent_bin(std::vector<uint>& pointsIDs);
+            void get_points_from_most_frequent_bin(std::vector<uint>& pointsIds) const;
 
             /**
               * \brief Remove all points from a bin

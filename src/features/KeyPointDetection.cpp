@@ -249,12 +249,15 @@ namespace rgbd_slam {
              */
 
 
-            Key_Point_Extraction::Key_Point_Extraction(const unsigned int minHessian) 
-            {
+            Key_Point_Extraction::Key_Point_Extraction(const unsigned int minHessian) :
                 // Create feature extractor and matcher
-                _featureDetector = cv::FastFeatureDetector::create( minHessian );
-                _advancedFeatureDetector = cv::FastFeatureDetector::create( minHessian / 2 );
-                _descriptorExtractor = cv::xfeatures2d::BriefDescriptorExtractor::create();
+                _featureDetector(cv::FastFeatureDetector::create( minHessian )),
+                _advancedFeatureDetector(cv::FastFeatureDetector::create( minHessian / 2 )),
+                _descriptorExtractor(cv::xfeatures2d::BriefDescriptorExtractor::create())
+            {
+                assert(_featureDetector != nullptr);
+                assert(_advancedFeatureDetector != nullptr);
+                assert(_descriptorExtractor != nullptr);
 
                 //profiling
                 _meanPointExtractionTime = 0.0;
@@ -288,7 +291,7 @@ namespace rgbd_slam {
                 return framePoints;
             }
 
-            const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> keypointContainer) const
+            const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const
             {
                 const uint radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_diameter();  // in pixels
                 const cv::Scalar fillColor(0, 0, 0);

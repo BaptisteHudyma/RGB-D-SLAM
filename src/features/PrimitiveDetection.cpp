@@ -13,7 +13,7 @@ namespace rgbd_slam {
     namespace features {
         namespace primitives {
 
-            Primitive_Detection::Primitive_Detection(const uint height, const uint width, const uint blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
+            Primitive_Detection::Primitive_Detection(const uint width, const uint height, const uint blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
                 :  
                     _histogram(blocSize), 
                     _width(width), _height(height),  _blocSize(blocSize), 
@@ -69,7 +69,7 @@ namespace rgbd_slam {
                 setMaskTime = 0;
             }
 
-            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::unordered_map<int, uint>& associatedIds, const double timeElapsed) {
+            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::unordered_map<int, uint>& associatedIds, const double elapsedTime) {
                 //apply masks on image
                 for(uint r = 0; r < _height; ++r){
                     const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
@@ -102,9 +102,9 @@ namespace rgbd_slam {
 
                 // Show frame rate and labels
                 cv::rectangle(labeledImage, cv::Point(0,0), cv::Point(_width, 20), cv::Scalar(0,0,0), -1);
-                if(timeElapsed > 0) {
+                if(elapsedTime > 0) {
                     std::stringstream fps;
-                    fps << static_cast<int>((1 / timeElapsed + 0.5)) << " fps";
+                    fps << static_cast<int>((1 / elapsedTime + 0.5)) << " fps";
                     cv::putText(labeledImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
                 }
 
@@ -599,7 +599,7 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix) {
+            void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix) const {
                 uint rows2scanCount = segmentMap.rows - 1;
                 uint cols2scanCount = segmentMap.cols - 1;
 

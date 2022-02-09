@@ -8,7 +8,11 @@ namespace primitives {
 
     using namespace std;
 
-    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId) {
+    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId) :
+        _cellActivatedCount(0),
+        _segmentCount(0),
+        _local2globalMap(nullptr)
+    {
         //copy stored data
         _radius.push_back(seg._radius[subRegionId]);
         _centers.push_back(seg._centers[subRegionId]);
@@ -18,39 +22,36 @@ namespace primitives {
         _axis[0] = seg._axis[0];
         _axis[1] = seg._axis[1];
         _axis[2] = seg._axis[2];
-
-        _local2globalMap = nullptr;
-        _segmentCount = 0;
-        _cellActivatedCount = 0;
     }
 
     /*
      *  Copy constructor
      */
-    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg) {
-        _radius = seg._radius;
-        _centers = seg._centers;
+    Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg) :
+        _centers(seg._centers),
+        _radius(seg._radius),
+        _cellActivatedCount(0),
+        _segmentCount(0),
+        _local2globalMap(nullptr)
+    {
         //_pointsAxis1 = seg.pointsAxis1; 
         //_pointsAxis2 = seg.pointsAxis2;
         //_normalsAxis1Axis2 = seg._normalsAxis1Axis2;
         _axis[0] = seg._axis[0];
         _axis[1] = seg._axis[1];
         _axis[2] = seg._axis[2];
-
-        _local2globalMap = nullptr;
-        _segmentCount = 0;
-        _cellActivatedCount = 0;
     }
 
-    Cylinder_Segment::Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const uint planeCount, const bool* activatedMask, const uint cellActivatedCount) {
+    Cylinder_Segment::Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const uint planeCount, const bool* activatedMask, const uint cellActivatedCount) :
+        _cellActivatedCount(cellActivatedCount),
+        _segmentCount(0),
+        _local2globalMap(nullptr)
+    {
         uint samplesCount = planeCount;
-        _cellActivatedCount = cellActivatedCount;
 
         const float minimumCyinderScore = Parameters::get_cylinder_ransac_minimm_score();
         const float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
 
-        _segmentCount = 0;
-        _local2globalMap = nullptr;
         _local2globalMap = new uint[_cellActivatedCount];
 
         Eigen::MatrixXd N(3, 2 * _cellActivatedCount);

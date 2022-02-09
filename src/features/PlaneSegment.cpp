@@ -23,29 +23,28 @@ namespace primitives {
         _ptsPerCellCount(seg._ptsPerCellCount), 
         _minZeroPointCount(seg._minZeroPointCount), 
         _cellWidth(seg._cellWidth), 
-        _cellHeight(seg._cellHeight)
+        _cellHeight(seg._cellHeight),
+        _pointCount(seg._pointCount),
+        _score(seg._score),
+        _MSE(seg._MSE),
+        _isPlanar(seg._isPlanar),
+        _mean(seg._mean),
+        _normal(seg._normal),
+        _d(seg._d),
+        _Sx(seg._Sx),
+        _Sy(seg._Sy),
+        _Sz(seg._Sz),
+        _Sxs(seg._Sxs),
+        _Sys(seg._Sys),
+        _Szs(seg._Szs),
+        _Sxy(seg._Sxy),
+        _Syz(seg._Syz),
+        _Szx(seg._Szx)
     {
-        _pointCount = seg._pointCount;
-        _score = seg._score;
-        _MSE = seg._MSE;
-        _isPlanar = seg._isPlanar;
-
-        _mean = seg._mean;
-        _normal = seg._normal;
-        _d = seg._d;
-
-        _Sx = seg._Sx;
-        _Sy = seg._Sy;
-        _Sz = seg._Sz;
-        _Sxs = seg._Sxs;
-        _Sys = seg._Sys;
-        _Szs = seg._Szs;
-        _Sxy = seg._Sxy;
-        _Syz = seg._Syz;
-        _Szx = seg._Szx;
     }
 
-    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const uint cellId) {
+    void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const uint cellId) 
+    {
         clear_plane_parameters();
         _isPlanar = true;
 
@@ -142,28 +141,28 @@ namespace primitives {
     }
 
 
-    void Plane_Segment::expand_segment(const Plane_Segment& ps) {
-        _Sx += ps._Sx;
-        _Sy += ps._Sy;
-        _Sz += ps._Sz;
+    void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {
+        _Sx += planeSegment._Sx;
+        _Sy += planeSegment._Sy;
+        _Sz += planeSegment._Sz;
 
-        _Sxs += ps._Sxs;
-        _Sys += ps._Sys;
-        _Szs += ps._Szs;
+        _Sxs += planeSegment._Sxs;
+        _Sys += planeSegment._Sys;
+        _Szs += planeSegment._Szs;
 
-        _Sxy += ps._Sxy;
-        _Syz += ps._Syz;
-        _Szx += ps._Szx;
+        _Sxy += planeSegment._Sxy;
+        _Syz += planeSegment._Syz;
+        _Szx += planeSegment._Szx;
 
-        _pointCount += ps._pointCount;
+        _pointCount += planeSegment._pointCount;
     }
 
     /*
      * Merge the PCA saved values in prevision of a plane fitting
      * This function do not make any plane calculations
      */
-    void Plane_Segment::expand_segment(const std::unique_ptr<Plane_Segment>& ps) {
-        expand_segment(*ps);
+    void Plane_Segment::expand_segment(const std::unique_ptr<Plane_Segment>& planeSegment) {
+        expand_segment(*planeSegment);
     }
 
     void Plane_Segment::fit_plane() {
@@ -238,18 +237,18 @@ namespace primitives {
     }
 
 
-    double Plane_Segment::get_normal_similarity(const Plane_Segment& p) {
+    double Plane_Segment::get_normal_similarity(const Plane_Segment& p) const {
         return (_normal.dot(p._normal));
     }
 
-    double Plane_Segment::get_signed_distance(const double point[3]) {
+    double Plane_Segment::get_signed_distance(const double point[3]) const {
         return 
             _normal[0] * (point[0] - _mean[0]) + 
             _normal[1] * (point[1] - _mean[1]) + 
             _normal[2] * (point[2] - _mean[2]); 
     }
 
-    double Plane_Segment::get_signed_distance(const vector3& point) {
+    double Plane_Segment::get_signed_distance(const vector3& point) const {
         return _normal.dot(point - _mean);
     }
 

@@ -62,18 +62,19 @@ namespace rgbd_slam {
          *      Staged_Point
          */
 
-        Staged_Point::Staged_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor)
-            : IMap_Point_With_Tracking(coordinates, covariance, descriptor)
-        {
-            _matchesCount = 0; 
-            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
-        }
-        Staged_Point::Staged_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
-            : IMap_Point_With_Tracking(coordinates, covariance, descriptor, id)
-        {
-            _matchesCount = 0; 
-            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
-        }
+        Staged_Point::Staged_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+            IMap_Point_With_Tracking(coordinates, covariance, descriptor),
+
+            _matchesCount(0)
+            {
+            }
+
+        Staged_Point::Staged_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
+            IMap_Point_With_Tracking(coordinates, covariance, descriptor, id),
+
+            _matchesCount(0)
+            {
+            }
 
         double Staged_Point::get_confidence() const 
         {
@@ -109,19 +110,20 @@ namespace rgbd_slam {
          */
 
 
-        Map_Point::Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor) 
-            : IMap_Point_With_Tracking(coordinates, covariance, descriptor)
+        Map_Point::Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+            IMap_Point_With_Tracking(coordinates, covariance, descriptor),
+
+            _failTrackingCount(0),
+            _age(0)
         {
-            _age = 0;
-            _failTrackingCount = 0;
-            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
-        Map_Point::Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) 
-            : IMap_Point_With_Tracking(coordinates, covariance, descriptor, id)
+
+        Map_Point::Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
+            IMap_Point_With_Tracking(coordinates, covariance, descriptor, id),
+
+            _failTrackingCount(0),
+            _age(0)
         {
-            _age = 0;
-            _failTrackingCount = 0;
-            _lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
 
         double Map_Point::get_confidence() const

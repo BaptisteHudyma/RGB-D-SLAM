@@ -98,12 +98,13 @@ namespace rgbd_slam {
              *
              */
             Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, const uint id, const cv::Mat& shapeMask) :
-                Primitive(id, shapeMask)
+                Primitive(id, shapeMask),
+
+                _d(planeSeg->get_plane_d()),
+                _mean(planeSeg->get_mean())
             {
                 _primitiveType = PrimitiveType::Plane;
-                _mean = planeSeg->get_mean();
                 _normal = planeSeg->get_normal();
-                _d = planeSeg->get_plane_d();
             }
 
             bool Plane::is_similar(const std::unique_ptr<Primitive>& prim) {

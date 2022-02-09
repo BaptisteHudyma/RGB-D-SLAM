@@ -32,11 +32,11 @@ namespace rgbd_slam {
          * \brief Transform a vector in screen space to a vector in world space
          *
          * \param[in] vector4d A vector in screen space
-         * \param[in] screenToWorldMatrix Matrix to transform local to world coordinates
+         * \param[in] cameraToWorldMatrix Matrix to transform local to world coordinates
          *
          * \return A vector in world space
          */
-        const vector4 screen_to_world_coordinates(const vector4& vector4d, const matrix44& screenToWorldMatrix);
+        const vector4 screen_to_world_coordinates(const vector4& vector4d, const matrix44& cameraToWorldMatrix);
 
 
         /**
@@ -74,8 +74,10 @@ namespace rgbd_slam {
 
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
+         *
+         * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
          */
-        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointError);
+        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance);
 
         /**
          * \brief Compute a quaternion from the given euler angles, in radians

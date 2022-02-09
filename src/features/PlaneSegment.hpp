@@ -52,17 +52,17 @@ namespace primitives {
              *
              * \return A number between -1 and 1
              */
-            double get_normal_similarity(const Plane_Segment& p);
+            double get_normal_similarity(const Plane_Segment& p) const;
 
             /**
              * \brief Compute the signed distance from a plane to a point
              */
-            double get_signed_distance(const double point[3]);
+            double get_signed_distance(const double point[3]) const;
 
             /**
              * \brief Compute the signed distance from a plane to a point
              */
-            double get_signed_distance(const vector3& point);
+            double get_signed_distance(const vector3& point) const;
 
             /**
              * \brief Fit a plane to the contained points using PCA

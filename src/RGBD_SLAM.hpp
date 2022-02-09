@@ -35,13 +35,13 @@ namespace rgbd_slam {
             /**
              * \brief Estimates a new pose from the given images
              *
-             * \param[in] rgbImage Raw RGB image
-             * \param[in] depthImage Raw depth Image
+             * \param[in] inputRgbImage Raw RGB image
+             * \param[in] inputDepthImage Raw depth Image
              * \param[in] detectLines Should we use line detection on the RGB image ?
              *
              * \return The new estimated pose 
              */
-            const utils::Pose track(const cv::Mat& rgbImage, const cv::Mat& depthImage, bool detectLines = false);
+            const utils::Pose track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines = false);
 
             /**
              * \brief Compute a debug image
@@ -57,7 +57,7 @@ namespace rgbd_slam {
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
              */
-            void show_statistics(double frameMeanTreatmentTime) const;
+            void show_statistics(double meanFrameTreatmentTime) const;
 
         protected:
 
@@ -111,6 +111,11 @@ namespace rgbd_slam {
             double _meanTreatmentTime;
             double _meanLineTreatment;
             double _meanPoseTreatmentTime;
+
+        private:
+            // remove copy constructors as we have dynamically instantiated members
+            RGBD_SLAM(const RGBD_SLAM& rgbdSlam) = delete;
+            RGBD_SLAM& operator=(const RGBD_SLAM& rgbdSlam) = delete;
     };
 
 

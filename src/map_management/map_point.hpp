@@ -59,7 +59,7 @@ namespace rgbd_slam {
              */
             virtual void update_unmatched(int removeNMatches = 1) = 0;
 
-            const matrix33 get_covariance_matrix() { return _covariance; };
+            const matrix33 get_covariance_matrix() const { return _covariance; };
 
             int _lastMatchedIndex;
 
@@ -113,10 +113,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Compute a confidence in this point (-1, 1)
                  */
-                double get_confidence() const;
-
-                // count of unique matches
-                int _matchedCount;
+                double get_confidence() const override;
         };
 
 
@@ -155,7 +152,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Compute a confidence score (-1, 1)
                  */
-                double get_confidence() const; 
+                double get_confidence() const override; 
 
             private:
                 // The number of times this point failed tracking.
@@ -163,9 +160,6 @@ namespace rgbd_slam {
 
                 // Successful matches count
                 int _age;   
-
-                //0 - 1: keypoint confidence (consecutive matches, ...) 
-                float _confidence;
         };
 
     } /* map_management */

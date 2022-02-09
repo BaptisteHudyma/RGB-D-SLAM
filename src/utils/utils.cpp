@@ -27,19 +27,19 @@ namespace rgbd_slam {
                 << message << std::endl;
         }
 
-        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix44& screenToWorldMatrix) 
+        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix44& cameraToWorldMatrix) 
         {
             const double x = (screenX - Parameters::get_camera_1_center_x()) * measuredZ / Parameters::get_camera_1_focal_x();
             const double y = (screenY - Parameters::get_camera_1_center_y()) * measuredZ / Parameters::get_camera_1_focal_y();
 
             vector4 worldPoint;
             worldPoint << x, y, measuredZ, 1.0;
-            return screen_to_world_coordinates(worldPoint, screenToWorldMatrix).head<3>();
+            return screen_to_world_coordinates(worldPoint, cameraToWorldMatrix).head<3>();
         }
 
-        const vector4 screen_to_world_coordinates(const vector4& vector4d, const matrix44& screenToWorldMatrix)
+        const vector4 screen_to_world_coordinates(const vector4& vector4d, const matrix44& cameraToWorldMatrix)
         {
-            return screenToWorldMatrix * vector4d;
+            return cameraToWorldMatrix * vector4d;
         }
 
         bool world_to_screen_coordinates(const vector3& position3D, const matrix44& worldToScreenMatrix, vector2& screenCoordinates)
@@ -79,9 +79,9 @@ namespace rgbd_slam {
             return compute_world_to_camera_transform(compute_camera_to_world_transform(rotation, position));
         }
 
-        const matrix44 compute_world_to_camera_transform(const matrix44& screenToWorldMatrix)
+        const matrix44 compute_world_to_camera_transform(const matrix44& cameraToWorldMatrix)
         {
-            return screenToWorldMatrix.inverse();
+            return cameraToWorldMatrix.inverse();
         }
 
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)

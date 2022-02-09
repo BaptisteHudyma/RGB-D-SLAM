@@ -15,12 +15,12 @@ namespace primitives {
     class Depth_Operations {
         public:
             /**
-              * \param[in] paramFilePath Path of the file containing the camera parameters
+              * \param[in] parameterFilePath Path of the file containing the camera parameters
               * \param[in] width Depth image width (constant)
               * \param[in] height Depth image height (constant)
               * \param[in] cellSize Size of the cloud point division (> 0)
               */
-            Depth_Operations(const std::string& paramFilePath, const uint width, const uint height, const uint cellSize);
+            Depth_Operations(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 

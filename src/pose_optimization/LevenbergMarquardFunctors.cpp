@@ -52,14 +52,15 @@ namespace rgbd_slam {
                 return (abs(alpha - 2) / alpha) * ( pow(internalTerm, alpha / 2.0) - 1);
             }
             // ]0, 2]
-            else if (alpha <= 2 and alpha > 0)
+            else if (alpha > 0)
             {
                 return 0.5 * scaledSquaredError;
             }
             // ]-100, 0]
-            else if (alpha <= 0 and alpha > -100)
+            else if (alpha > -100)
             {
-                return log(0.5 * scaledSquaredError + 1);
+                // log(1 + 0.5 * error)
+                return log1p(0.5 * scaledSquaredError);
             }
             // ]-oo, -100]
             else 

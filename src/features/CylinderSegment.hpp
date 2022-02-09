@@ -24,10 +24,10 @@ namespace primitives {
              *
              * \param[in] planeGrid The plane segment container
              * \param[in] planeCount
-             * \param[in] activated_mask An array of size planeCount, referencing activated plane segments 
+             * \param[in] activatedMask An array of size planeCount, referencing activated plane segments 
              * \param[in] cellActivatedCount
              */
-            Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const uint planeCount, const bool* activated_mask, const uint cellActivatedCount);
+            Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const uint planeCount, const bool* activatedMask, const uint cellActivatedCount);
 
             /**
              * \brief Copy constructor

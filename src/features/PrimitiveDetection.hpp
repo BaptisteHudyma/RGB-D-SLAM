@@ -44,11 +44,11 @@ namespace primitives {
               * \param[in] width The fixed depth image width
               * \param[in] height The fixed depth image height
               * \param[in] blocSize Size of an image division, in pixels.
-              * \param[in] minCosAngeForMerge Minimum cosinus of the angle of two planes to merge those planes
+              * \param[in] minCosAngleForMerge Minimum cosinus of the angle of two planes to merge those planes
               * \param[in] maxMergeDist Maximum distance between the center of two planes to merge those planes
               * \param[in] useCylinderDetection Transform some planes in cylinders, when they show an obvious cylinder shape
               */
-            Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngeForMerge = 0.9659, const float maxMergeDist = 50, const bool useCylinderDetection = false);
+            Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659, const float maxMergeDistance = 50, const bool useCylinderDetection = false);
 
             /**
               * \brief Main compute function: computes the primitives in the depth imahe
@@ -162,7 +162,7 @@ namespace primitives {
              * \param[in] segmentMap
              * \param[out] planesAssociationMatrix
              */
-            void get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix);
+            void get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix) const;
 
         private:
             Histogram _histogram;
