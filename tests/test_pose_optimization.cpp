@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <random>
 
 #include "pose_optimization/pose_optimization.hpp"
 #include "pose.hpp"
@@ -7,7 +8,7 @@
 
 namespace rgbd_slam {
 
-    const unsigned int NUMBER_OF_POINTS_IN_CUBE = pow(4, 3);
+    const uint NUMBER_OF_POINTS_IN_CUBE = pow(4, 3);
     const double CUBE_SIDE_SIZE = 20;   // Millimeters
     const double CUBE_START_X = 100;
     const double CUBE_START_Y = 100;
@@ -22,6 +23,12 @@ namespace rgbd_slam {
     const double MEDIUM_GUESS = 0.5;
     const double BAD_GUESS = 0.1;
 
+    // Error associated with each points of the cube
+    const double POINTS_ERROR = 5; 
+
+    // set random
+    std::random_device randomDevice;
+    std::mt19937 randomEngine(randomDevice());
 
     struct Point {
         double x;
@@ -29,24 +36,27 @@ namespace rgbd_slam {
         double z;
     };
     typedef std::vector<Point> point_container;
-    const point_container get_cube_points(const unsigned int numberOfPoints)
+    const point_container get_cube_points(const uint numberOfPoints, const double error)
     {
-        const unsigned int numberOfPointsByLine = static_cast<unsigned int>(pow(static_cast<double>(numberOfPoints), 1.0 / 3.0));
+        assert(error >= 0);
+        std::uniform_real_distribution<double> errorDistribution(-error, error);
+
+        const uint numberOfPointsByLine = static_cast<uint>(pow(static_cast<double>(numberOfPoints), 1.0 / 3.0));
         const double numberOfPointsByLineDouble = CUBE_SIDE_SIZE / static_cast<double>(numberOfPointsByLine - 1);
 
         point_container pointContainer;
         pointContainer.reserve(pow(numberOfPointsByLine, 3));
 
-        for(unsigned int cubePlaneIndex = 0; cubePlaneIndex <= numberOfPointsByLine; ++cubePlaneIndex)
+        for(uint cubePlaneIndex = 0; cubePlaneIndex <= numberOfPointsByLine; ++cubePlaneIndex)
         {
-            for(unsigned int cubeLineIndex = 0; cubeLineIndex <= numberOfPointsByLine; ++cubeLineIndex)
+            for(uint cubeLineIndex = 0; cubeLineIndex <= numberOfPointsByLine; ++cubeLineIndex)
             {
-                for(unsigned int cubeColumnIndex = 0; cubeColumnIndex <= numberOfPointsByLine; ++cubeColumnIndex)
+                for(uint cubeColumnIndex = 0; cubeColumnIndex <= numberOfPointsByLine; ++cubeColumnIndex)
                 {
                     Point cubePoint;
-                    cubePoint.x = CUBE_START_X + cubePlaneIndex  * numberOfPointsByLineDouble;
-                    cubePoint.y = CUBE_START_Y + cubeLineIndex   * numberOfPointsByLineDouble;
-                    cubePoint.z = CUBE_START_Z + cubeColumnIndex * numberOfPointsByLineDouble;
+                    cubePoint.x = CUBE_START_X + cubePlaneIndex  * numberOfPointsByLineDouble + errorDistribution(randomEngine);
+                    cubePoint.y = CUBE_START_Y + cubeLineIndex   * numberOfPointsByLineDouble + errorDistribution(randomEngine);
+                    cubePoint.z = CUBE_START_Z + cubeColumnIndex * numberOfPointsByLineDouble + errorDistribution(randomEngine);
 
                     pointContainer.push_back(cubePoint);
                 }
@@ -55,13 +65,14 @@ namespace rgbd_slam {
         return pointContainer;
     }
 
-    const matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error)
+    const matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
     {
+        assert(error >= 0);
         const matrix44& W2CtransformationMatrix = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
         uint invalidPointsCounter = 0;
 
         matches_containers::match_point_container matchedPoints;
-        for (const Point point : get_cube_points(NUMBER_OF_POINTS_IN_CUBE))
+        for (const Point point : get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error))
         {
             // world coordinates
             const vector3 worldPointStart(point.x, point.y, point.z);
@@ -106,7 +117,7 @@ namespace rgbd_slam {
         if (not isPoseValid)
             FAIL();
 
-        const double approxPositionError = 1;  // mm
+        const double approxPositionError = 1 + POINTS_ERROR;  // mm
         const double approxRotationError = 0.1 * EulerToRadian;   // 0.1 degree
         EXPECT_NEAR(trueEndPose.get_position().x(), endPose.get_position().x(), approxPositionError);
         EXPECT_NEAR(trueEndPose.get_position().y(), endPose.get_position().y(), approxPositionError);
@@ -141,7 +152,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -170,7 +181,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -198,7 +209,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -226,7 +237,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -254,7 +265,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -288,7 +299,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -316,7 +327,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -344,7 +355,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -377,7 +388,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -402,7 +413,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -427,7 +438,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -452,7 +463,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -480,7 +491,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -505,7 +516,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -530,7 +541,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -555,7 +566,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -583,7 +594,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -608,7 +619,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -633,7 +644,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
@@ -658,7 +669,7 @@ namespace rgbd_slam {
         const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, 0);
+        const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
 
         // Estimated pose base
