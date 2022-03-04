@@ -7,7 +7,7 @@
 \doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static bool \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation_a84eccfcde046289c5c19c83d6433f807}{triangulate}} (const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&current\+World\+To\+Camera\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&new\+World\+To\+Camera\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point2\+Da, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point2\+Db, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&triangulated\+Point)
+static bool \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation_a94ee5519310f6c56e45a034c32ad93c8}{triangulate}} (const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&current\+World\+To\+Camera\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&new\+World\+To\+Camera\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point2\+Da, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point2\+Db, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&triangulated\+Point)
 \begin{DoxyCompactList}\small\item\em Triangulate a world point from two successive 2D matches, with an already known pose. \end{DoxyCompactList}\item 
 static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation_ac4b5d4f83c1def50857b591a0c8dd4dc}{get\+\_\+supposed\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose, const double baseline\+Pose\+Supposition)
 \begin{DoxyCompactList}\small\item\em Return a weak supposition of a new pose, from an optimized pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -24,11 +24,11 @@ static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mb
 
 Return a weak supposition of a new pose, from an optimized pose. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_triangulation_a84eccfcde046289c5c19c83d6433f807}\label{classrgbd__slam_1_1utils_1_1_triangulation_a84eccfcde046289c5c19c83d6433f807}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_triangulation_a94ee5519310f6c56e45a034c32ad93c8}\label{classrgbd__slam_1_1utils_1_1_triangulation_a94ee5519310f6c56e45a034c32ad93c8}} 
 \index{rgbd\_slam::utils::Triangulation@{rgbd\_slam::utils::Triangulation}!triangulate@{triangulate}}
 \index{triangulate@{triangulate}!rgbd\_slam::utils::Triangulation@{rgbd\_slam::utils::Triangulation}}
 \doxysubsubsection{\texorpdfstring{triangulate()}{triangulate()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Triangulation\+::triangulate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{current\+World\+To\+Camera\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{new\+World\+To\+Camera\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point2\+Da,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point2\+Db,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{triangulated\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Triangulation\+::triangulate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{current\+World\+To\+Camera\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{new\+World\+To\+Camera\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point2\+Da,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point2\+Db,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{triangulated\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 
 

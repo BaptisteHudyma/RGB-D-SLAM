@@ -7,7 +7,7 @@ A class to detect and store keypoints.
 
 
 
-{\ttfamily \#include $<$Key\+Point\+Detection.\+hpp$>$}
+{\ttfamily \#include $<$keypoint\+\_\+detection.\+hpp$>$}
 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -25,7 +25,7 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point__
 \begin{DoxyCompactList}\small\item\em Compute the current frame keypoints from optical flow. There is need for matching with this configuration. \end{DoxyCompactList}\item 
 const std\+::vector$<$ cv\+::\+Point2f $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd4e2a25365bca3f79c605ac069503c}{detect\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&mask, const uint minimum\+Points\+For\+Validity) const
 \begin{DoxyCompactList}\small\item\em Compute new key point, with an optional mask to exclude detection zones. \end{DoxyCompactList}\item 
-const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a0529378729be6612a2e26a8cec4bed91}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const cv\+::\+Size image\+Size, const std\+::vector$<$ cv\+::\+Point2f $>$ keypoint\+Container) const
+const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a41ff5b3e5511b495d5bbb94d4048c5de}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const cv\+::\+Size image\+Size, const std\+::vector$<$ cv\+::\+Point2f $>$ \&keypoint\+Container) const
 \end{DoxyCompactItemize}
 
 
@@ -42,11 +42,11 @@ A class to detect and store keypoints.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a0529378729be6612a2e26a8cec4bed91}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a0529378729be6612a2e26a8cec4bed91}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a41ff5b3e5511b495d5bbb94d4048c5de}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a41ff5b3e5511b495d5bbb94d4048c5de}} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!compute\_key\_point\_mask@{compute\_key\_point\_mask}}
 \index{compute\_key\_point\_mask@{compute\_key\_point\_mask}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{compute\_key\_point\_mask()}{compute\_key\_point\_mask()}}
-{\footnotesize\ttfamily const cv\+::\+Mat rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::compute\+\_\+key\+\_\+point\+\_\+mask (\begin{DoxyParamCaption}\item[{const cv\+::\+Size}]{image\+Size,  }\item[{const std\+::vector$<$ cv\+::\+Point2f $>$}]{keypoint\+Container }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily const cv\+::\+Mat rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::compute\+\_\+key\+\_\+point\+\_\+mask (\begin{DoxyParamCaption}\item[{const cv\+::\+Size}]{image\+Size,  }\item[{const std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{keypoint\+Container }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aca210323ab089b71468435f136d96aad}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aca210323ab089b71468435f136d96aad}} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!compute\_keypoints@{compute\_keypoints}}
@@ -142,5 +142,5 @@ Show the time statistics for certain parts of the program. Kind of a basic profi
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_key_point_detection_8hpp}{Key\+Point\+Detection.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_key_point_detection_8cpp}{Key\+Point\+Detection.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{keypoint__detection_8hpp}{keypoint\+\_\+detection.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{keypoint__detection_8cpp}{keypoint\+\_\+detection.\+cpp}}\end{DoxyCompactItemize}

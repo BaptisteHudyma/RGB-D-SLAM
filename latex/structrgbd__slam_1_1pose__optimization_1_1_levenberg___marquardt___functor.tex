@@ -7,7 +7,7 @@ Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotatio
 
 
 
-{\ttfamily \#include $<$Levenberg\+Marquard\+Functors.\+hpp$>$}
+{\ttfamily \#include $<$levenberg\+\_\+marquard\+\_\+functors.\+hpp$>$}
 
 \doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
@@ -53,28 +53,28 @@ Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotatio
 \index{InputType@{InputType}!rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}}
 \doxysubsubsection{\texorpdfstring{InputType}{InputType}}
 {\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
-typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa934a64e8c19364010a4f60b41230effa}{Inputs\+At\+Compile\+Time}}, 1$>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a10beb8913f4937bc0c3de4e7eb048124}{Input\+Type}}}
+typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa934a64e8c19364010a4f60b41230effa}{Inputs\+At\+Compile\+Time}}, 1$>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\+Input\+Type}
 
 \mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_aa3fc6a4805e1f47ce21048d8f19db1b8}\label{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_aa3fc6a4805e1f47ce21048d8f19db1b8}} 
 \index{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}!JacobianType@{JacobianType}}
 \index{JacobianType@{JacobianType}!rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}}
 \doxysubsubsection{\texorpdfstring{JacobianType}{JacobianType}}
 {\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
-typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa174d6ee09a4be818644994b27ac40733}{Values\+At\+Compile\+Time}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa934a64e8c19364010a4f60b41230effa}{Inputs\+At\+Compile\+Time}}$>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_aa3fc6a4805e1f47ce21048d8f19db1b8}{Jacobian\+Type}}}
+typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa174d6ee09a4be818644994b27ac40733}{Values\+At\+Compile\+Time}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa934a64e8c19364010a4f60b41230effa}{Inputs\+At\+Compile\+Time}}$>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\+Jacobian\+Type}
 
 \mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}\label{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}} 
 \index{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}!Scalar@{Scalar}}
 \index{Scalar@{Scalar}!rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}}
 \doxysubsubsection{\texorpdfstring{Scalar}{Scalar}}
 {\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
-typedef \+\_\+\+Scalar \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}}
+typedef \+\_\+\+Scalar \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\+Scalar}
 
 \mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a76469098b16581f5e74bf4d29066ce36}\label{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a76469098b16581f5e74bf4d29066ce36}} 
 \index{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}!ValueType@{ValueType}}
 \index{ValueType@{ValueType}!rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}}
 \doxysubsubsection{\texorpdfstring{ValueType}{ValueType}}
 {\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
-typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa174d6ee09a4be818644994b27ac40733}{Values\+At\+Compile\+Time}}, 1$>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a76469098b16581f5e74bf4d29066ce36}{Value\+Type}}}
+typedef Eigen\+::\+Matrix$<$\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa174d6ee09a4be818644994b27ac40733}{Values\+At\+Compile\+Time}}, 1$>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\+Value\+Type}
 
 
 
@@ -102,7 +102,7 @@ Values\+At\+Compile\+Time&\\
 \index{Levenberg\_Marquardt\_Functor@{Levenberg\_Marquardt\_Functor}!rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$@{rgbd\_slam::pose\_optimization::Levenberg\_Marquardt\_Functor$<$ \_Scalar, NX, NY $>$}}
 \doxysubsubsection{\texorpdfstring{Levenberg\_Marquardt\_Functor()}{Levenberg\_Marquardt\_Functor()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+\+Scalar , int NX = Eigen\+::\+Dynamic, int NY = Eigen\+::\+Dynamic$>$ \\
-\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}} (\begin{DoxyParamCaption}\item[{const uint}]{input\+Count,  }\item[{const uint}]{output\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}}$<$ \+\_\+\+Scalar, NX, NY $>$\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor (\begin{DoxyParamCaption}\item[{const uint}]{input\+Count,  }\item[{const uint}]{output\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -142,4 +142,4 @@ uint \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___mar
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\mbox{\hyperlink{_levenberg_marquard_functors_8hpp}{Levenberg\+Marquard\+Functors.\+hpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\mbox{\hyperlink{levenberg__marquard__functors_8hpp}{levenberg\+\_\+marquard\+\_\+functors.\+hpp}}\end{DoxyCompactItemize}

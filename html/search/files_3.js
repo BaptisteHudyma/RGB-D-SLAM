@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['keypointdetection_2ecpp_0',['KeyPointDetection.cpp',['../_key_point_detection_8cpp.html',1,'']]],
-  ['keypointdetection_2ehpp_1',['KeyPointDetection.hpp',['../_key_point_detection_8hpp.html',1,'']]]
+  ['keypoint_5fdetection_2ecpp_0',['keypoint_detection.cpp',['../keypoint__detection_8cpp.html',1,'']]],
+  ['keypoint_5fdetection_2ehpp_1',['keypoint_detection.hpp',['../keypoint__detection_8hpp.html',1,'']]]
 ];

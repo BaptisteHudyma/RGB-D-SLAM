@@ -17,17 +17,21 @@ void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3fe
 \item 
 void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{rgbd\+\_\+slam\+::utils\+::log\+\_\+error}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
 \item 
-const vector3 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const matrix34 \&camera\+To\+World\+Matrix)
+const vector3 \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const matrix44 \&camera\+To\+World\+Matrix)
 \item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const vector3 \&position3D, const matrix34 \&world\+To\+Camera\+Matrix, vector2 \&screen\+Coordinates)
+const vector4 \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb50425c88603d51b0f82f0d8abadc46}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const vector4 \&vector4d, const matrix44 \&camera\+To\+World\+Matrix)
+\begin{DoxyCompactList}\small\item\em Transform a vector in screen space to a vector in world space. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const vector3 \&position3D, const matrix44 \&world\+To\+Screen\+Matrix, vector2 \&screen\+Coordinates)
 \begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
-const matrix34 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
+const vector4 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5f33c26a7b68f18c379482984646ff47}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const vector4 \&world\+Vector4, const matrix44 \&world\+To\+Screen\+Matrix)
+\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in screen space. \end{DoxyCompactList}\item 
+const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
-const matrix34 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const matrix34 \&camera\+To\+World\+Matrix)
+const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const matrix44 \&camera\+To\+World\+Matrix)
 \item 
-const matrix34 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
+const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19fb642babfd16a76}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
-const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const vector2 \&screen\+Point, const double depth, const matrix33 \&screen\+Point\+Error)
+const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const vector2 \&screen\+Point, const double depth, const matrix33 \&screen\+Point\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
 const quaternion \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const Euler\+Angles \&euler\+Angles)
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 

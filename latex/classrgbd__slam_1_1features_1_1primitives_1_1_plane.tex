@@ -7,7 +7,7 @@ Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_
 
 
 
-{\ttfamily \#include $<$Shape\+Primitives.\+hpp$>$}
+{\ttfamily \#include $<$shape\+\_\+primitives.\+hpp$>$}
 
 Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Plane\+:\begin{figure}[H]
 \begin{center}
@@ -22,7 +22,12 @@ Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Plane\+:\beg
 \begin{DoxyCompactList}\small\item\em Construct a plane object. \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a66e77ae84ff5929262109109d893f0b6}{is\+\_\+similar}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} $>$ \&prim) override
 \begin{DoxyCompactList}\small\item\em Get the similarity of two planes, based on normal direction. \end{DoxyCompactList}\item 
-virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6592806aa5bd56b382a36f125581035f}{get\+\_\+distance}} (const Eigen\+::\+Vector3d \&point) override
+virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a85fdc2ee54c3fb1c5622f1c09752071f}{get\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a320a470f59b6f322894162a8ea17576c}{\+\_\+d}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
@@ -53,15 +58,15 @@ Construct a plane object.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6592806aa5bd56b382a36f125581035f}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6592806aa5bd56b382a36f125581035f}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a85fdc2ee54c3fb1c5622f1c09752071f}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a85fdc2ee54c3fb1c5622f1c09752071f}} 
 \index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!get\_distance@{get\_distance}}
 \index{get\_distance@{get\_distance}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
 \doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 Return the distance of this primitive to a point 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a471b0ff8f7657a1f658d6640d145504e}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6537b793a2db1e5fb5009b5ddcf4fdb8}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
 
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a66e77ae84ff5929262109109d893f0b6}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a66e77ae84ff5929262109109d893f0b6}} 
 \index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!is\_similar@{is\_similar}}
@@ -87,7 +92,16 @@ Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primit
 
 
 
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a320a470f59b6f322894162a8ea17576c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a320a470f59b6f322894162a8ea17576c}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!\_d@{\_d}}
+\index{\_d@{\_d}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{\_d}{\_d}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::\+\_\+d}
+
+
+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_shape_primitives_8hpp}{Shape\+Primitives.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_shape_primitives_8cpp}{Shape\+Primitives.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{shape__primitives_8hpp}{shape\+\_\+primitives.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{shape__primitives_8cpp}{shape\+\_\+primitives.\+cpp}}\end{DoxyCompactItemize}

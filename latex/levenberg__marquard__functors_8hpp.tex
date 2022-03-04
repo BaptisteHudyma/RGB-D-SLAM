@@ -1,0 +1,37 @@
+\hypertarget{levenberg__marquard__functors_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/levenberg\+\_\+marquard\+\_\+functors.hpp File Reference}
+\label{levenberg__marquard__functors_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.hpp}}
+{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}matches\+\_\+containers.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}map\+\_\+point.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$Eigen/\+Eigen$>$}\newline
+{\ttfamily \#include $<$unsupported/\+Eigen/\+Non\+Linear\+Optimization$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ \+\_\+\+Scalar, NX, NY $>$}}
+\begin{DoxyCompactList}\small\item\em Structure given to the Levenberg-\/\+Marquardt algorithm. It optimizes a rotation (quaternion) and a translation (vector3) using the matched features from a frame to the local map, using their distances to one another as the main metric. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator}}
+\begin{DoxyCompactList}\small\item\em Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Functor}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+vector3 \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const quaternion \&quat)
+\begin{DoxyCompactList}\small\item\em Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. \end{DoxyCompactList}\item 
+quaternion \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aeee6808d772dc72ceac7fd61a3564eca}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const vector3 optimization\+Coefficients)
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from it\textquotesingle{}s scaled axis representation. \end{DoxyCompactList}\item 
+quaternion \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+exponential}} (const quaternion \&quat)
+\item 
+quaternion \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+logarithm}} (const quaternion \&quat)
+\item 
+const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
+\begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}

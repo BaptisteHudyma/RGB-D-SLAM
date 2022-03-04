@@ -1,0 +1,37 @@
+\hypertarget{shape__primitives_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/shape\+\_\+primitives.hpp File Reference}
+\label{shape__primitives_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/shape\_primitives.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/shape\_primitives.hpp}}
+{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
+{\ttfamily \#include \char`\"{}plane\+\_\+segment.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cylinder\+\_\+segment.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}
+\begin{DoxyCompactList}\small\item\em A base class used to compute the tracking analysis. It is a pure virtual class. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder}}
+\begin{DoxyCompactList}\small\item\em Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} class. Handles cylinder primitives. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane}}
+\begin{DoxyCompactList}\small\item\em Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} class. Handles planes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{rgbd\+\_\+slam\+::features}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives}{rgbd\+\_\+slam\+::features\+::primitives}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::unique\+\_\+ptr$<$ Primitive $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aae58d36ef7ede2c0c0baa7a6a6e366a1}{rgbd\+\_\+slam\+::features\+::primitives\+::primitive\+\_\+uniq\+\_\+ptr}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+Type}} \{ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a4bbb8f967da6d1a610596d7257179c2b}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Invalid}}
+, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a0d3adee051531c15b3509b4d4d75ce7b}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane}}
+, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741a2ec2c2961c7ce5a114d969c1f562a563}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder}}
+ \}
+\begin{DoxyCompactList}\small\item\em A type class for faster conversions. \end{DoxyCompactList}\end{DoxyCompactItemize}

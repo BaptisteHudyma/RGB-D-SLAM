@@ -1,0 +1,43 @@
+\hypertarget{keypoint__detection_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoint\+\_\+detection.cpp File Reference}
+\label{keypoint__detection_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoint\_detection.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoint\_detection.cpp}}
+{\ttfamily \#include \char`\"{}keypoint\+\_\+detection.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{rgbd\+\_\+slam\+::features}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints}{rgbd\+\_\+slam\+::features\+::keypoints}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::pair$<$ int, int $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ae55bb72725640a20ea2ea8875d954da2}{rgbd\+\_\+slam\+::features\+::keypoints\+::int\+\_\+pair}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ad1e4b59b0306fab61597157a08378679}{rgbd\+\_\+slam\+::features\+::keypoints\+::is\+\_\+in\+\_\+border}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&im)
+\begin{DoxyCompactList}\small\item\em checks if a point is in an image, a with border \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ae4c96326a1210562ae185fa60999ea86}{rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+depth\+\_\+approximation}} (const cv\+::\+Mat \&depth\+Image, const cv\+::\+Point2f \&depth\+Coordinates)
+\begin{DoxyCompactList}\small\item\em Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth with the surrounding points to prevent invalid depth on edges. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}{rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const float \mbox{\hyperlink{keypoint__detection_8cpp_ae733a6f1b2a7620908882b826fce053d}{BORDER\+\_\+\+SIZE}} = 1.
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{keypoint__detection_8cpp_ae733a6f1b2a7620908882b826fce053d}\label{keypoint__detection_8cpp_ae733a6f1b2a7620908882b826fce053d}} 
+\index{keypoint\_detection.cpp@{keypoint\_detection.cpp}!BORDER\_SIZE@{BORDER\_SIZE}}
+\index{BORDER\_SIZE@{BORDER\_SIZE}!keypoint\_detection.cpp@{keypoint\_detection.cpp}}
+\doxysubsubsection{\texorpdfstring{BORDER\_SIZE}{BORDER\_SIZE}}
+{\footnotesize\ttfamily const float BORDER\+\_\+\+SIZE = 1.}
+

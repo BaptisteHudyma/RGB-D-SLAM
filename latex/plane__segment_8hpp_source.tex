@@ -1,0 +1,94 @@
+\hypertarget{plane__segment_8hpp_source}{}\doxysection{plane\+\_\+segment.\+hpp}
+\label{plane__segment_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/plane\_segment.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/plane\_segment.hpp}}
+\mbox{\hyperlink{plane__segment_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_FEATURES\_PRIMITIVES\_PLANESEGMENT\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_FEATURES\_PRIMITIVES\_PLANESEGMENT\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }features \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }primitives \{}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{16     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\_Segment}} \{}
+\DoxyCodeLine{17         \textcolor{keyword}{public}:}
+\DoxyCodeLine{24             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a01dc2c5180b59b42abd50216ddb1b7d4}{Plane\_Segment}}(\textcolor{keyword}{const} uint cellWidth, \textcolor{keyword}{const} uint ptsPerCellCount);}
+\DoxyCodeLine{25             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a01dc2c5180b59b42abd50216ddb1b7d4}{Plane\_Segment}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\_Segment}}\& seg);}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aaf11c05d06874d408e7790486f6788d7}{init\_plane\_segment}}(\textcolor{keyword}{const} Eigen::MatrixXf\& depthCloudArray, \textcolor{keyword}{const} uint cellId);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{33             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ad81d874c228c110abfd79f5da4355d2c}{is\_depth\_discontinuous}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\_Segment}}\& planeSegment);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{40             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}{expand\_segment}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\_Segment}}\& planeSegment);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{47             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}{expand\_segment}}(\textcolor{keyword}{const} std::unique\_ptr<Plane\_Segment>\& planeSegment);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{54             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_acf772b88ea844ed2b2c01739ef7644b2}{get\_normal\_similarity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\_Segment}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{59             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab20140285b7a18ae4f4c665b9a85324e}{get\_signed\_distance}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} point[3]) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{64             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab20140285b7a18ae4f4c665b9a85324e}{get\_signed\_distance}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& point) \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{69             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a68c2a5064518afdfc94fc50d3753c1da}{fit\_plane}}();   \textcolor{comment}{//fit a plane to this node points}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{74             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a4cc94ec3ad8ecc546810e905272a6a23}{clear\_plane\_parameters}}();    \textcolor{comment}{//clear node plane parameters  }}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76             EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78         \textcolor{keyword}{public}: \textcolor{comment}{//getters}}
+\DoxyCodeLine{79                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a66ab7fa6c31aeabbe55aa38c5dddb2e6}{get\_MSE}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_MSE; \};}
+\DoxyCodeLine{80                 \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a771afc7f0eb80897e835791dad397993}{get\_normal}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_normal; \};}
+\DoxyCodeLine{81                 \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a7846ce7827774634aa10fd5d4e415f11}{get\_mean}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_mean; \};}
+\DoxyCodeLine{82                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abaad9ce92dfcdec28d2c772d2cc1aaab}{get\_plane\_d}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_d; \};}
+\DoxyCodeLine{83                 \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2746bf24bf12a0932ab2544a40c409ba}{is\_planar}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_isPlanar; \};}
+\DoxyCodeLine{84                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa4777ebf46540b6c0d3fe4a811d4c6ab}{get\_score}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_score; \};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89         \textcolor{keyword}{private}:}
+\DoxyCodeLine{90                 \textcolor{keyword}{const} uint \_ptsPerCellCount;  \textcolor{comment}{//max nb of points per initial cell}}
+\DoxyCodeLine{91                 \textcolor{keyword}{const} uint \_minZeroPointCount;  \textcolor{comment}{//min acceptable zero points in a node}}
+\DoxyCodeLine{92                 \textcolor{keyword}{const} uint \_cellWidth;}
+\DoxyCodeLine{93                 \textcolor{keyword}{const} uint \_cellHeight;}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95                 uint \_pointCount;         \textcolor{comment}{//point count}}
+\DoxyCodeLine{96                 \textcolor{keywordtype}{double} \_score;    \textcolor{comment}{//plane fitting score}}
+\DoxyCodeLine{97                 \textcolor{keywordtype}{double} \_MSE;     \textcolor{comment}{//plane fitting mean square error}}
+\DoxyCodeLine{98                 \textcolor{keywordtype}{bool} \_isPlanar;  \textcolor{comment}{//true if node represent a correct node, false: ignore node while mapping}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_mean;     \textcolor{comment}{//mean point of all points in node}}
+\DoxyCodeLine{101                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_normal;   \textcolor{comment}{//fitted plane normal}}
+\DoxyCodeLine{102                 \textcolor{keywordtype}{double} \_d;           \textcolor{comment}{//fitted plane d param (ax + by + xz + d)}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104         \textcolor{keyword}{private}:}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106                 \textcolor{comment}{//PCA stored coeffs: efficient calculations of point cloud characteristics}}
+\DoxyCodeLine{107                 \textcolor{keywordtype}{double} \_Sx;      \textcolor{comment}{//sum of x}}
+\DoxyCodeLine{108                 \textcolor{keywordtype}{double} \_Sy;      \textcolor{comment}{//sum of y}}
+\DoxyCodeLine{109                 \textcolor{keywordtype}{double} \_Sz;      \textcolor{comment}{//sum of z}}
+\DoxyCodeLine{110                 \textcolor{keywordtype}{double} \_Sxs;     \textcolor{comment}{//sum of x squared}}
+\DoxyCodeLine{111                 \textcolor{keywordtype}{double} \_Sys;     \textcolor{comment}{//sum of y squared}}
+\DoxyCodeLine{112                 \textcolor{keywordtype}{double} \_Szs;     \textcolor{comment}{//sum of z squared}}
+\DoxyCodeLine{113                 \textcolor{keywordtype}{double} \_Sxy;     \textcolor{comment}{//sum of x*y}}
+\DoxyCodeLine{114                 \textcolor{keywordtype}{double} \_Syz;     \textcolor{comment}{//sum of y*z}}
+\DoxyCodeLine{115                 \textcolor{keywordtype}{double} \_Szx;     \textcolor{comment}{//sum of z*x}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117         \textcolor{keyword}{private}:}
+\DoxyCodeLine{118                 \textcolor{comment}{//prevent backend copy}}
+\DoxyCodeLine{119                 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\_Segment}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\_Segment}}\& seg);}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121     \};}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \}}
+\DoxyCodeLine{124 \}}
+\DoxyCodeLine{125 \}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

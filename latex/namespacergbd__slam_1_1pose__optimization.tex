@@ -34,7 +34,7 @@ const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a
 \item 
 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}{get\+\_\+quaternion\+\_\+logarithm}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a609ad2d1991285f52d6d86a1de1ff78a}{get\+\_\+distance\+\_\+to\+\_\+point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&cam\+To\+World\+Matrix)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}{get\+\_\+distance\+\_\+to\+\_\+point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&cam\+To\+World\+Matrix)
 \begin{DoxyCompactList}\small\item\em Compute the retroprojection distance between a map\+Point and a camera\+Point. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}{get\+\_\+n\+\_\+random\+\_\+matches}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, const uint n)
 \begin{DoxyCompactList}\small\item\em Return a random subset of matches, of size n. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -65,11 +65,11 @@ double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a609ad2d199128
 \doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointB }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a609ad2d1991285f52d6d86a1de1ff78a}\label{namespacergbd__slam_1_1pose__optimization_a609ad2d1991285f52d6d86a1de1ff78a}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}\label{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_to\_point@{get\_distance\_to\_point}}
 \index{get\_distance\_to\_point@{get\_distance\_to\_point}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_distance\_to\_point()}{get\_distance\_to\_point()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+to\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{cam\+To\+World\+Matrix }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+to\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{cam\+To\+World\+Matrix }\end{DoxyParamCaption})}
 
 
 

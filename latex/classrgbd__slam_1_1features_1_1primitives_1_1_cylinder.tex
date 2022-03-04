@@ -7,7 +7,7 @@ Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_
 
 
 
-{\ttfamily \#include $<$Shape\+Primitives.\+hpp$>$}
+{\ttfamily \#include $<$shape\+\_\+primitives.\+hpp$>$}
 
 Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Cylinder\+:\begin{figure}[H]
 \begin{center}
@@ -22,7 +22,7 @@ Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Cylinder\+:\
 \begin{DoxyCompactList}\small\item\em Construct a cylinder object. \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}{is\+\_\+similar}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} $>$ \&prim) override
 \begin{DoxyCompactList}\small\item\em Get the similarity of two cylinders, based on normal direction and radius. \end{DoxyCompactList}\item 
-virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ab9e41baf4ff8675fdfeae3bbdb241da2}{get\+\_\+distance}} (const Eigen\+::\+Vector3d \&point) override
+virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a118fff7905ebb024914fad065d456e0e}{get\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) override
 \begin{DoxyCompactList}\small\item\em Get the distance of a point to the surface of the cylinder. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
@@ -53,11 +53,11 @@ Construct a cylinder object.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ab9e41baf4ff8675fdfeae3bbdb241da2}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ab9e41baf4ff8675fdfeae3bbdb241da2}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a118fff7905ebb024914fad065d456e0e}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a118fff7905ebb024914fad065d456e0e}} 
 \index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!get\_distance@{get\_distance}}
 \index{get\_distance@{get\_distance}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
 \doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -68,7 +68,7 @@ The signed distance of the point to the surface, 0 if the point is on the surfac
 \end{DoxyReturn}
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a471b0ff8f7657a1f658d6640d145504e}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6537b793a2db1e5fb5009b5ddcf4fdb8}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
 
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}} 
 \index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!is\_similar@{is\_similar}}
@@ -96,5 +96,5 @@ Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primit
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_shape_primitives_8hpp}{Shape\+Primitives.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{_shape_primitives_8cpp}{Shape\+Primitives.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{shape__primitives_8hpp}{shape\+\_\+primitives.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/\mbox{\hyperlink{shape__primitives_8cpp}{shape\+\_\+primitives.\+cpp}}\end{DoxyCompactItemize}

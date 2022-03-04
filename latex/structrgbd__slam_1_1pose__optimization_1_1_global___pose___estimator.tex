@@ -7,7 +7,7 @@ Implementation of the main pose and orientation optimisation, to be used by the 
 
 
 
-{\ttfamily \#include $<$Levenberg\+Marquard\+Functors.\+hpp$>$}
+{\ttfamily \#include $<$levenberg\+\_\+marquard\+\_\+functors.\+hpp$>$}
 
 Inheritance diagram for rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+\+Pose\+\_\+\+Estimator\+:\begin{figure}[H]
 \begin{center}
@@ -20,9 +20,9 @@ Inheritance diagram for rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+
 \item 
 \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1fcc96ee2aeb8832ffbf9c2187890622}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const size\+\_\+t n, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&world\+Position, const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&world\+Rotation)
 \item 
-double \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ae1fcc3abd892876c4631afe43e7b79dc}{get\+\_\+2\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&world\+To\+Cam\+Matrix) const
+double \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_abccab39bd3d59c59afadc990dd5e79cb}{get\+\_\+2\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Cam\+Matrix) const
 \begin{DoxyCompactList}\small\item\em Return te distance between the map point projected to screen space and the it\textquotesingle{}s matched screen point. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_aca0d41f87de3d465768caf5b8815a28f}{get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&cam\+To\+World\+Matrix) const
+double \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ab9de2443ed5745b7ca8588acc340596c}{get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&cam\+To\+World\+Matrix) const
 \begin{DoxyCompactList}\small\item\em Return te 3D distance between the map point and the it\textquotesingle{}s matched screen point projected to world space. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1413e702e0a1c579b72e20a2901d0679}{operator()}} (const Eigen\+::\+Vector\+Xd \&x, Eigen\+::\+Vector\+Xd \&fvec) const
 \begin{DoxyCompactList}\small\item\em Implementation of the objective function. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -53,11 +53,11 @@ Implementation of the main pose and orientation optimisation, to be used by the 
 GLOBAL POSE ESTIMATOR members 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ae1fcc3abd892876c4631afe43e7b79dc}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ae1fcc3abd892876c4631afe43e7b79dc}} 
+\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_abccab39bd3d59c59afadc990dd5e79cb}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_abccab39bd3d59c59afadc990dd5e79cb}} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!get\_2D\_to\_3D\_distance@{get\_2D\_to\_3D\_distance}}
 \index{get\_2D\_to\_3D\_distance@{get\_2D\_to\_3D\_distance}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{get\_2D\_to\_3D\_distance()}{get\_2D\_to\_3D\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::get\+\_\+2\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{world\+To\+Cam\+Matrix }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::get\+\_\+2\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Cam\+Matrix }\end{DoxyParamCaption}) const}
 
 
 
@@ -75,11 +75,11 @@ Return te distance between the map point projected to screen space and the it\te
 \begin{DoxyReturn}{Returns}
 The 2D screen distance between those two points 
 \end{DoxyReturn}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_aca0d41f87de3d465768caf5b8815a28f}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_aca0d41f87de3d465768caf5b8815a28f}} 
+\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ab9de2443ed5745b7ca8588acc340596c}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ab9de2443ed5745b7ca8588acc340596c}} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!get\_3D\_to\_3D\_distance@{get\_3D\_to\_3D\_distance}}
 \index{get\_3D\_to\_3D\_distance@{get\_3D\_to\_3D\_distance}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{get\_3D\_to\_3D\_distance()}{get\_3D\_to\_3D\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{cam\+To\+World\+Matrix }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{cam\+To\+World\+Matrix }\end{DoxyParamCaption}) const}
 
 
 
@@ -118,5 +118,5 @@ Implementation of the objective function.
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\mbox{\hyperlink{_levenberg_marquard_functors_8hpp}{Levenberg\+Marquard\+Functors.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\mbox{\hyperlink{_levenberg_marquard_functors_8cpp}{Levenberg\+Marquard\+Functors.\+cpp}}\end{DoxyCompactItemize}
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\mbox{\hyperlink{levenberg__marquard__functors_8hpp}{levenberg\+\_\+marquard\+\_\+functors.\+hpp}}\item 
+/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/\mbox{\hyperlink{levenberg__marquard__functors_8cpp}{levenberg\+\_\+marquard\+\_\+functors.\+cpp}}\end{DoxyCompactItemize}

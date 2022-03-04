@@ -1,0 +1,144 @@
+\hypertarget{primitive__detection_8hpp_source}{}\doxysection{primitive\+\_\+detection.\+hpp}
+\label{primitive__detection_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitive\_detection.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitive\_detection.hpp}}
+\mbox{\hyperlink{primitive__detection_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_FEATURES\_PRIMITIVES\_PRIMITIVEDETECTION\_HPP }}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_FEATURES\_PRIMITIVES\_PRIMITIVEDETECTION\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <math.h>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{plane__segment_8hpp}{plane\_segment.hpp}}"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{cylinder__segment_8hpp}{cylinder\_segment.hpp}}"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{histogram_8hpp}{histogram.hpp}}"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{shape__primitives_8hpp}{shape\_primitives.hpp}}"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }features \{}
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }primitives \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     \textcolor{keyword}{typedef} std::list<primitive\_uniq\_ptr> \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}{primitive\_container}}; }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{30     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{Primitive\_Detection}} \{}
+\DoxyCodeLine{31         \textcolor{comment}{//check for planes in an organized depth points matrix }}
+\DoxyCodeLine{32         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{33             \textcolor{comment}{//typdefs}}
+\DoxyCodeLine{34             \textcolor{keyword}{typedef} std::vector<std::pair<int, int>> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\_vector}};}
+\DoxyCodeLine{35             \textcolor{keyword}{typedef} std::unique\_ptr<Plane\_Segment> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a65c1f8eea51000c775c6e2c024df7d8b}{plane\_segment\_unique\_ptr}};}
+\DoxyCodeLine{36             \textcolor{keyword}{typedef} std::unique\_ptr<Cylinder\_Segment> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a5447caf12f82fefd49fa3a4b2e5d6eaf}{cylinder\_segment\_unique\_ptr}};}
+\DoxyCodeLine{37             \textcolor{keyword}{typedef} std::vector<plane\_segment\_unique\_ptr> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1c6de1dae1c5b4783520c1720ad1bd7b}{planes\_ptr\_vector}}; }
+\DoxyCodeLine{38             \textcolor{keyword}{typedef} std::vector<cylinder\_segment\_unique\_ptr> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ae175d07a6ac399887ee4cd473b76fa41}{cylinders\_ptr\_vector}}; }
+\DoxyCodeLine{39             \textcolor{keyword}{typedef} std::vector<uint> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\_vector}};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41         \textcolor{keyword}{public}:}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{51             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a096293d1058519af4111f1841496cccf}{Primitive\_Detection}}(\textcolor{keyword}{const} uint width, \textcolor{keyword}{const} uint height, \textcolor{keyword}{const} uint blocSize = 20, \textcolor{keyword}{const} \textcolor{keywordtype}{float} minCosAngleForMerge = 0.9659, \textcolor{keyword}{const} \textcolor{keywordtype}{float} maxMergeDistance = 50, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} useCylinderDetection = \textcolor{keyword}{false});}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{60             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a911fc1929bc8ad43697ff1fecdd03570}{find\_primitives}}(\textcolor{keyword}{const} Eigen::MatrixXf\& depthMatrix, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}{primitive\_container}}\& primitiveSegments, cv::Mat\& segOut);  \textcolor{comment}{//detect 3D primitives in depth image}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{75             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a7f1ecaecbf481e926300056272eef75e}{apply\_masks}}(\textcolor{keyword}{const} cv::Mat\& inputImage, \textcolor{keyword}{const} std::vector<cv::Vec3b>\& colors, \textcolor{keyword}{const} cv::Mat\& maskImage, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}{primitive\_container}}\& primitiveSegments, cv::Mat\& labeledImage, \textcolor{keyword}{const} std::unordered\_map<int, uint>\& associatedIds, \textcolor{keyword}{const} \textcolor{keywordtype}{double} elapsedTime=0);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a9f64424ca0ce70414c2df2022c32dc7f}{\string~Primitive\_Detection}}();}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80             \textcolor{comment}{//perf measurments}}
+\DoxyCodeLine{81             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1e6576f91cd41de4316f20c41cbf365a}{resetTime}};}
+\DoxyCodeLine{82             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8e4334b78d47adf54a76b32812c18080}{initTime}};}
+\DoxyCodeLine{83             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8bd7311ff1c1968b338c80fa710b5f18}{growTime}};}
+\DoxyCodeLine{84             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_afa8239c91447b7a5b6f2590a7024e5b1}{mergeTime}};}
+\DoxyCodeLine{85             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_acee4e990aaeeec273775cf0fc944fa61}{refineTime}};}
+\DoxyCodeLine{86             \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a15e86c6c982aafda2c86c80e255cff98}{setMaskTime}};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{93             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a115d7b6c99fa776c20350d6c5be88524}{reset\_data}}();}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{100             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a2432ff11db00aad60cdf4aac0a371c3d}{init\_planar\_cell\_fitting}}(\textcolor{keyword}{const} Eigen::MatrixXf\& depthCloudArray);}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{107             \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a715077ee5debce0b42373c1be367170c}{init\_histogram}}();}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{115             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a0b258d0c1f42657ccabc1aceb1cd3e7c}{grow\_planes\_and\_cylinders}}(uint remainingPlanarCells, \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\_vector}}\& cylinderToRegionMap);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{122             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a3ccd5670ed0507cbd74c0fb8cf70e6a2}{merge\_planes}}(\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\_vector}}\& planeMergeLabels);}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{131             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a5e9bdbde2b9ac905322e7b499796edef}{refine\_plane\_boundaries}}(\textcolor{keyword}{const} Eigen::MatrixXf\& depthCloudArray, \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\_vector}}\& planeMergeLabels, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}{primitive\_container}}\& primitiveSegments);}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{140             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ade155c5358bd18f05407c4fd4d0e2183}{refine\_cylinder\_boundaries}}(\textcolor{keyword}{const} Eigen::MatrixXf\& depthCloudArray, \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\_vector}}\& cylinderToRegionMap, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a82fffe54c97a2ecd30ab76c0b1b1d910}{primitive\_container}}\& primitiveSegments); }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{147             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a43e507867cbf8d34e6931225971911f0}{set\_masked\_display}}(cv::Mat\& segOut); }
+\DoxyCodeLine{148 }
+\DoxyCodeLine{157             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ac73bd13f1cce9a325b0a26a82efb189d}{region\_growing}}(\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} x, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} y, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& seedPlaneNormal, \textcolor{keyword}{const} \textcolor{keywordtype}{double} seedPlaneD);}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{165             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_aa122f54c9de8589811b434d10d0a4268}{get\_connected\_components}}(\textcolor{keyword}{const} cv::Mat\& segmentMap, \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}}\& planesAssociationMatrix) \textcolor{keyword}{const};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167         \textcolor{keyword}{private}:}
+\DoxyCodeLine{168             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}} \_histogram;}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170             \textcolor{keyword}{const} uint \_width;}
+\DoxyCodeLine{171             \textcolor{keyword}{const} uint \_height;}
+\DoxyCodeLine{172             \textcolor{keyword}{const} uint \_blocSize;}
+\DoxyCodeLine{173             \textcolor{keyword}{const} uint \_pointsPerCellCount;}
+\DoxyCodeLine{174             \textcolor{keyword}{const} \textcolor{keywordtype}{float} \_minCosAngleForMerge;}
+\DoxyCodeLine{175             \textcolor{keyword}{const} \textcolor{keywordtype}{float} \_maxMergeDist;}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177             \textcolor{keyword}{const} \textcolor{keywordtype}{bool} \_useCylinderDetection;}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179             \textcolor{keyword}{const} uint \_cellWidth;}
+\DoxyCodeLine{180             \textcolor{keyword}{const} uint \_cellHeight;}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182             \textcolor{keyword}{const} uint \_horizontalCellsCount;}
+\DoxyCodeLine{183             \textcolor{keyword}{const} uint \_verticalCellsCount;}
+\DoxyCodeLine{184             \textcolor{keyword}{const} uint \_totalCellCount;}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a65c1f8eea51000c775c6e2c024df7d8b}{plane\_segment\_unique\_ptr}} *\_planeGrid;}
+\DoxyCodeLine{187             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1c6de1dae1c5b4783520c1720ad1bd7b}{planes\_ptr\_vector}} \_planeSegments;}
+\DoxyCodeLine{188             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ae175d07a6ac399887ee4cd473b76fa41}{cylinders\_ptr\_vector}} \_cylinderSegments;}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190             cv::Mat\_<int> \_gridPlaneSegmentMap;}
+\DoxyCodeLine{191             cv::Mat\_<uchar> \_gridPlaneSegMapEroded;}
+\DoxyCodeLine{192             cv::Mat\_<int> \_gridCylinderSegMap;}
+\DoxyCodeLine{193             cv::Mat\_<uchar> \_gridCylinderSegMapEroded;}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195             Eigen::ArrayXf \_distancesCellStacked;}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197             \textcolor{comment}{//arrays}}
+\DoxyCodeLine{198             \textcolor{keywordtype}{bool}* \_activationMap;}
+\DoxyCodeLine{199             \textcolor{keywordtype}{bool}* \_unassignedMask;}
+\DoxyCodeLine{200             \textcolor{keywordtype}{float}* \_distancesStacked;}
+\DoxyCodeLine{201             \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}* \_segMapStacked;}
+\DoxyCodeLine{202             \textcolor{keywordtype}{float}* \_cellDistanceTols;}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204             \textcolor{comment}{//mat}}
+\DoxyCodeLine{205             cv::Mat \_mask;}
+\DoxyCodeLine{206             cv::Mat \_maskEroded;}
+\DoxyCodeLine{207             cv::Mat \_maskDilated;}
+\DoxyCodeLine{208             cv::Mat \_maskDiff;}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210             \textcolor{comment}{//kernels}}
+\DoxyCodeLine{211             cv::Mat \_maskSquareKernel;}
+\DoxyCodeLine{212             cv::Mat \_maskCrossKernel;}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214         \textcolor{keyword}{private}:}
+\DoxyCodeLine{215             \textcolor{comment}{//prevent backend copy}}
+\DoxyCodeLine{216             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a096293d1058519af4111f1841496cccf}{Primitive\_Detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{Primitive\_Detection}}\&);}
+\DoxyCodeLine{217             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{Primitive\_Detection}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{Primitive\_Detection}}\&);}
+\DoxyCodeLine{218     \};}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 \}}
+\DoxyCodeLine{221 \}}
+\DoxyCodeLine{222 \}}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

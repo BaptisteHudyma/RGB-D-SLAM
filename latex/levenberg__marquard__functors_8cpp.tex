@@ -1,0 +1,31 @@
+\hypertarget{levenberg__marquard__functors_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/levenberg\+\_\+marquard\+\_\+functors.cpp File Reference}
+\label{levenberg__marquard__functors_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.cpp}}
+{\ttfamily \#include \char`\"{}levenberg\+\_\+marquard\+\_\+functors.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a70715953a0c8c4bad83b0d41d80c9ce3}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan}} (const vector2 \&pointA, const vector2 \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan}} (const vector3 \&pointA, const vector3 \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared}} (const vector2 \&pointA, const vector2 \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a68a39fcaa10cd8b4fb2c7b29b3842c92}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared}} (const vector3 \&pointA, const vector3 \&pointB)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
+\begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
+vector3 \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const quaternion \&quat)
+\begin{DoxyCompactList}\small\item\em Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. \end{DoxyCompactList}\item 
+quaternion \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aeee6808d772dc72ceac7fd61a3564eca}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const vector3 optimization\+Coefficients)
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from it\textquotesingle{}s scaled axis representation. \end{DoxyCompactList}\item 
+const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
+\begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}

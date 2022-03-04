@@ -23,17 +23,21 @@ void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3fe
 \item 
 void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{log\+\_\+error}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
 \item 
-const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&camera\+To\+World\+Matrix)
+const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix)
 \item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}{world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position3D, const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&world\+To\+Camera\+Matrix, \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Coordinates)
+const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb50425c88603d51b0f82f0d8abadc46}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \&vector4d, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix)
+\begin{DoxyCompactList}\small\item\em Transform a vector in screen space to a vector in world space. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}{world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position3D, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Screen\+Matrix, \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Coordinates)
 \begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
+const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5f33c26a7b68f18c379482984646ff47}{world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \&world\+Vector4, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Screen\+Matrix)
+\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in screen space. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19fb642babfd16a76}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
+const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&camera\+To\+World\+Matrix)
+const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix)
 \item 
-const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&screen\+Point\+Error)
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&screen\+Point\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles)
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 
@@ -51,27 +55,27 @@ const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \mbox{
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}\label{namespacergbd__slam_1_1utils_a9e272e0bd94f09e8360a964103485776}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19fb642babfd16a76}\label{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19fb642babfd16a76}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}}
 \index{compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{compute\_camera\_to\_world\_transform()}{compute\_camera\_to\_world\_transform()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position }\end{DoxyParamCaption})}
 
 
 
 Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) 
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}\label{namespacergbd__slam_1_1utils_a2a8f6f95de5202a449e7c09b69833615}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}\label{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}
 \index{compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{compute\_world\_to\_camera\_transform()}{compute\_world\_to\_camera\_transform()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}\label{namespacergbd__slam_1_1utils_a28578e2a6faeee85b26e97663b1e2b2d}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}\label{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}
 \index{compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{compute\_world\_to\_camera\_transform()}{compute\_world\_to\_camera\_transform()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position }\end{DoxyParamCaption})}
 
 
 
@@ -97,7 +101,7 @@ Compute euler angles from a given quaternion.
 
 Compute a quaternion from the given euler angles, in radians. 
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}\label{namespacergbd__slam_1_1utils_a92ee6dfe0c19ceff485e5506541d676b}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}\label{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_world\_point\_covariance@{get\_world\_point\_covariance}}
 \index{get\_world\_point\_covariance@{get\_world\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_world\_point\_covariance()}{get\_world\_point\_covariance()}}
@@ -107,6 +111,18 @@ Compute a quaternion from the given euler angles, in radians.
 
 Compute the associated Gaussian error of a screen point when it will be transformed to world point. 
 
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em screen\+Point} & The 2D point in screen coordinates \\
+\hline
+\mbox{\texttt{ in}}  & {\em depth} & The depth associated with this screen point \\
+\hline
+\mbox{\texttt{ in}}  & {\em screen\+Point\+Covariance} & The covariance matrix associated with a point in screen space\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the covariance of the 3D world point 
+\end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}\label{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!log@{log}}
 \index{log@{log}!rgbd\_slam::utils@{rgbd\_slam::utils}}
@@ -125,17 +141,37 @@ Log an error line \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a4bf8393963e8b
 \doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
 {\footnotesize\ttfamily std\+::ostream \& rgbd\+\_\+slam\+::utils\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&}]{pose }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}\label{namespacergbd__slam_1_1utils_a44c96391245109bd6cdabf988a3ee092}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}\label{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}}
 \index{screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{screen\_to\_world\_coordinates()}{screen\_to\_world\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const double}]{screenX,  }\item[{const double}]{screenY,  }\item[{const double}]{measuredZ,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{screen\_to\_world\_coordinates()}{screen\_to\_world\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const double}]{screenX,  }\item[{const double}]{screenY,  }\item[{const double}]{measuredZ,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}\label{namespacergbd__slam_1_1utils_aed2388e7883381f18bd0a5acfaf77c32}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_afb50425c88603d51b0f82f0d8abadc46}\label{namespacergbd__slam_1_1utils_afb50425c88603d51b0f82f0d8abadc46}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}}
+\index{screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{screen\_to\_world\_coordinates()}{screen\_to\_world\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \&}]{vector4d,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})}
+
+
+
+Transform a vector in screen space to a vector in world space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vector4d} & A vector in screen space \\
+\hline
+\mbox{\texttt{ in}}  & {\em camera\+To\+World\+Matrix} & Matrix to transform local to world coordinates\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector in world space 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}\label{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!world\_to\_screen\_coordinates@{world\_to\_screen\_coordinates}}
 \index{world\_to\_screen\_coordinates@{world\_to\_screen\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{world\_to\_screen\_coordinates()}{world\_to\_screen\_coordinates()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position3D,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}} \&}]{world\+To\+Camera\+Matrix,  }\item[{\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{screen\+Coordinates }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{world\_to\_screen\_coordinates()}{world\_to\_screen\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{position3D,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Screen\+Matrix,  }\item[{\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{screen\+Coordinates }\end{DoxyParamCaption})}
 
 
 
@@ -145,11 +181,31 @@ Transform a point from world to screen coordinate system.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em position3D} & Coordinates of the detected point (world coordinates) \\
 \hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera\+Matrix} & Matrix to transform the world to a local coordinate system \\
+\mbox{\texttt{ in}}  & {\em world\+To\+Screen\+Matrix} & Matrix to transform the world to a local coordinate system \\
 \hline
 \mbox{\texttt{ out}}  & {\em screen\+Coordinates} & The point screen coordinates, if the function returned true\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 True if the screen position is valid 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a5f33c26a7b68f18c379482984646ff47}\label{namespacergbd__slam_1_1utils_a5f33c26a7b68f18c379482984646ff47}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!world\_to\_screen\_coordinates@{world\_to\_screen\_coordinates}}
+\index{world\_to\_screen\_coordinates@{world\_to\_screen\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{world\_to\_screen\_coordinates()}{world\_to\_screen\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \&}]{world\+Vector4,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Screen\+Matrix }\end{DoxyParamCaption})}
+
+
+
+Transform a vector in world space to a vector in screen space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+Vector4} & A vector in screen space \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+To\+Screen\+Matrix} & Matrix to transform the world to a local coordinate system\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The input vector transformed to screen space 
 \end{DoxyReturn}

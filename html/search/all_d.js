@@ -10,18 +10,18 @@ var searchData=
   ['matched_5fpoint_5fcontainer_7',['matched_point_container',['../namespacergbd__slam.html#acb92efd792d97b44c1f403017ac54de9',1,'rgbd_slam']]],
   ['matches_5fcontainers_2ehpp_8',['matches_containers.hpp',['../matches__containers_8hpp.html',1,'']]],
   ['matrix33_9',['matrix33',['../namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69',1,'rgbd_slam']]],
-  ['matrix33_5farray_10',['matrix33_array',['../namespacergbd__slam.html#ae3e01af67e7bdde27079ebeff7396f0a',1,'rgbd_slam']]],
+  ['matrix33_5fvector_10',['matrix33_vector',['../namespacergbd__slam.html#acf5b5b3fbd3b0a6fa0893ab150650dd3',1,'rgbd_slam']]],
   ['matrix34_11',['matrix34',['../namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84',1,'rgbd_slam']]],
-  ['matrix34_5farray_12',['matrix34_array',['../namespacergbd__slam.html#a8290c9f86a96c5d71d6ef705da159c59',1,'rgbd_slam']]],
+  ['matrix34_5fvector_12',['matrix34_vector',['../namespacergbd__slam.html#aa80e2a59978f0997c0fe22f8ffe32e06',1,'rgbd_slam']]],
   ['matrix43_13',['matrix43',['../namespacergbd__slam.html#a823edbcbe45c6e21187073ad28cd0370',1,'rgbd_slam']]],
   ['matrix44_14',['matrix44',['../namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a',1,'rgbd_slam']]],
-  ['matrix44_5farray_15',['matrix44_array',['../namespacergbd__slam.html#a5effc51202e8cb5888424d66181defe7',1,'rgbd_slam']]],
+  ['matrix44_5fvector_15',['matrix44_vector',['../namespacergbd__slam.html#a9609c7829c28a3a2fb81151c1527417d',1,'rgbd_slam']]],
   ['matrixb_16',['Matrixb',['../namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53',1,'rgbd_slam']]],
   ['max_5fdepth_5fdistance_17',['MAX_DEPTH_DISTANCE',['../namespacergbd__slam_1_1map__management.html#a1bb27dd2e94061ad6907d9a1a4c3701e',1,'rgbd_slam::map_management']]],
   ['merge_5fplanes_18',['merge_planes',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a3ccd5670ed0507cbd74c0fb8cf70e6a2',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
   ['mergetime_19',['mergeTime',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#afa8239c91447b7a5b6f2590a7024e5b1',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
   ['min_5fdepth_5fdistance_20',['MIN_DEPTH_DISTANCE',['../namespacergbd__slam_1_1map__management.html#a37c5d6ae09aa12e7d554fa2fcfe1991a',1,'rgbd_slam::map_management']]],
   ['motion_5fmodel_21',['Motion_Model',['../classrgbd__slam_1_1utils_1_1_motion___model.html#a92747ec6ef3d202641797ccd08b36f07',1,'rgbd_slam::utils::Motion_Model::Motion_Model()'],['../classrgbd__slam_1_1utils_1_1_motion___model.html',1,'rgbd_slam::utils::Motion_Model']]],
-  ['motionmodel_2ecpp_22',['MotionModel.cpp',['../_motion_model_8cpp.html',1,'']]],
-  ['motionmodel_2ehpp_23',['MotionModel.hpp',['../_motion_model_8hpp.html',1,'']]]
+  ['motion_5fmodel_2ecpp_22',['motion_model.cpp',['../motion__model_8cpp.html',1,'']]],
+  ['motion_5fmodel_2ehpp_23',['motion_model.hpp',['../motion__model_8hpp.html',1,'']]]
 ];

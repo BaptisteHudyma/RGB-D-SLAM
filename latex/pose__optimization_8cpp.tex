@@ -1,0 +1,21 @@
+\hypertarget{pose__optimization_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/pose\+\_\+optimization.cpp File Reference}
+\label{pose__optimization_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp}}
+{\ttfamily \#include \char`\"{}pose\+\_\+optimization.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}levenberg\+\_\+marquard\+\_\+functors.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$Eigen/\+Std\+Vector$>$}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+to\+\_\+point}} (const vector3 \&map\+Point, const vector3 \&matched\+Point, const matrix44 \&cam\+To\+World\+Matrix)
+\begin{DoxyCompactList}\small\item\em Compute the retroprojection distance between a map\+Point and a camera\+Point. \end{DoxyCompactList}\item 
+matches\+\_\+containers\+::match\+\_\+point\+\_\+container \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+n\+\_\+random\+\_\+matches}} (const matches\+\_\+containers\+::match\+\_\+point\+\_\+container \&matched\+Points, const uint n)
+\begin{DoxyCompactList}\small\item\em Return a random subset of matches, of size n. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -48,7 +48,7 @@
 \DoxyCodeLine{56 }
 \DoxyCodeLine{60             \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa2627b0500cbeff88570ad7017153465}{update\_unmatched}}(\textcolor{keywordtype}{int} removeNMatches = 1) = 0;}
 \DoxyCodeLine{61 }
-\DoxyCodeLine{62             \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a9122dd694648a7f56d3a9d80be0320fc}{get\_covariance\_matrix}}() \{ \textcolor{keywordflow}{return} \_covariance; \};}
+\DoxyCodeLine{62             \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a114df6422d2b509705c729b3b779049d}{get\_covariance\_matrix}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_covariance; \};}
 \DoxyCodeLine{63 }
 \DoxyCodeLine{64             \textcolor{keywordtype}{int} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_aa81f3998f97f5d86a34570722204e909}{\_lastMatchedIndex}};}
 \DoxyCodeLine{65 }
@@ -80,55 +80,49 @@
 \DoxyCodeLine{110                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a6c21ed525c2f98bc47f98ce704f62cb7}{update\_matched}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& newPointCoordinates, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& covariance) \textcolor{keyword}{override};}
 \DoxyCodeLine{111 }
 \DoxyCodeLine{112             \textcolor{keyword}{private}:}
-\DoxyCodeLine{116                 \textcolor{keywordtype}{double} get\_confidence() \textcolor{keyword}{const};}
-\DoxyCodeLine{117 }
-\DoxyCodeLine{118                 \textcolor{comment}{// count of unique matches}}
-\DoxyCodeLine{119                 \textcolor{keywordtype}{int} \_matchedCount;}
-\DoxyCodeLine{120         \};}
-\DoxyCodeLine{121 }
-\DoxyCodeLine{122 }
-\DoxyCodeLine{126         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{Map\_Point}} }
-\DoxyCodeLine{127             : \textcolor{keyword}{public} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\_Point\_With\_Tracking}} }
-\DoxyCodeLine{128         \{}
-\DoxyCodeLine{129 }
-\DoxyCodeLine{130             \textcolor{keyword}{public}:}
-\DoxyCodeLine{131                 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a4b28a516e3b8419ac4177a184291c0a6}{Map\_Point}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coordinates, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& covariance, \textcolor{keyword}{const} cv::Mat\& descriptor);}
-\DoxyCodeLine{132                 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a4b28a516e3b8419ac4177a184291c0a6}{Map\_Point}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coordinates, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& covariance, \textcolor{keyword}{const} cv::Mat\& descriptor, \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} \textcolor{keywordtype}{id});}
-\DoxyCodeLine{133 }
-\DoxyCodeLine{134 }
-\DoxyCodeLine{138                 \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad492ba9b9000d85b97cbb18bc2f11c52}{is\_lost}}() \textcolor{keyword}{const}; }
-\DoxyCodeLine{139 }
-\DoxyCodeLine{143                 \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ac295737d57b95dfcb00645ff3be3e597}{update\_unmatched}}(\textcolor{keywordtype}{int} removeNMatches = 1) \textcolor{keyword}{override};}
-\DoxyCodeLine{144 }
-\DoxyCodeLine{148                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad71e7f37511fa245cbc69254b8c9cde2}{update\_matched}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& newPointCoordinates, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& covariance) \textcolor{keyword}{override};}
-\DoxyCodeLine{149 }
-\DoxyCodeLine{150                 \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a78264c7d69160b1838f7e454ccdd6a2f}{get\_age}}()\textcolor{keyword}{ const }\{}
-\DoxyCodeLine{151                     \textcolor{keywordflow}{return} \_age;}
-\DoxyCodeLine{152                 \}}
-\DoxyCodeLine{153 }
-\DoxyCodeLine{154             \textcolor{keyword}{protected}:}
-\DoxyCodeLine{158                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a7387929b17b1503f75210ff184efaa13}{get\_confidence}}() \textcolor{keyword}{const}; }
-\DoxyCodeLine{159 }
-\DoxyCodeLine{160             \textcolor{keyword}{private}:}
-\DoxyCodeLine{161                 \textcolor{comment}{// The number of times this point failed tracking.}}
-\DoxyCodeLine{162                 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_failTrackingCount;}
-\DoxyCodeLine{163 }
-\DoxyCodeLine{164                 \textcolor{comment}{// Successful matches count}}
-\DoxyCodeLine{165                 \textcolor{keywordtype}{int} \_age;   }
+\DoxyCodeLine{116                 \textcolor{keywordtype}{double} get\_confidence() \textcolor{keyword}{const override};}
+\DoxyCodeLine{117         \};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{123         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{Map\_Point}} }
+\DoxyCodeLine{124             : \textcolor{keyword}{public} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\_Point\_With\_Tracking}} }
+\DoxyCodeLine{125         \{}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127             \textcolor{keyword}{public}:}
+\DoxyCodeLine{128                 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a4b28a516e3b8419ac4177a184291c0a6}{Map\_Point}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coordinates, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& covariance, \textcolor{keyword}{const} cv::Mat\& descriptor);}
+\DoxyCodeLine{129                 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a4b28a516e3b8419ac4177a184291c0a6}{Map\_Point}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coordinates, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& covariance, \textcolor{keyword}{const} cv::Mat\& descriptor, \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} \textcolor{keywordtype}{id});}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 }
+\DoxyCodeLine{135                 \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad492ba9b9000d85b97cbb18bc2f11c52}{is\_lost}}() \textcolor{keyword}{const}; }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{140                 \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ac295737d57b95dfcb00645ff3be3e597}{update\_unmatched}}(\textcolor{keywordtype}{int} removeNMatches = 1) \textcolor{keyword}{override};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{145                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad71e7f37511fa245cbc69254b8c9cde2}{update\_matched}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& newPointCoordinates, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& covariance) \textcolor{keyword}{override};}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147                 \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a78264c7d69160b1838f7e454ccdd6a2f}{get\_age}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{148                     \textcolor{keywordflow}{return} \_age;}
+\DoxyCodeLine{149                 \}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151             \textcolor{keyword}{protected}:}
+\DoxyCodeLine{155                 \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a721c25c90375f259fa7a53080014e948}{get\_confidence}}() \textcolor{keyword}{const override}; }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157             \textcolor{keyword}{private}:}
+\DoxyCodeLine{158                 \textcolor{comment}{// The number of times this point failed tracking.}}
+\DoxyCodeLine{159                 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \_failTrackingCount;}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161                 \textcolor{comment}{// Successful matches count}}
+\DoxyCodeLine{162                 \textcolor{keywordtype}{int} \_age;   }
+\DoxyCodeLine{163         \};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     \} \textcolor{comment}{/* map\_management */}}
 \DoxyCodeLine{166 }
-\DoxyCodeLine{167                 \textcolor{comment}{//0 -\/ 1: keypoint confidence (consecutive matches, ...) }}
-\DoxyCodeLine{168                 \textcolor{keywordtype}{float} \_confidence;}
-\DoxyCodeLine{169         \};}
-\DoxyCodeLine{170 }
-\DoxyCodeLine{171     \} \textcolor{comment}{/* map\_management */}}
-\DoxyCodeLine{172 }
-\DoxyCodeLine{173     \textcolor{keyword}{typedef} std::list<map\_management::Point> \mbox{\hyperlink{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}{point\_container}};}
-\DoxyCodeLine{174     \textcolor{keyword}{typedef} std::pair<map\_management::Point, map\_management::Point> \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\_point\_pair}};}
-\DoxyCodeLine{175     \textcolor{keyword}{typedef} std::list<map\_point\_pair> \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{matched\_point\_container}};}
-\DoxyCodeLine{176     \textcolor{keyword}{typedef} std::map<unsigned int, map\_management::Point> \mbox{\hyperlink{namespacergbd__slam_aabf57974b523109882f55bf41bffdfda}{point\_map}};}
-\DoxyCodeLine{177 }
-\DoxyCodeLine{178 \} \textcolor{comment}{/* rgbd\_slam */}}
-\DoxyCodeLine{179 }
-\DoxyCodeLine{180 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{167     \textcolor{keyword}{typedef} std::list<map\_management::Point> \mbox{\hyperlink{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}{point\_container}};}
+\DoxyCodeLine{168     \textcolor{keyword}{typedef} std::pair<map\_management::Point, map\_management::Point> \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\_point\_pair}};}
+\DoxyCodeLine{169     \textcolor{keyword}{typedef} std::list<map\_point\_pair> \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{matched\_point\_container}};}
+\DoxyCodeLine{170     \textcolor{keyword}{typedef} std::unordered\_map<unsigned int, map\_management::Point> \mbox{\hyperlink{namespacergbd__slam_a120a836e72fb1dfc7d430f0fec397419}{point\_map}};}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 \} \textcolor{comment}{/* rgbd\_slam */}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}
