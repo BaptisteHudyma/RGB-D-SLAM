@@ -45,7 +45,7 @@ namespace primitives {
               * \param[in] height The fixed depth image height
               * \param[in] blocSize Size of an image division, in pixels.
               * \param[in] minCosAngleForMerge Minimum cosinus of the angle of two planes to merge those planes
-              * \param[in] maxMergeDist Maximum distance between the center of two planes to merge those planes
+              * \param[in] maxMergeDistance Maximum distance between the center of two planes to merge those planes
               * \param[in] useCylinderDetection Transform some planes in cylinders, when they show an obvious cylinder shape
               */
             Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659, const float maxMergeDistance = 50, const bool useCylinderDetection = false);

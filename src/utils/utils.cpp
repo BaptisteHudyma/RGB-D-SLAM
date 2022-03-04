@@ -62,9 +62,9 @@ namespace rgbd_slam {
             return true;
         }
 
-        const vector4 world_to_screen_coordinates(const vector4& vector4, const matrix44& worldToScreenMatrix)
+        const vector4 world_to_screen_coordinates(const vector4& worldVector4, const matrix44& worldToScreenMatrix)
         {
-            return worldToScreenMatrix * vector4;
+            return worldToScreenMatrix * worldVector4;
         }
 
         const matrix44 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)

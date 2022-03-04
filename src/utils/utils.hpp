@@ -53,12 +53,12 @@ namespace rgbd_slam {
         /**
          * \brief Transform a vector in world space to a vector in screen space
          *
-         * \param[in] vector4d A vector in screen space
+         * \param[in] worldVector4 A vector in screen space
          * \param[in] worldToScreenMatrix Matrix to transform the world to a local coordinate system
          *
          * \return The input vector transformed to screen space
          */
-        const vector4 world_to_screen_coordinates(const vector4& vector4, const matrix44& worldToScreenMatrix);
+        const vector4 world_to_screen_coordinates(const vector4& worldVector4, const matrix44& worldToScreenMatrix);
 
         /**
          * \brief Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd)
@@ -75,7 +75,11 @@ namespace rgbd_slam {
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
          *
+         * \param[in] screenPoint The 2D point in screen coordinates
+         * \param[in] depth The depth associated with this screen point
          * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
+         *
+         * \return the covariance of the 3D world point
          */
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance);
 

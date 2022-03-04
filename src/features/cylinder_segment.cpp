@@ -289,22 +289,22 @@ namespace primitives {
         }
     }
 
-    double Cylinder_Segment::distance(const vector3& point) {
-        double minDist = this->distance(point, 0);
+    double Cylinder_Segment::get_distance(const vector3& point) const {
+        double minDist = this->get_distance(point, 0);
         for(vector3_vector::size_type i = 1; i < _pointsAxis1.size(); i++) {
-            double nd = this->distance(point, i);
+            double nd = this->get_distance(point, i);
             if (minDist > nd)
                 minDist = nd;
         }
         return minDist;
     }
 
-    double Cylinder_Segment::distance(const vector3& point, const uint id) {
+    double Cylinder_Segment::get_distance(const vector3& point, const uint segmentId) const {
         return (
-                (_pointsAxis2[id] - _pointsAxis1[id]).cross(
-                    point - _pointsAxis2[id]
+                (_pointsAxis2[segmentId] - _pointsAxis1[segmentId]).cross(
+                    point - _pointsAxis2[segmentId]
                     )
-               ).norm() / _normalsAxis1Axis2[id] - _radius[id];
+               ).norm() / _normalsAxis1Axis2[segmentId] - _radius[segmentId];
     }
 
     /*

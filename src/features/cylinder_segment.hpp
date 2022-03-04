@@ -51,7 +51,7 @@ namespace primitives {
              *
              * \return The signed distance between the point and cylinder surface
              */
-            double distance(const vector3& point);
+            double get_distance(const vector3& point) const;
 
             ~Cylinder_Segment();
 
@@ -137,7 +137,7 @@ namespace primitives {
 
 
         protected:
-                double distance(const Eigen::Vector3d& point, const uint segmentId);
+                double get_distance(const vector3& point, const uint segmentId) const;
 
         private:
                 vector3 _axis;
