@@ -12,7 +12,7 @@ namespace primitives {
     /**
       * \brief Handles operations on the initial depth image, to transform it on a connected cloud points. It also handles the loading of the camera parameters from the configuration file
       */
-    class Depth_Operations {
+    class Depth_Map_Transformation {
         public:
             /**
               * \param[in] parameterFilePath Path of the file containing the camera parameters
@@ -20,7 +20,7 @@ namespace primitives {
               * \param[in] height Depth image height (constant)
               * \param[in] cellSize Size of the cloud point division (> 0)
               */
-            Depth_Operations(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize);
+            Depth_Map_Transformation(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 

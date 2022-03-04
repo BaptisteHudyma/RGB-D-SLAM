@@ -31,7 +31,7 @@ namespace rgbd_slam {
             std::string finalPath = calibPath.str();
 
             // primitive connected graph creator
-            _depthOps = new features::primitives::Depth_Operations(
+            _depthOps = new features::primitives::Depth_Map_Transformation(
                     finalPath, 
                     _width, 
                     _height, 

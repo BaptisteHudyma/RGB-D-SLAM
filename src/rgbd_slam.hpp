@@ -6,7 +6,7 @@
 
 #include <Eigen/Dense>
 
-#include "depth_operations.hpp"
+#include "depth_map_transformation.hpp"
 
 #include "geodesic_operations.hpp"
 #include "primitive_detection.hpp"
@@ -79,7 +79,7 @@ namespace rgbd_slam {
             const uint _width;
             const uint _height;
 
-            features::primitives::Depth_Operations* _depthOps;
+            features::primitives::Depth_Map_Transformation* _depthOps;
 
             size_t _computeKeypointCount;
 

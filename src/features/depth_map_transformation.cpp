@@ -1,4 +1,4 @@
-#include "depth_operations.hpp"
+#include "depth_map_transformation.hpp"
 #include "parameters.hpp"
 #include "utils.hpp"
 
@@ -8,7 +8,7 @@ namespace rgbd_slam {
 namespace features {
 namespace primitives {
 
-        Depth_Operations::Depth_Operations(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize) 
+        Depth_Map_Transformation::Depth_Map_Transformation(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize) 
             : 
                 _width(width), _height(height), _cellSize(cellSize),
                 _cloudArray(width * height, 3),
@@ -23,7 +23,7 @@ namespace primitives {
                 init_matrices();
         }
 
-        void Depth_Operations::get_organized_cloud_array(cv::Mat& depthImage, Eigen::MatrixXf& organizedCloudArray) {
+        void Depth_Map_Transformation::get_organized_cloud_array(cv::Mat& depthImage, Eigen::MatrixXf& organizedCloudArray) {
             if(not this->is_ok())
                 return;
 
@@ -100,7 +100,7 @@ namespace primitives {
             depthImage = outputDepth;
         }
 
-        bool Depth_Operations::load_parameters(const std::string& parameterFilePath) {
+        bool Depth_Map_Transformation::load_parameters(const std::string& parameterFilePath) {
             cv::FileStorage fs(parameterFilePath, cv::FileStorage::READ);
             if (fs.isOpened()) {
                 fs["Rotation"] >> _Rstereo;
@@ -117,7 +117,7 @@ namespace primitives {
         /*
          *  Called after loading parameters to init matrices
          */
-        void Depth_Operations::init_matrices() {
+        void Depth_Map_Transformation::init_matrices() {
             uint horizontalCellsCount = static_cast<uint>(_width / _cellSize);
 
             _fxIr = Parameters::get_camera_2_focal_x();

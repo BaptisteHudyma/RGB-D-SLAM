@@ -73,7 +73,7 @@ include_directories(
     )
 
 add_library(features SHARED
-    ${FEATS}/depth_operations.cpp
+    ${FEATS}/depth_map_transformation.cpp
     ${FEATS}/primitive_detection.cpp
     ${FEATS}/plane_segment.cpp
     ${FEATS}/cylinder_segment.cpp
