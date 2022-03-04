@@ -1,4 +1,4 @@
-#include "CylinderSegment.hpp"
+#include "cylinder_segment.hpp"
 #include "parameters.hpp"
 #include "utils.hpp"
 

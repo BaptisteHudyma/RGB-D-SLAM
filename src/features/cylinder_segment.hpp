@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_CYLINDERSEGMENT_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_CYLINDERSEGMENT_HPP 
 
-#include "PlaneSegment.hpp"
+#include "plane_segment.hpp"
 
 #include <vector>
 #include <memory>

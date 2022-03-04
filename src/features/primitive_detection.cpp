@@ -1,5 +1,5 @@
 #include <limits>
-#include "PrimitiveDetection.hpp"
+#include "primitive_detection.hpp"
 #include "parameters.hpp"
 #include "utils.hpp"
 

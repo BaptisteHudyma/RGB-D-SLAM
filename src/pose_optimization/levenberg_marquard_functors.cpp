@@ -1,4 +1,4 @@
-#include "LevenbergMarquardFunctors.hpp"
+#include "levenberg_marquard_functors.hpp"
 
 #include "utils.hpp"
 #include "parameters.hpp"

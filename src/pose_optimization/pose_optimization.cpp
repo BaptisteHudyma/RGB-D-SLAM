@@ -1,7 +1,7 @@
-#include "PoseOptimization.hpp"
+#include "pose_optimization.hpp"
 
 #include "utils.hpp"
-#include "LevenbergMarquardFunctors.hpp"
+#include "levenberg_marquard_functors.hpp"
 #include "parameters.hpp"
 
 #include <Eigen/StdVector>

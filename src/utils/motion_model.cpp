@@ -1,4 +1,4 @@
-#include "MotionModel.hpp"
+#include "motion_model.hpp"
 
 namespace rgbd_slam {
 namespace utils {

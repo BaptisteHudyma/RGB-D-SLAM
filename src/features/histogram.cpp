@@ -1,4 +1,4 @@
-#include "Histogram.hpp"
+#include "histogram.hpp"
 #include "utils.hpp"
 
 namespace rgbd_slam {

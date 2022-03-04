@@ -3,7 +3,6 @@
 
 #include <Eigen/Dense>
 #include <memory>
-#include "PlaneSegment.hpp"
 #include "types.hpp"
 
 

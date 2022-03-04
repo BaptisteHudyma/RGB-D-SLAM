@@ -11,10 +11,10 @@
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 
-#include "PlaneSegment.hpp"
-#include "CylinderSegment.hpp"
-#include "Histogram.hpp"
-#include "ShapePrimitives.hpp"
+#include "plane_segment.hpp"
+#include "cylinder_segment.hpp"
+#include "histogram.hpp"
+#include "shape_primitives.hpp"
 #include "types.hpp"
 
 

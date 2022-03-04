@@ -1,4 +1,4 @@
-#include "KeyPointDetection.hpp"
+#include "keypoint_detection.hpp"
 #include "parameters.hpp"
 
 #include "utils.hpp"

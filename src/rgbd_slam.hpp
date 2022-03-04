@@ -6,16 +6,16 @@
 
 #include <Eigen/Dense>
 
-#include "DepthOperations.hpp"
+#include "depth_operations.hpp"
 
-#include "GeodesicOperations.hpp"
-#include "PrimitiveDetection.hpp"
-#include "LineSegmentDetector.hpp"
-#include "KeyPointDetection.hpp"
+#include "geodesic_operations.hpp"
+#include "primitive_detection.hpp"
+#include "line_segment_detector.hpp"
+#include "keypoint_detection.hpp"
 #include "local_map.hpp"
 
-#include "Pose.hpp"
-#include "MotionModel.hpp"
+#include "pose.hpp"
+#include "motion_model.hpp"
 
 namespace rgbd_slam {
 

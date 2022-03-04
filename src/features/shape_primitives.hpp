@@ -4,8 +4,8 @@
 //cv:Mat
 #include <opencv2/opencv.hpp>
 
-#include "PlaneSegment.hpp"
-#include "CylinderSegment.hpp"
+#include "plane_segment.hpp"
+#include "cylinder_segment.hpp"
 
 #include "types.hpp"
 

@@ -1,4 +1,4 @@
-#include "GeodesicOperations.hpp"
+#include "geodesic_operations.hpp"
 
 using namespace cv;
 

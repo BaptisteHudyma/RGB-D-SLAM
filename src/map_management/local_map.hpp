@@ -9,9 +9,9 @@
 #include "types.hpp"
 #include "matches_containers.hpp"
 #include "map_point.hpp"
-#include "KeyPointDetection.hpp"
-#include "PrimitiveDetection.hpp"
-#include "Pose.hpp"
+#include "keypoint_detection.hpp"
+#include "primitive_detection.hpp"
+#include "pose.hpp"
 
 
 namespace rgbd_slam {

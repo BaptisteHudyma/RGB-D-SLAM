@@ -6,8 +6,8 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "RGBD_SLAM.hpp"
-#include "Pose.hpp"
+#include "rgbd_slam.hpp"
+#include "pose.hpp"
 #include "parameters.hpp"
 
 #include "utils.hpp"

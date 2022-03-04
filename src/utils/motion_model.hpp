@@ -2,7 +2,7 @@
 #define RGBDSLAM_UTILS_MOTIONMODEL_HPP
 
 #include "types.hpp"
-#include "Pose.hpp"
+#include "pose.hpp"
 
 #include <Eigen/Dense>
 

@@ -1,4 +1,4 @@
-#include "ShapePrimitives.hpp"
+#include "shape_primitives.hpp"
 #include "utils.hpp"
 #include "parameters.hpp"
 

@@ -73,14 +73,14 @@ include_directories(
     )
 
 add_library(features SHARED
-    ${FEATS}/DepthOperations.cpp
-    ${FEATS}/PrimitiveDetection.cpp
-    ${FEATS}/PlaneSegment.cpp
-    ${FEATS}/CylinderSegment.cpp
-    ${FEATS}/Histogram.cpp
-    ${FEATS}/ShapePrimitives.cpp
+    ${FEATS}/depth_operations.cpp
+    ${FEATS}/primitive_detection.cpp
+    ${FEATS}/plane_segment.cpp
+    ${FEATS}/cylinder_segment.cpp
+    ${FEATS}/histogram.cpp
+    ${FEATS}/shape_primitives.cpp
 
-    ${FEATS}/KeyPointDetection.cpp
+    ${FEATS}/keypoint_detection.cpp
     )
 
 add_library(mapManagement SHARED
@@ -89,26 +89,26 @@ add_library(mapManagement SHARED
     )
 
 add_library(thirdParty SHARED
-    ${THIRD_PARTY}/LineSegmentDetector.cpp
-    ${THIRD_PARTY}/GeodesicOperations.cpp
+    ${THIRD_PARTY}/line_segment_detector.cpp
+    ${THIRD_PARTY}/geodesic_operations.cpp
     ${THIRD_PARTY}/dsyevh3.cpp
     )
 
 add_library(poseOptimization SHARED
-    ${POSE_OPTI}/LevenbergMarquardFunctors.cpp
-    ${POSE_OPTI}/PoseOptimization.cpp
+    ${POSE_OPTI}/levenberg_marquard_functors.cpp
+    ${POSE_OPTI}/pose_optimization.cpp
     )
 
 add_library(utils SHARED
     ${UTILS}/utils.cpp
-    ${UTILS}/Pose.cpp
-    ${UTILS}/MotionModel.cpp
+    ${UTILS}/pose.cpp
+    ${UTILS}/motion_model.cpp
     ${UTILS}/triangulation.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED
     ${SRC}/parameters.cpp
-    ${SRC}/RGBD_SLAM.cpp
+    ${SRC}/rgbd_slam.cpp
     )
 
 target_link_libraries(${PROJECT_NAME}

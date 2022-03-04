@@ -1,7 +1,7 @@
 #include <cassert>
 #include <opencv2/line_descriptor.hpp>
 
-#include "LineSegmentDetector.hpp"
+#include "line_segment_detector.hpp"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Default LSD parameters

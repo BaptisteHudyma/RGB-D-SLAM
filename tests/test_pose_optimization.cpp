@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "pose_optimization/PoseOptimization.hpp"
-#include "Pose.hpp"
+#include "pose_optimization/pose_optimization.hpp"
+#include "pose.hpp"
 #include "utils.hpp"
 #include "parameters.hpp"
 

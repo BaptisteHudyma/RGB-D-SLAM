@@ -2,7 +2,7 @@
 #define RGBDSLAM_UTILS_TRIANGULATION_HPP
 
 #include "types.hpp"
-#include "Pose.hpp"
+#include "pose.hpp"
 
 namespace rgbd_slam {
     namespace utils {

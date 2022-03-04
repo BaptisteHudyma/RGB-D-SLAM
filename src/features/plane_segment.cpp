@@ -1,4 +1,4 @@
-#include "PlaneSegment.hpp"
+#include "plane_segment.hpp"
 #include "eig33sym.hpp"
 
 #include "parameters.hpp"

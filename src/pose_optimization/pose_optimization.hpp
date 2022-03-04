@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_POSEOPTIMIZATION_POSEOPTIMIZATION_HPP
 #define RGBDSLAM_POSEOPTIMIZATION_POSEOPTIMIZATION_HPP
 
-#include "Pose.hpp"
+#include "pose.hpp"
 #include "types.hpp"
 #include "matches_containers.hpp"
 
