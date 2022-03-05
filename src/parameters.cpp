@@ -1,15 +1,58 @@
 #include "parameters.hpp"
 
+#include <opencv2/core/core.hpp>
 #include <math.h>
 #include <cfloat>
+#include <iostream>
 
 namespace rgbd_slam {
 
     bool Parameters::parse_file(const std::string& fileName )
     {
-        load_defaut();
+        _isValid = false;
+
+        // set the global parameters
+        set_parameters();
+
+        cv::FileStorage configFile(fileName, cv::FileStorage::READ);
+        if (not configFile.isOpened())
+        {
+            std::cerr << "Cannot load parameter files, starting with default configuration" << std::endl;
+            load_defaut();
+            return false;
+        }
+        // Load start pose
+        _startingPositionX = configFile["starting_position_x"];
+        _startingPositionY = configFile["starting_position_y"];
+        _startingPositionZ = configFile["starting_position_z"];
+        _startingRotationX = configFile["starting_rotation_x"];
+        _startingRotationY = configFile["starting_rotation_y"];
+        _startingRotationZ = configFile["starting_rotation_z"];
+
+        // Load Camera 1 parameters
+        _camera1FocalX = configFile["camera_1_focal_x"];
+        _camera1FocalY = configFile["camera_1_focal_y"];
+        _camera1CenterX = configFile["camera_1_center_x"];
+        _camera1CenterY = configFile["camera_1_center_y"];
+
+        // Load camera 2 parameters
+        _camera2FocalX = configFile["camera_2_focal_x"];
+        _camera2FocalY = configFile["camera_2_focal_y"];
+        _camera2CenterX = configFile["camera_2_center_x"];
+        _camera2CenterY = configFile["camera_2_center_y"];
+
+        // Load camera offsets of camera 2, relative to camera 1
+        _camera2TranslationX = configFile["camera_2_translation_offset_x"];
+        _camera2TranslationY = configFile["camera_2_translation_offset_y"];
+        _camera2TranslationZ = configFile["camera_2_translation_offset_z"];
+        _camera2RotationX = configFile["camera_2_rotation_offset_x"];
+        _camera2RotationY = configFile["camera_2_rotation_offset_y"];
+        _camera2RotationZ = configFile["camera_2_rotation_offset_z"];
+
+        // TODO Check parameters
         _isValid = true;
-        // TODO
+
+        configFile.release();
         return _isValid;
     }
 
@@ -36,14 +79,17 @@ namespace rgbd_slam {
         _camera2CenterY = 230.58580662101753;
 
         // Camera 2 position & rotation
-        _camera2TranslationX = 1.1497548441022023e+01;
-        _camera2TranslationY = 3.5139088879273231e+01;
-        _camera2TranslationZ = 2.1887459420807019e+01;
+        _camera2TranslationX = 0;
+        _camera2TranslationY = 0;
+        _camera2TranslationZ = 0;
 
         _camera2RotationX = 0; 
         _camera2RotationY = 0; 
         _camera2RotationZ = 0; 
+    }
 
+    void Parameters::set_parameters()
+    {
         // Point detection/Matching
         _matchSearchRadius = 30;
         _matchSearchCellSize = 50;

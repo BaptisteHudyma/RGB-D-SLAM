@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
 
 
     // Load a default set of parameters
-    rgbd_slam::Parameters::load_defaut();
+    rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
     //start with identity pose
     rgbd_slam::utils::Pose pose;
     const rgbd_slam::vector3 startingPosition(

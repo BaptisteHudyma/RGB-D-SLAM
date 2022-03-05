@@ -120,8 +120,9 @@ int main(int argc, char* argv[])
     height = rgbImage.rows;
 
 
+    // Load a default set of parameters
+    rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
     //start with identity pose
-    rgbd_slam::Parameters::parse_file("");
     rgbd_slam::utils::Pose pose;
     const rgbd_slam::vector3 startingPosition(
             rgbd_slam::Parameters::get_starting_position_x(),

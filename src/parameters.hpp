@@ -8,8 +8,20 @@ namespace rgbd_slam {
     class Parameters
     {
         public:
+            /**
+             * \brief Parse a yaml configuration file and load the parameters. Sets the default parameters
+             */
             static bool parse_file(const std::string& fileName );
+
+            /**
+             * \brief Set the default camera parameters
+             */
             static void load_defaut();
+
+            /**
+             * \brief set the global parameters
+             */
+            static void set_parameters();
 
             static bool is_valid() { return _isValid; };
 
@@ -101,7 +113,7 @@ namespace rgbd_slam {
         private:
             // Is this set of parameters valid
             inline static bool _isValid; 
-            
+
             // Starting position (m & radians)
             inline static double _startingPositionX;
             inline static double _startingPositionY;
@@ -121,7 +133,7 @@ namespace rgbd_slam {
             inline static double _camera2CenterY;
             inline static double _camera2FocalX;
             inline static double _camera2FocalY;
-            
+
             // Camera 2 position and rotation
             inline static double _camera2TranslationX;
             inline static double _camera2TranslationY;
