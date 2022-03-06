@@ -44,13 +44,14 @@ namespace rgbd_slam {
             // Use a kalman filter to estimate this point position
             const matrix33& identity = matrix33::Identity(); 
             const matrix33 kalmanGain = _covariance * (_covariance + newPointCovariance).inverse();
-
+            
             const vector3 newPosition = _coordinates + (kalmanGain * (newPointCoordinates - _coordinates));
             const double score = (_coordinates - newPosition).norm();
 
-            const matrix33 invGain = identity - kalmanGain;
+            assert(not isnan(newPosition.x()) and not isnan(newPosition.y()) and not isnan(newPosition.z()));
 
             // update this map point
+            const matrix33 invGain = identity - kalmanGain;
             _covariance = (invGain * _covariance * invGain.transpose()) + (kalmanGain * newPointCovariance * kalmanGain.transpose());
             _coordinates = newPosition;
 

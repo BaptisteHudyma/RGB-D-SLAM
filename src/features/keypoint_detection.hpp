@@ -63,7 +63,7 @@ namespace rgbd_slam {
                     /**
                      * \brief Return the depth associated with a certain keypoint
                      */
-                    double get_depth(const unsigned int index) const
+                    double get_depth(const uint index) const
                     {
                         assert(index < _depths.size());
 
@@ -78,25 +78,25 @@ namespace rgbd_slam {
                     /**
                      * \brief return the keypoint associated with the index
                      */
-                    const vector2 get_keypoint(const unsigned int index) const 
+                    const vector2 get_keypoint(const uint index) const 
                     {
                         assert(index < _keypoints.size());
                         return _keypoints[index];
                     }
 
-                    bool is_descriptor_computed(const unsigned int index) const
+                    bool is_descriptor_computed(const uint index) const
                     {
-                        return index < static_cast<unsigned int>(_descriptors.rows);
+                        return index < static_cast<uint>(_descriptors.rows);
                     }
 
-                    const cv::Mat get_descriptor(const unsigned int index) const
+                    const cv::Mat get_descriptor(const uint index) const
                     {
-                        assert(index < static_cast<unsigned int>(_descriptors.rows));
+                        assert(index < static_cast<uint>(_descriptors.rows));
 
                         return _descriptors.row(index);
                     }
 
-                    unsigned int get_keypoint_count() const
+                    uint get_keypoint_count() const
                     {
                         return _keypoints.size();
                     }
@@ -124,8 +124,8 @@ namespace rgbd_slam {
                      *
                      * \param[in] searchSpaceIndex The 2D array index (y, x)
                      */
-                    unsigned int get_search_space_index(const int_pair& searchSpaceIndex) const;
-                    unsigned int get_search_space_index(const unsigned int x, const unsigned int y) const;
+                    uint get_search_space_index(const int_pair& searchSpaceIndex) const;
+                    uint get_search_space_index(const uint x, const uint y) const;
 
 
                 private:
@@ -146,7 +146,7 @@ namespace rgbd_slam {
                     int _searchSpaceCellRadius; 
 
                     // Corresponds to a 2D box containing index of key points in those boxes
-                    typedef std::list<unsigned int> index_container;
+                    typedef std::list<uint> index_container;
                     std::vector<index_container> _searchSpaceIndexContainer;
 
 
@@ -164,7 +164,7 @@ namespace rgbd_slam {
                     /**
                      *
                      */
-                    Key_Point_Extraction(const unsigned int minHessian = 25);
+                    Key_Point_Extraction(const uint minHessian = 25);
 
                     /**
                      * \brief compute the keypoints in the gray image, using optical flow and/or generic feature detectors 
@@ -185,7 +185,7 @@ namespace rgbd_slam {
                      * \param[in] meanFrameTreatmentTime The mean time in seconds that this program used to treat one frame
                      * \param[in] frameCount Total of frame treated by the program
                      */
-                    void show_statistics(const double meanFrameTreatmentTime, const unsigned int frameCount) const;
+                    void show_statistics(const double meanFrameTreatmentTime, const uint frameCount) const;
 
                 protected:
 

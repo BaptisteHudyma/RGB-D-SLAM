@@ -28,9 +28,10 @@ namespace rgbd_slam {
         matrix33 get_screen_point_covariance(const double depth) 
         {
             // Quadratic error model (uses depth as meters)
-            const double depthMeters = depth / 1000;
+            const double depthMeters = depth / 1000.0;
             // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = is_depth_valid(depth) ? std::max(0.0, -0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0;
+            const double depthVariance = is_depth_valid(depth) ? std::max(0.01, -0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0;
+            assert(depthVariance > 0);
 
             // TODO xy variance should also depend on the placement of the pixel in x and y
             const double xyVariance = pow(0.1, 2.0);
@@ -49,6 +50,8 @@ namespace rgbd_slam {
          */
         void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
         {
+            const vector3& coordinates = mapPoint._coordinates;
+            assert(not isnan(coordinates.x()) and not isnan(coordinates.y()) and not isnan(coordinates.z()));
             if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
             {
                 // use previously known screen coordinates
@@ -175,8 +178,6 @@ namespace rgbd_slam {
 
             // add local map points to global map
             update_local_to_global();
-
-            //std::cout << "local map: " << _localPointMap.size() << " | staged points: " << _stagedPoints.size() << std::endl;
         }
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)
@@ -281,8 +282,10 @@ namespace rgbd_slam {
 
                 if (stagedPointIterator->should_add_to_local_map())
                 {
+                    const vector3& stagedPointCoordinates = stagedPointIterator->_coordinates;
+                    assert(not isnan(stagedPointCoordinates.x()) and not isnan(stagedPointCoordinates.y()) and not isnan(stagedPointCoordinates.z()));
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
-                    _localPointMap.emplace(_localPointMap.end(), stagedPointIterator->_coordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
+                    _localPointMap.emplace(_localPointMap.end(), stagedPointCoordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
                     _localPointMap.back()._lastMatchedIndex = stagedPointIterator->_lastMatchedIndex;
                     _localPointMap.back()._screenCoordinates = stagedPointIterator->_screenCoordinates;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
@@ -315,6 +318,7 @@ namespace rgbd_slam {
 
                     const vector2& screenPoint = keypointObject.get_keypoint(i);
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorldMatrix);
+                    assert(not isnan(worldPoint.x()) and not isnan(worldPoint.y()) and not isnan(worldPoint.z()));
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(depth));
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
@@ -380,12 +384,12 @@ namespace rgbd_slam {
         {
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
-            for (const Map_Point& mapPoint : _localPointMap) {
+            for (const IMap_Point_With_Tracking& mapPoint : _localPointMap) {
                 draw_point_on_image(mapPoint, worldToCamMatrix, cv::Scalar(0, 255, 0), debugImage);
             }
             if (shouldDisplayStaged)
             {
-                for (const Staged_Point& stagedPoint : _stagedPoints) {
+                for (const IMap_Point_With_Tracking& stagedPoint : _stagedPoints) {
                     draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 200), debugImage);
                 }
             }

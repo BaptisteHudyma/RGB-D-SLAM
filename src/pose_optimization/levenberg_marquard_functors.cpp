@@ -7,24 +7,11 @@ namespace rgbd_slam {
     namespace pose_optimization {
 
 
-        double get_distance_manhattan(const vector2& pointA, const vector2& pointB) 
+        double get_distance_manhattan(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB) 
         { 
-            return 
-                abs(pointA.x() - pointB.x()) + 
-                abs(pointA.y() - pointB.y());
+            return (pointA - pointB).lpNorm<1>();
         }
-        double get_distance_manhattan(const vector3& pointA, const vector3& pointB) 
-        { 
-            return 
-                abs(pointA.x() - pointB.x()) + 
-                abs(pointA.y() - pointB.y()) +
-                abs(pointA.z() - pointB.z());
-        }
-        double get_distance_squared(const vector2& pointA, const vector2& pointB) 
-        { 
-            return (pointA - pointB).norm();
-        }
-        double get_distance_squared(const vector3& pointA, const vector3& pointB) 
+        double get_distance_squared(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB) 
         { 
             return (pointA - pointB).norm();
         }
@@ -139,7 +126,7 @@ namespace rgbd_slam {
             for(matches_containers::match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 // Compute retroprojected distance
                 const double distance = get_2D_to_3D_distance(pointIterator->second, pointIterator->first, transformationMatrix);
-                assert(distance >= 0);
+                assert(distance >= 0.0);
 
                 meanOfDistances += distance; 
                 fvec(pointIndex) = distance;
@@ -174,7 +161,12 @@ namespace rgbd_slam {
             vector2 mapPointAs2D; 
             const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix, mapPointAs2D);
             if(isCoordinatesValid)
-                return get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
+            {
+                const double distance = get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
+                if (isnan(distance))
+                    return std::numeric_limits<double>::max();
+                return distance;
+            }
             // high number
             return std::numeric_limits<double>::max();
         }

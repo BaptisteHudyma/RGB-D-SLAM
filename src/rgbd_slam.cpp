@@ -23,6 +23,7 @@ namespace rgbd_slam {
             // Load parameters (once)
             if (not Parameters::is_valid())
             {
+                utils::log("No parameter file given using default parameters.");
                 Parameters::load_defaut();
             }
             // primitive connected graph creator
@@ -96,10 +97,10 @@ namespace rgbd_slam {
 
 
         //clean warp artefacts
-        //cv::Mat newMat;
-        //cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, _kernel);
-        //cv::medianBlur(newMat, newMat, 3);
-        //cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
+        cv::Mat newMat;
+        cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, _kernel);
+        cv::medianBlur(newMat, newMat, 3);
+        cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
 
         //project depth image in an organized cloud
         double t1 = cv::getTickCount();

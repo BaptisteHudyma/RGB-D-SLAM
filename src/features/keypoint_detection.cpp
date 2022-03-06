@@ -63,7 +63,7 @@ namespace rgbd_slam {
                 _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
 
                 // Fill depth values, add points to image boxes
-                const unsigned int allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
+                const uint allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
                 _depths = std::vector<double>(allKeypointSize, 0.0);
                 _keypoints = std::vector<vector2>(allKeypointSize);
 
@@ -75,7 +75,9 @@ namespace rgbd_slam {
 
                     _keypoints[pointIndex] = vectorKeypoint; 
 
-                    const unsigned int searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
+                    const uint searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
+                    assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
+
                     _searchSpaceIndexContainer[searchSpaceIndex].push_back(pointIndex);
 
                     // Depths are in millimeters, will be 0 if coordinates are invalid
@@ -102,7 +104,9 @@ namespace rgbd_slam {
 
 #if 0
                     // add to matcher (not activated = never matched with descriptors)
-                    const unsigned int searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
+                    const uint searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
+                    assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
+
                     _searchSpaceIndexContainer[searchSpaceIndex].push_back(newKeypointIndex);
 #endif
 
@@ -114,11 +118,11 @@ namespace rgbd_slam {
             }
 
 
-            unsigned int Keypoint_Handler::get_search_space_index(const int_pair& searchSpaceIndex) const
+            uint Keypoint_Handler::get_search_space_index(const int_pair& searchSpaceIndex) const
             {
                 return get_search_space_index(searchSpaceIndex.second, searchSpaceIndex.first);
             }
-            unsigned int Keypoint_Handler::get_search_space_index(const unsigned int x, const unsigned int y) const 
+            uint Keypoint_Handler::get_search_space_index(const uint x, const uint y) const 
             {
                 return y * _cellCountY + x;
             }
@@ -139,22 +143,25 @@ namespace rgbd_slam {
             {
                 const int_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
 
-                const unsigned int startY = std::max(0, searchSpaceCoordinates.first - _searchSpaceCellRadius);
-                const unsigned int startX = std::max(0, searchSpaceCoordinates.second - _searchSpaceCellRadius);
+                const uint startY = std::max(0, searchSpaceCoordinates.first - _searchSpaceCellRadius);
+                const uint startX = std::max(0, searchSpaceCoordinates.second - _searchSpaceCellRadius);
 
-                const unsigned int endY = std::min(_cellCountY, searchSpaceCoordinates.first + _searchSpaceCellRadius + 1);
-                const unsigned int endX = std::min(_cellCountX, searchSpaceCoordinates.second + _searchSpaceCellRadius + 1);
+                const uint endY = std::min(_cellCountY, searchSpaceCoordinates.first + _searchSpaceCellRadius + 1);
+                const uint endX = std::min(_cellCountX, searchSpaceCoordinates.second + _searchSpaceCellRadius + 1);
 
                 // Squared search diameter, to compare distance without sqrt
                 const float squaredSearchDiameter = pow(Parameters::get_search_matches_distance(), 2);
 
                 cv::Mat keyPointMask(cv::Mat::zeros(1, _descriptors.rows, CV_8UC1));
-                for (unsigned int i = startY; i < endY; ++i)
+                for (uint i = startY; i < endY; ++i)
                 {
-                    for (unsigned int j = startX; j < endX; ++j)
+                    for (uint j = startX; j < endX; ++j)
                     {
-                        const index_container& keypointIndexContainer = _searchSpaceIndexContainer[get_search_space_index(j, i)]; 
-                        for(int keypointIndex : keypointIndexContainer)
+                        const size_t searchSpaceIndex = get_search_space_index(j, i);
+                        assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
+
+                        const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex]; 
+                        for(const int keypointIndex : keypointIndexContainer)
                         {
                             if (not isKeyPointMatchedContainer[keypointIndex])
                             {
@@ -249,7 +256,7 @@ namespace rgbd_slam {
              */
 
 
-            Key_Point_Extraction::Key_Point_Extraction(const unsigned int minHessian) :
+            Key_Point_Extraction::Key_Point_Extraction(const uint minHessian) :
                 // Create feature extractor and matcher
                 _featureDetector(cv::FastFeatureDetector::create( minHessian )),
                 _advancedFeatureDetector(cv::FastFeatureDetector::create( minHessian / 2 )),
@@ -513,7 +520,7 @@ namespace rgbd_slam {
                 return std::round(treatmentTime / totalTimeElapsed * 10000.0) / 100.0;
             }
 
-            void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentTime, const unsigned int frameCount) const {
+            void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentTime, const uint frameCount) const {
                 if (frameCount > 0) { 
                     double meanPointExtractionTime = _meanPointExtractionTime / frameCount;
                     std::cout << "Mean point extraction time is " << meanPointExtractionTime << " seconds (" << get_percent_of_elapsed_time(meanPointExtractionTime, meanFrameTreatmentTime) << "%)" << std::endl;

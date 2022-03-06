@@ -197,7 +197,7 @@ int main(int argc, char* argv[])
         }
         // convert to mm & float 32
         depthImage.convertTo(depthImage, CV_32FC1);
-        depthImage *= 100;
+        depthImage *= 100.0 / 5.0;
 
         // get optimized pose
         double elapsedTime = cv::getTickCount();

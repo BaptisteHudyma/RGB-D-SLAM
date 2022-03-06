@@ -3,7 +3,7 @@
 #include "parameters.hpp"
 
 #include <Eigen/Dense>
-#include <cmath>
+#include <math.h>
 #include <filesystem>
 #include <iostream>
 
@@ -44,6 +44,8 @@ namespace rgbd_slam {
 
         bool world_to_screen_coordinates(const vector3& position3D, const matrix44& worldToScreenMatrix, vector2& screenCoordinates)
         {
+            assert( not isnan(position3D.x()) and not isnan(position3D.y()) and not isnan(position3D.z()) );
+
             vector4 ptH;
             ptH << position3D, 1.0;
             const vector4& point4d = world_to_screen_coordinates(ptH, worldToScreenMatrix);
@@ -58,8 +60,12 @@ namespace rgbd_slam {
             const double screenX = Parameters::get_camera_1_focal_x() * point3D.x() * inverseDepth + Parameters::get_camera_1_center_x();
             const double screenY = Parameters::get_camera_1_focal_y() * point3D.y() * inverseDepth + Parameters::get_camera_1_center_y();
 
-            screenCoordinates = vector2(screenX, screenY);
-            return true;
+            if (not isnan(screenX) and not isnan(screenY))
+            {
+                screenCoordinates = vector2(screenX, screenY);
+                return true;
+            }
+            return false;
         }
 
         const vector4 world_to_screen_coordinates(const vector4& worldVector4, const matrix44& worldToScreenMatrix)
@@ -90,11 +96,6 @@ namespace rgbd_slam {
             const double cameraFY = Parameters::get_camera_1_focal_y();
             const double cameraCX = Parameters::get_camera_1_center_x();
             const double cameraCY = Parameters::get_camera_1_center_y();
-
-            assert(cameraFX > 0);
-            assert(cameraFY > 0);
-            assert(cameraCX > 0);
-            assert(cameraCY > 0);
 
             // Jacobian of the screen to world function. Use absolutes to prevent negative variances
             const matrix33 jacobian {
