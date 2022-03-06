@@ -2,13 +2,14 @@
 #include "parameters.hpp"
 #include "utils.hpp"
 
+#include <opencv2/core/eigen.hpp>
 #include <tbb/parallel_for.h>
 
 namespace rgbd_slam {
 namespace features {
 namespace primitives {
 
-        Depth_Map_Transformation::Depth_Map_Transformation(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize) 
+        Depth_Map_Transformation::Depth_Map_Transformation(const uint width, const uint height, const uint cellSize) 
             : 
                 _width(width), _height(height), _cellSize(cellSize),
                 _cloudArray(width * height, 3),
@@ -18,7 +19,7 @@ namespace primitives {
                 _cellMap(height, width)
         {
             _isOk = false;
-            _isOk = load_parameters(parameterFilePath);
+            _isOk = load_parameters();
             if(this->is_ok())
                 init_matrices();
         }
@@ -100,18 +101,31 @@ namespace primitives {
             depthImage = outputDepth;
         }
 
-        bool Depth_Map_Transformation::load_parameters(const std::string& parameterFilePath) {
-            cv::FileStorage fs(parameterFilePath, cv::FileStorage::READ);
-            if (fs.isOpened()) {
-                fs["Rotation"] >> _Rstereo;
-                fs["Translation"] >> _Tstereo;
-                fs.release();
-                return true;
-            }else{
-                rgbd_slam::utils::log_error("Calibration file " + parameterFilePath + " missing");
-                return false;
-            }
-            fs.release();
+        bool Depth_Map_Transformation::load_parameters() {
+            // TODO check parameters 
+            _fxIr = Parameters::get_camera_2_focal_x();
+            _fyIr = Parameters::get_camera_2_focal_y();
+            _cxIr = Parameters::get_camera_2_center_x();
+            _cyIr = Parameters::get_camera_2_center_y();
+
+            _fxRgb = Parameters::get_camera_1_focal_x();
+            _fyRgb = Parameters::get_camera_1_focal_y();
+            _cxRgb = Parameters::get_camera_1_center_x();
+            _cyRgb = Parameters::get_camera_1_center_y();
+
+            _Tstereo = cv::Mat(3, 1, CV_64F);
+            _Tstereo.at<double>(0) = Parameters::get_camera_2_translation_x();
+            _Tstereo.at<double>(1) = Parameters::get_camera_2_translation_y();
+            _Tstereo.at<double>(2) = Parameters::get_camera_2_translation_z();
+
+            const EulerAngles rotationEuler(
+                    Parameters::get_camera_2_rotation_x(),
+                    Parameters::get_camera_2_rotation_y(),
+                    Parameters::get_camera_2_rotation_z()
+                    );
+            const matrix33 cameraRotation = utils::get_rotation_matrix_from_euler_angles(rotationEuler);
+            cv::eigen2cv(cameraRotation, _Rstereo);
+            return true;
         }
 
         /*
@@ -119,15 +133,6 @@ namespace primitives {
          */
         void Depth_Map_Transformation::init_matrices() {
             uint horizontalCellsCount = static_cast<uint>(_width / _cellSize);
-
-            _fxIr = Parameters::get_camera_2_focal_x();
-            _fyIr = Parameters::get_camera_2_focal_y();
-            _cxIr = Parameters::get_camera_2_center_x();
-            _cyIr = Parameters::get_camera_2_center_y();
-            _fxRgb = Parameters::get_camera_1_focal_x();
-            _fyRgb = Parameters::get_camera_1_focal_y();
-            _cxRgb = Parameters::get_camera_1_center_x();
-            _cyRgb = Parameters::get_camera_1_center_y();
 
             // Pre-computations for backprojection
             for (uint r = 0; r < _height; r++){

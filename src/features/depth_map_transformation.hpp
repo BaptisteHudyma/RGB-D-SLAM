@@ -15,12 +15,11 @@ namespace primitives {
     class Depth_Map_Transformation {
         public:
             /**
-              * \param[in] parameterFilePath Path of the file containing the camera parameters
               * \param[in] width Depth image width (constant)
               * \param[in] height Depth image height (constant)
               * \param[in] cellSize Size of the cloud point division (> 0)
               */
-            Depth_Map_Transformation(const std::string& parameterFilePath, const uint width, const uint height, const uint cellSize);
+            Depth_Map_Transformation(const uint width, const uint height, const uint cellSize);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -50,7 +49,7 @@ namespace primitives {
             /**
               * \brief Loads the camera intrinsic parameters
               */
-            bool load_parameters(const std::string& parameterFilePath);
+            bool load_parameters();
 
             /**
               * \brief Must be called after load_parameters. Fills the computation matrices

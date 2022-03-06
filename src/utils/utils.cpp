@@ -147,6 +147,22 @@ namespace rgbd_slam {
             return eulerAngles;
         }
 
+        const matrix33 get_rotation_matrix_from_euler_angles(const EulerAngles& eulerAngles)
+        {
+            const double ch = cos(eulerAngles.roll);
+            const double sh = sin(eulerAngles.roll);
+            const double ca = cos(eulerAngles.pitch);
+            const double sa = sin(eulerAngles.pitch);
+            const double cb = cos(eulerAngles.yaw);
+            const double sb = sin(eulerAngles.yaw);
+
+            const matrix33 rotationMatrix {
+                {ch*ca,  sh*sb - ch*sa*cb,  ch*sa*sb + sh*cb},
+                {sa,     ca*cb,             -ca*sb},
+                {-sh*ca, sh*sa*cb + ch*sb,  -sh*sa*sb + ch*cb}
+            };
+            return rotationMatrix;
+        }
 
     }
 }

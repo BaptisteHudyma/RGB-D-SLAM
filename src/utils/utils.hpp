@@ -93,6 +93,11 @@ namespace rgbd_slam {
          */
         const EulerAngles get_euler_angles_from_quaternion(const quaternion& quat);
 
+        /**
+         * \brief Compute a rotation matrix from a euler angle container
+         */
+        const matrix33 get_rotation_matrix_from_euler_angles(const EulerAngles& eulerAngles);
+
     }
 }
 

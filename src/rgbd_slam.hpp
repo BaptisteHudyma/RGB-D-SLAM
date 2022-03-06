@@ -25,12 +25,11 @@ namespace rgbd_slam {
             typedef std::list<features::primitives::primitive_uniq_ptr> primitive_container; 
 
             /**
-             * \param[in] dataPath Path of the file that contains the camera intrinsics
              * \param[in] startPose the initial pose
              * \param[in] imageWidth The width of the depth images (fixed)
              * \param[in] imageHeight The height of the depth image (fixed)
              */
-            RGBD_SLAM(const std::stringstream& dataPath, const utils::Pose &startPose, const uint imageWidth = 640, const uint imageHeight = 480);
+            RGBD_SLAM(const utils::Pose &startPose, const uint imageWidth = 640, const uint imageHeight = 480);
 
             /**
              * \brief Estimates a new pose from the given images

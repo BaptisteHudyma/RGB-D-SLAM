@@ -10,7 +10,7 @@
 
 namespace rgbd_slam {
 
-    RGBD_SLAM::RGBD_SLAM(const std::stringstream& dataPath, const utils::Pose &startPose, const uint imageWidth, const uint imageHeight) :
+    RGBD_SLAM::RGBD_SLAM(const utils::Pose &startPose, const uint imageWidth, const uint imageHeight) :
         _width(imageWidth),
         _height(imageHeight),
 
@@ -25,14 +25,8 @@ namespace rgbd_slam {
             {
                 Parameters::load_defaut();
             }
-            // Get intrinsics parameters
-            std::stringstream calibPath;
-            calibPath << dataPath.str() << "calib_params.xml";
-            std::string finalPath = calibPath.str();
-
             // primitive connected graph creator
             _depthOps = new features::primitives::Depth_Map_Transformation(
-                    finalPath, 
                     _width, 
                     _height, 
                     Parameters::get_depth_map_patch_size()

@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
     const rgbd_slam::quaternion& startingRotation = rgbd_slam::utils::get_quaternion_from_euler_angles(startingRotationEuler);
     pose.set_parameters(startingPosition, startingRotation);
 
-    rgbd_slam::RGBD_SLAM RGBD_Slam (dataPath, pose, width, height);
+    rgbd_slam::RGBD_SLAM RGBD_Slam (pose, width, height);
 
     //frame counters
     unsigned int totalFrameTreated = 0;
