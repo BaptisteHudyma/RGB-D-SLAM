@@ -30,7 +30,8 @@ namespace rgbd_slam {
             // Quadratic error model (uses depth as meters)
             const double depthMeters = depth / 1000.0;
             // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = is_depth_valid(depth) ? std::max(0.01, -0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0;
+            const double depthVariance = std::max(0.0001, is_depth_valid(depth) ? (-0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
+            // a zero variance will break the kalman gain
             assert(depthVariance > 0);
 
             // TODO xy variance should also depend on the placement of the pixel in x and y

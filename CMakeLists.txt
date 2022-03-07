@@ -53,6 +53,8 @@ enable_testing()
 set(SRC src)
 set(THIRD_PARTY third_party)
 set(FEATS       ${SRC}/features)
+set(KEYPOINTS   ${FEATS}/keypoints)
+set(PRIMITIVES  ${FEATS}/primitives)
 set(POSE_OPTI   ${SRC}/pose_optimization)
 set(MAP         ${SRC}/map_management)
 set(UTILS       ${SRC}/utils)
@@ -64,7 +66,8 @@ include_directories(SYSTEM
 
 include_directories(
     ${SRC}
-    ${FEATS}
+    ${KEYPOINTS}
+    ${PRIMITIVES}
     ${POSE_OPTI}
     ${MAP}
     ${THIRD_PARTY}
@@ -72,15 +75,17 @@ include_directories(
     ${EXAMPLES}
     )
 
-add_library(features SHARED
-    ${FEATS}/depth_map_transformation.cpp
-    ${FEATS}/primitive_detection.cpp
-    ${FEATS}/plane_segment.cpp
-    ${FEATS}/cylinder_segment.cpp
-    ${FEATS}/histogram.cpp
-    ${FEATS}/shape_primitives.cpp
+add_library(keypoints SHARED
+    ${KEYPOINTS}/keypoint_detection.cpp
+    )
 
-    ${FEATS}/keypoint_detection.cpp
+add_library(primitives SHARED
+    ${PRIMITIVES}/depth_map_transformation.cpp
+    ${PRIMITIVES}/primitive_detection.cpp
+    ${PRIMITIVES}/plane_segment.cpp
+    ${PRIMITIVES}/cylinder_segment.cpp
+    ${PRIMITIVES}/histogram.cpp
+    ${PRIMITIVES}/shape_primitives.cpp
     )
 
 add_library(mapManagement SHARED
@@ -112,7 +117,8 @@ add_library(${PROJECT_NAME} SHARED
     )
 
 target_link_libraries(${PROJECT_NAME}
-    features 
+    keypoints
+    primitives
     mapManagement
     poseOptimization
     thirdParty
