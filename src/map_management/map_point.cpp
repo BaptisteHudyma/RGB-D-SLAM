@@ -48,7 +48,7 @@ namespace rgbd_slam {
             const vector3 newPosition = _coordinates + (kalmanGain * (newPointCoordinates - _coordinates));
             const double score = (_coordinates - newPosition).norm();
 
-            assert(not isnan(newPosition.x()) and not isnan(newPosition.y()) and not isnan(newPosition.z()));
+            assert(not std::isnan(newPosition.x()) and not std::isnan(newPosition.y()) and not std::isnan(newPosition.z()));
 
             // update this map point
             const matrix33 invGain = identity - kalmanGain;

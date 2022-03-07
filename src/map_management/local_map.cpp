@@ -52,7 +52,7 @@ namespace rgbd_slam {
         void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
         {
             const vector3& coordinates = mapPoint._coordinates;
-            assert(not isnan(coordinates.x()) and not isnan(coordinates.y()) and not isnan(coordinates.z()));
+            assert(not std::isnan(coordinates.x()) and not std::isnan(coordinates.y()) and not std::isnan(coordinates.z()));
             if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
             {
                 // use previously known screen coordinates
@@ -284,7 +284,7 @@ namespace rgbd_slam {
                 if (stagedPointIterator->should_add_to_local_map())
                 {
                     const vector3& stagedPointCoordinates = stagedPointIterator->_coordinates;
-                    assert(not isnan(stagedPointCoordinates.x()) and not isnan(stagedPointCoordinates.y()) and not isnan(stagedPointCoordinates.z()));
+                    assert(not std::isnan(stagedPointCoordinates.x()) and not std::isnan(stagedPointCoordinates.y()) and not std::isnan(stagedPointCoordinates.z()));
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
                     _localPointMap.emplace(_localPointMap.end(), stagedPointCoordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
                     _localPointMap.back()._lastMatchedIndex = stagedPointIterator->_lastMatchedIndex;
@@ -319,7 +319,7 @@ namespace rgbd_slam {
 
                     const vector2& screenPoint = keypointObject.get_keypoint(i);
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorldMatrix);
-                    assert(not isnan(worldPoint.x()) and not isnan(worldPoint.y()) and not isnan(worldPoint.z()));
+                    assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(depth));
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));

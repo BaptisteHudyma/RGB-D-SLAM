@@ -44,7 +44,7 @@ namespace rgbd_slam {
 
         bool world_to_screen_coordinates(const vector3& position3D, const matrix44& worldToScreenMatrix, vector2& screenCoordinates)
         {
-            assert( not isnan(position3D.x()) and not isnan(position3D.y()) and not isnan(position3D.z()) );
+            assert( not std::isnan(position3D.x()) and not std::isnan(position3D.y()) and not std::isnan(position3D.z()) );
 
             vector4 ptH;
             ptH << position3D, 1.0;
@@ -60,7 +60,7 @@ namespace rgbd_slam {
             const double screenX = Parameters::get_camera_1_focal_x() * point3D.x() * inverseDepth + Parameters::get_camera_1_center_x();
             const double screenY = Parameters::get_camera_1_focal_y() * point3D.y() * inverseDepth + Parameters::get_camera_1_center_y();
 
-            if (not isnan(screenX) and not isnan(screenY))
+            if (not std::isnan(screenX) and not std::isnan(screenY))
             {
                 screenCoordinates = vector2(screenX, screenY);
                 return true;

@@ -163,8 +163,7 @@ namespace rgbd_slam {
             if(isCoordinatesValid)
             {
                 const double distance = get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
-                if (isnan(distance))
-                    return std::numeric_limits<double>::max();
+                assert (not std::isnan(distance) and distance >= 0);
                 return distance;
             }
             // high number
