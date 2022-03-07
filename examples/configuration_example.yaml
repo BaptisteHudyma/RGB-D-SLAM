@@ -1,0 +1,31 @@
+%YAML:1.0
+
+#% starting position of the observer, in meters
+starting_position_x: 0.0
+starting_position_y: 0.0
+starting_position_z: 0.0
+
+# starting rotation of the observer, in meters
+starting_rotation_x: 0.0
+starting_rotation_y: 0.0
+starting_rotation_z: 0.0
+
+# Focal distance and center of the camera 1 (RGB)
+camera_1_focal_x: 517.3
+camera_1_focal_y: 516.5
+camera_1_center_x: 318.6
+camera_1_center_y: 255.3
+
+# Focal distance and center of the camera 2 (depth)
+camera_2_focal_x: 591.1
+camera_2_focal_y: 590.1
+camera_2_center_x: 331.0
+camera_2_center_y: 234.0
+
+# Offset of the camera 2 to the center of the camera 1 (in millimeters and radians) 
+camera_2_translation_offset_x: 0.0
+camera_2_translation_offset_y: 0.0
+camera_2_translation_offset_z: 0.0
+camera_2_rotation_offset_x: 0.0 
+camera_2_rotation_offset_y: 0.0
+camera_2_rotation_offset_z: 0.0
