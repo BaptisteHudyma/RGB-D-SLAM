@@ -76,6 +76,7 @@ include_directories(
     )
 
 add_library(keypoints SHARED
+    ${KEYPOINTS}/keypoint_handler.cpp
     ${KEYPOINTS}/keypoint_detection.cpp
     )
 
