@@ -58,6 +58,9 @@ namespace rgbd_slam {
 
     void Parameters::load_defaut() 
     {
+        // set the global parameters
+        set_parameters();
+
         // Initial position & rotation, if necessary
         _startingPositionX = 0;
         _startingPositionY = 0;
