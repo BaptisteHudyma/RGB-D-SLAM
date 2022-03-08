@@ -69,6 +69,18 @@ namespace rgbd_slam {
         {
             // Check constants
             assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
+
+            _mapWriter = new utils::XYZ_Map_Writer("out");
+        }
+
+        Local_Map::~Local_Map()
+        {
+            for (Map_Point& mapPoint : _localPointMap) 
+            {
+                _mapWriter->add_point(mapPoint._coordinates);
+            }
+
+            delete _mapWriter;
         }
 
         bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints)
@@ -262,6 +274,9 @@ namespace rgbd_slam {
                 update_point_match_status(*pointMapIterator, keypointObject, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (pointMapIterator->is_lost()) {
+                    // write to file
+                    _mapWriter->add_point(pointMapIterator->_coordinates);
+
                     // Remove useless point
                     pointMapIterator = _localPointMap.erase(pointMapIterator);
                 }

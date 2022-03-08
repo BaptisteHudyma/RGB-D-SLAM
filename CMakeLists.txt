@@ -110,6 +110,7 @@ add_library(utils SHARED
     ${UTILS}/pose.cpp
     ${UTILS}/motion_model.cpp
     ${UTILS}/triangulation.cpp
+    ${UTILS}/map_writer.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED

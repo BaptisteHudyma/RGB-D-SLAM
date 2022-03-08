@@ -13,6 +13,8 @@
 #include "primitive_detection.hpp"
 #include "pose.hpp"
 
+#include "map_writer.hpp"
+
 
 namespace rgbd_slam {
     namespace map_management {
@@ -23,6 +25,7 @@ namespace rgbd_slam {
         class Local_Map {
             public:
                 Local_Map();
+                ~Local_Map();
 
                 /**
                  * \brief Compute the point feature matches between the local map and a given set of points. Update the staged point list matched points
@@ -161,6 +164,9 @@ namespace rgbd_slam {
                 //local primitive map
                 primitive_map_container _localPrimitiveMap;
                 std::unordered_map<int, uint> _previousPrimitiveAssociation;
+
+                
+                utils::XYZ_Map_Writer* _mapWriter; 
         };
 
     }

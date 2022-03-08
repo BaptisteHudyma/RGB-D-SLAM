@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
     RGBD_Slam.show_statistics(meanTreatmentTime / totalFrameTreated);
 
     cv::destroyAllWindows();
-    exit(0);
+    return 0;
 }
 
 

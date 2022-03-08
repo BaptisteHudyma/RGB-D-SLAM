@@ -79,6 +79,15 @@ namespace rgbd_slam {
             _currentPose = startPose;
         }
 
+    RGBD_SLAM::~RGBD_SLAM()
+    {
+        delete _localMap;
+        delete _primitiveDetector;
+        delete _pointMatcher;
+        delete _lineDetector;
+        delete _depthOps;
+    }
+
 
     const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
     {

@@ -30,6 +30,7 @@ namespace rgbd_slam {
              * \param[in] imageHeight The height of the depth image (fixed)
              */
             RGBD_SLAM(const utils::Pose &startPose, const uint imageWidth = 640, const uint imageHeight = 480);
+            ~RGBD_SLAM();
 
             /**
              * \brief Estimates a new pose from the given images
