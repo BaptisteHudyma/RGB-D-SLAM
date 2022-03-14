@@ -7,11 +7,11 @@
 namespace rgbd_slam {
     namespace utils {
 
-        class Map_Writer
+        class IMap_Writer
         {
             public:
-                Map_Writer(const std::string& filename);
-                virtual ~Map_Writer();
+                IMap_Writer(const std::string& filename);
+                virtual ~IMap_Writer();
 
                 virtual void add_point(const vector3& pointCoordinates) = 0;
 
@@ -21,7 +21,7 @@ namespace rgbd_slam {
         };
 
         class XYZ_Map_Writer :
-            public Map_Writer
+            public IMap_Writer
         {
             public:
                 XYZ_Map_Writer(const std::string& filename);
@@ -30,7 +30,7 @@ namespace rgbd_slam {
         };
 
         class PCD_Map_Writer:
-            public Map_Writer
+            public IMap_Writer
         {
             public:
                 PCD_Map_Writer(const std::string& filename);

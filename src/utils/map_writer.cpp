@@ -5,7 +5,7 @@
 namespace rgbd_slam {
     namespace utils {
 
-        Map_Writer::Map_Writer(const std::string& filename)
+        IMap_Writer::IMap_Writer(const std::string& filename)
         {
             _file.open(filename, std::ios_base::trunc | std::ios_base::out);
             if (not _file.is_open())
@@ -15,18 +15,17 @@ namespace rgbd_slam {
             }
         }
 
-        Map_Writer::~Map_Writer()
+        IMap_Writer::~IMap_Writer()
         {
             if (_file.is_open())
                 _file.close();
-            utils::log("Closing file");
         }
 
         /**
           *     XYZ format
           */
         XYZ_Map_Writer::XYZ_Map_Writer(const std::string& filename):
-            Map_Writer(filename + ".xyz")
+            IMap_Writer(filename + ".xyz")
         {
         }
 
@@ -51,7 +50,7 @@ namespace rgbd_slam {
           */
 
         PCD_Map_Writer::PCD_Map_Writer(const std::string& filename):
-            Map_Writer(filename + ".pcd")
+            IMap_Writer(filename + ".pcd")
         {
             _file << "# .PCD v.7 - Point Cloud Data file format\n";
             _file << "VERSION .7\n";
