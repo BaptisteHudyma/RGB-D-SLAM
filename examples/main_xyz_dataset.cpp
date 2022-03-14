@@ -9,7 +9,7 @@
 #include "rgbd_slam.hpp"
 #include "pose.hpp"
 #include "parameters.hpp"
-#include "utils.hpp"
+#include "angle_utils.hpp"
 
 
 void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) 

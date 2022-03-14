@@ -3,7 +3,9 @@
 
 #include "pose_optimization/pose_optimization.hpp"
 #include "pose.hpp"
-#include "utils.hpp"
+#include "camera_transformation.hpp"
+#include "logger.hpp"
+#include "angle_utils.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {

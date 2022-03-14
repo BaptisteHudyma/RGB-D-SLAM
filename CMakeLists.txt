@@ -106,7 +106,10 @@ add_library(poseOptimization SHARED
     )
 
 add_library(utils SHARED
-    ${UTILS}/utils.cpp
+    ${UTILS}/angle_utils.cpp
+    ${UTILS}/covariances.cpp
+    ${UTILS}/camera_transformation.cpp
+    ${UTILS}/logger.cpp
     ${UTILS}/pose.cpp
     ${UTILS}/motion_model.cpp
     ${UTILS}/triangulation.cpp

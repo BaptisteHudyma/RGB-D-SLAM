@@ -1,6 +1,6 @@
 #include "triangulation.hpp"
 
-#include "utils.hpp"
+#include "camera_transformation.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {

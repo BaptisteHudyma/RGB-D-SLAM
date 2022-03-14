@@ -1,6 +1,7 @@
 #include "pose_optimization.hpp"
 
-#include "utils.hpp"
+#include "camera_transformation.hpp"
+#include "logger.hpp"
 #include "levenberg_marquard_functors.hpp"
 #include "parameters.hpp"
 

@@ -1,6 +1,6 @@
 #include "map_writer.hpp"
 
-#include "utils.hpp"
+#include "logger.hpp"
 
 namespace rgbd_slam {
     namespace utils {

@@ -3,7 +3,7 @@
 
 #include "pose_optimization.hpp"
 #include "parameters.hpp"
-#include "utils.hpp"
+#include "logger.hpp"
 #include "matches_containers.hpp"
 
 #include "rgbd_slam.hpp"

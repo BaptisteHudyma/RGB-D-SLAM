@@ -1,6 +1,6 @@
 #include "cylinder_segment.hpp"
 #include "parameters.hpp"
-#include "utils.hpp"
+#include "logger.hpp"
 
 namespace rgbd_slam {
 namespace features {

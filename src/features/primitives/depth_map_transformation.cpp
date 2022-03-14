@@ -1,6 +1,6 @@
 #include "depth_map_transformation.hpp"
 #include "parameters.hpp"
-#include "utils.hpp"
+#include "angle_utils.hpp"
 
 #include <opencv2/core/eigen.hpp>
 #include <tbb/parallel_for.h>

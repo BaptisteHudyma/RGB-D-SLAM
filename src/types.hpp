@@ -3,6 +3,7 @@
 
 
 #include <Eigen/StdVector>
+#include <Eigen/Geometry>
 #include <map>
 #include <list>
 

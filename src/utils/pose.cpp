@@ -1,6 +1,6 @@
 #include "pose.hpp"
 
-#include "utils.hpp"
+#include "angle_utils.hpp"
 
 namespace rgbd_slam {
 namespace utils {

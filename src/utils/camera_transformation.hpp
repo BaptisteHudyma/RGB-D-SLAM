@@ -1,21 +1,10 @@
-#ifndef RGBDSLAM_UTILS_UTILS_HPP
-#define RGBDSLAM_UTILS_UTILS_HPP
+#ifndef RGBDSLAM_UTILS_CAMERA_TRANSFORMATION_HPP
+#define RGBDSLAM_UTILS_CAMERA_TRANSFORMATION_HPP
 
 #include "types.hpp"
 
-#include <string_view>
-#include <source_location>
-
-
 namespace rgbd_slam {
     namespace utils {
-
-        /**
-         * Log an error line
-         */
-        void log(std::string_view message, const std::source_location& location = std::source_location::current());
-        void log_error(std::string_view message, const std::source_location& location = std::source_location::current());
-
         /*
          * \brief Transform a screen point with a depth value to a 3D point
          *
@@ -72,36 +61,8 @@ namespace rgbd_slam {
          */
         const matrix44 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position);
 
-        /**
-         * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
-         *
-         * \param[in] screenPoint The 2D point in screen coordinates
-         * \param[in] depth The depth associated with this screen point
-         * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
-         *
-         * \return the covariance of the 3D world point
-         */
-        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance);
-
-        /**
-         * \brief Compute a quaternion from the given euler angles, in radians
-         */
-        const quaternion get_quaternion_from_euler_angles(const EulerAngles& eulerAngles);
-
-        /**
-         * \brief Compute euler angles from a given quaternion
-         */
-        const EulerAngles get_euler_angles_from_quaternion(const quaternion& quat);
-
-        /**
-         * \brief Compute a rotation matrix from a euler angle container
-         */
-        const matrix33 get_rotation_matrix_from_euler_angles(const EulerAngles& eulerAngles);
-
-    }
-}
-
-
+    }   // utils
+}       // rgbd_slam
 
 
 #endif

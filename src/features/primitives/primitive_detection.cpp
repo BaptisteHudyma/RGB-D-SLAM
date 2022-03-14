@@ -1,7 +1,7 @@
 #include <limits>
 #include "primitive_detection.hpp"
 #include "parameters.hpp"
-#include "utils.hpp"
+#include "logger.hpp"
 
 //index offset of a cylinder to a plane: used for masks display purposes
 const uint CYLINDER_CODE_OFFSET = 50;

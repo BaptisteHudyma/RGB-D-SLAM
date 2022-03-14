@@ -1,5 +1,5 @@
 #include "shape_primitives.hpp"
-#include "utils.hpp"
+#include "logger.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {
