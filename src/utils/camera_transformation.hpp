@@ -5,6 +5,12 @@
 
 namespace rgbd_slam {
     namespace utils {
+
+        /**
+          * \brief Return true is a measurement is in the measurement range
+          */
+        bool is_depth_valid(const double depth);
+
         /*
          * \brief Transform a screen point with a depth value to a 3D point
          *

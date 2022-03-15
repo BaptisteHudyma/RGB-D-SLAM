@@ -5,6 +5,16 @@
 
 namespace rgbd_slam {
     namespace utils {
+
+        /**
+         * \brief compute a covariance matrix for a screen point associated with a depth measurement
+         *
+         * \param[in] screenCoordinates The coordinates of this 2D point, in screen space
+         * \param[in] depth The depth associated to this 2D point
+         *
+         * \return A 3x3 covariance matrix. It should be diagonal
+         */
+        const matrix33 get_screen_point_covariance(const vector2& screenCoordinates, const double depth);
         
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point

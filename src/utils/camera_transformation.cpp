@@ -7,6 +7,16 @@
 
 namespace rgbd_slam {
     namespace utils {
+
+
+        const double MIN_DEPTH_DISTANCE = 40;   // M millimeters is the depth camera minimum reliable distance
+        const double MAX_DEPTH_DISTANCE = 6000; // N meters is the depth camera maximum reliable distance
+
+        bool is_depth_valid(const double depth)
+        {
+            return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
+        }
+
         
         const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix44& cameraToWorldMatrix) 
         {

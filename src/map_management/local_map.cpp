@@ -9,44 +9,9 @@
 namespace rgbd_slam {
     namespace map_management {
 
-        const double MIN_DEPTH_DISTANCE = 40;   // M millimeters is the depth camera minimum reliable distance
-        const double MAX_DEPTH_DISTANCE = 6000; // N meters is the depth camera maximum reliable distance
-
         /**
          * LOCAL UTILS FUNCTIONS
          */
-
-        /**
-         * \brief checks the depth validity of a measurement
-         */
-        bool is_depth_valid(const double depth)
-        {
-            return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
-        }
-
-        /**
-         * \brief compute a covariance matrix for a point associated with a depth measurement
-         */
-        matrix33 get_screen_point_covariance(const double depth) 
-        {
-            // Quadratic error model (uses depth as meters)
-            const double depthMeters = depth / 1000.0;
-            // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = std::max(0.0001, is_depth_valid(depth) ? (-0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
-            // a zero variance will break the kalman gain
-            assert(depthVariance > 0);
-
-            // TODO xy variance should also depend on the placement of the pixel in x and y
-            const double xyVariance = pow(0.1, 2.0);
-
-            matrix33 screenPointCovariance {
-                {xyVariance, 0,          0},
-                    {0,          xyVariance, 0},
-                    {0,          0,          depthVariance * depthVariance},
-            };
-            return screenPointCovariance;
-        }
-
 
         /**
          * \brief My add a point to the tracked feature object, used to add optical flow tracking
@@ -103,7 +68,7 @@ namespace rgbd_slam {
             }
 
             const double screenPointDepth = detectedKeypoint.get_depth(matchIndex);
-            if (is_depth_valid(screenPointDepth) ) {
+            if (utils::is_depth_valid(screenPointDepth) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
 
@@ -207,12 +172,12 @@ namespace rgbd_slam {
                     const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
                     const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
 
-                    if(is_depth_valid(matchedPointDepth))
+                    if(utils::is_depth_valid(matchedPointDepth))
                     {
                         // transform screen point to world point
                         const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
                         // get a measure of the estimated variance of the new world point
-                        const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, get_screen_point_covariance(matchedPointDepth));
+                        const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
                         // TODO update the variances with the pose variance
 
                         // update this map point errors & position
@@ -329,7 +294,7 @@ namespace rgbd_slam {
             {
                 if (not _isPointMatched[i]) {
                     const double depth = keypointObject.get_depth(i);
-                    if (not is_depth_valid(depth))
+                    if (not utils::is_depth_valid(depth))
                     {
                         continue;
                     }
@@ -338,7 +303,7 @@ namespace rgbd_slam {
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorldMatrix);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(depth));
+                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, utils::get_screen_point_covariance(screenPoint, depth));
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
                     _stagedPoints.back()._screenCoordinates << screenPoint, depth;
                     // This id is to unsure the tracking of this staged point for it's first detection

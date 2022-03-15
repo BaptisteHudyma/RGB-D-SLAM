@@ -1,9 +1,32 @@
 #include "covariances.hpp"
 
 #include "parameters.hpp"
+#include "camera_transformation.hpp"
 
 namespace rgbd_slam {
     namespace utils {
+        
+        const matrix33 get_screen_point_covariance(const vector2& screenCoordinates, const double depth) 
+        {
+            // Quadratic error model (uses depth as meters)
+            const double depthMeters = depth / 1000.0;
+            // If depth is less than the min distance, covariance is set to a high value
+            const double depthVariance = std::max(0.0001, utils::is_depth_valid(depth) ? (-0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
+            // a zero variance will break the kalman gain
+            assert(depthVariance > 0);
+
+            // TODO xy variance should also depend on the placement of the pixel in x and y
+            const double xyVariance = pow(0.1, 2.0);
+
+            matrix33 screenPointCovariance {
+                {xyVariance, 0,          0},
+                    {0,          xyVariance, 0},
+                    {0,          0,          depthVariance * depthVariance},
+            };
+            return screenPointCovariance;
+        }
+
+
         
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)
         {
