@@ -5,12 +5,12 @@
 #include <cfloat>
 #include <iostream>
 
+#include "logger.hpp"
+
 namespace rgbd_slam {
 
     bool Parameters::parse_file(const std::string& fileName )
     {
-        _isValid = false;
-
         // set the global parameters
         set_parameters();
 
@@ -19,6 +19,7 @@ namespace rgbd_slam {
         {
             std::cerr << "Cannot load parameter files, starting with default configuration" << std::endl;
             load_defaut();
+            check_parameters_validity();
             return false;
         }
         // Load start pose
@@ -49,8 +50,7 @@ namespace rgbd_slam {
         _camera2RotationY = configFile["camera_2_rotation_offset_y"];
         _camera2RotationZ = configFile["camera_2_rotation_offset_z"];
 
-        // TODO Check parameters
-        _isValid = true;
+        check_parameters_validity();
 
         configFile.release();
         return _isValid;
@@ -147,8 +147,252 @@ namespace rgbd_slam {
         // Cylinder ransac fitting
         _cylinderRansacSqrtMaxDistance = 0.04;
         _cylinderRansacMinimumScore = 75;
+    }
 
+    void Parameters::check_parameters_validity()
+    {
         _isValid = true;
+        if (_matchSearchRadius <= 0)
+        {
+            utils::log_error("Match search radius must be > 0");
+            _isValid = false;
+        }
+        if (_matchSearchCellSize <= 0)
+        {
+            utils::log_error("Match search cell size must be > 0");
+            _isValid = false;
+        }
+        if (_maximumMatchDistance <= 0)
+        {
+            utils::log_error("Minimum match distance must be > 0");
+            _isValid = false;
+        }
+        if (_detectorMinHessian <= 0)
+        {
+            utils::log_error("Keypoint detector hessian must be > 0");
+            _isValid = false;
+        }
+        if (_keypointRefreshFrequency <= 0)
+        {
+            utils::log_error("Keypoint refresh frequency must be > 0");
+            _isValid = false;
+        }
+        if (_opticalFlowPyramidDepth <= 0)
+        {
+            utils::log_error("Pyramid depth must be > 0");
+            _isValid = false;
+        }
+        if (_opticalFlowPyramidWindowSize <= 0)
+        {
+            utils::log_error("Pyramid window size must be > 0");
+            _isValid = false;
+        }
+        if (_opticalFlowMaxError <= 0)
+        {
+            utils::log_error("Optical flow maximum error  must be > 0");
+            _isValid = false;
+        }
+        if (_opticalFlowMaxDistance <= 0)
+        {
+            utils::log_error("Optical flow maximum distance  must be > 0");
+            _isValid = false;
+        }
+        if (_keypointMaskDiameter <= 0)
+        {
+            utils::log_error("keypoint mask diameters must be > 0");
+            _isValid = false;
+        }
+        
+
+        if (_minimumPointForOptimization < 3)
+        {
+            utils::log_error("A pose cannot be computed with less than 3 points");
+            _isValid = false;
+        }
+        if (_optimizationMaximumIterations <= 0)
+        {
+            utils::log_error("Optimization maximum iterations must be > 0");
+            _isValid = false;
+        }
+        if (_optimizationErrorPrecision < 0)
+        {
+            utils::log_error("Optimization error precision must be >= 0");
+            _isValid = false;
+        }
+        if (_optimizationToleranceOfSolutionVectorNorm < 0)
+        {
+            utils::log_error("The optimization tolerance for the norm of the solution vector must be >= 0");
+            _isValid = false;
+        }
+        if (_optimizationToleranceOfVectorFunction < 0)
+        {
+            utils::log_error("The optimization tolerance for the vector function must be >= 0");
+            _isValid = false;
+        }
+        if (_optimizationToleranceOfErrorFunctionGradient < 0)
+        {
+            utils::log_error("The optimization tolerance for the error function gradient must be >= 0");
+            _isValid = false;
+        }
+        if (_optimizationDiagonalStepBoundShift <= 0)
+        {
+            utils::log_error("The optimization diagonal stepbound shift must be > 0");
+            _isValid = false;
+        }
+        if (_maximumOptimizationRANSACiterations <= 0)
+        {
+            utils::log_error("The RANSAC maximum iterations must be > 0");
+            _isValid = false;
+        }
+        if (_maximumRetroprojectionError <= 0)
+        {
+            utils::log_error("The maximum retroprojection error  must be > 0");
+            _isValid = false;
+        }
+
+
+        if (_pointWeightThreshold <= 0)
+        {
+            utils::log_error("Point weight threshold must be > 0");
+            _isValid = false;
+        }
+        if (_pointWeightCoefficient <= 0)
+        {
+            utils::log_error("The point weight coefficient must be > 0");
+            _isValid = false;
+        }
+        if (std::isnan(_pointLossAlpha))
+        {
+            utils::log_error("The point loss alpha parameter must be a real number");
+            _isValid = false;
+        }
+        if (_pointLossScale <= 0)
+        {
+            utils::log_error("The point loss scale parameter must be > 0");
+            _isValid = false;
+        }
+        if (_pointErrorMultiplier <= 0)
+        {
+            utils::log_error("Point error multiplier must be > 0");
+            _isValid = false;
+        }
+
+
+        if (_pointUnmatchedCountToLoose <= 0)
+        {
+            utils::log_error("Unmatched points to loose tracking must be > 0");
+            _isValid = false;
+        }
+        if (_pointAgeConfidence <= 0)
+        {
+            utils::log_error("Point age confidence must be > 0");
+            _isValid = false;
+        }
+        if (_pointStagedAgeConfidence <= 0)
+        {
+            utils::log_error("Staged point confidence must be > 0");
+            _isValid = false;
+        }
+        if (_pointMinimumConfidenceForMap <= 0)
+        {
+            utils::log_error("Minimum confidence to add staged point to map  must be > 0");
+            _isValid = false;
+        }
+        if (_mapMaximumRetroprojectionError <= 0)
+        {
+            utils::log_error("Maximum retroprojection must be > 0");
+            _isValid = false;
+        }
+
+
+        if (_minimumIOUToConsiderMatch <= 0)
+        {
+            utils::log_error("Minimum InterOverUnion must be > 0");
+            _isValid = false;
+        }
+        if (_minimumCellActivated <= 0)
+        {
+            utils::log_error("Minimum cell activated must be > 0");
+            _isValid = false;
+        }
+        if (_depthSigmaError <= 0)
+        {
+            utils::log_error("Depth sigma error must be > 0");
+            _isValid = false;
+        }
+        if (_depthSigmaMargin <= 0)
+        {
+            utils::log_error("Depth sigma margin must be > 0");
+            _isValid = false;
+        }
+        if (_depthDiscontinuityLimit <= 0)
+        {
+            utils::log_error("Depth discontinuous limit must be > 0");
+            _isValid = false;
+        }
+        if (_depthAlpha <= 0)
+        {
+            utils::log_error("Depth Alpha must be > 0");
+            _isValid = false;
+        }
+
+
+        if (_cylinderRansacSqrtMaxDistance <= 0)
+        {
+            utils::log_error("Cylinder RANSAC max distance must be > 0");
+            _isValid = false;
+        }
+        if (_cylinderRansacMinimumScore <= 0)
+        {
+            utils::log_error("Cylinder RANSAC minimum score must be > 0");
+            _isValid = false;
+        }
+
+
+        if (_camera1FocalX <= 0)
+        {
+            utils::log_error("Camera 1 focal X distance must be > 0");
+            _isValid = false;
+        }
+        if (_camera1FocalY <= 0)
+        {
+            utils::log_error("Camera 1 focal Y distance must be > 0");
+            _isValid = false;
+        }
+        if (_camera1CenterX <= 0)
+        {
+            utils::log_error("Camera 1 center X distance must be > 0");
+            _isValid = false;
+        }
+        if (_camera1CenterY <= 0)
+        {
+            utils::log_error("Camera 1 center Y distance must be > 0");
+            _isValid = false;
+        }
+
+
+        if (_camera2FocalX <= 0)
+        {
+            utils::log_error("Camera 2 focal X distance must be > 0");
+            _isValid = false;
+        }
+        if (_camera2FocalY <= 0)
+        {
+            utils::log_error("Camera 2 focal Y distance must be > 0");
+            _isValid = false;
+        }
+        if (_camera2CenterX <= 0)
+        {
+            utils::log_error("Camera 2 center X distance must be > 0");
+            _isValid = false;
+        }
+        if (_camera2CenterY <= 0)
+        {
+            utils::log_error("Camera 2 center Y distance must be > 0");
+            _isValid = false;
+        }
+
+
     }
 
 };  /* rgbd_slam */

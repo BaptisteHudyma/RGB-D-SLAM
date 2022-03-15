@@ -112,7 +112,7 @@ namespace rgbd_slam {
 
         private:
             // Is this set of parameters valid
-            inline static bool _isValid; 
+            inline static bool _isValid = false; 
 
             // Starting position (m & radians)
             inline static double _startingPositionX;
@@ -201,6 +201,12 @@ namespace rgbd_slam {
             inline static uint _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
             inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
             inline static double _mapMaximumRetroprojectionError;       // Maximum error between a map point retro projection and the new point position before removing it from the local map (in millimeters)
+
+
+            /**
+              * \brief Update the _isValid attribute
+              */
+            static void check_parameters_validity();
     };
 
 };
