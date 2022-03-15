@@ -82,8 +82,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a16888254fb461418c13462a161a79852"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#a16888254fb461418c13462a161a79852">Depth_Map_Transformation</a> (const std::string &amp;parameterFilePath, const uint width, const uint height, const uint cellSize)</td></tr>
-<tr class="separator:a16888254fb461418c13462a161a79852"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a819b2aa0502ecd0aae999c10a894c7c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#a819b2aa0502ecd0aae999c10a894c7c4">Depth_Map_Transformation</a> (const uint width, const uint height, const uint cellSize)</td></tr>
+<tr class="separator:a819b2aa0502ecd0aae999c10a894c7c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae719e5155c7171f19ced8b7d441ff39d"><td class="memItemLeft" align="right" valign="top">EIGEN_MAKE_ALIGNED_OPERATOR_NEW void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#ae719e5155c7171f19ced8b7d441ff39d">get_organized_cloud_array</a> (cv::Mat &amp;depthImage, Eigen::MatrixXf &amp;organizedCloudArray)</td></tr>
 <tr class="memdesc:ae719e5155c7171f19ced8b7d441ff39d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an point cloud organized by cells of cellSize*cellSize pixels.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#ae719e5155c7171f19ced8b7d441ff39d">More...</a><br /></td></tr>
 <tr class="separator:ae719e5155c7171f19ced8b7d441ff39d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,9 +101,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a8de33877b0ea70c7df3c2dc7b9ff943c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#a8de33877b0ea70c7df3c2dc7b9ff943c">load_parameters</a> (const std::string &amp;parameterFilePath)</td></tr>
-<tr class="memdesc:a8de33877b0ea70c7df3c2dc7b9ff943c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the camera intrinsic parameters.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#a8de33877b0ea70c7df3c2dc7b9ff943c">More...</a><br /></td></tr>
-<tr class="separator:a8de33877b0ea70c7df3c2dc7b9ff943c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e718af36fd6b11ef68be47485f42287"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#a2e718af36fd6b11ef68be47485f42287">load_parameters</a> ()</td></tr>
+<tr class="memdesc:a2e718af36fd6b11ef68be47485f42287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the camera intrinsic parameters.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#a2e718af36fd6b11ef68be47485f42287">More...</a><br /></td></tr>
+<tr class="separator:a2e718af36fd6b11ef68be47485f42287"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2fc7e2abf09fea51ffcc9f76bd1bf16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#ad2fc7e2abf09fea51ffcc9f76bd1bf16">init_matrices</a> ()</td></tr>
 <tr class="memdesc:ad2fc7e2abf09fea51ffcc9f76bd1bf16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Must be called after load_parameters. Fills the computation matrices.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation.html#ad2fc7e2abf09fea51ffcc9f76bd1bf16">More...</a><br /></td></tr>
 <tr class="separator:ad2fc7e2abf09fea51ffcc9f76bd1bf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -111,8 +111,8 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Handles operations on the initial depth image, to transform it on a connected cloud points. It also handles the loading of the camera parameters from the configuration file. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a16888254fb461418c13462a161a79852" name="a16888254fb461418c13462a161a79852"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16888254fb461418c13462a161a79852">&#9670;&nbsp;</a></span>Depth_Map_Transformation()</h2>
+<a id="a819b2aa0502ecd0aae999c10a894c7c4" name="a819b2aa0502ecd0aae999c10a894c7c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a819b2aa0502ecd0aae999c10a894c7c4">&#9670;&nbsp;</a></span>Depth_Map_Transformation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -120,12 +120,6 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::features::primitives::Depth_Map_Transformation::Depth_Map_Transformation </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>parameterFilePath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>width</em>, </td>
         </tr>
@@ -150,7 +144,6 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">parameterFilePath</td><td>Path of the file containing the camera parameters </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">width</td><td>Depth image width (constant) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">height</td><td>Depth image height (constant) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cellSize</td><td>Size of the cloud point division (&gt; 0) </td></tr>
@@ -353,8 +346,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8de33877b0ea70c7df3c2dc7b9ff943c" name="a8de33877b0ea70c7df3c2dc7b9ff943c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8de33877b0ea70c7df3c2dc7b9ff943c">&#9670;&nbsp;</a></span>load_parameters()</h2>
+<a id="a2e718af36fd6b11ef68be47485f42287" name="a2e718af36fd6b11ef68be47485f42287"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e718af36fd6b11ef68be47485f42287">&#9670;&nbsp;</a></span>load_parameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,8 +358,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool rgbd_slam::features::primitives::Depth_Map_Transformation::load_parameters </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>parameterFilePath</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -382,8 +374,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/<a class="el" href="depth__map__transformation_8hpp_source.html">depth_map_transformation.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/<a class="el" href="depth__map__transformation_8cpp.html">depth_map_transformation.cpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="depth__map__transformation_8hpp_source.html">depth_map_transformation.hpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="depth__map__transformation_8cpp.html">depth_map_transformation.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

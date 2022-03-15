@@ -14,7 +14,9 @@ typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primi
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a480712bf75bc2de29c4e947297e901b9}{RGBD\+\_\+\+SLAM}} (const std\+::stringstream \&data\+Path, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&start\+Pose, const uint image\+Width=640, const uint image\+Height=480)
+\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}{RGBD\+\_\+\+SLAM}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&start\+Pose, const uint image\+Width=640, const uint image\+Height=480)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}{$\sim$\+RGBD\+\_\+\+SLAM}} ()
 \item 
 const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a5f5c5ac2b4b1d3804cb6e4ed0c329524}{track}} (const cv\+::\+Mat \&input\+Rgb\+Image, const cv\+::\+Mat \&input\+Depth\+Image, bool detect\+Lines=false)
 \begin{DoxyCompactList}\small\item\em Estimates a new pose from the given images. \end{DoxyCompactList}\item 
@@ -49,16 +51,14 @@ void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a480712bf75bc2de29c4e947297e901b9}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a480712bf75bc2de29c4e947297e901b9}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!RGBD\_SLAM@{RGBD\_SLAM}}
 \index{RGBD\_SLAM@{RGBD\_SLAM}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{RGBD\_SLAM()}{RGBD\_SLAM()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const std\+::stringstream \&}]{data\+Path,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{start\+Pose,  }\item[{const uint}]{image\+Width = {\ttfamily 640},  }\item[{const uint}]{image\+Height = {\ttfamily 480} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{start\+Pose,  }\item[{const uint}]{image\+Width = {\ttfamily 640},  }\item[{const uint}]{image\+Height = {\ttfamily 480} }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em data\+Path} & Path of the file that contains the camera intrinsics \\
-\hline
 \mbox{\texttt{ in}}  & {\em start\+Pose} & the initial pose \\
 \hline
 \mbox{\texttt{ in}}  & {\em image\+Width} & The width of the depth images (fixed) \\
@@ -66,6 +66,12 @@ void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b
 \mbox{\texttt{ in}}  & {\em image\+Height} & The height of the depth image (fixed) \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}} 
+\index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!````~RGBD\_SLAM@{$\sim$RGBD\_SLAM}}
+\index{````~RGBD\_SLAM@{$\sim$RGBD\_SLAM}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{$\sim$RGBD\_SLAM()}{~RGBD\_SLAM()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::$\sim$\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
 
 
 \doxysubsection{Member Function Documentation}

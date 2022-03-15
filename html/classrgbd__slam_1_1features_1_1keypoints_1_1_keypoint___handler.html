@@ -79,7 +79,7 @@ $(function() {
 <p>Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association.  
  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="keypoint__detection_8hpp_source.html">keypoint_detection.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="keypoint__handler_8hpp_source.html">keypoint_handler.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -93,20 +93,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6ce94798a84592fde5b65381800a443"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#aa6ce94798a84592fde5b65381800a443">get_match_index</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;projectedMapPoint, const cv::Mat &amp;mapPointDescriptor, const std::vector&lt; bool &gt; &amp;isKeyPointMatchedContainer) const</td></tr>
 <tr class="memdesc:aa6ce94798a84592fde5b65381800a443"><td class="mdescLeft">&#160;</td><td class="mdescRight">get an index corresponding to the index of the point matches.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#aa6ce94798a84592fde5b65381800a443">More...</a><br /></td></tr>
 <tr class="separator:aa6ce94798a84592fde5b65381800a443"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b0c5c83428083941bfd22759835e45e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a9b0c5c83428083941bfd22759835e45e">get_depth</a> (const unsigned int index) const</td></tr>
-<tr class="memdesc:a9b0c5c83428083941bfd22759835e45e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the depth associated with a certain keypoint.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a9b0c5c83428083941bfd22759835e45e">More...</a><br /></td></tr>
-<tr class="separator:a9b0c5c83428083941bfd22759835e45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f96599d7f04c7a90b124272246e1389"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a1f96599d7f04c7a90b124272246e1389">get_depth</a> (const uint index) const</td></tr>
+<tr class="memdesc:a1f96599d7f04c7a90b124272246e1389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the depth associated with a certain keypoint.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a1f96599d7f04c7a90b124272246e1389">More...</a><br /></td></tr>
+<tr class="separator:a1f96599d7f04c7a90b124272246e1389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a144b42745038ff79ab69be4cb010aec6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a144b42745038ff79ab69be4cb010aec6">get_depth_count</a> () const</td></tr>
 <tr class="separator:a144b42745038ff79ab69be4cb010aec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dc4839dba84732c950e515e7c54f4aa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a2dc4839dba84732c950e515e7c54f4aa">get_keypoint</a> (const unsigned int index) const</td></tr>
-<tr class="memdesc:a2dc4839dba84732c950e515e7c54f4aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the keypoint associated with the index  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a2dc4839dba84732c950e515e7c54f4aa">More...</a><br /></td></tr>
-<tr class="separator:a2dc4839dba84732c950e515e7c54f4aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47e0b6bb397e54d265558d9f1dd8f120"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a47e0b6bb397e54d265558d9f1dd8f120">is_descriptor_computed</a> (const unsigned int index) const</td></tr>
-<tr class="separator:a47e0b6bb397e54d265558d9f1dd8f120"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a695563472e22244d424fa61c70bd755e"><td class="memItemLeft" align="right" valign="top">const cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a695563472e22244d424fa61c70bd755e">get_descriptor</a> (const unsigned int index) const</td></tr>
-<tr class="separator:a695563472e22244d424fa61c70bd755e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf66abb1959b066ff0beed19d4106b3b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#acf66abb1959b066ff0beed19d4106b3b">get_keypoint_count</a> () const</td></tr>
-<tr class="separator:acf66abb1959b066ff0beed19d4106b3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898c47165d2c6653f05c8f418256771b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a898c47165d2c6653f05c8f418256771b">get_keypoint</a> (const uint index) const</td></tr>
+<tr class="memdesc:a898c47165d2c6653f05c8f418256771b"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the keypoint associated with the index  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a898c47165d2c6653f05c8f418256771b">More...</a><br /></td></tr>
+<tr class="separator:a898c47165d2c6653f05c8f418256771b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84f4e67e3c3e4e459d7398a2310cacf5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a84f4e67e3c3e4e459d7398a2310cacf5">is_descriptor_computed</a> (const uint index) const</td></tr>
+<tr class="separator:a84f4e67e3c3e4e459d7398a2310cacf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66fbc904e5696804ad81a889fc44a475"><td class="memItemLeft" align="right" valign="top">const cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a66fbc904e5696804ad81a889fc44a475">get_descriptor</a> (const uint index) const</td></tr>
+<tr class="separator:a66fbc904e5696804ad81a889fc44a475"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaef97472cf94cd95c72d90d0eb86c329"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#aaef97472cf94cd95c72d90d0eb86c329">get_keypoint_count</a> () const</td></tr>
+<tr class="separator:aaef97472cf94cd95c72d90d0eb86c329"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
 Protected Types</h2></td></tr>
@@ -121,11 +121,11 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a4e33c2bfa1eee6700d5c0e7e58cf1618"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a566cc50761385b5f88404399abaf3132">int_pair</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a4e33c2bfa1eee6700d5c0e7e58cf1618">get_search_space_coordinates</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;pointToPlace) const</td></tr>
 <tr class="memdesc:a4e33c2bfa1eee6700d5c0e7e58cf1618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with _searchSpaceIndexContainer.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a4e33c2bfa1eee6700d5c0e7e58cf1618">More...</a><br /></td></tr>
 <tr class="separator:a4e33c2bfa1eee6700d5c0e7e58cf1618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1a5710f1f5501fb516f7bedfd4b9aba"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#ae1a5710f1f5501fb516f7bedfd4b9aba">get_search_space_index</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a566cc50761385b5f88404399abaf3132">int_pair</a> &amp;searchSpaceIndex) const</td></tr>
-<tr class="memdesc:ae1a5710f1f5501fb516f7bedfd4b9aba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute an 1D array index from a 2D array index.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#ae1a5710f1f5501fb516f7bedfd4b9aba">More...</a><br /></td></tr>
-<tr class="separator:ae1a5710f1f5501fb516f7bedfd4b9aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46f7e4634509c506d24cf85c9534952e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a46f7e4634509c506d24cf85c9534952e">get_search_space_index</a> (const unsigned int x, const unsigned int y) const</td></tr>
-<tr class="separator:a46f7e4634509c506d24cf85c9534952e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35aa9151e9cbdcde22ec57bcc8f25869"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a35aa9151e9cbdcde22ec57bcc8f25869">get_search_space_index</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a566cc50761385b5f88404399abaf3132">int_pair</a> &amp;searchSpaceIndex) const</td></tr>
+<tr class="memdesc:a35aa9151e9cbdcde22ec57bcc8f25869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute an 1D array index from a 2D array index.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a35aa9151e9cbdcde22ec57bcc8f25869">More...</a><br /></td></tr>
+<tr class="separator:a35aa9151e9cbdcde22ec57bcc8f25869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8afbfa646282d48643f7c56a80bbfb0c"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a8afbfa646282d48643f7c56a80bbfb0c">get_search_space_index</a> (const uint x, const uint y) const</td></tr>
+<tr class="separator:a8afbfa646282d48643f7c56a80bbfb0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association. </p>
@@ -256,8 +256,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9b0c5c83428083941bfd22759835e45e" name="a9b0c5c83428083941bfd22759835e45e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b0c5c83428083941bfd22759835e45e">&#9670;&nbsp;</a></span>get_depth()</h2>
+<a id="a1f96599d7f04c7a90b124272246e1389" name="a1f96599d7f04c7a90b124272246e1389"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f96599d7f04c7a90b124272246e1389">&#9670;&nbsp;</a></span>get_depth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,7 +268,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">double rgbd_slam::features::keypoints::Keypoint_Handler::get_depth </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -309,8 +309,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a695563472e22244d424fa61c70bd755e" name="a695563472e22244d424fa61c70bd755e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a695563472e22244d424fa61c70bd755e">&#9670;&nbsp;</a></span>get_descriptor()</h2>
+<a id="a66fbc904e5696804ad81a889fc44a475" name="a66fbc904e5696804ad81a889fc44a475"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66fbc904e5696804ad81a889fc44a475">&#9670;&nbsp;</a></span>get_descriptor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,7 +321,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const cv::Mat rgbd_slam::features::keypoints::Keypoint_Handler::get_descriptor </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -335,8 +335,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2dc4839dba84732c950e515e7c54f4aa" name="a2dc4839dba84732c950e515e7c54f4aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dc4839dba84732c950e515e7c54f4aa">&#9670;&nbsp;</a></span>get_keypoint()</h2>
+<a id="a898c47165d2c6653f05c8f418256771b" name="a898c47165d2c6653f05c8f418256771b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a898c47165d2c6653f05c8f418256771b">&#9670;&nbsp;</a></span>get_keypoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,7 +347,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> rgbd_slam::features::keypoints::Keypoint_Handler::get_keypoint </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -363,8 +363,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acf66abb1959b066ff0beed19d4106b3b" name="acf66abb1959b066ff0beed19d4106b3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf66abb1959b066ff0beed19d4106b3b">&#9670;&nbsp;</a></span>get_keypoint_count()</h2>
+<a id="aaef97472cf94cd95c72d90d0eb86c329" name="aaef97472cf94cd95c72d90d0eb86c329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaef97472cf94cd95c72d90d0eb86c329">&#9670;&nbsp;</a></span>get_keypoint_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,7 +373,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int rgbd_slam::features::keypoints::Keypoint_Handler::get_keypoint_count </td>
+          <td class="memname">uint rgbd_slam::features::keypoints::Keypoint_Handler::get_keypoint_count </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -461,8 +461,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae1a5710f1f5501fb516f7bedfd4b9aba" name="ae1a5710f1f5501fb516f7bedfd4b9aba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1a5710f1f5501fb516f7bedfd4b9aba">&#9670;&nbsp;</a></span>get_search_space_index() <span class="overload">[1/2]</span></h2>
+<a id="a35aa9151e9cbdcde22ec57bcc8f25869" name="a35aa9151e9cbdcde22ec57bcc8f25869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35aa9151e9cbdcde22ec57bcc8f25869">&#9670;&nbsp;</a></span>get_search_space_index() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,7 +471,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int rgbd_slam::features::keypoints::Keypoint_Handler::get_search_space_index </td>
+          <td class="memname">uint rgbd_slam::features::keypoints::Keypoint_Handler::get_search_space_index </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a566cc50761385b5f88404399abaf3132">int_pair</a> &amp;&#160;</td>
           <td class="paramname"><em>searchSpaceIndex</em></td><td>)</td>
@@ -495,8 +495,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a46f7e4634509c506d24cf85c9534952e" name="a46f7e4634509c506d24cf85c9534952e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46f7e4634509c506d24cf85c9534952e">&#9670;&nbsp;</a></span>get_search_space_index() <span class="overload">[2/2]</span></h2>
+<a id="a8afbfa646282d48643f7c56a80bbfb0c" name="a8afbfa646282d48643f7c56a80bbfb0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8afbfa646282d48643f7c56a80bbfb0c">&#9670;&nbsp;</a></span>get_search_space_index() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,15 +505,15 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int rgbd_slam::features::keypoints::Keypoint_Handler::get_search_space_index </td>
+          <td class="memname">uint rgbd_slam::features::keypoints::Keypoint_Handler::get_search_space_index </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -587,8 +587,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a47e0b6bb397e54d265558d9f1dd8f120" name="a47e0b6bb397e54d265558d9f1dd8f120"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47e0b6bb397e54d265558d9f1dd8f120">&#9670;&nbsp;</a></span>is_descriptor_computed()</h2>
+<a id="a84f4e67e3c3e4e459d7398a2310cacf5" name="a84f4e67e3c3e4e459d7398a2310cacf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84f4e67e3c3e4e459d7398a2310cacf5">&#9670;&nbsp;</a></span>is_descriptor_computed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -599,7 +599,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool rgbd_slam::features::keypoints::Keypoint_Handler::is_descriptor_computed </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -614,8 +614,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/<a class="el" href="keypoint__detection_8hpp_source.html">keypoint_detection.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/<a class="el" href="keypoint__detection_8cpp.html">keypoint_detection.cpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/keypoints/<a class="el" href="keypoint__handler_8hpp_source.html">keypoint_handler.hpp</a></li>
+<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/keypoints/<a class="el" href="keypoint__handler_8cpp.html">keypoint_handler.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

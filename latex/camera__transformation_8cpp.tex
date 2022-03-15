@@ -1,0 +1,29 @@
+\hypertarget{camera__transformation_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/camera\+\_\+transformation.cpp File Reference}
+\label{camera__transformation_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.cpp}}
+{\ttfamily \#include \char`\"{}camera\+\_\+transformation.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const vector3 \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const matrix44 \&camera\+To\+World\+Matrix)
+\item 
+const vector4 \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb50425c88603d51b0f82f0d8abadc46}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const vector4 \&vector4d, const matrix44 \&camera\+To\+World\+Matrix)
+\begin{DoxyCompactList}\small\item\em Transform a vector in screen space to a vector in world space. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const vector3 \&position3D, const matrix44 \&world\+To\+Screen\+Matrix, vector2 \&screen\+Coordinates)
+\begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
+const vector4 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5f33c26a7b68f18c379482984646ff47}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const vector4 \&world\+Vector4, const matrix44 \&world\+To\+Screen\+Matrix)
+\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in screen space. \end{DoxyCompactList}\item 
+const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19fb642babfd16a76}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
+\begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
+const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
+\begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
+const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const matrix44 \&camera\+To\+World\+Matrix)
+\end{DoxyCompactItemize}

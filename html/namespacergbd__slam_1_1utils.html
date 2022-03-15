@@ -77,13 +77,19 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_i_map___writer.html">IMap_Writer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_motion___model.html">Motion_Model</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dead reckoning class: guess next pose using a motion model.  <a href="classrgbd__slam_1_1utils_1_1_motion___model.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_p_c_d___map___writer.html">PCD_Map_Writer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store a position.  <a href="classrgbd__slam_1_1utils_1_1_pose.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_triangulation.html">Triangulation</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_x_y_z___map___writer.html">XYZ_Map_Writer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -93,12 +99,15 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1f943d571d918b61309edcd6d98f848a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a1f943d571d918b61309edcd6d98f848a">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a> &amp;pose)</td></tr>
-<tr class="separator:a1f943d571d918b61309edcd6d98f848a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70ca427c71b64180b3a0140cf3feca05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a70ca427c71b64180b3a0140cf3feca05">log</a> (std::string_view message, const std::source_location &amp;location)</td></tr>
-<tr class="separator:a70ca427c71b64180b3a0140cf3feca05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bf8393963e8bf65bc8cb135f43b0b0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a4bf8393963e8bf65bc8cb135f43b0b0a">log_error</a> (std::string_view message, const std::source_location &amp;location)</td></tr>
-<tr class="separator:a4bf8393963e8bf65bc8cb135f43b0b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a689f666ff207fba3031e7f371e2d0a5a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a689f666ff207fba3031e7f371e2d0a5a">get_quaternion_from_euler_angles</a> (const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a> &amp;eulerAngles)</td></tr>
+<tr class="memdesc:a689f666ff207fba3031e7f371e2d0a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from the given euler angles, in radians.  <a href="namespacergbd__slam_1_1utils.html#a689f666ff207fba3031e7f371e2d0a5a">More...</a><br /></td></tr>
+<tr class="separator:a689f666ff207fba3031e7f371e2d0a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a995cd2edc48202cf14bce574a152b0ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a995cd2edc48202cf14bce574a152b0ce">get_euler_angles_from_quaternion</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;quat)</td></tr>
+<tr class="memdesc:a995cd2edc48202cf14bce574a152b0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute euler angles from a given quaternion.  <a href="namespacergbd__slam_1_1utils.html#a995cd2edc48202cf14bce574a152b0ce">More...</a><br /></td></tr>
+<tr class="separator:a995cd2edc48202cf14bce574a152b0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07db914662571bbec6e8a1911fa8a117"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a07db914662571bbec6e8a1911fa8a117">get_rotation_matrix_from_euler_angles</a> (const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a> &amp;eulerAngles)</td></tr>
+<tr class="memdesc:a07db914662571bbec6e8a1911fa8a117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a rotation matrix from a euler angle container.  <a href="namespacergbd__slam_1_1utils.html#a07db914662571bbec6e8a1911fa8a117">More...</a><br /></td></tr>
+<tr class="separator:a07db914662571bbec6e8a1911fa8a117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6dd19d1fead39267cf42ef78b08a5cb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ab6dd19d1fead39267cf42ef78b08a5cb">screen_to_world_coordinates</a> (const double screenX, const double screenY, const double measuredZ, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix)</td></tr>
 <tr class="separator:ab6dd19d1fead39267cf42ef78b08a5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb50425c88603d51b0f82f0d8abadc46"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#afb50425c88603d51b0f82f0d8abadc46">screen_to_world_coordinates</a> (const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> &amp;vector4d, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix)</td></tr>
@@ -121,12 +130,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a09dda9d0924d503bab6cec2b6663e179"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">get_world_point_covariance</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenPoint, const double depth, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;screenPointCovariance)</td></tr>
 <tr class="memdesc:a09dda9d0924d503bab6cec2b6663e179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point.  <a href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">More...</a><br /></td></tr>
 <tr class="separator:a09dda9d0924d503bab6cec2b6663e179"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a689f666ff207fba3031e7f371e2d0a5a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a689f666ff207fba3031e7f371e2d0a5a">get_quaternion_from_euler_angles</a> (const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a> &amp;eulerAngles)</td></tr>
-<tr class="memdesc:a689f666ff207fba3031e7f371e2d0a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from the given euler angles, in radians.  <a href="namespacergbd__slam_1_1utils.html#a689f666ff207fba3031e7f371e2d0a5a">More...</a><br /></td></tr>
-<tr class="separator:a689f666ff207fba3031e7f371e2d0a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a995cd2edc48202cf14bce574a152b0ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a995cd2edc48202cf14bce574a152b0ce">get_euler_angles_from_quaternion</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;quat)</td></tr>
-<tr class="memdesc:a995cd2edc48202cf14bce574a152b0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute euler angles from a given quaternion.  <a href="namespacergbd__slam_1_1utils.html#a995cd2edc48202cf14bce574a152b0ce">More...</a><br /></td></tr>
-<tr class="separator:a995cd2edc48202cf14bce574a152b0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70ca427c71b64180b3a0140cf3feca05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a70ca427c71b64180b3a0140cf3feca05">log</a> (std::string_view message, const std::source_location &amp;location)</td></tr>
+<tr class="separator:a70ca427c71b64180b3a0140cf3feca05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bf8393963e8bf65bc8cb135f43b0b0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a4bf8393963e8bf65bc8cb135f43b0b0a">log_error</a> (std::string_view message, const std::source_location &amp;location)</td></tr>
+<tr class="separator:a4bf8393963e8bf65bc8cb135f43b0b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f943d571d918b61309edcd6d98f848a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a1f943d571d918b61309edcd6d98f848a">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a> &amp;pose)</td></tr>
+<tr class="separator:a1f943d571d918b61309edcd6d98f848a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ad5c3e0ac91a5ac0fa91e12e608cb8399" name="ad5c3e0ac91a5ac0fa91e12e608cb8399"></a>
@@ -259,6 +268,26 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Compute a quaternion from the given euler angles, in radians. </p>
+
+</div>
+</div>
+<a id="a07db914662571bbec6e8a1911fa8a117" name="a07db914662571bbec6e8a1911fa8a117"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07db914662571bbec6e8a1911fa8a117">&#9670;&nbsp;</a></span>get_rotation_matrix_from_euler_angles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::utils::get_rotation_matrix_from_euler_angles </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_euler_angles.html">EulerAngles</a> &amp;&#160;</td>
+          <td class="paramname"><em>eulerAngles</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute a rotation matrix from a euler angle container. </p>
 
 </div>
 </div>

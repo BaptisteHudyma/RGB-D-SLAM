@@ -87,8 +87,10 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a480712bf75bc2de29c4e947297e901b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a480712bf75bc2de29c4e947297e901b9">RGBD_SLAM</a> (const std::stringstream &amp;dataPath, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;startPose, const uint imageWidth=640, const uint imageHeight=480)</td></tr>
-<tr class="separator:a480712bf75bc2de29c4e947297e901b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c5df73aff09ecdb2fb4f655e634b2d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a7c5df73aff09ecdb2fb4f655e634b2d1">RGBD_SLAM</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;startPose, const uint imageWidth=640, const uint imageHeight=480)</td></tr>
+<tr class="separator:a7c5df73aff09ecdb2fb4f655e634b2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a088d6a5a0579505227fd57004dc54bbe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a088d6a5a0579505227fd57004dc54bbe">~RGBD_SLAM</a> ()</td></tr>
+<tr class="separator:a088d6a5a0579505227fd57004dc54bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f5c5ac2b4b1d3804cb6e4ed0c329524"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a5f5c5ac2b4b1d3804cb6e4ed0c329524">track</a> (const cv::Mat &amp;inputRgbImage, const cv::Mat &amp;inputDepthImage, bool detectLines=false)</td></tr>
 <tr class="memdesc:a5f5c5ac2b4b1d3804cb6e4ed0c329524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates a new pose from the given images.  <a href="classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a5f5c5ac2b4b1d3804cb6e4ed0c329524">More...</a><br /></td></tr>
 <tr class="separator:a5f5c5ac2b4b1d3804cb6e4ed0c329524"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,8 +141,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a480712bf75bc2de29c4e947297e901b9" name="a480712bf75bc2de29c4e947297e901b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a480712bf75bc2de29c4e947297e901b9">&#9670;&nbsp;</a></span>RGBD_SLAM()</h2>
+<a id="a7c5df73aff09ecdb2fb4f655e634b2d1" name="a7c5df73aff09ecdb2fb4f655e634b2d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c5df73aff09ecdb2fb4f655e634b2d1">&#9670;&nbsp;</a></span>RGBD_SLAM()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,12 +150,6 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::RGBD_SLAM::RGBD_SLAM </td>
           <td>(</td>
-          <td class="paramtype">const std::stringstream &amp;&#160;</td>
-          <td class="paramname"><em>dataPath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
           <td class="paramname"><em>startPose</em>, </td>
         </tr>
@@ -178,13 +174,29 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">dataPath</td><td>Path of the file that contains the camera intrinsics </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">startPose</td><td>the initial pose </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">imageWidth</td><td>The width of the depth images (fixed) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">imageHeight</td><td>The height of the depth image (fixed) </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a088d6a5a0579505227fd57004dc54bbe" name="a088d6a5a0579505227fd57004dc54bbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a088d6a5a0579505227fd57004dc54bbe">&#9670;&nbsp;</a></span>~RGBD_SLAM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">rgbd_slam::RGBD_SLAM::~RGBD_SLAM </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

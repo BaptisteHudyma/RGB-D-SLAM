@@ -14,13 +14,9 @@ class \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimiza
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a70715953a0c8c4bad83b0d41d80c9ce3}{get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointB)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5207432a5c81057d120acfb70840848d}{get\+\_\+distance\+\_\+manhattan}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}{get\+\_\+distance\+\_\+manhattan}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointB)
-\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}{get\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&pointB)
-\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a68a39fcaa10cd8b4fb2c7b29b3842c92}{get\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointA, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pointB)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0b6cc8326af6476d539cb0795ce31f76}{get\+\_\+distance\+\_\+squared}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
 \item 
 double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}{get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
 \begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
@@ -41,29 +37,17 @@ double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a70715953a0c8c4bad83b0d41d80c9ce3}\label{namespacergbd__slam_1_1pose__optimization_a70715953a0c8c4bad83b0d41d80c9ce3}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5207432a5c81057d120acfb70840848d}\label{namespacergbd__slam_1_1pose__optimization_a5207432a5c81057d120acfb70840848d}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_manhattan@{get\_distance\_manhattan}}
 \index{get\_distance\_manhattan@{get\_distance\_manhattan}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointB }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}\label{namespacergbd__slam_1_1pose__optimization_ac8823ced068f1f1969affa48a9c7280d}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_manhattan@{get\_distance\_manhattan}}
-\index{get\_distance\_manhattan@{get\_distance\_manhattan}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointB }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}\label{namespacergbd__slam_1_1pose__optimization_a91f59ece099a17dfa78c3a84cea32593}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0b6cc8326af6476d539cb0795ce31f76}\label{namespacergbd__slam_1_1pose__optimization_a0b6cc8326af6476d539cb0795ce31f76}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_squared@{get\_distance\_squared}}
 \index{get\_distance\_squared@{get\_distance\_squared}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{pointB }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a68a39fcaa10cd8b4fb2c7b29b3842c92}\label{namespacergbd__slam_1_1pose__optimization_a68a39fcaa10cd8b4fb2c7b29b3842c92}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_squared@{get\_distance\_squared}}
-\index{get\_distance\_squared@{get\_distance\_squared}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointA,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pointB }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}\label{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_to\_point@{get\_distance\_to\_point}}

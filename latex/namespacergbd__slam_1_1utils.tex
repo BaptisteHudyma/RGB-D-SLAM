@@ -3,11 +3,17 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_map___writer}{IMap\+\_\+\+Writer}}
+\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model}{Motion\+\_\+\+Model}}
 \begin{DoxyCompactList}\small\item\em Dead reckoning class\+: guess next pose using a motion model. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_p_c_d___map___writer}{PCD\+\_\+\+Map\+\_\+\+Writer}}
+\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}
 \begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation}{Triangulation}}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_x_y_z___map___writer}{XYZ\+\_\+\+Map\+\_\+\+Writer}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
@@ -17,12 +23,12 @@ typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pos
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose)
-\item 
-void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}{log}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
-\item 
-void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{log\+\_\+error}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
-\item 
+const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles)
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
+\begin{DoxyCompactList}\small\item\em Compute euler angles from a given quaternion. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a07db914662571bbec6e8a1911fa8a117}{get\+\_\+rotation\+\_\+matrix\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles)
+\begin{DoxyCompactList}\small\item\em Compute a rotation matrix from a euler angle container. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix)
 \item 
 const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb50425c88603d51b0f82f0d8abadc46}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \&vector4d, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix)
@@ -39,10 +45,12 @@ const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{ma
 \item 
 const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&screen\+Point\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles)
-\begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
-\begin{DoxyCompactList}\small\item\em Compute euler angles from a given quaternion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a70ca427c71b64180b3a0140cf3feca05}{log}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
+\item 
+void \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4bf8393963e8bf65bc8cb135f43b0b0a}{log\+\_\+error}} (std\+::string\+\_\+view message, const std\+::source\+\_\+location \&location)
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose)
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Typedef Documentation}
@@ -100,6 +108,16 @@ Compute euler angles from a given quaternion.
 
 
 Compute a quaternion from the given euler angles, in radians. 
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a07db914662571bbec6e8a1911fa8a117}\label{namespacergbd__slam_1_1utils_a07db914662571bbec6e8a1911fa8a117}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_rotation\_matrix\_from\_euler\_angles@{get\_rotation\_matrix\_from\_euler\_angles}}
+\index{get\_rotation\_matrix\_from\_euler\_angles@{get\_rotation\_matrix\_from\_euler\_angles}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{get\_rotation\_matrix\_from\_euler\_angles()}{get\_rotation\_matrix\_from\_euler\_angles()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+rotation\+\_\+matrix\+\_\+from\+\_\+euler\+\_\+angles (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&}]{euler\+Angles }\end{DoxyParamCaption})}
+
+
+
+Compute a rotation matrix from a euler angle container. 
 
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}\label{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_world\_point\_covariance@{get\_world\_point\_covariance}}

@@ -7,50 +7,51 @@
 \DoxyCodeLine{3 }
 \DoxyCodeLine{4 }
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Eigen/StdVector>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <map>}}
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <list>}}
-\DoxyCodeLine{8 }
-\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{10     \textcolor{comment}{/*}}
-\DoxyCodeLine{11 \textcolor{comment}{     *        Declare the most common types used in this program}}
-\DoxyCodeLine{12 \textcolor{comment}{     */}}
-\DoxyCodeLine{13 }
-\DoxyCodeLine{14     \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}{EulerToRadian}} = M\_PI/180.0;}
-\DoxyCodeLine{15 }
-\DoxyCodeLine{16     \textcolor{keyword}{typedef} Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}};}
-\DoxyCodeLine{17     \textcolor{keyword}{typedef} Eigen::Vector2d \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}};}
-\DoxyCodeLine{18     \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 1> \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}};}
-\DoxyCodeLine{19     \textcolor{keyword}{typedef} Eigen::Vector4d \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}};}
-\DoxyCodeLine{20     \textcolor{keyword}{typedef} Eigen::Matrix3d \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}};}
-\DoxyCodeLine{21     \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 4> \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}};}
-\DoxyCodeLine{22     \textcolor{keyword}{typedef} Eigen::Matrix<double, 4, 3> \mbox{\hyperlink{namespacergbd__slam_a823edbcbe45c6e21187073ad28cd0370}{matrix43}};}
-\DoxyCodeLine{23     \textcolor{keyword}{typedef} Eigen::Matrix4d \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}};}
-\DoxyCodeLine{24     \textcolor{keyword}{typedef} Eigen::Quaternion<double> \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}};}
-\DoxyCodeLine{25 }
-\DoxyCodeLine{26     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{EulerAngles}}}
-\DoxyCodeLine{27     \{}
-\DoxyCodeLine{28         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}};}
-\DoxyCodeLine{29         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}};}
-\DoxyCodeLine{30         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}};}
-\DoxyCodeLine{31 }
-\DoxyCodeLine{32         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a7264afdffca3e88fe5a5f66b0c426bda}{EulerAngles}}() \{\};}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a662462d5be7bf3543fb0010b9950bb4c}{EulerAngles}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} p, \textcolor{keyword}{const} \textcolor{keywordtype}{double} r):}
-\DoxyCodeLine{35             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}}(y),}
-\DoxyCodeLine{36             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}}(p),}
-\DoxyCodeLine{37             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}}(r)}
-\DoxyCodeLine{38         \{\};}
-\DoxyCodeLine{39     \};}
-\DoxyCodeLine{40 }
-\DoxyCodeLine{41     \textcolor{keyword}{typedef} std::vector<vector2, Eigen::aligned\_allocator<vector2>> \mbox{\hyperlink{namespacergbd__slam_a67952da6f144367a173fb51b3fd47c6e}{vector2\_vector}};}
-\DoxyCodeLine{42     \textcolor{keyword}{typedef} std::vector<vector3, Eigen::aligned\_allocator<vector3>> \mbox{\hyperlink{namespacergbd__slam_ae6859425949b304e9b491455312fea52}{vector3\_vector}};}
-\DoxyCodeLine{43     \textcolor{keyword}{typedef} std::vector<vector4, Eigen::aligned\_allocator<vector4>> \mbox{\hyperlink{namespacergbd__slam_ad351d2e6546c9bf619f06e4b0fe26ce6}{vector4\_vector}};}
-\DoxyCodeLine{44     \textcolor{keyword}{typedef} std::vector<matrix33, Eigen::aligned\_allocator<matrix33>> \mbox{\hyperlink{namespacergbd__slam_acf5b5b3fbd3b0a6fa0893ab150650dd3}{matrix33\_vector}};}
-\DoxyCodeLine{45     \textcolor{keyword}{typedef} std::vector<matrix34, Eigen::aligned\_allocator<matrix34>> \mbox{\hyperlink{namespacergbd__slam_aa80e2a59978f0997c0fe22f8ffe32e06}{matrix34\_vector}};}
-\DoxyCodeLine{46     \textcolor{keyword}{typedef} std::vector<matrix44, Eigen::aligned\_allocator<matrix44>> \mbox{\hyperlink{namespacergbd__slam_a9609c7829c28a3a2fb81151c1527417d}{matrix44\_vector}};}
-\DoxyCodeLine{47     \textcolor{keyword}{typedef} std::vector<quaternion, Eigen::aligned\_allocator<quaternion>> \mbox{\hyperlink{namespacergbd__slam_a621ea1422d69227eecd1931a93238b98}{quaternion\_vector}};}
-\DoxyCodeLine{48 \}}
-\DoxyCodeLine{49 }
-\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <Eigen/Geometry>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{11     \textcolor{comment}{/*}}
+\DoxyCodeLine{12 \textcolor{comment}{     *        Declare the most common types used in this program}}
+\DoxyCodeLine{13 \textcolor{comment}{     */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15     \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}{EulerToRadian}} = M\_PI/180.0;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     \textcolor{keyword}{typedef} Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}};}
+\DoxyCodeLine{18     \textcolor{keyword}{typedef} Eigen::Vector2d \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}};}
+\DoxyCodeLine{19     \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 1> \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}};}
+\DoxyCodeLine{20     \textcolor{keyword}{typedef} Eigen::Vector4d \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}};}
+\DoxyCodeLine{21     \textcolor{keyword}{typedef} Eigen::Matrix3d \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}};}
+\DoxyCodeLine{22     \textcolor{keyword}{typedef} Eigen::Matrix<double, 3, 4> \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}};}
+\DoxyCodeLine{23     \textcolor{keyword}{typedef} Eigen::Matrix<double, 4, 3> \mbox{\hyperlink{namespacergbd__slam_a823edbcbe45c6e21187073ad28cd0370}{matrix43}};}
+\DoxyCodeLine{24     \textcolor{keyword}{typedef} Eigen::Matrix4d \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}};}
+\DoxyCodeLine{25     \textcolor{keyword}{typedef} Eigen::Quaternion<double> \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{EulerAngles}}}
+\DoxyCodeLine{28     \{}
+\DoxyCodeLine{29         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}};}
+\DoxyCodeLine{30         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}};}
+\DoxyCodeLine{31         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a7264afdffca3e88fe5a5f66b0c426bda}{EulerAngles}}() \{\};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a662462d5be7bf3543fb0010b9950bb4c}{EulerAngles}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} p, \textcolor{keyword}{const} \textcolor{keywordtype}{double} r):}
+\DoxyCodeLine{36             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}}(y),}
+\DoxyCodeLine{37             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}}(p),}
+\DoxyCodeLine{38             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}}(r)}
+\DoxyCodeLine{39         \{\};}
+\DoxyCodeLine{40     \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{keyword}{typedef} std::vector<vector2, Eigen::aligned\_allocator<vector2>> \mbox{\hyperlink{namespacergbd__slam_a67952da6f144367a173fb51b3fd47c6e}{vector2\_vector}};}
+\DoxyCodeLine{43     \textcolor{keyword}{typedef} std::vector<vector3, Eigen::aligned\_allocator<vector3>> \mbox{\hyperlink{namespacergbd__slam_ae6859425949b304e9b491455312fea52}{vector3\_vector}};}
+\DoxyCodeLine{44     \textcolor{keyword}{typedef} std::vector<vector4, Eigen::aligned\_allocator<vector4>> \mbox{\hyperlink{namespacergbd__slam_ad351d2e6546c9bf619f06e4b0fe26ce6}{vector4\_vector}};}
+\DoxyCodeLine{45     \textcolor{keyword}{typedef} std::vector<matrix33, Eigen::aligned\_allocator<matrix33>> \mbox{\hyperlink{namespacergbd__slam_acf5b5b3fbd3b0a6fa0893ab150650dd3}{matrix33\_vector}};}
+\DoxyCodeLine{46     \textcolor{keyword}{typedef} std::vector<matrix34, Eigen::aligned\_allocator<matrix34>> \mbox{\hyperlink{namespacergbd__slam_aa80e2a59978f0997c0fe22f8ffe32e06}{matrix34\_vector}};}
+\DoxyCodeLine{47     \textcolor{keyword}{typedef} std::vector<matrix44, Eigen::aligned\_allocator<matrix44>> \mbox{\hyperlink{namespacergbd__slam_a9609c7829c28a3a2fb81151c1527417d}{matrix44\_vector}};}
+\DoxyCodeLine{48     \textcolor{keyword}{typedef} std::vector<quaternion, Eigen::aligned\_allocator<quaternion>> \mbox{\hyperlink{namespacergbd__slam_a621ea1422d69227eecd1931a93238b98}{quaternion\_vector}};}
+\DoxyCodeLine{49 \}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}
