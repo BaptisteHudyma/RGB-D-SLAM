@@ -30,6 +30,8 @@ namespace rgbd_slam {
 
             vector3 sumOfErrors;
             vector3 sumOfSquaredErrors;
+            sumOfErrors.setZero();
+            sumOfSquaredErrors.setZero();
             // For each pair of points
             for (const matches_containers::point_pair& match : matchedPoints)
             {
@@ -126,10 +128,10 @@ namespace rgbd_slam {
             }
 
             const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(finalPose, inlierMatchedPoints, finalPose);
+            // Compute pose variance
             if (isPoseValid)
             {
-                // TODO: compute variance
-                // compute_pose_variance(finalPose, inlierMatchedPoints);
+                finalPose.set_position_variance(compute_pose_variance(finalPose, inlierMatchedPoints));
             }
             return isPoseValid;
         }

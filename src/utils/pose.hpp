@@ -7,43 +7,67 @@
 #include <Eigen/StdVector>
 
 namespace rgbd_slam { 
-namespace utils {
+    namespace utils {
 
-    /**
-     * \brief Store a position
-     */
-    class Pose {
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-        public:
-            Pose(); 
-            Pose(const vector3 &position, const quaternion &orientation);
+        /**
+         * \brief Store a position
+         */
+        class PoseBase {
+            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+            public:
+                PoseBase(); 
+                PoseBase(const vector3 &position, const quaternion &orientation);
 
-            //setters
-            void set_parameters(const vector3 &position, const quaternion &orientation);
+                //setters
+                void set_parameters(const vector3 &position, const quaternion &orientation);
 
-            void update(const vector3& position, const quaternion& orientation);
+                void update(const vector3& position, const quaternion& orientation);
 
-            //getters
-            const vector3 get_position() const { return _position; }
-            const matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
-            const quaternion get_orientation_quaternion() const { return _orientation; }
+                //getters
+                const vector3 get_position() const { return _position; }
+                const matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
+                const quaternion get_orientation_quaternion() const { return _orientation; }
 
-            /**
-             * \brief A display function, to avoid a friend operator function
-             */
-            void display(std::ostream& os) const;
+                /**
+                 * \brief A display function, to avoid a friend operator function
+                 */
+                void display(std::ostream& os) const;
 
-        private:
-            quaternion _orientation;
-            vector3 _position;
-    };
+            private:
+                quaternion _orientation;
+                vector3 _position;
+        };
 
-    std::ostream& operator<<(std::ostream& os, const Pose& pose);
+        /**
+         * \brief Store a position with variance estimations
+         */
+        class Pose :
+            public PoseBase
+        {
+            public:
+                Pose(); 
+                Pose(const vector3& position, const quaternion& orientation);
+                Pose(const vector3& position, const quaternion& orientation, const vector3& poseVariance);
 
-    //array of poses
-    typedef std::vector<Pose, Eigen::aligned_allocator<Pose>> pose_array;
+                void set_position_variance(const vector3& variance) { _positionVariance = variance; };
+                const vector3 get_position_variance() const { return _positionVariance; };
 
-}
+                /**
+                 * \brief A display function, to avoid a friend operator function
+                 */
+                void display(std::ostream& os) const;
+
+            private:
+                vector3 _positionVariance;
+        };
+
+        std::ostream& operator<<(std::ostream& os, const PoseBase& pose);
+        std::ostream& operator<<(std::ostream& os, const Pose& pose);
+
+        //array of poses
+        typedef std::vector<Pose, Eigen::aligned_allocator<Pose>> pose_array;
+
+    }
 }
 
 
