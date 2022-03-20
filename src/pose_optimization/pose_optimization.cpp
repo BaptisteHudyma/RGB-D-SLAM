@@ -20,6 +20,37 @@ namespace rgbd_slam {
         }
 
         /**
+         * \brief Compute the variance of the final pose in X Y Z
+         */
+        vector3 compute_pose_variance(const utils::Pose& optimizedPose, const matches_containers::match_point_container& matchedPoints)
+        {
+            assert(matchedPoints.size() > 0);
+
+            const matrix44& transformationMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+
+            vector3 sumOfErrors;
+            vector3 sumOfSquaredErrors;
+            // For each pair of points
+            for (const matches_containers::point_pair& match : matchedPoints)
+            {
+                // Convert to world coordinates
+                const vector3& matchedPoint3d = utils::screen_to_world_coordinates(match.first.x(), match.first.y(), match.first.z(), transformationMatrix);
+
+                // absolute of (world map Point - new world point)
+                const vector3& matchError = (match.second - matchedPoint3d).cwiseAbs();
+                sumOfErrors += matchError;
+                sumOfSquaredErrors += matchError.cwiseAbs2();
+            }
+
+            assert(sumOfErrors.x() >= 0 and sumOfErrors.y() >= 0 and sumOfErrors.z() >= 0);
+            assert(sumOfSquaredErrors.x() >= 0 and sumOfSquaredErrors.y() >= 0 and sumOfSquaredErrors.z() >= 0);
+
+            const double numberOfMatchesInverse = 1.0 / static_cast<double>(matchedPoints.size());
+            const vector3& mean = sumOfErrors * numberOfMatchesInverse; 
+            return (sumOfSquaredErrors * numberOfMatchesInverse) - mean.cwiseAbs2();
+        }
+
+        /**
          * \brief Return a random subset of matches, of size n
          */
         matches_containers::match_point_container get_n_random_matches(const matches_containers::match_point_container& matchedPoints, const uint n)
@@ -94,7 +125,13 @@ namespace rgbd_slam {
                 return false;
             }
 
-            return Pose_Optimization::get_optimized_global_pose(finalPose, inlierMatchedPoints, finalPose);
+            const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(finalPose, inlierMatchedPoints, finalPose);
+            if (isPoseValid)
+            {
+                // TODO: compute variance
+                // compute_pose_variance(finalPose, inlierMatchedPoints);
+            }
+            return isPoseValid;
         }
 
         bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
@@ -102,7 +139,7 @@ namespace rgbd_slam {
             utils::Pose newPose;
             matches_containers::match_point_container matchPointInliers;
             const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, newPose, matchPointInliers);
-            
+
             if (isPoseValid)
             {
                 // compute pose covariance matrix
