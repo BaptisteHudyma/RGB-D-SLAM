@@ -47,11 +47,13 @@ namespace rgbd_slam {
         Pose::Pose() :
             PoseBase()
         {
+            _positionVariance.setZero();
         }
 
         Pose::Pose(const vector3& position, const quaternion& orientation) :
             PoseBase(position, orientation)
         {
+            _positionVariance.setZero();
         }
 
         Pose::Pose(const vector3& position, const quaternion& orientation, const vector3& poseVariance) :
