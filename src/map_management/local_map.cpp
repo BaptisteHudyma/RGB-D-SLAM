@@ -79,7 +79,7 @@ namespace rgbd_slam {
                 point._screenCoordinates << screenPoint, screenPointDepth;
 
                 const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), screenPointDepth);
-                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, point._coordinates);
+                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, point._coordinates, point._id);
                 return true;
             }
             else {
@@ -138,9 +138,15 @@ namespace rgbd_slam {
             return matchedPrimitiveContainer;
         }
 
-
-        void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const matches_containers::match_point_container& outlierMatchedPoints)
         {
+            // Mark inliers as unmatched
+            for (const matches_containers::Match& match : outlierMatchedPoints)
+            {
+                const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
+                assert(isOutlierRemoved == true);
+            }
+
             const matrix44& previousCameraToWorldMatrix = utils::compute_camera_to_world_transform(previousPose.get_orientation_quaternion(), previousPose.get_position());
             const matrix44& cameraToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
@@ -385,7 +391,29 @@ namespace rgbd_slam {
             }
         }
 
-
+        bool Local_Map::mark_point_with_id_as_unmatched(const size_t pointId)
+        {
+            // TODO this should be more efficient
+            for (IMap_Point_With_Tracking& point: _localPointMap)
+            {
+                if (pointId == point._id)
+                {
+                    // Mark as unmatched
+                    point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+                    return true;
+                }
+            }
+            for (IMap_Point_With_Tracking& point : _stagedPoints)
+            {
+                if (pointId == point._id)
+                {
+                    // Mark as unmatched
+                    point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }   /* map_management */
 }   /* rgbd_slam */

@@ -74,17 +74,17 @@ namespace rgbd_slam {
             return selectedMatches;
         }
 
-        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& inlierMatchedPoints) 
+        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
             const uint minimumPointsForOptimization = 3;    // Selected set of random points
             const uint maxIterations = Parameters::get_maximum_ransac_iterations();
             const double maxThreshold = 200;   // maximum inlier threshold (in millimeters)
             double threshold = 1;       // minimum retroprojection error to consider a match as an inlier (in millimeters)
-            const uint matchedPointSize = matchedPoints.size();
+            const size_t matchedPointSize = matchedPoints.size();
             const double acceptableMinimumScore = matchedPointSize * 0.9;       // RANSAC will stop if this mean score is reached
 
-            uint iteration = 0;
-            for(; iteration < maxIterations; ++iteration)
+            matches_containers::match_point_container inlierMatchedPoints;  // Contains the best pose inliers
+            for(uint iteration = 0; iteration < maxIterations; ++iteration)
             {
                 const matches_containers::match_point_container& selectedMatches = get_n_random_matches(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
@@ -98,11 +98,16 @@ namespace rgbd_slam {
 
                 // Select inliers by retroprojection threshold
                 matches_containers::match_point_container potentialInliersContainer;
+                matches_containers::match_point_container potentialOutliersContainer;
                 for (const matches_containers::Match& match : matchedPoints)
                 {
                     if (get_distance_to_point(match._worldPoint, match._screenPoint, transformationMatrix) < threshold)
                     {
                         potentialInliersContainer.insert(potentialInliersContainer.end(), match);
+                    }
+                    else
+                    {
+                        potentialOutliersContainer.insert(potentialOutliersContainer.end(), match);
                     }
                 }
 
@@ -111,9 +116,10 @@ namespace rgbd_slam {
                 {
                     finalPose = pose;
                     inlierMatchedPoints.swap(potentialInliersContainer);
+                    outlierMatchedPoints.swap(potentialOutliersContainer);
 
                     if (inlierMatchedPoints.size() >= acceptableMinimumScore)
-                        // We can stop here, the optimization is pretty good
+                        // We can stop here, the optimization is good enough
                         break;
                 }
                 else if (iteration % 5 and threshold < maxThreshold)
@@ -121,7 +127,6 @@ namespace rgbd_slam {
                     threshold += 10;
             }
 
-            //std::cout << iteration << " " << matchedPointSize << " " <<  inlierMatchedPoints.size() << " threshold is " << threshold << std::endl;
             if (inlierMatchedPoints.size() < minimumPointsForOptimization)
             {
                 utils::log_error("Could not find a transformation with enough inliers");
@@ -138,11 +143,10 @@ namespace rgbd_slam {
             return isPoseValid;
         }
 
-        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
+        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
             utils::Pose newPose;
-            matches_containers::match_point_container matchPointInliers;
-            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, newPose, matchPointInliers);
+            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, newPose, outlierMatchedPoints);
 
             if (isPoseValid)
             {

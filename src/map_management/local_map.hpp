@@ -54,8 +54,9 @@ namespace rgbd_slam {
                  * \param[in] previousPose The clean true pose of the observer, before the new measurements
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
+                 * \param[in] outlierMatchedPoints A container for all the wrongly associated points detected in the pose optimization process. They should be marked as invalid matches
                  */
-                void update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const matches_containers::match_point_container& outlierMatchedPoints);
 
                 /**
                  * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global ids 
@@ -149,6 +150,15 @@ namespace rgbd_slam {
                  */
                 void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const;
 
+
+                /**
+                 * \brief Mark a point with the id pointId as unmatched. Will search the staged and local map.
+                 * \param[in] pointId The uniq id of the point to unmatch
+                 * 
+                 * \return true if the point was found and updated
+                 */
+                bool mark_point_with_id_as_unmatched(const size_t pointId);
+
             private:
                 // local map point container
                 typedef std::list<Map_Point> point_map_container;
@@ -168,7 +178,7 @@ namespace rgbd_slam {
                 primitive_map_container _localPrimitiveMap;
                 std::unordered_map<int, uint> _previousPrimitiveAssociation;
 
-                
+
                 utils::XYZ_Map_Writer* _mapWriter; 
         };
 

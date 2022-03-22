@@ -10,13 +10,15 @@ namespace rgbd_slam {
         //      - the coordinates of the detected point in screen space
         //      - the coordinates of the matched point in world space
         struct Match {
-            Match(const vector3& screenPoint, const vector3& worldPoint) :
+            Match(const vector3& screenPoint, const vector3& worldPoint, const size_t mapId) :
                 _worldPoint(worldPoint),
-                _screenPoint(screenPoint)
+                _screenPoint(screenPoint),
+                _mapPointId(mapId)
             {};
 
-            vector3 _worldPoint;
-            vector3 _screenPoint;
+            vector3 _worldPoint;    // coordinates of the local world point
+            vector3 _screenPoint;   // Coordinates of the detected screen point
+            size_t _mapPointId;     // Id of the world point in the local map 
         };
         typedef std::list<Match> match_point_container;
 

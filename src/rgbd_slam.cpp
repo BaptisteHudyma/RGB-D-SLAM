@@ -208,6 +208,8 @@ namespace rgbd_slam {
         const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
         const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
 
+        matches_containers::match_point_container outlierMatchedPoints;
+
         // the map will be updated only if a valid pose is found
         bool shouldUpdateMap = true;
         if (_computeKeypointCount != 0)
@@ -216,7 +218,7 @@ namespace rgbd_slam {
                 // Enough matches to optimize
                 // Optimize refined pose
                 utils::Pose optimizedPose;
-                shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, optimizedPose);
+                shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, optimizedPose, outlierMatchedPoints);
                 if (shouldUpdateMap)
                 {
                     refinedPose = optimizedPose;
@@ -240,7 +242,7 @@ namespace rgbd_slam {
         // Update local map if a valid transformation was found
         if (shouldUpdateMap)
         {
-            _localMap->update(_currentPose, refinedPose, keypointObject);
+            _localMap->update(_currentPose, refinedPose, keypointObject, outlierMatchedPoints);
         }
 
         return refinedPose;

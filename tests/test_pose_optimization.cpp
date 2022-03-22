@@ -85,7 +85,8 @@ namespace rgbd_slam {
             {
                 // screen coordinates
                 const vector3 screenPointEnd(transformedPoint.x(), transformedPoint.y(), worldPointStart.z());
-                matchedPoints.emplace(matchedPoints.end(), screenPointEnd, worldPointStart);
+                // Dont care about the map id
+                matchedPoints.emplace(matchedPoints.end(), screenPointEnd, worldPointStart, 0);
             }
             else
             {
@@ -112,7 +113,8 @@ namespace rgbd_slam {
     {
         // Compute end pose
         utils::Pose endPose; 
-        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, endPose);
+        matches_containers::match_point_container outlierMatchedPoints;
+        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, endPose, outlierMatchedPoints);
 
         if (not isPoseValid)
             FAIL();
