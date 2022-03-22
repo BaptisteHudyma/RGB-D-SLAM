@@ -98,6 +98,7 @@ add_library(thirdParty SHARED
     ${THIRD_PARTY}/line_segment_detector.cpp
     ${THIRD_PARTY}/geodesic_operations.cpp
     ${THIRD_PARTY}/dsyevh3.cpp
+    ${THIRD_PARTY}/p3p.cpp
     )
 
 add_library(poseOptimization SHARED
@@ -144,6 +145,10 @@ target_link_libraries(slam_tunnel_mat ${PROJECT_NAME})
 add_executable(slam_freiburg_xyz
     ${EXAMPLES}/main_xyz_dataset.cpp)
 target_link_libraries(slam_freiburg_xyz ${PROJECT_NAME})
+
+add_executable(test_p3p
+    ${THIRD_PARTY}/p3p_test.cpp)
+target_link_libraries(test_p3p ${PROJECT_NAME})
 
 
 # Include test dir
