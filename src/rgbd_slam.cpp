@@ -239,7 +239,9 @@ namespace rgbd_slam {
 
         // Update local map if a valid transformation was found
         if (shouldUpdateMap)
+        {
             _localMap->update(_currentPose, refinedPose, keypointObject);
+        }
 
         return refinedPose;
     }

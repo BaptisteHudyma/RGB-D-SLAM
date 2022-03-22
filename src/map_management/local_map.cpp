@@ -145,10 +145,10 @@ namespace rgbd_slam {
             const matrix44& cameraToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // add local map points
-            update_local_keypoint_map(previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
+            update_local_keypoint_map(optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
 
             // add staged points to local map
-            update_staged_keypoints_map(previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
+            update_staged_keypoints_map(optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
 
             // Add unmatched poins to the staged map, to unsure tracking of new features
             add_umatched_keypoints_to_staged_map(cameraToWorldMatrix, keypointObject);
@@ -160,7 +160,7 @@ namespace rgbd_slam {
             update_local_to_global();
         }
 
-        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)
+        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)
         {
             const int matchedPointIndex = mapPoint._lastMatchedIndex;
             if (matchedPointIndex != UNMATCHED_POINT_INDEX)
@@ -178,10 +178,17 @@ namespace rgbd_slam {
                         const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
                         // get a measure of the estimated variance of the new world point
                         const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
-                        // TODO update the variances with the pose variance
+
+                        // TODO pose improve variance computation
+                        const vector3& poseVariance = optimizedPose.get_position_variance();
+                        const matrix33 poseCovariance {
+                            {poseVariance.x(), 0, 0},
+                                {0, poseVariance.y(), 0},
+                                {0, 0, poseVariance.z()}
+                        };
 
                         // update this map point errors & position
-                        mapPoint.update_matched(newCoordinates, worldPointCovariance);
+                        mapPoint.update_matched(newCoordinates, worldPointCovariance + poseCovariance);
 
                         // If a new descriptor is available, update it
                         if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -232,13 +239,13 @@ namespace rgbd_slam {
             mapPoint.update_unmatched();
         }
 
-        void Local_Map::update_local_keypoint_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_local_keypoint_map(const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             point_map_container::iterator pointMapIterator = _localPointMap.begin();
             while(pointMapIterator != _localPointMap.end())
             {
                 // Update the matched/unmatched status
-                update_point_match_status(*pointMapIterator, keypointObject, previousCameraToWorldMatrix, cameraToWorldMatrix);
+                update_point_match_status(*pointMapIterator, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (pointMapIterator->is_lost()) {
                     // write to file
@@ -254,14 +261,14 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::update_staged_keypoints_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_staged_keypoints_map(const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
             while(stagedPointIterator != _stagedPoints.end())
             {
                 // Update the matched/unmatched status
-                update_point_match_status(*stagedPointIterator, keypointObject, previousCameraToWorldMatrix, cameraToWorldMatrix);
+                update_point_match_status(*stagedPointIterator, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (stagedPointIterator->should_add_to_local_map())
                 {
