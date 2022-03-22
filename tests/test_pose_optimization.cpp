@@ -85,9 +85,7 @@ namespace rgbd_slam {
             {
                 // screen coordinates
                 const vector3 screenPointEnd(transformedPoint.x(), transformedPoint.y(), worldPointStart.z());
-
-                const matches_containers::point_pair matched(screenPointEnd, worldPointStart);
-                matchedPoints.push_back(matched);
+                matchedPoints.emplace(matchedPoints.end(), screenPointEnd, worldPointStart);
             }
             else
             {

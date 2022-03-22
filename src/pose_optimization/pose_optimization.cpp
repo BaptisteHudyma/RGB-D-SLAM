@@ -34,13 +34,13 @@ namespace rgbd_slam {
             sumOfErrors.setZero();
             sumOfSquaredErrors.setZero();
             // For each pair of points
-            for (const matches_containers::point_pair& match : matchedPoints)
+            for (const matches_containers::Match& match : matchedPoints)
             {
                 // Convert to world coordinates
-                const vector3& matchedPoint3d = utils::screen_to_world_coordinates(match.first.x(), match.first.y(), match.first.z(), transformationMatrix);
+                const vector3& matchedPoint3d = utils::screen_to_world_coordinates(match._screenPoint.x(), match._screenPoint.y(), match._screenPoint.z(), transformationMatrix);
 
                 // absolute of (world map Point - new world point)
-                const vector3& matchError = (match.second - matchedPoint3d).cwiseAbs();
+                const vector3& matchError = (match._worldPoint - matchedPoint3d).cwiseAbs();
                 sumOfErrors += matchError;
                 sumOfSquaredErrors += matchError.cwiseAbs2();
             }
@@ -98,9 +98,9 @@ namespace rgbd_slam {
 
                 // Select inliers by retroprojection threshold
                 matches_containers::match_point_container potentialInliersContainer;
-                for (const matches_containers::point_pair& match : matchedPoints)
+                for (const matches_containers::Match& match : matchedPoints)
                 {
-                    if (get_distance_to_point(match.second, match.first, transformationMatrix) < threshold)
+                    if (get_distance_to_point(match._worldPoint, match._screenPoint, transformationMatrix) < threshold)
                     {
                         potentialInliersContainer.insert(potentialInliersContainer.end(), match);
                     }
@@ -236,19 +236,16 @@ namespace rgbd_slam {
             std::vector<vector3> cameraPoints;
             std::vector<vector3> worldPoints;
 
-            for (const matches_containers::point_pair& match : matchedPoints)
+            for (const matches_containers::Match& match : matchedPoints)
             {
-                const vector3& matchedCameraPoint = match.first;
-                const vector3& matchedWorldPoint = match.second;
-
                 const vector3 cameraPoint (
-                        (matchedCameraPoint.x() - Parameters::get_camera_1_center_x()) / Parameters::get_camera_1_focal_x(),
-                        (matchedCameraPoint.y() - Parameters::get_camera_1_center_y()) / Parameters::get_camera_1_focal_y(),
+                        (match._screenPoint.x() - Parameters::get_camera_1_center_x()) / Parameters::get_camera_1_focal_x(),
+                        (match._screenPoint.y() - Parameters::get_camera_1_center_y()) / Parameters::get_camera_1_focal_y(),
                         1
                         );
 
                 cameraPoints.push_back(cameraPoint.normalized());
-                worldPoints.push_back(matchedWorldPoint);
+                worldPoints.push_back(match._worldPoint);
             }
 
             std::vector<lambdatwist::CameraPose> finalCameraPoses;
