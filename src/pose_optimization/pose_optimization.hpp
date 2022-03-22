@@ -46,6 +46,8 @@ namespace rgbd_slam {
                  * \return True if a valid pose and inliers were found
                  */
                 static bool compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& inlierMatchedPoints); 
+
+                static bool compute_p3p_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose);
         };
 
     }   /* pose_optimization */

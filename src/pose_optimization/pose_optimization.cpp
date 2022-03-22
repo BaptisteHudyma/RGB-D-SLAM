@@ -4,6 +4,7 @@
 #include "logger.hpp"
 #include "levenberg_marquard_functors.hpp"
 #include "parameters.hpp"
+#include "p3p.hpp"
 
 #include <Eigen/StdVector>
 
@@ -88,7 +89,8 @@ namespace rgbd_slam {
                 const matches_containers::match_point_container& selectedMatches = get_n_random_matches(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
                 utils::Pose pose; 
-                const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(currentPose, matchedPoints, pose);
+                const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(currentPose, selectedMatches, pose);
+                //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedMatches, pose);
                 if (not isPoseValid)
                     continue;
 
@@ -225,6 +227,45 @@ namespace rgbd_slam {
             // Update refined pose with optimized pose
             optimizedPose = utils::Pose(endPosition, endRotation);
             return true;
+        }
+
+        bool Pose_Optimization::compute_p3p_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose)
+        {
+            assert(matchedPoints.size() == 3);
+
+            std::vector<vector3> cameraPoints;
+            std::vector<vector3> worldPoints;
+
+            for (const matches_containers::point_pair& match : matchedPoints)
+            {
+                const vector3& matchedCameraPoint = match.first;
+                const vector3& matchedWorldPoint = match.second;
+
+                const vector3 cameraPoint (
+                        (matchedCameraPoint.x() - Parameters::get_camera_1_center_x()) / Parameters::get_camera_1_focal_x(),
+                        (matchedCameraPoint.y() - Parameters::get_camera_1_center_y()) / Parameters::get_camera_1_focal_y(),
+                        1
+                        );
+
+                cameraPoints.push_back(cameraPoint.normalized());
+                worldPoints.push_back(matchedWorldPoint);
+            }
+
+            std::vector<lambdatwist::CameraPose> finalCameraPoses;
+            lambdatwist::p3p(cameraPoints, worldPoints, &finalCameraPoses);
+
+            double closestPoseDistance = std::numeric_limits<double>::max();
+            for(const lambdatwist::CameraPose& cameraPose : finalCameraPoses)
+            {
+                const double poseDistance = (currentPose.get_position() - cameraPose.t).norm();
+                if (poseDistance < closestPoseDistance)
+                {
+                    closestPoseDistance = poseDistance;
+                    optimizedPose.set_parameters(cameraPose.t, quaternion(cameraPose.R));
+                }
+            }
+            // At least one valid pose found
+            return closestPoseDistance < std::numeric_limits<double>::max();
         }
 
     }   /* pose_optimization*/

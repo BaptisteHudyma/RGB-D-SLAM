@@ -45,7 +45,7 @@ void setup_instance(std::vector<Eigen::Vector3d> &x, std::vector<Eigen::Vector3d
 
     std::uniform_real_distribution<double> unif_depths(0.1, 10);
     std::default_random_engine re;
-    
+
 
     for(int i = 0; i < 3; ++i) {
         Eigen::Vector3d z = Eigen::Vector3d::Random();
@@ -97,15 +97,15 @@ bool test_simple_instance() {
 
     p3p(x,X, &poses);
 
-      for(CameraPose &pose : poses) {
+    for(CameraPose &pose : poses) {
         if(!is_valid(pose,x,X))
             return false;
         double err_R = (pose.R - Eigen::Matrix3d::Identity()).norm();
         double err_t = (pose.t - Eigen::Vector3d::Zero()).norm();
-        
+
         if( err_R < 1e-8 && err_t < 1e-8)
             return true;
-       
+
     }
 
     return false;
@@ -122,7 +122,7 @@ bool test_random_instance() {
     setup_instance(x, X, pose_gt);
 
     int n_sols = p3p(x, X, &poses);
-    
+
     REQUIRE( n_sols > 0 );
 
     for(CameraPose &pose : poses) {
@@ -134,7 +134,7 @@ bool test_random_instance() {
         if( err_R < 1e-8 && err_t < 1e-8)
             return true;
     }
-    
+
 
     return false;
 
@@ -149,7 +149,7 @@ bool test_simple_instance2() {
     y1 << 0.0, 0.0, 1.0;
     y2 << 2.0, 0.0, 1.0;
     y3 << 0.0, 2.0, 1.0;
-    
+
     y1.normalize();
     y2.normalize();
     y3.normalize();
@@ -157,7 +157,7 @@ bool test_simple_instance2() {
     X1 << 0.0, 0.0, 0.0;
     X2 << 1.0, 0.0, 0.0;
     X3 << 0.0, 1.0, 0.0;
-    
+
     std::vector<Eigen::Vector3d> x{y1,y2,y3};
     std::vector<Eigen::Vector3d> X{X1,X2,X3};
 
@@ -187,19 +187,19 @@ bool test_simple_instance2() {
 int main() {
     unsigned int seed = (unsigned int)time(0);	
     srand(seed);
-    
-	std::cout << "Running tests... (seed = " << seed << ")\n\n";
 
-	int passed = 0;
-	int num_tests = 0;
+    std::cout << "Running tests... (seed = " << seed << ")\n\n";
+
+    int passed = 0;
+    int num_tests = 0;
 
     for(int i = 0; i < 10; ++i) {
-	    TEST(test_random_instance);
+        TEST(test_random_instance);
     }
 
-	TEST(test_simple_instance);
+    TEST(test_simple_instance);
 
     TEST(test_simple_instance2);
 
-	std::cout << "\nDone! Passed " << passed << "/" << num_tests << " tests.\n";
+    std::cout << "\nDone! Passed " << passed << "/" << num_tests << " tests.\n";
 }
