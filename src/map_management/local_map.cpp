@@ -144,6 +144,7 @@ namespace rgbd_slam {
             for (const matches_containers::Match& match : outlierMatchedPoints)
             {
                 const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
+                // If no points were found, this is bad
                 assert(isOutlierRemoved == true);
             }
 
@@ -306,6 +307,12 @@ namespace rgbd_slam {
             for(unsigned int i = 0; i < keypointVectorSize; ++i)
             {
                 if (not _isPointMatched[i]) {
+                    // TODO remove this condition when we will compute the descriptor for optical flow points 
+                    if(! keypointObject.is_descriptor_computed(i))
+                    {
+                        continue;
+                    }
+
                     const double depth = keypointObject.get_depth(i);
                     if (not utils::is_depth_valid(depth))
                     {
@@ -398,8 +405,7 @@ namespace rgbd_slam {
             {
                 if (pointId == point._id)
                 {
-                    // Mark as unmatched
-                    point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+                    mark_point_with_id_as_unmatched(pointId, point);
                     return true;
                 }
             }
@@ -407,12 +413,21 @@ namespace rgbd_slam {
             {
                 if (pointId == point._id)
                 {
-                    // Mark as unmatched
-                    point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+                    mark_point_with_id_as_unmatched(pointId, point);
                     return true;
                 }
             }
             return false;
+        }
+
+        void Local_Map::mark_point_with_id_as_unmatched(const size_t pointId, IMap_Point_With_Tracking& point)
+        {
+            assert(pointId == point._id);
+            assert(point._lastMatchedIndex < static_cast<int>(_isPointMatched.size()));
+
+            // Mark point as unmatched
+            _isPointMatched[point._lastMatchedIndex] = false;
+            point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
         }
 
     }   /* map_management */

@@ -153,11 +153,17 @@ namespace rgbd_slam {
 
                 /**
                  * \brief Mark a point with the id pointId as unmatched. Will search the staged and local map.
+                 *
                  * \param[in] pointId The uniq id of the point to unmatch
                  * 
                  * \return true if the point was found and updated
                  */
                 bool mark_point_with_id_as_unmatched(const size_t pointId);
+
+                /**
+                 * \brief mark a point as unmatched
+                 */
+                void mark_point_with_id_as_unmatched(const size_t pointId, IMap_Point_With_Tracking& point);
 
             private:
                 // local map point container
@@ -180,6 +186,7 @@ namespace rgbd_slam {
 
 
                 utils::XYZ_Map_Writer* _mapWriter; 
+
         };
 
     }
