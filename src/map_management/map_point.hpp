@@ -13,6 +13,37 @@ namespace rgbd_slam {
         const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
         const int UNMATCHED_POINT_INDEX = -1;      // Id of a unmatched point
 
+        struct MatchedScreenPoint
+        {
+            MatchedScreenPoint():
+                _matchIndex(UNMATCHED_POINT_INDEX)
+            {
+                _screenCoordinates.setZero();
+            };
+
+            MatchedScreenPoint(const vector3& screenCoordinates, const int matchIndex = UNMATCHED_POINT_INDEX):
+                _screenCoordinates(screenCoordinates),
+                _matchIndex(matchIndex)
+            {};
+
+            bool is_matched() const
+            { 
+                return _matchIndex != UNMATCHED_POINT_INDEX;
+            }
+
+            void mark_unmatched()
+            {
+                _matchIndex = UNMATCHED_POINT_INDEX;
+                _screenCoordinates.setZero();
+            }
+
+            // matched point coordinates in screen space
+            vector3 _screenCoordinates;
+
+            // Match index in the detected point object (can be UNMATCHED_POINT_INDEX);
+            int _matchIndex;
+        };
+
         /**
          * \brief Basic keypoint class 
          */
@@ -20,7 +51,6 @@ namespace rgbd_slam {
         {
             // world coordinates
             vector3 _coordinates;
-            vector3 _screenCoordinates;
 
             // 3D descriptor (SURF)
             cv::Mat _descriptor;
@@ -61,19 +91,20 @@ namespace rgbd_slam {
 
             const matrix33 get_covariance_matrix() const { return _covariance; };
 
-            int _lastMatchedIndex;
+            // an object referencing the last match for this point
+            MatchedScreenPoint _matchedScreenPoint;
 
             protected:
-            
+
             /**
-              * \brief update the current point by tracking with a kalman filter. Will update the point position & covariance
-              * \return The distance between the new position ans the previous one
-              */
+             * \brief update the current point by tracking with a kalman filter. Will update the point position & covariance
+             * \return The distance between the new position ans the previous one
+             */
             double track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance);
 
             private:
             // covariance matrix
-           matrix33 _covariance; 
+            matrix33 _covariance; 
         };
 
         /**

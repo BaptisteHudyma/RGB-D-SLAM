@@ -20,10 +20,10 @@ namespace rgbd_slam {
         {
             const vector3& coordinates = mapPoint._coordinates;
             assert(not std::isnan(coordinates.x()) and not std::isnan(coordinates.y()) and not std::isnan(coordinates.z()));
-            if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
+            if (mapPoint._matchedScreenPoint.is_matched())
             {
                 // use previously known screen coordinates
-                keypointsWithIds._keypoints.push_back(cv::Point2f(mapPoint._screenCoordinates.x(), mapPoint._screenCoordinates.y()));
+                keypointsWithIds._keypoints.push_back(cv::Point2f(mapPoint._matchedScreenPoint._screenCoordinates.x(), mapPoint._matchedScreenPoint._screenCoordinates.y()));
                 keypointsWithIds._ids.push_back(mapPoint._id);
             }
         }
@@ -63,7 +63,7 @@ namespace rgbd_slam {
 
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX) {
                 //unmatched point
-                point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+                point._matchedScreenPoint.mark_unmatched();
                 return false;
             }
 
@@ -75,11 +75,12 @@ namespace rgbd_slam {
                 const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
 
                 // update index and screen coordinates 
-                point._lastMatchedIndex = matchIndex;
-                point._screenCoordinates << screenPoint, screenPointDepth;
+                MatchedScreenPoint match;
+                match._screenCoordinates << screenPoint, screenPointDepth;
+                match._matchIndex = matchIndex;
+                point._matchedScreenPoint = match;
 
-                const vector3 screen3DPoint(screenPoint.x(), screenPoint.y(), screenPointDepth);
-                matchedPoints.emplace(matchedPoints.end(), screen3DPoint, point._coordinates, point._id);
+                matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
                 return true;
             }
             else {
@@ -87,8 +88,12 @@ namespace rgbd_slam {
                 _isPointMatched[matchIndex] = true;
 
                 // update index and screen coordinates 
-                point._lastMatchedIndex = matchIndex;
-                point._screenCoordinates << detectedKeypoint.get_keypoint(matchIndex), 0;
+                MatchedScreenPoint match;
+                match._screenCoordinates << detectedKeypoint.get_keypoint(matchIndex), 0;
+                match._matchIndex = matchIndex;
+                point._matchedScreenPoint = match;
+
+                matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
                 return true;
             }
             return false;
@@ -169,9 +174,9 @@ namespace rgbd_slam {
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)
         {
-            const int matchedPointIndex = mapPoint._lastMatchedIndex;
-            if (matchedPointIndex != UNMATCHED_POINT_INDEX)
+            if (mapPoint._matchedScreenPoint.is_matched())
             {
+                const int matchedPointIndex = mapPoint._matchedScreenPoint._matchIndex;
                 const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
                 if (matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
                 {
@@ -283,8 +288,7 @@ namespace rgbd_slam {
                     assert(not std::isnan(stagedPointCoordinates.x()) and not std::isnan(stagedPointCoordinates.y()) and not std::isnan(stagedPointCoordinates.z()));
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
                     _localPointMap.emplace(_localPointMap.end(), stagedPointCoordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
-                    _localPointMap.back()._lastMatchedIndex = stagedPointIterator->_lastMatchedIndex;
-                    _localPointMap.back()._screenCoordinates = stagedPointIterator->_screenCoordinates;
+                    _localPointMap.back()._matchedScreenPoint = stagedPointIterator->_matchedScreenPoint;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
                 else if (stagedPointIterator->should_remove_from_staged())
@@ -325,9 +329,12 @@ namespace rgbd_slam {
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, utils::get_screen_point_covariance(screenPoint, depth));
                     _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
-                    _stagedPoints.back()._screenCoordinates << screenPoint, depth;
+
+                    MatchedScreenPoint match;
+                    match._screenCoordinates << screenPoint, depth;
                     // This id is to unsure the tracking of this staged point for it's first detection
-                    _stagedPoints.back()._lastMatchedIndex = 0;
+                    match._matchIndex = 0;
+                    _stagedPoints.back()._matchedScreenPoint = match;
                 }
             }
 
@@ -370,7 +377,7 @@ namespace rgbd_slam {
 
         void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const
         {
-            if (mapPoint._lastMatchedIndex != UNMATCHED_POINT_INDEX)
+            if (mapPoint._matchedScreenPoint.is_matched())
             {
                 vector2 screenPoint; 
                 const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, screenPoint);
@@ -423,11 +430,11 @@ namespace rgbd_slam {
         void Local_Map::mark_point_with_id_as_unmatched(const size_t pointId, IMap_Point_With_Tracking& point)
         {
             assert(pointId == point._id);
-            assert(point._lastMatchedIndex < static_cast<int>(_isPointMatched.size()));
+            assert(point._matchedScreenPoint._matchIndex < static_cast<int>(_isPointMatched.size()));
 
             // Mark point as unmatched
-            _isPointMatched[point._lastMatchedIndex] = false;
-            point._lastMatchedIndex = UNMATCHED_POINT_INDEX;
+            _isPointMatched[point._matchedScreenPoint._matchIndex] = false;
+            point._matchedScreenPoint.mark_unmatched();
         }
 
     }   /* map_management */
