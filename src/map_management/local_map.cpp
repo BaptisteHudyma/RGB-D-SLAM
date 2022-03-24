@@ -42,7 +42,7 @@ namespace rgbd_slam {
 
         Local_Map::~Local_Map()
         {
-            for (Map_Point& mapPoint : _localPointMap) 
+            for (const auto& [pointId, mapPoint] : _localPointMap) 
             {
                 _mapWriter->add_point(mapPoint._coordinates);
             }
@@ -72,11 +72,9 @@ namespace rgbd_slam {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
 
-                const vector2& screenPoint = detectedKeypoint.get_keypoint(matchIndex);
-
                 // update index and screen coordinates 
                 MatchedScreenPoint match;
-                match._screenCoordinates << screenPoint, screenPointDepth;
+                match._screenCoordinates << detectedKeypoint.get_keypoint(matchIndex), screenPointDepth;
                 match._matchIndex = matchIndex;
                 point._matchedScreenPoint = match;
 
@@ -109,13 +107,13 @@ namespace rgbd_slam {
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
 
             // Try to find matches in local map
-            for (Map_Point& mapPoint : _localPointMap) 
+            for (auto& [pointId, mapPoint] : _localPointMap) 
             {
                 find_match(mapPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
             }
 
             // Try to find matches in staged points
-            for(Staged_Point& stagedPoint : _stagedPoints)
+            for(auto& [pointId, stagedPoint] : _stagedPoints)
             {
                 find_match(stagedPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
             }
@@ -257,11 +255,12 @@ namespace rgbd_slam {
             while(pointMapIterator != _localPointMap.end())
             {
                 // Update the matched/unmatched status
-                update_point_match_status(*pointMapIterator, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
+                Map_Point& mapPoint = pointMapIterator->second;
+                update_point_match_status(mapPoint, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
-                if (pointMapIterator->is_lost()) {
+                if (mapPoint.is_lost()) {
                     // write to file
-                    _mapWriter->add_point(pointMapIterator->_coordinates);
+                    _mapWriter->add_point(mapPoint._coordinates);
 
                     // Remove useless point
                     pointMapIterator = _localPointMap.erase(pointMapIterator);
@@ -279,19 +278,23 @@ namespace rgbd_slam {
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
             while(stagedPointIterator != _stagedPoints.end())
             {
+                Staged_Point& stagedPoint = stagedPointIterator->second;
                 // Update the matched/unmatched status
-                update_point_match_status(*stagedPointIterator, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
+                update_point_match_status(stagedPoint, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
-                if (stagedPointIterator->should_add_to_local_map())
+                if (stagedPoint.should_add_to_local_map())
                 {
-                    const vector3& stagedPointCoordinates = stagedPointIterator->_coordinates;
+                    const vector3& stagedPointCoordinates = stagedPoint._coordinates;
                     assert(not std::isnan(stagedPointCoordinates.x()) and not std::isnan(stagedPointCoordinates.y()) and not std::isnan(stagedPointCoordinates.z()));
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
-                    _localPointMap.emplace(_localPointMap.end(), stagedPointCoordinates, stagedPointIterator->get_covariance_matrix(), stagedPointIterator->_descriptor, stagedPointIterator->_id);
-                    _localPointMap.back()._matchedScreenPoint = stagedPointIterator->_matchedScreenPoint;
+                    _localPointMap.emplace(
+                            stagedPoint._id,
+                            Map_Point(stagedPointCoordinates, stagedPoint.get_covariance_matrix(), stagedPoint._descriptor, stagedPoint._id)
+                            );
+                    _localPointMap.at(stagedPoint._id)._matchedScreenPoint = stagedPoint._matchedScreenPoint;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
-                else if (stagedPointIterator->should_remove_from_staged())
+                else if (stagedPoint.should_remove_from_staged())
                 {
                     // Remove from staged points
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
@@ -328,13 +331,17 @@ namespace rgbd_slam {
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, utils::get_screen_point_covariance(screenPoint, depth));
-                    _stagedPoints.emplace(_stagedPoints.end(), worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
+
+                    Staged_Point newStagedPoint(worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
+                    _stagedPoints.emplace(
+                            newStagedPoint._id,
+                            newStagedPoint);
 
                     MatchedScreenPoint match;
                     match._screenCoordinates << screenPoint, depth;
                     // This id is to unsure the tracking of this staged point for it's first detection
                     match._matchIndex = 0;
-                    _stagedPoints.back()._matchedScreenPoint = match;
+                    _stagedPoints.at(newStagedPoint._id)._matchedScreenPoint = match;
                 }
             }
 
@@ -351,12 +358,12 @@ namespace rgbd_slam {
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
 
             // add map points with valid retroprojected coordinates
-            for (const Map_Point& point : _localPointMap)
+            for (const auto& [pointId, point]  : _localPointMap)
             {
                 add_point_to_tracked_features(point, keypointsWithIds);
             }
             // add staged points with valid retroprojected coordinates
-            for (const Staged_Point& point : _stagedPoints)
+            for (const auto& [pointId, point] : _stagedPoints)
             {
                 add_point_to_tracked_features(point, keypointsWithIds);
             }
@@ -394,12 +401,12 @@ namespace rgbd_slam {
         {
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
-            for (const IMap_Point_With_Tracking& mapPoint : _localPointMap) {
+            for (const auto& [pointId, mapPoint] : _localPointMap) {
                 draw_point_on_image(mapPoint, worldToCamMatrix, cv::Scalar(0, 255, 0), debugImage);
             }
             if (shouldDisplayStaged)
             {
-                for (const IMap_Point_With_Tracking& stagedPoint : _stagedPoints) {
+                for (const auto& [pointId, stagedPoint] : _stagedPoints) {
                     draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 200), debugImage);
                 }
             }
@@ -407,22 +414,20 @@ namespace rgbd_slam {
 
         bool Local_Map::mark_point_with_id_as_unmatched(const size_t pointId)
         {
-            // TODO this should be more efficient
-            for (IMap_Point_With_Tracking& point: _localPointMap)
+            point_map_container::iterator pointMapIterator = _localPointMap.find(pointId);
+            if (pointMapIterator != _localPointMap.end())
             {
-                if (pointId == point._id)
-                {
-                    mark_point_with_id_as_unmatched(pointId, point);
-                    return true;
-                }
+                assert(pointMapIterator->second._id == pointId);
+                mark_point_with_id_as_unmatched(pointId, pointMapIterator->second);
+                return true;
             }
-            for (IMap_Point_With_Tracking& point : _stagedPoints)
+
+            staged_point_container::iterator stagedPointIterator = _stagedPoints.find(pointId);
+            if (stagedPointIterator != _stagedPoints.end())
             {
-                if (pointId == point._id)
-                {
-                    mark_point_with_id_as_unmatched(pointId, point);
-                    return true;
-                }
+                assert(stagedPointIterator->second._id == pointId);
+                mark_point_with_id_as_unmatched(pointId, stagedPointIterator->second);
+                return true;
             }
             return false;
         }
