@@ -109,12 +109,14 @@ namespace rgbd_slam {
             // Try to find matches in local map
             for (auto& [pointId, mapPoint] : _localPointMap) 
             {
+                assert(pointId == mapPoint._id);
                 find_match(mapPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
             }
 
             // Try to find matches in staged points
             for(auto& [pointId, stagedPoint] : _stagedPoints)
             {
+                assert(pointId == stagedPoint._id);
                 find_match(stagedPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
             }
 
@@ -176,72 +178,68 @@ namespace rgbd_slam {
             {
                 const int matchedPointIndex = mapPoint._matchedScreenPoint._matchIndex;
                 const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
-                if (matchedPointIndex >= 0 and matchedPointIndex < keypointsSize)
+
+                assert(matchedPointIndex >= 0 and matchedPointIndex < keypointsSize); 
+
+                // get match coordinates, transform them to world coordinates
+                const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
+                const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
+
+                if(utils::is_depth_valid(matchedPointDepth))
                 {
-                    // get match coordinates, transform them to world coordinates
-                    const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
-                    const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
+                    // transform screen point to world point
+                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
+                    // get a measure of the estimated variance of the new world point
+                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
 
-                    if(utils::is_depth_valid(matchedPointDepth))
-                    {
-                        // transform screen point to world point
-                        const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
-                        // get a measure of the estimated variance of the new world point
-                        const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
+                    // TODO pose improve variance computation
+                    const vector3& poseVariance = optimizedPose.get_position_variance();
+                    const matrix33 poseCovariance {
+                        {poseVariance.x(), 0, 0},
+                            {0, poseVariance.y(), 0},
+                            {0, 0, poseVariance.z()}
+                    };
 
-                        // TODO pose improve variance computation
-                        const vector3& poseVariance = optimizedPose.get_position_variance();
-                        const matrix33 poseCovariance {
-                            {poseVariance.x(), 0, 0},
-                                {0, poseVariance.y(), 0},
-                                {0, 0, poseVariance.z()}
-                        };
+                    // update this map point errors & position
+                    mapPoint.update_matched(newCoordinates, worldPointCovariance + poseCovariance);
 
-                        // update this map point errors & position
-                        mapPoint.update_matched(newCoordinates, worldPointCovariance + poseCovariance);
+                    // If a new descriptor is available, update it
+                    if (keypointObject.is_descriptor_computed(matchedPointIndex))
+                        mapPoint._descriptor = keypointObject.get_descriptor(matchedPointIndex);
 
-                        // If a new descriptor is available, update it
-                        if (keypointObject.is_descriptor_computed(matchedPointIndex))
-                            mapPoint._descriptor = keypointObject.get_descriptor(matchedPointIndex);
-
-                        // End of the function
-                        return;
-                    }
-                    else
-                    {
-#if 0
-                        // inefficient...
-                        const matrix44& worldToCameraMatrix = utils::compute_world_to_camera_transform(previousCameraToWorldMatrix);
-                        vector2 previousPointScreenCoordinates;
-                        const bool isTransformationValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, previousPointScreenCoordinates);
-                        if (isTransformationValid)
-                        {
-                            vector3 triangulatedPoint;
-                            const bool isTriangulationValid = utils::Triangulation::triangulate(previousCameraToWorldMatrix, cameraToWorldMatrix, previousPointScreenCoordinates, matchedPointCoordinates, triangulatedPoint);
-                            // update the match
-                            if (isTriangulationValid)
-                            {
-                                //std::cout << "udpate with triangulation " << triangulatedPoint.transpose() << " " << mapPoint._coordinates.transpose() << std::endl;
-                                // get a measure of the estimated variance of the new world point
-                                //const matrix33& worldPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
-                                const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
-                                // TODO update the variances with the pose variance
-
-                                // update this map point errors & position
-                                mapPoint.update_matched(triangulatedPoint, worldPointCovariance);
-
-                                // If a new descriptor is available, update it
-                                if (keypointObject.is_descriptor_computed(matchedPointIndex))
-                                    mapPoint._descriptor = keypointObject.get_descriptor(matchedPointIndex);
-                                return;
-                            }
-                        }
-#endif
-                    }
+                    // End of the function
+                    return;
                 }
                 else
                 {
-                    utils::log_error("Match point index is out of bounds of keypointObject");
+#if 0
+                    // inefficient...
+                    const matrix44& worldToCameraMatrix = utils::compute_world_to_camera_transform(previousCameraToWorldMatrix);
+                    vector2 previousPointScreenCoordinates;
+                    const bool isTransformationValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, previousPointScreenCoordinates);
+                    if (isTransformationValid)
+                    {
+                        vector3 triangulatedPoint;
+                        const bool isTriangulationValid = utils::Triangulation::triangulate(previousCameraToWorldMatrix, cameraToWorldMatrix, previousPointScreenCoordinates, matchedPointCoordinates, triangulatedPoint);
+                        // update the match
+                        if (isTriangulationValid)
+                        {
+                            //std::cout << "udpate with triangulation " << triangulatedPoint.transpose() << " " << mapPoint._coordinates.transpose() << std::endl;
+                            // get a measure of the estimated variance of the new world point
+                            //const matrix33& worldPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
+                            const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
+                            // TODO update the variances with the pose variance
+
+                            // update this map point errors & position
+                            mapPoint.update_matched(triangulatedPoint, worldPointCovariance);
+
+                            // If a new descriptor is available, update it
+                            if (keypointObject.is_descriptor_computed(matchedPointIndex))
+                                mapPoint._descriptor = keypointObject.get_descriptor(matchedPointIndex);
+                            return;
+                        }
+                    }
+#endif
                 }
             }
 
@@ -256,6 +254,8 @@ namespace rgbd_slam {
             {
                 // Update the matched/unmatched status
                 Map_Point& mapPoint = pointMapIterator->second;
+                assert(pointMapIterator->first == mapPoint._id);
+
                 update_point_match_status(mapPoint, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (mapPoint.is_lost()) {
@@ -279,6 +279,8 @@ namespace rgbd_slam {
             while(stagedPointIterator != _stagedPoints.end())
             {
                 Staged_Point& stagedPoint = stagedPointIterator->second;
+                assert(stagedPointIterator->first == stagedPoint._id);
+
                 // Update the matched/unmatched status
                 update_point_match_status(stagedPoint, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
@@ -360,11 +362,13 @@ namespace rgbd_slam {
             // add map points with valid retroprojected coordinates
             for (const auto& [pointId, point]  : _localPointMap)
             {
+                assert(pointId == point._id);
                 add_point_to_tracked_features(point, keypointsWithIds);
             }
             // add staged points with valid retroprojected coordinates
             for (const auto& [pointId, point] : _stagedPoints)
             {
+                assert(pointId == point._id);
                 add_point_to_tracked_features(point, keypointsWithIds);
             }
             return keypointsWithIds;
@@ -402,11 +406,13 @@ namespace rgbd_slam {
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
             for (const auto& [pointId, mapPoint] : _localPointMap) {
+                assert(pointId == mapPoint._id);
                 draw_point_on_image(mapPoint, worldToCamMatrix, cv::Scalar(0, 255, 0), debugImage);
             }
             if (shouldDisplayStaged)
             {
                 for (const auto& [pointId, stagedPoint] : _stagedPoints) {
+                    assert(pointId == stagedPoint._id);
                     draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 200), debugImage);
                 }
             }
@@ -417,16 +423,18 @@ namespace rgbd_slam {
             point_map_container::iterator pointMapIterator = _localPointMap.find(pointId);
             if (pointMapIterator != _localPointMap.end())
             {
-                assert(pointMapIterator->second._id == pointId);
-                mark_point_with_id_as_unmatched(pointId, pointMapIterator->second);
+                Map_Point& mapPoint = pointMapIterator->second;
+                assert(mapPoint._id == pointId);
+                mark_point_with_id_as_unmatched(pointId, mapPoint);
                 return true;
             }
 
             staged_point_container::iterator stagedPointIterator = _stagedPoints.find(pointId);
             if (stagedPointIterator != _stagedPoints.end())
             {
-                assert(stagedPointIterator->second._id == pointId);
-                mark_point_with_id_as_unmatched(pointId, stagedPointIterator->second);
+                Staged_Point& stagedPoint = stagedPointIterator->second;
+                assert(stagedPoint._id == pointId);
+                mark_point_with_id_as_unmatched(pointId, stagedPoint);
                 return true;
             }
             return false;
