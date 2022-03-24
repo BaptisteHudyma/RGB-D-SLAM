@@ -37,9 +37,6 @@ namespace rgbd_slam {
                 exit(-1);
             }
 
-            // init motion model
-            _motionModel.reset();
-
             //local map
             _localMap = new map_management::Local_Map();
 
@@ -77,6 +74,9 @@ namespace rgbd_slam {
 
             _computeKeypointCount = 0;
             _currentPose = startPose;
+
+            // init motion model
+            _motionModel.reset(_currentPose.get_position(), _currentPose.get_orientation_quaternion());
         }
 
     RGBD_SLAM::~RGBD_SLAM()
@@ -167,7 +167,7 @@ namespace rgbd_slam {
 
         // this frame points and  assoc
         t1 = cv::getTickCount();
-        utils::Pose refinedPose = this->compute_new_pose(grayImage, depthImage);
+        const utils::Pose& refinedPose = this->compute_new_pose(grayImage, depthImage);
         _meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
         //update motion model with refined pose
@@ -214,7 +214,7 @@ namespace rgbd_slam {
         bool shouldUpdateMap = true;
         if (_computeKeypointCount != 0)
         {
-            if (matchedPoints.size() > Parameters::get_minimum_point_count_for_optimization()) {
+            if (matchedPoints.size() >= Parameters::get_minimum_point_count_for_optimization()) {
                 // Enough matches to optimize
                 // Optimize refined pose
                 utils::Pose optimizedPose;

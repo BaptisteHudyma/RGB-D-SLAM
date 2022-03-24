@@ -106,7 +106,7 @@ namespace rgbd_slam {
         _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
-        _minimumPointForOptimization = 5;
+        _minimumPointForOptimization = 6;   // Should be >= 6
         _optimizationMaximumIterations = 1024;
         _optimizationErrorPrecision = 0;
         _optimizationToleranceOfSolutionVectorNorm = 1e-4;//sqrt(DBL_EPSILON); // Smallest delta of doubles

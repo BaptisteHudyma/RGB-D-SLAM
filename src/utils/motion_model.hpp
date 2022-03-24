@@ -17,6 +17,7 @@ namespace utils {
         public:
             Motion_Model();
             void reset();
+            void reset(const vector3& lastPosition, const quaternion& lastRotation);
 
             /**
              * \brief Predicts next pose with motion model (dead reckoning)

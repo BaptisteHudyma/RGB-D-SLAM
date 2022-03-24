@@ -76,13 +76,14 @@ namespace rgbd_slam {
 
         bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
-            const uint minimumPointsForOptimization = 3;    // Selected set of random points
+            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Selected set of random points
             const uint maxIterations = Parameters::get_maximum_ransac_iterations();
             const double maxThreshold = 200;   // maximum inlier threshold (in millimeters)
             double threshold = 1;       // minimum retroprojection error to consider a match as an inlier (in millimeters)
             const size_t matchedPointSize = matchedPoints.size();
             const double acceptableMinimumScore = matchedPointSize * 0.9;       // RANSAC will stop if this mean score is reached
 
+            utils::Pose bestPose = currentPose;
             matches_containers::match_point_container inlierMatchedPoints;  // Contains the best pose inliers
             for(uint iteration = 0; iteration < maxIterations; ++iteration)
             {
@@ -114,7 +115,7 @@ namespace rgbd_slam {
                 // We have a better score than the previous best one
                 if (potentialInliersContainer.size() > inlierMatchedPoints.size())
                 {
-                    finalPose = pose;
+                    bestPose = pose;
                     inlierMatchedPoints.swap(potentialInliersContainer);
                     outlierMatchedPoints.swap(potentialOutliersContainer);
 
@@ -134,7 +135,7 @@ namespace rgbd_slam {
                 return false;
             }
 
-            const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(finalPose, inlierMatchedPoints, finalPose);
+            const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(bestPose, inlierMatchedPoints, finalPose);
             // Compute pose variance
             if (isPoseValid)
             {
@@ -162,6 +163,8 @@ namespace rgbd_slam {
 
         bool Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
         {
+            assert(matchedPoints.size() >= 6);
+
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();
 
@@ -220,16 +223,16 @@ namespace rgbd_slam {
                     input[2]
                     );
 
-            if (endStatus == Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation)
+            if (endStatus <= 0) 
             {
-                // Error: reached end of minimization without reaching a minimum
+                // Error while optimizing 
                 const std::string message = get_human_readable_end_message(endStatus);
                 utils::log("Failed to converge with " + std::to_string(matchedPoints.size()) + " points | Status " + message);
                 return false;
             }
 
             // Update refined pose with optimized pose
-            optimizedPose = utils::Pose(endPosition, endRotation);
+            optimizedPose.set_parameters(endPosition, endRotation);
             return true;
         }
 

@@ -17,6 +17,14 @@ namespace utils {
         _linearVelocity.setIdentity();
     }
 
+    void Motion_Model::reset(const vector3& lastPosition, const quaternion& lastRotation) {
+        _lastQ = lastRotation;
+        _angularVelocity.setIdentity();
+
+        _lastPosition = lastPosition;
+        _linearVelocity.setIdentity();
+    }
+
 
 
     const Pose Motion_Model::predict_next_pose(const Pose& currentPose) const {
