@@ -214,9 +214,9 @@ namespace rgbd_slam {
             utils::log_error("Optimization maximum iterations must be > 0");
             _isValid = false;
         }
-        if (_optimizationErrorPrecision <= 0)
+        if (_optimizationErrorPrecision < 0)
         {
-            utils::log_error("Optimization error precision must be > 0");
+            utils::log_error("Optimization error precision must be >= 0");
             _isValid = false;
         }
         if (_optimizationToleranceOfSolutionVectorNorm < 0)

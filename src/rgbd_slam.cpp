@@ -23,8 +23,13 @@ namespace rgbd_slam {
             // Load parameters (once)
             if (not Parameters::is_valid())
             {
-                utils::log("No parameter file given using default parameters.");
                 Parameters::load_defaut();
+                if (not Parameters::is_valid())
+                {
+                    utils::log_error("Invalid default parameters. Check your static parameters configuration");
+                    exit(-1);
+                }
+                utils::log("Invalid parameters. Switching to default parameters");
             }
             // primitive connected graph creator
             _depthOps = new features::primitives::Depth_Map_Transformation(

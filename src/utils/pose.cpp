@@ -30,7 +30,7 @@ namespace rgbd_slam {
 
         void PoseBase::display(std::ostream& os) const {
             const EulerAngles displayAngles = get_euler_angles_from_quaternion(_orientation);
-            os << _position.transpose() << " | " << displayAngles.yaw / EulerToRadian << ", " << displayAngles.pitch / EulerToRadian << ", " << displayAngles.roll / EulerToRadian;
+            os << "position: (" << (_position.transpose() * 0.001) << ") meters | rotation: (" << displayAngles.yaw / EulerToRadian << ", " << displayAngles.pitch / EulerToRadian << ", " << displayAngles.roll / EulerToRadian << ") degrees";
         }
 
 
@@ -64,7 +64,7 @@ namespace rgbd_slam {
 
         void Pose::display(std::ostream& os) const {
             PoseBase::display(os);
-            os << " | var: " << _positionVariance.transpose();
+            os << std::endl << "position variance: " << (_positionVariance.transpose() * 0.001) << " meters";
         }
 
         std::ostream& operator<<(std::ostream& os, const Pose& pose) {
