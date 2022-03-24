@@ -145,13 +145,8 @@ namespace rgbd_slam {
 
         void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const matches_containers::match_point_container& outlierMatchedPoints)
         {
-            // Mark inliers as unmatched
-            for (const matches_containers::Match& match : outlierMatchedPoints)
-            {
-                const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
-                // If no points were found, this is bad
-                assert(isOutlierRemoved == true);
-            }
+            // Unmatch detected outliers
+            mark_outliers_as_unmatched(outlierMatchedPoints);
 
             const matrix44& previousCameraToWorldMatrix = utils::compute_camera_to_world_transform(previousPose.get_orientation_quaternion(), previousPose.get_position());
             const matrix44& cameraToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
@@ -418,8 +413,20 @@ namespace rgbd_slam {
             }
         }
 
+        void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints)
+        {
+            // Mark outliers as unmatched
+            for (const matches_containers::Match& match : outlierMatchedPoints)
+            {
+                const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
+                // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
+                assert(isOutlierRemoved == true);
+            }
+        }
+
         bool Local_Map::mark_point_with_id_as_unmatched(const size_t pointId)
         {
+            // Check if id is in local map
             point_map_container::iterator pointMapIterator = _localPointMap.find(pointId);
             if (pointMapIterator != _localPointMap.end())
             {
@@ -429,6 +436,7 @@ namespace rgbd_slam {
                 return true;
             }
 
+            // Check if id is in staged points
             staged_point_container::iterator stagedPointIterator = _stagedPoints.find(pointId);
             if (stagedPointIterator != _stagedPoints.end())
             {
@@ -437,6 +445,8 @@ namespace rgbd_slam {
                 mark_point_with_id_as_unmatched(pointId, stagedPoint);
                 return true;
             }
+
+            // point associated with id was not find
             return false;
         }
 

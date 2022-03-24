@@ -152,6 +152,11 @@ namespace rgbd_slam {
 
 
                 /**
+                 * \brief Mark all the outliers detected during optimization as unmatched
+                 */
+                void mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints);
+
+                /**
                  * \brief Mark a point with the id pointId as unmatched. Will search the staged and local map.
                  *
                  * \param[in] pointId The uniq id of the point to unmatch
