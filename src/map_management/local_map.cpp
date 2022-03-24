@@ -145,6 +145,9 @@ namespace rgbd_slam {
 
         void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const matches_containers::match_point_container& outlierMatchedPoints)
         {
+            // TODO find a better way to display trajectory than just a new map point
+            _mapWriter->add_point(optimizedPose.get_position());
+
             // Unmatch detected outliers
             mark_outliers_as_unmatched(outlierMatchedPoints);
 
@@ -391,7 +394,7 @@ namespace rgbd_slam {
                 //Map Point are green 
                 if (isCoordinatesValid)
                 {
-                    cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 4, pointColor, 1);
+                    cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 3, pointColor, -1);
                 }
             }
         }
@@ -408,7 +411,7 @@ namespace rgbd_slam {
             {
                 for (const auto& [pointId, stagedPoint] : _stagedPoints) {
                     assert(pointId == stagedPoint._id);
-                    draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 200), debugImage);
+                    draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 255), debugImage);
                 }
             }
         }

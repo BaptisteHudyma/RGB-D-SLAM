@@ -48,6 +48,7 @@ namespace rgbd_slam {
 
                 _cellCountX = std::ceil(depthImage.cols / cellSize);
                 _cellCountY = std::ceil(depthImage.rows / cellSize);
+                assert(_cellCountX > 0 and _cellCountY > 0);
 
                 _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
 
