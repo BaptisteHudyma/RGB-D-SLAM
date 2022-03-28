@@ -5,7 +5,7 @@ starting_position_x: 0.0
 starting_position_y: 0.0
 starting_position_z: 0.0
 
-# starting rotation of the observer, in meters
+# starting rotation of the observer, in radians
 starting_rotation_x: 0.0
 starting_rotation_y: 0.0
 starting_rotation_z: 0.0

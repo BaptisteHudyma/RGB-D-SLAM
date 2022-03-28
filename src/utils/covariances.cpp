@@ -41,7 +41,7 @@ namespace rgbd_slam {
                     {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
                     {0.0,              0.0,              1}
             };
-            const matrix33& worldPointCovariance = jacobian * screenPointCovariance * jacobian.transpose();
+            const matrix33& worldPointCovariance = (jacobian.transpose() * jacobian).inverse() * screenPointCovariance;
             return worldPointCovariance;
         }
 

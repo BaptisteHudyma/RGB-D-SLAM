@@ -173,10 +173,8 @@ namespace rgbd_slam {
             private:
                 // local map point container
                 typedef std::map<size_t, Map_Point> point_map_container;
-                typedef std::pair<size_t, Map_Point> point_map_pair;
                 // staged points container
                 typedef std::map<size_t, Staged_Point> staged_point_container;
-                typedef std::pair<size_t, Staged_Point> staged_point_pair;
                 // local shape primitive map container
                 typedef std::list<features::primitives::primitive_uniq_ptr> primitive_map_container; 
 

@@ -118,8 +118,7 @@ namespace rgbd_slam {
             }
 
 
-            typedef std::pair<int, int> int_pair;
-            const int_pair Keypoint_Handler::get_search_space_coordinates(const vector2& pointToPlace) const
+            const Keypoint_Handler::int_pair Keypoint_Handler::get_search_space_coordinates(const vector2& pointToPlace) const
             {
                 const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 const int_pair cellCoordinates(
