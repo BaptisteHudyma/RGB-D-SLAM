@@ -189,7 +189,7 @@ namespace rgbd_slam {
         return refinedPose;
     }
 
-    void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks) 
+    void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool showStagedPoints, const bool showPrimitiveMasks) 
     {
         debugImage = originalRGB.clone();
         if (showPrimitiveMasks)
@@ -197,7 +197,7 @@ namespace rgbd_slam {
             _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, debugImage, _previousAssociatedIds, elapsedTime);
         }
 
-        _localMap->get_debug_image(camPose, false, debugImage); 
+        _localMap->get_debug_image(camPose, showStagedPoints, debugImage); 
     }
 
 

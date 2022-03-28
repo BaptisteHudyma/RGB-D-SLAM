@@ -64,11 +64,12 @@ bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage,
     return false;
 }
 
-bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
+bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
 {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
         "{p primitive     |  1   | display primitive masks }"
+        "{d staged        |  0   | display points in staged container }"
         "{l lines         |  0   | Detect lines }"
         "{i index         |  0   | First image to parse   }"
         "{j jump          |  0   | Only take every j image into consideration   }"
@@ -84,6 +85,7 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& use
     }
 
     showPrimitiveMasks = parser.get<bool>("p");
+    showStagedPoints = parser.get<bool>("d");
     useLineDetection = parser.get<bool>("l");
     startIndex = parser.get<int>("i");
     jumpImages = parser.get<unsigned int>("j");
@@ -99,11 +101,11 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& use
 int main(int argc, char* argv[]) 
 {
     std::stringstream dataPath("../data/freiburg1_xyz/");
-    bool showPrimitiveMasks, useLineDetection, shouldSavePoses;
+    bool showPrimitiveMasks, showStagedPoints, useLineDetection, shouldSavePoses;
     int startIndex;
     unsigned int jumpFrames = 0;
 
-    if (not parse_parameters(argc, argv, showPrimitiveMasks, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
+    if (not parse_parameters(argc, argv, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
 
@@ -207,7 +209,7 @@ int main(int argc, char* argv[])
 
         // display masks on image
         cv::Mat segRgb = rgbImage.clone();
-        RGBD_Slam.get_debug_image(pose, rgbImage, segRgb, elapsedTime, showPrimitiveMasks);
+        RGBD_Slam.get_debug_image(pose, rgbImage, segRgb, elapsedTime, showStagedPoints, showPrimitiveMasks);
         cv::imshow("RGBD-SLAM", segRgb);
 
         //check user inputs

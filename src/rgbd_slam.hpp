@@ -52,7 +52,7 @@ namespace rgbd_slam {
              * \param[in] elapsedTime Time since the last call (used for FPS count)
              * \param[in] showPrimitiveMasks Display the detected primitive masks
              */
-            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, bool showPrimitiveMasks = true);
+            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, const bool showStagedPoints = false, bool showPrimitiveMasks = false);
 
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
