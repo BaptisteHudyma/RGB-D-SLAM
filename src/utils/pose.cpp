@@ -57,9 +57,9 @@ namespace rgbd_slam {
         }
 
         Pose::Pose(const vector3& position, const quaternion& orientation, const vector3& poseVariance) :
-            PoseBase(position, orientation)
+            PoseBase(position, orientation),
+            _positionVariance(poseVariance)
         {
-            _positionVariance = poseVariance;
         }
 
         void Pose::display(std::ostream& os) const {

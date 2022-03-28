@@ -29,7 +29,7 @@ namespace rgbd_slam {
              * \param[in] imageWidth The width of the depth images (fixed)
              * \param[in] imageHeight The height of the depth image (fixed)
              */
-            RGBD_SLAM(const utils::Pose &startPose, const uint imageWidth = 640, const uint imageHeight = 480);
+            explicit RGBD_SLAM(const utils::Pose &startPose, const uint imageWidth = 640, const uint imageHeight = 480);
             ~RGBD_SLAM();
 
             /**

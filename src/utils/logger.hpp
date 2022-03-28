@@ -11,8 +11,8 @@ namespace rgbd_slam {
         /**
          * Log an error line
          */
-        void log(std::string_view message, const std::source_location& location = std::source_location::current());
-        void log_error(std::string_view message, const std::source_location& location = std::source_location::current());
+        void log(const std::string_view& message, const std::source_location& location = std::source_location::current());
+        void log_error(const std::string_view& message, const std::source_location& location = std::source_location::current());
 
     }   // utils
 }   // rgbd_slam

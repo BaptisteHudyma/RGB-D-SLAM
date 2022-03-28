@@ -182,7 +182,7 @@ namespace rgbd_slam {
 
                 // START of optical flow
                 const std::vector<cv::Point2f>& lastKeypoints = lastKeypointsWithIds._keypoints;
-                if (imagePreviousPyramide.size() <= 0 or imageCurrentPyramide.size() <= 0 or errorThreshold < 0 or lastKeypoints.size() <= 0)
+                if (imagePreviousPyramide.empty() or imageCurrentPyramide.empty() or errorThreshold < 0 or lastKeypoints.empty())
                 {
                     utils::log_error("OpticalFlow: invalid parameters");
                     return keypointStruct;
@@ -236,7 +236,7 @@ namespace rgbd_slam {
                     keypointIndexContainer.push_back(keypointIndex);
                 }
 
-                if (newKeypoints.size() <= 0)
+                if (newKeypoints.empty())
                 {
                     utils::log("No new points detected for backtracking", std::source_location::current());
                     return keypointStruct;

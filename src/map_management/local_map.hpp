@@ -192,6 +192,8 @@ namespace rgbd_slam {
 
                 utils::XYZ_Map_Writer* _mapWriter; 
 
+                Local_Map(const Local_Map& map) = delete;
+                void operator=(const Local_Map& map) = delete;
         };
 
     }

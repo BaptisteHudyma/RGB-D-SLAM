@@ -6,7 +6,7 @@
 namespace rgbd_slam {
     namespace utils {
 
-        void log(std::string_view message, const std::source_location& location)
+        void log(const std::string_view& message, const std::source_location& location)
         {
             std::cout << "[INF] "
                 << std::filesystem::path(location.file_name()).filename().string() << "("
@@ -14,7 +14,7 @@ namespace rgbd_slam {
                 //<< location.function_name() << " | "
                 << message << std::endl;
         }
-        void log_error(std::string_view message, const std::source_location& location)
+        void log_error(const std::string_view& message, const std::source_location& location)
         {
             std::cerr << "[ERR] "
                 << std::filesystem::path(location.file_name()).filename().string() << "("

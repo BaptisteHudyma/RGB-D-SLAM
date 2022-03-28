@@ -24,7 +24,7 @@ namespace rgbd_slam {
             public IMap_Writer
         {
             public:
-                XYZ_Map_Writer(const std::string& filename);
+                explicit XYZ_Map_Writer(const std::string& filename);
 
                 void add_point(const vector3& pointCoordinates) override;
         };
@@ -33,7 +33,7 @@ namespace rgbd_slam {
             public IMap_Writer
         {
             public:
-                PCD_Map_Writer(const std::string& filename);
+                explicit PCD_Map_Writer(const std::string& filename);
 
                 void add_point(const vector3& pointCoordinates) override;
         };

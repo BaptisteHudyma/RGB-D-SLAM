@@ -140,8 +140,10 @@ namespace rgbd_slam {
             if (isPoseValid)
             {
                 finalPose.set_position_variance(compute_pose_variance(finalPose, inlierMatchedPoints));
+                return true;
             }
-            return isPoseValid;
+
+            return false;
         }
 
         bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints) 

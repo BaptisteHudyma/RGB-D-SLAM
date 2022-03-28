@@ -171,7 +171,7 @@ namespace rgbd_slam {
 
             int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const
             {
-                if (_keypoints.size() <= 0)
+                if (_keypoints.empty())
                     return INVALID_MATCH_INDEX;
 
                 // search if the keypoint id is in the detected points
@@ -210,7 +210,7 @@ namespace rgbd_slam {
             {
                 assert(isKeyPointMatchedContainer.size() == _keypoints.size());
                 // cannot compute matches without a match or descriptors
-                if (_keypoints.size() <= 0 or _descriptors.rows <= 0)
+                if (_keypoints.empty() or _descriptors.rows <= 0)
                     return INVALID_MATCH_INDEX;
 
                 // check descriptor dimensions

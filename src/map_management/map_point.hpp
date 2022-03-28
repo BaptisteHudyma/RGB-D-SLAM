@@ -21,7 +21,7 @@ namespace rgbd_slam {
                 _screenCoordinates.setZero();
             };
 
-            MatchedScreenPoint(const vector3& screenCoordinates, const int matchIndex = UNMATCHED_POINT_INDEX):
+            explicit MatchedScreenPoint(const vector3& screenCoordinates, const int matchIndex = UNMATCHED_POINT_INDEX):
                 _screenCoordinates(screenCoordinates),
                 _matchIndex(matchIndex)
             {};
