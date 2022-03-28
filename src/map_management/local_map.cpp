@@ -384,7 +384,7 @@ namespace rgbd_slam {
             _stagedPoints.clear();
         }
 
-        void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage) const
+        void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage)
         {
             if (mapPoint._matchedScreenPoint.is_matched())
             {

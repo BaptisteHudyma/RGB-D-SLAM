@@ -57,7 +57,7 @@ namespace rgbd_slam {
                      * \param[in] errorThreshold an error Threshold for optical flow, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
                      */
-                    KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold) const;
+                    static KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold);
 
 
                     /**

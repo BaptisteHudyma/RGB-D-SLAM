@@ -92,7 +92,7 @@ namespace rgbd_slam {
              *
              * \return The 2D screen distance between those two points
              */
-            double get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& worldToCamMatrix) const;
+            static double get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& worldToCamMatrix);
 
             /**
              * \brief Return te 3D distance between the map point and the it's matched screen point projected to world space
@@ -103,7 +103,7 @@ namespace rgbd_slam {
              *
              * \return The 3D screen distance between those two points
              */
-            double get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& camToWorldMatrix) const;
+            static double get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& camToWorldMatrix);
 
             /**
              * \brief Implementation of the objective function

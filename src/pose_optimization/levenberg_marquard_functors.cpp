@@ -155,7 +155,7 @@ namespace rgbd_slam {
             return 0;
         }
 
-        double Global_Pose_Estimator::get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& worldToCamMatrix) const
+        double Global_Pose_Estimator::get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& worldToCamMatrix)
         {
             const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
             vector2 mapPointAs2D; 
@@ -170,7 +170,7 @@ namespace rgbd_slam {
             return std::numeric_limits<double>::max();
         }
 
-        double Global_Pose_Estimator::get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& camToWorldMatrix) const
+        double Global_Pose_Estimator::get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& camToWorldMatrix)
         {
             const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
 
