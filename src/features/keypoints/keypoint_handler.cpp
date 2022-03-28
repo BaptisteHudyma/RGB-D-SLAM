@@ -178,7 +178,7 @@ namespace rgbd_slam {
                 if (mapPointId != INVALID_MAP_POINT_ID)
                 {
                     // return the match if it's the case
-                    intToIntContainer::const_iterator uniqueIndexIterator = _uniqueIdsToKeypointIndex.find(mapPointId);
+                    uintToUintContainer::const_iterator uniqueIndexIterator = _uniqueIdsToKeypointIndex.find(mapPointId);
                     if (uniqueIndexIterator != _uniqueIdsToKeypointIndex.cend()) {
                         return static_cast<int>(uniqueIndexIterator->second);
                     }

@@ -104,13 +104,13 @@ namespace rgbd_slam {
         {
             assert(_lossScale > 0);
             assert(_pointErrorMultiplier > 0);
-            assert(_points.size() > 0);
+            assert(not _points.empty());
         }
 
         // Implementation of the objective function
         int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
         {
-            assert(_points.size() > 0);
+            assert(not _points.empty());
             assert(x.size() == 6);
             assert(static_cast<size_t>(fvec.size()) == _points.size());
 

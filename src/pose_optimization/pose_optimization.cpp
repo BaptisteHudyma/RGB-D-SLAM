@@ -25,7 +25,7 @@ namespace rgbd_slam {
          */
         vector3 compute_pose_variance(const utils::Pose& optimizedPose, const matches_containers::match_point_container& matchedPoints)
         {
-            assert(matchedPoints.size() > 0);
+            assert(not matchedPoints.empty());
 
             const matrix44& transformationMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
@@ -78,10 +78,10 @@ namespace rgbd_slam {
         {
             const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Selected set of random points
             const uint maxIterations = Parameters::get_maximum_ransac_iterations();
-            const double maxThreshold = 200;   // maximum inlier threshold (in millimeters)
-            double threshold = 1;       // minimum retroprojection error to consider a match as an inlier (in millimeters)
+            const double maxThreshold = Parameters::get_ransac_maximum_retroprojection_error_for_inliers(); // maximum inlier threshold (in millimeters)
             const size_t matchedPointSize = matchedPoints.size();
-            const double acceptableMinimumScore = matchedPointSize * 0.9;       // RANSAC will stop if this mean score is reached
+            const double acceptableMinimumScore = matchedPointSize * Parameters::get_ransac_minimum_inliers_for_validation();       // RANSAC will stop if this mean score is reached
+            double threshold = Parameters::get_ransac_initial_threshold();  // minimum retroprojection error to consider a match as an inlier (in millimeters)
 
             utils::Pose bestPose = currentPose;
             matches_containers::match_point_container inlierMatchedPoints;  // Contains the best pose inliers
@@ -120,8 +120,10 @@ namespace rgbd_slam {
                     outlierMatchedPoints.swap(potentialOutliersContainer);
 
                     if (inlierMatchedPoints.size() >= acceptableMinimumScore)
+                    {
                         // We can stop here, the optimization is good enough
                         break;
+                    }
                 }
                 else if (iteration % 5 and threshold < maxThreshold)
                     // augment the error threshold

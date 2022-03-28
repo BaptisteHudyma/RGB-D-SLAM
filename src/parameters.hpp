@@ -57,6 +57,11 @@ namespace rgbd_slam {
             static double get_minimum_normals_dot_difference() { return _minimumNormalsDotDifference; };
 
             // Optimisation parameters
+            static size_t get_maximum_ransac_iterations() { return _maximumOptimizationRANSACiterations; };
+            static double get_ransac_maximum_retroprojection_error_for_inliers() { return _ransacMaximumRetroprojectionErrorForInliers; };
+            static double get_ransac_minimum_inliers_for_validation () { return _ransacMinimumInliersForValidation; };
+            static double get_ransac_initial_threshold () { return _ransacInitialThreshold; };
+
             static uint get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
             static uint get_maximum_point_count_per_frame() { return _maximumPointPerFrame; };
             static uint get_optimization_maximum_iterations() { return _optimizationMaximumIterations; };
@@ -65,7 +70,6 @@ namespace rgbd_slam {
             static double get_optimization_ftol() { return _optimizationToleranceOfVectorFunction; };
             static double get_optimization_gtol() { return _optimizationToleranceOfErrorFunctionGradient; };
             static double get_optimization_factor() { return _optimizationDiagonalStepBoundShift; };
-            static size_t get_maximum_ransac_iterations() { return _maximumOptimizationRANSACiterations; };
             static double get_maximum_retroprojection_error() { return _maximumRetroprojectionError; };
 
             static double get_point_weight_threshold() { return _pointWeightThreshold; };
@@ -151,6 +155,10 @@ namespace rgbd_slam {
             inline static uint _minimumPointForOptimization;    // Minimum points to launch optimization
             inline static uint _maximumPointPerFrame;           // maximum points per frame, over which we do not want to detect more points (optimization)
 
+            inline static double _maximumOptimizationRANSACiterations;      // maximum iterations of RANSAC algorithm for pose optimisation
+            inline static double _ransacMaximumRetroprojectionErrorForInliers;  // Distance to validate an inlier
+            inline static double _ransacMinimumInliersForValidation;            // % of inliers to validate a transformation
+            inline static double _ransacInitialThreshold;                       // Initial threshold for the inliers
             inline static double _optimizationToleranceOfSolutionVectorNorm;    // tolerance for the norm of the solution vector
             inline static double _optimizationToleranceOfVectorFunction;        // tolerance for the norm of the vector function
 
@@ -159,7 +167,6 @@ namespace rgbd_slam {
             inline static double _optimizationErrorPrecision;                   // error precision
 
             inline static uint _optimizationMaximumIterations;              // Max iteration of the Levenberg Marquart optimisation
-            inline static double _maximumOptimizationRANSACiterations;      // maximum iterations of RANSAC algorithm for pose optimisation
             inline static double _maximumRetroprojectionError;              // In pixel: maximum distance after which we can consider a retroprojection as invalid
 
             inline static double _pointWeightThreshold;

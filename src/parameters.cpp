@@ -98,7 +98,7 @@ namespace rgbd_slam {
         _matchSearchCellSize = 50;
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
         _detectorMinHessian = 40;       // The higher the least detected points
-        _keypointRefreshFrequency = 5; // Update the keypoint list every N calls
+        _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
         _opticalFlowPyramidWindowSize = 25;
         _opticalFlowMaxError = 35;      // error in pixel after which a point is rejected
@@ -106,14 +106,18 @@ namespace rgbd_slam {
         _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
+        _maximumOptimizationRANSACiterations = 100;
+        _ransacMaximumRetroprojectionErrorForInliers = 100; //10 cm
+        _ransacMinimumInliersForValidation = 0.90;   //90% of inliers to accept the final outliers
+        _ransacInitialThreshold = 1;    // 5 millimeter
+
         _minimumPointForOptimization = 6;   // Should be >= 6
         _optimizationMaximumIterations = 1024;
         _optimizationErrorPrecision = 0;
-        _optimizationToleranceOfSolutionVectorNorm = 1e-4;//sqrt(DBL_EPSILON); // Smallest delta of doubles
+        _optimizationToleranceOfSolutionVectorNorm = 1e-4;  // Smallest delta of doubles
         _optimizationToleranceOfVectorFunction = 1e-3;
         _optimizationToleranceOfErrorFunctionGradient = 0;
         _optimizationDiagonalStepBoundShift = 100;
-        _maximumOptimizationRANSACiterations = 200;
         _maximumRetroprojectionError = 3;
 
         _pointWeightThreshold = 1.345;

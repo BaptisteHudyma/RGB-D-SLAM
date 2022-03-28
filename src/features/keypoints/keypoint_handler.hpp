@@ -147,8 +147,8 @@ namespace rgbd_slam {
                     //store current frame keypoints
                     std::vector<vector2> _keypoints;
                     std::vector<double> _depths;
-                    typedef std::unordered_map<size_t, size_t> intToIntContainer;
-                    intToIntContainer _uniqueIdsToKeypointIndex;
+                    typedef std::unordered_map<size_t, size_t> uintToUintContainer;
+                    uintToUintContainer _uniqueIdsToKeypointIndex;
                     cv::Mat _descriptors;
 
                     // Number of image divisions (cells)
