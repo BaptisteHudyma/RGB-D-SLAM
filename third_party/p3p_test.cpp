@@ -64,7 +64,7 @@ void setup_instance(std::vector<Eigen::Vector3d> &x, std::vector<Eigen::Vector3d
 }
 
 bool is_valid(const CameraPose &pose, const std::vector<Eigen::Vector3d> &x, const std::vector<Eigen::Vector3d> &X) {
-    for(int k = 0; k < x.size(); ++k) {
+    for(size_t k = 0; k < x.size(); ++k) {
         Eigen::Vector3d z = pose.R * X[k] + pose.t;
         double res = std::abs(1 - x[k].normalized().dot(z.normalized()));
         if(res > 1e-8) {        
@@ -93,11 +93,9 @@ bool test_simple_instance() {
     std::vector<Eigen::Vector3d> X{X1,X2,X3};
 
 
-    std::vector<CameraPose> poses;
+    const std::vector<CameraPose>& poses = p3p(x,X);
 
-    p3p(x,X, &poses);
-
-    for(CameraPose &pose : poses) {
+    for(const CameraPose &pose : poses) {
         if(!is_valid(pose,x,X))
             return false;
         double err_R = (pose.R - Eigen::Matrix3d::Identity()).norm();
@@ -117,15 +115,11 @@ bool test_random_instance() {
     std::vector<Eigen::Vector3d> X;
     CameraPose pose_gt;
 
-    std::vector<CameraPose> poses;
-
     setup_instance(x, X, pose_gt);
 
-    int n_sols = p3p(x, X, &poses);
-
-    REQUIRE( n_sols > 0 );
-
-    for(CameraPose &pose : poses) {
+    const std::vector<CameraPose>& poses = p3p(x, X);
+    
+    for(const CameraPose &pose : poses) {
         if(!is_valid(pose,x,X))
             return false;
         double err_R = (pose.R - pose_gt.R).norm();
@@ -162,16 +156,14 @@ bool test_simple_instance2() {
     std::vector<Eigen::Vector3d> X{X1,X2,X3};
 
 
-    std::vector<CameraPose> poses;
-
-    p3p(x,X, &poses);
+    const std::vector<CameraPose>& poses = p3p(x,X);
 
     Eigen::Matrix3d R_gt;
     R_gt.setIdentity();
     Eigen::Vector3d t_gt;
     t_gt << 0.0, 0.0, 0.5;
 
-    for(CameraPose &pose : poses) {
+    for(const CameraPose &pose : poses) {
         if(!is_valid(pose,x,X))
             return false;
         double err_R = (pose.R - R_gt).norm();

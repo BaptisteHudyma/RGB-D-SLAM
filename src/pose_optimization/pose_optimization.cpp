@@ -54,11 +54,18 @@ namespace rgbd_slam {
             const size_t maxIndex = matchedPoints.size();
             assert(n <= maxIndex);
 
+            std::set<size_t> uniqueIndexes;
+            // TODO: can get stuck, find a better way
+            while(uniqueIndexes.size() < n)
+            {
+                uniqueIndexes.insert(rand() % maxIndex);
+            }
+
+            // TODO: inefficient, find a better way
             // get a random subset of indexes
             matches_containers::match_point_container selectedMatches;
-            while(selectedMatches.size() < n)
+            for(const size_t index : uniqueIndexes)
             {
-                const uint index = rand() % maxIndex;
                 matches_containers::match_point_container::const_iterator it = matchedPoints.cbegin();
                 std::advance(it, index);
 
@@ -252,13 +259,15 @@ namespace rgbd_slam {
                 worldPoints.push_back(match._worldPoint);
             }
 
-            std::vector<lambdatwist::CameraPose> finalCameraPoses;
-            lambdatwist::p3p(cameraPoints, worldPoints, &finalCameraPoses);
+            const std::vector<lambdatwist::CameraPose>& finalCameraPoses = lambdatwist::p3p(cameraPoints, worldPoints);
+            assert(finalCameraPoses.size() <= 4);
 
             double closestPoseDistance = std::numeric_limits<double>::max();
             for(const lambdatwist::CameraPose& cameraPose : finalCameraPoses)
             {
                 const double poseDistance = utils::get_distance_euclidean(currentPose.get_position(), cameraPose.t);
+                assert(poseDistance >= 0 and not std::isnan(poseDistance));
+
                 if (poseDistance < closestPoseDistance)
                 {
                     closestPoseDistance = poseDistance;
