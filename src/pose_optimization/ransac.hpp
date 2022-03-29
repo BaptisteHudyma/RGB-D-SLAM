@@ -14,13 +14,11 @@ namespace rgbd_slam {
         template< template<typename> class Container, typename T>
             Container<T> get_random_subset(const Container<T>& inContainer, const uint numberOfElementsToChoose)
             {
-                const size_t maxIndex = inContainer.size();
-                assert(numberOfElementsToChoose <= maxIndex);
+                assert(numberOfElementsToChoose <= inContainer.size());
 
                 // get a vector of references and shuffle it
                 std::vector<std::reference_wrapper<const T>> copyVector(inContainer.cbegin(), inContainer.cend());
                 std::random_shuffle(copyVector.begin(), copyVector.end());
-
                 assert(copyVector.size() == inContainer.size());
 
                 // copy the first matches, they will be randoms

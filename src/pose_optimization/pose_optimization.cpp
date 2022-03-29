@@ -245,7 +245,7 @@ namespace rgbd_slam {
                 if (poseDistance < closestPoseDistance)
                 {
                     closestPoseDistance = poseDistance;
-                    optimizedPose.set_parameters(cameraPose.t, quaternion(cameraPose.R));
+                    optimizedPose.set_parameters(cameraPose.t, quaternion(cameraPose.R.inverse()));
                 }
             }
             // At least one valid pose found

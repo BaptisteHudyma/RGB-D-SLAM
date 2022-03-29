@@ -43,7 +43,8 @@ namespace utils {
         quaternion integralQ = currentQ * newAngVel;
         integralQ.normalize();
 
-        return Pose(integralPos, integralQ);
+        // TODO: predict variance instead of copying ? 
+        return Pose(integralPos, integralQ, currentPose.get_position_variance());
     }
 
 
