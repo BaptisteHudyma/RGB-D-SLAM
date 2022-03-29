@@ -8,6 +8,8 @@
 #include "parameters.hpp"
 #include "p3p.hpp"
 
+#include "ransac.hpp"
+
 #include <Eigen/StdVector>
 
 namespace rgbd_slam {
@@ -44,34 +46,6 @@ namespace rgbd_slam {
             const double numberOfMatchesInverse = 1.0 / static_cast<double>(matchedPoints.size());
             const vector3& mean = sumOfErrors * numberOfMatchesInverse; 
             return (sumOfSquaredErrors * numberOfMatchesInverse) - mean.cwiseAbs2();
-        }
-
-        /**
-         * \brief Return a random subset of matches, of size n
-         */
-        matches_containers::match_point_container get_n_random_matches(const matches_containers::match_point_container& matchedPoints, const uint n)
-        {
-            const size_t maxIndex = matchedPoints.size();
-            assert(n <= maxIndex);
-
-            std::set<size_t> uniqueIndexes;
-            // TODO: can get stuck, find a better way
-            while(uniqueIndexes.size() < n)
-            {
-                uniqueIndexes.insert(rand() % maxIndex);
-            }
-
-            // TODO: inefficient, find a better way
-            // get a random subset of indexes
-            matches_containers::match_point_container selectedMatches;
-            for(const size_t index : uniqueIndexes)
-            {
-                matches_containers::match_point_container::const_iterator it = matchedPoints.cbegin();
-                std::advance(it, index);
-
-                selectedMatches.insert(selectedMatches.begin(), *it);
-            }
-            return selectedMatches;
         }
 
         bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
