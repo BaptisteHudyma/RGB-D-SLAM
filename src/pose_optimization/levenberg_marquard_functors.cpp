@@ -1,20 +1,11 @@
 #include "levenberg_marquard_functors.hpp"
 
 #include "camera_transformation.hpp"
+#include "distance_utils.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {
     namespace pose_optimization {
-
-
-        double get_distance_manhattan(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB) 
-        { 
-            return (pointA - pointB).lpNorm<1>();
-        }
-        double get_distance_squared(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB) 
-        { 
-            return (pointA - pointB).norm();
-        }
 
         /**
          * \brief Implementation of "A General and Adaptive Robust Loss Function" (2019)
@@ -125,7 +116,7 @@ namespace rgbd_slam {
             // Compute retroprojection distances
             for(matches_containers::match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
                 // Compute retroprojected distance
-                const double distance = get_2D_to_3D_distance(pointIterator->_worldPoint, pointIterator->_screenPoint, transformationMatrix);
+                const double distance = utils::get_3D_to_2D_distance(pointIterator->_worldPoint, pointIterator->_screenPoint, transformationMatrix);
                 assert(distance >= 0.0);
 
                 meanOfDistances += distance; 
@@ -153,28 +144,6 @@ namespace rgbd_slam {
                 }
             }
             return 0;
-        }
-
-        double Global_Pose_Estimator::get_2D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& worldToCamMatrix)
-        {
-            const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
-            vector2 mapPointAs2D; 
-            const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint, worldToCamMatrix, mapPointAs2D);
-            if(isCoordinatesValid)
-            {
-                const double distance = get_distance_manhattan(matchedPointAs2D, mapPointAs2D);
-                assert (not std::isnan(distance) and distance >= 0);
-                return distance;
-            }
-            // high number
-            return std::numeric_limits<double>::max();
-        }
-
-        double Global_Pose_Estimator::get_3D_to_3D_distance(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& camToWorldMatrix)
-        {
-            const vector3& matchedPointAs3D = utils::screen_to_world_coordinates( matchedPoint.x(), matchedPoint.y(), matchedPoint.z(), camToWorldMatrix);
-
-            return get_distance_manhattan(matchedPointAs3D, mapPoint);
         }
 
 

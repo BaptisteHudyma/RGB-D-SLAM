@@ -1,6 +1,8 @@
 #include "pose_optimization.hpp"
 
 #include "camera_transformation.hpp"
+#include "distance_utils.hpp"
+
 #include "logger.hpp"
 #include "levenberg_marquard_functors.hpp"
 #include "parameters.hpp"
@@ -10,21 +12,6 @@
 
 namespace rgbd_slam {
     namespace pose_optimization {
-
-        /**
-         * \brief Compute the retroprojection distance between a mapPoint and  a cameraPoint
-         */
-        double get_distance_to_point(const vector3& mapPoint, const vector3& matchedPoint, const matrix44& worldToCameraMatrix) 
-        {
-            vector2 retroprojectedMapPoint;
-            if (not utils::world_to_screen_coordinates(mapPoint, worldToCameraMatrix, retroprojectedMapPoint))
-            {
-                return std::numeric_limits<double>::max();
-            }
-
-            const vector2 matchedPointAs2D(matchedPoint.x(), matchedPoint.y());
-            return (retroprojectedMapPoint- matchedPointAs2D).norm();
-        }
 
         /**
          * \brief Compute the variance of the final pose in X Y Z
@@ -108,7 +95,7 @@ namespace rgbd_slam {
                 matches_containers::match_point_container potentialOutliersContainer;
                 for (const matches_containers::Match& match : matchedPoints)
                 {
-                    if (get_distance_to_point(match._worldPoint, match._screenPoint, transformationMatrix) < threshold)
+                    if (utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, transformationMatrix) < threshold)
                     {
                         potentialInliersContainer.insert(potentialInliersContainer.end(), match);
                     }
@@ -271,7 +258,7 @@ namespace rgbd_slam {
             double closestPoseDistance = std::numeric_limits<double>::max();
             for(const lambdatwist::CameraPose& cameraPose : finalCameraPoses)
             {
-                const double poseDistance = (currentPose.get_position() - cameraPose.t).norm();
+                const double poseDistance = utils::get_distance_euclidean(currentPose.get_position(), cameraPose.t);
                 if (poseDistance < closestPoseDistance)
                 {
                     closestPoseDistance = poseDistance;
