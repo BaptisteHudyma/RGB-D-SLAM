@@ -2,6 +2,8 @@
 #define RGBDSLAM_UTILS_COVARIANCES_HPP
 
 #include "types.hpp"
+#include "pose.hpp"
+#include "matches_containers.hpp"
 
 namespace rgbd_slam {
     namespace utils {
@@ -15,7 +17,7 @@ namespace rgbd_slam {
          * \return A 3x3 covariance matrix. It should be diagonal
          */
         const matrix33 get_screen_point_covariance(const vector2& screenCoordinates, const double depth);
-        
+
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
          *
@@ -26,6 +28,16 @@ namespace rgbd_slam {
          * \return the covariance of the 3D world point
          */
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance);
+
+        /**
+         * \brief Compute the variance of the final pose in X Y Z
+         *
+         * \param[in] pose The pose to compute the variance of
+         * \param[in] matchedPoints A container of matched features (inliers)
+         *
+         * \return the variance of this pose in X Y and Z
+         */
+        const vector3 compute_pose_variance(const utils::Pose& optimizedPose, const matches_containers::match_point_container& matchedPoints);
 
     }   // utils
 }       // rgbd_slam

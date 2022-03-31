@@ -20,6 +20,9 @@ namespace rgbd_slam {
         
         const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix44& cameraToWorldMatrix) 
         {
+            assert(measuredZ > 0);
+            assert(screenX >= 0 and screenY >= 0);
+
             const double x = (screenX - Parameters::get_camera_1_center_x()) * measuredZ / Parameters::get_camera_1_focal_x();
             const double y = (screenY - Parameters::get_camera_1_center_y()) * measuredZ / Parameters::get_camera_1_focal_y();
 

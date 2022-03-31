@@ -64,7 +64,7 @@ namespace rgbd_slam {
 
         void Pose::display(std::ostream& os) const {
             PoseBase::display(os);
-            os << std::endl << "position variance: " << _positionVariance.transpose() << " millimeters";
+            os << std::endl << "position standard dev : " << _positionVariance.transpose().cwiseSqrt() << " millimeters";
         }
 
         std::ostream& operator<<(std::ostream& os, const Pose& pose) {

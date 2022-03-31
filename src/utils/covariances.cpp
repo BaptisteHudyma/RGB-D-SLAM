@@ -45,5 +45,44 @@ namespace rgbd_slam {
             return worldPointCovariance;
         }
 
+
+        const vector3 compute_pose_variance(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints)
+        {
+            assert(not matchedPoints.empty());
+
+            const matrix44& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
+
+            vector3 sumOfErrors = vector3::Zero();
+            vector3 sumOfSquaredErrors = vector3::Zero();
+            size_t numberOf3Dpoints = 0; 
+
+            // For each pair of points
+            for (const matches_containers::Match& match : matchedPoints)
+            {
+                // We only evaluate 3D points because 2D points cannot evaluate position
+                if (match._screenPoint.z() <= 0)
+                    continue;
+
+                // Convert to world coordinates
+                const vector3& matchedPoint3d = utils::screen_to_world_coordinates(match._screenPoint.x(), match._screenPoint.y(), match._screenPoint.z(), transformationMatrix);
+
+                // absolute of (world map Point - new world point)
+                const vector3& matchError = (match._worldPoint - matchedPoint3d).cwiseAbs();
+                sumOfErrors += matchError;
+                sumOfSquaredErrors += matchError.cwiseAbs2();
+                ++numberOf3Dpoints;
+            }
+
+            assert(numberOf3Dpoints > 0);
+            assert(sumOfErrors.x() >= 0 and sumOfErrors.y() >= 0 and sumOfErrors.z() >= 0);
+            assert(sumOfSquaredErrors.x() >= 0 and sumOfSquaredErrors.y() >= 0 and sumOfSquaredErrors.z() >= 0);
+
+            const double numberOfMatchesInverse = 1.0 / static_cast<double>(numberOf3Dpoints);
+            const vector3& mean = sumOfErrors * numberOfMatchesInverse; 
+            const vector3& variance = (sumOfSquaredErrors * numberOfMatchesInverse) - mean.cwiseAbs2();
+
+            return variance;
+        }
+
     }   // utils
 }       // rgbd_slam
