@@ -220,9 +220,6 @@ namespace rgbd_slam {
                             //const matrix33& worldPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
                             const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
 
-                            // Get the optimized pose covariance
-                            const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
-
                             // update this map point errors & position
                             mapPoint.update_matched(triangulatedPoint, worldPointCovariance + poseCovariance);
 

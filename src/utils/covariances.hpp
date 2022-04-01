@@ -34,10 +34,11 @@ namespace rgbd_slam {
          *
          * \param[in] pose The pose to compute the variance of
          * \param[in] matchedPoints A container of matched features (inliers)
+         * \param[out] poseVariance If the function returns true, then this is the estimated position variance estimated from matched points
          *
-         * \return the variance of this pose in X Y and Z
+         * \return True if the variance was estimated 
          */
-        const vector3 compute_pose_variance(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints);
+        bool compute_pose_variance(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints, vector3& poseVariance);
 
         /**
          * \brief Compute a pose covariance matrix from a pose

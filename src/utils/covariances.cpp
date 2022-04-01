@@ -46,7 +46,7 @@ namespace rgbd_slam {
         }
 
 
-        const vector3 compute_pose_variance(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints)
+        bool compute_pose_variance(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints, vector3& poseVariance)
         {
             assert(not matchedPoints.empty());
 
@@ -73,15 +73,20 @@ namespace rgbd_slam {
                 ++numberOf3Dpoints;
             }
 
-            assert(numberOf3Dpoints > 0);
-            assert(sumOfErrors.x() >= 0 and sumOfErrors.y() >= 0 and sumOfErrors.z() >= 0);
-            assert(sumOfSquaredErrors.x() >= 0 and sumOfSquaredErrors.y() >= 0 and sumOfSquaredErrors.z() >= 0);
+            if (numberOf3Dpoints > 0)
+            {
+                assert(sumOfErrors.x() >= 0 and sumOfErrors.y() >= 0 and sumOfErrors.z() >= 0);
+                assert(sumOfSquaredErrors.x() >= 0 and sumOfSquaredErrors.y() >= 0 and sumOfSquaredErrors.z() >= 0);
 
-            const double numberOfMatchesInverse = 1.0 / static_cast<double>(numberOf3Dpoints);
-            const vector3& mean = sumOfErrors * numberOfMatchesInverse; 
-            const vector3& variance = (sumOfSquaredErrors * numberOfMatchesInverse) - mean.cwiseAbs2();
+                const double numberOfMatchesInverse = 1.0 / static_cast<double>(numberOf3Dpoints);
+                const vector3& mean = sumOfErrors * numberOfMatchesInverse; 
+                
+                poseVariance = (sumOfSquaredErrors * numberOfMatchesInverse) - mean.cwiseAbs2();
 
-            return variance;
+                return true;
+            }
+            // No 3D points to estimate the variance
+            return false;
         }
 
 
@@ -92,8 +97,8 @@ namespace rgbd_slam {
             // TODO improve covariance computation
             const matrix33 poseCovariance {
                 {poseVariance.x(), 0, 0},
-                {0, poseVariance.y(), 0},
-                {0, 0, poseVariance.z()}
+                    {0, poseVariance.y(), 0},
+                    {0, 0, poseVariance.z()}
             };
 
             return poseCovariance;
