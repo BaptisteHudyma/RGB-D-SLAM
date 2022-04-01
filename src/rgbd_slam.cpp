@@ -94,7 +94,7 @@ namespace rgbd_slam {
     }
 
 
-    const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines) 
+    const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool detectLines) 
     {
         assert(static_cast<size_t>(inputDepthImage.rows) == _height);
         assert(static_cast<size_t>(inputDepthImage.cols) == _width);
@@ -280,7 +280,7 @@ namespace rgbd_slam {
     }
 
 
-    double get_percent_of_elapsed_time(double treatmentTime, double totalTimeElapsed) 
+    double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) 
     {
         if (totalTimeElapsed <= 0)
             return 0;
@@ -288,7 +288,7 @@ namespace rgbd_slam {
     }
 
 
-    void RGBD_SLAM::show_statistics(double meanFrameTreatmentTime) const 
+    void RGBD_SLAM::show_statistics(const double meanFrameTreatmentTime) const 
     {
         if (_totalFrameTreated > 0)
         {

@@ -71,7 +71,7 @@ namespace rgbd_slam {
                      */
                     const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const;
 
-                    const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f> & keypointContainer) const;
+                    const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const;
 
                 private:
                     cv::Ptr<cv::FeatureDetector> _featureDetector;

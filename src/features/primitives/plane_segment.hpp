@@ -30,7 +30,8 @@ namespace primitives {
             /**
              * \return True if this plane segment presents a depth discontinuity with another one.
              */
-            bool is_depth_discontinuous(const Plane_Segment& planeSegment);
+            bool is_depth_discontinuous(const Plane_Segment& planeSegment) const;
+            bool is_depth_discontinuous(const vector3& planeMean) const;
 
             /**
              * \brief Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations
@@ -52,11 +53,6 @@ namespace primitives {
              * \return A number between -1 and 1
              */
             double get_normal_similarity(const Plane_Segment& p) const;
-
-            /**
-             * \brief Compute the signed distance from a plane to a point
-             */
-            double get_signed_distance(const double point[3]) const;
 
             /**
              * \brief Compute the signed distance from a plane to a point

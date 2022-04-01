@@ -24,7 +24,7 @@ namespace primitives {
               * \param[in] points Points to put directly in the histogram bins
               * \param[in] flags Array of size points.rows(), indicating which point is in a planar segment
               */
-            void init_histogram(const Eigen::MatrixXd& points, const bool* flags);
+            void init_histogram(const Eigen::MatrixXd& points, const std::vector<bool>& flags);
 
             /**
               * \brief Return the points in the bin containing the most points
@@ -48,11 +48,10 @@ namespace primitives {
         protected:
 
         private:
-            uint* _H;
+            std::vector<uint> _H;
             std::vector<int> _B;
 
             const uint _binPerCoordCount;
-            const uint _binCount;
             uint _pointCount;
 
             const double _minX;

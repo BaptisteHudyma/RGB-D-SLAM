@@ -104,7 +104,7 @@ namespace primitives {
              *
              * \return  Number of initial planar surfaces
              */
-            int init_histogram();
+            uint init_histogram();
 
             /**
              * \brief grow planes and find cylinders from those planes
@@ -183,7 +183,7 @@ namespace primitives {
             const uint _verticalCellsCount;
             const uint _totalCellCount;
 
-            plane_segment_unique_ptr *_planeGrid;
+            std::vector<plane_segment_unique_ptr> _planeGrid;
             planes_ptr_vector _planeSegments;
             cylinders_ptr_vector _cylinderSegments;
 
@@ -195,11 +195,11 @@ namespace primitives {
             Eigen::ArrayXf _distancesCellStacked;
 
             //arrays
-            bool* _activationMap;
-            bool* _unassignedMask;
-            float* _distancesStacked;
-            unsigned char* _segMapStacked;
-            float* _cellDistanceTols;
+            std::vector<bool> _activationMap;
+            std::vector<bool> _unassignedMask;
+            std::vector<float> _distancesStacked;
+            std::vector<unsigned char> _segMapStacked;
+            std::vector<float> _cellDistanceTols;
 
             //mat
             cv::Mat _mask;

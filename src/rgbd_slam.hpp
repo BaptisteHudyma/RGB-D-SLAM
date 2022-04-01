@@ -41,7 +41,7 @@ namespace rgbd_slam {
              *
              * \return The new estimated pose 
              */
-            const utils::Pose track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, bool detectLines = false);
+            const utils::Pose track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool detectLines = false);
 
             /**
              * \brief Compute a debug image
@@ -52,7 +52,7 @@ namespace rgbd_slam {
              * \param[in] elapsedTime Time since the last call (used for FPS count)
              * \param[in] showPrimitiveMasks Display the detected primitive masks
              */
-            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, double elapsedTime, const bool showStagedPoints = false, bool showPrimitiveMasks = false);
+            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool showStagedPoints = false, const bool showPrimitiveMasks = false);
 
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler

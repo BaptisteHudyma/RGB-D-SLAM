@@ -48,7 +48,7 @@ namespace primitives {
         clear_plane_parameters();
         _isPlanar = true;
 
-        uint offset = cellId * _ptsPerCellCount;
+        const uint offset = cellId * _ptsPerCellCount;
 
         //get z of depth points
         const Eigen::MatrixXf& Z_matrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
@@ -77,7 +77,7 @@ namespace primitives {
         i++;
         // Scan horizontally through the middle
         while(i < j){
-            float z = Z_matrix(i);
+            const float z = Z_matrix(i);
             if(z > 0) {
                 if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) {
                     zLast = z;
@@ -130,14 +130,20 @@ namespace primitives {
         if(_isPlanar) {
             fit_plane();
             //MSE > T_MSE
-            if(_MSE > pow(Parameters::get_depth_sigma_error() * pow(_mean[2], 2) + Parameters::get_depth_sigma_margin(), 2))
+            if(_MSE > pow(Parameters::get_depth_sigma_error() * pow(_mean.z(), 2) + Parameters::get_depth_sigma_margin(), 2))
                 _isPlanar = false;
         }
 
     }
 
-    bool Plane_Segment::is_depth_discontinuous(const Plane_Segment& planeSegment) {
-        return abs(_mean[2] - planeSegment._mean[2]) < 2 * Parameters::get_depth_alpha() * (abs(_mean[2]) + 0.5);
+
+    bool Plane_Segment::is_depth_discontinuous(const Plane_Segment& planeSegment) const
+    {
+        return is_depth_discontinuous(planeSegment._mean);
+    }
+    bool Plane_Segment::is_depth_discontinuous(const vector3& planeMean) const
+    {
+        return abs(_mean.z() - planeMean.z()) < 2.0 * Parameters::get_depth_alpha() * (abs(_mean.z()) + 0.5);
     }
 
 
@@ -168,8 +174,7 @@ namespace primitives {
     void Plane_Segment::fit_plane() {
         const double oneOverCount = 1.0 / (double)_pointCount;
         //fit a plane to the stored points
-        _mean = vector3(_Sx, _Sy, _Sz);
-        _mean *= oneOverCount;
+        _mean = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
         // Expressing covariance as E[PP^t] + E[P]*E[P^T]
         double cov[3][3] = {
@@ -182,29 +187,26 @@ namespace primitives {
         cov[2][1] = cov[1][2];
 
         // This uses QR decomposition for symmetric matrices
-        double sv[3] = {0, 0, 0};
-        double v[3] = {0};
-        if(not LA::eig33sym(cov, sv, v))
+        vector3 sv = vector3::Zero();
+        vector3 v = vector3::Zero();
+        // Pass those vectors as C style arrays of 3 elements
+        if(not LA::eig33sym(cov, &sv(0), &v(0)))
             utils::log("Too much error");
 
-        //_d = -v.dot(_mean);
-        _d = -(v[0] * _mean[0] + v[1] * _mean[1] + v[2] * _mean[2]);
+        _d = -v.dot(_mean);
+        //_d = -(v[0] * _mean[0] + v[1] * _mean[1] + v[2] * _mean[2]);
 
         // Enforce normal orientation
         if(_d > 0) {   //point normal toward the camera
-            _normal[0] = v[0]; 
-            _normal[1] = v[1];
-            _normal[2] = v[2];
+            _normal = v; 
         } else {
-            _normal[0] = -v[0];
-            _normal[1] = -v[1];
-            _normal[2] = -v[2];
+            _normal = -v;
             _d = -_d;
         } 
 
         //_score = sv[0] / (sv[0] + sv[1] + sv[2]);
-        _MSE = sv[0] * oneOverCount;
-        _score = sv[1] / sv[0];
+        _MSE = sv.x() * oneOverCount;
+        _score = sv.y() / sv.x();
     }
 
     /*
@@ -216,12 +218,8 @@ namespace primitives {
         _MSE = 0;
         _isPlanar = false; 
 
-        _mean[0] = 0;
-        _mean[1] = 0;
-        _mean[2] = 0;
-        _normal[0] = 0;
-        _normal[1] = 0;
-        _normal[2] = 0;
+        _mean = vector3::Zero();
+        _normal = vector3::Zero();
         _d = 0;
 
         //Clear saved plane parameters
@@ -239,13 +237,6 @@ namespace primitives {
 
     double Plane_Segment::get_normal_similarity(const Plane_Segment& p) const {
         return (_normal.dot(p._normal));
-    }
-
-    double Plane_Segment::get_signed_distance(const double point[3]) const {
-        return 
-            _normal[0] * (point[0] - _mean[0]) + 
-            _normal[1] * (point[1] - _mean[1]) + 
-            _normal[2] * (point[2] - _mean[2]); 
     }
 
     double Plane_Segment::get_signed_distance(const vector3& point) const {

@@ -10,8 +10,7 @@ namespace primitives {
 
     Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId) :
         _cellActivatedCount(0),
-        _segmentCount(0),
-        _local2globalMap(nullptr)
+        _segmentCount(0)
     {
         //copy stored data
         _radius.push_back(seg._radius[subRegionId]);
@@ -31,8 +30,7 @@ namespace primitives {
         _centers(seg._centers),
         _radius(seg._radius),
         _cellActivatedCount(0),
-        _segmentCount(0),
-        _local2globalMap(nullptr)
+        _segmentCount(0)
     {
         //_pointsAxis1 = seg.pointsAxis1; 
         //_pointsAxis2 = seg.pointsAxis2;
@@ -42,23 +40,22 @@ namespace primitives {
         _axis[2] = seg._axis[2];
     }
 
-    Cylinder_Segment::Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const uint planeCount, const bool* activatedMask, const uint cellActivatedCount) :
+    Cylinder_Segment::Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& activatedMask, const uint cellActivatedCount) :
         _cellActivatedCount(cellActivatedCount),
-        _segmentCount(0),
-        _local2globalMap(nullptr)
+        _segmentCount(0)
     {
-        uint samplesCount = planeCount;
+        const uint samplesCount = activatedMask.size();
 
         const float minimumCyinderScore = Parameters::get_cylinder_ransac_minimm_score();
         const float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
 
-        _local2globalMap = new uint[_cellActivatedCount];
+        _local2globalMap.assign(_cellActivatedCount, 0);
 
         Eigen::MatrixXd N(3, 2 * _cellActivatedCount);
         Eigen::MatrixXd P(3, _cellActivatedCount);
 
         // Init. P and N
-        int j = 0;
+        uint j = 0;
         for(uint i = 0; i < samplesCount; i++){
             if (activatedMask[i]){
                 const vector3& planeNormal = planeGrid[i]->get_normal();
@@ -69,6 +66,8 @@ namespace primitives {
                 P(0, j) = planeMean[0];
                 P(1, j) = planeMean[1];
                 P(2, j) = planeMean[2];
+
+                assert(j < _local2globalMap.size());
                 _local2globalMap[j] = i;
                 j++;
             }
@@ -85,12 +84,12 @@ namespace primitives {
         }
 
         // Compute covariance
-        Eigen::MatrixXd cov = (N * N.adjoint()) / static_cast<double>(N.cols() - 1);
+        const Eigen::MatrixXd cov = (N * N.adjoint()) / static_cast<double>(N.cols() - 1);
 
         // PCA using QR decomposition for symmetric matrices
         Eigen::SelfAdjointEigenSolver<matrix33> es(cov);
         const vector3& S = es.eigenvalues();
-        double score = S(2)/S(0);
+        const double score = S(2)/S(0);
 
         // Checkpoint 1
         if(score < minimumCyinderScore){
@@ -123,14 +122,14 @@ namespace primitives {
         N.row(2) = N.row(2).array() / normalsNorm.array();
 
         // Ransac params
-        float pSuccess = 0.8;
-        float w = 0.33;
+        const float pSuccess = 0.8;
+        const float w = 0.33;
         float K = log(1 - pSuccess) / log(1 - pow(w, 3));
 
-        int mLeft = _cellActivatedCount;
+        uint mLeft = _cellActivatedCount;
         Matrixb idsLeftMask(1, _cellActivatedCount);
 
-        vector<int> idsLeft;
+        vector<uint> idsLeft;
         for(uint i = 0; i < _cellActivatedCount; i++){
             idsLeft.push_back(i);
             idsLeftMask(i) = true;
@@ -142,23 +141,23 @@ namespace primitives {
             Matrixb I(1, _cellActivatedCount);
             Matrixb IFinal(1, _cellActivatedCount);
             double minHypothesisDist = maximumSqrtDistance * mLeft;
-            int inliersAcceptedCount = 0.9 * mLeft;
-            int maxInliersCount = 0;
+            const uint inliersAcceptedCount = 0.9 * mLeft;
+            uint maxInliersCount = 0;
 
             // RANSAC loop
             int k = 0;
             while(k < K){
                 // Random triplet
-                int id_1 = idsLeft[rand() % mLeft];
-                int id_2 = idsLeft[rand() % mLeft];
-                int id_3 = idsLeft[rand() % mLeft];
+                const uint id_1 = idsLeft[rand() % mLeft];
+                const uint id_2 = idsLeft[rand() % mLeft];
+                const uint id_3 = idsLeft[rand() % mLeft];
 
                 e1 = (N.col(id_1) + N.col(id_2) + N.col(id_3));
                 e2 = (PProj.col(id_1) + PProj.col(id_2) + PProj.col(id_3));
 
                 // LLS solution for triplets
                 A = e1.transpose() * e1;
-                double a = 1.0-A(0)/9.0;
+                const double a = 1.0 - A(0) / 9.0;
                 double b = (
                         (N.col(id_1).array() * PProj.col(id_1).array()) + 
                         (N.col(id_2).array() * PProj.col(id_2).array()) + 
@@ -182,13 +181,18 @@ namespace primitives {
 
                 //MSAC truncated distance
                 double dist = 0.0;
-                int inliersCount = 0;
-                for(uint i = 0;i < _cellActivatedCount; i++){
-                    if(idsLeftMask(i)){
-                        if(I(i)) {
+                uint inliersCount = 0;
+                for(uint i = 0;i < _cellActivatedCount; i++)
+                {
+                    if(idsLeftMask(i))
+                    {
+                        if(I(i)) 
+                        {
                             inliersCount += 1;
                             dist += D(i);
-                        }else{
+                        }
+                        else
+                        {
                             dist += maximumSqrtDistance;
                         }
                     }
@@ -197,10 +201,14 @@ namespace primitives {
                 if(dist < minHypothesisDist){
                     minHypothesisDist = dist;
                     maxInliersCount = inliersCount;
-                    for(uint i = 0; i < _cellActivatedCount; i++){
-                        if(idsLeftMask(i)){
+                    for(uint i = 0; i < _cellActivatedCount; i++)
+                    {
+                        if(idsLeftMask(i))
+                        {
                             IFinal(i) = I(i);
-                        }else{
+                        }
+                        else
+                        {
                             IFinal(i) = false;
                         }
                     }
@@ -243,7 +251,7 @@ namespace primitives {
 
             A = e1.transpose() * e1;
 
-            double a = 1 - A(0) / (maxInliersCount * maxInliersCount);
+            const double a = 1 - A(0) / (maxInliersCount * maxInliersCount);
             b /= maxInliersCount;
             b -= (e1.transpose() * e2)(0) / (maxInliersCount * maxInliersCount);
             double r = b / a;
@@ -262,7 +270,7 @@ namespace primitives {
             // Save points on axis
             const vector3& P1d = center;
             const vector3& P2d = center + vec;
-            double P1P2d = (P2d - P1d).norm();
+            const double P1P2d = (P2d - P1d).norm();
             // Use point-to-line distances (same as cylinder distances)
             vector3 P3;
             for(uint i = 0; i < _cellActivatedCount; i++){
@@ -289,17 +297,19 @@ namespace primitives {
         }
     }
 
-    double Cylinder_Segment::get_distance(const vector3& point) const {
+    double Cylinder_Segment::get_distance(const vector3& point) const 
+    {
         double minDist = this->get_distance(point, 0);
         for(vector3_vector::size_type i = 1; i < _pointsAxis1.size(); i++) {
-            double nd = this->get_distance(point, i);
+            const double nd = this->get_distance(point, i);
             if (minDist > nd)
                 minDist = nd;
         }
         return minDist;
     }
 
-    double Cylinder_Segment::get_distance(const vector3& point, const uint segmentId) const {
+    double Cylinder_Segment::get_distance(const vector3& point, const uint segmentId) const 
+    {
         return (
                 (_pointsAxis2[segmentId] - _pointsAxis1[segmentId]).cross(
                     point - _pointsAxis2[segmentId]
@@ -310,11 +320,13 @@ namespace primitives {
     /*
      *  Getters
      */
-    uint Cylinder_Segment::get_segment_count() const { 
+    uint Cylinder_Segment::get_segment_count() const 
+    { 
         return _segmentCount; 
     }
 
-    double Cylinder_Segment::get_MSE_at(const uint index) const { 
+    double Cylinder_Segment::get_MSE_at(const uint index) const 
+    { 
         if(index >= _MSE.size()) {
             utils::log_error("get_MSE required index over MSE vector size");
             exit(-1);
@@ -322,7 +334,8 @@ namespace primitives {
         return _MSE[index]; 
     }
 
-    bool Cylinder_Segment::is_inlier_at (const uint indexA, const uint indexB) const { 
+    bool Cylinder_Segment::is_inlier_at (const uint indexA, const uint indexB) const 
+    { 
         if(indexA >= _inliers.size() or indexB >= _inliers[indexA].size()) {
             utils::log_error("get_inlier required index over inlier vector size");
             exit(-1);
@@ -330,19 +343,18 @@ namespace primitives {
         return _inliers[indexA](indexB); 
     }
 
-    uint Cylinder_Segment::get_local_to_global_mapping(const uint index) const {
+    uint Cylinder_Segment::get_local_to_global_mapping(const uint index) const 
+    {
         if (index >= _cellActivatedCount) {
             utils::log_error("get_local_to_global required index over array size");
             exit(-1);
         }
-        if(_local2globalMap == nullptr) {
-            utils::log_error("_local2globalMap not initialized");
-            exit(-1);
-        }
+        assert(index < _local2globalMap.size());
         return _local2globalMap[index]; 
     }
 
-    const vector3& Cylinder_Segment::get_axis1_point(const uint index) const { 
+    const vector3& Cylinder_Segment::get_axis1_point(const uint index) const 
+    { 
         if(index >= _pointsAxis1.size()) {
             utils::log_error("get_axis_1 required index over axis1 vector size");
             exit(-1);
@@ -358,7 +370,8 @@ namespace primitives {
         return _pointsAxis2[index];
     }
 
-    double Cylinder_Segment::get_axis_normal(const uint index) const { 
+    double Cylinder_Segment::get_axis_normal(const uint index) const 
+    { 
         if(index >= _normalsAxis1Axis2.size()) {
             utils::log_error("get_axis_normal required index over normals vector size");
             exit(-1);
@@ -366,7 +379,8 @@ namespace primitives {
         return _normalsAxis1Axis2[index]; 
     }
 
-    double Cylinder_Segment::get_radius(const uint index) const {
+    double Cylinder_Segment::get_radius(const uint index) const
+    {
         if(index >= _radius.size()) {
             utils::log_error("get_radius required index over radius vector size");
             exit(-1);
@@ -374,21 +388,20 @@ namespace primitives {
         return _radius[index]; 
     }
 
-    double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other) {
+    double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other) 
+    {
         return std::abs( _axis[0] * other._axis[0] + _axis[1] * other._axis[1] + _axis[2] * other._axis[2]  );
     }
 
-    const vector3 Cylinder_Segment::get_normal() const {
+    const vector3 Cylinder_Segment::get_normal() const
+    {
         return _axis;
     }
 
 
 
-    Cylinder_Segment::~Cylinder_Segment() {
-        if(_local2globalMap != nullptr) {
-            delete[] _local2globalMap;    
-            _local2globalMap = nullptr;
-        }
+    Cylinder_Segment::~Cylinder_Segment() 
+    {
         _cellActivatedCount = 0;
     }
 

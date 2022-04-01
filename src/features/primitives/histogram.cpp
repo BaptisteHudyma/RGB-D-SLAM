@@ -7,34 +7,36 @@ namespace primitives {
 
     Histogram::Histogram(const uint binPerCoordCount) : 
         _binPerCoordCount(binPerCoordCount),
-        _binCount(_binPerCoordCount * _binPerCoordCount),
         //set limits
         _minX(0), _minY(-M_PI),
         _maxXminX(M_PI - _minX), _maxYminY(M_PI - _minY)
     {
-        _H = new uint[_binCount];
+        _H.assign(_binPerCoordCount * _binPerCoordCount, 0);
         reset();
     }
 
     void Histogram::reset() {
-        std::fill_n(_H, _binCount, 0);
+        std::fill_n(_H.begin(), _H.size(), 0);
         _B.clear();
     }
 
-    void Histogram::init_histogram(const Eigen::MatrixXd& points, const bool* flags) {
+    void Histogram::init_histogram(const Eigen::MatrixXd& points, const std::vector<bool>& flags) {
         //_reset();
         _pointCount = points.rows();
         _B.assign(_pointCount, -1);
 
+        assert(_pointCount == flags.size());
+        assert(_B.size() == flags.size());
+
         for(uint i = 0; i < _pointCount; i += 1) {
             if(flags[i]) {
-                int xQ = (_binPerCoordCount - 1) * (points(i, 0) - _minX) / _maxXminX;
+                const int xQ = (_binPerCoordCount - 1) * (points(i, 0) - _minX) / _maxXminX;
                 //dealing with degeneracy
                 int yQ = 0;
                 if(xQ > 0)
                     yQ = (_binPerCoordCount - 1) * (points(i, 1) - _minY) / _maxYminY;
 
-                int bin = yQ * _binPerCoordCount + xQ;
+                const uint bin = yQ * _binPerCoordCount + xQ;
                 _B[i] = bin;
                 _H[bin] += 1;
             }
@@ -44,7 +46,9 @@ namespace primitives {
     void Histogram::get_points_from_most_frequent_bin(std::vector<uint>& pointsIds ) const {
         int mostFrequentBin = -1;
         uint maxOccurencesCount = 0;
-        for(uint i = 0; i < _binCount; i += 1) {
+        
+        const size_t binSize = _H.size();
+        for(uint i = 0; i < binSize; i += 1) {
             //get most frequent bin index
             if(_H[i] > maxOccurencesCount) {
                 mostFrequentBin = i;
@@ -53,6 +57,7 @@ namespace primitives {
         }
 
         if(mostFrequentBin >= 0) {
+            pointsIds.reserve(_pointCount);
             //most frequent bin is not empty
             for(uint i = 0; i < _pointCount; i += 1) {
                 if(_B[i] == mostFrequentBin) {
@@ -74,7 +79,6 @@ namespace primitives {
 
 
     Histogram::~Histogram() {
-        delete []_H;
     }
 
 }

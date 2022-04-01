@@ -18,6 +18,9 @@ namespace primitives {
      * \brief Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting
      */
     class Cylinder_Segment {
+        protected:
+            typedef std::unique_ptr<Plane_Segment> plane_segment_unique_ptr;
+
         public:
             /**
              * \brief Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
@@ -27,7 +30,7 @@ namespace primitives {
              * \param[in] activatedMask An array of size planeCount, referencing activated plane segments 
              * \param[in] cellActivatedCount
              */
-            Cylinder_Segment(const std::unique_ptr<Plane_Segment>* planeGrid, const uint planeCount, const bool* activatedMask, const uint cellActivatedCount);
+            Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& activatedMask, const uint cellActivatedCount);
 
             /**
              * \brief Copy constructor
@@ -153,7 +156,7 @@ namespace primitives {
 
                 uint _cellActivatedCount;
                 uint _segmentCount;
-                uint* _local2globalMap;
+                std::vector<uint> _local2globalMap;
 
         private:
                 //prevent dangerous and inefficient back end copy
