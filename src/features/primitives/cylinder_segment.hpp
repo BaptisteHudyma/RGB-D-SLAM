@@ -27,7 +27,6 @@ namespace primitives {
              * \brief Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
              *
              * \param[in] planeGrid The plane segment container
-             * \param[in] planeCount
              * \param[in] activatedMask An array of size planeCount, referencing activated plane segments 
              * \param[in] cellActivatedCount
              */

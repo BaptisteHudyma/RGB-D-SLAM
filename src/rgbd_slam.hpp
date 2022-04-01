@@ -50,6 +50,7 @@ namespace rgbd_slam {
              * \param[in] originalRGB Raw rgb image. Will be used as a base for the final image
              * \param[out] debugImage Output image
              * \param[in] elapsedTime Time since the last call (used for FPS count)
+             * \param[in] showStagedPoints Display the points that are not map points yet
              * \param[in] showPrimitiveMasks Display the detected primitive masks
              */
             void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool showStagedPoints = false, const bool showPrimitiveMasks = false);
