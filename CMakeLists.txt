@@ -151,6 +151,10 @@ add_executable(slam_freiburg1_rotation
     ${EXAMPLES}/main_freiburg1_rotation_dataset.cpp)
 target_link_libraries(slam_freiburg1_rotation ${PROJECT_NAME})
 
+add_executable(slam_freiburg1_desk
+    ${EXAMPLES}/main_freiburg1_desk_dataset.cpp)
+target_link_libraries(slam_freiburg1_desk ${PROJECT_NAME})
+
 add_executable(test_p3p
     ${THIRD_PARTY}/p3p_test.cpp)
 target_link_libraries(test_p3p ${PROJECT_NAME})
