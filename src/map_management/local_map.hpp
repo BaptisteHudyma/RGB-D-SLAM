@@ -99,40 +99,41 @@ namespace rgbd_slam {
                  * \brief Update the Matched/Unmatched status of a map point
                  *
                  * \param[in, out] mapPoint the map point to update
+                 * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] keypointObject An object to handle all detected points in an image
-                 * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
                  * \param[in] cameraToWorldMatrix A transformation matrix to convert a camera point to a world point
                  */
-                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix);
+                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix);
 
                 /**
                  * \brief Update local keypoint map features 
                  *
-                 * \param[in] optimizedPose The clean true pose of the observer, after optimization
+                 * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
                  * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_keypoint_map(const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const matrix33& poseCovariance, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
                  *
-                 * \param[in] optimizedPose The clean true pose of the observer, after optimization
+                 * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization
                  * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged_keypoints_map(const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_staged_keypoints_map(const matrix33& poseCovariance, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Add unmatched detected points to the staged map
                  *
+                 * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void add_umatched_keypoints_to_staged_map(const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void add_umatched_keypoints_to_staged_map(const matrix33& poseCovariance, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features

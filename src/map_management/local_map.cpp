@@ -151,17 +151,18 @@ namespace rgbd_slam {
             // Unmatch detected outliers
             mark_outliers_as_unmatched(outlierMatchedPoints);
 
+            const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
             const matrix44& previousCameraToWorldMatrix = utils::compute_camera_to_world_transform(previousPose.get_orientation_quaternion(), previousPose.get_position());
             const matrix44& cameraToWorldMatrix = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // add local map points
-            update_local_keypoint_map(optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
+            update_local_keypoint_map(poseCovariance, previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
 
             // add staged points to local map
-            update_staged_keypoints_map(optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
+            update_staged_keypoints_map(poseCovariance, previousCameraToWorldMatrix, cameraToWorldMatrix, keypointObject);
 
             // Add unmatched poins to the staged map, to unsure tracking of new features
-            add_umatched_keypoints_to_staged_map(cameraToWorldMatrix, keypointObject);
+            add_umatched_keypoints_to_staged_map(poseCovariance, cameraToWorldMatrix, keypointObject);
 
             // add primitives to local map
             //update_local_primitive_map(cameraToWorldMatrix, );
@@ -170,7 +171,7 @@ namespace rgbd_slam {
             update_local_to_global();
         }
 
-        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)
+        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)
         {
             if (mapPoint._matchedScreenPoint.is_matched())
             {
@@ -189,9 +190,6 @@ namespace rgbd_slam {
                     const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
                     // get a measure of the estimated variance of the new world point
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
-
-                    // Get the optimized pose covariance
-                    const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
 
                     // update this map point errors & position
                     mapPoint.update_matched(newCoordinates, worldPointCovariance + poseCovariance);
@@ -242,7 +240,7 @@ namespace rgbd_slam {
             mapPoint.update_unmatched();
         }
 
-        void Local_Map::update_local_keypoint_map(const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_local_keypoint_map(const matrix33& poseCovariance, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             point_map_container::iterator pointMapIterator = _localPointMap.begin();
             while(pointMapIterator != _localPointMap.end())
@@ -251,7 +249,7 @@ namespace rgbd_slam {
                 Map_Point& mapPoint = pointMapIterator->second;
                 assert(pointMapIterator->first == mapPoint._id);
 
-                update_point_match_status(mapPoint, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
+                update_point_match_status(mapPoint, poseCovariance, keypointObject, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (mapPoint.is_lost()) {
                     // write to file
@@ -267,7 +265,7 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::update_staged_keypoints_map(const utils::Pose& optimizedPose, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_staged_keypoints_map(const matrix33& poseCovariance, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
@@ -277,7 +275,7 @@ namespace rgbd_slam {
                 assert(stagedPointIterator->first == stagedPoint._id);
 
                 // Update the matched/unmatched status
-                update_point_match_status(stagedPoint, keypointObject, optimizedPose, previousCameraToWorldMatrix, cameraToWorldMatrix);
+                update_point_match_status(stagedPoint, poseCovariance, keypointObject, previousCameraToWorldMatrix, cameraToWorldMatrix);
 
                 if (stagedPoint.should_add_to_local_map())
                 {
@@ -304,7 +302,7 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::add_umatched_keypoints_to_staged_map(const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::add_umatched_keypoints_to_staged_map(const matrix33& poseCovariance, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add all unmatched points to staged point container 
             const size_t keypointVectorSize = _isPointMatched.size();
@@ -326,10 +324,10 @@ namespace rgbd_slam {
                     const vector2& screenPoint = keypointObject.get_keypoint(i);
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorldMatrix);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
-
+                    
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, utils::get_screen_point_covariance(screenPoint, depth));
 
-                    Staged_Point newStagedPoint(worldPoint, worldPointCovariance, keypointObject.get_descriptor(i));
+                    Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
                     _stagedPoints.emplace(
                             newStagedPoint._id,
                             newStagedPoint);
@@ -351,6 +349,8 @@ namespace rgbd_slam {
 
             // initialize output structure
             features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
+            
+            // TODO: check the efficiency gain of those reserve calls
             keypointsWithIds._ids.reserve(numberOfNewKeypoints);
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
 
