@@ -42,7 +42,7 @@ typedef std\+::pair$<$ int, int $>$ \mbox{\hyperlink{classrgbd__slam_1_1features
 \item 
 const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad741c7ea236c946807d196e83cb7a233}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point\+To\+Search, const std\+::vector$<$ bool $>$ \&is\+Key\+Point\+Matched\+Container) const
 \begin{DoxyCompactList}\small\item\em Return a mask eliminating the keypoints to far from the point to match. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\+\_\+pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a4e33c2bfa1eee6700d5c0e7e58cf1618}{get\+\_\+search\+\_\+space\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point\+To\+Place) const
+const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\+\_\+pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a32101e53653338c92ba5bf47bfbf8b77}{get\+\_\+search\+\_\+space\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&point\+To\+Place) const
 \begin{DoxyCompactList}\small\item\em Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with \+\_\+search\+Space\+Index\+Container. \end{DoxyCompactList}\item 
 uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a35aa9151e9cbdcde22ec57bcc8f25869}{get\+\_\+search\+\_\+space\+\_\+index}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\+\_\+pair}} \&search\+Space\+Index) const
 \begin{DoxyCompactList}\small\item\em Compute an 1D array index from a 2D array index. \end{DoxyCompactList}\item 
@@ -165,11 +165,11 @@ get an index corresponding to the index of the point matches.
 \begin{DoxyReturn}{Returns}
 An index \texorpdfstring{$>$}{>}= 0 corresponding to the matched keypoint, or -\/1 if no match was found 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a4e33c2bfa1eee6700d5c0e7e58cf1618}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a4e33c2bfa1eee6700d5c0e7e58cf1618}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a32101e53653338c92ba5bf47bfbf8b77}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a32101e53653338c92ba5bf47bfbf8b77}} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_search\_space\_coordinates@{get\_search\_space\_coordinates}}
 \index{get\_search\_space\_coordinates@{get\_search\_space\_coordinates}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_search\_space\_coordinates()}{get\_search\_space\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\+\_\+pair}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point\+To\+Place }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{Keypoint\+\_\+\+Handler\+::int\+\_\+pair}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{point\+To\+Place }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 

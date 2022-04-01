@@ -9,35 +9,38 @@
 \DoxyCodeLine{5 }
 \DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
 \DoxyCodeLine{7     \textcolor{keyword}{namespace }utils \{}
-\DoxyCodeLine{8         \textcolor{comment}{/*}}
-\DoxyCodeLine{9 \textcolor{comment}{         * \(\backslash\)brief Transform a screen point with a depth value to a 3D point}}
-\DoxyCodeLine{10 \textcolor{comment}{         *}}
-\DoxyCodeLine{11 \textcolor{comment}{         * \(\backslash\)param[in] screenX X coordinates of the 2D point (double because we can have sub pixel accuracy)}}
-\DoxyCodeLine{12 \textcolor{comment}{         * \(\backslash\)param[in] screenY Y coordinates of the 2D point (double because we can have sub pixel accuracy)}}
-\DoxyCodeLine{13 \textcolor{comment}{         * \(\backslash\)param[in] measuredZ Measured z depth of the point, in millimeters}}
-\DoxyCodeLine{14 \textcolor{comment}{         * \(\backslash\)param[in] cameraToWorldMatrix Matrix to transform local to world coordinates}}
-\DoxyCodeLine{15 \textcolor{comment}{         *}}
-\DoxyCodeLine{16 \textcolor{comment}{         * \(\backslash\)return A 3D point in frame coordinates}}
-\DoxyCodeLine{17 \textcolor{comment}{         */}}
-\DoxyCodeLine{18         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{screen\_to\_world\_coordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} screenX, \textcolor{keyword}{const} \textcolor{keywordtype}{double} screenY, \textcolor{keyword}{const} \textcolor{keywordtype}{double} measuredZ, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& cameraToWorldMatrix);}
-\DoxyCodeLine{19 }
-\DoxyCodeLine{28         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{screen\_to\_world\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\& vector4d, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& cameraToWorldMatrix);}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{30 }
-\DoxyCodeLine{40         \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}{world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position3D, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& worldToScreenMatrix, \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& screenCoordinates);}
-\DoxyCodeLine{41 }
-\DoxyCodeLine{50         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}{world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\& worldVector4, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& worldToScreenMatrix);}
-\DoxyCodeLine{51 }
-\DoxyCodeLine{55         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
-\DoxyCodeLine{56 }
-\DoxyCodeLine{57         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& cameraToWorldMatrix);}
-\DoxyCodeLine{58 }
-\DoxyCodeLine{62         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19fb642babfd16a76}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
-\DoxyCodeLine{63 }
-\DoxyCodeLine{64     \}   \textcolor{comment}{// utils}}
-\DoxyCodeLine{65 \}       \textcolor{comment}{// rgbd\_slam}}
-\DoxyCodeLine{66 }
-\DoxyCodeLine{67 }
-\DoxyCodeLine{68 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{12         \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{is\_depth\_valid}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} depth);}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14         \textcolor{comment}{/*}}
+\DoxyCodeLine{15 \textcolor{comment}{         * \(\backslash\)brief Transform a screen point with a depth value to a 3D point}}
+\DoxyCodeLine{16 \textcolor{comment}{         *}}
+\DoxyCodeLine{17 \textcolor{comment}{         * \(\backslash\)param[in] screenX X coordinates of the 2D point (double because we can have sub pixel accuracy)}}
+\DoxyCodeLine{18 \textcolor{comment}{         * \(\backslash\)param[in] screenY Y coordinates of the 2D point (double because we can have sub pixel accuracy)}}
+\DoxyCodeLine{19 \textcolor{comment}{         * \(\backslash\)param[in] measuredZ Measured z depth of the point, in millimeters}}
+\DoxyCodeLine{20 \textcolor{comment}{         * \(\backslash\)param[in] cameraToWorldMatrix Matrix to transform local to world coordinates}}
+\DoxyCodeLine{21 \textcolor{comment}{         *}}
+\DoxyCodeLine{22 \textcolor{comment}{         * \(\backslash\)return A 3D point in frame coordinates}}
+\DoxyCodeLine{23 \textcolor{comment}{         */}}
+\DoxyCodeLine{24         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{screen\_to\_world\_coordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} screenX, \textcolor{keyword}{const} \textcolor{keywordtype}{double} screenY, \textcolor{keyword}{const} \textcolor{keywordtype}{double} measuredZ, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& cameraToWorldMatrix);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{34         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{screen\_to\_world\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\& vector4d, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& cameraToWorldMatrix);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{46         \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}{world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position3D, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& worldToScreenMatrix, \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& screenCoordinates);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{56         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac117de3fa384b602d8deb8ffeede54f3}{world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\& worldVector4, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& worldToScreenMatrix);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{61         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& cameraToWorldMatrix);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{68         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19fb642babfd16a76}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \}   \textcolor{comment}{// utils}}
+\DoxyCodeLine{71 \}       \textcolor{comment}{// rgbd\_slam}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

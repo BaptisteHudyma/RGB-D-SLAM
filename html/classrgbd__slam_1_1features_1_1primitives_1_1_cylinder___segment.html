@@ -69,6 +69,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::features::primitives::Cylinder_Segment Class Reference</div></div>
@@ -82,9 +83,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5c09ddd0819a97a3fcab718b1bda282e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a5c09ddd0819a97a3fcab718b1bda282e">Cylinder_Segment</a> (const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &gt; *planeGrid, const uint planeCount, const bool *activatedMask, const uint cellActivatedCount)</td></tr>
-<tr class="memdesc:a5c09ddd0819a97a3fcab718b1bda282e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a5c09ddd0819a97a3fcab718b1bda282e">More...</a><br /></td></tr>
-<tr class="separator:a5c09ddd0819a97a3fcab718b1bda282e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba1a1c0c4fef04d84c2e22274d1604a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#aba1a1c0c4fef04d84c2e22274d1604a6">Cylinder_Segment</a> (const std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae86386857ec8a5f34258de1704e1c238">plane_segment_unique_ptr</a> &gt; &amp;planeGrid, const std::vector&lt; bool &gt; &amp;activatedMask, const uint cellActivatedCount)</td></tr>
+<tr class="memdesc:aba1a1c0c4fef04d84c2e22274d1604a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#aba1a1c0c4fef04d84c2e22274d1604a6">More...</a><br /></td></tr>
+<tr class="separator:aba1a1c0c4fef04d84c2e22274d1604a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4315d3396bf884157894e07f06082d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ac4315d3396bf884157894e07f06082d4">Cylinder_Segment</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html">Cylinder_Segment</a> &amp;seg, const uint subRegionId)</td></tr>
 <tr class="memdesc:ac4315d3396bf884157894e07f06082d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ac4315d3396bf884157894e07f06082d4">More...</a><br /></td></tr>
 <tr class="separator:ac4315d3396bf884157894e07f06082d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,6 +121,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7bafa1f1e627a6714955d8c265034975"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a7bafa1f1e627a6714955d8c265034975">get_normal</a> () const</td></tr>
 <tr class="separator:a7bafa1f1e627a6714955d8c265034975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
+Protected Types</h2></td></tr>
+<tr class="memitem:ae86386857ec8a5f34258de1704e1c238"><td class="memItemLeft" align="right" valign="top">typedef std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae86386857ec8a5f34258de1704e1c238">plane_segment_unique_ptr</a></td></tr>
+<tr class="separator:ae86386857ec8a5f34258de1704e1c238"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a5ea0785f7eab53b3dbfd7f1bdb86f583"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a5ea0785f7eab53b3dbfd7f1bdb86f583">get_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;point, const uint segmentId) const</td></tr>
@@ -127,9 +133,32 @@ Protected Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5c09ddd0819a97a3fcab718b1bda282e" name="a5c09ddd0819a97a3fcab718b1bda282e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c09ddd0819a97a3fcab718b1bda282e">&#9670;&nbsp;</a></span>Cylinder_Segment() <span class="overload">[1/3]</span></h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ae86386857ec8a5f34258de1704e1c238" name="ae86386857ec8a5f34258de1704e1c238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae86386857ec8a5f34258de1704e1c238">&#9670;&nbsp;</a></span>plane_segment_unique_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::unique_ptr&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae86386857ec8a5f34258de1704e1c238">rgbd_slam::features::primitives::Cylinder_Segment::plane_segment_unique_ptr</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aba1a1c0c4fef04d84c2e22274d1604a6" name="aba1a1c0c4fef04d84c2e22274d1604a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba1a1c0c4fef04d84c2e22274d1604a6">&#9670;&nbsp;</a></span>Cylinder_Segment() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,19 +166,13 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::features::primitives::Cylinder_Segment::Cylinder_Segment </td>
           <td>(</td>
-          <td class="paramtype">const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &gt; *&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae86386857ec8a5f34258de1704e1c238">plane_segment_unique_ptr</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>planeGrid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const uint&#160;</td>
-          <td class="paramname"><em>planeCount</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool *&#160;</td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
           <td class="paramname"><em>activatedMask</em>, </td>
         </tr>
         <tr>
@@ -170,7 +193,6 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">planeGrid</td><td>The plane segment container </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">planeCount</td><td></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">activatedMask</td><td>An array of size planeCount, referencing activated plane segments </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cellActivatedCount</td><td></td></tr>
   </table>

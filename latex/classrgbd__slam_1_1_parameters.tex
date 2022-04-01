@@ -59,6 +59,14 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a8746de6726b024685
 \item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3cc5cbafbc854fb6d0c8e77713499581}{get\+\_\+minimum\+\_\+normals\+\_\+dot\+\_\+difference}} ()
 \item 
+static size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}{get\+\_\+maximum\+\_\+ransac\+\_\+iterations}} ()
+\item 
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a0d74da32c7ddcd01c9d7dc6cfb31fde9}{get\+\_\+ransac\+\_\+maximum\+\_\+retroprojection\+\_\+error\+\_\+for\+\_\+inliers}} ()
+\item 
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a16ad6407324ad6758ed6541447cb0329}{get\+\_\+ransac\+\_\+minimum\+\_\+inliers\+\_\+for\+\_\+validation}} ()
+\item 
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a1d132d0601d473e741cd9b72f2f49de9}{get\+\_\+ransac\+\_\+initial\+\_\+threshold}} ()
+\item 
 static uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a850e679de0ef3b2dae619828b4c41643}{get\+\_\+minimum\+\_\+point\+\_\+count\+\_\+for\+\_\+optimization}} ()
 \item 
 static uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ad5b80f8f279de2bcc308b3375a2df6d2}{get\+\_\+maximum\+\_\+point\+\_\+count\+\_\+per\+\_\+frame}} ()
@@ -74,8 +82,6 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a5e07b1eeb7eaf94e8
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a82042da110892f0cb0fe14c146e10180}{get\+\_\+optimization\+\_\+gtol}} ()
 \item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a213e6dbf97dcabf42fea5dd00ed80ebe}{get\+\_\+optimization\+\_\+factor}} ()
-\item 
-static size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}{get\+\_\+maximum\+\_\+ransac\+\_\+iterations}} ()
 \item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a8999c927c494468dcf8eb172b54e5795}{get\+\_\+maximum\+\_\+retroprojection\+\_\+error}} ()
 \item 
@@ -473,6 +479,24 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 \index{get\_point\_weight\_threshold@{get\_point\_weight\_threshold}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
 \doxysubsubsection{\texorpdfstring{get\_point\_weight\_threshold()}{get\_point\_weight\_threshold()}}
 {\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+point\+\_\+weight\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a1d132d0601d473e741cd9b72f2f49de9}\label{classrgbd__slam_1_1_parameters_a1d132d0601d473e741cd9b72f2f49de9}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_initial\_threshold@{get\_ransac\_initial\_threshold}}
+\index{get\_ransac\_initial\_threshold@{get\_ransac\_initial\_threshold}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_ransac\_initial\_threshold()}{get\_ransac\_initial\_threshold()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+initial\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a0d74da32c7ddcd01c9d7dc6cfb31fde9}\label{classrgbd__slam_1_1_parameters_a0d74da32c7ddcd01c9d7dc6cfb31fde9}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_maximum\_retroprojection\_error\_for\_inliers@{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers}}
+\index{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers@{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers()}{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+maximum\+\_\+retroprojection\+\_\+error\+\_\+for\+\_\+inliers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a16ad6407324ad6758ed6541447cb0329}\label{classrgbd__slam_1_1_parameters_a16ad6407324ad6758ed6541447cb0329}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_minimum\_inliers\_for\_validation@{get\_ransac\_minimum\_inliers\_for\_validation}}
+\index{get\_ransac\_minimum\_inliers\_for\_validation@{get\_ransac\_minimum\_inliers\_for\_validation}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_ransac\_minimum\_inliers\_for\_validation()}{get\_ransac\_minimum\_inliers\_for\_validation()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+minimum\+\_\+inliers\+\_\+for\+\_\+validation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1_parameters_abddde410436ccb2d7856604c417b6d3e}\label{classrgbd__slam_1_1_parameters_abddde410436ccb2d7856604c417b6d3e}} 
 \index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_search\_matches\_cell\_size@{get\_search\_matches\_cell\_size}}

@@ -21,12 +21,15 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point__
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5dca03a817b44aabaf7be8aa5d16ad6b}{get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow}} (const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Previous\+Pyramide, const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Current\+Pyramide, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const uint pyramid\+Depth, const uint window\+Size, const double error\+Threshold, const double max\+Distance\+Threshold) const
-\begin{DoxyCompactList}\small\item\em Compute the current frame keypoints from optical flow. There is need for matching with this configuration. \end{DoxyCompactList}\item 
 const std\+::vector$<$ cv\+::\+Point2f $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd4e2a25365bca3f79c605ac069503c}{detect\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&mask, const uint minimum\+Points\+For\+Validity) const
 \begin{DoxyCompactList}\small\item\em Compute new key point, with an optional mask to exclude detection zones. \end{DoxyCompactList}\item 
 const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a41ff5b3e5511b495d5bbb94d4048c5de}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const cv\+::\+Size image\+Size, const std\+::vector$<$ cv\+::\+Point2f $>$ \&keypoint\+Container) const
 \end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac93a7e1d204e8476e54df557a3ec2d77}{get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow}} (const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Previous\+Pyramide, const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Current\+Pyramide, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const uint pyramid\+Depth, const uint window\+Size, const double error\+Threshold, const double max\+Distance\+Threshold)
+\begin{DoxyCompactList}\small\item\em Compute the current frame keypoints from optical flow. There is need for matching with this configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -94,11 +97,11 @@ Compute new key point, with an optional mask to exclude detection zones.
 \begin{DoxyReturn}{Returns}
 An array of points in the input image 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5dca03a817b44aabaf7be8aa5d16ad6b}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5dca03a817b44aabaf7be8aa5d16ad6b}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac93a7e1d204e8476e54df557a3ec2d77}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac93a7e1d204e8476e54df557a3ec2d77}} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!get\_keypoints\_from\_optical\_flow@{get\_keypoints\_from\_optical\_flow}}
 \index{get\_keypoints\_from\_optical\_flow@{get\_keypoints\_from\_optical\_flow}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{get\_keypoints\_from\_optical\_flow()}{get\_keypoints\_from\_optical\_flow()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Previous\+Pyramide,  }\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Current\+Pyramide,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&}]{last\+Keypoints\+With\+Ids,  }\item[{const uint}]{pyramid\+Depth,  }\item[{const uint}]{window\+Size,  }\item[{const double}]{error\+Threshold,  }\item[{const double}]{max\+Distance\+Threshold }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Previous\+Pyramide,  }\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Current\+Pyramide,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&}]{last\+Keypoints\+With\+Ids,  }\item[{const uint}]{pyramid\+Depth,  }\item[{const uint}]{window\+Size,  }\item[{const double}]{error\+Threshold,  }\item[{const double}]{max\+Distance\+Threshold }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
 
 
 

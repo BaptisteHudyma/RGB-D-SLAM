@@ -8,39 +8,38 @@
 \DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{pose_8hpp}{pose.hpp}}"{}}}
 \DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
-\DoxyCodeLine{8 }
-\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{10 \textcolor{keyword}{namespace }utils \{}
-\DoxyCodeLine{11 }
-\DoxyCodeLine{15     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model}{Motion\_Model}} \{}
-\DoxyCodeLine{16 }
-\DoxyCodeLine{17         \textcolor{keyword}{public}:}
-\DoxyCodeLine{18             \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a92747ec6ef3d202641797ccd08b36f07}{Motion\_Model}}();}
-\DoxyCodeLine{19             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}{reset}}();}
-\DoxyCodeLine{20 }
-\DoxyCodeLine{26             \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ad46746162eb145a3944dc1156088bad3}{predict\_next\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}\& currentPose) \textcolor{keyword}{const};}
-\DoxyCodeLine{27 }
-\DoxyCodeLine{33             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}{update\_model}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}\& pose);}
-\DoxyCodeLine{34 }
-\DoxyCodeLine{35             EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
-\DoxyCodeLine{36 }
-\DoxyCodeLine{37         \textcolor{keyword}{protected}:}
-\DoxyCodeLine{38 }
-\DoxyCodeLine{39         \textcolor{keyword}{private}:}
-\DoxyCodeLine{40                 \textcolor{comment}{// Last known rotation quaternion estimated by the motion model (set by update\_model)}}
-\DoxyCodeLine{41                 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \_lastQ;}
-\DoxyCodeLine{42                 \textcolor{comment}{// Last computed angular velocity}}
-\DoxyCodeLine{43                 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \_angularVelocity;}
-\DoxyCodeLine{44                 \textcolor{comment}{// Last known translation estimated by the motion model (set by update\_model)}}
-\DoxyCodeLine{45                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_lastPosition;}
-\DoxyCodeLine{46                 \textcolor{comment}{// Last computed linear velocity}}
-\DoxyCodeLine{47                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_linearVelocity;}
-\DoxyCodeLine{48     \};}
-\DoxyCodeLine{49 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }utils \{}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{13     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model}{Motion\_Model}} \{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15         \textcolor{keyword}{public}:}
+\DoxyCodeLine{16             \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a92747ec6ef3d202641797ccd08b36f07}{Motion\_Model}}();}
+\DoxyCodeLine{17             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}{reset}}();}
+\DoxyCodeLine{18             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}{reset}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& lastPosition, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& lastRotation);}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{25             \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ad46746162eb145a3944dc1156088bad3}{predict\_next\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}\& currentPose) \textcolor{keyword}{const};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{32             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}{update\_model}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}\& pose);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34             EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38         \textcolor{keyword}{private}:}
+\DoxyCodeLine{39                 \textcolor{comment}{// Last known rotation quaternion estimated by the motion model (set by update\_model)}}
+\DoxyCodeLine{40                 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \_lastQ;}
+\DoxyCodeLine{41                 \textcolor{comment}{// Last computed angular velocity}}
+\DoxyCodeLine{42                 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \_angularVelocity;}
+\DoxyCodeLine{43                 \textcolor{comment}{// Last known translation estimated by the motion model (set by update\_model)}}
+\DoxyCodeLine{44                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_lastPosition;}
+\DoxyCodeLine{45                 \textcolor{comment}{// Last computed linear velocity}}
+\DoxyCodeLine{46                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_linearVelocity;}
+\DoxyCodeLine{47     \};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \}}
 \DoxyCodeLine{50 \}}
-\DoxyCodeLine{51 \}}
-\DoxyCodeLine{52 }
-\DoxyCodeLine{53 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

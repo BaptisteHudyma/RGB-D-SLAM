@@ -2,7 +2,6 @@
 \label{camera__transformation_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.cpp}}
 {\ttfamily \#include \char`\"{}camera\+\_\+transformation.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
-{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -13,6 +12,8 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{rgbd\+\_\+slam\+::utils\+::is\+\_\+depth\+\_\+valid}} (const double depth)
+\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
 const vector3 \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab6dd19d1fead39267cf42ef78b08a5cb}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const double screenX, const double screenY, const double measuredZ, const matrix44 \&camera\+To\+World\+Matrix)
 \item 
 const vector4 \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb50425c88603d51b0f82f0d8abadc46}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const vector4 \&vector4d, const matrix44 \&camera\+To\+World\+Matrix)
@@ -26,4 +27,11 @@ const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_aead20ffa20ef5ce19f
 const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae084f160a8b3b4955c68984f20b907d1}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
 const matrix44 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const matrix44 \&camera\+To\+World\+Matrix)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const double \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb0e42e07f9e12d67543af504e440506}{rgbd\+\_\+slam\+::utils\+::\+MIN\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 40
+\item 
+const double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7c711197a8776f474dea42a34838b675}{rgbd\+\_\+slam\+::utils\+::\+MAX\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 6000
 \end{DoxyCompactItemize}

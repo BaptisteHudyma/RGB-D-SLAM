@@ -5,74 +5,73 @@
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_FEATURES\_PRIMITIVES\_DEPTHOPERATIONS\_HPP }}
 \DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_FEATURES\_PRIMITIVES\_DEPTHOPERATIONS\_HPP}}
 \DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <iostream>}}
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{9 \textcolor{keyword}{namespace }features \{}
-\DoxyCodeLine{10 \textcolor{keyword}{namespace }primitives \{}
-\DoxyCodeLine{11 }
-\DoxyCodeLine{15     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{Depth\_Map\_Transformation}} \{}
-\DoxyCodeLine{16         \textcolor{keyword}{public}:}
-\DoxyCodeLine{22             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a819b2aa0502ecd0aae999c10a894c7c4}{Depth\_Map\_Transformation}}(\textcolor{keyword}{const} uint width, \textcolor{keyword}{const} uint height, \textcolor{keyword}{const} uint cellSize);}
-\DoxyCodeLine{23 }
-\DoxyCodeLine{24             EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }features \{}
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }primitives \{}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{14     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{Depth\_Map\_Transformation}} \{}
+\DoxyCodeLine{15         \textcolor{keyword}{public}:}
+\DoxyCodeLine{21             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a819b2aa0502ecd0aae999c10a894c7c4}{Depth\_Map\_Transformation}}(\textcolor{keyword}{const} uint width, \textcolor{keyword}{const} uint height, \textcolor{keyword}{const} uint cellSize);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23             EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{24 }
 \DoxyCodeLine{25 }
-\DoxyCodeLine{26 }
-\DoxyCodeLine{33             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_ae719e5155c7171f19ced8b7d441ff39d}{get\_organized\_cloud\_array}}(cv::Mat\& depthImage, Eigen::MatrixXf\& organizedCloudArray);}
-\DoxyCodeLine{34 }
-\DoxyCodeLine{40             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a241946b20821fd2206529856b81f866a}{is\_ok}}()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} \_isOk;\};}
-\DoxyCodeLine{41 }
-\DoxyCodeLine{42         \textcolor{keyword}{public}: \textcolor{comment}{//getters}}
-\DoxyCodeLine{43             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a6b4d9e1b31a8aca926e57d68a29036ab}{get\_rgb\_fx}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_fxRgb; \}}
-\DoxyCodeLine{44             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a9307664eefcf389c381bea3da3dd757f}{get\_rgb\_fy}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_fyRgb; \}}
-\DoxyCodeLine{45             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a828b06eedbc4940ffe0a52c664a0857f}{get\_rgb\_cx}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_cxRgb; \}}
-\DoxyCodeLine{46             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a0ba4ab7ea890c0983145cd14c4de41dd}{get\_rgb\_cy}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_cyRgb; \}}
-\DoxyCodeLine{47 }
-\DoxyCodeLine{48         \textcolor{keyword}{protected}:}
-\DoxyCodeLine{52             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a2e718af36fd6b11ef68be47485f42287}{load\_parameters}}();}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{57             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_ad2fc7e2abf09fea51ffcc9f76bd1bf16}{init\_matrices}}();}
-\DoxyCodeLine{58 }
-\DoxyCodeLine{59         \textcolor{keyword}{private}:}
-\DoxyCodeLine{60             uint \_width;}
-\DoxyCodeLine{61             uint \_height;}
-\DoxyCodeLine{62             uint \_cellSize;}
-\DoxyCodeLine{63             \textcolor{keywordtype}{bool} \_isOk;}
-\DoxyCodeLine{64 }
-\DoxyCodeLine{65             Eigen::MatrixXf \_cloudArray;}
-\DoxyCodeLine{66 }
-\DoxyCodeLine{67             \textcolor{comment}{//cam parameters}}
-\DoxyCodeLine{68             \textcolor{keywordtype}{float} \_fxIr;}
-\DoxyCodeLine{69             \textcolor{keywordtype}{float} \_fyIr;}
-\DoxyCodeLine{70             \textcolor{keywordtype}{float} \_cxIr;}
-\DoxyCodeLine{71             \textcolor{keywordtype}{float} \_cyIr;}
-\DoxyCodeLine{72 }
-\DoxyCodeLine{73             \textcolor{keywordtype}{float} \_fxRgb;}
-\DoxyCodeLine{74             \textcolor{keywordtype}{float} \_fyRgb;}
-\DoxyCodeLine{75             \textcolor{keywordtype}{float} \_cxRgb;}
-\DoxyCodeLine{76             \textcolor{keywordtype}{float} \_cyRgb;}
-\DoxyCodeLine{77 }
-\DoxyCodeLine{78             \textcolor{comment}{//camera parameters}}
-\DoxyCodeLine{79             cv::Mat \_Rstereo;}
-\DoxyCodeLine{80             cv::Mat \_Tstereo;}
-\DoxyCodeLine{81 }
-\DoxyCodeLine{82             \textcolor{comment}{//pre computation matrix}}
-\DoxyCodeLine{83             cv::Mat\_<float> \_X;}
-\DoxyCodeLine{84             cv::Mat\_<float> \_Y;}
-\DoxyCodeLine{85             cv::Mat\_<float> \_Xt;}
-\DoxyCodeLine{86             cv::Mat\_<float> \_Yt;}
-\DoxyCodeLine{87             cv::Mat\_<float> \_Xpre;}
-\DoxyCodeLine{88             cv::Mat\_<float> \_Ypre;}
-\DoxyCodeLine{89             cv::Mat\_<float> \_U;   }
-\DoxyCodeLine{90             cv::Mat\_<float> \_V;}
-\DoxyCodeLine{91             cv::Mat\_<int> \_cellMap;}
-\DoxyCodeLine{92     \};}
+\DoxyCodeLine{32             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_ae719e5155c7171f19ced8b7d441ff39d}{get\_organized\_cloud\_array}}(cv::Mat\& depthImage, Eigen::MatrixXf\& organizedCloudArray);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{39             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a241946b20821fd2206529856b81f866a}{is\_ok}}()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} \_isOk;\};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41         \textcolor{keyword}{public}: \textcolor{comment}{//getters}}
+\DoxyCodeLine{42             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a6b4d9e1b31a8aca926e57d68a29036ab}{get\_rgb\_fx}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_fxRgb; \}}
+\DoxyCodeLine{43             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a9307664eefcf389c381bea3da3dd757f}{get\_rgb\_fy}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_fyRgb; \}}
+\DoxyCodeLine{44             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a828b06eedbc4940ffe0a52c664a0857f}{get\_rgb\_cx}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_cxRgb; \}}
+\DoxyCodeLine{45             \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a0ba4ab7ea890c0983145cd14c4de41dd}{get\_rgb\_cy}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_cyRgb; \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47         \textcolor{keyword}{protected}:}
+\DoxyCodeLine{51             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a2e718af36fd6b11ef68be47485f42287}{load\_parameters}}();}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{56             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_ad2fc7e2abf09fea51ffcc9f76bd1bf16}{init\_matrices}}();}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58         \textcolor{keyword}{private}:}
+\DoxyCodeLine{59             uint \_width;}
+\DoxyCodeLine{60             uint \_height;}
+\DoxyCodeLine{61             uint \_cellSize;}
+\DoxyCodeLine{62             \textcolor{keywordtype}{bool} \_isOk;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64             Eigen::MatrixXf \_cloudArray;}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66             \textcolor{comment}{//cam parameters}}
+\DoxyCodeLine{67             \textcolor{keywordtype}{float} \_fxIr;}
+\DoxyCodeLine{68             \textcolor{keywordtype}{float} \_fyIr;}
+\DoxyCodeLine{69             \textcolor{keywordtype}{float} \_cxIr;}
+\DoxyCodeLine{70             \textcolor{keywordtype}{float} \_cyIr;}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72             \textcolor{keywordtype}{float} \_fxRgb;}
+\DoxyCodeLine{73             \textcolor{keywordtype}{float} \_fyRgb;}
+\DoxyCodeLine{74             \textcolor{keywordtype}{float} \_cxRgb;}
+\DoxyCodeLine{75             \textcolor{keywordtype}{float} \_cyRgb;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77             \textcolor{comment}{//camera parameters}}
+\DoxyCodeLine{78             cv::Mat \_Rstereo;}
+\DoxyCodeLine{79             cv::Mat \_Tstereo;}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81             \textcolor{comment}{//pre computation matrix}}
+\DoxyCodeLine{82             cv::Mat\_<float> \_X;}
+\DoxyCodeLine{83             cv::Mat\_<float> \_Y;}
+\DoxyCodeLine{84             cv::Mat\_<float> \_Xt;}
+\DoxyCodeLine{85             cv::Mat\_<float> \_Yt;}
+\DoxyCodeLine{86             cv::Mat\_<float> \_Xpre;}
+\DoxyCodeLine{87             cv::Mat\_<float> \_Ypre;}
+\DoxyCodeLine{88             cv::Mat\_<float> \_U;   }
+\DoxyCodeLine{89             cv::Mat\_<float> \_V;}
+\DoxyCodeLine{90             cv::Mat\_<int> \_cellMap;}
+\DoxyCodeLine{91     \};}
+\DoxyCodeLine{92 \}}
 \DoxyCodeLine{93 \}}
 \DoxyCodeLine{94 \}}
-\DoxyCodeLine{95 \}}
-\DoxyCodeLine{96 }
-\DoxyCodeLine{97 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

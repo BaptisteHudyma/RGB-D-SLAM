@@ -88,8 +88,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5a91e76f9334abee9b5f294713f2b2b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf11c05d06874d408e7790486f6788d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#aaf11c05d06874d408e7790486f6788d7">init_plane_segment</a> (const Eigen::MatrixXf &amp;depthCloudArray, const uint cellId)</td></tr>
 <tr class="separator:aaf11c05d06874d408e7790486f6788d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad81d874c228c110abfd79f5da4355d2c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ad81d874c228c110abfd79f5da4355d2c">is_depth_discontinuous</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;planeSegment)</td></tr>
-<tr class="separator:ad81d874c228c110abfd79f5da4355d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5957552d2fc15f93cf3131bfef1e29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a4b5957552d2fc15f93cf3131bfef1e29">is_depth_discontinuous</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;planeSegment) const</td></tr>
+<tr class="separator:a4b5957552d2fc15f93cf3131bfef1e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae22a9b6cc49dfc6637702db5302ea644"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ae22a9b6cc49dfc6637702db5302ea644">is_depth_discontinuous</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;planeMean) const</td></tr>
+<tr class="separator:ae22a9b6cc49dfc6637702db5302ea644"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b1e72fb7ce2a37682169726012392cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a8b1e72fb7ce2a37682169726012392cd">expand_segment</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;planeSegment)</td></tr>
 <tr class="memdesc:a8b1e72fb7ce2a37682169726012392cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a8b1e72fb7ce2a37682169726012392cd">More...</a><br /></td></tr>
 <tr class="separator:a8b1e72fb7ce2a37682169726012392cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -99,9 +101,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acf772b88ea844ed2b2c01739ef7644b2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#acf772b88ea844ed2b2c01739ef7644b2">get_normal_similarity</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;p) const</td></tr>
 <tr class="memdesc:acf772b88ea844ed2b2c01739ef7644b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dot product of two plane normals.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#acf772b88ea844ed2b2c01739ef7644b2">More...</a><br /></td></tr>
 <tr class="separator:acf772b88ea844ed2b2c01739ef7644b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab20140285b7a18ae4f4c665b9a85324e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ab20140285b7a18ae4f4c665b9a85324e">get_signed_distance</a> (const double point[3]) const</td></tr>
-<tr class="memdesc:ab20140285b7a18ae4f4c665b9a85324e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the signed distance from a plane to a point.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ab20140285b7a18ae4f4c665b9a85324e">More...</a><br /></td></tr>
-<tr class="separator:ab20140285b7a18ae4f4c665b9a85324e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad29da0efc04a494eba4cf6ea8d02f7b7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ad29da0efc04a494eba4cf6ea8d02f7b7">get_signed_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;point) const</td></tr>
 <tr class="memdesc:ad29da0efc04a494eba4cf6ea8d02f7b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the signed distance from a plane to a point.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ad29da0efc04a494eba4cf6ea8d02f7b7">More...</a><br /></td></tr>
 <tr class="separator:ad29da0efc04a494eba4cf6ea8d02f7b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,28 +418,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab20140285b7a18ae4f4c665b9a85324e" name="ab20140285b7a18ae4f4c665b9a85324e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab20140285b7a18ae4f4c665b9a85324e">&#9670;&nbsp;</a></span>get_signed_distance() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::features::primitives::Plane_Segment::get_signed_distance </td>
-          <td>(</td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>point</em>[3]</td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute the signed distance from a plane to a point. </p>
-
-</div>
-</div>
 <a id="ad29da0efc04a494eba4cf6ea8d02f7b7" name="ad29da0efc04a494eba4cf6ea8d02f7b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad29da0efc04a494eba4cf6ea8d02f7b7">&#9670;&nbsp;</a></span>get_signed_distance() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad29da0efc04a494eba4cf6ea8d02f7b7">&#9670;&nbsp;</a></span>get_signed_distance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -487,8 +466,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad81d874c228c110abfd79f5da4355d2c" name="ad81d874c228c110abfd79f5da4355d2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad81d874c228c110abfd79f5da4355d2c">&#9670;&nbsp;</a></span>is_depth_discontinuous()</h2>
+<a id="a4b5957552d2fc15f93cf3131bfef1e29" name="a4b5957552d2fc15f93cf3131bfef1e29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5957552d2fc15f93cf3131bfef1e29">&#9670;&nbsp;</a></span>is_depth_discontinuous() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -498,11 +477,29 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;&#160;</td>
           <td class="paramname"><em>planeSegment</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>True if this plane segment presents a depth discontinuity with another one. </dd></dl>
+
+</div>
+</div>
+<a id="ae22a9b6cc49dfc6637702db5302ea644" name="ae22a9b6cc49dfc6637702db5302ea644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22a9b6cc49dfc6637702db5302ea644">&#9670;&nbsp;</a></span>is_depth_discontinuous() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rgbd_slam::features::primitives::Plane_Segment::is_depth_discontinuous </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>planeMean</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

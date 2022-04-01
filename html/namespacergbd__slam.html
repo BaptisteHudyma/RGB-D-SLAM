@@ -97,14 +97,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a72a7655490cf888467a9fcfb29bc4145"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a72a7655490cf888467a9fcfb29bc4145">point_container</a></td></tr>
-<tr class="separator:a72a7655490cf888467a9fcfb29bc4145"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90bbc9699481bccb75546e08a112d64d"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a>, <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a90bbc9699481bccb75546e08a112d64d">map_point_pair</a></td></tr>
-<tr class="separator:a90bbc9699481bccb75546e08a112d64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb92efd792d97b44c1f403017ac54de9"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; <a class="el" href="namespacergbd__slam.html#a90bbc9699481bccb75546e08a112d64d">map_point_pair</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#acb92efd792d97b44c1f403017ac54de9">matched_point_container</a></td></tr>
-<tr class="separator:acb92efd792d97b44c1f403017ac54de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a120a836e72fb1dfc7d430f0fec397419"><td class="memItemLeft" align="right" valign="top">typedef std::unordered_map&lt; unsigned int, <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a120a836e72fb1dfc7d430f0fec397419">point_map</a></td></tr>
-<tr class="separator:a120a836e72fb1dfc7d430f0fec397419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fe13c1b6f4e20bd00b1d8c76d6fcc53"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; bool, Eigen::Dynamic, Eigen::Dynamic &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">Matrixb</a></td></tr>
 <tr class="separator:a0fe13c1b6f4e20bd00b1d8c76d6fcc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbfe158267b4d08e84815de6e0fc4cda"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Vector2d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a></td></tr>
@@ -140,8 +132,8 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9ea2d91bb44d771590c65ee304863542"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a9ea2d91bb44d771590c65ee304863542">get_percent_of_elapsed_time</a> (double treatmentTime, double totalTimeElapsed)</td></tr>
-<tr class="separator:a9ea2d91bb44d771590c65ee304863542"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e64ff2828290a079a7e2c76eea845b5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a0e64ff2828290a079a7e2c76eea845b5">get_percent_of_elapsed_time</a> (const double treatmentTime, const double totalTimeElapsed)</td></tr>
+<tr class="separator:a0e64ff2828290a079a7e2c76eea845b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -149,34 +141,6 @@ Variables</h2></td></tr>
 <tr class="separator:a377c6ad409881df230ffac24f94ec9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a90bbc9699481bccb75546e08a112d64d" name="a90bbc9699481bccb75546e08a112d64d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90bbc9699481bccb75546e08a112d64d">&#9670;&nbsp;</a></span>map_point_pair</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::pair&lt;<a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a>, <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a>&gt; <a class="el" href="namespacergbd__slam.html#a90bbc9699481bccb75546e08a112d64d">rgbd_slam::map_point_pair</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="acb92efd792d97b44c1f403017ac54de9" name="acb92efd792d97b44c1f403017ac54de9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb92efd792d97b44c1f403017ac54de9">&#9670;&nbsp;</a></span>matched_point_container</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::list&lt;<a class="el" href="namespacergbd__slam.html#a90bbc9699481bccb75546e08a112d64d">map_point_pair</a>&gt; <a class="el" href="namespacergbd__slam.html#acb92efd792d97b44c1f403017ac54de9">rgbd_slam::matched_point_container</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a2877fc3a278a20d5132bcd38e12faf69" name="a2877fc3a278a20d5132bcd38e12faf69"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2877fc3a278a20d5132bcd38e12faf69">&#9670;&nbsp;</a></span>matrix33</h2>
 
@@ -283,34 +247,6 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">typedef Eigen::Matrix&lt;bool, Eigen::Dynamic, Eigen::Dynamic&gt; <a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">rgbd_slam::Matrixb</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a72a7655490cf888467a9fcfb29bc4145" name="a72a7655490cf888467a9fcfb29bc4145"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72a7655490cf888467a9fcfb29bc4145">&#9670;&nbsp;</a></span>point_container</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::list&lt;<a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a>&gt; <a class="el" href="namespacergbd__slam.html#a72a7655490cf888467a9fcfb29bc4145">rgbd_slam::point_container</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a120a836e72fb1dfc7d430f0fec397419" name="a120a836e72fb1dfc7d430f0fec397419"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a120a836e72fb1dfc7d430f0fec397419">&#9670;&nbsp;</a></span>point_map</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::unordered_map&lt;unsigned int, <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">map_management::Point</a>&gt; <a class="el" href="namespacergbd__slam.html#a120a836e72fb1dfc7d430f0fec397419">rgbd_slam::point_map</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -430,8 +366,8 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a9ea2d91bb44d771590c65ee304863542" name="a9ea2d91bb44d771590c65ee304863542"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ea2d91bb44d771590c65ee304863542">&#9670;&nbsp;</a></span>get_percent_of_elapsed_time()</h2>
+<a id="a0e64ff2828290a079a7e2c76eea845b5" name="a0e64ff2828290a079a7e2c76eea845b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e64ff2828290a079a7e2c76eea845b5">&#9670;&nbsp;</a></span>get_percent_of_elapsed_time()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -439,13 +375,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">double rgbd_slam::get_percent_of_elapsed_time </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>treatmentTime</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>totalTimeElapsed</em>&#160;</td>
         </tr>
         <tr>

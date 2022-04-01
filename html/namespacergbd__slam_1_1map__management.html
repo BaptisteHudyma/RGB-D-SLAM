@@ -86,6 +86,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html">Map_Point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map point structure, containing all the necessary informations to identify a map point.  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_matched_screen_point.html">MatchedScreenPoint</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">Point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic keypoint class.  <a href="structrgbd__slam_1_1map__management_1_1_point.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -95,22 +97,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8d618e9f3d453c2c6f52fd7298a0743a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#a8d618e9f3d453c2c6f52fd7298a0743a">is_depth_valid</a> (const double depth)</td></tr>
-<tr class="memdesc:a8d618e9f3d453c2c6f52fd7298a0743a"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks the depth validity of a measurement  <a href="namespacergbd__slam_1_1map__management.html#a8d618e9f3d453c2c6f52fd7298a0743a">More...</a><br /></td></tr>
-<tr class="separator:a8d618e9f3d453c2c6f52fd7298a0743a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f0dc79963431686f04556b2abf79074"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#a4f0dc79963431686f04556b2abf79074">get_screen_point_covariance</a> (const double depth)</td></tr>
-<tr class="memdesc:a4f0dc79963431686f04556b2abf79074"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute a covariance matrix for a point associated with a depth measurement  <a href="namespacergbd__slam_1_1map__management.html#a4f0dc79963431686f04556b2abf79074">More...</a><br /></td></tr>
-<tr class="separator:a4f0dc79963431686f04556b2abf79074"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d854ab517611e578813e309aa66ed8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#aa9d854ab517611e578813e309aa66ed8">add_point_to_tracked_features</a> (const <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;mapPoint, <a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">features::keypoints::KeypointsWithIdStruct</a> &amp;keypointsWithIds)</td></tr>
 <tr class="memdesc:aa9d854ab517611e578813e309aa66ed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">My add a point to the tracked feature object, used to add optical flow tracking.  <a href="namespacergbd__slam_1_1map__management.html#aa9d854ab517611e578813e309aa66ed8">More...</a><br /></td></tr>
 <tr class="separator:aa9d854ab517611e578813e309aa66ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a37c5d6ae09aa12e7d554fa2fcfe1991a"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#a37c5d6ae09aa12e7d554fa2fcfe1991a">MIN_DEPTH_DISTANCE</a> = 40</td></tr>
-<tr class="separator:a37c5d6ae09aa12e7d554fa2fcfe1991a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bb27dd2e94061ad6907d9a1a4c3701e"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#a1bb27dd2e94061ad6907d9a1a4c3701e">MAX_DEPTH_DISTANCE</a> = 6000</td></tr>
-<tr class="separator:a1bb27dd2e94061ad6907d9a1a4c3701e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad715b0460102980c8d6fcaa81b1107d3"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#ad715b0460102980c8d6fcaa81b1107d3">INVALID_POINT_UNIQ_ID</a> = 0</td></tr>
 <tr class="separator:ad715b0460102980c8d6fcaa81b1107d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4b9445dc894687f9645da2c1d7fb3df"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#ac4b9445dc894687f9645da2c1d7fb3df">UNMATCHED_POINT_INDEX</a> = -1</td></tr>
@@ -144,46 +136,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>My add a point to the tracked feature object, used to add optical flow tracking. </p>
-
-</div>
-</div>
-<a id="a4f0dc79963431686f04556b2abf79074" name="a4f0dc79963431686f04556b2abf79074"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f0dc79963431686f04556b2abf79074">&#9670;&nbsp;</a></span>get_screen_point_covariance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::map_management::get_screen_point_covariance </td>
-          <td>(</td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>depth</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>compute a covariance matrix for a point associated with a depth measurement </p>
-
-</div>
-</div>
-<a id="a8d618e9f3d453c2c6f52fd7298a0743a" name="a8d618e9f3d453c2c6f52fd7298a0743a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d618e9f3d453c2c6f52fd7298a0743a">&#9670;&nbsp;</a></span>is_depth_valid()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool rgbd_slam::map_management::is_depth_valid </td>
-          <td>(</td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>depth</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>checks the depth validity of a measurement </p>
 <p >LOCAL UTILS FUNCTIONS </p>
 
 </div>
@@ -197,34 +149,6 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">const size_t rgbd_slam::map_management::INVALID_POINT_UNIQ_ID = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1bb27dd2e94061ad6907d9a1a4c3701e" name="a1bb27dd2e94061ad6907d9a1a4c3701e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bb27dd2e94061ad6907d9a1a4c3701e">&#9670;&nbsp;</a></span>MAX_DEPTH_DISTANCE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const double rgbd_slam::map_management::MAX_DEPTH_DISTANCE = 6000</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a37c5d6ae09aa12e7d554fa2fcfe1991a" name="a37c5d6ae09aa12e7d554fa2fcfe1991a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37c5d6ae09aa12e7d554fa2fcfe1991a">&#9670;&nbsp;</a></span>MIN_DEPTH_DISTANCE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const double rgbd_slam::map_management::MIN_DEPTH_DISTANCE = 40</td>
         </tr>
       </table>
 </div><div class="memdoc">

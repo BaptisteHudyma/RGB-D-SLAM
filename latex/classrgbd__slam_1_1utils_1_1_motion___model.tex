@@ -16,6 +16,8 @@ Dead reckoning class\+: guess next pose using a motion model.
 \item 
 void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}{reset}} ()
 \item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a9ed49b7ad6ce227cbd32207a62498f22}{reset}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&last\+Position, const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&last\+Rotation)
+\item 
 const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_ad46746162eb145a3944dc1156088bad3}{predict\+\_\+next\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&current\+Pose) const
 \begin{DoxyCompactList}\small\item\em Predicts next pose with motion model (dead reckoning) \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}{update\+\_\+model}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose)
@@ -53,8 +55,14 @@ Predicts next pose with motion model (dead reckoning)
 \mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}\label{classrgbd__slam_1_1utils_1_1_motion___model_ac9600382efdf1ff99cf681ff0b2e0bb6}} 
 \index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}!reset@{reset}}
 \index{reset@{reset}!rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}}
-\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Motion\+\_\+\+Model\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_motion___model_a9ed49b7ad6ce227cbd32207a62498f22}\label{classrgbd__slam_1_1utils_1_1_motion___model_a9ed49b7ad6ce227cbd32207a62498f22}} 
+\index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}!reset@{reset}}
+\index{reset@{reset}!rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Motion\+\_\+\+Model\+::reset (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{last\+Position,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{last\+Rotation }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}\label{classrgbd__slam_1_1utils_1_1_motion___model_a0e2eb38348c4c6df954f973220e0b289}} 
 \index{rgbd\_slam::utils::Motion\_Model@{rgbd\_slam::utils::Motion\_Model}!update\_model@{update\_model}}

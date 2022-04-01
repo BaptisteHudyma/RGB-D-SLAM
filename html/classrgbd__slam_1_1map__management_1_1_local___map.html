@@ -70,6 +70,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1map__management_1_1_local___map-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::map_management::Local_Map Class Reference</div></div>
 </div><!--header-->
@@ -86,15 +87,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a55f49d47df2e5c63d581786b64645ee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa418a6f97b3af08cc1738c599db63d27"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#aa418a6f97b3af08cc1738c599db63d27">~Local_Map</a> ()</td></tr>
 <tr class="separator:aa418a6f97b3af08cc1738c599db63d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af81e3393fafec87ba9385745c1c43530"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#af81e3393fafec87ba9385745c1c43530">find_keypoint_matches</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;currentPose, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;detectedKeypoint)</td></tr>
+<tr class="memitem:af81e3393fafec87ba9385745c1c43530"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#af81e3393fafec87ba9385745c1c43530">find_keypoint_matches</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;currentPose, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;detectedKeypoint)</td></tr>
 <tr class="memdesc:af81e3393fafec87ba9385745c1c43530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the point feature matches between the local map and a given set of points. Update the staged point list matched points.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#af81e3393fafec87ba9385745c1c43530">More...</a><br /></td></tr>
 <tr class="separator:af81e3393fafec87ba9385745c1c43530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c3fc00d5774f0984d8c6063af4100d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#a97738459fd8c450454fb64fdce577492">matches_containers::match_primitive_container</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a7c3fc00d5774f0984d8c6063af4100d7">find_primitive_matches</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;currentPose, const <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">features::primitives::primitive_container</a> &amp;detectedPrimitives)</td></tr>
 <tr class="memdesc:a7c3fc00d5774f0984d8c6063af4100d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the primitive matches.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a7c3fc00d5774f0984d8c6063af4100d7">More...</a><br /></td></tr>
 <tr class="separator:a7c3fc00d5774f0984d8c6063af4100d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a971ddf768f39fba6e1c2ff5f4d39708b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a971ddf768f39fba6e1c2ff5f4d39708b">update</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;previousPose, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;optimizedPose, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject)</td></tr>
-<tr class="memdesc:a971ddf768f39fba6e1c2ff5f4d39708b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the local and global map. Add new points to staged and map container.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a971ddf768f39fba6e1c2ff5f4d39708b">More...</a><br /></td></tr>
-<tr class="separator:a971ddf768f39fba6e1c2ff5f4d39708b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8af6754d457ae66408eaf5ee46b4352"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#ac8af6754d457ae66408eaf5ee46b4352">update</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;previousPose, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;optimizedPose, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;outlierMatchedPoints)</td></tr>
+<tr class="memdesc:ac8af6754d457ae66408eaf5ee46b4352"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the local and global map. Add new points to staged and map container.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#ac8af6754d457ae66408eaf5ee46b4352">More...</a><br /></td></tr>
+<tr class="separator:ac8af6754d457ae66408eaf5ee46b4352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e0a9d1f902a90b99b39e90dbd63cb73"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">features::keypoints::KeypointsWithIdStruct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a8e0a9d1f902a90b99b39e90dbd63cb73">get_tracked_keypoints_features</a> () const</td></tr>
 <tr class="memdesc:a8e0a9d1f902a90b99b39e90dbd63cb73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return an object containing the tracked keypoint features in screen space (2D), with the associated global ids.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a8e0a9d1f902a90b99b39e90dbd63cb73">More...</a><br /></td></tr>
 <tr class="separator:a8e0a9d1f902a90b99b39e90dbd63cb73"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,27 +108,39 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a0edf9ab397aa1078d84ad86b0e4687d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a0edf9ab397aa1078d84ad86b0e4687d3">find_match</a> (<a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;point, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;detectedKeypoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToCamMatrix, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;matchedPoints)</td></tr>
+<tr class="memitem:a0edf9ab397aa1078d84ad86b0e4687d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a0edf9ab397aa1078d84ad86b0e4687d3">find_match</a> (<a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;point, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;detectedKeypoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToCamMatrix, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;matchedPoints)</td></tr>
 <tr class="memdesc:a0edf9ab397aa1078d84ad86b0e4687d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a match for a given point, and update this point match index. It will update the _isPointMatched object if a point is matched.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a0edf9ab397aa1078d84ad86b0e4687d3">More...</a><br /></td></tr>
 <tr class="separator:a0edf9ab397aa1078d84ad86b0e4687d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4e4c1fbed0b0bac2369847cefa68efe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#ad4e4c1fbed0b0bac2369847cefa68efe">update_point_match_status</a> (<a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;mapPoint, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;previousCameraToWorldMatrix, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix)</td></tr>
-<tr class="memdesc:ad4e4c1fbed0b0bac2369847cefa68efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the Matched/Unmatched status of a map point.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#ad4e4c1fbed0b0bac2369847cefa68efe">More...</a><br /></td></tr>
-<tr class="separator:ad4e4c1fbed0b0bac2369847cefa68efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f30dd908c2fcce7c5f125e70001622"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a38f30dd908c2fcce7c5f125e70001622">update_local_keypoint_map</a> (const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;previousCameraToWorldMatrix, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject)</td></tr>
-<tr class="memdesc:a38f30dd908c2fcce7c5f125e70001622"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update local keypoint map features.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a38f30dd908c2fcce7c5f125e70001622">More...</a><br /></td></tr>
-<tr class="separator:a38f30dd908c2fcce7c5f125e70001622"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade295fd4560a8bb5506a8774bdc42663"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#ade295fd4560a8bb5506a8774bdc42663">update_staged_keypoints_map</a> (const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;previousCameraToWorldMatrix, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject)</td></tr>
-<tr class="memdesc:ade295fd4560a8bb5506a8774bdc42663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add previously uncertain keypoint features to the local map.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#ade295fd4560a8bb5506a8774bdc42663">More...</a><br /></td></tr>
-<tr class="separator:ade295fd4560a8bb5506a8774bdc42663"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39f24921be8442c0743357443cb321e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a39f24921be8442c0743357443cb321e9">add_umatched_keypoints_to_staged_map</a> (const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject)</td></tr>
-<tr class="memdesc:a39f24921be8442c0743357443cb321e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add unmatched detected points to the staged map.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a39f24921be8442c0743357443cb321e9">More...</a><br /></td></tr>
-<tr class="separator:a39f24921be8442c0743357443cb321e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b4e7b3ef6b097f5fd41144127c3febe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a3b4e7b3ef6b097f5fd41144127c3febe">update_point_match_status</a> (<a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;poseCovariance, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;previousCameraToWorldMatrix, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix)</td></tr>
+<tr class="memdesc:a3b4e7b3ef6b097f5fd41144127c3febe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the Matched/Unmatched status of a map point.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a3b4e7b3ef6b097f5fd41144127c3febe">More...</a><br /></td></tr>
+<tr class="separator:a3b4e7b3ef6b097f5fd41144127c3febe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fa0963d137eee15a2eb9d25c8884039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a9fa0963d137eee15a2eb9d25c8884039">update_local_keypoint_map</a> (const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;poseCovariance, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;previousCameraToWorldMatrix, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject)</td></tr>
+<tr class="memdesc:a9fa0963d137eee15a2eb9d25c8884039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update local keypoint map features.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a9fa0963d137eee15a2eb9d25c8884039">More...</a><br /></td></tr>
+<tr class="separator:a9fa0963d137eee15a2eb9d25c8884039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b98f8c35f26a98bf33708e5006f1b9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a5b98f8c35f26a98bf33708e5006f1b9a">update_staged_keypoints_map</a> (const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;poseCovariance, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;previousCameraToWorldMatrix, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject)</td></tr>
+<tr class="memdesc:a5b98f8c35f26a98bf33708e5006f1b9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add previously uncertain keypoint features to the local map.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a5b98f8c35f26a98bf33708e5006f1b9a">More...</a><br /></td></tr>
+<tr class="separator:a5b98f8c35f26a98bf33708e5006f1b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a748a8d6a9575e8dad87269be79f09c6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a748a8d6a9575e8dad87269be79f09c6d">add_umatched_keypoints_to_staged_map</a> (const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;poseCovariance, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix, const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;keypointObject)</td></tr>
+<tr class="memdesc:a748a8d6a9575e8dad87269be79f09c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add unmatched detected points to the staged map.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a748a8d6a9575e8dad87269be79f09c6d">More...</a><br /></td></tr>
+<tr class="separator:a748a8d6a9575e8dad87269be79f09c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af62ebdf2d7be0eca02c759a8cc1ea602"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#af62ebdf2d7be0eca02c759a8cc1ea602">update_local_to_global</a> ()</td></tr>
 <tr class="memdesc:af62ebdf2d7be0eca02c759a8cc1ea602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean the local map so it stays local, and update the global map with the good features.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#af62ebdf2d7be0eca02c759a8cc1ea602">More...</a><br /></td></tr>
 <tr class="separator:af62ebdf2d7be0eca02c759a8cc1ea602"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff0a1216828187bf6aaef437b5a498d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#aff0a1216828187bf6aaef437b5a498d8">draw_point_on_image</a> (const <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToCameraMatrix, const cv::Scalar &amp;pointColor, cv::Mat &amp;debugImage) const</td></tr>
-<tr class="memdesc:aff0a1216828187bf6aaef437b5a498d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a given map point on the given debug image.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#aff0a1216828187bf6aaef437b5a498d8">More...</a><br /></td></tr>
-<tr class="separator:aff0a1216828187bf6aaef437b5a498d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6922aeab012e88206c07c2079eef442e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a6922aeab012e88206c07c2079eef442e">mark_outliers_as_unmatched</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;outlierMatchedPoints)</td></tr>
+<tr class="memdesc:a6922aeab012e88206c07c2079eef442e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark all the outliers detected during optimization as unmatched.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a6922aeab012e88206c07c2079eef442e">More...</a><br /></td></tr>
+<tr class="separator:a6922aeab012e88206c07c2079eef442e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c95f09e7fc79f6d22ccbb0d5303a76f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a2c95f09e7fc79f6d22ccbb0d5303a76f">mark_point_with_id_as_unmatched</a> (const size_t pointId)</td></tr>
+<tr class="memdesc:a2c95f09e7fc79f6d22ccbb0d5303a76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark a point with the id pointId as unmatched. Will search the staged and local map.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a2c95f09e7fc79f6d22ccbb0d5303a76f">More...</a><br /></td></tr>
+<tr class="separator:a2c95f09e7fc79f6d22ccbb0d5303a76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d78da66bf537cfc63a13b085c3191e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a92d78da66bf537cfc63a13b085c3191e">mark_point_with_id_as_unmatched</a> (const size_t pointId, <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;point)</td></tr>
+<tr class="memdesc:a92d78da66bf537cfc63a13b085c3191e"><td class="mdescLeft">&#160;</td><td class="mdescRight">mark a point as unmatched  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a92d78da66bf537cfc63a13b085c3191e">More...</a><br /></td></tr>
+<tr class="separator:a92d78da66bf537cfc63a13b085c3191e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a162e33d06a66cceb6396ee123ed24ba4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a162e33d06a66cceb6396ee123ed24ba4">draw_point_on_image</a> (const <a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToCameraMatrix, const cv::Scalar &amp;pointColor, cv::Mat &amp;debugImage)</td></tr>
+<tr class="memdesc:a162e33d06a66cceb6396ee123ed24ba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw a given map point on the given debug image.  <a href="classrgbd__slam_1_1map__management_1_1_local___map.html#a162e33d06a66cceb6396ee123ed24ba4">More...</a><br /></td></tr>
+<tr class="separator:a162e33d06a66cceb6396ee123ed24ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Maintain a local map around the camera. Can return matched features, and update the global map when features are estimated to be reliable. For now we dont have a global map. </p>
@@ -168,8 +181,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a39f24921be8442c0743357443cb321e9" name="a39f24921be8442c0743357443cb321e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39f24921be8442c0743357443cb321e9">&#9670;&nbsp;</a></span>add_umatched_keypoints_to_staged_map()</h2>
+<a id="a748a8d6a9575e8dad87269be79f09c6d" name="a748a8d6a9575e8dad87269be79f09c6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a748a8d6a9575e8dad87269be79f09c6d">&#9670;&nbsp;</a></span>add_umatched_keypoints_to_staged_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,6 +193,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void rgbd_slam::map_management::Local_Map::add_umatched_keypoints_to_staged_map </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>poseCovariance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
           <td class="paramname"><em>cameraToWorldMatrix</em>, </td>
         </tr>
@@ -205,6 +224,7 @@ Protected Member Functions</h2></td></tr>
 <p>Add unmatched detected points to the staged map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">poseCovariance</td><td>The covariance matrix of the optimized position of the observer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorldMatrix</td><td>A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">keypointObject</td><td>An object containing the detected key points in the rgbd frame. Must be the same as in find_matches </td></tr>
   </table>
@@ -213,8 +233,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aff0a1216828187bf6aaef437b5a498d8" name="aff0a1216828187bf6aaef437b5a498d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff0a1216828187bf6aaef437b5a498d8">&#9670;&nbsp;</a></span>draw_point_on_image()</h2>
+<a id="a162e33d06a66cceb6396ee123ed24ba4" name="a162e33d06a66cceb6396ee123ed24ba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a162e33d06a66cceb6396ee123ed24ba4">&#9670;&nbsp;</a></span>draw_point_on_image()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -249,12 +269,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -279,7 +299,7 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> rgbd_slam::map_management::Local_Map::find_keypoint_matches </td>
+          <td class="memname"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> rgbd_slam::map_management::Local_Map::find_keypoint_matches </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
           <td class="paramname"><em>currentPose</em>, </td>
@@ -340,7 +360,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;&#160;</td>
           <td class="paramname"><em>matchedPoints</em>&#160;</td>
         </tr>
         <tr>
@@ -477,6 +497,107 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a6922aeab012e88206c07c2079eef442e" name="a6922aeab012e88206c07c2079eef442e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6922aeab012e88206c07c2079eef442e">&#9670;&nbsp;</a></span>mark_outliers_as_unmatched()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::map_management::Local_Map::mark_outliers_as_unmatched </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>outlierMatchedPoints</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark all the outliers detected during optimization as unmatched. </p>
+
+</div>
+</div>
+<a id="a2c95f09e7fc79f6d22ccbb0d5303a76f" name="a2c95f09e7fc79f6d22ccbb0d5303a76f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c95f09e7fc79f6d22ccbb0d5303a76f">&#9670;&nbsp;</a></span>mark_point_with_id_as_unmatched() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rgbd_slam::map_management::Local_Map::mark_point_with_id_as_unmatched </td>
+          <td>(</td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>pointId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark a point with the id pointId as unmatched. Will search the staged and local map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointId</td><td>The uniq id of the point to unmatch</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the point was found and updated </dd></dl>
+
+</div>
+</div>
+<a id="a92d78da66bf537cfc63a13b085c3191e" name="a92d78da66bf537cfc63a13b085c3191e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92d78da66bf537cfc63a13b085c3191e">&#9670;&nbsp;</a></span>mark_point_with_id_as_unmatched() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::map_management::Local_Map::mark_point_with_id_as_unmatched </td>
+          <td>(</td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>pointId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>mark a point as unmatched </p>
+
+</div>
+</div>
 <a id="ad1073f3d16e8549024d939620831cc1e" name="ad1073f3d16e8549024d939620831cc1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1073f3d16e8549024d939620831cc1e">&#9670;&nbsp;</a></span>reset()</h2>
 
@@ -496,8 +617,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a971ddf768f39fba6e1c2ff5f4d39708b" name="a971ddf768f39fba6e1c2ff5f4d39708b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a971ddf768f39fba6e1c2ff5f4d39708b">&#9670;&nbsp;</a></span>update()</h2>
+<a id="ac8af6754d457ae66408eaf5ee46b4352" name="ac8af6754d457ae66408eaf5ee46b4352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8af6754d457ae66408eaf5ee46b4352">&#9670;&nbsp;</a></span>update()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -518,7 +639,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">features::keypoints::Keypoint_Handler</a> &amp;&#160;</td>
-          <td class="paramname"><em>keypointObject</em>&#160;</td>
+          <td class="paramname"><em>keypointObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>outlierMatchedPoints</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -534,14 +661,15 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">previousPose</td><td>The clean true pose of the observer, before the new measurements </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">optimizedPose</td><td>The clean true pose of the observer, after optimization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">keypointObject</td><td>An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">outlierMatchedPoints</td><td>A container for all the wrongly associated points detected in the pose optimization process. They should be marked as invalid matches </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a38f30dd908c2fcce7c5f125e70001622" name="a38f30dd908c2fcce7c5f125e70001622"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38f30dd908c2fcce7c5f125e70001622">&#9670;&nbsp;</a></span>update_local_keypoint_map()</h2>
+<a id="a9fa0963d137eee15a2eb9d25c8884039" name="a9fa0963d137eee15a2eb9d25c8884039"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fa0963d137eee15a2eb9d25c8884039">&#9670;&nbsp;</a></span>update_local_keypoint_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -552,6 +680,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void rgbd_slam::map_management::Local_Map::update_local_keypoint_map </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>poseCovariance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
           <td class="paramname"><em>previousCameraToWorldMatrix</em>, </td>
         </tr>
@@ -583,6 +717,7 @@ Protected Member Functions</h2></td></tr>
 <p>Update local keypoint map features. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">poseCovariance</td><td>The covariance matrix of the optimized position of the observer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">previousCameraToWorldMatrix</td><td>A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorldMatrix</td><td>A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">keypointObject</td><td>An object containing the detected key points in the rgbd frame. Must be the same as in find_matches </td></tr>
@@ -619,8 +754,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad4e4c1fbed0b0bac2369847cefa68efe" name="ad4e4c1fbed0b0bac2369847cefa68efe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4e4c1fbed0b0bac2369847cefa68efe">&#9670;&nbsp;</a></span>update_point_match_status()</h2>
+<a id="a3b4e7b3ef6b097f5fd41144127c3febe" name="a3b4e7b3ef6b097f5fd41144127c3febe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b4e7b3ef6b097f5fd41144127c3febe">&#9670;&nbsp;</a></span>update_point_match_status()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -633,6 +768,12 @@ Protected Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html">IMap_Point_With_Tracking</a> &amp;&#160;</td>
           <td class="paramname"><em>mapPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>poseCovariance</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -669,6 +810,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">mapPoint</td><td>the map point to update </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">poseCovariance</td><td>The covariance matrix of the optimized position of the observer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">keypointObject</td><td>An object to handle all detected points in an image </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">previousCameraToWorldMatrix</td><td>A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorldMatrix</td><td>A transformation matrix to convert a camera point to a world point </td></tr>
@@ -678,8 +820,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ade295fd4560a8bb5506a8774bdc42663" name="ade295fd4560a8bb5506a8774bdc42663"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade295fd4560a8bb5506a8774bdc42663">&#9670;&nbsp;</a></span>update_staged_keypoints_map()</h2>
+<a id="a5b98f8c35f26a98bf33708e5006f1b9a" name="a5b98f8c35f26a98bf33708e5006f1b9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b98f8c35f26a98bf33708e5006f1b9a">&#9670;&nbsp;</a></span>update_staged_keypoints_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -690,6 +832,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void rgbd_slam::map_management::Local_Map::update_staged_keypoints_map </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>poseCovariance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
           <td class="paramname"><em>previousCameraToWorldMatrix</em>, </td>
         </tr>
@@ -721,6 +869,7 @@ Protected Member Functions</h2></td></tr>
 <p>Add previously uncertain keypoint features to the local map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">poseCovariance</td><td>The covariance matrix of the optimized position of the observer </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">previousCameraToWorldMatrix</td><td>A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorldMatrix</td><td>A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">keypointObject</td><td>An object containing the detected key points in the rgbd frame. Must be the same as in find_matches </td></tr>

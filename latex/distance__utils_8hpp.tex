@@ -1,0 +1,21 @@
+\hypertarget{distance__utils_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/distance\+\_\+utils.hpp File Reference}
+\label{distance__utils_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.hpp}}
+{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a173685d2c7d390b356cbb92a2fc6f34e}{rgbd\+\_\+slam\+::utils\+::get\+\_\+distance\+\_\+euclidean}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
+\begin{DoxyCompactList}\small\item\em Compute a distance between two 3D points. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a02f7a096d8a6742b7f6a4f375771d0cc}{rgbd\+\_\+slam\+::utils\+::get\+\_\+distance\+\_\+manhattan}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
+\begin{DoxyCompactList}\small\item\em Compute a distance between two 3D points. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a35743118f9724893e86e6920b281c5cc}{rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance}} (const vector3 \&world\+Point, const Eigen\+::\+Vector\+Xd \&camera\+Point, const matrix44 \&world\+To\+Camera\+Transformation\+Matrix)
+\begin{DoxyCompactList}\small\item\em Compute a distance between a world point and a camera point, by retroprojecting the world point to camera space. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_afeafca9da8645b7c4b95f9b7cfd3cb45}{rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const vector3 \&world\+Point, const vector3 \&camera\+Point, const matrix44 \&camera\+To\+World\+Transformation\+Matrix)
+\begin{DoxyCompactList}\small\item\em Compute a distance between a world point and a 3D point in camera space, by projecting the camera point to world space. \end{DoxyCompactList}\end{DoxyCompactItemize}

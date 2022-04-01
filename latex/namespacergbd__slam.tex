@@ -25,14 +25,6 @@ class \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\+\_\+\+SLAM}}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::list$<$ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}{point\+\_\+container}}
-\item 
-typedef std\+::pair$<$ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\+\_\+point\+\_\+pair}}
-\item 
-typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\+\_\+point\+\_\+pair}} $>$ \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{matched\+\_\+point\+\_\+container}}
-\item 
-typedef std\+::unordered\+\_\+map$<$ unsigned int, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}} $>$ \mbox{\hyperlink{namespacergbd__slam_a120a836e72fb1dfc7d430f0fec397419}{point\+\_\+map}}
-\item 
 typedef Eigen\+::\+Matrix$<$ bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic $>$ \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}}
 \item 
 typedef Eigen\+::\+Vector2d \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}
@@ -68,7 +60,7 @@ typedef std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf09
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_a9ea2d91bb44d771590c65ee304863542}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (double treatment\+Time, double total\+Time\+Elapsed)
+double \mbox{\hyperlink{namespacergbd__slam_a0e64ff2828290a079a7e2c76eea845b5}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -78,18 +70,6 @@ const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec
 
 
 \doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}\label{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}} 
-\index{rgbd\_slam@{rgbd\_slam}!map\_point\_pair@{map\_point\_pair}}
-\index{map\_point\_pair@{map\_point\_pair}!rgbd\_slam@{rgbd\_slam}}
-\doxysubsubsection{\texorpdfstring{map\_point\_pair}{map\_point\_pair}}
-{\footnotesize\ttfamily typedef std\+::pair$<$\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{rgbd\+\_\+slam\+::map\+\_\+point\+\_\+pair}}}
-
-\mbox{\Hypertarget{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}\label{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}} 
-\index{rgbd\_slam@{rgbd\_slam}!matched\_point\_container@{matched\_point\_container}}
-\index{matched\_point\_container@{matched\_point\_container}!rgbd\_slam@{rgbd\_slam}}
-\doxysubsubsection{\texorpdfstring{matched\_point\_container}{matched\_point\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_a90bbc9699481bccb75546e08a112d64d}{map\+\_\+point\+\_\+pair}}$>$ \mbox{\hyperlink{namespacergbd__slam_acb92efd792d97b44c1f403017ac54de9}{rgbd\+\_\+slam\+::matched\+\_\+point\+\_\+container}}}
-
 \mbox{\Hypertarget{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}\label{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}} 
 \index{rgbd\_slam@{rgbd\_slam}!matrix33@{matrix33}}
 \index{matrix33@{matrix33}!rgbd\_slam@{rgbd\_slam}}
@@ -137,18 +117,6 @@ const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec
 \index{Matrixb@{Matrixb}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{Matrixb}{Matrixb}}
 {\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic$>$ \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{rgbd\+\_\+slam\+::\+Matrixb}}}
-
-\mbox{\Hypertarget{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}\label{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}} 
-\index{rgbd\_slam@{rgbd\_slam}!point\_container@{point\_container}}
-\index{point\_container@{point\_container}!rgbd\_slam@{rgbd\_slam}}
-\doxysubsubsection{\texorpdfstring{point\_container}{point\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a72a7655490cf888467a9fcfb29bc4145}{rgbd\+\_\+slam\+::point\+\_\+container}}}
-
-\mbox{\Hypertarget{namespacergbd__slam_a120a836e72fb1dfc7d430f0fec397419}\label{namespacergbd__slam_a120a836e72fb1dfc7d430f0fec397419}} 
-\index{rgbd\_slam@{rgbd\_slam}!point\_map@{point\_map}}
-\index{point\_map@{point\_map}!rgbd\_slam@{rgbd\_slam}}
-\doxysubsubsection{\texorpdfstring{point\_map}{point\_map}}
-{\footnotesize\ttfamily typedef std\+::unordered\+\_\+map$<$unsigned int, \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{map\+\_\+management\+::\+Point}}$>$ \mbox{\hyperlink{namespacergbd__slam_a120a836e72fb1dfc7d430f0fec397419}{rgbd\+\_\+slam\+::point\+\_\+map}}}
 
 \mbox{\Hypertarget{namespacergbd__slam_a078420ee4217ebf095ba100570679827}\label{namespacergbd__slam_a078420ee4217ebf095ba100570679827}} 
 \index{rgbd\_slam@{rgbd\_slam}!quaternion@{quaternion}}
@@ -201,11 +169,11 @@ const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_a9ea2d91bb44d771590c65ee304863542}\label{namespacergbd__slam_a9ea2d91bb44d771590c65ee304863542}} 
+\mbox{\Hypertarget{namespacergbd__slam_a0e64ff2828290a079a7e2c76eea845b5}\label{namespacergbd__slam_a0e64ff2828290a079a7e2c76eea845b5}} 
 \index{rgbd\_slam@{rgbd\_slam}!get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}}
 \index{get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{get\_percent\_of\_elapsed\_time()}{get\_percent\_of\_elapsed\_time()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{double}]{treatment\+Time,  }\item[{double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})}
 
 
 

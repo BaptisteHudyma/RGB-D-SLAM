@@ -68,16 +68,19 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">pose_optimization.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="pose__optimization_8hpp_source.html">pose_optimization.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="camera__transformation_8hpp_source.html">camera_transformation.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="distance__utils_8hpp_source.html">distance_utils.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="covariances_8hpp_source.html">covariances.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="logger_8hpp_source.html">logger.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="levenberg__marquard__functors_8hpp_source.html">levenberg_marquard_functors.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
+<code>#include &quot;p3p.hpp&quot;</code><br />
+<code>#include &quot;<a class="el" href="ransac_8hpp_source.html">ransac.hpp</a>&quot;</code><br />
 <code>#include &lt;Eigen/StdVector&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -86,15 +89,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacergbd__slam_1_1pose__optimization"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html">rgbd_slam::pose_optimization</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a0ea5df14f479b77da3cc1afbc9e2c097"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a0ea5df14f479b77da3cc1afbc9e2c097">rgbd_slam::pose_optimization::get_distance_to_point</a> (const vector3 &amp;mapPoint, const vector3 &amp;matchedPoint, const matrix44 &amp;camToWorldMatrix)</td></tr>
-<tr class="memdesc:a0ea5df14f479b77da3cc1afbc9e2c097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the retroprojection distance between a mapPoint and a cameraPoint.  <a href="namespacergbd__slam_1_1pose__optimization.html#a0ea5df14f479b77da3cc1afbc9e2c097">More...</a><br /></td></tr>
-<tr class="separator:a0ea5df14f479b77da3cc1afbc9e2c097"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e2de17bbf8260fb3c4024d31f29d2d7"><td class="memItemLeft" align="right" valign="top">matches_containers::match_point_container&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a1e2de17bbf8260fb3c4024d31f29d2d7">rgbd_slam::pose_optimization::get_n_random_matches</a> (const matches_containers::match_point_container &amp;matchedPoints, const uint n)</td></tr>
-<tr class="memdesc:a1e2de17bbf8260fb3c4024d31f29d2d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a random subset of matches, of size n.  <a href="namespacergbd__slam_1_1pose__optimization.html#a1e2de17bbf8260fb3c4024d31f29d2d7">More...</a><br /></td></tr>
-<tr class="separator:a1e2de17bbf8260fb3c4024d31f29d2d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

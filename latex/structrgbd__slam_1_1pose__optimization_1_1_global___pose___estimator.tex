@@ -18,12 +18,8 @@ Inheritance diagram for rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1fcc96ee2aeb8832ffbf9c2187890622}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const size\+\_\+t n, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&world\+Position, const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&world\+Rotation)
+\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1fcc96ee2aeb8832ffbf9c2187890622}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const size\+\_\+t n, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&world\+Position, const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&world\+Rotation)
 \item 
-double \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_abccab39bd3d59c59afadc990dd5e79cb}{get\+\_\+2\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Cam\+Matrix) const
-\begin{DoxyCompactList}\small\item\em Return te distance between the map point projected to screen space and the it\textquotesingle{}s matched screen point. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ab9de2443ed5745b7ca8588acc340596c}{get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&cam\+To\+World\+Matrix) const
-\begin{DoxyCompactList}\small\item\em Return te 3D distance between the map point and the it\textquotesingle{}s matched screen point projected to world space. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1413e702e0a1c579b72e20a2901d0679}{operator()}} (const Eigen\+::\+Vector\+Xd \&x, Eigen\+::\+Vector\+Xd \&fvec) const
 \begin{DoxyCompactList}\small\item\em Implementation of the objective function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
@@ -37,7 +33,7 @@ Implementation of the main pose and orientation optimisation, to be used by the 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!Global\_Pose\_Estimator@{Global\_Pose\_Estimator}}
 \index{Global\_Pose\_Estimator@{Global\_Pose\_Estimator}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{Global\_Pose\_Estimator()}{Global\_Pose\_Estimator()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{n,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{world\+Position,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{world\+Rotation }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{n,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{world\+Position,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{world\+Rotation }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -53,50 +49,6 @@ Implementation of the main pose and orientation optimisation, to be used by the 
 GLOBAL POSE ESTIMATOR members 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_abccab39bd3d59c59afadc990dd5e79cb}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_abccab39bd3d59c59afadc990dd5e79cb}} 
-\index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!get\_2D\_to\_3D\_distance@{get\_2D\_to\_3D\_distance}}
-\index{get\_2D\_to\_3D\_distance@{get\_2D\_to\_3D\_distance}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
-\doxysubsubsection{\texorpdfstring{get\_2D\_to\_3D\_distance()}{get\_2D\_to\_3D\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::get\+\_\+2\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Cam\+Matrix }\end{DoxyParamCaption}) const}
-
-
-
-Return te distance between the map point projected to screen space and the it\textquotesingle{}s matched screen point. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em map\+Point} & The map point in 3D world coordinates \\
-\hline
-\mbox{\texttt{ in}}  & {\em matched\+Point} & The detected \& matched point, in 3D screen coordinates \\
-\hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Cam\+Matrix} & The matrix to make a transformation from world coordinates to screen coordinates\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-The 2D screen distance between those two points 
-\end{DoxyReturn}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ab9de2443ed5745b7ca8588acc340596c}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_ab9de2443ed5745b7ca8588acc340596c}} 
-\index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!get\_3D\_to\_3D\_distance@{get\_3D\_to\_3D\_distance}}
-\index{get\_3D\_to\_3D\_distance@{get\_3D\_to\_3D\_distance}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
-\doxysubsubsection{\texorpdfstring{get\_3D\_to\_3D\_distance()}{get\_3D\_to\_3D\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{cam\+To\+World\+Matrix }\end{DoxyParamCaption}) const}
-
-
-
-Return te 3D distance between the map point and the it\textquotesingle{}s matched screen point projected to world space. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em map\+Point} & The map point in 3D world coordinates \\
-\hline
-\mbox{\texttt{ in}}  & {\em matched\+Point} & The detected \& matched point, in 3D screen coordinates \\
-\hline
-\mbox{\texttt{ in}}  & {\em cam\+To\+World\+Matrix} & The matrix to make a transformation from screen coordinates to world coordinates\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-The 3D screen distance between those two points 
-\end{DoxyReturn}
 \mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1413e702e0a1c579b72e20a2901d0679}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1413e702e0a1c579b72e20a2901d0679}} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!operator()@{operator()}}
 \index{operator()@{operator()}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}

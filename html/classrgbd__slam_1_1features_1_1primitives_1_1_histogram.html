@@ -83,9 +83,9 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2c554b601e1418e56cb53973929d2274"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a2c554b601e1418e56cb53973929d2274">Histogram</a> (const uint binPerCoordCount)</td></tr>
 <tr class="separator:a2c554b601e1418e56cb53973929d2274"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e9d176658ec3b7cbe7c43bb4b453b8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a2e9d176658ec3b7cbe7c43bb4b453b8d">init_histogram</a> (const Eigen::MatrixXd &amp;points, const bool *flags)</td></tr>
-<tr class="memdesc:a2e9d176658ec3b7cbe7c43bb4b453b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise the histogram.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a2e9d176658ec3b7cbe7c43bb4b453b8d">More...</a><br /></td></tr>
-<tr class="separator:a2e9d176658ec3b7cbe7c43bb4b453b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a463cae329fb27ccbe72540d583caa587"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a463cae329fb27ccbe72540d583caa587">init_histogram</a> (const Eigen::MatrixXd &amp;points, const std::vector&lt; bool &gt; &amp;flags)</td></tr>
+<tr class="memdesc:a463cae329fb27ccbe72540d583caa587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise the histogram.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a463cae329fb27ccbe72540d583caa587">More...</a><br /></td></tr>
+<tr class="separator:a463cae329fb27ccbe72540d583caa587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2eb0827bed183246cc45b4d4edf0beab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a2eb0827bed183246cc45b4d4edf0beab">get_points_from_most_frequent_bin</a> (std::vector&lt; uint &gt; &amp;pointsIds) const</td></tr>
 <tr class="memdesc:a2eb0827bed183246cc45b4d4edf0beab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the points in the bin containing the most points.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#a2eb0827bed183246cc45b4d4edf0beab">More...</a><br /></td></tr>
 <tr class="separator:a2eb0827bed183246cc45b4d4edf0beab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,8 +177,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2e9d176658ec3b7cbe7c43bb4b453b8d" name="a2e9d176658ec3b7cbe7c43bb4b453b8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e9d176658ec3b7cbe7c43bb4b453b8d">&#9670;&nbsp;</a></span>init_histogram()</h2>
+<a id="a463cae329fb27ccbe72540d583caa587" name="a463cae329fb27ccbe72540d583caa587"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a463cae329fb27ccbe72540d583caa587">&#9670;&nbsp;</a></span>init_histogram()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -192,7 +192,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const bool *&#160;</td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
           <td class="paramname"><em>flags</em>&#160;</td>
         </tr>
         <tr>

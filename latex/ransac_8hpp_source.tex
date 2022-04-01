@@ -1,0 +1,35 @@
+\hypertarget{ransac_8hpp_source}{}\doxysection{ransac.\+hpp}
+\label{ransac_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/ransac.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/ransac.hpp}}
+\mbox{\hyperlink{ransac_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_POSEOPTIMIZATION\_RANSAC\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_POSEOPTIMIZATION\_RANSAC\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{6     \textcolor{keyword}{namespace }pose\_optimization \{}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{14         \textcolor{keyword}{template}< \textcolor{keyword}{template}<\textcolor{keyword}{typename}> \textcolor{keyword}{class }Container, \textcolor{keyword}{typename} T>}
+\DoxyCodeLine{15             Container<T> \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a37a8e81899ab799fbfa9cc5ad825707f}{get\_random\_subset}}(\textcolor{keyword}{const} Container<T>\& inContainer, \textcolor{keyword}{const} uint numberOfElementsToChoose)}
+\DoxyCodeLine{16             \{}
+\DoxyCodeLine{17                 assert(numberOfElementsToChoose <= inContainer.size());}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19                 \textcolor{comment}{// get a vector of references and shuffle it}}
+\DoxyCodeLine{20                 std::vector<std::reference\_wrapper<const T>> copyVector(inContainer.cbegin(), inContainer.cend());}
+\DoxyCodeLine{21                 std::random\_shuffle(copyVector.begin(), copyVector.end());}
+\DoxyCodeLine{22                 assert(copyVector.size() == inContainer.size());}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24                 \textcolor{comment}{// copy the first matches, they will be randoms}}
+\DoxyCodeLine{25                 Container<T> outContainer;}
+\DoxyCodeLine{26                 \textcolor{keywordflow}{for}(uint i = 0; i < numberOfElementsToChoose; ++i)}
+\DoxyCodeLine{27                     outContainer.insert(outContainer.begin(), copyVector[i]);}
+\DoxyCodeLine{28                 \textcolor{keywordflow}{return} outContainer;}
+\DoxyCodeLine{29             \}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \}   \textcolor{comment}{/* pose\_optimization */}}
+\DoxyCodeLine{32 \}   \textcolor{comment}{/* rgbd\_slam */}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

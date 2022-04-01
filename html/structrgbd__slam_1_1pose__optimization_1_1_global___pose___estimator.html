@@ -90,14 +90,8 @@ Inheritance diagram for rgbd_slam::pose_optimization::Global_Pose_Estimator:</di
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1fcc96ee2aeb8832ffbf9c2187890622"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1fcc96ee2aeb8832ffbf9c2187890622">Global_Pose_Estimator</a> (const size_t n, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;points, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;worldPosition, const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;worldRotation)</td></tr>
+<tr class="memitem:a1fcc96ee2aeb8832ffbf9c2187890622"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1fcc96ee2aeb8832ffbf9c2187890622">Global_Pose_Estimator</a> (const size_t n, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;points, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;worldPosition, const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;worldRotation)</td></tr>
 <tr class="separator:a1fcc96ee2aeb8832ffbf9c2187890622"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abccab39bd3d59c59afadc990dd5e79cb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#abccab39bd3d59c59afadc990dd5e79cb">get_2D_to_3D_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;matchedPoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToCamMatrix) const</td></tr>
-<tr class="memdesc:abccab39bd3d59c59afadc990dd5e79cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return te distance between the map point projected to screen space and the it's matched screen point.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#abccab39bd3d59c59afadc990dd5e79cb">More...</a><br /></td></tr>
-<tr class="separator:abccab39bd3d59c59afadc990dd5e79cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9de2443ed5745b7ca8588acc340596c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#ab9de2443ed5745b7ca8588acc340596c">get_3D_to_3D_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;matchedPoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;camToWorldMatrix) const</td></tr>
-<tr class="memdesc:ab9de2443ed5745b7ca8588acc340596c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return te 3D distance between the map point and the it's matched screen point projected to world space.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#ab9de2443ed5745b7ca8588acc340596c">More...</a><br /></td></tr>
-<tr class="separator:ab9de2443ed5745b7ca8588acc340596c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1413e702e0a1c579b72e20a2901d0679"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1413e702e0a1c579b72e20a2901d0679">operator()</a> (const Eigen::VectorXd &amp;x, Eigen::VectorXd &amp;fvec) const</td></tr>
 <tr class="memdesc:a1413e702e0a1c579b72e20a2901d0679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the objective function.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1413e702e0a1c579b72e20a2901d0679">More...</a><br /></td></tr>
 <tr class="separator:a1413e702e0a1c579b72e20a2901d0679"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,7 +140,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;&#160;</td>
           <td class="paramname"><em>points</em>, </td>
         </tr>
         <tr>
@@ -182,96 +176,6 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="abccab39bd3d59c59afadc990dd5e79cb" name="abccab39bd3d59c59afadc990dd5e79cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abccab39bd3d59c59afadc990dd5e79cb">&#9670;&nbsp;</a></span>get_2D_to_3D_distance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::pose_optimization::Global_Pose_Estimator::get_2D_to_3D_distance </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>mapPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>matchedPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldToCamMatrix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return te distance between the map point projected to screen space and the it's matched screen point. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">mapPoint</td><td>The map point in 3D world coordinates </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoint</td><td>The detected &amp; matched point, in 3D screen coordinates </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCamMatrix</td><td>The matrix to make a transformation from world coordinates to screen coordinates</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 2D screen distance between those two points </dd></dl>
-
-</div>
-</div>
-<a id="ab9de2443ed5745b7ca8588acc340596c" name="ab9de2443ed5745b7ca8588acc340596c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9de2443ed5745b7ca8588acc340596c">&#9670;&nbsp;</a></span>get_3D_to_3D_distance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::pose_optimization::Global_Pose_Estimator::get_3D_to_3D_distance </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>mapPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>matchedPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>camToWorldMatrix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return te 3D distance between the map point and the it's matched screen point projected to world space. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">mapPoint</td><td>The map point in 3D world coordinates </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoint</td><td>The detected &amp; matched point, in 3D screen coordinates </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">camToWorldMatrix</td><td>The matrix to make a transformation from screen coordinates to world coordinates</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 3D screen distance between those two points </dd></dl>
-
-</div>
-</div>
 <a id="a1413e702e0a1c579b72e20a2901d0679" name="a1413e702e0a1c579b72e20a2901d0679"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1413e702e0a1c579b72e20a2901d0679">&#9670;&nbsp;</a></span>operator()()</h2>
 

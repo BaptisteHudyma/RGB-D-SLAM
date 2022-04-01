@@ -70,6 +70,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::features::keypoints::Key_Point_Extraction Class Reference</div></div>
 </div><!--header-->
@@ -93,14 +94,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a5dca03a817b44aabaf7be8aa5d16ad6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">KeypointsWithIdStruct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a5dca03a817b44aabaf7be8aa5d16ad6b">get_keypoints_from_optical_flow</a> (const std::vector&lt; cv::Mat &gt; &amp;imagePreviousPyramide, const std::vector&lt; cv::Mat &gt; &amp;imageCurrentPyramide, const <a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">KeypointsWithIdStruct</a> &amp;lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold) const</td></tr>
-<tr class="memdesc:a5dca03a817b44aabaf7be8aa5d16ad6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the current frame keypoints from optical flow. There is need for matching with this configuration.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a5dca03a817b44aabaf7be8aa5d16ad6b">More...</a><br /></td></tr>
-<tr class="separator:a5dca03a817b44aabaf7be8aa5d16ad6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dd4e2a25365bca3f79c605ac069503c"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; cv::Point2f &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a3dd4e2a25365bca3f79c605ac069503c">detect_keypoints</a> (const cv::Mat &amp;grayImage, const cv::Mat &amp;mask, const uint minimumPointsForValidity) const</td></tr>
 <tr class="memdesc:a3dd4e2a25365bca3f79c605ac069503c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute new key point, with an optional mask to exclude detection zones.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a3dd4e2a25365bca3f79c605ac069503c">More...</a><br /></td></tr>
 <tr class="separator:a3dd4e2a25365bca3f79c605ac069503c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ff5b3e5511b495d5bbb94d4048c5de"><td class="memItemLeft" align="right" valign="top">const cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a41ff5b3e5511b495d5bbb94d4048c5de">compute_key_point_mask</a> (const cv::Size imageSize, const std::vector&lt; cv::Point2f &gt; &amp;keypointContainer) const</td></tr>
 <tr class="separator:a41ff5b3e5511b495d5bbb94d4048c5de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:ac93a7e1d204e8476e54df557a3ec2d77"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">KeypointsWithIdStruct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#ac93a7e1d204e8476e54df557a3ec2d77">get_keypoints_from_optical_flow</a> (const std::vector&lt; cv::Mat &gt; &amp;imagePreviousPyramide, const std::vector&lt; cv::Mat &gt; &amp;imageCurrentPyramide, const <a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">KeypointsWithIdStruct</a> &amp;lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold)</td></tr>
+<tr class="memdesc:ac93a7e1d204e8476e54df557a3ec2d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the current frame keypoints from optical flow. There is need for matching with this configuration.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#ac93a7e1d204e8476e54df557a3ec2d77">More...</a><br /></td></tr>
+<tr class="separator:ac93a7e1d204e8476e54df557a3ec2d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A class to detect and store keypoints. </p>
@@ -266,8 +270,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5dca03a817b44aabaf7be8aa5d16ad6b" name="a5dca03a817b44aabaf7be8aa5d16ad6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5dca03a817b44aabaf7be8aa5d16ad6b">&#9670;&nbsp;</a></span>get_keypoints_from_optical_flow()</h2>
+<a id="ac93a7e1d204e8476e54df557a3ec2d77" name="ac93a7e1d204e8476e54df557a3ec2d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac93a7e1d204e8476e54df557a3ec2d77">&#9670;&nbsp;</a></span>get_keypoints_from_optical_flow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,12 +324,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

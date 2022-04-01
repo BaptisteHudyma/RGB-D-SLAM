@@ -7,16 +7,16 @@
 \doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a008488e605b46f090d13b0bc8a16a135}{compute\+\_\+optimized\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&current\+Pose, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&optimized\+Pose)
+static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a9ed6833fe8e6e26183af96d803e821b4}{compute\+\_\+optimized\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&current\+Pose, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&optimized\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&outlier\+Matched\+Points)
 \begin{DoxyCompactList}\small\item\em Compute a new observer global pose, to replace the current estimated pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a008488e605b46f090d13b0bc8a16a135}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a008488e605b46f090d13b0bc8a16a135}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a9ed6833fe8e6e26183af96d803e821b4}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a9ed6833fe8e6e26183af96d803e821b4}} 
 \index{rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}!compute\_optimized\_pose@{compute\_optimized\_pose}}
 \index{compute\_optimized\_pose@{compute\_optimized\_pose}!rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}}
 \doxysubsubsection{\texorpdfstring{compute\_optimized\_pose()}{compute\_optimized\_pose()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Pose\+\_\+\+Optimization\+::compute\+\_\+optimized\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{current\+Pose,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{optimized\+Pose }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Pose\+\_\+\+Optimization\+::compute\+\_\+optimized\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{current\+Pose,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{optimized\+Pose,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{outlier\+Matched\+Points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
@@ -28,7 +28,9 @@ Compute a new observer global pose, to replace the current estimated pose.
 \hline
 \mbox{\texttt{ in}}  & {\em matched\+Points} & Object containing the match between observed screen points and reliable map \& futur map points \\
 \hline
-\mbox{\texttt{ out}}  & {\em optimized\+Pose} & The estimated world translation \& rotation of the camera pose, if the function returned true\\
+\mbox{\texttt{ out}}  & {\em optimized\+Pose} & The estimated world translation \& rotation of the camera pose, if the function returned true \\
+\hline
+\mbox{\texttt{ out}}  & {\em outlier\+Matched\+Points} & The outliers matched point for the final\+Pose. Valid if the function returned true\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

@@ -1,13 +1,13 @@
 \hypertarget{pose_8hpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/pose.hpp File Reference}
 \label{pose_8hpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/pose.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/pose.hpp}}
 {\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
-{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
-{\ttfamily \#include $<$Eigen/\+Std\+Vector$>$}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{rgbd\+\_\+slam\+::utils\+::\+Pose\+Base}}
+\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{rgbd\+\_\+slam\+::utils\+::\+Pose}}
-\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Store a position with variance estimations. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -22,6 +22,8 @@ typedef std\+::vector$<$ Pose, Eigen\+::aligned\+\_\+allocator$<$ Pose $>$ $>$ \
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7830f2322d077dd3b0659ac1226daa5f}{rgbd\+\_\+slam\+::utils\+::operator$<$$<$}} (std\+::ostream \&os, const Pose\+Base \&pose)
 \item 
 std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}{rgbd\+\_\+slam\+::utils\+::operator$<$$<$}} (std\+::ostream \&os, const Pose \&pose)
 \end{DoxyCompactItemize}

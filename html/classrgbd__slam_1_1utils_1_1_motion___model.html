@@ -85,6 +85,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a92747ec6ef3d202641797ccd08b36f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9600382efdf1ff99cf681ff0b2e0bb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_motion___model.html#ac9600382efdf1ff99cf681ff0b2e0bb6">reset</a> ()</td></tr>
 <tr class="separator:ac9600382efdf1ff99cf681ff0b2e0bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed49b7ad6ce227cbd32207a62498f22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_motion___model.html#a9ed49b7ad6ce227cbd32207a62498f22">reset</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;lastPosition, const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;lastRotation)</td></tr>
+<tr class="separator:a9ed49b7ad6ce227cbd32207a62498f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad46746162eb145a3944dc1156088bad3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_motion___model.html#ad46746162eb145a3944dc1156088bad3">predict_next_pose</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a> &amp;currentPose) const</td></tr>
 <tr class="memdesc:ad46746162eb145a3944dc1156088bad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts next pose with motion model (dead reckoning)  <a href="classrgbd__slam_1_1utils_1_1_motion___model.html#ad46746162eb145a3944dc1156088bad3">More...</a><br /></td></tr>
 <tr class="separator:ad46746162eb145a3944dc1156088bad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,7 +142,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ac9600382efdf1ff99cf681ff0b2e0bb6" name="ac9600382efdf1ff99cf681ff0b2e0bb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9600382efdf1ff99cf681ff0b2e0bb6">&#9670;&nbsp;</a></span>reset()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9600382efdf1ff99cf681ff0b2e0bb6">&#9670;&nbsp;</a></span>reset() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,6 +152,34 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9ed49b7ad6ce227cbd32207a62498f22" name="a9ed49b7ad6ce227cbd32207a62498f22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ed49b7ad6ce227cbd32207a62498f22">&#9670;&nbsp;</a></span>reset() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::utils::Motion_Model::reset </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>lastPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>lastRotation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

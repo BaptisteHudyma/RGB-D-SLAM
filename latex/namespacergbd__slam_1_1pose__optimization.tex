@@ -14,10 +14,6 @@ class \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimiza
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5207432a5c81057d120acfb70840848d}{get\+\_\+distance\+\_\+manhattan}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
-\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0b6cc8326af6476d539cb0795ce31f76}{get\+\_\+distance\+\_\+squared}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
-\item 
 double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}{get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
 \begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
@@ -30,35 +26,11 @@ const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a
 \item 
 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}{get\+\_\+quaternion\+\_\+logarithm}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}{get\+\_\+distance\+\_\+to\+\_\+point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&matched\+Point, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&cam\+To\+World\+Matrix)
-\begin{DoxyCompactList}\small\item\em Compute the retroprojection distance between a map\+Point and a camera\+Point. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}{get\+\_\+n\+\_\+random\+\_\+matches}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, const uint n)
-\begin{DoxyCompactList}\small\item\em Return a random subset of matches, of size n. \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\footnotesize template$<$template$<$ typename $>$ class Container, typename T $>$ }\\Container$<$ T $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a37a8e81899ab799fbfa9cc5ad825707f}{get\+\_\+random\+\_\+subset}} (const Container$<$ T $>$ \&in\+Container, const uint number\+Of\+Elements\+To\+Choose)
+\begin{DoxyCompactList}\small\item\em Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to in\+Container.\+size. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5207432a5c81057d120acfb70840848d}\label{namespacergbd__slam_1_1pose__optimization_a5207432a5c81057d120acfb70840848d}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_manhattan@{get\_distance\_manhattan}}
-\index{get\_distance\_manhattan@{get\_distance\_manhattan}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0b6cc8326af6476d539cb0795ce31f76}\label{namespacergbd__slam_1_1pose__optimization_a0b6cc8326af6476d539cb0795ce31f76}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_squared@{get\_distance\_squared}}
-\index{get\_distance\_squared@{get\_distance\_squared}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_squared()}{get\_distance\_squared()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}\label{namespacergbd__slam_1_1pose__optimization_a0ea5df14f479b77da3cc1afbc9e2c097}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_distance\_to\_point@{get\_distance\_to\_point}}
-\index{get\_distance\_to\_point@{get\_distance\_to\_point}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_to\_point()}{get\_distance\_to\_point()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+distance\+\_\+to\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{matched\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{cam\+To\+World\+Matrix }\end{DoxyParamCaption})}
-
-
-
-Compute the retroprojection distance between a map\+Point and a camera\+Point. 
-
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}\label{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_generalized\_loss\_estimator@{get\_generalized\_loss\_estimator}}
 \index{get\_generalized\_loss\_estimator@{get\_generalized\_loss\_estimator}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -96,16 +68,6 @@ Use for debug.
 \begin{DoxyReturn}{Returns}
 Returns a string with the human readable version of Eigen Levenberg\+Marquardt output status 
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}\label{namespacergbd__slam_1_1pose__optimization_a1e2de17bbf8260fb3c4024d31f29d2d7}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_n\_random\_matches@{get\_n\_random\_matches}}
-\index{get\_n\_random\_matches@{get\_n\_random\_matches}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_n\_random\_matches()}{get\_n\_random\_matches()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+n\+\_\+random\+\_\+matches (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aac0b5a78c14f75d31fe7bcc15d377b9c}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points,  }\item[{const uint}]{n }\end{DoxyParamCaption})}
-
-
-
-Return a random subset of matches, of size n. 
-
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}\label{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_exponential@{get\_quaternion\_exponential}}
 \index{get\_quaternion\_exponential@{get\_quaternion\_exponential}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -128,6 +90,27 @@ Compute a quaternion from the Lie projection (Scaled Axis representation) \mbox{
 \doxysubsubsection{\texorpdfstring{get\_quaternion\_logarithm()}{get\_quaternion\_logarithm()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+logarithm (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a37a8e81899ab799fbfa9cc5ad825707f}\label{namespacergbd__slam_1_1pose__optimization_a37a8e81899ab799fbfa9cc5ad825707f}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_random\_subset@{get\_random\_subset}}
+\index{get\_random\_subset@{get\_random\_subset}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_random\_subset()}{get\_random\_subset()}}
+{\footnotesize\ttfamily template$<$template$<$ typename $>$ class Container, typename T $>$ \\
+Container$<$ T $>$ rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+subset (\begin{DoxyParamCaption}\item[{const Container$<$ T $>$ \&}]{in\+Container,  }\item[{const uint}]{number\+Of\+Elements\+To\+Choose }\end{DoxyParamCaption})}
+
+
+
+Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to in\+Container.\+size. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em in\+Container} & A container of size \texorpdfstring{$>$}{>} number\+Of\+Elements\+To\+Choose, in which this function will pick elements \\
+\hline
+\mbox{\texttt{ in}}  & {\em number\+Of\+Elements\+To\+Choose} & The number of elements we which to find in the final container \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A container of size number\+Of\+Elements\+To\+Choose, with no duplicated elements. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}\label{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}}
 \index{get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}

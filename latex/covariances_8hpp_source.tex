@@ -6,16 +6,24 @@
 \DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_COVARIANCES\_HPP}}
 \DoxyCodeLine{3 }
 \DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
-\DoxyCodeLine{5 }
-\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{7     \textcolor{keyword}{namespace }utils \{}
-\DoxyCodeLine{8         }
-\DoxyCodeLine{18         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}{get\_world\_point\_covariance}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& screenPoint, \textcolor{keyword}{const} \textcolor{keywordtype}{double} depth, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& screenPointCovariance);}
-\DoxyCodeLine{19 }
-\DoxyCodeLine{20     \}   \textcolor{comment}{// utils}}
-\DoxyCodeLine{21 \}       \textcolor{comment}{// rgbd\_slam}}
-\DoxyCodeLine{22 }
-\DoxyCodeLine{23 }
-\DoxyCodeLine{24 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{pose_8hpp}{pose.hpp}}"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{matches__containers_8hpp}{matches\_containers.hpp}}"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{9     \textcolor{keyword}{namespace }utils \{}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{19         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a6881ff8fc4349b095eda7e107e8b38c0}{get\_screen\_point\_covariance}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& screenCoordinates, \textcolor{keyword}{const} \textcolor{keywordtype}{double} depth);}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{30         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}{get\_world\_point\_covariance}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& screenPoint, \textcolor{keyword}{const} \textcolor{keywordtype}{double} depth, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& screenPointCovariance);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{40         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5b76a21e6521ae3b3e7385f73d1c870a}{compute\_pose\_variance}}(\textcolor{keyword}{const} utils::Pose\& pose, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\_containers::match\_point\_container}}\& matchedPoints);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{46         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a85dff6fcf36f784135436ffc74443d3a}{compute\_pose\_covariance}}(\textcolor{keyword}{const} utils::Pose\& pose);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \}   \textcolor{comment}{// utils}}
+\DoxyCodeLine{49 \}       \textcolor{comment}{// rgbd\_slam}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

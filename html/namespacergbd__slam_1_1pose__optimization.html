@@ -89,10 +89,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5207432a5c81057d120acfb70840848d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a5207432a5c81057d120acfb70840848d">get_distance_manhattan</a> (const Eigen::VectorXd &amp;pointA, const Eigen::VectorXd &amp;pointB)</td></tr>
-<tr class="separator:a5207432a5c81057d120acfb70840848d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b6cc8326af6476d539cb0795ce31f76"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a0b6cc8326af6476d539cb0795ce31f76">get_distance_squared</a> (const Eigen::VectorXd &amp;pointA, const Eigen::VectorXd &amp;pointB)</td></tr>
-<tr class="separator:a0b6cc8326af6476d539cb0795ce31f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c5baaf110f1e80eb1c0a168f313f031"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a1c5baaf110f1e80eb1c0a168f313f031">get_generalized_loss_estimator</a> (const double error, const double alpha=1, const double scale=1)</td></tr>
 <tr class="memdesc:a1c5baaf110f1e80eb1c0a168f313f031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of "A General and Adaptive Robust Loss Function" (2019) By Jonathan T. Barron.  <a href="namespacergbd__slam_1_1pose__optimization.html#a1c5baaf110f1e80eb1c0a168f313f031">More...</a><br /></td></tr>
 <tr class="separator:a1c5baaf110f1e80eb1c0a168f313f031"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,106 +105,12 @@ Functions</h2></td></tr>
 <tr class="separator:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae2acb81b214e548bffd58f4ebf90d2f5">get_quaternion_logarithm</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;quat)</td></tr>
 <tr class="separator:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ea5df14f479b77da3cc1afbc9e2c097"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a0ea5df14f479b77da3cc1afbc9e2c097">get_distance_to_point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;mapPoint, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;matchedPoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;camToWorldMatrix)</td></tr>
-<tr class="memdesc:a0ea5df14f479b77da3cc1afbc9e2c097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the retroprojection distance between a mapPoint and a cameraPoint.  <a href="namespacergbd__slam_1_1pose__optimization.html#a0ea5df14f479b77da3cc1afbc9e2c097">More...</a><br /></td></tr>
-<tr class="separator:a0ea5df14f479b77da3cc1afbc9e2c097"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e2de17bbf8260fb3c4024d31f29d2d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a1e2de17bbf8260fb3c4024d31f29d2d7">get_n_random_matches</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;matchedPoints, const uint n)</td></tr>
-<tr class="memdesc:a1e2de17bbf8260fb3c4024d31f29d2d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a random subset of matches, of size n.  <a href="namespacergbd__slam_1_1pose__optimization.html#a1e2de17bbf8260fb3c4024d31f29d2d7">More...</a><br /></td></tr>
-<tr class="separator:a1e2de17bbf8260fb3c4024d31f29d2d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37a8e81899ab799fbfa9cc5ad825707f"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename &gt; class Container, typename T &gt; </td></tr>
+<tr class="memitem:a37a8e81899ab799fbfa9cc5ad825707f"><td class="memTemplItemLeft" align="right" valign="top">Container&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a37a8e81899ab799fbfa9cc5ad825707f">get_random_subset</a> (const Container&lt; T &gt; &amp;inContainer, const uint numberOfElementsToChoose)</td></tr>
+<tr class="memdesc:a37a8e81899ab799fbfa9cc5ad825707f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to inContainer.size.  <a href="namespacergbd__slam_1_1pose__optimization.html#a37a8e81899ab799fbfa9cc5ad825707f">More...</a><br /></td></tr>
+<tr class="separator:a37a8e81899ab799fbfa9cc5ad825707f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5207432a5c81057d120acfb70840848d" name="a5207432a5c81057d120acfb70840848d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5207432a5c81057d120acfb70840848d">&#9670;&nbsp;</a></span>get_distance_manhattan()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::pose_optimization::get_distance_manhattan </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>pointA</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>pointB</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0b6cc8326af6476d539cb0795ce31f76" name="a0b6cc8326af6476d539cb0795ce31f76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b6cc8326af6476d539cb0795ce31f76">&#9670;&nbsp;</a></span>get_distance_squared()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::pose_optimization::get_distance_squared </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>pointA</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>pointB</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0ea5df14f479b77da3cc1afbc9e2c097" name="a0ea5df14f479b77da3cc1afbc9e2c097"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ea5df14f479b77da3cc1afbc9e2c097">&#9670;&nbsp;</a></span>get_distance_to_point()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::pose_optimization::get_distance_to_point </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>mapPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>matchedPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>camToWorldMatrix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute the retroprojection distance between a mapPoint and a cameraPoint. </p>
-
-</div>
-</div>
 <a id="a1c5baaf110f1e80eb1c0a168f313f031" name="a1c5baaf110f1e80eb1c0a168f313f031"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c5baaf110f1e80eb1c0a168f313f031">&#9670;&nbsp;</a></span>get_generalized_loss_estimator()</h2>
 
@@ -276,36 +178,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1e2de17bbf8260fb3c4024d31f29d2d7" name="a1e2de17bbf8260fb3c4024d31f29d2d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e2de17bbf8260fb3c4024d31f29d2d7">&#9670;&nbsp;</a></span>get_n_random_matches()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> rgbd_slam::pose_optimization::get_n_random_matches </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#aac0b5a78c14f75d31fe7bcc15d377b9c">matches_containers::match_point_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>matchedPoints</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return a random subset of matches, of size n. </p>
-
-</div>
-</div>
 <a id="a60b66cfa4c51c64babcb5ad9b259c1ba" name="a60b66cfa4c51c64babcb5ad9b259c1ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60b66cfa4c51c64babcb5ad9b259c1ba">&#9670;&nbsp;</a></span>get_quaternion_exponential()</h2>
 
@@ -360,6 +232,46 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a37a8e81899ab799fbfa9cc5ad825707f" name="a37a8e81899ab799fbfa9cc5ad825707f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37a8e81899ab799fbfa9cc5ad825707f">&#9670;&nbsp;</a></span>get_random_subset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;template&lt; typename &gt; class Container, typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Container&lt; T &gt; rgbd_slam::pose_optimization::get_random_subset </td>
+          <td>(</td>
+          <td class="paramtype">const Container&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inContainer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>numberOfElementsToChoose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to inContainer.size. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">inContainer</td><td>A container of size &gt; numberOfElementsToChoose, in which this function will pick elements </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">numberOfElementsToChoose</td><td>The number of elements we which to find in the final container </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A container of size numberOfElementsToChoose, with no duplicated elements. </dd></dl>
 
 </div>
 </div>

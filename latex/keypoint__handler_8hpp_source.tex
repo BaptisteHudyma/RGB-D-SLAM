@@ -78,7 +78,7 @@
 \DoxyCodeLine{125                     \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad741c7ea236c946807d196e83cb7a233}{compute\_key\_point\_mask}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& pointToSearch, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const};}
 \DoxyCodeLine{126 }
 \DoxyCodeLine{127                     \textcolor{keyword}{typedef} std::pair<int, int> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\_pair}};}
-\DoxyCodeLine{131                     \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\_pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a4e33c2bfa1eee6700d5c0e7e58cf1618}{get\_search\_space\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& pointToPlace) \textcolor{keyword}{const};}
+\DoxyCodeLine{131                     \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\_pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a32101e53653338c92ba5bf47bfbf8b77}{get\_search\_space\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& pointToPlace) \textcolor{keyword}{const};}
 \DoxyCodeLine{132 }
 \DoxyCodeLine{138                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a35aa9151e9cbdcde22ec57bcc8f25869}{get\_search\_space\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\_pair}}\& searchSpaceIndex) \textcolor{keyword}{const};}
 \DoxyCodeLine{139                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a35aa9151e9cbdcde22ec57bcc8f25869}{get\_search\_space\_index}}(\textcolor{keyword}{const} uint x, \textcolor{keyword}{const} uint y) \textcolor{keyword}{const};}
@@ -92,8 +92,8 @@
 \DoxyCodeLine{147                     \textcolor{comment}{//store current frame keypoints}}
 \DoxyCodeLine{148                     std::vector<vector2> \_keypoints;}
 \DoxyCodeLine{149                     std::vector<double> \_depths;}
-\DoxyCodeLine{150                     \textcolor{keyword}{typedef} std::unordered\_map<size\_t, size\_t> intToIntContainer;}
-\DoxyCodeLine{151                     intToIntContainer \_uniqueIdsToKeypointIndex;}
+\DoxyCodeLine{150                     \textcolor{keyword}{typedef} std::unordered\_map<size\_t, size\_t> uintToUintContainer;}
+\DoxyCodeLine{151                     uintToUintContainer \_uniqueIdsToKeypointIndex;}
 \DoxyCodeLine{152                     cv::Mat \_descriptors;}
 \DoxyCodeLine{153 }
 \DoxyCodeLine{154                     \textcolor{comment}{// Number of image divisions (cells)}}
