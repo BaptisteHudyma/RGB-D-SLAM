@@ -1,5 +1,5 @@
-// Dataset available from "Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry"
-
+// The dataset can be found here:
+// https://vision.in.tum.de/data/datasets/rgbd-dataset
 
 #include <iostream>
 #include <fstream>
@@ -12,11 +12,11 @@
 #include "rgbd_slam.hpp"
 #include "pose.hpp"
 #include "parameters.hpp"
-
 #include "angle_utils.hpp"
 
 
-void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) {
+void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
+{
     switch(cv::waitKey(1)) {
         //check pressed key
         case 'l':
@@ -36,8 +36,8 @@ void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiv
 }
 
 /**
-  * \brief checks the existence of a file (from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c)
-  */
+ * \brief checks the existence of a file (from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c)
+ */
 inline bool is_file_valid (const std::string& fileName) {
     struct stat buffer;
     return (stat (fileName.c_str(), &buffer) == 0);
@@ -101,11 +101,9 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& sho
     return parser.check();
 }
 
-
-
 int main(int argc, char* argv[]) 
 {
-    std::stringstream dataPath("../data/yoga/");
+    std::stringstream dataPath("../data/freiburg1_xyz/");
     bool showPrimitiveMasks, showStagedPoints, useLineDetection, shouldSavePoses;
     int startIndex;
     unsigned int jumpFrames = 0;
@@ -114,15 +112,15 @@ int main(int argc, char* argv[])
         return 0;   //could not parse parameters correctly 
     }
 
-    int width, height;
-    cv::Mat rgbImage, depthImage;
-    if(not load_images(dataPath, startIndex, rgbImage, depthImage) ) {
-        std::cout << "Error loading images at " << dataPath.str() << std::endl;
-        return -1;
-    }
+    // Get file & folder names
+    const std::string rgbImageListPath = dataPath.str() + "rgb.txt";
+    const std::string depthImageListPath = dataPath.str() + "depth.txt";
 
-    width = rgbImage.cols;
-    height = rgbImage.rows;
+    std::ifstream rgbImagesFile(rgbImageListPath);
+    std::ifstream depthImagesFile(depthImageListPath);
+
+    const int width  = 640; 
+    const int height = 480;
 
 
     // Load a default set of parameters
@@ -163,23 +161,48 @@ int main(int argc, char* argv[])
             std::to_string(1 + gmtTime->tm_min) + ":" +
             std::to_string(1 + gmtTime->tm_sec);
         std::cout << dateAndTime << std::endl;
-        trajectoryFile.open("traj_yoga_mat_" + dateAndTime + ".txt");
+        trajectoryFile.open("traj_freiburg_xyz_" + dateAndTime + ".txt");
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
     }
 
     //stop condition
     bool runLoop = true;
-    while(runLoop) {
+    for(std::string rgbLine, depthLine; runLoop && std::getline(rgbImagesFile, rgbLine) && std::getline(depthImagesFile, depthLine); ) {
 
+        if (rgbLine[0] == '#' or depthLine[0] == '#')
+            continue;
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
             ++frameIndex;
             continue;
         }
 
-        // read images
-        if(not load_images(dataPath, frameIndex, rgbImage, depthImage))
-            break;
+        // Parse lines
+        std::istringstream inputRgbString(rgbLine);
+        std::istringstream inputDepthString(depthLine);
+
+        double rgbTimeStamp = 0;
+        std::string rgbImagePath;
+        inputRgbString >> rgbTimeStamp >> rgbImagePath;
+        rgbImagePath = dataPath.str() + rgbImagePath;
+
+        double depthTimeStamp = 0;
+        std::string depthImagePath;
+        inputDepthString >> depthTimeStamp >> depthImagePath;
+        depthImagePath = dataPath.str() + depthImagePath;
+
+        // Load images
+        cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
+        cv::Mat depthImage = cv::imread(depthImagePath, cv::IMREAD_GRAYSCALE);
+
+        if (rgbImage.empty() or depthImage.empty())
+        {
+            std::cerr << "Cannot load " << rgbImagePath << " or " << depthImagePath << std::endl;
+            continue;
+        }
+        // convert to mm & float 32
+        depthImage.convertTo(depthImage, CV_32FC1);
+        depthImage *= 100.0 / 5.0;
 
         // get optimized pose
         double elapsedTime = cv::getTickCount();

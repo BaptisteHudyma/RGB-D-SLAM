@@ -1,3 +1,8 @@
+// The dataset can be found here:
+// https://vision.in.tum.de/data/datasets/rgbd-dataset
+
+
+
 #include <iostream>
 #include <fstream>
 #include <ctime>
@@ -100,7 +105,7 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& sho
 
 int main(int argc, char* argv[]) 
 {
-    std::stringstream dataPath("../data/freiburg1_xyz/");
+    std::stringstream dataPath("../data/freiburg1_rotation/");
     bool showPrimitiveMasks, showStagedPoints, useLineDetection, shouldSavePoses;
     int startIndex;
     unsigned int jumpFrames = 0;

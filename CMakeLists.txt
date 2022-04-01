@@ -143,9 +143,13 @@ add_executable(slam_tunnel_mat
     ${EXAMPLES}/main_tunnel_dataset.cpp)
 target_link_libraries(slam_tunnel_mat ${PROJECT_NAME})
 
-add_executable(slam_freiburg_xyz
-    ${EXAMPLES}/main_xyz_dataset.cpp)
-target_link_libraries(slam_freiburg_xyz ${PROJECT_NAME})
+add_executable(slam_freiburg1_xyz
+    ${EXAMPLES}/main_freiburg1_xyz_dataset.cpp)
+target_link_libraries(slam_freiburg1_xyz ${PROJECT_NAME})
+
+add_executable(slam_freiburg1_rotation
+    ${EXAMPLES}/main_freiburg1_rotation_dataset.cpp)
+target_link_libraries(slam_freiburg1_rotation ${PROJECT_NAME})
 
 add_executable(test_p3p
     ${THIRD_PARTY}/p3p_test.cpp)
