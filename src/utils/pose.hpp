@@ -3,9 +3,6 @@
 
 #include "types.hpp"
 
-#include <Eigen/Dense>
-#include <Eigen/StdVector>
-
 namespace rgbd_slam { 
     namespace utils {
 

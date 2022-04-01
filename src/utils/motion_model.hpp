@@ -4,8 +4,6 @@
 #include "types.hpp"
 #include "pose.hpp"
 
-#include <Eigen/Dense>
-
 namespace rgbd_slam {
 namespace utils {
 

@@ -3,7 +3,6 @@
 #include <opencv2/core/core.hpp>
 #include <math.h>
 #include <cfloat>
-#include <iostream>
 
 #include "logger.hpp"
 
@@ -17,7 +16,7 @@ namespace rgbd_slam {
         cv::FileStorage configFile(fileName, cv::FileStorage::READ);
         if (not configFile.isOpened())
         {
-            std::cerr << "Cannot load parameter files, starting with default configuration" << std::endl;
+            utils::log_error("Cannot load parameter files, starting with default configuration");
             load_defaut();
             check_parameters_validity();
             return false;

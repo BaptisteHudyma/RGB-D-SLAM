@@ -1,12 +1,13 @@
+#include "rgbd_slam.hpp"
+
 //circle imshow
 #include <opencv2/opencv.hpp>
 
-#include "pose_optimization.hpp"
 #include "parameters.hpp"
 #include "logger.hpp"
 #include "matches_containers.hpp"
 
-#include "rgbd_slam.hpp"
+#include "pose_optimization.hpp"
 
 namespace rgbd_slam {
 

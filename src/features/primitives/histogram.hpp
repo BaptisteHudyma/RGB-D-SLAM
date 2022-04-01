@@ -1,8 +1,8 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_HISTOGRAM_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_HISTOGRAM_HPP
 
-#include <Eigen/Dense>
 #include <vector>
+#include <Eigen/Dense>
 
 namespace rgbd_slam {
 namespace features {

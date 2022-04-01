@@ -174,10 +174,10 @@ namespace rgbd_slam {
         {
             if (mapPoint._matchedScreenPoint.is_matched())
             {
-                const int matchedPointIndex = mapPoint._matchedScreenPoint._matchIndex;
-                const int keypointsSize = static_cast<int>(keypointObject.get_keypoint_count());
+                assert(mapPoint._matchedScreenPoint._matchIndex >= 0);
 
-                assert(matchedPointIndex >= 0 and matchedPointIndex < keypointsSize); 
+                const size_t matchedPointIndex = mapPoint._matchedScreenPoint._matchIndex;
+                assert(matchedPointIndex < keypointObject.get_keypoint_count()); 
 
                 // get match coordinates, transform them to world coordinates
                 const vector2& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);

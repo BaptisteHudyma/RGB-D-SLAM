@@ -1,7 +1,6 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_DEPTHOPERATIONS_HPP 
 #define RGBDSLAM_FEATURES_PRIMITIVES_DEPTHOPERATIONS_HPP
 
-#include <iostream>
 #include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 

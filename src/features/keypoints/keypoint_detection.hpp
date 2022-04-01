@@ -3,10 +3,6 @@
 
 #include "keypoint_handler.hpp"
 
-#include <map>
-
-#include "map_point.hpp"
-
 namespace rgbd_slam {
     namespace features {
         namespace keypoints {

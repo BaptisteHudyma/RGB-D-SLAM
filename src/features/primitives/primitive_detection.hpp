@@ -1,15 +1,11 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVEDETECTION_HPP 
 #define RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVEDETECTION_HPP
 
-#include <math.h>
-#include <iostream>
-#include <iterator>
 #include <algorithm>
 #include <memory>
 #include <vector>
 
 #include <opencv2/opencv.hpp>
-#include <Eigen/Dense>
 
 #include "plane_segment.hpp"
 #include "cylinder_segment.hpp"

@@ -3,9 +3,10 @@
 
 #include "plane_segment.hpp"
 
+#include <Eigen/Dense>
+
 #include <vector>
 #include <memory>
-#include <Eigen/Dense>
 #include "types.hpp"
 
 

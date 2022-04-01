@@ -5,12 +5,7 @@
 #include "matches_containers.hpp"
 
 // types
-#include "map_point.hpp"
-
-#include <Eigen/Eigen>
 #include <unsupported/Eigen/NonLinearOptimization>
-
-#include <iostream>
 
 namespace rgbd_slam {
     namespace pose_optimization {

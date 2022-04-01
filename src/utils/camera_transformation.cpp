@@ -2,9 +2,6 @@
 
 #include "parameters.hpp"
 
-#include <Eigen/Dense>
-
-
 namespace rgbd_slam {
     namespace utils {
 
