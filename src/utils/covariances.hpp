@@ -37,7 +37,13 @@ namespace rgbd_slam {
          *
          * \return the variance of this pose in X Y and Z
          */
-        const vector3 compute_pose_variance(const utils::Pose& optimizedPose, const matches_containers::match_point_container& matchedPoints);
+        const vector3 compute_pose_variance(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints);
+
+        /**
+         * \brief Compute a pose covariance matrix from a pose
+         * \param[in] pose The pose to analyze
+         */
+        const matrix33 compute_pose_covariance(const utils::Pose& pose);
 
     }   // utils
 }       // rgbd_slam

@@ -190,13 +190,8 @@ namespace rgbd_slam {
                     // get a measure of the estimated variance of the new world point
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
 
-                    // TODO pose improve variance computation
-                    const vector3& poseVariance = optimizedPose.get_position_variance();
-                    const matrix33 poseCovariance {
-                        {poseVariance.x(), 0, 0},
-                            {0, poseVariance.y(), 0},
-                            {0, 0, poseVariance.z()}
-                    };
+                    // Get the optimized pose covariance
+                    const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
 
                     // update this map point errors & position
                     mapPoint.update_matched(newCoordinates, worldPointCovariance + poseCovariance);
@@ -226,10 +221,12 @@ namespace rgbd_slam {
                             // get a measure of the estimated variance of the new world point
                             //const matrix33& worldPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
                             const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
-                            // TODO update the variances with the pose variance
+
+                            // Get the optimized pose covariance
+                            const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
 
                             // update this map point errors & position
-                            mapPoint.update_matched(triangulatedPoint, worldPointCovariance);
+                            mapPoint.update_matched(triangulatedPoint, worldPointCovariance + poseCovariance);
 
                             // If a new descriptor is available, update it
                             if (keypointObject.is_descriptor_computed(matchedPointIndex))

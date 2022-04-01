@@ -5,7 +5,7 @@
 
 namespace rgbd_slam {
     namespace utils {
-        
+
         const matrix33 get_screen_point_covariance(const vector2& screenCoordinates, const double depth) 
         {
             // Quadratic error model (uses depth as meters)
@@ -27,7 +27,7 @@ namespace rgbd_slam {
         }
 
 
-        
+
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
@@ -83,6 +83,22 @@ namespace rgbd_slam {
 
             return variance;
         }
+
+
+        const matrix33 compute_pose_covariance(const utils::Pose& pose)
+        {
+            const vector3& poseVariance = pose.get_position_variance();
+
+            // TODO improve covariance computation
+            const matrix33 poseCovariance {
+                {poseVariance.x(), 0, 0},
+                {0, poseVariance.y(), 0},
+                {0, 0, poseVariance.z()}
+            };
+
+            return poseCovariance;
+        }
+
 
     }   // utils
 }       // rgbd_slam
