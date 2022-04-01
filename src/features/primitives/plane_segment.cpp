@@ -194,7 +194,6 @@ namespace primitives {
             utils::log("Too much error");
 
         _d = -v.dot(_mean);
-        //_d = -(v[0] * _mean[0] + v[1] * _mean[1] + v[2] * _mean[2]);
 
         // Enforce normal orientation
         if(_d > 0) {   //point normal toward the camera

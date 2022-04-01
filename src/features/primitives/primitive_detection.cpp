@@ -16,8 +16,8 @@ namespace rgbd_slam {
             Primitive_Detection::Primitive_Detection(const uint width, const uint height, const uint blocSize, const float minCosAngleForMerge, const float maxMergeDistance, const bool useCylinderDetection)
                 :  
                     _histogram(blocSize), 
-                    _width(width), _height(height),  _blocSize(blocSize), 
-                    _pointsPerCellCount(_blocSize * _blocSize), 
+                    _width(width), _height(height),  
+                    _pointsPerCellCount(blocSize * blocSize), 
                     _minCosAngleForMerge(minCosAngleForMerge), _maxMergeDist(maxMergeDistance),
                     _useCylinderDetection(useCylinderDetection),
                     _cellWidth(blocSize), _cellHeight(blocSize),
@@ -55,7 +55,8 @@ namespace rgbd_slam {
 
                 //array of unique_ptr<Plane_Segment>
                 _planeGrid.reserve(_totalCellCount);
-                for(uint i = 0; i < _totalCellCount; ++i) {
+                for(uint i = 0; i < _totalCellCount; ++i) 
+                {
                     //fill with empty nodes
                     _planeGrid.push_back(std::make_unique<Plane_Segment>(_cellWidth, _pointsPerCellCount));
                 }
@@ -69,23 +70,29 @@ namespace rgbd_slam {
                 setMaskTime = 0;
             }
 
-            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::unordered_map<int, uint>& associatedIds, const double elapsedTime) {
+            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::unordered_map<int, uint>& associatedIds, const double elapsedTime) 
+            {
                 //apply masks on image
-                for(uint r = 0; r < _height; ++r){
+                for(uint r = 0; r < _height; ++r)
+                {
                     const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
                     cv::Vec3b* outPtr = labeledImage.ptr<cv::Vec3b>(r);
 
-                    for(uint c = 0; c < _width; ++c){
+                    for(uint c = 0; c < _width; ++c)
+                    {
                         const int index = static_cast<int>(maskImage.at<uchar>(r, c)) - 1;   //get index of plane/cylinder at [r, c]
 
-                        if(index < 0) {
+                        if(index < 0) 
+                        {
                             // No primitive detected
                             outPtr[c] = rgbPtr[c];
                         }
-                        else if(associatedIds.contains(index)) {    //shape associated with last frame shape
-                            //there is a mask to display 
+                        else if(associatedIds.contains(index)) 
+                        {    //shape associated with last frame shape
+                             //there is a mask to display 
                             const uint primitiveIndex = static_cast<uint>(associatedIds.at(index));
-                            if (colors.size() <= primitiveIndex) {
+                            if (colors.size() <= primitiveIndex) 
+                            {
                                 utils::log_error("Id of primitive is greater than available colors");
                             }
                             else
@@ -94,7 +101,8 @@ namespace rgbd_slam {
                             }
                         }
                         // else: not matched
-                        else {
+                        else 
+                        {
                             outPtr[c] = rgbPtr[c];
                         }
                     }
@@ -102,14 +110,16 @@ namespace rgbd_slam {
 
                 // Show frame rate and labels
                 cv::rectangle(labeledImage, cv::Point(0,0), cv::Point(_width, 20), cv::Scalar(0,0,0), -1);
-                if(elapsedTime > 0) {
+                if(elapsedTime > 0) 
+                {
                     std::stringstream fps;
                     fps << static_cast<int>((1 / elapsedTime + 0.5)) << " fps";
                     cv::putText(labeledImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
                 }
 
                 //show plane labels
-                if (primitiveSegments.size() > 0){
+                if (primitiveSegments.size() > 0)
+                {
                     std::stringstream text1;
                     text1 << "Planes:";
                     double pos = _width * 0.25;
@@ -123,7 +133,8 @@ namespace rgbd_slam {
 
 
                     uint count = 0;
-                    for(const std::unique_ptr<Primitive>& prim : primitiveSegments){
+                    for(const std::unique_ptr<Primitive>& prim : primitiveSegments)
+                    {
                         uint id = prim->get_id();
 
                         if(associatedIds.contains(id))
@@ -152,8 +163,8 @@ namespace rgbd_slam {
              * Find the planes in the organized depth matrix using region growing
              * Segout will contain a 2D representation of the planes
              */
-            void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments, cv::Mat& segOut) {
-
+            void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments, cv::Mat& segOut) 
+            {
                 //reset used data structures
                 reset_data();
 
@@ -186,7 +197,8 @@ namespace rgbd_slam {
                 td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
                 mergeTime += td;
 
-                if(_useCylinderDetection) {
+                if(_useCylinderDetection) 
+                {
                     t1 = cv::getTickCount();
                     //refine cylinders boundaries and fill the final cylinders vector
                     refine_cylinder_boundaries(depthMatrix, cylinder2regionMap, primitiveSegments); 
@@ -201,7 +213,8 @@ namespace rgbd_slam {
                 setMaskTime += td;
             }
 
-            void Primitive_Detection::reset_data() {
+            void Primitive_Detection::reset_data() 
+            {
                 _histogram.reset();
 
                 //planeGrid SHOULD NOT be cleared
@@ -226,7 +239,8 @@ namespace rgbd_slam {
                 //kernels should not be cleared
             }
 
-            void Primitive_Detection::init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray) {
+            void Primitive_Detection::init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray) 
+            {
                 float sinCosAngleForMerge = sqrt(1 - pow(_minCosAngleForMerge, 2));
 
                 //for each planeGrid cell
@@ -273,7 +287,8 @@ namespace rgbd_slam {
                 uint cylinderCount = 0;
                 std::vector<uint> seedCandidates;
                 //find seed planes and make them grow
-                while(remainingPlanarCells > 0) {
+                while(remainingPlanarCells > 0) 
+                {
                     //get seed candidates
                     seedCandidates.clear();
                     _histogram.get_points_from_most_frequent_bin(seedCandidates);
@@ -284,9 +299,11 @@ namespace rgbd_slam {
                     //select seed cell with min MSE
                     uint seedId = 0;    //should not necessarily stay to 0 after the loop
                     float minMSE = INT_MAX;
-                    for(uint i = 0; i < seedCandidates.size(); ++i) {
-                        uint seedCandidate = seedCandidates[i];
-                        if(_planeGrid[seedCandidate]->get_MSE() < minMSE) {
+                    for(uint i = 0; i < seedCandidates.size(); ++i) 
+                    {
+                        const uint seedCandidate = seedCandidates[i];
+                        if(_planeGrid[seedCandidate]->get_MSE() < minMSE) 
+                        {
                             seedId = static_cast<int>(seedCandidate);
                             minMSE = _planeGrid[seedCandidate]->get_MSE();
                             //if(minMSE <= 0)
@@ -312,8 +329,10 @@ namespace rgbd_slam {
 
                     //merge activated cells & remove them from histogram
                     uint cellActivatedCount = 0;
-                    for(uint i = 0; i < activationMapSize; ++i) {
-                        if(_activationMap[i]) {
+                    for(uint i = 0; i < activationMapSize; ++i) 
+                    {
+                        if(_activationMap[i]) 
+                        {
                             newPlaneSegment.expand_segment(_planeGrid[i]);
                             cellActivatedCount += 1;
                             _histogram.remove_point(i);
@@ -322,7 +341,8 @@ namespace rgbd_slam {
                         }
                     }
 
-                    if(cellActivatedCount < Parameters::get_minimum_cell_activated()) {
+                    if(cellActivatedCount < Parameters::get_minimum_cell_activated()) 
+                    {
                         _histogram.remove_point(seedId);
                         continue;
                     }
@@ -330,15 +350,18 @@ namespace rgbd_slam {
                     //fit plane to merged data
                     newPlaneSegment.fit_plane();
 
-                    if(not _useCylinderDetection or newPlaneSegment.get_score() > 100) {
+                    if(not _useCylinderDetection or newPlaneSegment.get_score() > 100) 
+                    {
                         //its certainly a plane or we ignore cylinder detection
                         _planeSegments.push_back(std::make_unique<Plane_Segment>(newPlaneSegment));
                         const size_t currentPlaneCount = _planeSegments.size();
                         //mark cells
                         uint i = 0;
-                        for(uint r = 0; r < _verticalCellsCount; ++r) {
+                        for(uint r = 0; r < _verticalCellsCount; ++r) 
+                        {
                             int* row = _gridPlaneSegmentMap.ptr<int>(r);
-                            for(uint c = 0; c < _horizontalCellsCount; ++c) {
+                            for(uint c = 0; c < _horizontalCellsCount; ++c)
+                            {
                                 assert(i < activationMapSize);
 
                                 if(_activationMap[i])
@@ -349,7 +372,8 @@ namespace rgbd_slam {
                         }
 
                     }
-                    else if(_useCylinderDetection and cellActivatedCount > 5) {
+                    else if(_useCylinderDetection and cellActivatedCount > 5) 
+                    {
                         //cylinder fitting
                         // It is an extrusion
                         _cylinderSegments.push_back(std::make_unique<Cylinder_Segment>(_planeGrid, _activationMap, cellActivatedCount));
@@ -404,7 +428,8 @@ namespace rgbd_slam {
                 }//\while
             }
 
-            void Primitive_Detection::merge_planes(uint_vector& planeMergeLabels) {
+            void Primitive_Detection::merge_planes(uint_vector& planeMergeLabels) 
+            {
                 const uint planeCount = _planeSegments.size();
 
                 Matrixb planesAssocMat = Matrixb::Constant(planeCount, planeCount, false);
@@ -413,30 +438,35 @@ namespace rgbd_slam {
                 for(uint i = 0; i < planeCount; ++i)
                     planeMergeLabels.push_back(i);
 
-                for(uint r = 0; r < planesAssocMat.rows(); ++r) {
+                for(uint r = 0; r < planesAssocMat.rows(); ++r) 
+                {
                     uint planeId = planeMergeLabels[r];
                     bool planeWasExpanded = false;
                     const plane_segment_unique_ptr& testPlane = _planeSegments[planeId];
                     const vector3& testPlaneNormal = testPlane->get_normal();
 
-                    for(uint c = r+1; c < planesAssocMat.cols(); ++c) {
-                        if(planesAssocMat(r, c)) {
+                    for(uint c = r+1; c < planesAssocMat.cols(); ++c) 
+                    {
+                        if(planesAssocMat(r, c)) 
+                        {
                             const plane_segment_unique_ptr& mergePlane = _planeSegments[c];
                             const vector3& mergePlaneNormal = mergePlane->get_normal();
-                            double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
+                            const double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
 
                             const vector3& mergePlaneMean = mergePlane->get_mean();
-                            double distance = pow(
+                            const double distance = pow(
                                     testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d()
                                     , 2);
 
-                            if(cosAngle > _minCosAngleForMerge and distance < _maxMergeDist) {
+                            if(cosAngle > _minCosAngleForMerge and distance < _maxMergeDist) 
+                            {
                                 //merge plane segments
                                 _planeSegments[planeId]->expand_segment(mergePlane);
                                 planeMergeLabels[c] = planeId;
                                 planeWasExpanded = true;
                             }
-                            else {
+                            else 
+                            {
                                 planesAssocMat(r, c) = false;
                             }
                         }
@@ -446,15 +476,18 @@ namespace rgbd_slam {
                 }
             }
 
-            void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, primitive_container& primitiveSegments) {
+            void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, primitive_container& primitiveSegments) 
+            {
                 //refine the coarse planes boundaries to smoother versions
-                uint planeCount = _planeSegments.size();
-                for(uint i = 0; i < planeCount; ++i) {
+                const uint planeCount = _planeSegments.size();
+                for(uint i = 0; i < planeCount; ++i) 
+                {
                     if (i != planeMergeLabels[i])
                         continue;
 
                     _mask = cv::Scalar(0);
-                    for(uint j = i; j < planeCount; ++j) {
+                    for(uint j = i; j < planeCount; ++j) 
+                    {
                         if(planeMergeLabels[j] == planeMergeLabels[i])
                             _mask.setTo(1, _gridPlaneSegmentMap == j + 1);
                     }
@@ -485,14 +518,17 @@ namespace rgbd_slam {
                     _gridPlaneSegMapEroded.setTo(planeNr, _maskEroded > 0);
 
                     //cell refinement
-                    for(uint cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; ++cellR) {
-                        unsigned char* rowPtr = _maskDiff.ptr<uchar>(cellR);
+                    for(uint cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; ++cellR) 
+                    {
+                        const uchar* rowPtr = _maskDiff.ptr<uchar>(cellR);
 
-                        for(uint cellC = 0; cellC < _horizontalCellsCount; ++cellC, ++stackedCellId) {
-                            uint offset = stackedCellId * _pointsPerCellCount;
-                            uint nextOffset = offset + _pointsPerCellCount;
+                        for(uint cellC = 0; cellC < _horizontalCellsCount; ++cellC, ++stackedCellId) 
+                        {
+                            const uint offset = stackedCellId * _pointsPerCellCount;
+                            const uint nextOffset = offset + _pointsPerCellCount;
 
-                            if(rowPtr[cellC] > 0) {
+                            if(rowPtr[cellC] > 0) 
+                            {
                                 //compute distance block
                                 _distancesCellStacked = 
                                     depthCloudArray.block(offset, 0, _pointsPerCellCount, 1).array() * nx +
@@ -501,9 +537,11 @@ namespace rgbd_slam {
                                     d;
 
                                 //Assign pixel
-                                for(uint pt = offset, j = 0; pt < nextOffset; ++j, ++pt) {
+                                for(uint pt = offset, j = 0; pt < nextOffset; ++j, ++pt) 
+                                {
                                     float dist = pow(_distancesCellStacked(j), 2);
-                                    if(dist < maxDist and dist < _distancesStacked[pt]) {
+                                    if(dist < maxDist and dist < _distancesStacked[pt]) 
+                                    {
                                         _distancesStacked[pt] = dist;
                                         _segMapStacked[pt] = planeNr;
                                     }
@@ -514,12 +552,14 @@ namespace rgbd_slam {
                 }
             }
 
-            void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments) {
+            void Primitive_Detection::refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments) 
+            {
                 if(not _useCylinderDetection)
                     return; //no cylinder detections
 
                 int cylinderFinalCount = 0;
-                for(uint i = 0; i < cylinderToRegionMap.size(); i++){
+                for(uint i = 0; i < cylinderToRegionMap.size(); i++)
+                {
                     // Build mask
                     _mask = cv::Scalar(0);
                     _mask.setTo(1, _gridCylinderSegMap == (i + 1));
@@ -557,18 +597,23 @@ namespace rgbd_slam {
                     double maxDist = 9 * cylinderSegRef->get_MSE_at(subRegId);
 
                     // Cell refinement
-                    for(uint cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; cellR += 1){
-                        uchar* rowPtr = _maskDiff.ptr<uchar>(cellR);
-                        for(uint cellC = 0; cellC < _horizontalCellsCount; cellC++, stackedCellId++) {
-                            uint offset = stackedCellId * _pointsPerCellCount;
-                            uint nextOffset = offset + _pointsPerCellCount;
+                    for(uint cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; cellR += 1)
+                    {
+                        const uchar* rowPtr = _maskDiff.ptr<uchar>(cellR);
+                        for(uint cellC = 0; cellC < _horizontalCellsCount; cellC++, stackedCellId++) 
+                        {
+                            const uint offset = stackedCellId * _pointsPerCellCount;
+                            const uint nextOffset = offset + _pointsPerCellCount;
                             if(rowPtr[cellC] > 0){
                                 // Update cells
-                                for(uint pt = offset, j = 0; pt < nextOffset; pt++, j++) {
+                                for(uint pt = offset, j = 0; pt < nextOffset; pt++, j++) 
+                                {
                                     const vector3& point = depthCloudArray.row(pt).cast<double>();
-                                    if(point.z() > 0){
+                                    if(point.z() > 0)
+                                    {
                                         double dist = pow(P1P2.cross(point - P2).norm() / P1P2Normal - radius, 2);
-                                        if(dist < maxDist and dist < _distancesStacked[pt]){ 
+                                        if(dist < maxDist and dist < _distancesStacked[pt])
+                                        {
                                             _distancesStacked[pt] = dist;
                                             _segMapStacked[pt] = CYLINDER_CODE_OFFSET + cylinderFinalCount;
                                         }
@@ -580,37 +625,44 @@ namespace rgbd_slam {
                 }
             }
 
-            void Primitive_Detection::set_masked_display(cv::Mat& segOut) {
+            void Primitive_Detection::set_masked_display(cv::Mat& segOut) 
+            {
                 //copy and rearranging
                 // Copy inlier list to matrix form
-                for(uint cellR = 0; cellR < _verticalCellsCount; cellR += 1){
-                    uchar* gridPlaneErodedRowPtr = _gridPlaneSegMapEroded.ptr<uchar>(cellR);
-                    uchar* gridCylinderErodedRowPtr = _gridCylinderSegMapEroded.ptr<uchar>(cellR);
-                    uint rOffset = cellR * _cellHeight;
-                    uint rLimit = rOffset + _cellHeight;
+                for(uint cellR = 0; cellR < _verticalCellsCount; cellR += 1)
+                {
+                    const uchar* gridPlaneErodedRowPtr = _gridPlaneSegMapEroded.ptr<uchar>(cellR);
+                    const uchar* gridCylinderErodedRowPtr = _gridCylinderSegMapEroded.ptr<uchar>(cellR);
+                    const uint rOffset = cellR * _cellHeight;
+                    const uint rLimit = rOffset + _cellHeight;
 
-                    for(uint cellC = 0; cellC < _horizontalCellsCount; cellC += 1){
-                        uint cOffset = cellC * _cellWidth;
+                    for(uint cellC = 0; cellC < _horizontalCellsCount; cellC += 1)
+                    {
+                        const uint cOffset = cellC * _cellWidth;
 
-                        if (gridPlaneErodedRowPtr[cellC] > 0){
+                        if (gridPlaneErodedRowPtr[cellC] > 0)
+                        {
                             // Set rectangle equal to assigned cell
                             segOut(cv::Rect(cOffset, rOffset, _cellWidth, _cellHeight)).setTo(gridPlaneErodedRowPtr[cellC]);
                         } 
-                        else if(gridCylinderErodedRowPtr[cellC] > 0) {
+                        else if(gridCylinderErodedRowPtr[cellC] > 0) 
+                        {
                             // Set rectangle equal to assigned cell
                             segOut(cv::Rect(cOffset, rOffset, _cellWidth, _cellHeight)).setTo(gridCylinderErodedRowPtr[cellC]);
                         }
-                        else {
-                            uint cLimit = cOffset + _cellWidth;
+                        else 
+                        {
+                            const uint cLimit = cOffset + _cellWidth;
                             // Set cell pixels one by one
-                            uchar* stackPtr = &_segMapStacked[_pointsPerCellCount * cellR * _horizontalCellsCount + _pointsPerCellCount * cellC];
-                            for(uint r = rOffset, i = 0; r < rLimit; r++){
+                            const uchar* stackPtr = &_segMapStacked[_pointsPerCellCount * cellR * _horizontalCellsCount + _pointsPerCellCount * cellC];
+                            for(uint r = rOffset, i = 0; r < rLimit; r++)
+                            {
                                 uchar* rowPtr = segOut.ptr<uchar>(r);
-                                for(uint c = cOffset; c < cLimit; c++, i++){
-                                    uchar id = stackPtr[i];
-                                    if(id > 0) {
+                                for(uint c = cOffset; c < cLimit; c++, i++)
+                                {
+                                    const uchar id = stackPtr[i];
+                                    if(id > 0) 
                                         rowPtr[c] = id;
-                                    }
                                 }
                             }
                         }
@@ -619,21 +671,27 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix) const {
-                uint rows2scanCount = segmentMap.rows - 1;
-                uint cols2scanCount = segmentMap.cols - 1;
+            void Primitive_Detection::get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix) const 
+            {
+                const uint rows2scanCount = segmentMap.rows - 1;
+                const uint cols2scanCount = segmentMap.cols - 1;
 
-                for(uint r = 0; r < rows2scanCount; r += 1) {
+                for(uint r = 0; r < rows2scanCount; r += 1) 
+                {
                     const int *row = segmentMap.ptr<int>(r);
                     const int *rowBelow = segmentMap.ptr<int>(r + 1);
-                    for(uint c = 0; c < cols2scanCount; c += 1) {
+                    for(uint c = 0; c < cols2scanCount; c += 1) 
+                    {
                         const int pixelValue = row[c];
-                        if(pixelValue > 0) {
-                            if(row[c + 1] > 0 and pixelValue != row[c + 1]) {
+                        if(pixelValue > 0) 
+                        {
+                            if(row[c + 1] > 0 and pixelValue != row[c + 1]) 
+                            {
                                 planesAssociationMatrix(pixelValue - 1, row[c + 1] - 1) = true;
                                 planesAssociationMatrix(row[c + 1] - 1, pixelValue - 1) = true;
                             }
-                            if(rowBelow[c] > 0 and pixelValue != rowBelow[c]) {
+                            if(rowBelow[c] > 0 and pixelValue != rowBelow[c]) 
+                            {
                                 planesAssociationMatrix(pixelValue - 1, rowBelow[c] - 1) = true;
                                 planesAssociationMatrix(rowBelow[c] - 1, pixelValue - 1) = true;
                             }
@@ -643,22 +701,19 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::region_growing(const unsigned short x, const unsigned short y, const vector3& seedPlaneNormal, const double seedPlaneD) {
+            void Primitive_Detection::region_growing(const unsigned short x, const unsigned short y, const vector3& seedPlaneNormal, const double seedPlaneD) 
+            {
                 assert(_activationMap.size() == _unassignedMask.size());
 
                 const size_t index = x + _horizontalCellsCount * y;
                 if (index >= _totalCellCount)
-                {
                     return;
-                }
 
                 assert(index < _activationMap.size());
                 assert(index < _unassignedMask.size());
                 if ((not _unassignedMask[index]) or _activationMap[index]) 
-                {
                     //pixel is not part of a component or already labelled
                     return;
-                }
 
                 assert(index < _planeGrid.size()); 
 

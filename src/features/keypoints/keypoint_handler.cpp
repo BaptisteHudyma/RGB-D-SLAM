@@ -221,18 +221,20 @@ namespace rgbd_slam {
                 std::vector< std::vector<cv::DMatch> > knnMatches;
                 _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask);
 
+                assert(knnMatches.size() > 0);
+                const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
+
                 //check the farthest neighbors
-                if (knnMatches[0].size() > 1) {
-                    const std::vector<cv::DMatch>& match = knnMatches[0];
+                if (firstMatch.size() > 1) {
                     //check if point is a good match by checking it's distance to the second best matched point
-                    if (match[0].distance < _maxMatchDistance * match[1].distance) {
-                        int id = match[0].trainIdx;
+                    if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance) {
+                        int id = firstMatch[0].trainIdx;
                         return id;   //this frame key point
                     }
                     return INVALID_MATCH_INDEX;
                 }
-                else if (knnMatches[0].size() == 1) {
-                    int id = knnMatches[0][0].trainIdx;
+                else if (firstMatch.size() == 1) {
+                    int id = firstMatch[0].trainIdx;
                     return id;   //this frame key point
                 }
                 return INVALID_MATCH_INDEX;

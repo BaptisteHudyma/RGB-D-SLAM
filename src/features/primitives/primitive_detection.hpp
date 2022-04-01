@@ -169,7 +169,6 @@ namespace primitives {
 
             const uint _width;
             const uint _height;
-            const uint _blocSize;
             const uint _pointsPerCellCount;
             const float _minCosAngleForMerge;
             const float _maxMergeDist;
