@@ -3,7 +3,9 @@
 
 #include "plane_segment.hpp"
 
-#include <Eigen/Dense>
+#include "types.hpp"
+
+#include "Eigen/Dense"
 
 #include <vector>
 #include <memory>
@@ -11,161 +13,177 @@
 
 
 namespace rgbd_slam {
-namespace features {
-namespace primitives {
+    namespace features {
+        namespace primitives {
 
-
-    /**
-     * \brief Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting
-     */
-    class Cylinder_Segment {
-        protected:
-            typedef std::unique_ptr<Plane_Segment> plane_segment_unique_ptr;
-
-        public:
-            /**
-             * \brief Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
-             *
-             * \param[in] planeGrid The plane segment container
-             * \param[in] activatedMask An array of size planeCount, referencing activated plane segments 
-             * \param[in] cellActivatedCount
-             */
-            Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& activatedMask, const uint cellActivatedCount);
 
             /**
-             * \brief Copy constructor
-             *
-             * \param[in] seg Cylinder_Segment to copy
-             * \param[in] subRegionId Cylinder element ID to copy
+             * \brief Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting
              */
-            Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId);
+            class Cylinder_Segment {
+                protected:
+                    typedef std::unique_ptr<Plane_Segment> plane_segment_unique_ptr;
 
-            /**
-             * \brief Copy constructor
-             *
-             * \param[in] seg Cylinder_Segment to copy
-             */
-            Cylinder_Segment(const Cylinder_Segment& seg);
+                public:
+                    /**
+                     * \brief Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
+                     *
+                     * \param[in] planeGrid The plane segment container
+                     * \param[in] activatedMask An array of size planeCount, referencing activated plane segments 
+                     * \param[in] cellActivatedCount
+                     */
+                    Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& activatedMask, const uint cellActivatedCount);
 
-            /**
-             * \brief Compute the point to cylinder surface distance. This distance is an approximation, our cylinder being defined as a sum of plane segments and points on it's main axis
-             *
-             * \param[in] point The point to compute distance to
-             *
-             * \return The signed distance between the point and cylinder surface
-             */
-            double get_distance(const vector3& point) const;
+                    /**
+                     * \brief Copy constructor
+                     *
+                     * \param[in] seg Cylinder_Segment to copy
+                     * \param[in] subRegionId Cylinder element ID to copy
+                     */
+                    Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId);
 
-            ~Cylinder_Segment();
+                    /**
+                     * \brief Copy constructor
+                     *
+                     * \param[in] seg Cylinder_Segment to copy
+                     */
+                    Cylinder_Segment(const Cylinder_Segment& seg);
 
-            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+                    /**
+                     * \brief Compute the point to cylinder surface distance. This distance is an approximation, our cylinder being defined as a sum of plane segments and points on it's main axis
+                     *
+                     * \param[in] point The point to compute distance to
+                     *
+                     * \return The signed distance between the point and cylinder surface
+                     */
+                    double get_distance(const vector3& point) const;
 
-        public:
-                /**
-                 * \brief 
-                 *
-                 * \return The number of plane segments fitted in this cylinder surface
-                 */
-                uint get_segment_count() const;
+                    ~Cylinder_Segment();
 
-                /**
-                 * \brief 
-                 *
-                 * \param[in] index The index of the cylinder part to search
-                 *
-                 * \return the Mean Sqared Error of the fitting process
-                 */
-                double get_MSE_at(const uint index) const;
+                    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-                /**
-                 * \brief
-                 *
-                 *
-                 */
-                bool is_inlier_at (const uint indexA, const uint indexB) const;
+                public:
+                        /**
+                         * \brief 
+                         *
+                         * \return The number of plane segments fitted in this cylinder surface
+                         */
+                        uint get_segment_count() const;
 
-                /**
-                 * \brief 
-                 *
-                 * \param[in] index The index of the cylinder part to search
-                 *
-                 */
-                uint get_local_to_global_mapping(const uint index) const;
+                        /**
+                         * \brief 
+                         *
+                         * \param[in] index The index of the cylinder part to search
+                         *
+                         * \return the Mean Sqared Error of the fitting process
+                         */
+                        double get_MSE_at(const uint index) const;
 
-                /**
-                 * \brief 
-                 *
-                 * \param[in] index The index of the cylinder part to search
-                 *
-                 */
-                const vector3& get_axis1_point(const uint index) const;
+                        /**
+                         * \brief
+                         *
+                         *
+                         */
+                        bool is_inlier_at (const uint indexA, const uint indexB) const;
 
-                /**
-                 *
-                 * \param[in] index The index of the cylinder part to search
-                 *
-                 */
-                const vector3& get_axis2_point(const uint index) const;
+                        /**
+                         * \brief 
+                         *
+                         * \param[in] index The index of the cylinder part to search
+                         *
+                         */
+                        uint get_local_to_global_mapping(const uint index) const;
 
-                /**
-                 * \brief Return the normal of a portion of this cylinder segement
-                 *
-                 * \param[in] index The index of the portion to return, between 0 and _normalsAxis1Axis2.size()
-                 */
-                double get_axis_normal(const uint index) const;
+                        /**
+                         * \brief 
+                         *
+                         * \param[in] index The index of the cylinder part to search
+                         *
+                         */
+                        const vector3& get_axis1_point(const uint index) const;
 
+                        /**
+                         *
+                         * \param[in] index The index of the cylinder part to search
+                         *
+                         */
+                        const vector3& get_axis2_point(const uint index) const;
 
-                /**
-                 * \brief Return the radius of this cylinder segment
-                 *
-                 * \return The radius of the cylinder segment, in frame units
-                 */
-                double get_radius(const uint index) const;
-
-                /**
-                 * \brief Return the absolute result of the dot product of the two normals
-                 *
-                 * \param[in] other The cyclinder segment to compare normal with
-                 *
-                 * \return A double between 0 and 1, 0 when the normals are orthogonal, 1 il they are parallels.
-                 */
-                double get_normal_similarity(const Cylinder_Segment& other);
-
-                /**
-                 *
-                 *
-                 */
-                const vector3 get_normal() const;
+                        /**
+                         * \brief Return the normal of a portion of this cylinder segement
+                         *
+                         * \param[in] index The index of the portion to return, between 0 and _normalsAxis1Axis2.size()
+                         */
+                        double get_axis_normal(const uint index) const;
 
 
+                        /**
+                         * \brief Return the radius of this cylinder segment
+                         *
+                         * \return The radius of the cylinder segment, in frame units
+                         */
+                        double get_radius(const uint index) const;
 
-        protected:
-                double get_distance(const vector3& point, const uint segmentId) const;
+                        /**
+                         * \brief Return the absolute result of the dot product of the two normals
+                         *
+                         * \param[in] other The cyclinder segment to compare normal with
+                         *
+                         * \return A double between 0 and 1, 0 when the normals are orthogonal, 1 il they are parallels.
+                         */
+                        double get_normal_similarity(const Cylinder_Segment& other);
 
-        private:
-                vector3 _axis;
-
-                std::vector<Eigen::MatrixXd> _centers;
-                vector3_vector _pointsAxis1;
-                vector3_vector _pointsAxis2;
-                std::vector<double> _normalsAxis1Axis2;
-                std::vector<Matrixb> _inliers;
-
-                std::vector<double> _MSE;
-                std::vector<double> _radius;
-
-                uint _cellActivatedCount;
-                uint _segmentCount;
-                std::vector<uint> _local2globalMap;
-
-        private:
-                //prevent dangerous and inefficient back end copy
-                Cylinder_Segment& operator=(const Cylinder_Segment& seg);   //copy operator
-    };
+                        /**
+                         *
+                         *
+                         */
+                        const vector3 get_normal() const;
 
 
-}
-}
+
+                protected:
+
+                        /**
+                         * \brief 
+                         *
+                         * \param[in] maximumIterations
+                         * \param[in] idsLeft Ids of the planes left to fit. Contains all the ids, and mark as false the already fitted segments
+                         * \param[in] planeNormals Normals of the planes to fit
+                         * \param[in] projectedCentroids 
+                         * \param[in] maximumSqrtDistance Maximum distance between planes before rejecting cylinder fitting
+                         * \param[in] idsLeftMask container of the same size as idsLeft, indicating which ids are inliers 
+                         * \param[IFinal] 
+                         *
+                         * \brief Return the number of inliers of this cylinder fitting
+                         */
+                        uint run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, Matrixb& idsLeftMask, Matrixb& IFinal);
+
+                        double get_distance(const vector3& point, const uint segmentId) const;
+
+                private:
+                        vector3 _axis;
+
+                        std::vector<Eigen::MatrixXd> _centers;
+                        vector3_vector _pointsAxis1;
+                        vector3_vector _pointsAxis2;
+                        std::vector<double> _normalsAxis1Axis2;
+                        std::vector<Matrixb> _inliers;
+
+                        std::vector<double> _MSE;
+                        std::vector<double> _radius;
+
+                        uint _cellActivatedCount;
+                        uint _segmentCount;
+                        std::vector<uint> _local2globalMap;
+
+                private:
+                        //prevent dangerous and inefficient back end copy
+                        Cylinder_Segment& operator=(const Cylinder_Segment& seg);   //copy operator
+            };
+
+
+        }
+    }
 }
 
 

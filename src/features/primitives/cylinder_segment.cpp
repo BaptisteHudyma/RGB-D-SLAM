@@ -1,12 +1,12 @@
 #include "cylinder_segment.hpp"
+
 #include "parameters.hpp"
 #include "logger.hpp"
+#include <iostream>
 
 namespace rgbd_slam {
     namespace features {
         namespace primitives {
-
-            using namespace std;
 
             Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId) :
                 _cellActivatedCount(0),
@@ -41,199 +41,138 @@ namespace rgbd_slam {
                 _segmentCount(0)
             {
                 const uint samplesCount = activatedMask.size();
+                assert(samplesCount == planeGrid.size());
+                assert(_cellActivatedCount <= activatedMask.size());
 
                 const float minimumCyinderScore = Parameters::get_cylinder_ransac_minimm_score();
                 const float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
 
                 _local2globalMap.assign(_cellActivatedCount, 0);
 
-                Eigen::MatrixXd N(3, 2 * _cellActivatedCount);
-                Eigen::MatrixXd P(3, _cellActivatedCount);
+                Eigen::MatrixXd planeNormals(3, 2 * _cellActivatedCount);
+                Eigen::MatrixXd planeCentroids(3, _cellActivatedCount);
 
-                // Init. P and N
+                // Init. normals and centroids
                 uint j = 0;
-                for(uint i = 0; i < samplesCount; i++)
+                for(uint i = 0; i < samplesCount; ++i)
                 {
                     if (activatedMask[i])
                     {
+                        assert(i < planeGrid.size());
+                        assert(j < _cellActivatedCount);
+                        assert(j < _local2globalMap.size());
+
                         const vector3& planeNormal = planeGrid[i]->get_normal();
                         const vector3& planeMean = planeGrid[i]->get_mean();
-                        N(0, j) = planeNormal.x();
-                        N(1, j) = planeNormal.y();
-                        N(2, j) = planeNormal.z();
-                        P(0, j) = planeMean.x();
-                        P(1, j) = planeMean.y();
-                        P(2, j) = planeMean.z();
+                        planeNormals(0, j) = planeNormal.x();
+                        planeNormals(1, j) = planeNormal.y();
+                        planeNormals(2, j) = planeNormal.z();
+                        planeCentroids(0, j) = planeMean.x();
+                        planeCentroids(1, j) = planeMean.y();
+                        planeCentroids(2, j) = planeMean.z();
 
-                        assert(j < _local2globalMap.size());
                         _local2globalMap[j] = i;
-                        j++;
+                        ++j;
                     }
                 }
-                // Concatenate [N -N]
-                for(uint i = 0; i < samplesCount; i++)
+
+                // Concatenate [Normals -Normals]
+                for(uint i = 0; i < samplesCount; ++i)
                 {
                     if (activatedMask[i])
                     {
+                        assert(j < 2 * _cellActivatedCount);
                         const vector3& planeNormal = planeGrid[i]->get_normal();
-                        N(0, j) = -planeNormal.x();
-                        N(1, j) = -planeNormal.y();
-                        N(2, j) = -planeNormal.z();
-                        j++;
+                        planeNormals(0, j) = -planeNormal.x();
+                        planeNormals(1, j) = -planeNormal.y();
+                        planeNormals(2, j) = -planeNormal.z();
+                        ++j;
                     }
                 }
 
                 // Compute covariance
-                const Eigen::MatrixXd cov = (N * N.adjoint()) / static_cast<double>(N.cols() - 1);
+                const Eigen::MatrixXd cov = (planeNormals * planeNormals.adjoint()) / static_cast<double>(planeNormals.cols() - 1);
 
                 // PCA using QR decomposition for symmetric matrices
-                Eigen::SelfAdjointEigenSolver<matrix33> es(cov);
-                const vector3& S = es.eigenvalues();
-                const double score = S(2)/S(0);
+                Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(cov);
+                const vector3& eigenValues = eigenSolver.eigenvalues();
+                const double score = eigenValues(2) / eigenValues(0);
 
                 // Checkpoint 1
                 if(score < minimumCyinderScore)
                     return;
 
-                const vector3& vec = es.eigenvectors().col(0);
-                _axis = vec; 
+                const vector3& cylinderAxis = eigenSolver.eigenvectors().col(0);
+                _axis = cylinderAxis; 
 
-                Eigen::MatrixXd NCpy = N.block(0, 0, 3, _cellActivatedCount);
-                N = NCpy; /* This avoids memory issues */
-                Eigen::MatrixXd PProj(3, _cellActivatedCount);
+                Eigen::MatrixXd NCpy = planeNormals.block(0, 0, 3, _cellActivatedCount);
+                planeNormals = NCpy; /* This avoids memory issues */
+                Eigen::MatrixXd projectedCentroids(3, _cellActivatedCount);
 
                 // Projection to plane: P' = P-theta*<P.theta>
-                const Eigen::MatrixXd& PDotTheta = vec.transpose() * P;
-                PProj.row(0) = P.row(0) - PDotTheta * vec(0);
-                PProj.row(1) = P.row(1) - PDotTheta * vec(1);
-                PProj.row(2) = P.row(2) - PDotTheta * vec(2);
-                const Eigen::MatrixXd& NDotTheta = vec.transpose() * N;
-                N.row(0) -= NDotTheta * vec(0);
-                N.row(1) -= NDotTheta * vec(1);
-                N.row(2) -= NDotTheta * vec(2);
+                const Eigen::MatrixXd& centroidsDotTheta = cylinderAxis.transpose() * planeCentroids;
+                projectedCentroids.row(0) = planeCentroids.row(0) - centroidsDotTheta * cylinderAxis(0);
+                projectedCentroids.row(1) = planeCentroids.row(1) - centroidsDotTheta * cylinderAxis(1);
+                projectedCentroids.row(2) = planeCentroids.row(2) - centroidsDotTheta * cylinderAxis(2);
+                const Eigen::MatrixXd& normalsDotTheta = cylinderAxis.transpose() * planeNormals;
+                planeNormals.row(0) -= normalsDotTheta * cylinderAxis(0);
+                planeNormals.row(1) -= normalsDotTheta * cylinderAxis(1);
+                planeNormals.row(2) -= normalsDotTheta * cylinderAxis(2);
 
                 // Normalize projected normals
-                const Eigen::MatrixXd& normalsNorm = N.colwise().norm();
-                N.row(0) = N.row(0).array() / normalsNorm.array();
-                N.row(1) = N.row(1).array() / normalsNorm.array();
-                N.row(2) = N.row(2).array() / normalsNorm.array();
+                const Eigen::MatrixXd& normalsNorm = planeNormals.colwise().norm();
+                planeNormals.row(0) = planeNormals.row(0).array() / normalsNorm.array();
+                planeNormals.row(1) = planeNormals.row(1).array() / normalsNorm.array();
+                planeNormals.row(2) = planeNormals.row(2).array() / normalsNorm.array();
 
                 // Ransac params
-                const float pSuccess = 0.8;
-                const float w = 0.33;
-                float K = log(1 - pSuccess) / log(1 - pow(w, 3));
+                const float pSuccess = 0.8; // probability of selecting only inliers in a ransac iteration
+                const float w = 0.33;   // inliers / all elements
+                uint maximumIterations  = log(1 - pSuccess) / log(1 - pow(w, 3));
 
-                uint mLeft = _cellActivatedCount;
+                uint planeSegmentsLeft = _cellActivatedCount;
                 Matrixb idsLeftMask(1, _cellActivatedCount);
 
-                vector<uint> idsLeft;
+                std::vector<uint> idsLeft;
+                idsLeft.reserve(_cellActivatedCount);
                 for(uint i = 0; i < _cellActivatedCount; i++)
                 {
                     idsLeft.push_back(i);
                     idsLeftMask(i) = true;
                 }
                 // Sequential RANSAC main loop
-                while(mLeft > 5 and mLeft > 0.1 * _cellActivatedCount)
+                while(planeSegmentsLeft > 5 and planeSegmentsLeft > 0.1 * _cellActivatedCount)
                 {
-                    Eigen::MatrixXd A, center, e1, e2;
-                    Eigen::MatrixXd D(1, _cellActivatedCount);
-                    Matrixb I(1, _cellActivatedCount);
-                    Matrixb IFinal(1, _cellActivatedCount);
-                    double minHypothesisDist = maximumSqrtDistance * mLeft;
-                    const uint inliersAcceptedCount = 0.9 * mLeft;
-                    uint maxInliersCount = 0;
-
+                    Matrixb isInlierFinal(true, _cellActivatedCount);
                     // RANSAC loop
-                    int k = 0;
-                    while(k < K)
-                    {
-                        // Random triplet
-                        const uint id_1 = idsLeft[rand() % mLeft];
-                        const uint id_2 = idsLeft[rand() % mLeft];
-                        const uint id_3 = idsLeft[rand() % mLeft];
-
-                        e1 = (N.col(id_1) + N.col(id_2) + N.col(id_3));
-                        e2 = (PProj.col(id_1) + PProj.col(id_2) + PProj.col(id_3));
-
-                        // LLS solution for triplets
-                        A = e1.transpose() * e1;
-                        const double a = 1.0 - A(0) / 9.0;
-                        double b = (
-                                (N.col(id_1).array() * PProj.col(id_1).array()) + 
-                                (N.col(id_2).array() * PProj.col(id_2).array()) + 
-                                (N.col(id_3).array() * PProj.col(id_3).array())
-                                ).sum() / 3 
-                            - ((e1.transpose() * e2)(0) / 9);
-                        double r = b / a;
-
-                        center = (e2 - r * e1) / 3;
-
-                        // Unnecessary calculations here
-                        // Normal dist
-                        D = ((PProj - r * N).colwise()- center.col(0)).colwise().squaredNorm() / (r * r);
-
-                        // Rectify radius if concave
-                        if (r < 0)
-                            r = -r;
-
-                        // Inliers
-                        I = (D.array() < maximumSqrtDistance);
-
-                        //MSAC truncated distance
-                        double dist = 0.0;
-                        uint inliersCount = 0;
-                        for(uint i = 0;i < _cellActivatedCount; i++)
-                        {
-                            if(idsLeftMask(i))
-                            {
-                                if(I(i)) 
-                                {
-                                    inliersCount += 1;
-                                    dist += D(i);
-                                }
-                                else
-                                {
-                                    dist += maximumSqrtDistance;
-                                }
-                            }
-                        }
-
-                        if(dist < minHypothesisDist)
-                        {
-                            minHypothesisDist = dist;
-                            maxInliersCount = inliersCount;
-                            for(uint i = 0; i < _cellActivatedCount; i++)
-                            {
-                                if(idsLeftMask(i))
-                                {
-                                    IFinal(i) = I(i);
-                                }
-                                else
-                                {
-                                    IFinal(i) = false;
-                                }
-                            }
-                            if(inliersCount > inliersAcceptedCount)
-                                break;
-                        }
-                        k++;
-                    }
+                    const uint maxInliersCount = run_ransac_loop(maximumIterations, idsLeft, planeNormals, projectedCentroids, maximumSqrtDistance, idsLeftMask, isInlierFinal);
 
                     // Checkpoint 2
                     if(maxInliersCount < 6)
                         break;
 
+                    // somehow useful... Use a better metric ?
                     // Increase prob. of finding inlier for next RANSAC runs
-                    K = log(1 - pSuccess) / log(1 - pow(0.5, 3));
+                    maximumIterations = log(1 - pSuccess) / log(1 - pow(0.5, 3));
 
-                    // Remove cells from list of remaining cells
+                    // Remove cells from list of remaining cells AND compute LLS solution using all inliers
+                    double b = 0;
+                    vector3 sumOfNormals = vector3::Zero(); 
+                    vector3 sumOfCenters = vector3::Zero(); 
                     idsLeft.clear();
+                    idsLeft.reserve(_cellActivatedCount);
                     for(uint i = 0; i < _cellActivatedCount; i++)
                     {
-                        if(IFinal(i)) 
+                        if(isInlierFinal(i)) 
                         {
+                            // Remove cell from remaining cells
                             idsLeftMask(i) = false;
-                            mLeft--;
+                            planeSegmentsLeft--;
+
+                            // compute LLS solution using all inliers
+                            sumOfNormals += planeNormals.col(i);
+                            sumOfCenters += projectedCentroids.col(i);
+                            b += (planeNormals.col(i).array() * projectedCentroids.col(i).array()).sum();
                         }
                         else if(idsLeftMask(i)) 
                         {
@@ -241,60 +180,41 @@ namespace rgbd_slam {
                         }
                     }
 
-                    // LLS solution using all inliers
-                    e1.setZero();
-                    e2.setZero();
-                    double b = 0;
-                    for(uint i = 0; i < _cellActivatedCount; i++)
-                    {
-                        if(IFinal(i)) 
-                        {
-                            e1 += N.col(i);
-                            e2 += PProj.col(i);
-                            b += (N.col(i).array() * PProj.col(i).array()).sum();
-                        }
-                    }
-
-                    A = e1.transpose() * e1;
-
-                    const double a = 1 - A(0) / (maxInliersCount * maxInliersCount);
+                    const double maxInliersCountSquared = static_cast<double>(maxInliersCount * maxInliersCount);
+                    const double a = 1 - sumOfNormals.squaredNorm() / maxInliersCountSquared;
                     b /= maxInliersCount;
-                    b -= (e1.transpose() * e2)(0) / (maxInliersCount * maxInliersCount);
-                    double r = b / a;
-                    center = (e2 - r * e1) / maxInliersCount;
+                    b -= sumOfNormals.dot(sumOfCenters) / maxInliersCountSquared;
+                    double radius = b / a;
+                    const Eigen::MatrixXd center = (sumOfCenters - radius * sumOfNormals) / maxInliersCount;
 
                     // Rectify radius if concave
-                    if (r < 0)
-                        r = -r;
+                    if (radius < 0)
+                        radius = -radius;
 
                     // Add cylinder
                     _segmentCount += 1;
-                    _radius.push_back(r);
+                    _radius.push_back(radius);
                     _centers.push_back(center);
-                    _inliers.push_back(IFinal);
+                    _inliers.push_back(isInlierFinal);
 
                     // Save points on axis
                     const vector3& P1d = center;
-                    const vector3& P2d = center + vec;
+                    const vector3& P2d = center + cylinderAxis;
                     const double P1P2d = (P2d - P1d).norm();
-                    // Use point-to-line distances (same as cylinder distances)
-                    vector3 P3;
-                    for(uint i = 0; i < _cellActivatedCount; i++)
-                    {
-                        if(IFinal(i)) 
-                        {
-                            P3 = P.block<3,1>(0, i);
-                            //D(i) = (P3-center).norm()-r;
-                            D(i) = ((P2d - P1d).cross(P3 - P2d)).norm() / P1P2d - r;
-                        }
-                    }
-                    D = D.array().square();
 
+                    // Compute mean squared error
                     double mse = 0; 
                     for(uint i = 0; i < _cellActivatedCount; i++)
                     {
-                        if(IFinal(i))
-                            mse += D(i);
+                        if(isInlierFinal(i)) 
+                        {
+                            const vector3 P3 = planeCentroids.block<3,1>(0, i);
+                            // Compute point to line distance
+                            // Use point-to-line distances (same as cylinder distances)
+                            //distance = pow((P3 - center).norm() - radius, 2.0);
+                            const double distance = pow(((P2d - P1d).cross(P3 - P2d)).norm() / P1P2d - radius, 2.0);
+                            mse += distance;
+                        }
                     }
                     mse /= maxInliersCount;
                     _MSE.push_back(mse);
@@ -304,6 +224,93 @@ namespace rgbd_slam {
                     _pointsAxis2.push_back(P2d);
                     _normalsAxis1Axis2.push_back(P1P2d);
                 }
+            }
+
+            uint Cylinder_Segment::run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, Matrixb& idsLeftMask, Matrixb& isInlierFinal)
+            {
+                assert(maximumIterations > 0);
+                assert(idsLeft.size() > 3);
+                assert(maximumSqrtDistance > 0);
+
+                const uint planeIdsLeft = idsLeft.size();
+                const uint inliersAcceptedCount = 0.9 * planeIdsLeft;
+
+                // Score of the maximum inliers configuration
+                double minHypothesisDist = maximumSqrtDistance * planeIdsLeft;
+                // Indexes of the inliers of the best configuration
+                std::vector<uint> finalInlierIndexes;
+
+                // Run ransac loop
+                for(uint iteration = 0; iteration < maximumIterations; ++iteration)
+                {
+                    // Random triplet
+                    const uint id1 = idsLeft[rand() % planeIdsLeft];
+                    const uint id2 = idsLeft[rand() % planeIdsLeft];
+                    const uint id3 = idsLeft[rand() % planeIdsLeft];
+                    // normals of random planes
+                    const vector3& normal1 = planeNormals.col(id1);
+                    const vector3& normal2 = planeNormals.col(id2);
+                    const vector3& normal3 = planeNormals.col(id3);
+                    // centers of random planes
+                    const vector3& centroid1 = projectedCentroids.col(id1);
+                    const vector3& centroid2 = projectedCentroids.col(id2);
+                    const vector3& centroid3 = projectedCentroids.col(id3);
+
+                    // Sum of normals/centroids
+                    const vector3 sumOfNormals = (normal1 + normal2 + normal3);
+                    const vector3 sumOfCenters = (centroid1 + centroid2 + centroid3);
+
+                    // LLS solution for triplets
+                    const double a = 1.0 - sumOfNormals.squaredNorm() / 9.0;
+                    const double b = (
+                            (normal1.array() * centroid1.array()) + 
+                            (normal2.array() * centroid2.array()) + 
+                            (normal3.array() * centroid3.array())
+                            ).sum() / 3.0 
+                        - (sumOfNormals.dot(sumOfCenters) / 9.0);
+                    // compute cylinder center and radius
+                    const double radius = b / a;
+                    const vector3 center = (sumOfCenters - radius * sumOfNormals) / 3.0;
+
+                    //MSAC truncated distance
+                    std::vector<uint> inlierIndexes;
+                    double dist = 0.0;
+                    for(uint i = 0; i < _cellActivatedCount; ++i)
+                    {
+                        if(idsLeftMask(i))
+                        {
+                            // Normal dist
+                            const double distance = ((projectedCentroids.col(i) - radius * planeNormals.col(i)).colwise() - center.col(0)).squaredNorm() / (radius * radius);
+                            if(distance < maximumSqrtDistance) 
+                            {
+                                dist += distance;
+                                inlierIndexes.push_back(i);
+                            }
+                            else
+                            {
+                                dist += maximumSqrtDistance;
+                            }
+                        }
+                    }
+
+                    if(dist < minHypothesisDist)
+                    {
+                        // Keep parameters of the best transformation
+                        minHypothesisDist = dist;
+                        finalInlierIndexes.swap(inlierIndexes);
+
+                        // early stop
+                        if(inlierIndexes.size() > inliersAcceptedCount)
+                            break;
+                    }
+                }
+
+                // Compute the final inliers set
+                isInlierFinal.setConstant(false);
+                for(const uint inlierIndex : finalInlierIndexes)
+                    isInlierFinal(inlierIndex) = true;
+
+                return  isInlierFinal.size();
             }
 
             double Cylinder_Segment::get_distance(const vector3& point) const 
