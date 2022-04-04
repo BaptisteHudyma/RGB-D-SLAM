@@ -69,10 +69,11 @@ bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage,
     return false;
 }
 
-bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
+bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
 {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
+        "{dataset         |<none>| The dataset to read}"
         "{p primitive     |  1   | display primitive masks }"
         "{d staged        |  0   | display points in staged container }"
         "{l lines         |  0   | Detect lines }"
@@ -88,7 +89,8 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& sho
         parser.printMessage();
         return false;
     }
-
+    
+    dataset = parser.get<std::string>("dataset");
     showPrimitiveMasks = parser.get<bool>("p");
     showStagedPoints = parser.get<bool>("d");
     useLineDetection = parser.get<bool>("l");
@@ -105,14 +107,15 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& sho
 
 int main(int argc, char* argv[]) 
 {
-    std::stringstream dataPath("../data/freiburg1_rotation/");
+    std::string dataset;
     bool showPrimitiveMasks, showStagedPoints, useLineDetection, shouldSavePoses;
     int startIndex;
     unsigned int jumpFrames = 0;
 
-    if (not parse_parameters(argc, argv, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
+    if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
+    std::stringstream dataPath("../data/freiburg1_" + dataset + "/");
 
     // Get file & folder names
     const std::string rgbImageListPath = dataPath.str() + "rgb.txt";
