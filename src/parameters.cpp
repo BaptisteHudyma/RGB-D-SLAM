@@ -105,10 +105,10 @@ namespace rgbd_slam {
         _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
-        _maximumOptimizationRANSACiterations = 100;
-        _ransacMaximumRetroprojectionErrorForInliers = 100; //10 cm
-        _ransacMinimumInliersForValidation = 0.90;   //90% of inliers to accept the final outliers
-        _ransacInitialThreshold = 1;    // 5 millimeter
+        _ransacMaximumRetroprojectionErrorForInliers = 5;   // Retroprojection error between two screen points, in pixels
+        _ransacMinimumInliersProportionForEarlyStop = 0.90; // proportion of inliers in total set, to stop RANSAC early
+        _ransacProbabilityOfSuccess = 0.8;   // probability of having at least one correct transformation
+        _ransacInlierProportion = 0.6;       // number of inliers in data / number of points in data 
 
         _minimumPointForOptimization = 6;   // Should be >= 6
         _optimizationMaximumIterations = 1024;
@@ -206,6 +206,26 @@ namespace rgbd_slam {
             _isValid = false;
         }
         
+        if (_ransacMaximumRetroprojectionErrorForInliers <= 0)
+        {
+            utils::log_error("The RANSAC maximum retroprojection distance must be positive");
+            _isValid = false;
+        }
+        if (_ransacMinimumInliersProportionForEarlyStop < 0 or _ransacMinimumInliersProportionForEarlyStop > 1)
+        {
+            utils::log_error("The RANSAC proportion of inliers must be between 0 and 1");
+            _isValid = false;
+        }
+        if (_ransacProbabilityOfSuccess < 0 or _ransacProbabilityOfSuccess > 1)
+        {
+            utils::log_error("The RANSAC probability of success should be between 0 and 1");
+            _isValid = false;
+        }
+        if (_ransacInlierProportion < 0 or _ransacInlierProportion > 1)
+        {
+            utils::log_error("The RANSAC expected proportion of inliers must be between 0 and 1");
+            _isValid = false;
+        }
 
         if (_minimumPointForOptimization < 3)
         {
@@ -240,11 +260,6 @@ namespace rgbd_slam {
         if (_optimizationDiagonalStepBoundShift <= 0)
         {
             utils::log_error("The optimization diagonal stepbound shift must be > 0");
-            _isValid = false;
-        }
-        if (_maximumOptimizationRANSACiterations <= 0)
-        {
-            utils::log_error("The RANSAC maximum iterations must be > 0");
             _isValid = false;
         }
         if (_maximumRetroprojectionError <= 0)

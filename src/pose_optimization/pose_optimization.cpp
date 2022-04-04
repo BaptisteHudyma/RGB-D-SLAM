@@ -18,16 +18,26 @@ namespace rgbd_slam {
 
         bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
-            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Selected set of random points
-            const uint maxIterations = Parameters::get_maximum_ransac_iterations();
-            const double maxThreshold = Parameters::get_ransac_maximum_retroprojection_error_for_inliers(); // maximum inlier threshold (in millimeters)
             const size_t matchedPointSize = matchedPoints.size();
-            const double acceptableMinimumScore = matchedPointSize * Parameters::get_ransac_minimum_inliers_for_validation();       // RANSAC will stop if this mean score is reached
-            double threshold = Parameters::get_ransac_initial_threshold();  // minimum retroprojection error to consider a match as an inlier (in millimeters)
+            assert(matchedPointSize > 0);
 
+            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select, minimum number of points to compute a pose
+            const double maximumRetroprojectionThreshold = Parameters::get_ransac_maximum_retroprojection_error_for_inliers(); // maximum inlier threshold, in pixels 
+            const double acceptableInliersForEarlyStop = matchedPointSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop(); // RANSAC will stop early if this inlier count is reached
+
+            assert(minimumPointsForOptimization > 0);
+            assert(maximumRetroprojectionThreshold > 0);
+            assert(acceptableInliersForEarlyStop > 0);
+            
+            // Compute maximum iteration with the original RANSAC formula
+            const uint maximumIterations = log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization));
+            assert(maximumIterations > 0);
+
+            // set the start score to the maximum score
+            double minScore = matchedPointSize * maximumRetroprojectionThreshold;
             utils::Pose bestPose = currentPose;
             matches_containers::match_point_container inlierMatchedPoints;  // Contains the best pose inliers
-            for(uint iteration = 0; iteration < maxIterations; ++iteration)
+            for(uint iteration = 0; iteration < maximumIterations; ++iteration)
             {
                 const matches_containers::match_point_container& selectedMatches = get_random_subset(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
@@ -42,34 +52,38 @@ namespace rgbd_slam {
                 // Select inliers by retroprojection threshold
                 matches_containers::match_point_container potentialInliersContainer;
                 matches_containers::match_point_container potentialOutliersContainer;
+                double score = 0.0;
                 for (const matches_containers::Match& match : matchedPoints)
                 {
-                    if (utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, transformationMatrix) < threshold)
+                    // Retroproject world point to screen, and compute screen distance
+                    const double distance = utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, transformationMatrix);
+                    assert(distance >= 0);
+                    if (distance < maximumRetroprojectionThreshold)
                     {
                         potentialInliersContainer.insert(potentialInliersContainer.end(), match);
+                        score += distance;
                     }
                     else
                     {
                         potentialOutliersContainer.insert(potentialOutliersContainer.end(), match);
+                        score += maximumRetroprojectionThreshold;
                     }
                 }
 
                 // We have a better score than the previous best one
-                if (potentialInliersContainer.size() > inlierMatchedPoints.size())
+                if (score < minScore)
                 {
+                    minScore = score;
                     bestPose = pose;
                     inlierMatchedPoints.swap(potentialInliersContainer);
                     outlierMatchedPoints.swap(potentialOutliersContainer);
 
-                    if (inlierMatchedPoints.size() >= acceptableMinimumScore)
+                    if (inlierMatchedPoints.size() >= acceptableInliersForEarlyStop)
                     {
                         // We can stop here, the optimization is good enough
                         break;
                     }
                 }
-                else if (iteration % 5 and threshold < maxThreshold)
-                    // augment the error threshold
-                    threshold += 10;
             }
 
             if (inlierMatchedPoints.size() < minimumPointsForOptimization)
