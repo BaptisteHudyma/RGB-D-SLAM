@@ -9,11 +9,38 @@ See the Doxygen documentation on [GitHub Pages](https://baptistehudyma.github.io
 
 For now, we are at the state of visual odometry with local mapping.
 
+## Process
+### feature detection & matching
+The system starts by splitting the depth image as a 2D connected graph, and run a primitive analysis on it.
+This analysis extract local planar features, that are merged into bigger planes.
+Using an iterative RANSAC algorithm, those planar features are fitted to cylinders if possible, providing two kind of high level features.
+Those high level features are matched on one frame to another by comparing their normals and Inter-Over-Union score.
+
+The system also extract points and lines, to improve reliability of pose extraction.
+The lines are extracted using LSD.
+The feature points are tracked by optical flow and matched by their BRIEF descriptors when needed, and every N frames to prevent optical flow drift.
+
+### local map
+Every features are maintained in a local map, that keep tracks of the reliable local features.
+Those features parameters (positions, uncertainties, speed, ...) is updated if a map feature is matched, using an individual Kalman filter per feature (no bundle adjustment yet).
+
+New features are maintained in a staged feature container, that behaves exactly like the local map, but as a lesser priority during the matching step.
+
+### pose optimization
+The final pose for the frame is computed using the local map to detected feature matches.
+Outliers are filtered out using a simple RANSAC, and the final pose is computed using Levenberg Marquardt algorithm, with custom weighting functions.
+
+The optimized pose is used to update the local map and motion model, in case the features are lost for a moment.
+
+The complete systems runs in real time, between 30FPS and 60FPS for images of 640x480 pixels (depth and RGB images).
+
 ## To be implemented soon
-- Map point error model
 - Advanced camera parameter model
 - Point descriptors based on custom neural network
+- Usage of keyframe to separate local maps
 - Loop closing based on multiscale neural network 
+- Use a graph between keyframe to represent the trajectory, and close the loop easily (using bundle adjustment)
+- Create a new separate trajectory when loosing track of features, and merge it to the main trajectory when possible
 
 
 ## packages
@@ -33,19 +60,23 @@ make
 
 How to use
 ```
-./rgbdslam
+./slam_freiburg1 desk
 ```
 Parameters
 ```
 -h Display the help
+-d displays the staged features (not yet in local map)
 -f path to the file containing the data (depth, rgb, cam parameters)
 -c use cylinder detection 
+-j Drop j frames between slam process
 -i index of starting frame (> 0)
+-l compute line features
+-s Save the trajectory in an output file
 ```
 
 Check mem errors
 ```
-valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./rgbdslam
+valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./slam_freiburg1 desk
 ```
 
 
