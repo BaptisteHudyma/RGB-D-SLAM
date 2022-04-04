@@ -224,7 +224,7 @@ namespace rgbd_slam {
                 }
             }
 
-            uint Cylinder_Segment::run_ransac_loop(const float maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, Matrixb& idsLeftMask, Matrixb& isInlierFinal)
+            uint Cylinder_Segment::run_ransac_loop(const float maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& isInlierFinal)
             {
                 assert(maximumIterations > 0);
                 assert(idsLeft.size() > 3);
