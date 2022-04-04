@@ -73,7 +73,7 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPri
 {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
-        "{dataset         |<none>| The dataset to read}"
+        "{@dataset        |<none>| The dataset to read}"
         "{p primitive     |  1   | display primitive masks }"
         "{d staged        |  0   | display points in staged container }"
         "{l lines         |  0   | Detect lines }"
@@ -90,7 +90,7 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPri
         return false;
     }
     
-    dataset = parser.get<std::string>("dataset");
+    dataset = parser.get<std::string>("@dataset");
     showPrimitiveMasks = parser.get<bool>("p");
     showStagedPoints = parser.get<bool>("d");
     useLineDetection = parser.get<bool>("l");
@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
             std::to_string(1 + gmtTime->tm_min) + ":" +
             std::to_string(1 + gmtTime->tm_sec);
         std::cout << dateAndTime << std::endl;
-        trajectoryFile.open("traj_freiburg_xyz_" + dateAndTime + ".txt");
+        trajectoryFile.open("traj_freiburg1_" + dataset + "_" + dateAndTime + ".txt");
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
     }
 

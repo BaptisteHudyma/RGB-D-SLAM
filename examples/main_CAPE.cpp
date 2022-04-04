@@ -16,6 +16,8 @@
 #include "angle_utils.hpp"
 
 
+
+
 void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) {
     switch(cv::waitKey(1)) {
         //check pressed key
@@ -36,8 +38,8 @@ void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiv
 }
 
 /**
-  * \brief checks the existence of a file (from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c)
-  */
+ * \brief checks the existence of a file (from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c)
+ */
 inline bool is_file_valid (const std::string& fileName) {
     struct stat buffer;
     return (stat (fileName.c_str(), &buffer) == 0);
@@ -67,10 +69,11 @@ bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage,
     return false;
 }
 
-bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
+bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
 {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
+        "{@dataset        |<none>| Dataset to process }"
         "{p primitive     |  1   | display primitive masks }"
         "{d staged        |  0   | display points in staged container }"
         "{l lines         |  0   | Detect lines }"
@@ -87,6 +90,7 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& sho
         return false;
     }
 
+    dataset = parser.get<std::string>("@dataset");
     showPrimitiveMasks = parser.get<bool>("p");
     showStagedPoints = parser.get<bool>("d");
     useLineDetection = parser.get<bool>("l");
@@ -103,16 +107,16 @@ bool parse_parameters(int argc, char** argv, bool& showPrimitiveMasks, bool& sho
 
 
 
-int main(int argc, char* argv[]) 
-{
-    std::stringstream dataPath("../data/yoga/");
+int main(int argc, char* argv[]) {
+    std::string dataset;
     bool showPrimitiveMasks, showStagedPoints, useLineDetection, shouldSavePoses;
     int startIndex;
     unsigned int jumpFrames = 0;
 
-    if (not parse_parameters(argc, argv, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
+    if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
+    std::stringstream dataPath("../data/CAPE_" + dataset + "/");
 
     int width, height;
     cv::Mat rgbImage, depthImage;
@@ -163,7 +167,7 @@ int main(int argc, char* argv[])
             std::to_string(1 + gmtTime->tm_min) + ":" +
             std::to_string(1 + gmtTime->tm_sec);
         std::cout << dateAndTime << std::endl;
-        trajectoryFile.open("traj_yoga_mat_" + dateAndTime + ".txt");
+        trajectoryFile.open("traj_" + dataset + "_mat_" + dateAndTime + ".txt");
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
     }
 
@@ -209,7 +213,6 @@ int main(int argc, char* argv[])
             trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl; 
         }
     }
-
     if (shouldSavePoses)
         trajectoryFile.close();
 

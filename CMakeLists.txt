@@ -135,13 +135,9 @@ target_link_libraries(${PROJECT_NAME}
 
 
 # Examples of use
-add_executable(slam_yoga_mat
-    ${EXAMPLES}/main_yoga_mat_dataset.cpp)
-target_link_libraries(slam_yoga_mat ${PROJECT_NAME})
-
-add_executable(slam_tunnel_mat
-    ${EXAMPLES}/main_tunnel_dataset.cpp)
-target_link_libraries(slam_tunnel_mat ${PROJECT_NAME})
+add_executable(slam_CAPE
+    ${EXAMPLES}/main_CAPE.cpp)
+target_link_libraries(slam_CAPE ${PROJECT_NAME})
 
 add_executable(slam_freiburg1
     ${EXAMPLES}/main_freiburg1.cpp)
