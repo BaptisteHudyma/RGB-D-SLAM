@@ -128,13 +128,12 @@ namespace rgbd_slam {
                 // Ransac params
                 const float pSuccess = 0.8; // probability of selecting only inliers in a ransac iteration
                 const float w = 0.33;   // inliers / all elements
-                uint maximumIterations  = log(1 - pSuccess) / log(1 - pow(w, 3));
+                float maximumIterations = log(1 - pSuccess) / log(1 - pow(w, 3));
 
                 uint planeSegmentsLeft = _cellActivatedCount;
                 Matrixb idsLeftMask(1, _cellActivatedCount);
 
                 std::vector<uint> idsLeft;
-                idsLeft.reserve(_cellActivatedCount);
                 for(uint i = 0; i < _cellActivatedCount; i++)
                 {
                     idsLeft.push_back(i);
@@ -160,7 +159,6 @@ namespace rgbd_slam {
                     vector3 sumOfNormals = vector3::Zero(); 
                     vector3 sumOfCenters = vector3::Zero(); 
                     idsLeft.clear();
-                    idsLeft.reserve(_cellActivatedCount);
                     for(uint i = 0; i < _cellActivatedCount; i++)
                     {
                         if(isInlierFinal(i)) 
@@ -180,10 +178,10 @@ namespace rgbd_slam {
                         }
                     }
 
-                    const double maxInliersCountSquared = static_cast<double>(maxInliersCount * maxInliersCount);
-                    const double a = 1 - sumOfNormals.squaredNorm() / maxInliersCountSquared;
+                    const double oneOverMaxInliersCountSquared = 1.0 / static_cast<double>(maxInliersCount * maxInliersCount);
+                    const double a = 1 - sumOfNormals.squaredNorm() * oneOverMaxInliersCountSquared;
                     b /= maxInliersCount;
-                    b -= sumOfNormals.dot(sumOfCenters) / maxInliersCountSquared;
+                    b -= sumOfNormals.dot(sumOfCenters) * oneOverMaxInliersCountSquared;
                     double radius = b / a;
                     const Eigen::MatrixXd center = (sumOfCenters - radius * sumOfNormals) / maxInliersCount;
 
@@ -226,7 +224,7 @@ namespace rgbd_slam {
                 }
             }
 
-            uint Cylinder_Segment::run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, Matrixb& idsLeftMask, Matrixb& isInlierFinal)
+            uint Cylinder_Segment::run_ransac_loop(const float maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, Matrixb& idsLeftMask, Matrixb& isInlierFinal)
             {
                 assert(maximumIterations > 0);
                 assert(idsLeft.size() > 3);
@@ -270,6 +268,7 @@ namespace rgbd_slam {
                         - (sumOfNormals.dot(sumOfCenters) / 9.0);
                     // compute cylinder center and radius
                     const double radius = b / a;
+                    const double oneOverRadiusSquared = 1.0 / (radius * radius);
                     const vector3 center = (sumOfCenters - radius * sumOfNormals) / 3.0;
 
                     //MSAC truncated distance
@@ -280,7 +279,7 @@ namespace rgbd_slam {
                         if(idsLeftMask(i))
                         {
                             // Normal dist
-                            const double distance = ((projectedCentroids.col(i) - radius * planeNormals.col(i)).colwise() - center.col(0)).squaredNorm() / (radius * radius);
+                            const double distance = ((projectedCentroids.col(i) - radius * planeNormals.col(i)) - center.col(0)).squaredNorm() * oneOverRadiusSquared;
                             if(distance < maximumSqrtDistance) 
                             {
                                 dist += distance;
@@ -310,7 +309,7 @@ namespace rgbd_slam {
                 for(const uint inlierIndex : finalInlierIndexes)
                     isInlierFinal(inlierIndex) = true;
 
-                return  isInlierFinal.size();
+                return finalInlierIndexes.size();
             }
 
             double Cylinder_Segment::get_distance(const vector3& point) const 

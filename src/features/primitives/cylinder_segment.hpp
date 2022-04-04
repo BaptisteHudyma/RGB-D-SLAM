@@ -156,7 +156,7 @@ namespace rgbd_slam {
                          *
                          * \brief Return the number of inliers of this cylinder fitting
                          */
-                        uint run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, Matrixb& idsLeftMask, Matrixb& IFinal);
+                        uint run_ransac_loop(const float maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, Matrixb& idsLeftMask, Matrixb& IFinal);
 
                         double get_distance(const vector3& point, const uint segmentId) const;
 
