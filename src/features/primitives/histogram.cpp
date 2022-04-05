@@ -20,16 +20,16 @@ namespace primitives {
         _B.clear();
     }
 
-    void Histogram::init_histogram(const Eigen::MatrixXd& points, const std::vector<bool>& flags) {
+    void Histogram::init_histogram(const Eigen::MatrixXd& points, const std::vector<bool>& isUnasignedMask) {
         //_reset();
         _pointCount = points.rows();
         _B.assign(_pointCount, -1);
 
-        assert(_pointCount == flags.size());
-        assert(_B.size() == flags.size());
+        assert(_pointCount == isUnasignedMask.size());
+        assert(_B.size() == isUnasignedMask.size());
 
         for(uint i = 0; i < _pointCount; i += 1) {
-            if(flags[i]) {
+            if(isUnasignedMask[i]) {
                 const int xQ = (_binPerCoordCount - 1) * (points(i, 0) - _minX) / _maxXminX;
                 //dealing with degeneracy
                 int yQ = 0;

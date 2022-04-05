@@ -101,7 +101,7 @@ namespace rgbd_slam {
         {
             // will be used to detect new keypoints for the stagged map
             _isPointMatched.clear();
-            _isPointMatched = std::vector<bool>(detectedKeypoint.get_keypoint_count(), false);
+            _isPointMatched.assign(detectedKeypoint.get_keypoint_count(), false);
             matches_containers::match_point_container matchedPoints; 
 
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());

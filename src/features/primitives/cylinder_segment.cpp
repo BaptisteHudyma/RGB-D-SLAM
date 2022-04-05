@@ -35,13 +35,13 @@ namespace rgbd_slam {
                 _axis = seg._axis;
             }
 
-            Cylinder_Segment::Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& activatedMask, const uint cellActivatedCount) :
+            Cylinder_Segment::Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount) :
                 _cellActivatedCount(cellActivatedCount),
                 _segmentCount(0)
             {
-                const uint samplesCount = activatedMask.size();
+                const uint samplesCount = isActivatedMask.size();
                 assert(samplesCount == planeGrid.size());
-                assert(_cellActivatedCount <= activatedMask.size());
+                assert(_cellActivatedCount <= isActivatedMask.size());
 
                 const float minimumCyinderScore = Parameters::get_cylinder_ransac_minimm_score();
                 const float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
@@ -55,7 +55,7 @@ namespace rgbd_slam {
                 uint j = 0;
                 for(uint i = 0; i < samplesCount; ++i)
                 {
-                    if (activatedMask[i])
+                    if (isActivatedMask[i])
                     {
                         assert(i < planeGrid.size());
                         assert(j < _cellActivatedCount);
@@ -78,7 +78,7 @@ namespace rgbd_slam {
                 // Concatenate [Normals -Normals]
                 for(uint i = 0; i < samplesCount; ++i)
                 {
-                    if (activatedMask[i])
+                    if (isActivatedMask[i])
                     {
                         assert(j < 2 * _cellActivatedCount);
                         const vector3& planeNormal = planeGrid[i]->get_normal();
