@@ -182,9 +182,21 @@ namespace rgbd_slam {
     void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool showStagedPoints, const bool showPrimitiveMasks) 
     {
         debugImage = originalRGB.clone();
+
+        const uint bandSize = _height / 25.0;   // 1/25 of the total image should be for the top black band
+
+        // Show frame rate and labels
+        cv::rectangle(debugImage, cv::Point(0,0), cv::Point(_width, bandSize), cv::Scalar(0,0,0), -1);
+        if(elapsedTime > 0) 
+        {
+            std::stringstream fps;
+            fps << static_cast<int>((1 / elapsedTime + 0.5)) << " fps";
+            cv::putText(debugImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+        }
+
         if (showPrimitiveMasks)
         {
-            _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, debugImage, _previousAssociatedIds, elapsedTime);
+            _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
         }
 
         _localMap->get_debug_image(camPose, showStagedPoints, debugImage); 

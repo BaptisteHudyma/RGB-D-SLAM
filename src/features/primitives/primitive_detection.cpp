@@ -72,10 +72,12 @@ namespace rgbd_slam {
                 setMaskTime = 0;
             }
 
-            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, cv::Mat& labeledImage, const std::unordered_map<int, uint>& associatedIds, const double elapsedTime) 
+            void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, const std::unordered_map<int, uint>& associatedIds, const uint bandSize, cv::Mat& labeledImage) 
             {
+                assert(bandSize < _height);
+
                 //apply masks on image
-                for(uint r = 0; r < _height; ++r)
+                for(uint r = bandSize; r < _height; ++r)
                 {
                     const cv::Vec3b* rgbPtr = inputImage.ptr<cv::Vec3b>(r);
                     cv::Vec3b* outPtr = labeledImage.ptr<cv::Vec3b>(r);
@@ -110,30 +112,23 @@ namespace rgbd_slam {
                     }
                 }
 
-                // Show frame rate and labels
-                cv::rectangle(labeledImage, cv::Point(0,0), cv::Point(_width, 20), cv::Scalar(0,0,0), -1);
-                if(elapsedTime > 0) 
-                {
-                    std::stringstream fps;
-                    fps << static_cast<int>((1 / elapsedTime + 0.5)) << " fps";
-                    cv::putText(labeledImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
-                }
-
                 //show plane labels
                 if (primitiveSegments.size() > 0)
                 {
+                    const uint placeInBand = bandSize * 0.75;
                     std::stringstream text1;
                     text1 << "Planes:";
-                    double pos = _width * 0.25;
-                    cv::putText(labeledImage, text1.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+                    const double planeLabelPosition = _width * 0.25;
+                    cv::putText(labeledImage, text1.str(), cv::Point(planeLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
 
                     std::stringstream text2;
                     text2 << "Cylinders:";
-                    pos = _width * 0.60;
-                    cv::putText(labeledImage, text2.str(), cv::Point(pos, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+                    const double cylinderLabelPosition = _width * 0.60;
+                    cv::putText(labeledImage, text2.str(), cv::Point(cylinderLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
 
+                    // Diplay planes and cylinders in top band
                     uint count = 0;
                     for(const std::unique_ptr<Primitive>& prim : primitiveSegments)
                     {
@@ -142,13 +137,17 @@ namespace rgbd_slam {
                         if(associatedIds.contains(id))
                             id = associatedIds.at(id);
 
+                        double labelPosition;
                         if(id >= CYLINDER_CODE_OFFSET)
-                            pos = _width * 0.60;
+                            labelPosition = _width * 0.60;
                         else
-                            pos = _width * 0.25;
+                            labelPosition = _width * 0.25;
 
-                        cv::rectangle(labeledImage,  cv::Point(pos + 80 + 15 * count, 6),
-                                cv::Point(pos + 90 + 15 * count, 16), 
+                        // make a
+                        const uint labelSquareSize = bandSize * 0.5;
+                        cv::rectangle(labeledImage, 
+                                cv::Point(labelPosition + 80 + placeInBand * count, 6),
+                                cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * count, 6 + labelSquareSize), 
                                 cv::Scalar(
                                     colors[id][0],
                                     colors[id][1],
