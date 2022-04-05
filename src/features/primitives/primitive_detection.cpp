@@ -178,10 +178,6 @@ namespace rgbd_slam {
 
 
 
-            /*
-             * Find the planes in the organized depth matrix using region growing
-             * Segout will contain a 2D representation of the planes
-             */
             void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments, cv::Mat& segOut) 
             {
                 //reset used data structures
@@ -201,15 +197,13 @@ namespace rgbd_slam {
 
 
                 t1 = cv::getTickCount();
-                intpair_vector cylinder2regionMap;
-                grow_planes_and_cylinders(remainingPlanarCells, cylinder2regionMap);
+                const intpair_vector& cylinder2regionMap = grow_planes_and_cylinders(remainingPlanarCells);
                 td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
                 growTime += td;
 
                 //merge sparse planes
                 t1 = cv::getTickCount();
-                uint_vector planeMergeLabels;
-                merge_planes(planeMergeLabels);
+                const uint_vector& planeMergeLabels = merge_planes();
                 td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
                 mergeTime += td;
 
@@ -305,11 +299,14 @@ namespace rgbd_slam {
                 return remainingPlanarCells;
             }
 
-            void Primitive_Detection::grow_planes_and_cylinders(uint remainingPlanarCells, intpair_vector& cylinder2regionMap) 
+            Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinders(const uint remainingPlanarCells) 
             {
+                intpair_vector cylinder2regionMap;
+
                 uint cylinderCount = 0;
+                uint unaffectedPlanarCells = remainingPlanarCells;
                 //find seed planes and make them grow
-                while(remainingPlanarCells > 0) 
+                while(unaffectedPlanarCells > 0) 
                 {
                     //get seed candidates
                     const std::vector<uint>& seedCandidates = _histogram.get_points_from_most_frequent_bin();
@@ -363,8 +360,8 @@ namespace rgbd_slam {
                             _histogram.remove_point(planeSegmentIndex);
                             _isUnassignedMask[planeSegmentIndex] = false;
 
-                            assert(remainingPlanarCells > 0);
-                            --remainingPlanarCells;
+                            assert(unaffectedPlanarCells > 0);
+                            --unaffectedPlanarCells;
                         }
                     }
 
@@ -452,15 +449,18 @@ namespace rgbd_slam {
                         }
                     }
                 }//\while
+
+                return cylinder2regionMap;
             }
 
-            void Primitive_Detection::merge_planes(uint_vector& planeMergeLabels) 
+            Primitive_Detection::uint_vector Primitive_Detection::merge_planes() 
             {
                 const uint planeCount = _planeSegments.size();
 
                 Matrixb isPlanesConnectedMatrix = get_connected_components_matrix(_gridPlaneSegmentMap, planeCount);
                 assert(isPlanesConnectedMatrix.rows() == isPlanesConnectedMatrix.cols());
 
+                uint_vector planeMergeLabels;
                 planeMergeLabels.reserve(planeCount);
                 for(uint planeIndex = 0; planeIndex < planeCount; ++planeIndex)
                     // We use planes indexes as ids
@@ -505,6 +505,8 @@ namespace rgbd_slam {
                     if(wasPlaneExpanded)    //plane was merged with other planes
                         _planeSegments[planeId]->fit_plane();
                 }
+
+                return planeMergeLabels;
             }
 
             void Primitive_Detection::refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, const uint_vector& planeMergeLabels, primitive_container& primitiveSegments) 

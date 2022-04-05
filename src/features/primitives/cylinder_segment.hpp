@@ -29,7 +29,7 @@ namespace rgbd_slam {
                      * \brief Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
                      *
                      * \param[in] planeGrid The plane segment container
-                     * \param[in] activatedMask An array of size planeCount, referencing activated plane segments 
+                     * \param[in] isActivatedMask An array of size planeCount, referencing activated plane segments 
                      * \param[in] cellActivatedCount
                      */
                     Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount);
