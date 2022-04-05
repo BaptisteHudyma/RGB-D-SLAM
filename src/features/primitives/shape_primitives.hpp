@@ -58,6 +58,10 @@ namespace rgbd_slam {
                     uint get_id() const { return _id; };
                     void set_id(const uint id) { _id = id; };
 
+                    bool is_matched() const { return _isMatched; };
+                    void set_is_matched(const bool isMatched) { _isMatched = isMatched; };
+
+
                     vector3 _normal;
 
                 protected:
@@ -79,6 +83,7 @@ namespace rgbd_slam {
                     uint _id;
                     cv::Mat _shapeMask;
                     PrimitiveType _primitiveType;
+                    bool _isMatched;
 
                 private:
                     //remove copy functions

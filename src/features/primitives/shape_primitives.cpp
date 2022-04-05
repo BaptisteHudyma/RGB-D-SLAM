@@ -13,7 +13,8 @@ namespace rgbd_slam {
              */
             Primitive::Primitive(const uint id, const cv::Mat& shapeMask) :
                 _id(id),
-                _primitiveType(PrimitiveType::Invalid)
+                _primitiveType(PrimitiveType::Invalid),
+                _isMatched(false)
             {
                 assert(not shapeMask.empty());
 

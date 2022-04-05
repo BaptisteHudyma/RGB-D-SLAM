@@ -129,31 +129,51 @@ namespace rgbd_slam {
 
 
                     // Diplay planes and cylinders in top band
-                    uint count = 0;
+                    uint cylinderCount = 0;
+                    uint planeCount = 0;
+                    std::set<uint> alreadyDisplayedIds;
                     for(const std::unique_ptr<Primitive>& prim : primitiveSegments)
                     {
-                        uint id = prim->get_id();
+                        if(prim->is_matched())
+                        {
+                            const uint id = prim->get_id();
+                            if (alreadyDisplayedIds.contains(id))
+                                continue;   // already shown
+                            alreadyDisplayedIds.insert(id);
 
-                        if(associatedIds.contains(id))
-                            id = associatedIds.at(id);
-
-                        double labelPosition;
-                        if(id >= CYLINDER_CODE_OFFSET)
-                            labelPosition = _width * 0.60;
-                        else
-                            labelPosition = _width * 0.25;
-
-                        // make a
-                        const uint labelSquareSize = bandSize * 0.5;
-                        cv::rectangle(labeledImage, 
-                                cv::Point(labelPosition + 80 + placeInBand * count, 6),
-                                cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * count, 6 + labelSquareSize), 
-                                cv::Scalar(
-                                    colors[id][0],
-                                    colors[id][1],
-                                    colors[id][2]),
-                                -1);
-                        ++count;
+                            if(id >= CYLINDER_CODE_OFFSET)
+                            {
+                                // primitive is a cylinder
+                                const double labelPosition = _width * 0.60;
+                                // make a
+                                const uint labelSquareSize = bandSize * 0.5;
+                                cv::rectangle(labeledImage, 
+                                        cv::Point(labelPosition + 80 + placeInBand * cylinderCount, 6),
+                                        cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * cylinderCount, 6 + labelSquareSize), 
+                                        cv::Scalar(
+                                            colors[id][0],
+                                            colors[id][1],
+                                            colors[id][2]),
+                                        -1);
+                                ++cylinderCount;
+                            }
+                            else
+                            {
+                                const double labelPosition = _width * 0.25;
+                                // make a
+                                const uint labelSquareSize = bandSize * 0.5;
+                                cv::rectangle(labeledImage, 
+                                        cv::Point(labelPosition + 80 + placeInBand * planeCount, 6),
+                                        cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * planeCount, 6 + labelSquareSize), 
+                                        cv::Scalar(
+                                            colors[id][0],
+                                            colors[id][1],
+                                            colors[id][2]),
+                                        -1);
+                                ++planeCount;
+                            }
+                        }
+                        //else: not matched
                     }
                 }
             }
@@ -262,7 +282,8 @@ namespace rgbd_slam {
                 }
             }
 
-            uint Primitive_Detection::init_histogram() {
+            uint Primitive_Detection::init_histogram() 
+            {
                 uint remainingPlanarCells = 0;
                 Eigen::MatrixXd histBins(_totalCellCount, 2);
 
@@ -284,7 +305,8 @@ namespace rgbd_slam {
                 return remainingPlanarCells;
             }
 
-            void Primitive_Detection::grow_planes_and_cylinders(uint remainingPlanarCells, intpair_vector& cylinder2regionMap) {
+            void Primitive_Detection::grow_planes_and_cylinders(uint remainingPlanarCells, intpair_vector& cylinder2regionMap) 
+            {
                 uint cylinderCount = 0;
                 std::vector<uint> seedCandidates;
                 //find seed planes and make them grow
@@ -441,8 +463,8 @@ namespace rgbd_slam {
 
                 for(uint r = 0; r < planesAssocMat.rows(); ++r) 
                 {
-                    uint planeId = planeMergeLabels[r];
                     bool planeWasExpanded = false;
+                    const uint planeId = planeMergeLabels[r];
                     const plane_segment_unique_ptr& testPlane = _planeSegments[planeId];
                     const vector3& testPlaneNormal = testPlane->get_normal();
 
@@ -456,8 +478,8 @@ namespace rgbd_slam {
 
                             const vector3& mergePlaneMean = mergePlane->get_mean();
                             const double distance = pow(
-                                    testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d()
-                                    , 2);
+                                    testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d(),
+                                    2);
 
                             if(cosAngle > _minCosAngleForMerge and distance < _maxMergeDist) 
                             {
@@ -481,6 +503,7 @@ namespace rgbd_slam {
             {
                 //refine the coarse planes boundaries to smoother versions
                 const uint planeCount = _planeSegments.size();
+                uint planeIdAllocator = 0;
                 for(uint i = 0; i < planeCount; ++i) 
                 {
                     if (i != planeMergeLabels[i])
@@ -490,7 +513,7 @@ namespace rgbd_slam {
                     for(uint j = i; j < planeCount; ++j) 
                     {
                         if(planeMergeLabels[j] == planeMergeLabels[i])
-                            _mask.setTo(1, _gridPlaneSegmentMap == j + 1);
+                            _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
                     }
 
                     cv::erode(_mask, _maskEroded, _maskCrossKernel);
@@ -503,20 +526,22 @@ namespace rgbd_slam {
                     cv::dilate(_mask, _maskDilated, _maskSquareKernel);
                     _maskDiff = _maskDilated - _maskEroded;
 
+                    // new plane ID
+                    const uchar planeId = ++planeIdAllocator;
+                    assert(planeId < CYLINDER_CODE_OFFSET);
+
                     //add new plane to final shapes
-                    primitiveSegments.push_back(std::move(std::make_unique<Plane>(_planeSegments[i], planeMergeLabels[i], _maskDilated)));
+                    primitiveSegments.push_back(std::move(std::make_unique<Plane>(_planeSegments[i], planeId - 1, _maskDilated)));
 
-
-                    uchar planeNr = (unsigned char)primitiveSegments.size();
                     const vector3& planeNormal = _planeSegments[i]->get_normal();
-                    float nx = planeNormal.x();
-                    float ny = planeNormal.y();
-                    float nz = planeNormal.z();
-                    float d = _planeSegments[i]->get_plane_d();
+                    const float nx = planeNormal.x();
+                    const float ny = planeNormal.y();
+                    const float nz = planeNormal.z();
+                    const float d = _planeSegments[i]->get_plane_d();
                     //TODO: better distance metric
-                    float maxDist = 9 * _planeSegments[i]->get_MSE();
+                    const float maxDist = 9 * _planeSegments[i]->get_MSE();
 
-                    _gridPlaneSegMapEroded.setTo(planeNr, _maskEroded > 0);
+                    _gridPlaneSegMapEroded.setTo(planeId, _maskEroded > 0);
 
                     //cell refinement
                     for(uint cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; ++cellR) 
@@ -544,7 +569,7 @@ namespace rgbd_slam {
                                     if(dist < maxDist and dist < _distancesStacked[pt]) 
                                     {
                                         _distancesStacked[pt] = dist;
-                                        _segMapStacked[pt] = planeNr;
+                                        _segMapStacked[pt] = planeId;
                                     }
                                 }
                             }
@@ -558,7 +583,7 @@ namespace rgbd_slam {
                 if(not _useCylinderDetection)
                     return; //no cylinder detections
 
-                int cylinderFinalCount = 0;
+                uint cylinderIdAllocator = CYLINDER_CODE_OFFSET;
                 for(uint i = 0; i < cylinderToRegionMap.size(); i++)
                 {
                     // Build mask
@@ -574,28 +599,29 @@ namespace rgbd_slam {
                     if (max <= 0)
                         continue;
 
-                    cylinderFinalCount += 1;
+                    // Affect a new cylinder id
+                    const uchar cylinderId = ++cylinderIdAllocator;
 
                     // Dilate to obtain borders
                     cv::dilate(_mask, _maskDilated, _maskSquareKernel);
                     _maskDiff = _maskDilated - _maskEroded;
 
-                    _gridCylinderSegMapEroded.setTo((unsigned char)CYLINDER_CODE_OFFSET + cylinderFinalCount, _maskEroded > 0);
+                    _gridCylinderSegMapEroded.setTo(cylinderId, _maskEroded > 0);
 
-                    int regId = cylinderToRegionMap[i].first;
-                    int subRegId = cylinderToRegionMap[i].second;
+                    const int regId = cylinderToRegionMap[i].first;
+                    const int subRegId = cylinderToRegionMap[i].second;
                     const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
                     //add new cylinder to final shapes
-                    primitiveSegments.push_back(std::move(std::make_unique<Cylinder>(cylinderSegRef, CYLINDER_CODE_OFFSET + cylinderFinalCount -  1, _maskDilated)));
+                    primitiveSegments.push_back(std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId - 1, _maskDilated)));
 
 
                     // Get variables needed for point-surface distance computation
                     const vector3& P2 = cylinderSegRef->get_axis2_point(subRegId);
                     const vector3& P1P2 = P2 - cylinderSegRef->get_axis1_point(subRegId);
-                    double P1P2Normal = cylinderSegRef->get_axis_normal(subRegId);
-                    double radius = cylinderSegRef->get_radius(subRegId);
-                    double maxDist = 9 * cylinderSegRef->get_MSE_at(subRegId);
+                    const double P1P2Normal = cylinderSegRef->get_axis_normal(subRegId);
+                    const double radius = cylinderSegRef->get_radius(subRegId);
+                    const double maxDist = 9 * cylinderSegRef->get_MSE_at(subRegId);
 
                     // Cell refinement
                     for(uint cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; cellR += 1)
@@ -616,7 +642,7 @@ namespace rgbd_slam {
                                         if(dist < maxDist and dist < _distancesStacked[pt])
                                         {
                                             _distancesStacked[pt] = dist;
-                                            _segMapStacked[pt] = CYLINDER_CODE_OFFSET + cylinderFinalCount;
+                                            _segMapStacked[pt] = cylinderId;
                                         }
                                     }
                                 }

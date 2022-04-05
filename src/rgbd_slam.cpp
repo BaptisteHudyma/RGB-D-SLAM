@@ -126,10 +126,14 @@ namespace rgbd_slam {
             //find matches between consecutive images
             //compare normals, superposed area (and colors ?)
             for(features::primitives::primitive_uniq_ptr& prim : primitives) {
+                // set unmatched
+                prim->set_is_matched(false);
                 for(const features::primitives::primitive_uniq_ptr& prevPrim : _previousFramePrimitives) {
                     if(prim->is_similar(prevPrim)) {
+                        // A match is found !
                         associatedIds[prim->get_id()] = prevPrim->get_id();
                         prim->set_id(prevPrim->get_id());
+                        prim->set_is_matched(true);
                         break;
                     }
                 }
