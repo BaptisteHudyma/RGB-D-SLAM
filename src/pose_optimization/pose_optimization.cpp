@@ -226,15 +226,22 @@ namespace rgbd_slam {
             const std::vector<lambdatwist::CameraPose>& finalCameraPoses = lambdatwist::p3p(cameraPoints, worldPoints);
             assert(finalCameraPoses.size() <= 4);
 
+            const vector3& posePosition = currentPose.get_position();
+            const matrix33& poseRotation = currentPose.get_orientation_matrix();
+
             double closestPoseDistance = std::numeric_limits<double>::max();
             for(const lambdatwist::CameraPose& cameraPose : finalCameraPoses)
             {
-                const double poseDistance = utils::get_distance_manhattan(currentPose.get_position(), cameraPose.t * multiplier);
-                assert(poseDistance >= 0 and not std::isnan(poseDistance));
+                const double rotationDistance = (cameraPose.R - poseRotation).norm();
+                const double positionDistance = (cameraPose.t * multiplier - posePosition).norm();
 
-                if (poseDistance < closestPoseDistance)
+                assert(rotationDistance >= 0 and not std::isnan(rotationDistance));
+                assert(positionDistance >= 0 and not std::isnan(positionDistance));
+                const double distance = rotationDistance + positionDistance;
+
+                if (distance < closestPoseDistance)
                 {
-                    closestPoseDistance = poseDistance;
+                    closestPoseDistance = distance;
                     optimizedPose.set_parameters(cameraPose.t * multiplier, quaternion(cameraPose.R));
                 }
             }
