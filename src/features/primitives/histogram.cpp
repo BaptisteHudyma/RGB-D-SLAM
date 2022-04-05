@@ -43,12 +43,12 @@ namespace primitives {
         }
     }
 
-    void Histogram::get_points_from_most_frequent_bin(std::vector<uint>& pointsIds ) const {
+    std::vector<uint> Histogram::get_points_from_most_frequent_bin() const {
         int mostFrequentBin = -1;
         uint maxOccurencesCount = 0;
         
         const size_t binSize = _H.size();
-        for(uint i = 0; i < binSize; i += 1) {
+        for(uint i = 0; i < binSize; ++i) {
             //get most frequent bin index
             if(_H[i] > maxOccurencesCount) {
                 mostFrequentBin = i;
@@ -56,15 +56,17 @@ namespace primitives {
             }
         }
 
+        std::vector<uint> pointsIds;
         if(mostFrequentBin >= 0) {
             pointsIds.reserve(_pointCount);
             //most frequent bin is not empty
-            for(uint i = 0; i < _pointCount; i += 1) {
+            for(uint i = 0; i < _pointCount; ++i) {
                 if(_B[i] == mostFrequentBin) {
                     pointsIds.push_back(i);
                 }
             }
         }
+        return pointsIds;
     }
 
     void Histogram::remove_point(const uint pointId) {

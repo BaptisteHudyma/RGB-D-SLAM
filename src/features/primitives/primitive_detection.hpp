@@ -189,8 +189,8 @@ namespace primitives {
             Eigen::ArrayXf _distancesCellStacked;
 
             //arrays
-            std::vector<bool> _activationMap;
-            std::vector<bool> _unassignedMask;
+            std::vector<bool> _isActivatedMap;
+            std::vector<bool> _isUnassignedMask;
             std::vector<float> _distancesStacked;
             std::vector<unsigned char> _segMapStacked;
             std::vector<float> _cellDistanceTols;

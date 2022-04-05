@@ -29,9 +29,9 @@ namespace primitives {
             /**
               * \brief Return the points in the bin containing the most points
               *
-              * \param[out] pointsIds Container storing the points in the biggest bin
+              * \return Container storing the points in the biggest bin
               */
-            void get_points_from_most_frequent_bin(std::vector<uint>& pointsIds) const;
+            std::vector<uint> get_points_from_most_frequent_bin() const;
 
             /**
               * \brief Remove all points from a bin
