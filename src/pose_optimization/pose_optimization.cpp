@@ -205,6 +205,8 @@ namespace rgbd_slam {
         bool Pose_Optimization::compute_p3p_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose)
         {
             assert(matchedPoints.size() == 3);
+            // Do all operations on meters, while this SLAM uses millimeters
+            const double multiplier = 1000.0;
 
             std::vector<vector3> cameraPoints;
             std::vector<vector3> worldPoints;
@@ -218,7 +220,7 @@ namespace rgbd_slam {
                         );
 
                 cameraPoints.push_back(cameraPoint.normalized());
-                worldPoints.push_back(match._worldPoint);
+                worldPoints.push_back(match._worldPoint / multiplier);
             }
 
             const std::vector<lambdatwist::CameraPose>& finalCameraPoses = lambdatwist::p3p(cameraPoints, worldPoints);
@@ -227,13 +229,13 @@ namespace rgbd_slam {
             double closestPoseDistance = std::numeric_limits<double>::max();
             for(const lambdatwist::CameraPose& cameraPose : finalCameraPoses)
             {
-                const double poseDistance = utils::get_distance_euclidean(currentPose.get_position(), cameraPose.t);
+                const double poseDistance = utils::get_distance_manhattan(currentPose.get_position(), cameraPose.t * multiplier);
                 assert(poseDistance >= 0 and not std::isnan(poseDistance));
 
                 if (poseDistance < closestPoseDistance)
                 {
                     closestPoseDistance = poseDistance;
-                    optimizedPose.set_parameters(cameraPose.t, quaternion(cameraPose.R.inverse()));
+                    optimizedPose.set_parameters(cameraPose.t * multiplier, quaternion(cameraPose.R));
                 }
             }
             // At least one valid pose found
