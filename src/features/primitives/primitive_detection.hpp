@@ -42,9 +42,8 @@ namespace primitives {
               * \param[in] blocSize Size of an image division, in pixels.
               * \param[in] minCosAngleForMerge Minimum cosinus of the angle of two planes to merge those planes
               * \param[in] maxMergeDistance Maximum distance between the center of two planes to merge those planes
-              * \param[in] useCylinderDetection Transform some planes in cylinders, when they show an obvious cylinder shape
               */
-            Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659, const float maxMergeDistance = 50, const bool useCylinderDetection = false);
+            Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659, const float maxMergeDistance = 50);
 
             /**
               * \brief Main compute function: computes the primitives in the depth imahe
@@ -121,19 +120,19 @@ namespace primitives {
              * \brief Refine the final plane edges in mask images
              *
              * \param[in] depthCloudArray Organized cloud point
-             * \param[out] planeMergeLabels Container associating plane ID to global plane IDs
+             * \param[in] planeMergeLabels Container associating plane ID to global plane IDs
              * \param[in, out] primitiveSegments Container of shapes detected in this depth image
              */
-            void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, uint_vector& planeMergeLabels, primitive_container& primitiveSegments);
+            void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, const uint_vector& planeMergeLabels, primitive_container& primitiveSegments);
 
             /**
              * \brief Refine the cylinder edges in mask images
              *
              * \param[in] depthCloudArray Organized cloud point
-             * \param[out] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
+             * \param[int] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
              * \param[in, out] primitiveSegments Container of shapes detected in this depth image
              */
-            void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments); 
+            void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, const intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments); 
 
             /**
              * \brief Set output image pixel value with the index of the detected shape
@@ -156,9 +155,11 @@ namespace primitives {
              * \brief Fill an association matrix that links connected plane components
              *
              * \param[in] segmentMap
-             * \param[out] planesAssociationMatrix
+             * \param[in] numberOfPlanes Number of plane segments in segment map
+             *
+             * \return A symmetrical boolean matrix, indicating if a plane segment is connected to another plane segment
              */
-            void get_connected_components(const cv::Mat& segmentMap, Matrixb& planesAssociationMatrix) const;
+            Matrixb get_connected_components_matrix(const cv::Mat& segmentMap, const size_t numberOfPlanes) const;
 
         private:
             Histogram _histogram;
@@ -168,8 +169,6 @@ namespace primitives {
             const uint _pointsPerCellCount;
             const float _minCosAngleForMerge;
             const float _maxMergeDist;
-
-            const bool _useCylinderDetection;
 
             const uint _cellWidth;
             const uint _cellHeight;

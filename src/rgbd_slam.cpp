@@ -52,8 +52,7 @@ namespace rgbd_slam {
                     _height,
                     Parameters::get_depth_map_patch_size(),
                     Parameters::get_maximum_plane_match_angle(),
-                    Parameters::get_maximum_merge_distance(),
-                    true
+                    Parameters::get_maximum_merge_distance()
                     );
 
             // Line segment detector
