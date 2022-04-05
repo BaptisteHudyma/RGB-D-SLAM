@@ -8,8 +8,8 @@ var searchData=
   ['primitives_5',['primitives',['../namespacergbd__slam_1_1features_1_1primitives.html',1,'rgbd_slam::features']]],
   ['ransac_2ehpp_6',['ransac.hpp',['../ransac_8hpp.html',1,'']]],
   ['readme_2emd_7',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
-  ['refine_5fcylinder_5fboundaries_8',['refine_cylinder_boundaries',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ade155c5358bd18f05407c4fd4d0e2183',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
-  ['refine_5fplane_5fboundaries_9',['refine_plane_boundaries',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a5e9bdbde2b9ac905322e7b499796edef',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
+  ['refine_5fcylinder_5fboundaries_8',['refine_cylinder_boundaries',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a14948317c7a4bd306aef1a23b401f2f6',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
+  ['refine_5fplane_5fboundaries_9',['refine_plane_boundaries',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ac159d1a272e0e034615fdc53f52a290e',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
   ['refinetime_10',['refineTime',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#acee4e990aaeeec273775cf0fc944fa61',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
   ['region_5fgrowing_11',['region_growing',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ac73bd13f1cce9a325b0a26a82efb189d',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
   ['remove_5fpoint_12',['remove_point',['../classrgbd__slam_1_1features_1_1primitives_1_1_histogram.html#aafcd0a0740549c359aeda54fb2642cfc',1,'rgbd_slam::features::primitives::Histogram']]],
@@ -24,5 +24,6 @@ var searchData=
   ['rgbd_5fslam_2ehpp_21',['rgbd_slam.hpp',['../rgbd__slam_8hpp.html',1,'']]],
   ['rgdbslam_5fparameters_5fhpp_22',['RGDBSLAM_PARAMETERS_HPP',['../parameters_8hpp.html#ada5bb9e5dfd0204a9eb3c3e318a40e0f',1,'parameters.hpp']]],
   ['roll_23',['roll',['../structrgbd__slam_1_1_euler_angles.html#a3dc1511a2d1c5f2c004e9578e8de6b24',1,'rgbd_slam::EulerAngles']]],
-  ['utils_24',['utils',['../namespacergbd__slam_1_1utils.html',1,'rgbd_slam']]]
+  ['run_5fransac_5floop_24',['run_ransac_loop',['../classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae04979783f83ff5193478b2514be00b6',1,'rgbd_slam::features::primitives::Cylinder_Segment']]],
+  ['utils_25',['utils',['../namespacergbd__slam_1_1utils.html',1,'rgbd_slam']]]
 ];

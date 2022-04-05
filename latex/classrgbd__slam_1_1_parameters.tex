@@ -59,13 +59,13 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a8746de6726b024685
 \item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3cc5cbafbc854fb6d0c8e77713499581}{get\+\_\+minimum\+\_\+normals\+\_\+dot\+\_\+difference}} ()
 \item 
-static size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}{get\+\_\+maximum\+\_\+ransac\+\_\+iterations}} ()
-\item 
 static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a0d74da32c7ddcd01c9d7dc6cfb31fde9}{get\+\_\+ransac\+\_\+maximum\+\_\+retroprojection\+\_\+error\+\_\+for\+\_\+inliers}} ()
 \item 
-static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a16ad6407324ad6758ed6541447cb0329}{get\+\_\+ransac\+\_\+minimum\+\_\+inliers\+\_\+for\+\_\+validation}} ()
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a1b4d468f5d493d4aec6497593834f2e2}{get\+\_\+ransac\+\_\+minimum\+\_\+inliers\+\_\+proportion\+\_\+for\+\_\+early\+\_\+stop}} ()
 \item 
-static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a1d132d0601d473e741cd9b72f2f49de9}{get\+\_\+ransac\+\_\+initial\+\_\+threshold}} ()
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_aee5efc444d9f5337e28b9c8f1f271125}{get\+\_\+ransac\+\_\+probability\+\_\+of\+\_\+success}} ()
+\item 
+static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a56b08ed04e82127e2a25bca19e9fed76}{get\+\_\+ransac\+\_\+inlier\+\_\+proportion}} ()
 \item 
 static uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a850e679de0ef3b2dae619828b4c41643}{get\+\_\+minimum\+\_\+point\+\_\+count\+\_\+for\+\_\+optimization}} ()
 \item 
@@ -318,12 +318,6 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 \doxysubsubsection{\texorpdfstring{get\_maximum\_point\_count\_per\_frame()}{get\_maximum\_point\_count\_per\_frame()}}
 {\footnotesize\ttfamily static uint rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+maximum\+\_\+point\+\_\+count\+\_\+per\+\_\+frame (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}\label{classrgbd__slam_1_1_parameters_aacd4c2d6f0d528701ca97117bb3ecdd9}} 
-\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_maximum\_ransac\_iterations@{get\_maximum\_ransac\_iterations}}
-\index{get\_maximum\_ransac\_iterations@{get\_maximum\_ransac\_iterations}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
-\doxysubsubsection{\texorpdfstring{get\_maximum\_ransac\_iterations()}{get\_maximum\_ransac\_iterations()}}
-{\footnotesize\ttfamily static size\+\_\+t rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+maximum\+\_\+ransac\+\_\+iterations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
-
 \mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a8999c927c494468dcf8eb172b54e5795}\label{classrgbd__slam_1_1_parameters_a8999c927c494468dcf8eb172b54e5795}} 
 \index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_maximum\_retroprojection\_error@{get\_maximum\_retroprojection\_error}}
 \index{get\_maximum\_retroprojection\_error@{get\_maximum\_retroprojection\_error}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
@@ -480,11 +474,11 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 \doxysubsubsection{\texorpdfstring{get\_point\_weight\_threshold()}{get\_point\_weight\_threshold()}}
 {\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+point\+\_\+weight\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a1d132d0601d473e741cd9b72f2f49de9}\label{classrgbd__slam_1_1_parameters_a1d132d0601d473e741cd9b72f2f49de9}} 
-\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_initial\_threshold@{get\_ransac\_initial\_threshold}}
-\index{get\_ransac\_initial\_threshold@{get\_ransac\_initial\_threshold}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
-\doxysubsubsection{\texorpdfstring{get\_ransac\_initial\_threshold()}{get\_ransac\_initial\_threshold()}}
-{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+initial\+\_\+threshold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a56b08ed04e82127e2a25bca19e9fed76}\label{classrgbd__slam_1_1_parameters_a56b08ed04e82127e2a25bca19e9fed76}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_inlier\_proportion@{get\_ransac\_inlier\_proportion}}
+\index{get\_ransac\_inlier\_proportion@{get\_ransac\_inlier\_proportion}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_ransac\_inlier\_proportion()}{get\_ransac\_inlier\_proportion()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+inlier\+\_\+proportion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a0d74da32c7ddcd01c9d7dc6cfb31fde9}\label{classrgbd__slam_1_1_parameters_a0d74da32c7ddcd01c9d7dc6cfb31fde9}} 
 \index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_maximum\_retroprojection\_error\_for\_inliers@{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers}}
@@ -492,11 +486,17 @@ static double \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e
 \doxysubsubsection{\texorpdfstring{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers()}{get\_ransac\_maximum\_retroprojection\_error\_for\_inliers()}}
 {\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+maximum\+\_\+retroprojection\+\_\+error\+\_\+for\+\_\+inliers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a16ad6407324ad6758ed6541447cb0329}\label{classrgbd__slam_1_1_parameters_a16ad6407324ad6758ed6541447cb0329}} 
-\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_minimum\_inliers\_for\_validation@{get\_ransac\_minimum\_inliers\_for\_validation}}
-\index{get\_ransac\_minimum\_inliers\_for\_validation@{get\_ransac\_minimum\_inliers\_for\_validation}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
-\doxysubsubsection{\texorpdfstring{get\_ransac\_minimum\_inliers\_for\_validation()}{get\_ransac\_minimum\_inliers\_for\_validation()}}
-{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+minimum\+\_\+inliers\+\_\+for\+\_\+validation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_a1b4d468f5d493d4aec6497593834f2e2}\label{classrgbd__slam_1_1_parameters_a1b4d468f5d493d4aec6497593834f2e2}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_minimum\_inliers\_proportion\_for\_early\_stop@{get\_ransac\_minimum\_inliers\_proportion\_for\_early\_stop}}
+\index{get\_ransac\_minimum\_inliers\_proportion\_for\_early\_stop@{get\_ransac\_minimum\_inliers\_proportion\_for\_early\_stop}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_ransac\_minimum\_inliers\_proportion\_for\_early\_stop()}{get\_ransac\_minimum\_inliers\_proportion\_for\_early\_stop()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+minimum\+\_\+inliers\+\_\+proportion\+\_\+for\+\_\+early\+\_\+stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1_parameters_aee5efc444d9f5337e28b9c8f1f271125}\label{classrgbd__slam_1_1_parameters_aee5efc444d9f5337e28b9c8f1f271125}} 
+\index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_ransac\_probability\_of\_success@{get\_ransac\_probability\_of\_success}}
+\index{get\_ransac\_probability\_of\_success@{get\_ransac\_probability\_of\_success}!rgbd\_slam::Parameters@{rgbd\_slam::Parameters}}
+\doxysubsubsection{\texorpdfstring{get\_ransac\_probability\_of\_success()}{get\_ransac\_probability\_of\_success()}}
+{\footnotesize\ttfamily static double rgbd\+\_\+slam\+::\+Parameters\+::get\+\_\+ransac\+\_\+probability\+\_\+of\+\_\+success (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1_parameters_abddde410436ccb2d7856604c417b6d3e}\label{classrgbd__slam_1_1_parameters_abddde410436ccb2d7856604c417b6d3e}} 
 \index{rgbd\_slam::Parameters@{rgbd\_slam::Parameters}!get\_search\_matches\_cell\_size@{get\_search\_matches\_cell\_size}}

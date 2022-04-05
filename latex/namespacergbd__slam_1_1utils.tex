@@ -51,7 +51,7 @@ const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{ma
 \begin{DoxyCompactList}\small\item\em compute a covariance matrix for a screen point associated with a depth measurement \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a09dda9d0924d503bab6cec2b6663e179}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&screen\+Point, const double depth, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&screen\+Point\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5b76a21e6521ae3b3e7385f73d1c870a}{compute\+\_\+pose\+\_\+variance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a22065d1036a7b1f6b9cf9f79cca09bf7}{compute\+\_\+pose\+\_\+variance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pose\+Variance)
 \begin{DoxyCompactList}\small\item\em Compute the variance of the final pose in X Y Z. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a85dff6fcf36f784135436ffc74443d3a}{compute\+\_\+pose\+\_\+covariance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose)
 \begin{DoxyCompactList}\small\item\em Compute a pose covariance matrix from a pose. \end{DoxyCompactList}\item 
@@ -115,11 +115,11 @@ Compute a pose covariance matrix from a pose.
 \mbox{\texttt{ in}}  & {\em pose} & The pose to analyze \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a5b76a21e6521ae3b3e7385f73d1c870a}\label{namespacergbd__slam_1_1utils_a5b76a21e6521ae3b3e7385f73d1c870a}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a22065d1036a7b1f6b9cf9f79cca09bf7}\label{namespacergbd__slam_1_1utils_a22065d1036a7b1f6b9cf9f79cca09bf7}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_pose\_variance@{compute\_pose\_variance}}
 \index{compute\_pose\_variance@{compute\_pose\_variance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{compute\_pose\_variance()}{compute\_pose\_variance()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+pose\+\_\+variance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{pose,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::compute\+\_\+pose\+\_\+variance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{pose,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{pose\+Variance }\end{DoxyParamCaption})}
 
 
 
@@ -129,11 +129,13 @@ Compute the variance of the final pose in X Y Z.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em pose} & The pose to compute the variance of \\
 \hline
-\mbox{\texttt{ in}}  & {\em matched\+Points} & A container of matched features (inliers)\\
+\mbox{\texttt{ in}}  & {\em matched\+Points} & A container of matched features (inliers) \\
+\hline
+\mbox{\texttt{ out}}  & {\em pose\+Variance} & If the function returns true, then this is the estimated position variance estimated from matched points\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-the variance of this pose in X Y and Z 
+True if the variance was estimated 
 \end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}\label{namespacergbd__slam_1_1utils_a8ccc734fdffb0bef51e333ad5de60e56}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}

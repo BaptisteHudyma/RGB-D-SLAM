@@ -6,6 +6,6 @@ var searchData=
   ['mark_5funmatched_3',['mark_unmatched',['../structrgbd__slam_1_1map__management_1_1_matched_screen_point.html#ae47f3846c6e6f49bbd40c727a11b0edf',1,'rgbd_slam::map_management::MatchedScreenPoint']]],
   ['match_4',['Match',['../structrgbd__slam_1_1matches__containers_1_1_match.html#a03fae9791a2ffab8ea0b25ecb8788b58',1,'rgbd_slam::matches_containers::Match']]],
   ['matchedscreenpoint_5',['MatchedScreenPoint',['../structrgbd__slam_1_1map__management_1_1_matched_screen_point.html#a3e4b73b2487fef4ff10204e523e2606c',1,'rgbd_slam::map_management::MatchedScreenPoint::MatchedScreenPoint()'],['../structrgbd__slam_1_1map__management_1_1_matched_screen_point.html#a0560822adf01a00bca9327a618cb31c1',1,'rgbd_slam::map_management::MatchedScreenPoint::MatchedScreenPoint(const vector3 &amp;screenCoordinates, const int matchIndex=UNMATCHED_POINT_INDEX)']]],
-  ['merge_5fplanes_6',['merge_planes',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a3ccd5670ed0507cbd74c0fb8cf70e6a2',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
+  ['merge_5fplanes_6',['merge_planes',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a776295f859bf74f880c444ad54b3b5a1',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
   ['motion_5fmodel_7',['Motion_Model',['../classrgbd__slam_1_1utils_1_1_motion___model.html#a92747ec6ef3d202641797ccd08b36f07',1,'rgbd_slam::utils::Motion_Model']]]
 ];

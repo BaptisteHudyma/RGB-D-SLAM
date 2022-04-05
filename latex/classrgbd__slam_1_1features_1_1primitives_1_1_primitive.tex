@@ -29,6 +29,10 @@ virtual \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive
 uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a3276e6ceeb3acdb1026d2321d5e1db33}{get\+\_\+id}} () const
 \begin{DoxyCompactList}\small\item\em Return this shape assigned id. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6e68351289ffa71627e206144f9fdda4}{set\+\_\+id}} (const uint id)
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ac63de09a9c24d5842f67a6a4c3770f49}{is\+\_\+matched}} () const
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a2fd9f0eaeecf13541bc44c960a2aa723}{set\+\_\+is\+\_\+matched}} (const bool is\+Matched)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -50,6 +54,8 @@ uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6
 cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a59e1eb452738a0e25b06b0f44edf9fde}{\+\_\+shape\+Mask}}
 \item 
 \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9536701fa588803b6da36eaf6b25d741}{Primitive\+Type}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ae33b300ad292c6a9e2effb274f23bfe9}{\+\_\+primitive\+Type}}
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ab515b16113280ca91b4983984a4f64e2}{\+\_\+is\+Matched}}
 \end{DoxyCompactItemize}
 
 
@@ -136,6 +142,12 @@ A number between 0 and 1, indicating the IoU
 
 return the type of primitive that this object represents 
 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ac63de09a9c24d5842f67a6a4c3770f49}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ac63de09a9c24d5842f67a6a4c3770f49}} 
+\index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!is\_matched@{is\_matched}}
+\index{is\_matched@{is\_matched}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
+\doxysubsubsection{\texorpdfstring{is\_matched()}{is\_matched()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::is\+\_\+matched (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a07e7678584cd03660df651b28d0f03ae}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a07e7678584cd03660df651b28d0f03ae}} 
 \index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!is\_similar@{is\_similar}}
 \index{is\_similar@{is\_similar}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
@@ -159,6 +171,12 @@ Implemented in \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cy
 \doxysubsubsection{\texorpdfstring{set\_id()}{set\_id()}}
 {\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::set\+\_\+id (\begin{DoxyParamCaption}\item[{const uint}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a2fd9f0eaeecf13541bc44c960a2aa723}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a2fd9f0eaeecf13541bc44c960a2aa723}} 
+\index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!set\_is\_matched@{set\_is\_matched}}
+\index{set\_is\_matched@{set\_is\_matched}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
+\doxysubsubsection{\texorpdfstring{set\_is\_matched()}{set\_is\_matched()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::set\+\_\+is\+\_\+matched (\begin{DoxyParamCaption}\item[{const bool}]{is\+Matched }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \doxysubsection{Member Data Documentation}
@@ -167,6 +185,12 @@ Implemented in \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cy
 \index{\_id@{\_id}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
 \doxysubsubsection{\texorpdfstring{\_id}{\_id}}
 {\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::\+\_\+id\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ab515b16113280ca91b4983984a4f64e2}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_ab515b16113280ca91b4983984a4f64e2}} 
+\index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!\_isMatched@{\_isMatched}}
+\index{\_isMatched@{\_isMatched}!rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}}
+\doxysubsubsection{\texorpdfstring{\_isMatched}{\_isMatched}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+::\+\_\+is\+Matched\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a537c4067c3503ecec4590d39cf8d91d1}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a537c4067c3503ecec4590d39cf8d91d1}} 
 \index{rgbd\_slam::features::primitives::Primitive@{rgbd\_slam::features::primitives::Primitive}!\_normal@{\_normal}}

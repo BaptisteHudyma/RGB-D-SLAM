@@ -140,9 +140,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a09dda9d0924d503bab6cec2b6663e179"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">get_world_point_covariance</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenPoint, const double depth, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;screenPointCovariance)</td></tr>
 <tr class="memdesc:a09dda9d0924d503bab6cec2b6663e179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point.  <a href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">More...</a><br /></td></tr>
 <tr class="separator:a09dda9d0924d503bab6cec2b6663e179"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b76a21e6521ae3b3e7385f73d1c870a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a5b76a21e6521ae3b3e7385f73d1c870a">compute_pose_variance</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;pose, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;matchedPoints)</td></tr>
-<tr class="memdesc:a5b76a21e6521ae3b3e7385f73d1c870a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the variance of the final pose in X Y Z.  <a href="namespacergbd__slam_1_1utils.html#a5b76a21e6521ae3b3e7385f73d1c870a">More...</a><br /></td></tr>
-<tr class="separator:a5b76a21e6521ae3b3e7385f73d1c870a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22065d1036a7b1f6b9cf9f79cca09bf7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a22065d1036a7b1f6b9cf9f79cca09bf7">compute_pose_variance</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;pose, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;matchedPoints, <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;poseVariance)</td></tr>
+<tr class="memdesc:a22065d1036a7b1f6b9cf9f79cca09bf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the variance of the final pose in X Y Z.  <a href="namespacergbd__slam_1_1utils.html#a22065d1036a7b1f6b9cf9f79cca09bf7">More...</a><br /></td></tr>
+<tr class="separator:a22065d1036a7b1f6b9cf9f79cca09bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85dff6fcf36f784135436ffc74443d3a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a85dff6fcf36f784135436ffc74443d3a">compute_pose_covariance</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;pose)</td></tr>
 <tr class="memdesc:a85dff6fcf36f784135436ffc74443d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a pose covariance matrix from a pose.  <a href="namespacergbd__slam_1_1utils.html#a85dff6fcf36f784135436ffc74443d3a">More...</a><br /></td></tr>
 <tr class="separator:a85dff6fcf36f784135436ffc74443d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,14 +246,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a5b76a21e6521ae3b3e7385f73d1c870a" name="a5b76a21e6521ae3b3e7385f73d1c870a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b76a21e6521ae3b3e7385f73d1c870a">&#9670;&nbsp;</a></span>compute_pose_variance()</h2>
+<a id="a22065d1036a7b1f6b9cf9f79cca09bf7" name="a22065d1036a7b1f6b9cf9f79cca09bf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22065d1036a7b1f6b9cf9f79cca09bf7">&#9670;&nbsp;</a></span>compute_pose_variance()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> rgbd_slam::utils::compute_pose_variance </td>
+          <td class="memname">bool rgbd_slam::utils::compute_pose_variance </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
           <td class="paramname"><em>pose</em>, </td>
@@ -262,7 +262,13 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>matchedPoints</em>&#160;</td>
+          <td class="paramname"><em>matchedPoints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>poseVariance</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -276,11 +282,12 @@ Variables</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pose</td><td>The pose to compute the variance of </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoints</td><td>A container of matched features (inliers)</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matchedPoints</td><td>A container of matched features (inliers) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">poseVariance</td><td>If the function returns true, then this is the estimated position variance estimated from matched points</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the variance of this pose in X Y and Z </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the variance was estimated </dd></dl>
 
 </div>
 </div>

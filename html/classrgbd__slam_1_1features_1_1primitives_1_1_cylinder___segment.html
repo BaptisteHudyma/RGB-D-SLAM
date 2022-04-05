@@ -83,9 +83,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aba1a1c0c4fef04d84c2e22274d1604a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#aba1a1c0c4fef04d84c2e22274d1604a6">Cylinder_Segment</a> (const std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae86386857ec8a5f34258de1704e1c238">plane_segment_unique_ptr</a> &gt; &amp;planeGrid, const std::vector&lt; bool &gt; &amp;activatedMask, const uint cellActivatedCount)</td></tr>
-<tr class="memdesc:aba1a1c0c4fef04d84c2e22274d1604a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#aba1a1c0c4fef04d84c2e22274d1604a6">More...</a><br /></td></tr>
-<tr class="separator:aba1a1c0c4fef04d84c2e22274d1604a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14b8d2ca82e53e9b9a3f96edda9fabbc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a14b8d2ca82e53e9b9a3f96edda9fabbc">Cylinder_Segment</a> (const std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae86386857ec8a5f34258de1704e1c238">plane_segment_unique_ptr</a> &gt; &amp;planeGrid, const std::vector&lt; bool &gt; &amp;isActivatedMask, const uint cellActivatedCount)</td></tr>
+<tr class="memdesc:a14b8d2ca82e53e9b9a3f96edda9fabbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a14b8d2ca82e53e9b9a3f96edda9fabbc">More...</a><br /></td></tr>
+<tr class="separator:a14b8d2ca82e53e9b9a3f96edda9fabbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4315d3396bf884157894e07f06082d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ac4315d3396bf884157894e07f06082d4">Cylinder_Segment</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html">Cylinder_Segment</a> &amp;seg, const uint subRegionId)</td></tr>
 <tr class="memdesc:ac4315d3396bf884157894e07f06082d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ac4315d3396bf884157894e07f06082d4">More...</a><br /></td></tr>
 <tr class="separator:ac4315d3396bf884157894e07f06082d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,6 +128,9 @@ Protected Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae04979783f83ff5193478b2514be00b6"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae04979783f83ff5193478b2514be00b6">run_ransac_loop</a> (const float maximumIterations, const std::vector&lt; uint &gt; &amp;idsLeft, const Eigen::MatrixXd &amp;planeNormals, const Eigen::MatrixXd &amp;projectedCentroids, const float maximumSqrtDistance, const <a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">Matrixb</a> &amp;idsLeftMask, <a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">Matrixb</a> &amp;IFinal)</td></tr>
+<tr class="memdesc:ae04979783f83ff5193478b2514be00b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of inliers of this cylinder fitting.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae04979783f83ff5193478b2514be00b6">More...</a><br /></td></tr>
+<tr class="separator:ae04979783f83ff5193478b2514be00b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ea0785f7eab53b3dbfd7f1bdb86f583"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#a5ea0785f7eab53b3dbfd7f1bdb86f583">get_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;point, const uint segmentId) const</td></tr>
 <tr class="separator:a5ea0785f7eab53b3dbfd7f1bdb86f583"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -157,8 +160,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aba1a1c0c4fef04d84c2e22274d1604a6" name="aba1a1c0c4fef04d84c2e22274d1604a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba1a1c0c4fef04d84c2e22274d1604a6">&#9670;&nbsp;</a></span>Cylinder_Segment() <span class="overload">[1/3]</span></h2>
+<a id="a14b8d2ca82e53e9b9a3f96edda9fabbc" name="a14b8d2ca82e53e9b9a3f96edda9fabbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14b8d2ca82e53e9b9a3f96edda9fabbc">&#9670;&nbsp;</a></span>Cylinder_Segment() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,7 +176,7 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
-          <td class="paramname"><em>activatedMask</em>, </td>
+          <td class="paramname"><em>isActivatedMask</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -193,7 +196,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">planeGrid</td><td>The plane segment container </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">activatedMask</td><td>An array of size planeCount, referencing activated plane segments </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">isActivatedMask</td><td>An array of size planeCount, referencing activated plane segments </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cellActivatedCount</td><td></td></tr>
   </table>
   </dd>
@@ -576,6 +579,86 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae04979783f83ff5193478b2514be00b6" name="ae04979783f83ff5193478b2514be00b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae04979783f83ff5193478b2514be00b6">&#9670;&nbsp;</a></span>run_ransac_loop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint rgbd_slam::features::primitives::Cylinder_Segment::run_ransac_loop </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>maximumIterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; uint &gt; &amp;&#160;</td>
+          <td class="paramname"><em>idsLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::MatrixXd &amp;&#160;</td>
+          <td class="paramname"><em>planeNormals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::MatrixXd &amp;&#160;</td>
+          <td class="paramname"><em>projectedCentroids</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>maximumSqrtDistance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">Matrixb</a> &amp;&#160;</td>
+          <td class="paramname"><em>idsLeftMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">Matrixb</a> &amp;&#160;</td>
+          <td class="paramname"><em>IFinal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the number of inliers of this cylinder fitting. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">maximumIterations</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">idsLeft</td><td>Ids of the planes left to fit. Contains all the ids, and mark as false the already fitted segments </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">planeNormals</td><td>Normals of the planes to fit </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">projectedCentroids</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maximumSqrtDistance</td><td>Maximum distance between planes before rejecting cylinder fitting </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">idsLeftMask</td><td>container of the same size as idsLeft, indicating which ids are inliers </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[IFinal]</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -106,7 +106,15 @@ var menudata={children:[
 {text:"v",url:"functions_func_v.html#index_v"},
 {text:"x",url:"functions_func_x.html#index_x"},
 {text:"~",url:"functions_func_~.html#index__7E"}]},
-{text:"Variables",url:"functions_vars.html"},
+{text:"Variables",url:"functions_vars.html",children:[
+{text:"_",url:"functions_vars.html#index__5F"},
+{text:"g",url:"functions_vars.html#index_g"},
+{text:"i",url:"functions_vars.html#index_i"},
+{text:"m",url:"functions_vars.html#index_m"},
+{text:"p",url:"functions_vars.html#index_p"},
+{text:"r",url:"functions_vars.html#index_r"},
+{text:"s",url:"functions_vars.html#index_s"},
+{text:"y",url:"functions_vars.html#index_y"}]},
 {text:"Typedefs",url:"functions_type.html"},
 {text:"Enumerator",url:"functions_eval.html"}]}]},
 {text:"Files",url:"files.html",children:[

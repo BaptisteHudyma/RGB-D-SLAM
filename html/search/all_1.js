@@ -5,5 +5,5 @@ var searchData=
   ['add_5fumatched_5fkeypoints_5fto_5fstaged_5fmap_2',['add_umatched_keypoints_to_staged_map',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a748a8d6a9575e8dad87269be79f09c6d',1,'rgbd_slam::map_management::Local_Map']]],
   ['angle_5futils_2ecpp_3',['angle_utils.cpp',['../angle__utils_8cpp.html',1,'']]],
   ['angle_5futils_2ehpp_4',['angle_utils.hpp',['../angle__utils_8hpp.html',1,'']]],
-  ['apply_5fmasks_5',['apply_masks',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a7f1ecaecbf481e926300056272eef75e',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
+  ['apply_5fmasks_5',['apply_masks',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#aea8e4490690542045678684c772108a0',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
 ];

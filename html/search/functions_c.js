@@ -9,5 +9,5 @@ var searchData=
   ['posebase_6',['PoseBase',['../classrgbd__slam_1_1utils_1_1_pose_base.html#a0a9c8e94fe20d645c613bc3c42c16553',1,'rgbd_slam::utils::PoseBase::PoseBase()'],['../classrgbd__slam_1_1utils_1_1_pose_base.html#af41843dcca5d0b9a6319aa686df4f919',1,'rgbd_slam::utils::PoseBase::PoseBase(const vector3 &amp;position, const quaternion &amp;orientation)']]],
   ['predict_5fnext_5fpose_7',['predict_next_pose',['../classrgbd__slam_1_1utils_1_1_motion___model.html#ad46746162eb145a3944dc1156088bad3',1,'rgbd_slam::utils::Motion_Model']]],
   ['primitive_8',['Primitive',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a729381920ba721a402e94922b5a21a4e',1,'rgbd_slam::features::primitives::Primitive']]],
-  ['primitive_5fdetection_9',['Primitive_Detection',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a096293d1058519af4111f1841496cccf',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
+  ['primitive_5fdetection_9',['Primitive_Detection',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#abfb0908a83fed889a0319370dd06e86c',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
 ];

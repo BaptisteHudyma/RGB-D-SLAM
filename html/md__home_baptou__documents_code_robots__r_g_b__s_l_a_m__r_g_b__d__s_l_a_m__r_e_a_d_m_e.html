@@ -70,14 +70,31 @@ $(function() {
 <p >The primitive detection is based on <a href="https://arxiv.org/pdf/1803.02380.pdf">Fast Cylinder and Plane Extraction from Depth Cameras for Visua Odometry</a>. See the Doxygen documentation on <a href="https://baptistehudyma.github.io/RGB-D-SLAM/html/index.html">GitHub Pages</a>.</p>
 <p >For now, we are at the state of visual odometry with local mapping.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
+Process</h1>
+<h2><a class="anchor" id="autotoc_md2"></a>
+feature detection &amp; matching</h2>
+<p >The system starts by splitting the depth image as a 2D connected graph, and run a primitive analysis on it. This analysis extract local planar features, that are merged into bigger planes. Using an iterative RANSAC algorithm, those planar features are fitted to cylinders if possible, providing two kind of high level features. Those high level features are matched on one frame to another by comparing their normals and Inter-Over-Union score.</p>
+<p >The system also extract points and lines, to improve reliability of pose extraction. The lines are extracted using LSD. The feature points are tracked by optical flow and matched by their BRIEF descriptors when needed, and every N frames to prevent optical flow drift.</p>
+<h2><a class="anchor" id="autotoc_md3"></a>
+local map</h2>
+<p >Every features are maintained in a local map, that keep tracks of the reliable local features. Those features parameters (positions, uncertainties, speed, ...) is updated if a map feature is matched, using an individual Kalman filter per feature (no bundle adjustment yet).</p>
+<p >New features are maintained in a staged feature container, that behaves exactly like the local map, but as a lesser priority during the matching step.</p>
+<h2><a class="anchor" id="autotoc_md4"></a>
+pose optimization</h2>
+<p >The final pose for the frame is computed using the local map to detected feature matches. Outliers are filtered out using a simple RANSAC, and the final pose is computed using Levenberg Marquardt algorithm, with custom weighting functions.</p>
+<p >The optimized pose is used to update the local map and motion model, in case the features are lost for a moment.</p>
+<p >The complete systems runs in real time, between 30FPS and 60FPS for images of 640x480 pixels (depth and RGB images).</p>
+<h1><a class="anchor" id="autotoc_md5"></a>
 To be implemented soon</h1>
 <ul>
-<li>Map point error model</li>
 <li>Advanced camera parameter model</li>
 <li>Point descriptors based on custom neural network</li>
+<li>Usage of keyframe to separate local maps</li>
 <li>Loop closing based on multiscale neural network</li>
+<li>Use a graph between keyframe to represent the trajectory, and close the loop easily (using bundle adjustment)</li>
+<li>Create a new separate trajectory when loosing track of features, and merge it to the main trajectory when possible</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 packages</h1>
 <div class="fragment"><div class="line">opencv</div>
 <div class="line">Eigen</div>
@@ -86,15 +103,19 @@ packages</h1>
 </div><!-- fragment --><p >How to build Build </p><div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">make</div>
-</div><!-- fragment --><p >How to use </p><div class="fragment"><div class="line">./rgbdslam</div>
+</div><!-- fragment --><p >How to use </p><div class="fragment"><div class="line">./slam_freiburg1 desk</div>
 </div><!-- fragment --><p> Parameters </p><div class="fragment"><div class="line">-h Display the help</div>
+<div class="line">-d displays the staged features (not yet in local map)</div>
 <div class="line">-f path to the file containing the data (depth, rgb, cam parameters)</div>
 <div class="line">-c use cylinder detection </div>
+<div class="line">-j Drop j frames between slam process</div>
 <div class="line">-i index of starting frame (&gt; 0)</div>
-</div><!-- fragment --><p >Check mem errors </p><div class="fragment"><div class="line">valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./rgbdslam</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md3"></a>
+<div class="line">-l compute line features</div>
+<div class="line">-s Save the trajectory in an output file</div>
+</div><!-- fragment --><p >Check mem errors </p><div class="fragment"><div class="line">valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./slam_freiburg1 desk</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
 References:</h1>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 Primitive extraction</h2>
 <ul>
 <li><a href="https://arxiv.org/pdf/1803.02380.pdf">Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry</a></li>
@@ -102,7 +123,7 @@ Primitive extraction</h2>
 <li><a href="https://merl.com/publications/docs/TR2014-066.pdf">Fast Plane Extraction in Organized Point Clouds Using Agglomerative HierarchicalClustering</a></li>
 <li><a href="https://www.researchgate.net/publication/328822338_Depth_image-based_plane_detection">Depth image-based plane detection</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 Pose Optimization</h2>
 <ul>
 <li><a href="https://www.yumpu.com/en/document/read/30132260/using-quaternions-for-parametrizing-3-d-rotations-in-">Using Quaternions for Parametrizing 3D Rotations in Unconstrained Nonlinear Optimization</a> - 2001</li>
@@ -111,7 +132,7 @@ Pose Optimization</h2>
 <li>[A Quaternion-based Certifiably Optimal Solution to the Wahba Problem with Outliers]()</li>
 <li>[A General and Adaptive Robust Loss Function]() - 2019</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Visual odometry</h2>
 <ul>
 <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6165120/">LVT: Lightweight Visual Odometry for Autonomous Mobile Robots</a></li>
@@ -122,7 +143,7 @@ Visual odometry</h2>
 <li><a href="https://www.mdpi.com/1424-8220/20/10/2922/htm">Robust Stereo Visual Inertial Navigation System Based on Multi-Stage Outlier Removal in Dynamic Environments</a></li>
 <li>[RP-VIO: Robust Plane-based Visual-Inertial Odometry for Dynamic Environments]() - 2021</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 SLAM</h2>
 <ul>
 <li><a href="https://arxiv.org/pdf/1610.06475.pdf">ORB-SLAM2: an Open-Source SLAM System for Monocular, Stereo and RGB-D Cameras</a></li>

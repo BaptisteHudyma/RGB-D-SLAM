@@ -110,6 +110,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3276e6ceeb3acdb1026d2321d5e1db33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e68351289ffa71627e206144f9fdda4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a6e68351289ffa71627e206144f9fdda4">set_id</a> (const uint id)</td></tr>
 <tr class="separator:a6e68351289ffa71627e206144f9fdda4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac63de09a9c24d5842f67a6a4c3770f49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ac63de09a9c24d5842f67a6a4c3770f49">is_matched</a> () const</td></tr>
+<tr class="separator:ac63de09a9c24d5842f67a6a4c3770f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fd9f0eaeecf13541bc44c960a2aa723"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a2fd9f0eaeecf13541bc44c960a2aa723">set_is_matched</a> (const bool isMatched)</td></tr>
+<tr class="separator:a2fd9f0eaeecf13541bc44c960a2aa723"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -133,6 +137,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a59e1eb452738a0e25b06b0f44edf9fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae33b300ad292c6a9e2effb274f23bfe9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a9536701fa588803b6da36eaf6b25d741">PrimitiveType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ae33b300ad292c6a9e2effb274f23bfe9">_primitiveType</a></td></tr>
 <tr class="separator:ae33b300ad292c6a9e2effb274f23bfe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab515b16113280ca91b4983984a4f64e2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ab515b16113280ca91b4983984a4f64e2">_isMatched</a></td></tr>
+<tr class="separator:ab515b16113280ca91b4983984a4f64e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A base class used to compute the tracking analysis. It is a pure virtual class. </p>
@@ -327,6 +333,31 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ac63de09a9c24d5842f67a6a4c3770f49" name="ac63de09a9c24d5842f67a6a4c3770f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac63de09a9c24d5842f67a6a4c3770f49">&#9670;&nbsp;</a></span>is_matched()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rgbd_slam::features::primitives::Primitive::is_matched </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a07e7678584cd03660df651b28d0f03ae" name="a07e7678584cd03660df651b28d0f03ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07e7678584cd03660df651b28d0f03ae">&#9670;&nbsp;</a></span>is_similar()</h2>
 
@@ -384,6 +415,32 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a2fd9f0eaeecf13541bc44c960a2aa723" name="a2fd9f0eaeecf13541bc44c960a2aa723"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fd9f0eaeecf13541bc44c960a2aa723">&#9670;&nbsp;</a></span>set_is_matched()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::features::primitives::Primitive::set_is_matched </td>
+          <td>(</td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>isMatched</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a6e9dc0aef9db5ea8162c6bf8a31c422c" name="a6e9dc0aef9db5ea8162c6bf8a31c422c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e9dc0aef9db5ea8162c6bf8a31c422c">&#9670;&nbsp;</a></span>_id</h2>
@@ -396,6 +453,28 @@ Protected Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint rgbd_slam::features::primitives::Primitive::_id</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab515b16113280ca91b4983984a4f64e2" name="ab515b16113280ca91b4983984a4f64e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab515b16113280ca91b4983984a4f64e2">&#9670;&nbsp;</a></span>_isMatched</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rgbd_slam::features::primitives::Primitive::_isMatched</td>
         </tr>
       </table>
   </td>
