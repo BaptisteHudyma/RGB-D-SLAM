@@ -21,9 +21,9 @@ namespace rgbd_slam {
                 _advancedFeatureDetector(cv::FastFeatureDetector::create( minHessian / 2 )),
                 _descriptorExtractor(cv::xfeatures2d::BriefDescriptorExtractor::create())
             {
-                assert(_featureDetector != nullptr);
-                assert(_advancedFeatureDetector != nullptr);
-                assert(_descriptorExtractor != nullptr);
+                assert(not _featureDetector.empty() );
+                assert(not _advancedFeatureDetector.empty() );
+                assert(not _descriptorExtractor.empty() );
 
                 //profiling
                 _meanPointExtractionTime = 0.0;

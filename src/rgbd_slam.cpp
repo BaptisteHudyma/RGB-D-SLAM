@@ -61,7 +61,7 @@ namespace rgbd_slam {
             _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
 
             // Point detector and matcher
-            _pointMatcher = new features::keypoints::Key_Point_Extraction(Parameters::get_minimum_hessian());
+            _pointDetector = new features::keypoints::Key_Point_Extraction(Parameters::get_minimum_hessian());
 
             // kernel for various operations
             _kernel = cv::Mat::ones(3, 3, CV_8U);
@@ -89,7 +89,7 @@ namespace rgbd_slam {
     {
         delete _localMap;
         delete _primitiveDetector;
-        delete _pointMatcher;
+        delete _pointDetector;
         delete _lineDetector;
         delete _depthOps;
     }
@@ -211,7 +211,7 @@ namespace rgbd_slam {
         const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency())== 0;
 
         const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features();
-        const features::keypoints::Keypoint_Handler& keypointObject = _pointMatcher->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
+        const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
         const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
 
         matches_containers::match_point_container outlierMatchedPoints;
@@ -304,7 +304,7 @@ namespace rgbd_slam {
             double poseTreatmentTime = _meanPoseTreatmentTime / _totalFrameTreated;
             std::cout << "Mean pose estimation time is " << poseTreatmentTime << " seconds (" << get_percent_of_elapsed_time(poseTreatmentTime, meanFrameTreatmentTime) << "%)" << std::endl;
         }
-        _pointMatcher->show_statistics(meanFrameTreatmentTime, _totalFrameTreated);
+        _pointDetector->show_statistics(meanFrameTreatmentTime, _totalFrameTreated);
     }
 
 

@@ -89,7 +89,7 @@ namespace rgbd_slam {
             cv::LSD* _lineDetector;
 
             map_management::Local_Map* _localMap;
-            features::keypoints::Key_Point_Extraction* _pointMatcher;
+            features::keypoints::Key_Point_Extraction* _pointDetector;
 
             cv::Mat _kernel;
 

@@ -105,7 +105,7 @@ namespace rgbd_slam {
         _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
-        _ransacMaximumRetroprojectionErrorForInliers = 10;   // Retroprojection error between two screen points, in pixels
+        _ransacMaximumRetroprojectionErrorForInliers = 5;   // Retroprojection error between two screen points, in pixels
         _ransacMinimumInliersProportionForEarlyStop = 0.90; // proportion of inliers in total set, to stop RANSAC early
         _ransacProbabilityOfSuccess = 0.8;   // probability of having at least one correct transformation
         _ransacInlierProportion = 0.6;       // number of inliers in data / number of points in data 
