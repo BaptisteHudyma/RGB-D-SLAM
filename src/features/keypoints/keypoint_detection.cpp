@@ -45,7 +45,6 @@ namespace rgbd_slam {
                 if (frameKeypoints.size() >  minimumPointsForValidity)
                 {
                     // Refine keypoints positions
-                    framePoints.reserve(frameKeypoints.size());
                     cv::KeyPoint::convert(frameKeypoints, framePoints);
 
                     const cv::Size winSize  = cv::Size(3, 3);
@@ -148,7 +147,6 @@ namespace rgbd_slam {
                      *  DESCRIPTORS
                      */
                     std::vector<cv::KeyPoint> frameKeypoints;
-                    frameKeypoints.reserve(detectedKeypoints.size());
                     cv::KeyPoint::convert(detectedKeypoints, frameKeypoints);
 
                     // Compute descriptors
@@ -158,7 +156,6 @@ namespace rgbd_slam {
 
                     // convert back to keypoint list
                     detectedKeypoints.clear();
-                    detectedKeypoints.reserve(frameKeypoints.size());
                     cv::KeyPoint::convert(frameKeypoints, detectedKeypoints);
 
                     if (keypointDescriptors.rows > 0)
@@ -194,11 +191,6 @@ namespace rgbd_slam {
                 std::vector<cv::Point2f> forwardPoints;
 
                 const size_t previousKeyPointCount = lastKeypoints.size();
-                // Reserve room for the status, error and points
-                statusContainer.reserve(previousKeyPointCount);
-                errorContainer.reserve(previousKeyPointCount);
-                forwardPoints.reserve(previousKeyPointCount);
-
                 const cv::Size windowSizeObject = cv::Size(windowSize, windowSize);
                 const cv::TermCriteria criteria = cv::TermCriteria((cv::TermCriteria::COUNT) + (cv::TermCriteria::EPS), 10, 0.03);
 
@@ -207,7 +199,6 @@ namespace rgbd_slam {
 
                 // contains the ids of the good waypoints
                 std::vector<size_t> keypointIndexContainer;
-
                 keypointIndexContainer.reserve(previousKeyPointCount);
 
                 // set output structure
@@ -244,7 +235,6 @@ namespace rgbd_slam {
 
                 // Contains the keypoints from this frame, without outliers
                 std::vector<cv::Point2f> backwardKeypoints;
-                backwardKeypoints.reserve(newKeypoints.size());
 
                 // Backward tracking: go from this frame inliers to the last frame inliers
                 cv::calcOpticalFlowPyrLK(imageCurrentPyramide, imagePreviousPyramide, newKeypoints, backwardKeypoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);

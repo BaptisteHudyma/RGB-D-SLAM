@@ -100,7 +100,6 @@ namespace rgbd_slam {
         matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
         {
             // will be used to detect new keypoints for the stagged map
-            _isPointMatched.clear();
             _isPointMatched.assign(detectedKeypoint.get_keypoint_count(), false);
             matches_containers::match_point_container matchedPoints; 
 
