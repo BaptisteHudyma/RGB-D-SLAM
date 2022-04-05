@@ -8,7 +8,6 @@
 
 #include "depth_map_transformation.hpp"
 
-#include "geodesic_operations.hpp"
 #include "primitive_detection.hpp"
 #include "line_segment_detector.hpp"
 #include "keypoint_detection.hpp"

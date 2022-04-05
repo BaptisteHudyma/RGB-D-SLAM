@@ -103,19 +103,6 @@ namespace rgbd_slam {
         assert(static_cast<size_t>(inputRgbImage.cols) == _width);
 
         cv::Mat depthImage = inputDepthImage.clone();
-        cv::Mat rgbImage = inputRgbImage.clone();
-
-        cv::Mat grayImage;
-        cv::cvtColor(rgbImage, grayImage, cv::COLOR_BGR2GRAY);
-
-        primitive_container primitives;
-
-
-        //clean warp artefacts
-        cv::Mat newMat;
-        cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, _kernel);
-        cv::medianBlur(newMat, newMat, 3);
-        cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
 
         //project depth image in an organized cloud
         double t1 = cv::getTickCount();
@@ -127,12 +114,11 @@ namespace rgbd_slam {
 
         // Run primitive detection 
         t1 = cv::getTickCount();
+        primitive_container primitives;
         _segmentationOutput = cv::Mat::zeros(depthImage.size(), uchar(0));    //primitive mask mat
         _primitiveDetector->find_primitives(cloudArrayOrganized, primitives, _segmentationOutput);
         time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
         _meanTreatmentTime += time_elapsed;
-
-
 
         //associate primitives
         std::unordered_map<int, uint> associatedIds;
@@ -164,6 +150,9 @@ namespace rgbd_slam {
             //first frame, or no features detected last frame
 
         }
+
+        cv::Mat grayImage;
+        cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
         if(detectLines) { //detect lines in image
             cv::Mat outImage;

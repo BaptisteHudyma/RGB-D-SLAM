@@ -209,6 +209,15 @@ int main(int argc, char* argv[])
         depthImage.convertTo(depthImage, CV_32FC1);
         depthImage *= 100.0 / 5.0;
 
+        //clean warp artefacts
+#if 0
+        cv::Mat kernel = cv::Mat::ones(3, 3, CV_8U);
+        cv::Mat newMat;
+        cv::morphologyEx(depthImage, newMat, cv::MORPH_CLOSE, kernel);
+        cv::medianBlur(newMat, newMat, 3);
+        cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
+#endif
+
         // get optimized pose
         double elapsedTime = cv::getTickCount();
         pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
