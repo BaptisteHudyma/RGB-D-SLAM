@@ -50,15 +50,15 @@ namespace rgbd_slam {
             delete _mapWriter;
         }
 
-        bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints)
+        bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints)
         {
-            int matchIndex = detectedKeypoint.get_tracking_match_index(point._id, _isPointMatched);
+            int matchIndex = detectedKeypointsObject.get_tracking_match_index(point._id, _isPointMatched);
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
             {
                 vector2 projectedMapPoint;
                 const bool isScreenCoordinatesValid = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix, projectedMapPoint);
                 if (isScreenCoordinatesValid)
-                    matchIndex = detectedKeypoint.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
+                    matchIndex = detectedKeypointsObject.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
             }
 
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX) {
@@ -67,14 +67,14 @@ namespace rgbd_slam {
                 return false;
             }
 
-            const double screenPointDepth = detectedKeypoint.get_depth(matchIndex);
+            const double screenPointDepth = detectedKeypointsObject.get_depth(matchIndex);
             if (utils::is_depth_valid(screenPointDepth) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
 
                 // update index and screen coordinates 
                 MatchedScreenPoint match;
-                match._screenCoordinates << detectedKeypoint.get_keypoint(matchIndex), screenPointDepth;
+                match._screenCoordinates << detectedKeypointsObject.get_keypoint(matchIndex), screenPointDepth;
                 match._matchIndex = matchIndex;
                 point._matchedScreenPoint = match;
 
@@ -87,7 +87,7 @@ namespace rgbd_slam {
 
                 // update index and screen coordinates 
                 MatchedScreenPoint match;
-                match._screenCoordinates << detectedKeypoint.get_keypoint(matchIndex), 0;
+                match._screenCoordinates << detectedKeypointsObject.get_keypoint(matchIndex), 0;
                 match._matchIndex = matchIndex;
                 point._matchedScreenPoint = match;
 
@@ -97,10 +97,15 @@ namespace rgbd_slam {
             return false;
         }
 
-        matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint)
+        bool find_match()
+        {
+
+        }
+
+        matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject)
         {
             // will be used to detect new keypoints for the stagged map
-            _isPointMatched.assign(detectedKeypoint.get_keypoint_count(), false);
+            _isPointMatched.assign(detectedKeypointsObject.get_keypoint_count(), false);
             matches_containers::match_point_container matchedPoints; 
 
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
@@ -109,14 +114,14 @@ namespace rgbd_slam {
             for (auto& [pointId, mapPoint] : _localPointMap) 
             {
                 assert(pointId == mapPoint._id);
-                find_match(mapPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
+                find_match(mapPoint, detectedKeypointsObject, worldToCamMatrix, matchedPoints);
             }
 
             // Try to find matches in staged points
             for(auto& [pointId, stagedPoint] : _stagedPoints)
             {
                 assert(pointId == stagedPoint._id);
-                find_match(stagedPoint, detectedKeypoint, worldToCamMatrix, matchedPoints);
+                find_match(stagedPoint, detectedKeypointsObject, worldToCamMatrix, matchedPoints);
             }
 
             return matchedPoints;

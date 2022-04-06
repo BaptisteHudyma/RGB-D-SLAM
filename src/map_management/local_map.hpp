@@ -31,11 +31,11 @@ namespace rgbd_slam {
                  * \brief Compute the point feature matches between the local map and a given set of points. Update the staged point list matched points
                  *
                  * \param[in] currentPose The current observer pose.
-                 * \param[in] detectedKeypoint An object containing the detected key points in the rgbd frame
+                 * \param[in] detectedKeypointsObject An object containing the detected key points in the rgbd frame
                  *
                  * \return A container associating the map/staged points to detected key points
                  */
-                matches_containers::match_point_container find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypoint); 
+                matches_containers::match_point_container find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject); 
 
                 /**
                  * \brief Compute the primitive matches
@@ -87,13 +87,13 @@ namespace rgbd_slam {
                  * \brief Compute a match for a given point, and update this point match index. It will update the _isPointMatched object if a point is matched
                  *
                  * \param[in, out] point A map point that we want to match to detected points
-                 * \param[in] detectedKeypoint An object to handle all detected points in an image
+                 * \param[in] detectedKeypointsObject An object to handle all detected points in an image
                  * \param[in] worldToCamMatrix A matrix to transform a world point to a camera point
                  * \param[in, out] matchedPoints A container associating the detected to the map points
                  *
                  * \return A boolean indicating if this point was matched or not
                  */
-                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypoint, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
+                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
