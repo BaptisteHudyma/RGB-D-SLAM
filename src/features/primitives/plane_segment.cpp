@@ -167,7 +167,7 @@ namespace primitives {
      * Merge the PCA saved values in prevision of a plane fitting
      * This function do not make any plane calculations
      */
-    void Plane_Segment::expand_segment(const std::unique_ptr<Plane_Segment>& planeSegment) {
+    void Plane_Segment::expand_segment(const std::shared_ptr<Plane_Segment>& planeSegment) {
         expand_segment(*planeSegment);
     }
 

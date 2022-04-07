@@ -8,10 +8,12 @@
 
 #include "types.hpp"
 #include "matches_containers.hpp"
-#include "map_point.hpp"
 #include "keypoint_detection.hpp"
 #include "primitive_detection.hpp"
 #include "pose.hpp"
+
+#include "map_point.hpp"
+#include "map_primitive.hpp"
 
 #include "map_writer.hpp"
 
@@ -81,8 +83,17 @@ namespace rgbd_slam {
                  */
                 void get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, cv::Mat& debugImage) const;
 
-
             protected:
+
+                // Define types
+
+                // local map point container
+                typedef std::map<size_t, Map_Point> point_map_container;
+                // staged points container
+                typedef std::map<size_t, Staged_Point> staged_point_container;
+                // local shape primitive map container
+                typedef std::map<size_t, Primitive> primitive_map_container; 
+
 
                 /**
                  * \brief Compute a match for a given point, and update this point match index. It will update the _isPointMatched object if a point is matched
@@ -106,7 +117,7 @@ namespace rgbd_slam {
                  *
                  * \return A boolean indicating if this primitive was matched or not
                  */
-                bool find_match(features::primitives::primitive_uniq_ptr& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const matrix44& worldToCameraMatrix, matches_containers::match_primitive_container& matchedPrimitives);
+                bool find_match(Primitive& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const matrix44& worldToCameraMatrix, matches_containers::match_primitive_container& matchedPrimitives);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
@@ -194,19 +205,14 @@ namespace rgbd_slam {
                 void mark_point_with_id_as_unmatched(const size_t pointId, IMap_Point_With_Tracking& point);
 
             private:
-                // local map point container
-                typedef std::map<size_t, Map_Point> point_map_container;
-                // staged points container
-                typedef std::map<size_t, Staged_Point> staged_point_container;
-                // local shape primitive map container
-                typedef std::list<features::primitives::primitive_uniq_ptr> primitive_map_container; 
-
                 // Local map contains world points with a good confidence
                 point_map_container _localPointMap;
                 // Staged points are potential new map points, waiting to confirm confidence
                 staged_point_container _stagedPoints;
                 // Hold unmatched detected point indexes, to add in the staged point container
                 std::vector<bool> _isPointMatched;
+                // Hold unmatched primitive ids
+                std::set<uchar> _unmatchedPrimitiveIds;
 
                 //local primitive map
                 primitive_map_container _localPrimitiveMap;

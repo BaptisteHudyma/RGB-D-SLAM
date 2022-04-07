@@ -44,7 +44,7 @@ namespace primitives {
              *
              * \param[in] planeSegment Another plane segment
              */
-            void expand_segment(const std::unique_ptr<Plane_Segment>& planeSegment);
+            void expand_segment(const std::shared_ptr<Plane_Segment>& planeSegment);
 
             /**
              * \brief Compute the dot product of two plane normals

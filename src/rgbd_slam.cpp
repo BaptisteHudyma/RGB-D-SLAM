@@ -199,6 +199,7 @@ namespace rgbd_slam {
         _meanTreatmentTime += time_elapsed;
 
         const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
+        const matches_containers::match_primitive_container& matchedPrimitives = _localMap->find_primitive_matches(refinedPose, detectedPrimitives);
 
         matches_containers::match_point_container outlierMatchedPoints;
 

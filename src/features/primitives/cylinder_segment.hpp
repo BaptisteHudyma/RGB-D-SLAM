@@ -22,7 +22,7 @@ namespace rgbd_slam {
              */
             class Cylinder_Segment {
                 protected:
-                    typedef std::unique_ptr<Plane_Segment> plane_segment_unique_ptr;
+                    typedef std::shared_ptr<Plane_Segment> plane_segment_unique_ptr;
 
                 public:
                     /**

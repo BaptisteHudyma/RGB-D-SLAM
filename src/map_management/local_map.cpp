@@ -97,15 +97,24 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Local_Map::find_match(features::primitives::primitive_uniq_ptr& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const matrix44& worldToCameraMatrix, matches_containers::match_primitive_container& matchedPrimitives)
+        bool Local_Map::find_match(Primitive& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const matrix44& worldToCameraMatrix, matches_containers::match_primitive_container& matchedPrimitives)
         {
             // TODO: convert mapPrimitive to camera space
             for(const auto& [primitiveId, shapePrimitive] : detectedPrimitives)
             {
-                if(mapPrimitive->is_similar(shapePrimitive)) 
+                assert(primitiveId == shapePrimitive->get_id());
+                assert(primitiveId != UNMATCHED_PRIMITIVE_ID);
+
+                if (not _unmatchedPrimitiveIds.contains(primitiveId))
+                    // Does not allow multiple removal of a single match
+                    // TODO: change this
+                    continue;
+                if(mapPrimitive._primitive->is_similar(shapePrimitive)) 
                 {
-                    mapPrimitive->set_is_matched(true);
-                    matchedPrimitives.emplace(matchedPrimitives.end(), shapePrimitive->_normal, mapPrimitive->_normal);
+                    mapPrimitive._matchedPrimitive._matchId = primitiveId;
+                    matchedPrimitives.emplace(matchedPrimitives.end(), shapePrimitive->_normal, mapPrimitive._primitive->_normal);
+
+                    _unmatchedPrimitiveIds.erase(primitiveId);
                     return true;
                 }
             }
@@ -140,13 +149,31 @@ namespace rgbd_slam {
 
         matches_containers::match_primitive_container Local_Map::find_primitive_matches(const utils::Pose& currentPose, const features::primitives::primitive_container& detectedPrimitives)
         {
+            _unmatchedPrimitiveIds.clear();
+            // Fill in all features ids
+            for(const auto& [primitiveId, shapePrimitive] : detectedPrimitives)
+            {
+                assert(primitiveId == shapePrimitive->get_id());
+                assert(primitiveId != UNMATCHED_PRIMITIVE_ID);
+                if (not _unmatchedPrimitiveIds.insert(primitiveId).second)
+                {
+                    // This element was already in the map
+                    utils::log_error("A primitive index was already maintained in set");
+                }
+            }
+
+            // Compute a world to camera transformation matrix
             const matrix44& worldToCameraMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
 
+            // Search for matches
             matches_containers::match_primitive_container matchedPrimitiveContainer;
-            for(features::primitives::primitive_uniq_ptr& mapPrimitive : _localPrimitiveMap)
+            for(auto& [primitiveId, mapPrimitive] : _localPrimitiveMap)
             {
-                mapPrimitive->set_is_matched(false);
-                find_match(mapPrimitive, detectedPrimitives, worldToCameraMatrix, matchedPrimitiveContainer);
+                if (not find_match(mapPrimitive, detectedPrimitives, worldToCameraMatrix, matchedPrimitiveContainer))
+                {
+                    // Mark as unmatched
+                    mapPrimitive._matchedPrimitive.mark_unmatched();
+                }
             }
 
             return matchedPrimitiveContainer;
@@ -179,10 +206,24 @@ namespace rgbd_slam {
             // add local map points to global map
             update_local_to_global();
         }
-        
+
         void Local_Map::update_local_primitive_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::primitives::primitive_container& detectedPrimitives)
         {
-            // TODO
+            // TODO update local map content
+
+            // TODO add unmatched primitives to local map
+            for(const uchar& unmatchedDetectedPrimitiveId : _unmatchedPrimitiveIds)
+            {
+                assert(detectedPrimitives.contains(unmatchedDetectedPrimitiveId));
+
+                const features::primitives::primitive_uniq_ptr& detectedPrimitive = detectedPrimitives.at(unmatchedDetectedPrimitiveId);
+                Primitive newMapPrimitive(detectedPrimitive);
+                
+                _localPrimitiveMap.emplace(newMapPrimitive._id, newMapPrimitive);
+            }
+            std::cout << "unmatched: " << _unmatchedPrimitiveIds.size() << std::endl;
+            std::cout << "map " <<  _localPrimitiveMap.size() << std::endl;
+            _unmatchedPrimitiveIds.clear();
         }
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)

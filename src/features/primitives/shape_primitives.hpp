@@ -34,7 +34,7 @@ namespace rgbd_slam {
                      * 
                      * \return A double between 0 and 1, with 1 indicating identical primitives 
                      */
-                    virtual bool is_similar(const std::unique_ptr<Primitive>& prim) = 0; 
+                    virtual bool is_similar(const std::shared_ptr<Primitive>& prim) = 0; 
 
                     /**
                      * \brief Get the distance of a point to the primitive
@@ -58,10 +58,6 @@ namespace rgbd_slam {
                     uint get_id() const { return _id; };
                     void set_id(const uint id) { _id = id; };
 
-                    bool is_matched() const { return _isMatched; };
-                    void set_is_matched(const bool isMatched) { _isMatched = isMatched; };
-
-
                     vector3 _normal;
 
                 protected:
@@ -77,13 +73,12 @@ namespace rgbd_slam {
                      *
                      * \return A number between 0 and 1, indicating the IoU
                      */
-                    double get_IOU(const std::unique_ptr<Primitive>& prim) const;
+                    double get_IOU(const std::shared_ptr<Primitive>& prim) const;
 
                     //members
                     uint _id;
                     cv::Mat _shapeMask;
                     PrimitiveType _primitiveType;
-                    bool _isMatched;
 
                 private:
                     //remove copy functions
@@ -104,7 +99,7 @@ namespace rgbd_slam {
                      * \param[in] id ID assigned to this shape (for tracking and debug)
                      * \param[in] shapeMask Mask of the shape in the reference image
                      */
-                    Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, uint id, const cv::Mat& shapeMask);
+                    Cylinder(const std::shared_ptr<Cylinder_Segment>& cylinderSeg, uint id, const cv::Mat& shapeMask);
 
                     /**
                      * \brief Get the similarity of two cylinders, based on normal direction and radius
@@ -113,7 +108,7 @@ namespace rgbd_slam {
                      * 
                      * \return A double between 0 and 1, with 1 indicating identical cylinders
                      */
-                    virtual bool is_similar(const std::unique_ptr<Primitive>& prim) override;
+                    virtual bool is_similar(const std::shared_ptr<Primitive>& prim) override;
 
                     /**
                      * \brief Get the distance of a point to the surface of the cylinder
@@ -142,7 +137,7 @@ namespace rgbd_slam {
                      * \param[in] id ID assigned to this shape (for tracking and debug)
                      * \param[in] shapeMask Mask of the shape in the reference image
                      */
-                    Plane(const std::unique_ptr<Plane_Segment>& planeSeg, uint id, const cv::Mat& shapeMask);
+                    Plane(const std::shared_ptr<Plane_Segment>& planeSeg, uint id, const cv::Mat& shapeMask);
 
                     /**
                      * \brief Get the similarity of two planes, based on normal direction
@@ -151,7 +146,7 @@ namespace rgbd_slam {
                      * 
                      * \return A double between 0 and 1, with 1 indicating identical planes
                      */
-                    virtual bool is_similar(const std::unique_ptr<Primitive>& prim) override;
+                    virtual bool is_similar(const std::shared_ptr<Primitive>& prim) override;
 
                     /**
                       * Return the distance of this primitive to a point
@@ -165,7 +160,7 @@ namespace rgbd_slam {
 
 
 
-            typedef std::unique_ptr<Primitive> primitive_uniq_ptr;
+            typedef std::shared_ptr<Primitive> primitive_uniq_ptr;
 
         }
     }

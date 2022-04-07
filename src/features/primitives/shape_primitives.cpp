@@ -13,15 +13,14 @@ namespace rgbd_slam {
              */
             Primitive::Primitive(const uint id, const cv::Mat& shapeMask) :
                 _id(id),
-                _primitiveType(PrimitiveType::Invalid),
-                _isMatched(false)
+                _primitiveType(PrimitiveType::Invalid)
             {
                 assert(not shapeMask.empty());
 
                 _shapeMask = shapeMask.clone();
             }
 
-            double Primitive::get_IOU(const std::unique_ptr<Primitive>& prim) const {
+            double Primitive::get_IOU(const std::shared_ptr<Primitive>& prim) const {
                 assert(not _shapeMask.empty());
                 assert(not prim->_shapeMask.empty());
 
@@ -42,7 +41,7 @@ namespace rgbd_slam {
              *      CYLINDER
              *
              */
-            Cylinder::Cylinder(const std::unique_ptr<Cylinder_Segment>& cylinderSeg, const uint id, const cv::Mat& shapeMask) :
+            Cylinder::Cylinder(const std::shared_ptr<Cylinder_Segment>& cylinderSeg, const uint id, const cv::Mat& shapeMask) :
                 Primitive(id, shapeMask)
             {
                 _primitiveType = PrimitiveType::Cylinder;
@@ -54,7 +53,7 @@ namespace rgbd_slam {
                 _normal = cylinderSeg->get_normal();
             }
 
-            bool Cylinder::is_similar(const std::unique_ptr<Primitive>& prim) {
+            bool Cylinder::is_similar(const std::shared_ptr<Primitive>& prim) {
                 const PrimitiveType& primitiveType = prim->get_primitive_type();
                 assert(primitiveType != PrimitiveType::Invalid);
 
@@ -98,7 +97,7 @@ namespace rgbd_slam {
              *        PLANE
              *
              */
-            Plane::Plane(const std::unique_ptr<Plane_Segment>& planeSeg, const uint id, const cv::Mat& shapeMask) :
+            Plane::Plane(const std::shared_ptr<Plane_Segment>& planeSeg, const uint id, const cv::Mat& shapeMask) :
                 Primitive(id, shapeMask),
 
                 _d(planeSeg->get_plane_d()),
@@ -108,7 +107,7 @@ namespace rgbd_slam {
                 _normal = planeSeg->get_normal();
             }
 
-            bool Plane::is_similar(const std::unique_ptr<Primitive>& prim) {
+            bool Plane::is_similar(const std::shared_ptr<Primitive>& prim) {
                 const PrimitiveType& primitiveType = prim->get_primitive_type();
                 assert(primitiveType != PrimitiveType::Invalid);
 

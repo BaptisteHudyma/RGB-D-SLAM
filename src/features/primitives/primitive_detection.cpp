@@ -132,46 +132,42 @@ namespace rgbd_slam {
                     std::set<uint> alreadyDisplayedIds;
                     for(const auto& [primitiveId, prim] : primitiveSegments)
                     {
-                        if(prim->is_matched())
-                        {
-                            const uint id = prim->get_id();
-                            if (alreadyDisplayedIds.contains(id))
-                                continue;   // already shown
-                            alreadyDisplayedIds.insert(id);
+                        const uint id = prim->get_id();
+                        if (alreadyDisplayedIds.contains(id))
+                            continue;   // already shown
+                        alreadyDisplayedIds.insert(id);
 
-                            if(id >= CYLINDER_CODE_OFFSET)
-                            {
-                                // primitive is a cylinder
-                                const double labelPosition = _width * 0.60;
-                                // make a
-                                const uint labelSquareSize = bandSize * 0.5;
-                                cv::rectangle(labeledImage, 
-                                        cv::Point(labelPosition + 80 + placeInBand * cylinderCount, 6),
-                                        cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * cylinderCount, 6 + labelSquareSize), 
-                                        cv::Scalar(
-                                            colors[id][0],
-                                            colors[id][1],
-                                            colors[id][2]),
-                                        -1);
-                                ++cylinderCount;
-                            }
-                            else
-                            {
-                                const double labelPosition = _width * 0.25;
-                                // make a
-                                const uint labelSquareSize = bandSize * 0.5;
-                                cv::rectangle(labeledImage, 
-                                        cv::Point(labelPosition + 80 + placeInBand * planeCount, 6),
-                                        cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * planeCount, 6 + labelSquareSize), 
-                                        cv::Scalar(
-                                            colors[id][0],
-                                            colors[id][1],
-                                            colors[id][2]),
-                                        -1);
-                                ++planeCount;
-                            }
+                        if(id >= CYLINDER_CODE_OFFSET)
+                        {
+                            // primitive is a cylinder
+                            const double labelPosition = _width * 0.60;
+                            // make a
+                            const uint labelSquareSize = bandSize * 0.5;
+                            cv::rectangle(labeledImage, 
+                                    cv::Point(labelPosition + 80 + placeInBand * cylinderCount, 6),
+                                    cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * cylinderCount, 6 + labelSquareSize), 
+                                    cv::Scalar(
+                                        colors[id][0],
+                                        colors[id][1],
+                                        colors[id][2]),
+                                    -1);
+                            ++cylinderCount;
                         }
-                        //else: not matched
+                        else
+                        {
+                            const double labelPosition = _width * 0.25;
+                            // make a
+                            const uint labelSquareSize = bandSize * 0.5;
+                            cv::rectangle(labeledImage, 
+                                    cv::Point(labelPosition + 80 + placeInBand * planeCount, 6),
+                                    cv::Point(labelPosition + 80 + labelSquareSize + placeInBand * planeCount, 6 + labelSquareSize), 
+                                    cv::Scalar(
+                                        colors[id][0],
+                                        colors[id][1],
+                                        colors[id][2]),
+                                    -1);
+                            ++planeCount;
+                        }
                     }
                 }
             }
@@ -541,7 +537,7 @@ namespace rgbd_slam {
                     assert(planeId < CYLINDER_CODE_OFFSET);
 
                     //add new plane to final shapes
-                    primitiveSegments.emplace(planeId, std::move(std::make_unique<Plane>(_planeSegments[planeIndex], planeId - 1, _maskDilated)));
+                    primitiveSegments.emplace(planeId, std::move(std::make_unique<Plane>(_planeSegments[planeIndex], planeId, _maskDilated)));
 
                     const vector3& planeNormal = _planeSegments[planeIndex]->get_normal();
                     const float nx = planeNormal.x();
@@ -620,7 +616,7 @@ namespace rgbd_slam {
                     const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
                     //add new cylinder to final shapes
-                    primitiveSegments.emplace(cylinderId, std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId - 1, _maskDilated)));
+                    primitiveSegments.emplace(cylinderId, std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId, _maskDilated)));
 
 
                     // Get variables needed for point-surface distance computation

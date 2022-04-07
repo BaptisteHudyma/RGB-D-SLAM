@@ -28,8 +28,8 @@ namespace rgbd_slam {
                 protected:
                     //typdefs
                     typedef std::vector<std::pair<int, int>> intpair_vector;
-                    typedef std::unique_ptr<Plane_Segment> plane_segment_unique_ptr;
-                    typedef std::unique_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
+                    typedef std::shared_ptr<Plane_Segment> plane_segment_unique_ptr;
+                    typedef std::shared_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
                     typedef std::vector<plane_segment_unique_ptr> planes_ptr_vector; 
                     typedef std::vector<cylinder_segment_unique_ptr> cylinders_ptr_vector; 
                     typedef std::vector<uint> uint_vector;
