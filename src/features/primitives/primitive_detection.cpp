@@ -130,7 +130,7 @@ namespace rgbd_slam {
                     uint cylinderCount = 0;
                     uint planeCount = 0;
                     std::set<uint> alreadyDisplayedIds;
-                    for(const std::unique_ptr<Primitive>& prim : primitiveSegments)
+                    for(const auto& [primitiveId, prim] : primitiveSegments)
                     {
                         if(prim->is_matched())
                         {
@@ -541,7 +541,7 @@ namespace rgbd_slam {
                     assert(planeId < CYLINDER_CODE_OFFSET);
 
                     //add new plane to final shapes
-                    primitiveSegments.push_back(std::move(std::make_unique<Plane>(_planeSegments[planeIndex], planeId - 1, _maskDilated)));
+                    primitiveSegments.emplace(planeId, std::move(std::make_unique<Plane>(_planeSegments[planeIndex], planeId - 1, _maskDilated)));
 
                     const vector3& planeNormal = _planeSegments[planeIndex]->get_normal();
                     const float nx = planeNormal.x();
@@ -620,7 +620,7 @@ namespace rgbd_slam {
                     const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
                     //add new cylinder to final shapes
-                    primitiveSegments.push_back(std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId - 1, _maskDilated)));
+                    primitiveSegments.emplace(cylinderId, std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId - 1, _maskDilated)));
 
 
                     // Get variables needed for point-surface distance computation

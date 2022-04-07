@@ -21,7 +21,6 @@ namespace rgbd_slam {
     class RGBD_SLAM {
         public:
             typedef std::vector<cv::Vec4f> line_vector;
-            typedef std::list<features::primitives::primitive_uniq_ptr> primitive_container; 
 
             /**
              * \param[in] startPose the initial pose
@@ -66,10 +65,11 @@ namespace rgbd_slam {
              *
              * \param[in, out] grayImage The input image from the camera, as a gray image
              * \param[in] depthImage The associated depth image, already corrected with camera parameters
+             * \param[in] cloudArrayOrganized Organized depth image as a connected cloud
              *
              * \return The new estimated pose from points positions
              */
-            const utils::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage);
+            const utils::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage, const Eigen::MatrixXf& cloudArrayOrganized);
 
             void compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage);
 
@@ -91,12 +91,6 @@ namespace rgbd_slam {
             features::keypoints::Key_Point_Extraction* _pointDetector;
 
             cv::Mat _kernel;
-
-
-            //keep track of the primitives tracked last frame
-            primitive_container _previousFramePrimitives;
-
-            std::unordered_map<int, uint> _previousAssociatedIds;
 
             utils::Pose _currentPose;
             utils::Motion_Model _motionModel;

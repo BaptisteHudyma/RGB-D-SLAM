@@ -97,9 +97,20 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool find_match()
+        bool Local_Map::find_match(features::primitives::primitive_uniq_ptr& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const matrix44& worldToCameraMatrix, matches_containers::match_primitive_container& matchedPrimitives)
         {
+            // TODO: convert mapPrimitive to camera space
+            for(const auto& [primitiveId, shapePrimitive] : detectedPrimitives)
+            {
+                if(mapPrimitive->is_similar(shapePrimitive)) 
+                {
+                    mapPrimitive->set_is_matched(true);
+                    matchedPrimitives.emplace(matchedPrimitives.end(), shapePrimitive->_normal, mapPrimitive->_normal);
+                    return true;
+                }
+            }
 
+            return false;
         }
 
         matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject)
@@ -129,25 +140,19 @@ namespace rgbd_slam {
 
         matches_containers::match_primitive_container Local_Map::find_primitive_matches(const utils::Pose& currentPose, const features::primitives::primitive_container& detectedPrimitives)
         {
-            const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
+            const matrix44& worldToCameraMatrix = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
 
             matches_containers::match_primitive_container matchedPrimitiveContainer;
-            for(const features::primitives::primitive_uniq_ptr& mapPrimitive : _localPrimitiveMap)
+            for(features::primitives::primitive_uniq_ptr& mapPrimitive : _localPrimitiveMap)
             {
-                for(const features::primitives::primitive_uniq_ptr& shapePrimitive : detectedPrimitives) 
-                {
-                    if(mapPrimitive->is_similar(shapePrimitive)) 
-                    {
-                        matchedPrimitiveContainer.emplace(matchedPrimitiveContainer.end(), shapePrimitive->_normal, mapPrimitive->_normal);
-                        break;
-                    }
-                }
+                mapPrimitive->set_is_matched(false);
+                find_match(mapPrimitive, detectedPrimitives, worldToCameraMatrix, matchedPrimitiveContainer);
             }
 
             return matchedPrimitiveContainer;
         }
 
-        void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const matches_containers::match_point_container& outlierMatchedPoints)
+        void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::primitive_container& detectedPrimitives, const matches_containers::match_point_container& outlierMatchedPoints)
         {
             // TODO find a better way to display trajectory than just a new map point
             _mapWriter->add_point(optimizedPose.get_position());
@@ -169,10 +174,15 @@ namespace rgbd_slam {
             add_umatched_keypoints_to_staged_map(poseCovariance, cameraToWorldMatrix, keypointObject);
 
             // add primitives to local map
-            //update_local_primitive_map(cameraToWorldMatrix, );
+            update_local_primitive_map(cameraToWorldMatrix, cameraToWorldMatrix, detectedPrimitives);
 
             // add local map points to global map
             update_local_to_global();
+        }
+        
+        void Local_Map::update_local_primitive_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::primitives::primitive_container& detectedPrimitives)
+        {
+            // TODO
         }
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix)
@@ -325,7 +335,7 @@ namespace rgbd_slam {
                     const vector2& screenPoint = keypointObject.get_keypoint(i);
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorldMatrix);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
-                    
+
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, utils::get_screen_point_covariance(screenPoint, depth));
 
                     Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
@@ -350,7 +360,7 @@ namespace rgbd_slam {
 
             // initialize output structure
             features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
-            
+
             // TODO: check the efficiency gain of those reserve calls
             keypointsWithIds._ids.reserve(numberOfNewKeypoints);
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);

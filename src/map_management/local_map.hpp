@@ -54,9 +54,10 @@ namespace rgbd_slam {
                  * \param[in] previousPose The clean true pose of the observer, before the new measurements
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
+                 * \param[in] detectedPrimitives A container for all detected primitives in the depth image
                  * \param[in] outlierMatchedPoints A container for all the wrongly associated points detected in the pose optimization process. They should be marked as invalid matches
                  */
-                void update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const matches_containers::match_point_container& outlierMatchedPoints);
+                void update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::primitive_container& detectedPrimitives, const matches_containers::match_point_container& outlierMatchedPoints);
 
                 /**
                  * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global ids 
@@ -96,6 +97,18 @@ namespace rgbd_slam {
                 bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
 
                 /**
+                 * \brief Compute a match for a given primitive, and update this primitive match status.
+                 *
+                 * \param[in, out] mapPrimitive A map primitive  that we want to match to a detected primitive
+                 * \param[in] detectedPrimitives A container that stores all the detected primitives
+                 * \param[in] worldToCameraMatrix A matrix to transform a world point to a camera point
+                 * \param[in, out] matchedPrimitives A container associating the detected primitives to the map primitives
+                 *
+                 * \return A boolean indicating if this primitive was matched or not
+                 */
+                bool find_match(features::primitives::primitive_uniq_ptr& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const matrix44& worldToCameraMatrix, matches_containers::match_primitive_container& matchedPrimitives);
+
+                /**
                  * \brief Update the Matched/Unmatched status of a map point
                  *
                  * \param[in, out] mapPoint the map point to update
@@ -115,6 +128,15 @@ namespace rgbd_slam {
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
                 void update_local_keypoint_map(const matrix33& poseCovariance, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+
+                /**
+                 * \brief Update the local primitive map features
+                 *
+                 * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
+                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
+                 * \param[in] A container that stores the detected primitives in the depth image
+                 */
+                void update_local_primitive_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::primitives::primitive_container& detectedPrimitives);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map

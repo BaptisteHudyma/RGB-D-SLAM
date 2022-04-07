@@ -18,7 +18,7 @@ namespace rgbd_slam {
     namespace features {
         namespace primitives {
 
-            typedef std::list<primitive_uniq_ptr> primitive_container; 
+            typedef std::map<uchar, primitive_uniq_ptr> primitive_container; 
 
             /**
              * \brief Main extraction class. Extracts shape primitives from an organized cloud of points

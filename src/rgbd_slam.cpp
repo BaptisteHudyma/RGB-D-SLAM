@@ -111,48 +111,24 @@ namespace rgbd_slam {
         double time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
         _meanMatTreatmentTime += time_elapsed;
 
-        // Run primitive detection 
-        t1 = cv::getTickCount();
-        primitive_container primitives;
-        _segmentationOutput = cv::Mat::zeros(depthImage.size(), uchar(0));    //primitive mask mat
-        _primitiveDetector->find_primitives(cloudArrayOrganized, primitives, _segmentationOutput);
-        time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
-        _meanTreatmentTime += time_elapsed;
-
+        /*
         //associate primitives
         std::unordered_map<int, uint> associatedIds;
-        if(not _previousFramePrimitives.empty()) {
-            //find matches between consecutive images
-            //compare normals, superposed area (and colors ?)
-            for(features::primitives::primitive_uniq_ptr& prim : primitives) {
-                // set unmatched
-                prim->set_is_matched(false);
-                for(const features::primitives::primitive_uniq_ptr& prevPrim : _previousFramePrimitives) {
-                    if(prim->is_similar(prevPrim)) {
-                        // A match is found !
-                        associatedIds[prim->get_id()] = prevPrim->get_id();
-                        prim->set_id(prevPrim->get_id());
-                        prim->set_is_matched(true);
-                        break;
-                    }
+        //find matches between consecutive images
+        //compare normals, superposed area (and colors ?)
+        for(features::primitives::primitive_uniq_ptr& prim : primitives) {
+            // set unmatched
+            prim->set_is_matched(false);
+            for(const features::primitives::primitive_uniq_ptr& prevPrim : _previousFramePrimitives) {
+                if(prim->is_similar(prevPrim)) {
+                    // A match is found !
+                    associatedIds[prim->get_id()] = prevPrim->get_id();
+                    prim->set_id(prevPrim->get_id());
+                    prim->set_is_matched(true);
+                    break;
                 }
             }
-
-            //compute pose from matches 
-            //-> rotation assuming Manhattan world
-            //-> translation with min square minimisation
-
-            //local map reconstruction
-
-            //position refinement from local map
-
-            //global map update from local one
-
-        }
-        else {
-            //first frame, or no features detected last frame
-
-        }
+        }*/
 
         cv::Mat grayImage;
         cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
@@ -165,7 +141,7 @@ namespace rgbd_slam {
 
         // this frame points and  assoc
         t1 = cv::getTickCount();
-        const utils::Pose& refinedPose = this->compute_new_pose(grayImage, depthImage);
+        const utils::Pose& refinedPose = this->compute_new_pose(grayImage, depthImage, cloudArrayOrganized);
         _meanPoseTreatmentTime += (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
 
         //update motion model with refined pose
@@ -173,10 +149,6 @@ namespace rgbd_slam {
 
         // Update current pose
         _currentPose = refinedPose;
-
-        // exchange frames features
-        _previousFramePrimitives.swap(primitives);
-        _previousAssociatedIds.swap(associatedIds);
 
         _totalFrameTreated += 1;
         return refinedPose;
@@ -199,14 +171,15 @@ namespace rgbd_slam {
 
         if (showPrimitiveMasks)
         {
-            _primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
+            // TODO reactivate primitive visualization
+            //_primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
         }
 
         _localMap->get_debug_image(camPose, showStagedPoints, debugImage); 
     }
 
 
-    const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage) 
+    const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage, const Eigen::MatrixXf& cloudArrayOrganized) 
     {
         //get a pose with the motion model
         utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
@@ -216,6 +189,15 @@ namespace rgbd_slam {
 
         const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features();
         const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
+
+        // Run primitive detection 
+        double t1 = cv::getTickCount();
+        features::primitives::primitive_container detectedPrimitives;
+        _segmentationOutput = cv::Mat::zeros(depthImage.size(), uchar(0));    //primitive mask mat
+        _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPrimitives, _segmentationOutput);
+        double time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+        _meanTreatmentTime += time_elapsed;
+
         const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
 
         matches_containers::match_point_container outlierMatchedPoints;
@@ -252,7 +234,7 @@ namespace rgbd_slam {
         // Update local map if a valid transformation was found
         if (shouldUpdateMap)
         {
-            _localMap->update(_currentPose, refinedPose, keypointObject, outlierMatchedPoints);
+            _localMap->update(_currentPose, refinedPose, keypointObject, detectedPrimitives, outlierMatchedPoints);
         }
 
         return refinedPose;
