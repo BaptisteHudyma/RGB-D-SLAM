@@ -184,6 +184,8 @@ namespace rgbd_slam {
                  */
                 static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage);
 
+                void draw_primitives_on_image(const matrix44& worldToCameraMatrix, cv::Mat& debugImage) const;
+
 
                 /**
                  * \brief Mark all the outliers detected during optimization as unmatched

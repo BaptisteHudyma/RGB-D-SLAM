@@ -58,6 +58,9 @@ namespace rgbd_slam {
                     uint get_id() const { return _id; };
                     void set_id(const uint id) { _id = id; };
 
+                    cv::Mat get_shape_mask() const { return _shapeMask; };
+                    void set_shape_mask(cv::Mat mask) { _shapeMask = mask; };
+
                     vector3 _normal;
 
                 protected:
@@ -149,15 +152,14 @@ namespace rgbd_slam {
                     virtual bool is_similar(const std::shared_ptr<Primitive>& prim) override;
 
                     /**
-                      * Return the distance of this primitive to a point
-                      */
+                     * Return the distance of this primitive to a point
+                     */
                     virtual double get_distance(const vector3& point) override;
 
                     double _d;     //fourth component of the plane parameters
                 private:
                     vector3 _mean;      //mean center point
             };
-
 
 
             typedef std::shared_ptr<Primitive> primitive_uniq_ptr;

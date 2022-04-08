@@ -69,7 +69,6 @@ namespace rgbd_slam {
                      */
                     void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, const std::unordered_map<int, uint>& associatedIds, const uint bandSize, cv::Mat& labeledImage);
 
-
                     ~Primitive_Detection();
 
                     //perf measurments
@@ -161,6 +160,8 @@ namespace rgbd_slam {
                      * \return A symmetrical boolean matrix, indicating if a plane segment is connected to another plane segment
                      */
                     Matrixb get_connected_components_matrix(const cv::Mat& segmentMap, const size_t numberOfPlanes) const;
+
+
 
                 private:
                     Histogram _histogram;

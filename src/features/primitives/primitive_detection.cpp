@@ -536,9 +536,6 @@ namespace rgbd_slam {
                     const uchar planeId = ++planeIdAllocator;
                     assert(planeId < CYLINDER_CODE_OFFSET);
 
-                    //add new plane to final shapes
-                    primitiveSegments.emplace(planeId, std::move(std::make_unique<Plane>(_planeSegments[planeIndex], planeId, _maskDilated)));
-
                     const vector3& planeNormal = _planeSegments[planeIndex]->get_normal();
                     const float nx = planeNormal.x();
                     const float ny = planeNormal.y();
@@ -552,14 +549,14 @@ namespace rgbd_slam {
                     //cell refinement
                     for(uint cellR = 0, stackedCellId = 0; cellR < _verticalCellsCount; ++cellR) 
                     {
-                        const uchar* rowPtr = _maskDiff.ptr<uchar>(cellR);
-
+                        const uchar* maskDiffRow = _maskDiff.ptr<uchar>(cellR);
                         for(uint cellC = 0; cellC < _horizontalCellsCount; ++cellC, ++stackedCellId) 
                         {
                             const uint offset = stackedCellId * _pointsPerCellCount;
                             const uint nextOffset = offset + _pointsPerCellCount;
 
-                            if(rowPtr[cellC] > 0) 
+                            // If this cell is at the periphery of the mask, compute precise mask
+                            if(maskDiffRow[cellC] > 0) 
                             {
                                 //compute distance block
                                 _distancesCellStacked = 
@@ -571,7 +568,7 @@ namespace rgbd_slam {
                                 //Assign pixel
                                 for(uint pt = offset, j = 0; pt < nextOffset; ++j, ++pt) 
                                 {
-                                    float dist = pow(_distancesCellStacked(j), 2);
+                                    const float dist = pow(_distancesCellStacked(j), 2);
                                     if(dist < maxDist and dist < _distancesStacked[pt]) 
                                     {
                                         _distancesStacked[pt] = dist;
@@ -581,6 +578,9 @@ namespace rgbd_slam {
                             }
                         }
                     }
+
+                    //add new plane to final shapes
+                    primitiveSegments.emplace(planeId, std::move(std::make_unique<Plane>(_planeSegments[planeIndex], planeId, _mask)));
                 }
             }
 
@@ -615,10 +615,6 @@ namespace rgbd_slam {
                     const int subRegId = cylinderToRegionMap[cylinderIndex].second;
                     const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
-                    //add new cylinder to final shapes
-                    primitiveSegments.emplace(cylinderId, std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId, _maskDilated)));
-
-
                     // Get variables needed for point-surface distance computation
                     const vector3& P2 = cylinderSegRef->get_axis2_point(subRegId);
                     const vector3& P1P2 = P2 - cylinderSegRef->get_axis1_point(subRegId);
@@ -652,6 +648,9 @@ namespace rgbd_slam {
                             }
                         }
                     }
+
+                    //add new cylinder to final shapes
+                    primitiveSegments.emplace(cylinderId, std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId, _mask)));
                 }
             }
 

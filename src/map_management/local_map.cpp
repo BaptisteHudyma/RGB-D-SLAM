@@ -109,6 +109,7 @@ namespace rgbd_slam {
                     // Does not allow multiple removal of a single match
                     // TODO: change this
                     continue;
+
                 if(mapPrimitive._primitive->is_similar(shapePrimitive)) 
                 {
                     mapPrimitive._matchedPrimitive._matchId = primitiveId;
@@ -209,18 +210,31 @@ namespace rgbd_slam {
 
         void Local_Map::update_local_primitive_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::primitives::primitive_container& detectedPrimitives)
         {
-            // TODO update local map content
+            for (auto& [primitiveId, mapPrimitive] : _localPrimitiveMap)
+            {
+                if (mapPrimitive._matchedPrimitive.is_matched())
+                {
+                    const uchar primitiveId = mapPrimitive._matchedPrimitive._matchId;
+                    assert(primitiveId != UNMATCHED_PRIMITIVE_ID);
+                    assert(detectedPrimitives.contains(primitiveId));
 
-            // TODO add unmatched primitives to local map
+                    // TODO update primitive 
+                    mapPrimitive._primitive->set_shape_mask(detectedPrimitives.at(primitiveId)->get_shape_mask());
+                }
+            }
+
+
+            // add unmatched primitives to local map
             for(const uchar& unmatchedDetectedPrimitiveId : _unmatchedPrimitiveIds)
             {
                 assert(detectedPrimitives.contains(unmatchedDetectedPrimitiveId));
 
                 const features::primitives::primitive_uniq_ptr& detectedPrimitive = detectedPrimitives.at(unmatchedDetectedPrimitiveId);
                 Primitive newMapPrimitive(detectedPrimitive);
-                
+
                 _localPrimitiveMap.emplace(newMapPrimitive._id, newMapPrimitive);
             }
+
             std::cout << "unmatched: " << _unmatchedPrimitiveIds.size() << std::endl;
             std::cout << "map " <<  _localPrimitiveMap.size() << std::endl;
             _unmatchedPrimitiveIds.clear();
@@ -448,6 +462,17 @@ namespace rgbd_slam {
             }
         }
 
+        void Local_Map::draw_primitives_on_image(const matrix44& worldToCameraMatrix, cv::Mat& debugImage) const
+        {
+            for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
+            {
+                cv::Mat_<uchar> primitiveMask;
+                cv::resize(mapPrimitive._primitive->get_shape_mask() * 255, primitiveMask, debugImage.size(), cv::INTER_NEAREST);
+                cv::imshow("prim", primitiveMask);
+                break;
+            }
+        }
+
         void Local_Map::get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, cv::Mat& debugImage)  const
         {
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
@@ -463,6 +488,8 @@ namespace rgbd_slam {
                     draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 255), debugImage);
                 }
             }
+
+            draw_primitives_on_image(worldToCamMatrix, debugImage);
         }
 
         void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints)

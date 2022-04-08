@@ -13,16 +13,16 @@ namespace rgbd_slam {
              */
             Primitive::Primitive(const uint id, const cv::Mat& shapeMask) :
                 _id(id),
-                _primitiveType(PrimitiveType::Invalid)
+                _primitiveType(PrimitiveType::Invalid),
+                _shapeMask(shapeMask)
             {
                 assert(not shapeMask.empty());
-
-                _shapeMask = shapeMask.clone();
             }
 
             double Primitive::get_IOU(const std::shared_ptr<Primitive>& prim) const {
                 assert(not _shapeMask.empty());
                 assert(not prim->_shapeMask.empty());
+                assert(_shapeMask.size == prim->_shapeMask.size);
 
                 //get union of masks
                 const cv::Mat unionMat = (_shapeMask | prim->_shapeMask);
@@ -102,10 +102,10 @@ namespace rgbd_slam {
 
                 _d(planeSeg->get_plane_d()),
                 _mean(planeSeg->get_mean())
-            {
-                _primitiveType = PrimitiveType::Plane;
-                _normal = planeSeg->get_normal();
-            }
+                {
+                    _primitiveType = PrimitiveType::Plane;
+                    _normal = planeSeg->get_normal();
+                }
 
             bool Plane::is_similar(const std::shared_ptr<Primitive>& prim) {
                 const PrimitiveType& primitiveType = prim->get_primitive_type();
@@ -144,7 +144,6 @@ namespace rgbd_slam {
             double Plane::get_distance(const vector3& point) {
                 return _normal.dot(point - _mean); 
             }
-
 
         }
     }
