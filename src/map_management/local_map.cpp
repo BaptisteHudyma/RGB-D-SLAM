@@ -37,8 +37,6 @@ namespace rgbd_slam {
             // Check constants
             assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
 
-            set_color_vector();
-
             _mapWriter = new utils::XYZ_Map_Writer("out");
         }
 
@@ -505,9 +503,7 @@ namespace rgbd_slam {
             cv::Mat allPrimitiveMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
             for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
             {
-                // TODO find a better way to get colors
-                assert(primitiveId <= _primitiveColorCodes.size());
-                const cv::Scalar primitiveColor = _primitiveColorCodes[primitiveId - 1];
+                const cv::Scalar& primitiveColor = mapPrimitive._color;
 
                 cv::Mat primitiveMask;
                 // Resize with no interpolation
@@ -626,31 +622,6 @@ namespace rgbd_slam {
             _isPointMatched[point._matchedScreenPoint._matchIndex] = false;
             point._matchedScreenPoint.mark_unmatched();
         }
-
-
-        void Local_Map::set_color_vector() 
-        {
-            for(int i = 0; i < 100; i++) {
-                cv::Vec3b color;
-                color[0] = rand() % 255;
-                color[1] = rand() % 255;
-                color[2] = rand() % 255;
-                _primitiveColorCodes.push_back(color);
-            }
-
-            // Add specific colors for planes
-            _primitiveColorCodes[0][0] = 0;   _primitiveColorCodes[0][1] = 0;   _primitiveColorCodes[0][2] = 255;
-            _primitiveColorCodes[1][0] = 255; _primitiveColorCodes[1][1] = 0;   _primitiveColorCodes[1][2] = 204;
-            _primitiveColorCodes[2][0] = 255; _primitiveColorCodes[2][1] = 100; _primitiveColorCodes[2][2] = 0;
-            _primitiveColorCodes[3][0] = 0;   _primitiveColorCodes[3][1] = 153; _primitiveColorCodes[3][2] = 255;
-            // Add specific colors for cylinders
-            _primitiveColorCodes[50][0] = 178; _primitiveColorCodes[50][1] = 255; _primitiveColorCodes[50][2] = 0;
-            _primitiveColorCodes[51][0] = 255; _primitiveColorCodes[51][1] = 0;   _primitiveColorCodes[51][2] = 51;
-            _primitiveColorCodes[52][0] = 0;   _primitiveColorCodes[52][1] = 255; _primitiveColorCodes[52][2] = 51;
-            _primitiveColorCodes[53][0] = 153; _primitiveColorCodes[53][1] = 0;   _primitiveColorCodes[53][2] = 255;
-        }
-
-
 
     }   /* map_management */
 }   /* rgbd_slam */

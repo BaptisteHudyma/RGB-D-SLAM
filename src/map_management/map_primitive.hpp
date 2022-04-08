@@ -32,13 +32,21 @@ namespace rgbd_slam {
             Primitive(features::primitives::primitive_uniq_ptr primitive): 
                 _id(_currentPrimitiveId++),
                 _primitive(std::move(primitive))
-            {};
+            {
+                cv::Vec3b color;
+                color[0] = rand() % 255;
+                color[1] = rand() % 255;
+                color[2] = rand() % 255;
+                _color = color;
+            };
 
             // Unique identifier of this primitive in map
             const size_t _id;
 
             const features::primitives::primitive_uniq_ptr _primitive;
             MatchedPrimitive _matchedPrimitive;
+
+            cv::Scalar _color;  // display color of this primitive
 
 
             private:

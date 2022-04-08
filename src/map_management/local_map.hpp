@@ -226,10 +226,6 @@ namespace rgbd_slam {
                 // Remove copy operators
                 Local_Map(const Local_Map& map) = delete;
                 void operator=(const Local_Map& map) = delete;
-
-                // display
-                std::vector<cv::Vec3b> _primitiveColorCodes;
-                void set_color_vector();
         };
 
     }
