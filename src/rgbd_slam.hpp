@@ -95,9 +95,6 @@ namespace rgbd_slam {
             utils::Pose _currentPose;
             utils::Motion_Model _motionModel;
 
-            // display
-            std::vector<cv::Vec3b> _colorCodes;
-
             // debug
             uint _totalFrameTreated;
             double _meanMatTreatmentTime;

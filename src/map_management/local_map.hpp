@@ -221,11 +221,15 @@ namespace rgbd_slam {
                 primitive_map_container _localPrimitiveMap;
                 std::unordered_map<int, uint> _previousPrimitiveAssociation;
 
-
                 utils::XYZ_Map_Writer* _mapWriter; 
 
+                // Remove copy operators
                 Local_Map(const Local_Map& map) = delete;
                 void operator=(const Local_Map& map) = delete;
+
+                // display
+                std::vector<cv::Vec3b> _primitiveColorCodes;
+                void set_color_vector();
         };
 
     }

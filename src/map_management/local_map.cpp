@@ -37,6 +37,8 @@ namespace rgbd_slam {
             // Check constants
             assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
 
+            set_color_vector();
+
             _mapWriter = new utils::XYZ_Map_Writer("out");
         }
 
@@ -211,6 +213,8 @@ namespace rgbd_slam {
         void Local_Map::update_local_primitive_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::primitives::primitive_container& detectedPrimitives)
         {
             std::set<size_t> primitivesToRemove;
+
+            // Update primitives
             for (auto& [primitiveId, mapPrimitive] : _localPrimitiveMap)
             {
                 if (mapPrimitive._matchedPrimitive.is_matched())
@@ -244,8 +248,6 @@ namespace rgbd_slam {
                 _localPrimitiveMap.emplace(newMapPrimitive._id, newMapPrimitive);
             }
 
-            std::cout << "unmatched: " << _unmatchedPrimitiveIds.size() << std::endl;
-            std::cout << "map " <<  _localPrimitiveMap.size() << std::endl;
             _unmatchedPrimitiveIds.clear();
         }
 
@@ -480,6 +482,7 @@ namespace rgbd_slam {
             const cv::Size& debugImageSize = debugImage.size();
             const uint imageWidth = debugImageSize.width;
 
+            const double maskAlpha = 0.3;
             // 20 pixels
             const uint bandSize = 20;
 
@@ -499,9 +502,12 @@ namespace rgbd_slam {
             uint planeCount = 0;
             std::set<uint> alreadyDisplayedIds;
 
+            cv::Mat allPrimitiveMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
             for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
             {
-                const cv::Scalar primitiveColor = cv::Scalar(0, 0, 255);
+                // TODO find a better way to get colors
+                assert(primitiveId <= _primitiveColorCodes.size());
+                const cv::Scalar primitiveColor = _primitiveColorCodes[primitiveId - 1];
 
                 cv::Mat primitiveMask;
                 // Resize with no interpolation
@@ -511,12 +517,13 @@ namespace rgbd_slam {
                 assert(primitiveMask.type() == debugImage.type());
 
                 // merge with debug image
-                primitiveMask = (primitiveMask - primitiveColor) / 2.0;
-                debugImage = debugImage - primitiveMask;
+                primitiveMask.setTo(primitiveColor, primitiveMask);
+                allPrimitiveMasks += primitiveMask;
 
                 // Add color codes in label bar
                 if (alreadyDisplayedIds.contains(primitiveId))
                     continue;   // already shown
+
                 alreadyDisplayedIds.insert(primitiveId);
 
                 double labelPosition = imageWidth;
@@ -547,12 +554,19 @@ namespace rgbd_slam {
                         primitiveColor,
                         -1);
             }
+
+            cv::addWeighted(debugImage, (1 - maskAlpha), allPrimitiveMasks, maskAlpha, 0.0, debugImage);
         }
 
         void Local_Map::get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, const bool shouldDisplayPrimitiveMasks, cv::Mat& debugImage)  const
         {
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
+            // Display primitives
+            if (shouldDisplayPrimitiveMasks)
+                draw_primitives_on_image(worldToCamMatrix, debugImage);
+
+            // Display keypoints
             for (const auto& [pointId, mapPoint] : _localPointMap) {
                 assert(pointId == mapPoint._id);
                 draw_point_on_image(mapPoint, worldToCamMatrix, cv::Scalar(0, 255, 0), debugImage);
@@ -564,9 +578,6 @@ namespace rgbd_slam {
                     draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 255), debugImage);
                 }
             }
-
-            if (shouldDisplayPrimitiveMasks)
-                draw_primitives_on_image(worldToCamMatrix, debugImage);
         }
 
         void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints)
@@ -615,6 +626,31 @@ namespace rgbd_slam {
             _isPointMatched[point._matchedScreenPoint._matchIndex] = false;
             point._matchedScreenPoint.mark_unmatched();
         }
+
+
+        void Local_Map::set_color_vector() 
+        {
+            for(int i = 0; i < 100; i++) {
+                cv::Vec3b color;
+                color[0] = rand() % 255;
+                color[1] = rand() % 255;
+                color[2] = rand() % 255;
+                _primitiveColorCodes.push_back(color);
+            }
+
+            // Add specific colors for planes
+            _primitiveColorCodes[0][0] = 0;   _primitiveColorCodes[0][1] = 0;   _primitiveColorCodes[0][2] = 255;
+            _primitiveColorCodes[1][0] = 255; _primitiveColorCodes[1][1] = 0;   _primitiveColorCodes[1][2] = 204;
+            _primitiveColorCodes[2][0] = 255; _primitiveColorCodes[2][1] = 100; _primitiveColorCodes[2][2] = 0;
+            _primitiveColorCodes[3][0] = 0;   _primitiveColorCodes[3][1] = 153; _primitiveColorCodes[3][2] = 255;
+            // Add specific colors for cylinders
+            _primitiveColorCodes[50][0] = 178; _primitiveColorCodes[50][1] = 255; _primitiveColorCodes[50][2] = 0;
+            _primitiveColorCodes[51][0] = 255; _primitiveColorCodes[51][1] = 0;   _primitiveColorCodes[51][2] = 51;
+            _primitiveColorCodes[52][0] = 0;   _primitiveColorCodes[52][1] = 255; _primitiveColorCodes[52][2] = 51;
+            _primitiveColorCodes[53][0] = 153; _primitiveColorCodes[53][1] = 0;   _primitiveColorCodes[53][2] = 255;
+        }
+
+
 
     }   /* map_management */
 }   /* rgbd_slam */

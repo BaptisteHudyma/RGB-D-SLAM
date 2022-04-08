@@ -65,9 +65,6 @@ namespace rgbd_slam {
             // kernel for various operations
             _kernel = cv::Mat::ones(3, 3, CV_8U);
 
-            // set display colors
-            set_color_vector();
-
             if (_primitiveDetector == nullptr) {
                 utils::log_error("Instanciation of Primitive_Detector failed");
                 exit(-1);
@@ -218,31 +215,6 @@ namespace rgbd_slam {
         return refinedPose;
     }
 
-
-
-
-
-    void RGBD_SLAM::set_color_vector() 
-    {
-        for(int i = 0; i < 100; i++) {
-            cv::Vec3b color;
-            color[0] = rand() % 255;
-            color[1] = rand() % 255;
-            color[2] = rand() % 255;
-            _colorCodes.push_back(color);
-        }
-
-        // Add specific colors for planes
-        _colorCodes[0][0] = 0; _colorCodes[0][1] = 0; _colorCodes[0][2] = 255;
-        _colorCodes[1][0] = 255; _colorCodes[1][1] = 0; _colorCodes[1][2] = 204;
-        _colorCodes[2][0] = 255; _colorCodes[2][1] = 100; _colorCodes[2][2] = 0;
-        _colorCodes[3][0] = 0; _colorCodes[3][1] = 153; _colorCodes[3][2] = 255;
-        // Add specific colors for cylinders
-        _colorCodes[50][0] = 178; _colorCodes[50][1] = 255; _colorCodes[50][2] = 0;
-        _colorCodes[51][0] = 255; _colorCodes[51][1] = 0; _colorCodes[51][2] = 51;
-        _colorCodes[52][0] = 0; _colorCodes[52][1] = 255; _colorCodes[52][2] = 51;
-        _colorCodes[53][0] = 153; _colorCodes[53][1] = 0; _colorCodes[53][2] = 255;
-    }
 
 
     double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) 
