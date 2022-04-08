@@ -67,7 +67,6 @@ namespace rgbd_slam {
                 growTime = 0;
                 mergeTime = 0;
                 refineTime = 0;
-                setMaskTime = 0;
             }
 
             void Primitive_Detection::apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, const std::unordered_map<int, uint>& associatedIds, const uint bandSize, cv::Mat& labeledImage) 
@@ -174,7 +173,7 @@ namespace rgbd_slam {
 
 
 
-            void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments, cv::Mat& segOut) 
+            void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments) 
             {
                 //reset used data structures
                 reset_data();
@@ -214,12 +213,6 @@ namespace rgbd_slam {
                 refine_cylinder_boundaries(depthMatrix, cylinder2regionMap, primitiveSegments); 
                 td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
                 refineTime += td;
-
-                t1 = cv::getTickCount();
-                //set mask image
-                set_masked_display(segOut);
-                td = (cv::getTickCount() - t1) / (double)cv::getTickFrequency();
-                setMaskTime += td;
             }
 
             void Primitive_Detection::reset_data() 

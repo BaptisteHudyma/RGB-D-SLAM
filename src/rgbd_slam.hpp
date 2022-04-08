@@ -96,7 +96,6 @@ namespace rgbd_slam {
             utils::Motion_Model _motionModel;
 
             // display
-            cv::Mat_<uchar> _segmentationOutput;
             std::vector<cv::Vec3b> _colorCodes;
 
             // debug

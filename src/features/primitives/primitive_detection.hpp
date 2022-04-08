@@ -50,9 +50,8 @@ namespace rgbd_slam {
                      *
                      * \param[in] depthMatrix Organized cloud of points, constructed from depth map
                      * \param[out] primitiveSegments Container of detected segments in depth image
-                     * \param[out] segOut Output image, where each pixel is associated with a shape ID
                      */
-                    void find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments, cv::Mat& segOut);
+                    void find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments);
 
 
 
@@ -77,7 +76,6 @@ namespace rgbd_slam {
                     double growTime;
                     double mergeTime;
                     double refineTime;
-                    double setMaskTime;
 
                 protected:
 

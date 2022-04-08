@@ -171,8 +171,7 @@ namespace rgbd_slam {
         // Run primitive detection 
         double t1 = cv::getTickCount();
         features::primitives::primitive_container detectedPrimitives;
-        _segmentationOutput = cv::Mat::zeros(depthImage.size(), uchar(0));    //primitive mask mat
-        _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPrimitives, _segmentationOutput);
+        _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPrimitives);
         double time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
         _meanTreatmentTime += time_elapsed;
 

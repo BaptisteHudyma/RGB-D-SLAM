@@ -210,6 +210,7 @@ namespace rgbd_slam {
 
         void Local_Map::update_local_primitive_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::primitives::primitive_container& detectedPrimitives)
         {
+            std::set<size_t> primitivesToRemove;
             for (auto& [primitiveId, mapPrimitive] : _localPrimitiveMap)
             {
                 if (mapPrimitive._matchedPrimitive.is_matched())
@@ -221,8 +222,16 @@ namespace rgbd_slam {
                     // TODO update primitive 
                     mapPrimitive._primitive->set_shape_mask(detectedPrimitives.at(primitiveId)->get_shape_mask());
                 }
+                else
+                {
+                    // add to primitives to remove
+                    primitivesToRemove.emplace(primitiveId);
+                }   
             }
 
+            // Remove umatched
+            for(const size_t primitiveId : primitivesToRemove)
+                _localPrimitiveMap.erase(primitiveId);
 
             // add unmatched primitives to local map
             for(const uchar& unmatchedDetectedPrimitiveId : _unmatchedPrimitiveIds)
@@ -464,18 +473,79 @@ namespace rgbd_slam {
 
         void Local_Map::draw_primitives_on_image(const matrix44& worldToCameraMatrix, cv::Mat& debugImage) const
         {
+            assert(not debugImage.empty());
+
+            if (_localPrimitiveMap.size() == 0)
+                return;
+            const cv::Size& debugImageSize = debugImage.size();
+            const uint imageWidth = debugImageSize.width;
+
+            // 20 pixels
+            const uint bandSize = 20;
+
+            const uint placeInBand = bandSize * 0.75;
+            std::stringstream text1;
+            text1 << "Planes:";
+            const double planeLabelPosition = imageWidth * 0.25;
+            cv::putText(debugImage, text1.str(), cv::Point(planeLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+
+            std::stringstream text2;
+            text2 << "Cylinders:";
+            const double cylinderLabelPosition = imageWidth * 0.60;
+            cv::putText(debugImage, text2.str(), cv::Point(cylinderLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+
+            // Tracking variables
+            uint cylinderCount = 0;
+            uint planeCount = 0;
+            std::set<uint> alreadyDisplayedIds;
+
             for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
             {
+                const cv::Scalar primitiveColor = cv::Scalar(0, 0, 255);
+
                 cv::Mat primitiveMask;
                 // Resize with no interpolation
-                cv::resize(mapPrimitive._primitive->get_shape_mask() * 255, primitiveMask, debugImage.size(), 0, 0, cv::INTER_NEAREST);
+                cv::resize(mapPrimitive._primitive->get_shape_mask() * 255, primitiveMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
                 cv::cvtColor(primitiveMask, primitiveMask, cv::COLOR_GRAY2BGR);
                 assert(primitiveMask.size == debugImage.size);
                 assert(primitiveMask.type() == debugImage.type());
 
                 // merge with debug image
-                primitiveMask = (primitiveMask - cv::Scalar(0, 0, 255)) / 2.0;
+                primitiveMask = (primitiveMask - primitiveColor) / 2.0;
                 debugImage = debugImage - primitiveMask;
+
+                // Add color codes in label bar
+                if (alreadyDisplayedIds.contains(primitiveId))
+                    continue;   // already shown
+                alreadyDisplayedIds.insert(primitiveId);
+
+                double labelPosition = imageWidth;
+                uint finalPlaceInBand = placeInBand;
+                switch(mapPrimitive._primitive->get_primitive_type())
+                {
+                    case features::primitives::PrimitiveType::Plane:
+                        labelPosition *= 0.25;
+                        finalPlaceInBand *= planeCount;
+                        ++planeCount;
+                        break;
+                    case features::primitives::PrimitiveType::Cylinder:
+                        labelPosition *= 0.60;
+                        finalPlaceInBand *= cylinderCount;
+                        ++cylinderCount;
+                        break;
+                    default:
+                        labelPosition = -1;
+                        utils::log_error("Invalid enum value");
+                        continue;
+                }
+
+                // make a
+                const uint labelSquareSize = bandSize * 0.5;
+                cv::rectangle(debugImage, 
+                        cv::Point(labelPosition + 80 + finalPlaceInBand, 6),
+                        cv::Point(labelPosition + 80 + labelSquareSize + finalPlaceInBand, 6 + labelSquareSize), 
+                        primitiveColor,
+                        -1);
             }
         }
 
