@@ -53,21 +53,6 @@ namespace rgbd_slam {
                      */
                     void find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments);
 
-
-
-                    /**
-                     * \brief Apply each plane and cylinder mask on the maskImage, with colors corresponding to the ids of colors vector
-                     *
-                     * \param[in] inputImage input RGB image on which to put the planes and cylinder masks
-                     * \param[in] colors A vector of colors, that must remain consistant at each call
-                     * \param[in] maskImage An image where each pixel is the index of a plane or cylinder
-                     * \param[in] primitiveSegments A container of the planes and cylinders detected in inputImage
-                     * \param[in] associatedIds A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders
-                     * \param[in] bandSize Size in pixel of the black band on top of the debug image
-                     * \param[in, out] labeledImage The final result: an image with colored masks applied for each plane and cylinder, as well as a bar displaying informations on the top. Must be passed as an empty image of the same dimensions as labeledImage.
-                     */
-                    void apply_masks(const cv::Mat& inputImage, const std::vector<cv::Vec3b>& colors, const cv::Mat& maskImage, const primitive_container& primitiveSegments, const std::unordered_map<int, uint>& associatedIds, const uint bandSize, cv::Mat& labeledImage);
-
                     ~Primitive_Detection();
 
                     //perf measurments
@@ -115,29 +100,20 @@ namespace rgbd_slam {
                     uint_vector merge_planes();
 
                     /**
-                     * \brief Refine the final plane edges in mask images
+                     * \brief Add final plane to primitives, compute a mask for display 
                      *
-                     * \param[in] depthCloudArray Organized cloud point
                      * \param[in] planeMergeLabels Container associating plane ID to global plane IDs
                      * \param[in, out] primitiveSegments Container of shapes detected in this depth image
                      */
-                    void refine_plane_boundaries(const Eigen::MatrixXf& depthCloudArray, const uint_vector& planeMergeLabels, primitive_container& primitiveSegments);
+                    void add_planes_to_primitives(const uint_vector& planeMergeLabels, primitive_container& primitiveSegments);
 
                     /**
-                     * \brief Refine the cylinder edges in mask images
+                     * \brief Add final cylinders to primitives, compute a mask for display
                      *
-                     * \param[in] depthCloudArray Organized cloud point
                      * \param[in] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
                      * \param[in, out] primitiveSegments Container of shapes detected in this depth image
                      */
-                    void refine_cylinder_boundaries(const Eigen::MatrixXf& depthCloudArray, const intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments); 
-
-                    /**
-                     * \brief Set output image pixel value with the index of the detected shape
-                     *
-                     * \param[in, out] segOut Image segmented by shapes ids: Associates an image coordinate to a shape ID
-                     */
-                    void set_masked_display(cv::Mat& segOut); 
+                    void add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments); 
 
                     /**
                      * \brief Recursively Grow a plane seed and merge it with it's neighbors
@@ -182,28 +158,15 @@ namespace rgbd_slam {
                     cylinders_ptr_vector _cylinderSegments;
 
                     cv::Mat_<int> _gridPlaneSegmentMap;
-                    cv::Mat_<uchar> _gridPlaneSegMapEroded;
                     cv::Mat_<int> _gridCylinderSegMap;
-                    cv::Mat_<uchar> _gridCylinderSegMapEroded;
-
-                    Eigen::ArrayXf _distancesCellStacked;
 
                     //arrays
                     std::vector<bool> _isActivatedMap;
                     std::vector<bool> _isUnassignedMask;
-                    std::vector<float> _distancesStacked;
-                    std::vector<unsigned char> _segMapStacked;
                     std::vector<float> _cellDistanceTols;
 
-                    //mat
+                    // primitive cell mask
                     cv::Mat _mask;
-                    cv::Mat _maskEroded;
-                    cv::Mat _maskDilated;
-                    cv::Mat _maskDiff;
-
-                    //kernels
-                    cv::Mat _maskSquareKernel;
-                    cv::Mat _maskCrossKernel;
 
                 private:
                     //prevent backend copy
