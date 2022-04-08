@@ -466,14 +466,20 @@ namespace rgbd_slam {
         {
             for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
             {
-                cv::Mat_<uchar> primitiveMask;
-                cv::resize(mapPrimitive._primitive->get_shape_mask() * 255, primitiveMask, debugImage.size(), cv::INTER_NEAREST);
-                cv::imshow("prim", primitiveMask);
-                break;
+                cv::Mat primitiveMask;
+                // Resize with no interpolation
+                cv::resize(mapPrimitive._primitive->get_shape_mask() * 255, primitiveMask, debugImage.size(), 0, 0, cv::INTER_NEAREST);
+                cv::cvtColor(primitiveMask, primitiveMask, cv::COLOR_GRAY2BGR);
+                assert(primitiveMask.size == debugImage.size);
+                assert(primitiveMask.type() == debugImage.type());
+
+                // merge with debug image
+                primitiveMask = (primitiveMask - cv::Scalar(0, 0, 255)) / 2.0;
+                debugImage = debugImage - primitiveMask;
             }
         }
 
-        void Local_Map::get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, cv::Mat& debugImage)  const
+        void Local_Map::get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, const bool shouldDisplayPrimitiveMasks, cv::Mat& debugImage)  const
         {
             const matrix44& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
@@ -489,7 +495,8 @@ namespace rgbd_slam {
                 }
             }
 
-            draw_primitives_on_image(worldToCamMatrix, debugImage);
+            if (shouldDisplayPrimitiveMasks)
+                draw_primitives_on_image(worldToCamMatrix, debugImage);
         }
 
         void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints)

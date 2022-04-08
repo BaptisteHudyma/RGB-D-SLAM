@@ -79,9 +79,10 @@ namespace rgbd_slam {
                  *
                  * \param[in] camPose Pose of the camera in world coordinates
                  * \param[in] shouldDisplayStaged If true, will also display the content of the staged keypoint map
+                 * \param[in] shouldDisplayPrimitiveMasks If true, will also display the primitives in local map
                  * \param[in, out] debugImage Output image
                  */
-                void get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, cv::Mat& debugImage) const;
+                void get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, const bool shouldDisplayPrimitiveMasks, cv::Mat& debugImage) const;
 
             protected:
 

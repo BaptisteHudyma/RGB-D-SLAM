@@ -110,26 +110,8 @@ namespace rgbd_slam {
         _depthOps->get_organized_cloud_array(depthImage, cloudArrayOrganized);
         double time_elapsed = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
         _meanMatTreatmentTime += time_elapsed;
-
-        /*
-        //associate primitives
-        std::unordered_map<int, uint> associatedIds;
-        //find matches between consecutive images
-        //compare normals, superposed area (and colors ?)
-        for(features::primitives::primitive_uniq_ptr& prim : primitives) {
-            // set unmatched
-            prim->set_is_matched(false);
-            for(const features::primitives::primitive_uniq_ptr& prevPrim : _previousFramePrimitives) {
-                if(prim->is_similar(prevPrim)) {
-                    // A match is found !
-                    associatedIds[prim->get_id()] = prevPrim->get_id();
-                    prim->set_id(prevPrim->get_id());
-                    prim->set_is_matched(true);
-                    break;
-                }
-            }
-        }*/
-
+        
+        // Compute a gray image for feature extractions
         cv::Mat grayImage;
         cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
@@ -169,13 +151,9 @@ namespace rgbd_slam {
             cv::putText(debugImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
         }
 
-        if (showPrimitiveMasks)
-        {
-            // TODO reactivate primitive visualization
-            //_primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
-        }
+        //_primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
 
-        _localMap->get_debug_image(camPose, showStagedPoints, debugImage); 
+        _localMap->get_debug_image(camPose, showStagedPoints, showPrimitiveMasks, debugImage); 
     }
 
 
