@@ -34,6 +34,13 @@ namespace rgbd_slam {
                 _gridCylinderSegMap = cv::Mat_<int>(_verticalCellsCount, _horizontalCellsCount, 0);
 
                 _mask = cv::Mat(_verticalCellsCount, _horizontalCellsCount, CV_8U);
+                _maskEroded = cv::Mat(_verticalCellsCount, _horizontalCellsCount, CV_8U);
+
+                _maskCrossKernel = cv::Mat::ones(3, 3, CV_8U);
+                _maskCrossKernel.at<uchar>(0,0) = 0;
+                _maskCrossKernel.at<uchar>(2,2) = 0;
+                _maskCrossKernel.at<uchar>(0,2) = 0;
+                _maskCrossKernel.at<uchar>(2,0) = 0;
 
                 //array of unique_ptr<Plane_Segment>
                 _planeGrid.reserve(_totalCellCount);
@@ -386,6 +393,15 @@ namespace rgbd_slam {
                         if(planeMergeLabels[j] == planeMergeLabels[planeIndex])
                             _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
                     }
+                    // Opening
+                    cv::dilate(_mask, _mask, _maskCrossKernel);
+                    cv::erode(_mask, _mask, _maskCrossKernel);
+                    cv::erode(_mask, _maskEroded, _maskCrossKernel);
+                    double min, max;
+                    cv::minMaxLoc(_maskEroded, &min, &max);
+
+                    if(max <= 0 or min >= max)    //completely eroded: irrelevant plane
+                        continue;
 
                     // new plane ID
                     const uchar planeId = ++planeIdAllocator;
@@ -404,6 +420,16 @@ namespace rgbd_slam {
                     // Build mask
                     _mask = cv::Scalar(0);
                     _mask.setTo(1, _gridCylinderSegMap == (cylinderIndex + 1));
+
+                    // Opening
+                    cv::dilate(_mask, _mask, _maskCrossKernel);
+                    cv::erode(_mask, _mask, _maskCrossKernel);
+                    cv::erode(_mask, _maskEroded, _maskCrossKernel);
+                    double min, max;
+                    cv::minMaxLoc(_maskEroded, &min, &max);
+
+                    if(max <= 0 or min >= max)    //completely eroded: irrelevant cylinder 
+                        continue;
 
                     // Affect a new cylinder id
                     const uchar cylinderId = ++cylinderIdAllocator;

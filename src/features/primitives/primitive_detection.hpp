@@ -167,6 +167,9 @@ namespace rgbd_slam {
 
                     // primitive cell mask
                     cv::Mat _mask;
+                    cv::Mat _maskEroded;
+                    // kernel
+                    cv::Mat _maskCrossKernel;
 
                 private:
                     //prevent backend copy
