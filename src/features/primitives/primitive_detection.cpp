@@ -134,9 +134,9 @@ namespace rgbd_slam {
 
                     if (_planeGrid[stackedCellId]->is_planar()) {
                         const uint cellDiameter = static_cast<uint>((
-                                depthCloudArray.block(stackedCellId * _pointsPerCellCount + _pointsPerCellCount - 1, 0, 1, 3) - 
-                                depthCloudArray.block(stackedCellId * _pointsPerCellCount, 0, 1, 3)
-                                ).norm());
+                                    depthCloudArray.block(stackedCellId * _pointsPerCellCount + _pointsPerCellCount - 1, 0, 1, 3) - 
+                                    depthCloudArray.block(stackedCellId * _pointsPerCellCount, 0, 1, 3)
+                                    ).norm());
 
                         //array of depth metrics: neighbors merging threshold
                         _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist), 2.0f);
@@ -205,6 +205,8 @@ namespace rgbd_slam {
 
                     //copy plane segment in new object
                     Plane_Segment newPlaneSegment(*_planeGrid[seedId]);
+                    if (not newPlaneSegment.is_planar())
+                        continue;
 
                     //Seed cell growing
                     const uint y = static_cast<uint>(seedId / _horizontalCellsCount);
@@ -221,21 +223,27 @@ namespace rgbd_slam {
 
                     //merge activated cells & remove them from histogram
                     uint cellActivatedCount = 0;
+                    bool isPlaneFitable = false;
                     for(uint planeSegmentIndex = 0; planeSegmentIndex < activationMapSize; ++planeSegmentIndex) 
                     {
                         if(_isActivatedMap[planeSegmentIndex]) 
                         {
-                            newPlaneSegment.expand_segment(_planeGrid[planeSegmentIndex]);
-                            ++cellActivatedCount;
-                            _histogram.remove_point(planeSegmentIndex);
-                            _isUnassignedMask[planeSegmentIndex] = false;
+                            const plane_segment_unique_ptr planeSegment = _planeGrid[planeSegmentIndex];
+                            if (planeSegment->is_planar())
+                            {
+                                newPlaneSegment.expand_segment(planeSegment);
+                                ++cellActivatedCount;
+                                _histogram.remove_point(planeSegmentIndex);
+                                _isUnassignedMask[planeSegmentIndex] = false;
 
-                            assert(unaffectedPlanarCells > 0);
-                            --unaffectedPlanarCells;
+                                assert(unaffectedPlanarCells > 0);
+                                --unaffectedPlanarCells;
+                                isPlaneFitable = true;
+                            }
                         }
                     }
 
-                    if(cellActivatedCount < Parameters::get_minimum_cell_activated()) 
+                    if(not isPlaneFitable or cellActivatedCount < Parameters::get_minimum_cell_activated()) 
                     {
                         _histogram.remove_point(seedId);
                         continue;
@@ -273,7 +281,8 @@ namespace rgbd_slam {
                         // Fit planes to subsegments
                         for(uint segId = 0; segId < cylinderSegment->get_segment_count(); ++segId)
                         {
-                            newPlaneSegment.clear_plane_parameters();
+                            bool isPlaneFitable = false;
+                            Plane_Segment newMergedPlane(_cellWidth, _pointsPerCellCount);
                             for(uint col = 0; col < cellActivatedCount; ++col)
                             {
                                 if (cylinderSegment->is_inlier_at(segId, col))
@@ -281,16 +290,25 @@ namespace rgbd_slam {
                                     const uint localMapIndex = cylinderSegment->get_local_to_global_mapping(col);
                                     assert(localMapIndex < _planeGrid.size());
 
-                                    newPlaneSegment.expand_segment(_planeGrid[localMapIndex]);
+                                    const plane_segment_unique_ptr planeSegment = _planeGrid[localMapIndex];
+                                    if (planeSegment->is_planar())
+                                    {
+                                        newMergedPlane.expand_segment(planeSegment);
+                                        isPlaneFitable = true;
+                                    }
                                 }
                             }
 
-                            newPlaneSegment.fit_plane();
+                            // No continuous planes, pass
+                            if (not isPlaneFitable)
+                                continue;
+
+                            newMergedPlane.fit_plane();
                             // Model selection based on MSE
-                            if(newPlaneSegment.get_MSE() < cylinderSegment->get_MSE_at(segId))
+                            if(newMergedPlane.get_MSE() < cylinderSegment->get_MSE_at(segId))
                             {
                                 //MSE of the plane is less than MSE of the cylinder + this plane 
-                                _planeSegments.push_back(std::make_unique<Plane_Segment>(newPlaneSegment));
+                                _planeSegments.push_back(std::make_unique<Plane_Segment>(newMergedPlane));
                                 const uint currentPlaneCount = _planeSegments.size();
                                 for(uint col = 0; col < cellActivatedCount; ++col)
                                 {
@@ -343,6 +361,9 @@ namespace rgbd_slam {
                     bool wasPlaneExpanded = false;
                     const uint planeId = planeMergeLabels[row];
                     const plane_segment_unique_ptr& testPlane = _planeSegments[planeId];
+                    if (not testPlane->is_planar())
+                        continue;
+
                     const vector3& testPlaneNormal = testPlane->get_normal();
 
                     for(uint col = row + 1; col < isPlanesConnectedMatrixCols; ++col) 
@@ -350,6 +371,9 @@ namespace rgbd_slam {
                         if(isPlanesConnectedMatrix(row, col)) 
                         {
                             const plane_segment_unique_ptr& mergePlane = _planeSegments[col];
+                            if (not mergePlane->is_planar())
+                                continue;
+
                             const vector3& mergePlaneNormal = mergePlane->get_normal();
                             const double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
 
@@ -387,6 +411,8 @@ namespace rgbd_slam {
                 for(uint planeIndex = 0; planeIndex < planeCount; ++planeIndex) 
                 {
                     if (planeIndex != planeMergeLabels[planeIndex])
+                        continue;
+                    if (not _planeSegments[planeIndex]->is_planar())
                         continue;
 
                     _mask = cv::Scalar(0);
