@@ -126,9 +126,9 @@ namespace rgbd_slam {
                 planeNormals.row(2) = planeNormals.row(2).array() / normalsNorm.array();
 
                 // Ransac params
-                const float pSuccess = 0.8f; // probability of selecting only inliers in a ransac iteration
-                const float w = 0.33f;   // inliers / all elements
-                uint maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(w, 3.0f)));
+                const float pSuccess = Parameters::get_cylinder_ransac_probability_of_success(); // probability of selecting only inliers in a ransac iteration
+                const float w = Parameters::get_cylinder_ransac_inlier_proportion();   // inliers / all elements
+                const uint maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(w, 3.0f)));
 
                 uint planeSegmentsLeft = _cellActivatedCount;
                 Matrixb idsLeftMask(1, _cellActivatedCount);
@@ -140,7 +140,7 @@ namespace rgbd_slam {
                     idsLeftMask(i) = true;
                 }
                 // Sequential RANSAC main loop
-                while(planeSegmentsLeft > 5 and planeSegmentsLeft > 0.1 * _cellActivatedCount)
+                while(planeSegmentsLeft > Parameters::get_minimum_cell_activated() and planeSegmentsLeft > 0.1 * _cellActivatedCount)
                 {
                     Matrixb isInlierFinal(true, _cellActivatedCount);
                     // RANSAC loop
@@ -149,10 +149,6 @@ namespace rgbd_slam {
                     // Checkpoint 2
                     if(maxInliersCount < 6)
                         break;
-
-                    // somehow useful... TODO: Use a better metric ?
-                    // Increase prob. of finding inlier for next RANSAC runs
-                    maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(0.5f, 3.0f)));
 
                     // Remove cells from list of remaining cells AND compute LLS solution using all inliers
                     double b = 0;

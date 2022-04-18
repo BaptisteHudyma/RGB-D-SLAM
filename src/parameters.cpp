@@ -150,6 +150,8 @@ namespace rgbd_slam {
         // Cylinder ransac fitting
         _cylinderRansacSqrtMaxDistance = 0.04;
         _cylinderRansacMinimumScore = 75;
+        _cylinderRansacProbabilityOfSuccess = 0.8f;
+        _cylinderRansacInlierProportions = 0.33f;
     }
 
     void Parameters::check_parameters_validity()
@@ -363,6 +365,16 @@ namespace rgbd_slam {
         if (_cylinderRansacMinimumScore <= 0)
         {
             utils::log_error("Cylinder RANSAC minimum score must be > 0");
+            _isValid = false;
+        }
+        if (_cylinderRansacInlierProportions <= 0 or _cylinderRansacInlierProportions >= 1)
+        {
+            utils::log_error("Cylinder RANSAC inlier proportion must be in ]0, 1[");
+            _isValid = false;
+        }
+        if (_cylinderRansacProbabilityOfSuccess <= 0 or _cylinderRansacProbabilityOfSuccess >= 1)
+        {
+            utils::log_error("Cylinder RANSAC probability of success must be in ]0, 1[");
             _isValid = false;
         }
 
