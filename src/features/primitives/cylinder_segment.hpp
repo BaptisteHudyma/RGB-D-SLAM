@@ -144,9 +144,9 @@ namespace rgbd_slam {
                 protected:
 
                         /**
-                         * \brief 
+                         * \brief Run a RANSAC pose optimization with 6 points
                          *
-                         * \param[in] maximumIterations
+                         * \param[in] maximumIterations The maximum RANSAC loops that this function will run
                          * \param[in] idsLeft Ids of the planes left to fit. Contains all the ids, and mark as false the already fitted segments
                          * \param[in] planeNormals Normals of the planes to fit
                          * \param[in] projectedCentroids 
@@ -156,9 +156,9 @@ namespace rgbd_slam {
                          *
                          * \brief Return the number of inliers of this cylinder fitting
                          */
-                        uint run_ransac_loop(const float maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& IFinal);
+                        size_t run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& IFinal);
 
-                        double get_distance(const vector3& point, const uint segmentId) const;
+                        double get_distance(const vector3& point, const size_t segmentId) const;
 
                 private:
                         vector3 _axis;

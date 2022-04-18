@@ -3,6 +3,7 @@
 #include "parameters.hpp"
 #include "logger.hpp"
 
+
 namespace rgbd_slam {
     namespace features {
         namespace primitives {
@@ -39,7 +40,7 @@ namespace rgbd_slam {
                 _cellActivatedCount(cellActivatedCount),
                 _segmentCount(0)
             {
-                const uint samplesCount = isActivatedMask.size();
+                const size_t samplesCount = isActivatedMask.size();
                 assert(samplesCount == planeGrid.size());
                 assert(_cellActivatedCount <= isActivatedMask.size());
 
@@ -52,8 +53,8 @@ namespace rgbd_slam {
                 Eigen::MatrixXd planeCentroids(3, _cellActivatedCount);
 
                 // Init. normals and centroids
-                uint j = 0;
-                for(uint i = 0; i < samplesCount; ++i)
+                size_t j = 0;
+                for(size_t i = 0; i < samplesCount; ++i)
                 {
                     if (isActivatedMask[i])
                     {
@@ -76,7 +77,7 @@ namespace rgbd_slam {
                 }
 
                 // Concatenate [Normals -Normals]
-                for(uint i = 0; i < samplesCount; ++i)
+                for(size_t i = 0; i < samplesCount; ++i)
                 {
                     if (isActivatedMask[i])
                     {
@@ -125,9 +126,9 @@ namespace rgbd_slam {
                 planeNormals.row(2) = planeNormals.row(2).array() / normalsNorm.array();
 
                 // Ransac params
-                const float pSuccess = 0.8; // probability of selecting only inliers in a ransac iteration
-                const float w = 0.33;   // inliers / all elements
-                float maximumIterations = log(1 - pSuccess) / log(1 - pow(w, 3));
+                const float pSuccess = 0.8f; // probability of selecting only inliers in a ransac iteration
+                const float w = 0.33f;   // inliers / all elements
+                uint maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(w, 3.0f)));
 
                 uint planeSegmentsLeft = _cellActivatedCount;
                 Matrixb idsLeftMask(1, _cellActivatedCount);
@@ -149,9 +150,9 @@ namespace rgbd_slam {
                     if(maxInliersCount < 6)
                         break;
 
-                    // somehow useful... Use a better metric ?
+                    // somehow useful... TODO: Use a better metric ?
                     // Increase prob. of finding inlier for next RANSAC runs
-                    maximumIterations = log(1 - pSuccess) / log(1 - pow(0.5, 3));
+                    maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(0.5f, 3.0f)));
 
                     // Remove cells from list of remaining cells AND compute LLS solution using all inliers
                     double b = 0;
@@ -223,7 +224,7 @@ namespace rgbd_slam {
                 }
             }
 
-            uint Cylinder_Segment::run_ransac_loop(const float maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& isInlierFinal)
+            size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& isInlierFinal)
             {
                 assert(maximumIterations > 0);
                 assert(idsLeft.size() > 3);
@@ -323,12 +324,12 @@ namespace rgbd_slam {
                 return minDist;
             }
 
-            double Cylinder_Segment::get_distance(const vector3& point, const uint segmentId) const 
+            double Cylinder_Segment::get_distance(const vector3& point, const size_t segmentId) const 
             {
                 const vector3 pointAxis2to1 = _pointsAxis2[segmentId] - _pointsAxis1[segmentId];
                 const vector3 pointAxisTo2 = point - _pointsAxis2[segmentId]; 
                 const double pointAxisNorm = (pointAxis2to1.cross(pointAxisTo2)).norm();
-                return  pointAxisNorm / _normalsAxis1Axis2[segmentId] - _radius[segmentId];
+                return pointAxisNorm / _normalsAxis1Axis2[segmentId] - _radius[segmentId];
             }
 
             /*
