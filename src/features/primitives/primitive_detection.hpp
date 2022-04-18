@@ -43,7 +43,7 @@ namespace rgbd_slam {
                      * \param[in] minCosAngleForMerge Minimum cosinus of the angle of two planes to merge those planes
                      * \param[in] maxMergeDistance Maximum distance between the center of two planes to merge those planes
                      */
-                    Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659, const float maxMergeDistance = 50);
+                    Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659f, const float maxMergeDistance = 50.0f);
 
                     /**
                      * \brief Main compute function: computes the primitives in the depth imahe
@@ -123,7 +123,7 @@ namespace rgbd_slam {
                      * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
                      * \param[in] seedPlaneD D component of the plane to grow from
                      */
-                    void region_growing(const unsigned short x, const unsigned short y, const vector3& seedPlaneNormal, const double seedPlaneD);
+                    void region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD);
 
                     /**
                      * \brief Fill an association matrix that links connected plane components
