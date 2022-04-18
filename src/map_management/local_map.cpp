@@ -9,6 +9,7 @@
 namespace rgbd_slam {
     namespace map_management {
 
+
         /**
          * LOCAL UTILS FUNCTIONS
          */
@@ -66,6 +67,8 @@ namespace rgbd_slam {
                 point._matchedScreenPoint.mark_unmatched();
                 return false;
             }
+
+            assert(matchIndex >= 0);
 
             const double screenPointDepth = detectedKeypointsObject.get_depth(matchIndex);
             if (utils::is_depth_valid(screenPointDepth) ) {
@@ -498,7 +501,7 @@ namespace rgbd_slam {
             // Tracking variables
             uint cylinderCount = 0;
             uint planeCount = 0;
-            std::set<uint> alreadyDisplayedIds;
+            std::set<size_t> alreadyDisplayedIds;
 
             cv::Mat allPrimitiveMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
             for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
@@ -542,13 +545,16 @@ namespace rgbd_slam {
                         continue;
                 }
 
-                // make a
-                const uint labelSquareSize = bandSize * 0.5;
-                cv::rectangle(debugImage, 
-                        cv::Point(labelPosition + 80 + finalPlaceInBand, 6),
-                        cv::Point(labelPosition + 80 + labelSquareSize + finalPlaceInBand, 6 + labelSquareSize), 
-                        primitiveColor,
-                        -1);
+                if (labelPosition >= 0)
+                {
+                    // make a
+                    const uint labelSquareSize = bandSize * 0.5;
+                    cv::rectangle(debugImage, 
+                            cv::Point(labelPosition + 80 + finalPlaceInBand, 6),
+                            cv::Point(labelPosition + 80 + labelSquareSize + finalPlaceInBand, 6 + labelSquareSize), 
+                            primitiveColor,
+                            -1);
+                }
             }
 
             cv::addWeighted(debugImage, (1 - maskAlpha), allPrimitiveMasks, maskAlpha, 0.0, debugImage);
@@ -616,10 +622,11 @@ namespace rgbd_slam {
         void Local_Map::mark_point_with_id_as_unmatched(const size_t pointId, IMap_Point_With_Tracking& point)
         {
             assert(pointId == point._id);
-            assert(point._matchedScreenPoint._matchIndex < static_cast<int>(_isPointMatched.size()));
+            const int matchIndex = point._matchedScreenPoint._matchIndex;
+            assert(matchIndex >= 0 and matchIndex < static_cast<int>(_isPointMatched.size()));
 
             // Mark point as unmatched
-            _isPointMatched[point._matchedScreenPoint._matchIndex] = false;
+            _isPointMatched[matchIndex] = false;
             point._matchedScreenPoint.mark_unmatched();
         }
 
