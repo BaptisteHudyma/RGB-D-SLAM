@@ -11,7 +11,7 @@ namespace rgbd_slam {
     namespace features {
         namespace keypoints {
 
-            const float BORDER_SIZE = 1.; // Border of an image, in which points will be ignored
+            const double BORDER_SIZE = 1.; // Border of an image, in which points will be ignored
             const size_t INVALID_MAP_POINT_ID = 0;  // should be the same as INVALID_POINT_UNIQ_ID in map_point.hpp
             const int INVALID_MATCH_INDEX = -1;
 
@@ -24,7 +24,7 @@ namespace rgbd_slam {
               * \brief Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth with the surrounding points to prevent invalid depth on edges
               *
               */
-            float get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates);
+            double get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates);
 
             /**
              * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map
@@ -81,7 +81,7 @@ namespace rgbd_slam {
                         return _depths[index];
                     }
 
-                    double get_depth_count() const
+                    size_t get_depth_count() const
                     {
                         return _depths.size();
                     }
@@ -107,7 +107,7 @@ namespace rgbd_slam {
                         return _descriptors.row(index);
                     }
 
-                    uint get_keypoint_count() const
+                    size_t get_keypoint_count() const
                     {
                         return _keypoints.size();
                     }
@@ -124,18 +124,18 @@ namespace rgbd_slam {
                      */
                     const cv::Mat compute_key_point_mask(const vector2& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const;
 
-                    typedef std::pair<int, int> int_pair;
+                    typedef std::pair<uint, uint> uint_pair;
                     /**
                      * \brief Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with _searchSpaceIndexContainer
                      */
-                    const int_pair get_search_space_coordinates(const vector2& pointToPlace) const;
+                    const uint_pair get_search_space_coordinates(const vector2& pointToPlace) const;
 
                     /**
                      * \brief Compute an 1D array index from a 2D array index.
                      *
                      * \param[in] searchSpaceIndex The 2D array index (y, x)
                      */
-                    uint get_search_space_index(const int_pair& searchSpaceIndex) const;
+                    uint get_search_space_index(const uint_pair& searchSpaceIndex) const;
                     uint get_search_space_index(const uint x, const uint y) const;
 
 
@@ -152,9 +152,9 @@ namespace rgbd_slam {
                     cv::Mat _descriptors;
 
                     // Number of image divisions (cells)
-                    int _cellCountX;
-                    int _cellCountY;
-                    int _searchSpaceCellRadius; 
+                    uint _cellCountX;
+                    uint _cellCountY;
+                    uint _searchSpaceCellRadius; 
 
                     // Corresponds to a 2D box containing index of key points in those boxes
                     typedef std::list<uint> index_container;

@@ -13,21 +13,26 @@ namespace rgbd_slam {
                 return 
                     BORDER_SIZE <= pt.x and
                     BORDER_SIZE <= pt.y and
-                    pt.x < im.cols - BORDER_SIZE and
-                    pt.y < im.rows - BORDER_SIZE;
+                    pt.x < static_cast<double>(im.cols) - BORDER_SIZE and
+                    pt.y < static_cast<double>(im.rows) - BORDER_SIZE;
             } 
 
-            float get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates)
+            double get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates)
             {
                 if (is_in_border(depthCoordinates, depthImage)) 
                 {
-                    const float border = 2;
-                    const cv::Mat roi(depthImage(cv::Rect(depthCoordinates.x - border, depthCoordinates.y - border, border * 2, border * 2)));
+                    const double border = 2.0;
+                    const cv::Mat roi(depthImage(cv::Rect(
+                                    std::floor(depthCoordinates.x - border), 
+                                    std::floor(depthCoordinates.y - border), 
+                                    std::floor(border * 2.0), 
+                                    std::floor(border * 2.0))
+                                ));
                     double min, max;
                     cv::minMaxLoc(roi, &min, &max);
                     return min;
                 }
-                return 0;
+                return 0.0;
             }
 
 
@@ -43,23 +48,25 @@ namespace rgbd_slam {
 
                 _descriptors = inDescriptors;
 
-                const float cellSize = static_cast<float>(Parameters::get_search_matches_cell_size());
-                _searchSpaceCellRadius = std::ceil(Parameters::get_search_matches_distance() / cellSize);
+                const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+                assert(cellSize > 0);
+                _searchSpaceCellRadius = static_cast<uint>(std::ceil(Parameters::get_search_matches_distance() / cellSize));
+                assert(_searchSpaceCellRadius > 0);
 
-                _cellCountX = std::ceil(depthImage.cols / cellSize);
-                _cellCountY = std::ceil(depthImage.rows / cellSize);
+                _cellCountX = static_cast<uint>(std::ceil(depthImage.cols / cellSize));
+                _cellCountY = static_cast<uint>(std::ceil(depthImage.rows / cellSize));
                 assert(_cellCountX > 0 and _cellCountY > 0);
 
                 _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
 
                 // Fill depth values, add points to image boxes
-                const uint allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
+                const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
                 _depths = std::vector<double>(allKeypointSize, 0.0);
                 _keypoints = std::vector<vector2>(allKeypointSize);
 
                 // Add detected keypoints first
-                const size_t keypointIndexOffset = inKeypoints.size();
-                for(size_t pointIndex = 0; pointIndex < keypointIndexOffset; ++pointIndex) {
+                const uint keypointIndexOffset = static_cast<uint>(inKeypoints.size());
+                for(uint pointIndex = 0; pointIndex < keypointIndexOffset; ++pointIndex) {
                     const cv::Point2f& pt = inKeypoints[pointIndex];;
                     const vector2 vectorKeypoint(pt.x, pt.y); 
 
@@ -108,7 +115,7 @@ namespace rgbd_slam {
             }
 
 
-            uint Keypoint_Handler::get_search_space_index(const int_pair& searchSpaceIndex) const
+            uint Keypoint_Handler::get_search_space_index(const uint_pair& searchSpaceIndex) const
             {
                 return get_search_space_index(searchSpaceIndex.second, searchSpaceIndex.first);
             }
@@ -118,10 +125,10 @@ namespace rgbd_slam {
             }
 
 
-            const Keypoint_Handler::int_pair Keypoint_Handler::get_search_space_coordinates(const vector2& pointToPlace) const
+            const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(const vector2& pointToPlace) const
             {
                 const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
-                const int_pair cellCoordinates(
+                const uint_pair cellCoordinates(
                         std::clamp(floor(pointToPlace.y() / cellSize), 0.0, _cellCountY - 1.0),
                         std::clamp(floor(pointToPlace.x() / cellSize), 0.0, _cellCountX - 1.0)
                         );
@@ -130,16 +137,16 @@ namespace rgbd_slam {
 
             const cv::Mat Keypoint_Handler::compute_key_point_mask(const vector2& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
             {
-                const int_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
+                const uint_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
 
-                const uint startY = std::max(0, searchSpaceCoordinates.first - _searchSpaceCellRadius);
-                const uint startX = std::max(0, searchSpaceCoordinates.second - _searchSpaceCellRadius);
+                const uint startY = std::max(0U, searchSpaceCoordinates.first - _searchSpaceCellRadius);
+                const uint startX = std::max(0U, searchSpaceCoordinates.second - _searchSpaceCellRadius);
 
                 const uint endY = std::min(_cellCountY, searchSpaceCoordinates.first + _searchSpaceCellRadius + 1);
                 const uint endX = std::min(_cellCountX, searchSpaceCoordinates.second + _searchSpaceCellRadius + 1);
 
                 // Squared search diameter, to compare distance without sqrt
-                const float squaredSearchDiameter = pow(Parameters::get_search_matches_distance(), 2);
+                const float squaredSearchDiameter = static_cast<float>(pow(Parameters::get_search_matches_distance(), 2.0));
 
                 cv::Mat keyPointMask(cv::Mat::zeros(1, _descriptors.rows, CV_8UC1));
                 for (uint i = startY; i < endY; ++i)
@@ -150,7 +157,7 @@ namespace rgbd_slam {
                         assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
 
                         const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex]; 
-                        for(const int keypointIndex : keypointIndexContainer)
+                        for(const uint keypointIndex : keypointIndexContainer)
                         {
                             if (not isKeyPointMatchedContainer[keypointIndex])
                             {
@@ -194,7 +201,8 @@ namespace rgbd_slam {
                     const int trackingIndex = get_tracking_match_index(mapPointId);
                     if (trackingIndex != INVALID_MATCH_INDEX)
                     {
-                        if (!isKeyPointMatchedContainer[trackingIndex]) {
+                        assert(trackingIndex >= 0 and static_cast<size_t>(trackingIndex) < isKeyPointMatchedContainer.size());
+                        if (not isKeyPointMatchedContainer[static_cast<size_t>(trackingIndex)]) {
                             return trackingIndex;
                         }
                         else {

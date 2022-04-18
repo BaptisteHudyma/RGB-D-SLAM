@@ -17,8 +17,8 @@ namespace rgbd_slam {
 
             Key_Point_Extraction::Key_Point_Extraction(const uint minHessian) :
                 // Create feature extractor and matcher
-                _featureDetector(cv::FastFeatureDetector::create( minHessian )),
-                _advancedFeatureDetector(cv::FastFeatureDetector::create( minHessian / 2 )),
+                _featureDetector(cv::FastFeatureDetector::create(minHessian)),
+                _advancedFeatureDetector(cv::FastFeatureDetector::create(minHessian * 0.5)),
                 _descriptorExtractor(cv::xfeatures2d::BriefDescriptorExtractor::create())
             {
                 assert(not _featureDetector.empty() );
@@ -84,7 +84,7 @@ namespace rgbd_slam {
                 cv::Mat keypointDescriptors;
 
                 //detect keypoints
-                double t1 = cv::getTickCount();
+                int64 t1 = cv::getTickCount();
 
                 /*
                  * OPTICAL FLOW
@@ -164,7 +164,8 @@ namespace rgbd_slam {
                         keypointDescriptors = detectedKeypointDescriptors;
                 }
 
-                _meanPointExtractionTime += (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+                const double deltaTime = static_cast<double>(cv::getTickCount() - t1);
+                _meanPointExtractionTime += deltaTime / static_cast<double>(cv::getTickFrequency());
 
                 // Update last keypoint struct
                 return Keypoint_Handler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance);
