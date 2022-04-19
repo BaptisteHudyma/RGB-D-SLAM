@@ -134,8 +134,8 @@ namespace rgbd_slam {
         _maximumPointPerFrame = 200;
 
         // Primitive extraction
-        _minimumIOUToConsiderMatch = 0.2;
-        _minimumNormalsDotDifference = 0.9;
+        _minimumIOUToConsiderMatch = 0.3;
+        _minimumNormalsDotDifference = 0.6;
         _primitiveMaximumCosAngle = cos(M_PI/10.0);
         _primitiveMaximumMergeDistance = 100;
         _depthMapPatchSize = 20;

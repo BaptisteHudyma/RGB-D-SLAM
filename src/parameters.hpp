@@ -1,5 +1,5 @@
 #ifndef RGBDSLAM_PARAMETERS_HPP
-#define RGDBSLAM_PARAMETERS_HPP
+#define RGBDSLAM_PARAMETERS_HPP
 
 #include <string>
 
