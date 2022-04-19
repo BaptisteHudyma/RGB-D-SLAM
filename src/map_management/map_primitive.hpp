@@ -2,6 +2,7 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
 #include "shape_primitives.hpp"
+#include "parameters.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -19,12 +20,25 @@ namespace rgbd_slam {
                 return _matchId != UNMATCHED_PRIMITIVE_ID;
             }
 
+            void mark_matched(size_t matchId)
+            {
+                _matchId = matchId;
+                _unmatchedCount = 0;
+            }
+
             void mark_unmatched()
             {
                 _matchId = UNMATCHED_PRIMITIVE_ID;
+                ++_unmatchedCount;
             }
 
-            uchar _matchId;
+            bool is_lost()
+            {
+                return _unmatchedCount >= Parameters::get_maximum_unmatched_before_removal();
+            }
+
+            size_t _matchId; // Id of the last match
+            size_t _unmatchedCount; // count of unmatched iterations
         };
 
         struct Primitive 

@@ -115,7 +115,7 @@ namespace rgbd_slam {
 
                 if(mapPrimitive._primitive->is_similar(shapePrimitive)) 
                 {
-                    mapPrimitive._matchedPrimitive._matchId = primitiveId;
+                    mapPrimitive._matchedPrimitive.mark_matched(primitiveId);
                     matchedPrimitives.emplace(matchedPrimitives.end(), shapePrimitive->_normal, mapPrimitive._primitive->_normal);
 
                     _unmatchedPrimitiveIds.erase(primitiveId);
@@ -220,14 +220,14 @@ namespace rgbd_slam {
             {
                 if (mapPrimitive._matchedPrimitive.is_matched())
                 {
-                    const uchar primitiveId = mapPrimitive._matchedPrimitive._matchId;
+                    const size_t primitiveId = mapPrimitive._matchedPrimitive._matchId;
                     assert(primitiveId != UNMATCHED_PRIMITIVE_ID);
                     assert(detectedPrimitives.contains(primitiveId));
 
                     // TODO update primitive 
                     mapPrimitive._primitive->set_shape_mask(detectedPrimitives.at(primitiveId)->get_shape_mask());
                 }
-                else
+                else if (mapPrimitive._matchedPrimitive.is_lost())
                 {
                     // add to primitives to remove
                     primitivesToRemove.emplace(primitiveId);
@@ -506,6 +506,9 @@ namespace rgbd_slam {
             cv::Mat allPrimitiveMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
             for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
             {
+                if (not mapPrimitive._matchedPrimitive.is_matched())
+                    continue;
+
                 const cv::Scalar& primitiveColor = mapPrimitive._color;
 
                 cv::Mat primitiveMask;

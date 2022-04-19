@@ -59,6 +59,7 @@ namespace rgbd_slam {
         }
 
 
+
         /**
          *      Staged_Point
          */
