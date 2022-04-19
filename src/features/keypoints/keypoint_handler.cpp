@@ -8,25 +8,28 @@ namespace rgbd_slam {
         namespace keypoints {
 
 
-            bool is_in_border(const cv::Point2f &pt, const cv::Mat &im) 
+            bool is_in_border(const cv::Point2f &pt, const cv::Mat &im, const double borderSize) 
             {
+                assert(borderSize >= 0);
                 return 
-                    BORDER_SIZE <= pt.x and
-                    BORDER_SIZE <= pt.y and
-                    pt.x < static_cast<double>(im.cols) - BORDER_SIZE and
-                    pt.y < static_cast<double>(im.rows) - BORDER_SIZE;
+                    borderSize <= pt.x and
+                    borderSize <= pt.y and
+                    pt.x < static_cast<double>(im.cols) - borderSize and
+                    pt.y < static_cast<double>(im.rows) - borderSize;
             } 
 
             double get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates)
             {
-                if (is_in_border(depthCoordinates, depthImage)) 
+                const double border = BORDER_SIZE;
+                assert(border > 0);
+                if (is_in_border(depthCoordinates, depthImage, border)) 
                 {
-                    const double border = 2.0;
-                    const cv::Mat roi(depthImage(cv::Rect(
-                                    std::floor(depthCoordinates.x - border), 
-                                    std::floor(depthCoordinates.y - border), 
-                                    std::floor(border * 2.0), 
-                                    std::floor(border * 2.0))
+                    const cv::Mat roi(depthImage(
+                                cv::Rect(
+                                    std::max(depthCoordinates.x - border, 0.0), 
+                                    std::max(depthCoordinates.y - border, 0.0), 
+                                    (border * 2.0), 
+                                    (border * 2.0))
                                 ));
                     double min, max;
                     cv::minMaxLoc(roi, &min, &max);

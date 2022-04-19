@@ -18,11 +18,10 @@ namespace rgbd_slam {
             /**
              * \brief checks if a point is in an image, a with border
              */
-            bool is_in_border(const cv::Point2f &pt, const cv::Mat &im);
+            bool is_in_border(const cv::Point2f &pt, const cv::Mat &im, const double borderSize = 0);
 
             /**
               * \brief Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth with the surrounding points to prevent invalid depth on edges
-              *
               */
             double get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates);
 
