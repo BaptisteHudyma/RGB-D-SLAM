@@ -19,14 +19,12 @@ namespace rgbd_slam {
                 // Create feature extractor and matcher
                 _featureDetector(cv::FastFeatureDetector::create(minHessian)),
                 _advancedFeatureDetector(cv::FastFeatureDetector::create(minHessian * 0.5)),
-                _descriptorExtractor(cv::xfeatures2d::BriefDescriptorExtractor::create())
+                _descriptorExtractor(cv::xfeatures2d::BriefDescriptorExtractor::create()),
+                _meanPointExtractionDuration(0.0)
             {
                 assert(not _featureDetector.empty() );
                 assert(not _advancedFeatureDetector.empty() );
                 assert(not _descriptorExtractor.empty() );
-
-                //profiling
-                _meanPointExtractionTime = 0.0;
             }
 
             const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const
@@ -84,7 +82,7 @@ namespace rgbd_slam {
                 cv::Mat keypointDescriptors;
 
                 //detect keypoints
-                int64 t1 = cv::getTickCount();
+                const int64 keypointDetectionStartTime = cv::getTickCount();
 
                 /*
                  * OPTICAL FLOW
@@ -164,11 +162,10 @@ namespace rgbd_slam {
                         keypointDescriptors = detectedKeypointDescriptors;
                 }
 
-                const double deltaTime = static_cast<double>(cv::getTickCount() - t1);
-                _meanPointExtractionTime += deltaTime / static_cast<double>(cv::getTickFrequency());
-
                 // Update last keypoint struct
-                return Keypoint_Handler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance);
+                const Keypoint_Handler keypointHandler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance);
+                _meanPointExtractionDuration += (cv::getTickCount() - keypointDetectionStartTime) / static_cast<double>(cv::getTickFrequency());
+                return keypointHandler;
             }
 
 
@@ -270,10 +267,10 @@ namespace rgbd_slam {
                 return std::round(treatmentTime / totalTimeElapsed * 10000.0) / 100.0;
             }
 
-            void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentTime, const uint frameCount) const {
+            void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const {
                 if (frameCount > 0) { 
-                    double meanPointExtractionTime = _meanPointExtractionTime / frameCount;
-                    std::cout << "Mean point extraction time is " << meanPointExtractionTime << " seconds (" << get_percent_of_elapsed_time(meanPointExtractionTime, meanFrameTreatmentTime) << "%)" << std::endl;
+                    const double meanPointExtractionDuration = _meanPointExtractionDuration / static_cast<double>(frameCount);
+                    std::cout << "\tMean point extraction time is " << meanPointExtractionDuration << " seconds (" << get_percent_of_elapsed_time(meanPointExtractionDuration, meanFrameTreatmentDuration) << "%)" << std::endl;
                 }
             }
 

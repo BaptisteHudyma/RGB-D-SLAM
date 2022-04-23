@@ -56,7 +56,7 @@ namespace rgbd_slam {
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
              */
-            void show_statistics(double meanFrameTreatmentTime) const;
+            void show_statistics(double meanFrameTreatmentDuration) const;
 
         protected:
 
@@ -97,10 +97,14 @@ namespace rgbd_slam {
 
             // debug
             uint _totalFrameTreated;
-            double _meanMatTreatmentTime;
-            double _meanTreatmentTime;
-            double _meanLineTreatment;
-            double _meanPoseTreatmentTime;
+            double _meanDepthMapTreatmentDuration;
+            double _meanPoseOptimizationDuration;
+
+            double _meanPrimitiveTreatmentDuration;
+            double _meanLineTreatmentDuration;
+            double _meanFindMatchTime;
+            double _meanPoseOptimizationFromFeatures;
+            double _meanLocalMapUpdateDuration;
 
         private:
             // remove copy constructors as we have dynamically instantiated members

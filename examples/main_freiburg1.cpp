@@ -17,7 +17,7 @@
 #include "angle_utils.hpp"
 
 
-void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
+void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
 {
     switch(cv::waitKey(1)) {
         //check pressed key
@@ -31,7 +31,7 @@ void check_user_inputs(bool& runLoop, bool& useLineDetection, bool& showPrimitiv
             cv::waitKey(-1); //wait until any key is pressed
             break;
         case 'q': //quit button
-            runLoop = false;
+            shouldRunLoop = false;
         default:
             break;
     }
@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
     unsigned int totalFrameTreated = 0;
     unsigned int frameIndex = startIndex;   //current frame index count
 
-    double meanTreatmentTime = 0;
+    double meanTreatmentDuration = 0;
 
     std::ofstream trajectoryFile;
     if (shouldSavePoses)
@@ -171,9 +171,10 @@ int main(int argc, char* argv[])
     }
 
     //stop condition
-    bool runLoop = true;
-    for(std::string rgbLine, depthLine; runLoop && std::getline(rgbImagesFile, rgbLine) && std::getline(depthImagesFile, depthLine); ) {
-
+    bool shouldRunLoop = true;
+    for(std::string rgbLine, depthLine; shouldRunLoop and std::getline(rgbImagesFile, rgbLine) and std::getline(depthImagesFile, depthLine); ) 
+    {
+        // skip comments    
         if (rgbLine[0] == '#' or depthLine[0] == '#')
             continue;
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
@@ -219,18 +220,18 @@ int main(int argc, char* argv[])
 #endif
 
         // get optimized pose
-        double elapsedTime = cv::getTickCount();
+        const double trackingStartTime = cv::getTickCount();
         pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
-        elapsedTime = (cv::getTickCount() - elapsedTime) / (double)cv::getTickFrequency();
-        meanTreatmentTime += elapsedTime;
+        const double trackingDuration = (cv::getTickCount() - trackingStartTime) / (double)cv::getTickFrequency();
+        meanTreatmentDuration += trackingDuration;
 
         // display masks on image
         cv::Mat segRgb = rgbImage.clone();
-        RGBD_Slam.get_debug_image(pose, rgbImage, segRgb, elapsedTime, showStagedPoints, showPrimitiveMasks);
+        RGBD_Slam.get_debug_image(pose, rgbImage, segRgb, trackingDuration, showStagedPoints, showPrimitiveMasks);
         cv::imshow("RGBD-SLAM", segRgb);
 
         //check user inputs
-        check_user_inputs(runLoop, useLineDetection, showPrimitiveMasks);
+        check_user_inputs(shouldRunLoop, useLineDetection, showPrimitiveMasks);
 
         // counters
         ++totalFrameTreated;
@@ -254,7 +255,7 @@ int main(int argc, char* argv[])
     std::cout << "End pose : " << pose << std::endl;
     std::cout << "Process terminated at frame " << frameIndex << std::endl;
     std::cout << std::endl;
-    RGBD_Slam.show_statistics(meanTreatmentTime / totalFrameTreated);
+    RGBD_Slam.show_statistics(meanTreatmentDuration / totalFrameTreated);
 
     cv::destroyAllWindows();
     return 0;

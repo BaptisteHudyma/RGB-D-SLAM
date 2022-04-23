@@ -35,10 +35,10 @@ namespace rgbd_slam {
                     /**
                      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
                      *
-                     * \param[in] meanFrameTreatmentTime The mean time in seconds that this program used to treat one frame
+                     * \param[in] meanFrameTreatmentDuration The mean duration in seconds that this program used to treat one frame
                      * \param[in] frameCount Total of frame treated by the program
                      */
-                    void show_statistics(const double meanFrameTreatmentTime, const uint frameCount) const;
+                    void show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const;
 
                 protected:
 
@@ -76,7 +76,7 @@ namespace rgbd_slam {
 
                     std::vector<cv::Mat> _lastFramePyramide;
 
-                    double _meanPointExtractionTime;
+                    double _meanPointExtractionDuration;
 
             };
 
