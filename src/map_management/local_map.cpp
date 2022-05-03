@@ -574,7 +574,7 @@ namespace rgbd_slam {
             // Display keypoints
             for (const auto& [pointId, mapPoint] : _localPointMap) {
                 assert(pointId == mapPoint._id);
-                draw_point_on_image(mapPoint, worldToCamMatrix, cv::Scalar(0, 255, 0), debugImage);
+                draw_point_on_image(mapPoint, worldToCamMatrix, mapPoint._color, debugImage);
             }
             if (shouldDisplayStaged)
             {

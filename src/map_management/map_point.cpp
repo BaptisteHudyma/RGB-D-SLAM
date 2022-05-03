@@ -44,7 +44,7 @@ namespace rgbd_slam {
             // Use a kalman filter to estimate this point position
             const matrix33& identity = matrix33::Identity(); 
             const matrix33 kalmanGain = _covariance * (_covariance + newPointCovariance).inverse();
-            
+
             const vector3 newPosition = _coordinates + (kalmanGain * (newPointCoordinates - _coordinates));
             const double score = (_coordinates - newPosition).norm();
 
@@ -117,21 +117,32 @@ namespace rgbd_slam {
 
             _failTrackingCount(0),
             _age(0)
-        {
-        }
+            {
+                set_random_color();
+            }
 
         Map_Point::Map_Point(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
             IMap_Point_With_Tracking(coordinates, covariance, descriptor, id),
 
             _failTrackingCount(0),
             _age(0)
-        {
-        }
+            {
+                set_random_color();
+            }
 
         double Map_Point::get_confidence() const
         {
             double confidence = static_cast<double>(_age) / static_cast<double>(Parameters::get_point_age_confidence());
             return std::clamp(confidence, -1.0, 1.0);
+        }
+
+        void Map_Point::set_random_color()
+        {
+            cv::Vec3b color;
+            color[0] = rand() % 255;
+            color[1] = rand() % 255;
+            color[2] = rand() % 255;
+            _color = color;
         }
 
         /**

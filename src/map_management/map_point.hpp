@@ -179,7 +179,11 @@ namespace rgbd_slam {
                     return _age;
                 }
 
+                cv::Scalar _color;  // display color of this primitive
+
             protected:
+                void set_random_color();
+
                 /**
                  * \brief Compute a confidence score (-1, 1)
                  */
