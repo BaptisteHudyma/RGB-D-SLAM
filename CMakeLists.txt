@@ -35,17 +35,17 @@ list(APPEND INC_DIRS ${G2O_INCLUDE_DIR})
 list(APPEND LINK_LIBS ${G2O_LIBRARIES})
 
 # Load GTEST
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
-set(TESTS tests)
-enable_testing()
+#include(FetchContent)
+#FetchContent_Declare(
+#  googletest
+#  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+#)
+## For Windows: Prevent overriding the parent project's compiler/linker settings
+#set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#FetchContent_MakeAvailable(googletest)
+#
+#set(TESTS tests)
+#enable_testing()
 
 
 
@@ -149,7 +149,7 @@ target_link_libraries(test_p3p ${PROJECT_NAME})
 
 
 # Include test dir
-include(${CMAKE_MODULE_PATH}/runTests.cmake) 
+#include(${CMAKE_MODULE_PATH}/runTests.cmake) 
 
 
 
