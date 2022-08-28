@@ -6,6 +6,7 @@
 #include <ctime>
 // check file existence
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include <opencv2/opencv.hpp>
 
@@ -69,7 +70,7 @@ bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage,
     return false;
 }
 
-bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, bool& shouldSavePoses) 
+bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, unsigned int& fpsTarget, bool& shouldSavePoses) 
 {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
@@ -79,6 +80,7 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPri
         "{l lines         |  0   | Detect lines }"
         "{i index         |  0   | First image to parse   }"
         "{j jump          |  0   | Only take every j image into consideration   }"
+        "{r fps           |  30  | Used to slow down the treatment to correspond to a certain frame rate }"
         "{s save          |  0   | Should save all the pose to a file }"
         ;
 
@@ -96,6 +98,7 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPri
     useLineDetection = parser.get<bool>("l");
     startIndex = parser.get<int>("i");
     jumpImages = parser.get<unsigned int>("j");
+    fpsTarget = parser.get<unsigned int>("r");
     shouldSavePoses = parser.get<bool>("s");
 
     if(not parser.check()) {
@@ -111,9 +114,9 @@ int main(int argc, char* argv[]) {
     std::string dataset;
     bool showPrimitiveMasks, showStagedPoints, useLineDetection, shouldSavePoses;
     int startIndex;
-    unsigned int jumpFrames = 0;
+    unsigned int jumpFrames = 0, fpsTarget;
 
-    if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, shouldSavePoses)) {
+    if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, fpsTarget, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
     std::stringstream dataPath("../data/CAPE_" + dataset + "/");
@@ -211,6 +214,12 @@ int main(int argc, char* argv[]) {
             const rgbd_slam::EulerAngles& rotationEuler = rgbd_slam::utils::get_euler_angles_from_quaternion(rotation);
             trajectoryFile << position.x() << "," << position.y() << "," << position.z() << ",";
             trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl; 
+        }
+
+        //wait to adjust framerate
+        if (trackingDuration < 1.0 / fpsTarget)
+        {
+            usleep( (1.0 / static_cast<double>(fpsTarget) - trackingDuration) * 1e6);
         }
     }
     if (shouldSavePoses)
