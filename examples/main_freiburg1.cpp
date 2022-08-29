@@ -51,7 +51,7 @@ inline bool is_file_valid (const std::string& fileName) {
  *
  * \return true is load is successful, else return false
  */
-bool load_images(std::stringstream& dataPath, int imageIndex, cv::Mat& rgbImage, cv::Mat& depthImage) 
+bool load_images(const std::stringstream& dataPath, const int imageIndex, cv::Mat& rgbImage, cv::Mat& depthImage) 
 {
     std::stringstream depthImagePath, rgbImgPath;
     rgbImgPath << dataPath.str() << "rgb_"<< imageIndex <<".png";

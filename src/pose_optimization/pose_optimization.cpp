@@ -39,7 +39,7 @@ namespace rgbd_slam {
             matches_containers::match_point_container inlierMatchedPoints;  // Contains the best pose inliers
             for(uint iteration = 0; iteration < maximumIterations; ++iteration)
             {
-                const matches_containers::match_point_container& selectedMatches = get_random_subset(matchedPoints, minimumPointsForOptimization);
+                const matches_containers::match_point_container& selectedMatches = ransac::get_random_subset(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
                 utils::Pose pose; 
                 const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(currentPose, selectedMatches, pose);

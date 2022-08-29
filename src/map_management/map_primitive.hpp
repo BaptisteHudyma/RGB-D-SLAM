@@ -12,7 +12,8 @@ namespace rgbd_slam {
         struct MatchedPrimitive 
         {
             MatchedPrimitive():
-                _matchId(UNMATCHED_PRIMITIVE_ID)
+                _matchId(UNMATCHED_PRIMITIVE_ID),
+                _unmatchedCount(0)
             {};
 
             bool is_matched() const
