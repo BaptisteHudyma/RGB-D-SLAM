@@ -2,8 +2,11 @@
 
 #include <limits>
 
+#include "cylinder_segment.hpp"
 #include "parameters.hpp"
 #include "logger.hpp"
+#include "plane_segment.hpp"
+#include "shape_primitives.hpp"
 
 //index offset of a cylinder to a plane: used for masks display purposes
 const uint CYLINDER_CODE_OFFSET = 50;
@@ -228,8 +231,8 @@ namespace rgbd_slam {
                     {
                         if(_isActivatedMap[planeSegmentIndex]) 
                         {
-                            const plane_segment_unique_ptr planeSegment = _planeGrid[planeSegmentIndex];
-                            if (planeSegment->is_planar())
+                            const Plane_Segment& planeSegment = *(_planeGrid[planeSegmentIndex]);
+                            if (planeSegment.is_planar())
                             {
                                 newPlaneSegment.expand_segment(planeSegment);
                                 ++cellActivatedCount;
@@ -276,45 +279,45 @@ namespace rgbd_slam {
                         //cylinder fitting
                         // It is an extrusion
                         _cylinderSegments.push_back(std::make_unique<Cylinder_Segment>(_planeGrid, _isActivatedMap, cellActivatedCount));
-                        const cylinder_segment_unique_ptr& cylinderSegment = _cylinderSegments.back();
+                        const Cylinder_Segment& cylinderSegment = *(_cylinderSegments.back());
 
                         // Fit planes to subsegments
-                        for(uint segId = 0; segId < cylinderSegment->get_segment_count(); ++segId)
+                        for(uint segId = 0; segId < cylinderSegment.get_segment_count(); ++segId)
                         {
-                            bool isPlaneFitable = false;
+                            bool isPlaneSegmentFitable = false;
                             Plane_Segment newMergedPlane(_cellWidth, _pointsPerCellCount);
                             for(uint col = 0; col < cellActivatedCount; ++col)
                             {
-                                if (cylinderSegment->is_inlier_at(segId, col))
+                                if (cylinderSegment.is_inlier_at(segId, col))
                                 {
-                                    const uint localMapIndex = cylinderSegment->get_local_to_global_mapping(col);
+                                    const uint localMapIndex = cylinderSegment.get_local_to_global_mapping(col);
                                     assert(localMapIndex < _planeGrid.size());
 
-                                    const plane_segment_unique_ptr planeSegment = _planeGrid[localMapIndex];
-                                    if (planeSegment->is_planar())
+                                    const Plane_Segment& planeSegment = *(_planeGrid[localMapIndex]);
+                                    if (planeSegment.is_planar())
                                     {
                                         newMergedPlane.expand_segment(planeSegment);
-                                        isPlaneFitable = true;
+                                        isPlaneSegmentFitable = true;
                                     }
                                 }
                             }
 
                             // No continuous planes, pass
-                            if (not isPlaneFitable)
+                            if (not isPlaneSegmentFitable)
                                 continue;
 
                             newMergedPlane.fit_plane();
                             // Model selection based on MSE
-                            if(newMergedPlane.get_MSE() < cylinderSegment->get_MSE_at(segId))
+                            if(newMergedPlane.get_MSE() < cylinderSegment.get_MSE_at(segId))
                             {
                                 //MSE of the plane is less than MSE of the cylinder + this plane 
                                 _planeSegments.push_back(std::make_unique<Plane_Segment>(newMergedPlane));
                                 const uint currentPlaneCount = _planeSegments.size();
                                 for(uint col = 0; col < cellActivatedCount; ++col)
                                 {
-                                    if (cylinderSegment->is_inlier_at(segId, col))
+                                    if (cylinderSegment.is_inlier_at(segId, col))
                                     {
-                                        const uint cellId = cylinderSegment->get_local_to_global_mapping(col);
+                                        const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
                                         _gridPlaneSegmentMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = currentPlaneCount;
                                     }
                                 }
@@ -327,9 +330,9 @@ namespace rgbd_slam {
                                 cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
                                 for(uint col = 0; col < cellActivatedCount; ++col)
                                 {
-                                    if (cylinderSegment->is_inlier_at(segId, col))
+                                    if (cylinderSegment.is_inlier_at(segId, col))
                                     {
-                                        const uint cellId = cylinderSegment->get_local_to_global_mapping(col);
+                                        const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
                                         _gridCylinderSegMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = cylinderCount;
                                     }
                                 }
@@ -360,26 +363,26 @@ namespace rgbd_slam {
                 {
                     bool wasPlaneExpanded = false;
                     const uint planeId = planeMergeLabels[row];
-                    const plane_segment_unique_ptr& testPlane = _planeSegments[planeId];
-                    if (not testPlane->is_planar())
+                    const Plane_Segment& testPlane = *(_planeSegments[planeId]);
+                    if (not testPlane.is_planar())
                         continue;
 
-                    const vector3& testPlaneNormal = testPlane->get_normal();
+                    const vector3& testPlaneNormal = testPlane.get_normal();
 
                     for(uint col = row + 1; col < isPlanesConnectedMatrixCols; ++col) 
                     {
                         if(isPlanesConnectedMatrix(row, col)) 
                         {
-                            const plane_segment_unique_ptr& mergePlane = _planeSegments[col];
-                            if (not mergePlane->is_planar())
+                            const Plane_Segment& mergePlane = *(_planeSegments[col]);
+                            if (not mergePlane.is_planar())
                                 continue;
 
-                            const vector3& mergePlaneNormal = mergePlane->get_normal();
+                            const vector3& mergePlaneNormal = mergePlane.get_normal();
                             const double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
 
-                            const vector3& mergePlaneMean = mergePlane->get_mean();
+                            const vector3& mergePlaneMean = mergePlane.get_mean();
                             const double distance = pow(
-                                    testPlaneNormal.dot(mergePlaneMean) + testPlane->get_plane_d(),
+                                    testPlaneNormal.dot(mergePlaneMean) + testPlane.get_plane_d(),
                                     2);
 
                             if(cosAngle > _minCosAngleForMerge and distance < _maxMergeDist) 
@@ -436,7 +439,7 @@ namespace rgbd_slam {
                     assert(planeId < CYLINDER_CODE_OFFSET);
 
                     //add new plane to final shapes
-                    primitiveSegments.emplace(planeId, std::move(std::make_unique<Plane>(_planeSegments[planeIndex], planeId, _mask)));
+                    primitiveSegments.emplace(planeId, std::make_unique<Plane>(*(_planeSegments[planeIndex]), planeId, _mask));
                 }
             }
 
@@ -463,10 +466,9 @@ namespace rgbd_slam {
                     const uchar cylinderId = ++cylinderIdAllocator;
 
                     const uint regId = cylinderToRegionMap[cylinderIndex].first;
-                    const cylinder_segment_unique_ptr& cylinderSegRef = _cylinderSegments[regId];
 
                     //add new cylinder to final shapes
-                    primitiveSegments.emplace(cylinderId, std::move(std::make_unique<Cylinder>(cylinderSegRef, cylinderId, _mask)));
+                    primitiveSegments.emplace(cylinderId, std::make_unique<Cylinder>(*(_cylinderSegments[regId]), cylinderId, _mask));
                 }
             }
 

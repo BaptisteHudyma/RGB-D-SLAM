@@ -19,20 +19,20 @@ namespace rgbd_slam {
                 assert(not shapeMask.empty());
             }
 
-            double Primitive::get_IOU(const std::shared_ptr<Primitive>& prim) const {
+            double Primitive::get_IOU(const Primitive& prim) const {
                 assert(not _shapeMask.empty());
-                assert(not prim->_shapeMask.empty());
-                assert(_shapeMask.size == prim->_shapeMask.size);
+                assert(not prim._shapeMask.empty());
+                assert(_shapeMask.size == prim._shapeMask.size);
 
                 //get union of masks
-                const cv::Mat unionMat = (_shapeMask | prim->_shapeMask);
+                const cv::Mat unionMat = (_shapeMask | prim._shapeMask);
                 const int IOU = cv::countNonZero(unionMat);
                 if (IOU <= 0)
                     // Union is empty, quit
                     return 0;
 
                 //get inter of masks
-                const cv::Mat interMat = (_shapeMask & prim->_shapeMask);
+                const cv::Mat interMat = (_shapeMask & prim._shapeMask);
                 return static_cast<double>(cv::countNonZero(interMat)) / static_cast<double>(IOU);
             }
 
@@ -41,20 +41,20 @@ namespace rgbd_slam {
              *      CYLINDER
              *
              */
-            Cylinder::Cylinder(const std::shared_ptr<Cylinder_Segment>& cylinderSeg, const uint id, const cv::Mat& shapeMask) :
+            Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const uint id, const cv::Mat& shapeMask) :
                 Primitive(id, shapeMask)
             {
                 _primitiveType = PrimitiveType::Cylinder;
                 _radius = 0;
-                for(uint i = 0; i < cylinderSeg->get_segment_count(); ++i) {
-                    _radius += cylinderSeg->get_radius(i);
+                for(uint i = 0; i < cylinderSeg.get_segment_count(); ++i) {
+                    _radius += cylinderSeg.get_radius(i);
                 }
-                _radius /= cylinderSeg->get_segment_count();
-                _normal = cylinderSeg->get_normal();
+                _radius /= cylinderSeg.get_segment_count();
+                _normal = cylinderSeg.get_normal();
             }
 
-            bool Cylinder::is_similar(const std::shared_ptr<Primitive>& prim) {
-                const PrimitiveType& primitiveType = prim->get_primitive_type();
+            bool Cylinder::is_similar(const Primitive& prim) {
+                const PrimitiveType& primitiveType = prim.get_primitive_type();
                 assert(primitiveType != PrimitiveType::Invalid);
 
                 if(get_IOU(prim) < Parameters::get_minimum_iou_for_match())
@@ -63,25 +63,25 @@ namespace rgbd_slam {
                 switch(primitiveType)
                 {
                     case PrimitiveType::Plane:
-                        {
-                            // Not implemented. Maybe some day ?
-                            break;
-                        }
+                    {
+                        // Not implemented. Maybe some day ?
+                        break;
+                    }
                     case PrimitiveType::Cylinder:
+                    {
+                        const Cylinder* cylinder = dynamic_cast<const Cylinder*>(&prim);
+                        if(cylinder != nullptr)
                         {
-                            const Cylinder* cylinder = dynamic_cast<const Cylinder*>(prim.get());
-                            if(cylinder != nullptr) 
-                            {
-                                return std::abs( _normal.dot( cylinder->_normal ) ) > Parameters::get_minimum_normals_dot_difference();
-                            }
-                            utils::log_error("Failed attempt to convert a primitive indicated as a cylinder to a cylinder");
-                            break;
+                            return std::abs( _normal.dot( cylinder->_normal ) ) > Parameters::get_minimum_normals_dot_difference();
                         }
+                        utils::log_error("Failed attempt to convert a primitive indicated as a cylinder to a cylinder");
+                        break;
+                    }
                     default:
-                        {
-                            utils::log_error("Unknown primitive type");
-                            break;
-                        }
+                    {
+                        utils::log_error("Unknown primitive type");
+                        break;
+                    }
                 }
                 return false;
             }
@@ -97,18 +97,18 @@ namespace rgbd_slam {
              *        PLANE
              *
              */
-            Plane::Plane(const std::shared_ptr<Plane_Segment>& planeSeg, const uint id, const cv::Mat& shapeMask) :
+            Plane::Plane(const Plane_Segment& planeSeg, const uint id, const cv::Mat& shapeMask) :
                 Primitive(id, shapeMask),
 
-                _d(planeSeg->get_plane_d()),
-                _mean(planeSeg->get_mean())
-                {
-                    _primitiveType = PrimitiveType::Plane;
-                    _normal = planeSeg->get_normal();
-                }
+                _d(planeSeg.get_plane_d()),
+                _mean(planeSeg.get_mean())
+            {
+                _primitiveType = PrimitiveType::Plane;
+                _normal = planeSeg.get_normal();
+            }
 
-            bool Plane::is_similar(const std::shared_ptr<Primitive>& prim) {
-                const PrimitiveType& primitiveType = prim->get_primitive_type();
+            bool Plane::is_similar(const Primitive& prim) {
+                const PrimitiveType& primitiveType = prim.get_primitive_type();
                 assert(primitiveType != PrimitiveType::Invalid);
 
                 if(get_IOU(prim) < Parameters::get_minimum_iou_for_match())
@@ -119,7 +119,7 @@ namespace rgbd_slam {
                     case PrimitiveType::Plane:
                         {
                             // Check the conversion
-                            const Plane* plane = dynamic_cast<const Plane*>(prim.get());
+                            const Plane* plane = dynamic_cast<const Plane*>(&prim);
                             if(plane != nullptr)
                             {
                                 return (_normal.dot(plane->_normal) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();

@@ -40,13 +40,6 @@ namespace rgbd_slam {
                     void expand_segment(const Plane_Segment& planeSegment);
 
                     /**
-                     * \brief Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations
-                     *
-                     * \param[in] planeSegment Another plane segment
-                     */
-                    void expand_segment(const std::shared_ptr<Plane_Segment>& planeSegment);
-
-                    /**
                      * \brief Compute the dot product of two plane normals
                      *
                      * \return A number between -1 and 1

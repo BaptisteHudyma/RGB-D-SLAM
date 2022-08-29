@@ -173,7 +173,6 @@ namespace rgbd_slam {
                 return abs(_mean.z() - planeMean.z()) < 2.0 * Parameters::get_depth_alpha() * (abs(_mean.z()) + 0.5);
             }
 
-
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {
                 _Sx += planeSegment._Sx;
                 _Sy += planeSegment._Sy;
@@ -188,14 +187,6 @@ namespace rgbd_slam {
                 _Szx += planeSegment._Szx;
 
                 _pointCount += planeSegment._pointCount;
-            }
-
-            /*
-             * Merge the PCA saved values in prevision of a plane fitting
-             * This function do not make any plane calculations
-             */
-            void Plane_Segment::expand_segment(const std::shared_ptr<Plane_Segment>& planeSegment) {
-                expand_segment(*planeSegment);
             }
 
             void Plane_Segment::fit_plane() {

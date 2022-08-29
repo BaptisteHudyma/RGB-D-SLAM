@@ -113,7 +113,7 @@ namespace rgbd_slam {
                     // TODO: change this
                     continue;
 
-                if(mapPrimitive._primitive->is_similar(shapePrimitive)) 
+                if(mapPrimitive._primitive->is_similar(*shapePrimitive)) 
                 {
                     mapPrimitive._matchedPrimitive.mark_matched(primitiveId);
                     matchedPrimitives.emplace(matchedPrimitives.end(), shapePrimitive->_normal, mapPrimitive._primitive->_normal);
