@@ -24,7 +24,12 @@ namespace rgbd_slam {
             if (mapPoint._matchedScreenPoint.is_matched())
             {
                 // use previously known screen coordinates
-                keypointsWithIds._keypoints.push_back(cv::Point2f(mapPoint._matchedScreenPoint._screenCoordinates.x(), mapPoint._matchedScreenPoint._screenCoordinates.y()));
+                keypointsWithIds._keypoints.push_back(
+                    cv::Point2f(
+                                static_cast<float>(mapPoint._matchedScreenPoint._screenCoordinates.x()), 
+                                static_cast<float>(mapPoint._matchedScreenPoint._screenCoordinates.y())
+                                )
+                        );
                 keypointsWithIds._ids.push_back(mapPoint._id);
             }
         }
@@ -469,7 +474,7 @@ namespace rgbd_slam {
                 //Map Point are green 
                 if (isCoordinatesValid)
                 {
-                    cv::circle(debugImage, cv::Point(screenPoint.x(), screenPoint.y()), 3, pointColor, -1);
+                    cv::circle(debugImage, cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())), 3, pointColor, -1);
                 }
             }
         }
@@ -490,12 +495,12 @@ namespace rgbd_slam {
             const uint placeInBand = bandSize * 0.75;
             std::stringstream text1;
             text1 << "Planes:";
-            const double planeLabelPosition = imageWidth * 0.25;
+            const int planeLabelPosition = static_cast<int>(imageWidth * 0.25);
             cv::putText(debugImage, text1.str(), cv::Point(planeLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
             std::stringstream text2;
             text2 << "Cylinders:";
-            const double cylinderLabelPosition = imageWidth * 0.60;
+            const int cylinderLabelPosition = static_cast<int>(imageWidth * 0.60);
             cv::putText(debugImage, text2.str(), cv::Point(cylinderLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
             // Tracking variables
@@ -553,8 +558,8 @@ namespace rgbd_slam {
                     // make a
                     const uint labelSquareSize = bandSize * 0.5;
                     cv::rectangle(debugImage, 
-                            cv::Point(labelPosition + 80 + finalPlaceInBand, 6),
-                            cv::Point(labelPosition + 80 + labelSquareSize + finalPlaceInBand, 6 + labelSquareSize), 
+                            cv::Point(static_cast<int>(labelPosition + 80 + finalPlaceInBand), 6),
+                            cv::Point(static_cast<int>(labelPosition + 80 + labelSquareSize + finalPlaceInBand), 6 + labelSquareSize), 
                             primitiveColor,
                             -1);
                 }

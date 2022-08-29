@@ -34,7 +34,7 @@ namespace rgbd_slam {
                 _cellDistanceTols.assign(_totalCellCount, 0.0f);
 
                 _gridPlaneSegmentMap = cv::Mat_<int>(_verticalCellsCount, _horizontalCellsCount, 0);
-                _gridCylinderSegMap = cv::Mat_<int>(_verticalCellsCount, _horizontalCellsCount, 0);
+                _gridCylinderSegMap  = cv::Mat_<int>(_verticalCellsCount, _horizontalCellsCount, 0);
 
                 _mask = cv::Mat(_verticalCellsCount, _horizontalCellsCount, CV_8U);
                 _maskEroded = cv::Mat(_verticalCellsCount, _horizontalCellsCount, CV_8U);
