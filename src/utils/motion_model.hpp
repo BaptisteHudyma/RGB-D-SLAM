@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_UTILS_MOTIONMODEL_HPP
 #define RGBDSLAM_UTILS_MOTIONMODEL_HPP
 
-#include "types.hpp"
+#include "../types.hpp"
 #include "pose.hpp"
 
 namespace rgbd_slam {

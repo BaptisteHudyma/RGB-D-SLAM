@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 #define RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace rgbd_slam {
     namespace matches_containers {

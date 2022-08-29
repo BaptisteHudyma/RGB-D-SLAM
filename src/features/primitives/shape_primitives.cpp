@@ -1,6 +1,7 @@
 #include "shape_primitives.hpp"
-#include "logger.hpp"
-#include "parameters.hpp"
+
+#include "../../utils/logger.hpp"
+#include "../../parameters.hpp"
 
 namespace rgbd_slam {
     namespace features {

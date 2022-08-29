@@ -1,8 +1,8 @@
 #include "plane_segment.hpp"
 #include "eig33sym.hpp"
 
-#include "parameters.hpp"
-#include "logger.hpp"
+#include "../../parameters.hpp"
+#include "../../utils/logger.hpp"
 
 namespace rgbd_slam {
     namespace features {

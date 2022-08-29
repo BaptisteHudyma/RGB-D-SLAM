@@ -3,10 +3,11 @@
 #include <limits>
 
 #include "cylinder_segment.hpp"
-#include "parameters.hpp"
-#include "logger.hpp"
 #include "plane_segment.hpp"
 #include "shape_primitives.hpp"
+
+#include "../../parameters.hpp"
+#include "../../utils/logger.hpp"
 
 //index offset of a cylinder to a plane: used for masks display purposes
 const uint CYLINDER_CODE_OFFSET = 50;

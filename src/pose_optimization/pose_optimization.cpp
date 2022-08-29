@@ -1,15 +1,16 @@
 #include "pose_optimization.hpp"
 
-#include "camera_transformation.hpp"
-#include "distance_utils.hpp"
-
-#include "covariances.hpp"
-#include "logger.hpp"
 #include "levenberg_marquard_functors.hpp"
-#include "parameters.hpp"
-#include "p3p.hpp"
-
 #include "ransac.hpp"
+
+#include "../parameters.hpp"
+
+#include "../utils/camera_transformation.hpp"
+#include "../utils/distance_utils.hpp"
+#include "../utils/covariances.hpp"
+#include "../utils/logger.hpp"
+
+#include "../../third_party/p3p.hpp"
 
 #include <Eigen/StdVector>
 

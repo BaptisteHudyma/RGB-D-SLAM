@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 #define RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace rgbd_slam {
     namespace utils {

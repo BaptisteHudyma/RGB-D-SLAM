@@ -7,7 +7,7 @@
 #include "plane_segment.hpp"
 #include "cylinder_segment.hpp"
 
-#include "types.hpp"
+#include "../../types.hpp"
 
 namespace rgbd_slam {
     namespace features {

@@ -11,7 +11,8 @@
 #include "cylinder_segment.hpp"
 #include "histogram.hpp"
 #include "shape_primitives.hpp"
-#include "types.hpp"
+
+#include "../../types.hpp"
 
 
 namespace rgbd_slam {

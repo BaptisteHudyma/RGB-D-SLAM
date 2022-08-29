@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cfloat>
 
-#include "logger.hpp"
+#include "utils/logger.hpp"
 
 namespace rgbd_slam {
 

@@ -1,11 +1,8 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
-#include "types.hpp"
-
+#include "../types.hpp"
 #include <opencv2/opencv.hpp>
-
-
 
 namespace rgbd_slam {
     namespace map_management {

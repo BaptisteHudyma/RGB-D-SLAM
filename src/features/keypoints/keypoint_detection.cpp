@@ -1,7 +1,7 @@
 #include "keypoint_detection.hpp"
 
-#include "parameters.hpp"
-#include "logger.hpp"
+#include "../../parameters.hpp"
+#include "../../utils/logger.hpp"
 
 // circle
 #include <opencv2/opencv.hpp>

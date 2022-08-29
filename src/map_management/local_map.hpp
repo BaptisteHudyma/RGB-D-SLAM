@@ -6,16 +6,18 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/xfeatures2d.hpp>
 
-#include "types.hpp"
-#include "matches_containers.hpp"
-#include "keypoint_detection.hpp"
-#include "primitive_detection.hpp"
-#include "pose.hpp"
-
 #include "map_point.hpp"
 #include "map_primitive.hpp"
 
-#include "map_writer.hpp"
+#include "../types.hpp"
+
+#include "../utils/pose.hpp"
+#include "../utils/map_writer.hpp"
+#include "../utils/matches_containers.hpp"
+
+#include "../features/keypoints/keypoint_detection.hpp"
+#include "../features/primitives/primitive_detection.hpp"
+
 
 
 namespace rgbd_slam {

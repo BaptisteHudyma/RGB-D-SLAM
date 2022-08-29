@@ -1,10 +1,10 @@
 #include "local_map.hpp"
 
-#include "parameters.hpp"
-#include "triangulation.hpp"
-#include "camera_transformation.hpp"
-#include "covariances.hpp"
-#include "logger.hpp"
+#include "../parameters.hpp"
+#include "../utils/triangulation.hpp"
+#include "../utils/camera_transformation.hpp"
+#include "../utils/covariances.hpp"
+#include "../utils/logger.hpp"
 
 namespace rgbd_slam {
     namespace map_management {

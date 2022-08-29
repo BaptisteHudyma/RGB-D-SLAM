@@ -1,7 +1,7 @@
 #include "histogram.hpp"
 
 #include <cstddef>
-#include "logger.hpp"
+#include "../../utils/logger.hpp"
 
 namespace rgbd_slam {
 namespace features {

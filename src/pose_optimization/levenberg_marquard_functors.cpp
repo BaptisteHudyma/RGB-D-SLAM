@@ -1,8 +1,8 @@
 #include "levenberg_marquard_functors.hpp"
 
-#include "camera_transformation.hpp"
-#include "distance_utils.hpp"
-#include "parameters.hpp"
+#include "../utils/camera_transformation.hpp"
+#include "../utils/distance_utils.hpp"
+#include "../parameters.hpp"
 
 namespace rgbd_slam {
     namespace pose_optimization {

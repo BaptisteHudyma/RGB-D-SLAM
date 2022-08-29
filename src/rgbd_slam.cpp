@@ -4,10 +4,10 @@
 #include <opencv2/opencv.hpp>
 
 #include "parameters.hpp"
-#include "logger.hpp"
-#include "matches_containers.hpp"
+#include "utils/logger.hpp"
+#include "utils/matches_containers.hpp"
 
-#include "pose_optimization.hpp"
+#include "pose_optimization/pose_optimization.hpp"
 
 namespace rgbd_slam {
 

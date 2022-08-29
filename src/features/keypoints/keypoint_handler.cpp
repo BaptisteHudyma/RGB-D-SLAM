@@ -1,7 +1,7 @@
 #include "keypoint_handler.hpp"
 
-#include "parameters.hpp"
-#include "logger.hpp"
+#include "../../parameters.hpp"
+#include "../../utils/logger.hpp"
 
 namespace rgbd_slam {
     namespace features {

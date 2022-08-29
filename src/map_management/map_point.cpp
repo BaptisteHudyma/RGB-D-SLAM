@@ -1,5 +1,5 @@
 #include "map_point.hpp"
-#include "parameters.hpp"
+#include "../parameters.hpp"
 
 #include <Eigen/LU>
 

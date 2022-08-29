@@ -9,7 +9,8 @@
 
 #include <vector>
 #include <memory>
-#include "types.hpp"
+
+#include "../../types.hpp"
 
 
 namespace rgbd_slam {

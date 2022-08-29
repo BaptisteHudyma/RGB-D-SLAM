@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
-#include "shape_primitives.hpp"
+#include "../features/primitives/shape_primitives.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {
@@ -44,7 +44,7 @@ namespace rgbd_slam {
 
         struct Primitive 
         {
-            Primitive(features::primitives::primitive_uniq_ptr primitive): 
+            explicit Primitive(features::primitives::primitive_uniq_ptr primitive) : 
                 _id(_currentPrimitiveId++),
                 _primitive(std::move(primitive))
             {

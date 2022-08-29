@@ -2,7 +2,7 @@
 #define RGBDSLAM_UTILS_MAP_WRITER_HPP
 
 #include <fstream>
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace rgbd_slam {
     namespace utils {

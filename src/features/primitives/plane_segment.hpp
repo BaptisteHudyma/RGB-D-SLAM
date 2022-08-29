@@ -2,7 +2,7 @@
 #define RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 
 #include <memory>
-#include "types.hpp"
+#include "../../types.hpp"
 
 
 namespace rgbd_slam {

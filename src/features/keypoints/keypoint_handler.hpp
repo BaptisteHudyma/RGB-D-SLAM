@@ -5,7 +5,7 @@
 #include <vector>
 #include <opencv2/xfeatures2d.hpp>
 
-#include "types.hpp"
+#include "../../types.hpp"
 
 namespace rgbd_slam {
     namespace features {

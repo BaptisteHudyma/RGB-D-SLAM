@@ -6,15 +6,17 @@
 
 #include <Eigen/Dense>
 
-#include "depth_map_transformation.hpp"
+#include "features/primitives/depth_map_transformation.hpp"
+#include "features/primitives/primitive_detection.hpp"
+#include "features/keypoints/keypoint_detection.hpp"
 
-#include "primitive_detection.hpp"
-#include "line_segment_detector.hpp"
-#include "keypoint_detection.hpp"
-#include "local_map.hpp"
+#include "map_management/local_map.hpp"
 
-#include "pose.hpp"
-#include "motion_model.hpp"
+#include "utils/pose.hpp"
+#include "utils/motion_model.hpp"
+
+#include "../third_party/line_segment_detector.hpp"
+
 
 namespace rgbd_slam {
 
