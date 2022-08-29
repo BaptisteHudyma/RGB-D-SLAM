@@ -12,7 +12,7 @@ namespace rgbd_slam {
             const double cr = cos(eulerAngles.roll * 0.5);
             const double sr = sin(eulerAngles.roll * 0.5);
 
-            const quaternion quat(
+            quaternion quat(
                     cr * cp * cy + sr * sp * sy,
                     sr * cp * cy - cr * sp * sy,
                     cr * sp * cy + sr * cp * sy,
@@ -52,7 +52,7 @@ namespace rgbd_slam {
             const double cb = cos(eulerAngles.yaw);
             const double sb = sin(eulerAngles.yaw);
 
-            const matrix33 rotationMatrix {
+            matrix33 rotationMatrix {
                 {ch*ca,  sh*sb - ch*sa*cb,  ch*sa*sb + sh*cb},
                 {sa,     ca*cb,             -ca*sb},
                 {-sh*ca, sh*sa*cb + ch*sb,  -sh*sa*sb + ch*cb}

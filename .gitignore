@@ -4,6 +4,7 @@ build
 .clang*
 .editorconfig
 .gitattributes
+test.log
 
 ################################
 ###########  FILES  ############

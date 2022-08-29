@@ -31,19 +31,19 @@ namespace rgbd_slam {
                 typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
 
                 Levenberg_Marquardt_Functor(const uint inputCount, const uint outputCount) :
-                    _M(inputCount), _N(outputCount)
+                    _inputCount(inputCount), _outputCount(outputCount)
                 {
                 }
 
                 uint values() const {
-                    return _N;
+                    return _outputCount;
                 }
                 uint inputs() const {
-                    return _M;
+                    return _inputCount;
                 }
 
-                uint _M;
-                uint _N;
+                uint _inputCount;
+                uint _outputCount;
             };
 
 

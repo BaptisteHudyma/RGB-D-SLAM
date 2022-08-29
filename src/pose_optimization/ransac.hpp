@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_POSEOPTIMIZATION_RANSAC_HPP
 #define RGBDSLAM_POSEOPTIMIZATION_RANSAC_HPP
 
+#include <algorithm>
 #include <vector>
 
 namespace rgbd_slam {

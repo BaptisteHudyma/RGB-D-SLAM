@@ -59,7 +59,7 @@ namespace rgbd_slam {
                     void set_id(const uint id) { _id = id; };
 
                     cv::Mat get_shape_mask() const { return _shapeMask; };
-                    void set_shape_mask(cv::Mat mask) { _shapeMask = mask.clone(); };
+                    void set_shape_mask(const cv::Mat& mask) { _shapeMask = mask.clone(); };
 
                     vector3 _normal;
 

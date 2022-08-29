@@ -12,7 +12,7 @@ namespace rgbd_slam {
 
             Plane_Segment::Plane_Segment(const uint cellWidth, const uint ptsPerCellCount) : 
                 _ptsPerCellCount(ptsPerCellCount), 
-                _minZeroPointCount(_ptsPerCellCount / 2.0), 
+                _minZeroPointCount( static_cast<uint>(_ptsPerCellCount / 2.0)), 
                 _cellWidth(cellWidth), 
                 _cellHeight(_ptsPerCellCount / _cellWidth)
             {
@@ -81,7 +81,7 @@ namespace rgbd_slam {
 
             bool Plane_Segment::is_cell_horizontal_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
             {
-                const uint startValue = _cellWidth * (_cellHeight / 2.0);
+                const uint startValue = static_cast<uint>(_cellWidth * (_cellHeight / 2.0));
                 const uint j = startValue + _cellWidth;
 
                 uint discontinuityCounter = 0;

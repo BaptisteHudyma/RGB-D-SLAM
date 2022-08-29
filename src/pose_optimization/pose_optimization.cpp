@@ -18,19 +18,19 @@ namespace rgbd_slam {
 
         bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
-            const size_t matchedPointSize = matchedPoints.size();
+            const double matchedPointSize = static_cast<double>(matchedPoints.size());
             assert(matchedPointSize > 0);
 
             const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select, minimum number of points to compute a pose
             const double maximumRetroprojectionThreshold = Parameters::get_ransac_maximum_retroprojection_error_for_inliers(); // maximum inlier threshold, in pixels 
-            const double acceptableInliersForEarlyStop = matchedPointSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop(); // RANSAC will stop early if this inlier count is reached
+            const uint acceptableInliersForEarlyStop = static_cast<uint>(matchedPointSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this inlier count is reached
 
             assert(minimumPointsForOptimization > 0);
             assert(maximumRetroprojectionThreshold > 0);
             assert(acceptableInliersForEarlyStop > 0);
             
             // Compute maximum iteration with the original RANSAC formula
-            const uint maximumIterations = log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization));
+            const uint maximumIterations = static_cast<uint>(log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization)));
             assert(maximumIterations > 0);
 
             // set the start score to the maximum score

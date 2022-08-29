@@ -95,7 +95,7 @@ namespace rgbd_slam {
             const vector3& poseVariance = pose.get_position_variance();
 
             // TODO improve covariance computation
-            const matrix33 poseCovariance {
+            matrix33 poseCovariance {
                 {poseVariance.x(), 0, 0},
                     {0, poseVariance.y(), 0},
                     {0, 0, poseVariance.z()}
