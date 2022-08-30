@@ -73,15 +73,15 @@ bool load_images(const std::stringstream& dataPath, const int imageIndex, cv::Ma
 bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, unsigned int& fpsTarget, bool& shouldSavePoses) 
 {
     const cv::String keys = 
-        "{help h usage ?  |      | print this message     }"
-        "{@dataset        |<none>| The dataset to read}"
-        "{p primitive     |  1   | display primitive masks }"
-        "{d staged        |  0   | display points in staged container }"
-        "{l lines         |  0   | Detect lines }"
-        "{i index         |  0   | First image to parse   }"
-        "{j jump          |  0   | Only take every j image into consideration   }"
-        "{r fps           |  30  | Used to slow down the treatment to correspond to a certain frame rate }"
-        "{s save          |  0   | Should save all the pose to a file }"
+        "{help h usage ?  |             | print this message     }"
+        "{@dataset        | translation | The dataset to read}"
+        "{p primitive     |  1          | display primitive masks }"
+        "{d staged        |  0          | display points in staged container }"
+        "{l lines         |  0          | Detect lines }"
+        "{i index         |  0          | First image to parse   }"
+        "{j jump          |  0          | Only take every j image into consideration   }"
+        "{r fps           |  30         | Used to slow down the treatment to correspond to a certain frame rate }"
+        "{s save          |  0          | Should save all the pose to a file }"
         ;
 
     cv::CommandLineParser parser(argc, argv, keys);
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
     if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, fpsTarget, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
-    std::stringstream dataPath("../data/freiburg1_" + dataset + "/");
+    const std::stringstream dataPath("./data/freiburg1_" + dataset + "/");
 
     // Get file & folder names
     const std::string rgbImageListPath = dataPath.str() + "rgb.txt";

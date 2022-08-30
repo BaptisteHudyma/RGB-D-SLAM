@@ -163,7 +163,7 @@ namespace rgbd_slam {
                 }
 
                 // Update last keypoint struct
-                const Keypoint_Handler keypointHandler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance);
+                Keypoint_Handler keypointHandler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance);
                 _meanPointExtractionDuration += (cv::getTickCount() - keypointDetectionStartTime) / static_cast<double>(cv::getTickFrequency());
                 return keypointHandler;
             }
@@ -227,7 +227,7 @@ namespace rgbd_slam {
 
                 if (newKeypoints.empty())
                 {
-                    utils::log("No new points detected for backtracking", std::source_location::current());
+                    utils::log("No new points detected for backtracking");
                     return keypointStruct;
                 }
 

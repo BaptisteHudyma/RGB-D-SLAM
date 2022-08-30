@@ -6,7 +6,7 @@ IF(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
 
-set (CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
 set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal")# -Wconversion -Wsign-conversion")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")

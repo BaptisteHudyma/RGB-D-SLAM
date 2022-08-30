@@ -55,7 +55,7 @@ namespace rgbd_slam {
         /**
          * \brief Compute a quaternion from the Lie projection (Scaled Axis representation)
          */
-        quaternion get_quaternion_from_scale_axis_coefficients(const vector3 optimizationCoefficients);
+        quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients);
 
 
         quaternion get_quaternion_exponential(const quaternion& quat);

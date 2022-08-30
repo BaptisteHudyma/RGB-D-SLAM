@@ -74,7 +74,7 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPri
 {
     const cv::String keys = 
         "{help h usage ?  |      | print this message     }"
-        "{@dataset        |<none>| Dataset to process }"
+        "{@dataset        | yoga | Dataset to process }"
         "{p primitive     |  1   | display primitive masks }"
         "{d staged        |  0   | display points in staged container }"
         "{l lines         |  0   | Detect lines }"
@@ -119,7 +119,7 @@ int main(int argc, char* argv[]) {
     if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, fpsTarget, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
-    std::stringstream dataPath("../data/CAPE_" + dataset + "/");
+    const std::stringstream dataPath("./data/CAPE_" + dataset + "/");
 
     int width, height;
     cv::Mat rgbImage, depthImage;

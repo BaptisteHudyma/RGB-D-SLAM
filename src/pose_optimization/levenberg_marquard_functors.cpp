@@ -72,7 +72,7 @@ namespace rgbd_slam {
         /**
          * \brief Compute a quaternion from it's scaled axis representation
          */
-        quaternion get_quaternion_from_scale_axis_coefficients(const vector3 optimizationCoefficients)
+        quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients)
         {
             const double a = optimizationCoefficients.norm();
             const double ha = a * 0.5;

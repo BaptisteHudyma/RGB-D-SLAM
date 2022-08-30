@@ -117,27 +117,27 @@ namespace rgbd_slam {
 
                 switch(primitiveType)
                 {
-                    case PrimitiveType::Plane:
-                        {
-                            // Check the conversion
-                            const Plane* plane = dynamic_cast<const Plane*>(&prim);
-                            if(plane != nullptr)
-                            {
-                                return (_normal.dot(plane->_normal) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
-                            }
-                            utils::log_error("Failed attempt to convert a primitive indicated as a plane to a plane");
-                            break;
-                        }
                     case PrimitiveType::Cylinder:
+                    {
+                        // TODO: Not implemented. Maybe some day ?
+                        break;
+                    }
+                    case PrimitiveType::Plane:
+                    {
+                        // Check the conversion
+                        const Plane* plane = dynamic_cast<const Plane*>(&prim);
+                        if(plane != nullptr)
                         {
-                            // Not implemented. Maybe some day ?
-                            break;
+                            return (_normal.dot(plane->_normal) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
                         }
+                        utils::log_error("Failed attempt to convert a primitive indicated as a plane to a plane");
+                        break;
+                    }
                     default:
-                        {
-                            utils::log_error("Unknown primitive type");
-                            break;
-                        }
+                    {
+                        utils::log_error("Unknown primitive type");
+                        break;
+                    }
                 }
                 return false;
             }
