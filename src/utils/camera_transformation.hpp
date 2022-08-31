@@ -43,7 +43,7 @@ namespace rgbd_slam {
          *
          * \return True if the screen position is valid
          */
-        bool world_to_screen_coordinates(const vector3& position3D, const matrix44& worldToScreenMatrix, vector2& screenCoordinates);
+        bool compute_world_to_screen_coordinates(const vector3& position3D, const matrix44& worldToScreenMatrix, vector2& screenCoordinates);
 
         /**
          * \brief Transform a vector in world space to a vector in screen space

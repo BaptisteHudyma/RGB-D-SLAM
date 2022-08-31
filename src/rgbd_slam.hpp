@@ -37,11 +37,11 @@ namespace rgbd_slam {
              *
              * \param[in] inputRgbImage Raw RGB image
              * \param[in] inputDepthImage Raw depth Image
-             * \param[in] detectLines Should we use line detection on the RGB image ?
+             * \param[in] shouldDetectLines Should we use line detection on the RGB image ?
              *
              * \return The new estimated pose 
              */
-            const utils::Pose track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool detectLines = false);
+            const utils::Pose track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool shouldDetectLines = false);
 
             /**
              * \brief Compute a debug image
@@ -50,10 +50,10 @@ namespace rgbd_slam {
              * \param[in] originalRGB Raw rgb image. Will be used as a base for the final image
              * \param[out] debugImage Output image
              * \param[in] elapsedTime Time since the last call (used for FPS count)
-             * \param[in] showStagedPoints Display the points that are not map points yet
-             * \param[in] showPrimitiveMasks Display the detected primitive masks
+             * \param[in] shouldDisplayStagedPoints Display the points that are not map points yet
+             * \param[in] shouldDisplayPrimitiveMasks Display the detected primitive masks
              */
-            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool showStagedPoints = false, const bool showPrimitiveMasks = false);
+            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool shouldDisplayStagedPoints = false, const bool shouldDisplayPrimitiveMasks = false);
 
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler

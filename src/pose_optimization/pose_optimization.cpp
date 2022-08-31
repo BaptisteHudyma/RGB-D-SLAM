@@ -43,7 +43,7 @@ namespace rgbd_slam {
                 const matches_containers::match_point_container& selectedMatches = ransac::get_random_subset(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
                 utils::Pose pose; 
-                const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(currentPose, selectedMatches, pose);
+                const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, pose);
                 //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedMatches, pose);
                 if (not isPoseValid)
                     continue;
@@ -94,7 +94,7 @@ namespace rgbd_slam {
                 return false;
             }
 
-            const bool isPoseValid = Pose_Optimization::get_optimized_global_pose(bestPose, inlierMatchedPoints, finalPose);
+            const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, inlierMatchedPoints, finalPose);
             // Compute pose variance
             if (isPoseValid)
             {
@@ -128,7 +128,7 @@ namespace rgbd_slam {
         }
 
 
-        bool Pose_Optimization::get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
+        bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
         {
             assert(matchedPoints.size() >= 6);
 

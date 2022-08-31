@@ -94,7 +94,7 @@ namespace rgbd_slam {
     }
 
 
-    const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool detectLines) 
+    const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool shouldDetectLines) 
     {
         assert(static_cast<size_t>(inputDepthImage.rows) == _height);
         assert(static_cast<size_t>(inputDepthImage.cols) == _width);
@@ -114,7 +114,7 @@ namespace rgbd_slam {
         cv::Mat grayImage;
         cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
-        if(detectLines) { //detect lines in image
+        if(shouldDetectLines) { //detect lines in image
             cv::Mat outImage;
             compute_lines(grayImage, depthImage, outImage);
             cv::imshow("line", outImage);
@@ -135,7 +135,7 @@ namespace rgbd_slam {
         return refinedPose;
     }
 
-    void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool showStagedPoints, const bool showPrimitiveMasks) 
+    void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool shouldDisplayStagedPoints, const bool shouldDisplayPrimitiveMasks) 
     {
         debugImage = originalRGB.clone();
 
@@ -152,7 +152,7 @@ namespace rgbd_slam {
 
         //_primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
 
-        _localMap->get_debug_image(camPose, showStagedPoints, showPrimitiveMasks, debugImage); 
+        _localMap->get_debug_image(camPose, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks, debugImage); 
     }
 
 

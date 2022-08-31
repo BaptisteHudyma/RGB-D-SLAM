@@ -16,7 +16,7 @@ namespace rgbd_slam {
         bool Triangulation::is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const matrix44& worldToCameraMatrix, const double& maximumRetroprojectionError)
         {
             vector2 projectedScreenPoint;
-            const bool isRetroprojectionValid = utils::world_to_screen_coordinates(worldPoint, worldToCameraMatrix, projectedScreenPoint);
+            const bool isRetroprojectionValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCameraMatrix, projectedScreenPoint);
             if (not isRetroprojectionValid)
             {
                 return false;

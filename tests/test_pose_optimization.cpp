@@ -80,7 +80,7 @@ namespace rgbd_slam {
             const vector3 worldPointStart(point.x, point.y, point.z);
             //
             vector2 transformedPoint; 
-            const bool isScreenCoordinatesValid = utils::world_to_screen_coordinates(worldPointStart, W2CtransformationMatrix, transformedPoint);
+            const bool isScreenCoordinatesValid = utils::compute_world_to_screen_coordinates(worldPointStart, W2CtransformationMatrix, transformedPoint);
             if (isScreenCoordinatesValid)
             {
                 // screen coordinates

@@ -62,7 +62,7 @@ namespace rgbd_slam {
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
             {
                 vector2 projectedMapPoint;
-                const bool isScreenCoordinatesValid = utils::world_to_screen_coordinates(point._coordinates, worldToCamMatrix, projectedMapPoint);
+                const bool isScreenCoordinatesValid = utils::compute_world_to_screen_coordinates(point._coordinates, worldToCamMatrix, projectedMapPoint);
                 if (isScreenCoordinatesValid)
                     matchIndex = detectedKeypointsObject.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
             }
@@ -293,7 +293,7 @@ namespace rgbd_slam {
                     // inefficient...
                     const matrix44& worldToCameraMatrix = utils::compute_world_to_camera_transform(previousCameraToWorldMatrix);
                     vector2 previousPointScreenCoordinates;
-                    const bool isTransformationValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, previousPointScreenCoordinates);
+                    const bool isTransformationValid = utils::compute_world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, previousPointScreenCoordinates);
                     if (isTransformationValid)
                     {
                         vector3 triangulatedPoint;
@@ -469,7 +469,7 @@ namespace rgbd_slam {
             if (mapPoint._matchedScreenPoint.is_matched())
             {
                 vector2 screenPoint; 
-                const bool isCoordinatesValid = utils::world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, screenPoint);
+                const bool isCoordinatesValid = utils::compute_world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, screenPoint);
 
                 //Map Point are green 
                 if (isCoordinatesValid)

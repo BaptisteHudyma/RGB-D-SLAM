@@ -191,7 +191,7 @@ namespace rgbd_slam {
                 unsigned int _failTrackingCount;
 
                 // Successful matches count
-                int _age;   
+                int _age;
         };
 
     } /* map_management */

@@ -33,7 +33,7 @@ namespace rgbd_slam {
                  *
                  * \return True if a valid pose was computed 
                  */
-                static bool get_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose);
+                static bool compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose);
 
 
                 /**
