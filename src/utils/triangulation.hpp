@@ -27,7 +27,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Return a weak supposition of a new pose, from an optimized pose
                  */
-                static utils::Pose get_supposed_pose(const utils::Pose& pose, const double baselinePoseSupposition);
+                static Pose get_supposed_pose(const Pose& pose, const double baselinePoseSupposition);
 
             private:
                 

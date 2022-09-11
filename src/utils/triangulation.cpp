@@ -6,17 +6,17 @@
 namespace rgbd_slam {
     namespace utils {
 
-        utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const double baselinePoseSupposition)
+        Pose Triangulation::get_supposed_pose(const Pose& pose, const double baselinePoseSupposition)
         {
             const vector3 pt(baselinePoseSupposition, 0, 0);
             const vector3 newPosition = (pose.get_orientation_matrix() * pt) + pose.get_position();
-            return utils::Pose(newPosition, pose.get_orientation_quaternion());
+            return Pose(newPosition, pose.get_orientation_quaternion());
         }
 
         bool Triangulation::is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const matrix44& worldToCameraMatrix, const double& maximumRetroprojectionError)
         {
             vector2 projectedScreenPoint;
-            const bool isRetroprojectionValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCameraMatrix, projectedScreenPoint);
+            const bool isRetroprojectionValid = compute_world_to_screen_coordinates(worldPoint, worldToCameraMatrix, projectedScreenPoint);
             if (not isRetroprojectionValid)
             {
                 return false;

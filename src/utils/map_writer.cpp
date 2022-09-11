@@ -10,7 +10,7 @@ namespace rgbd_slam {
             _file.open(filename, std::ios_base::trunc | std::ios_base::out);
             if (not _file.is_open())
             {
-                utils::log_error("Could not open out file " + filename);
+                log_error("Could not open out file " + filename);
                 exit(-1);
             }
         }
@@ -33,7 +33,7 @@ namespace rgbd_slam {
         {
             if (not _file.is_open())
             {
-                utils::log_error("File is not opened");
+                log_error("File is not opened");
                 exit(-1);
             }
             
@@ -66,7 +66,7 @@ namespace rgbd_slam {
         {
             if (not _file.is_open())
             {
-                utils::log_error("File is not opened");
+                log_error("File is not opened");
                 exit(-1);
             }
             

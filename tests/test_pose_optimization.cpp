@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 #include <random>
 
-#include "pose_optimization/pose_optimization.hpp"
-#include "pose.hpp"
-#include "camera_transformation.hpp"
-#include "logger.hpp"
-#include "angle_utils.hpp"
 #include "parameters.hpp"
+#include "pose_optimization/pose_optimization.hpp"
+#include "utils/pose.hpp"
+#include "utils/camera_transformation.hpp"
+#include "utils/logger.hpp"
+#include "utils/angle_utils.hpp"
 
 namespace rgbd_slam {
 

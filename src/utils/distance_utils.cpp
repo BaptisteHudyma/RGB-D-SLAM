@@ -19,7 +19,7 @@ namespace rgbd_slam {
         {
             const vector2 cameraPointAs2D(cameraPoint.x(), cameraPoint.y());
             vector2 worldPointAs2D; 
-            const bool isCoordinatesValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCameraTransformationMatrix, worldPointAs2D);
+            const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCameraTransformationMatrix, worldPointAs2D);
             if(isCoordinatesValid)
             {
                 const double distance = get_distance_manhattan(cameraPointAs2D, worldPointAs2D);
@@ -32,7 +32,7 @@ namespace rgbd_slam {
 
         double get_3D_to_3D_distance(const vector3& worldPoint, const vector3& cameraPoint, const matrix44& cameraToWorldTransformationMatrix)
         {
-            const vector3& cameraPointAs3D = utils::screen_to_world_coordinates( cameraPoint.x(), cameraPoint.y(), cameraPoint.z(), cameraToWorldTransformationMatrix);
+            const vector3& cameraPointAs3D = screen_to_world_coordinates( cameraPoint.x(), cameraPoint.y(), cameraPoint.z(), cameraToWorldTransformationMatrix);
 
             return get_distance_manhattan(worldPoint, cameraPointAs3D);
         }

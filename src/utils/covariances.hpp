@@ -39,13 +39,13 @@ namespace rgbd_slam {
          *
          * \return True if the variance was estimated 
          */
-        bool compute_pose_variance(const utils::Pose& pose, const matches_containers::match_point_container& matchedPoints, vector3& poseVariance);
+        bool compute_pose_variance(const Pose& pose, const matches_containers::match_point_container& matchedPoints, vector3& poseVariance);
 
         /**
          * \brief Compute a pose covariance matrix from a pose
          * \param[in] pose The pose to analyze
          */
-        const matrix33 compute_pose_covariance(const utils::Pose& pose);
+        const matrix33 compute_pose_covariance(const Pose& pose);
 
     }   // utils
 }       // rgbd_slam
