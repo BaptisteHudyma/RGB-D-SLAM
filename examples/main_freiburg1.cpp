@@ -170,12 +170,12 @@ int main(int argc, char* argv[])
         double rgbTimeStamp = 0;
         std::string rgbImagePath;
         inputRgbString >> rgbTimeStamp >> rgbImagePath;
-        rgbImagePath += dataPath.str() + rgbImagePath;
+        rgbImagePath.insert(0, dataPath.str());
 
         double depthTimeStamp = 0;
         std::string depthImagePath;
         inputDepthString >> depthTimeStamp >> depthImagePath;
-        depthImagePath += dataPath.str() + depthImagePath;
+        depthImagePath.insert(0, dataPath.str());
 
         // Load images
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
