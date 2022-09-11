@@ -26,8 +26,7 @@ namespace rgbd_slam {
 
         void KalmanFilter::update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance) {
 
-            if(not is_initialized())
-                throw std::runtime_error("Filter is not isInitialized!");
+            assert(is_initialized());
 
             // Get new raw estimate
             Eigen::VectorXd newStateEstimate = systemDynamics * stateEstimate;

@@ -89,7 +89,7 @@ namespace rgbd_slam {
             virtual void update_unmatched(int removeNMatches = 1) = 0;
 
             const Eigen::MatrixXd get_covariance_matrix() const { 
-                return _kalmanFilter->get_state_covariance(); 
+                return _kalmanFilter->get_state_covariance();
             };
 
             // an object referencing the last match for this point

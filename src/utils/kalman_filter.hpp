@@ -18,9 +18,9 @@ namespace rgbd_slam {
             * \param[in] processNoiseCovariance Process noise covariance
             */
             KalmanFilter(
-                    const Eigen::MatrixXd& systemDynamics,
-                    const Eigen::MatrixXd& outputMatrix,
-                    const Eigen::MatrixXd& processNoiseCovariance
+                const Eigen::MatrixXd& systemDynamics,
+                const Eigen::MatrixXd& outputMatrix,
+                const Eigen::MatrixXd& processNoiseCovariance
             );
 
             /**
@@ -28,7 +28,7 @@ namespace rgbd_slam {
             * \param[in] firstEstimateErrorCovariance Estimate error covariance for the first guess
             * \param[in] x0 The original state estimate
             */
-            void init(const Eigen::MatrixXd& firstEstimateErrorCovariance, const Eigen::VectorXd& x0 );
+            void init(const Eigen::MatrixXd& firstEstimateErrorCovariance, const Eigen::VectorXd& x0);
 
             /**
             * \brief Update the estimated state based on measured values. The time step is assumed to remain constant.

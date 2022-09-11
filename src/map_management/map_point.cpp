@@ -44,6 +44,7 @@ namespace rgbd_slam {
             _kalmanFilter->init(covariance, coordinates);
         }
 
+        const double pointProcessNoise = 0.6;   // TODO set in parameters
         void IMap_Point_With_Tracking::build_kalman_filter()
         {
             const size_t stateDimension = 3;        //x, y, z
@@ -59,9 +60,11 @@ namespace rgbd_slam {
             outputMatrix.setIdentity();
 
             processNoiseCovariance << 
-                0.05, 0, 0,
-                0, 0.05, 0,
-                0, 0, 0.05;
+            //  x    y    z
+                1,   0,   0,
+                0,   1,   0,
+                0,   0,   1;
+            processNoiseCovariance *= pointProcessNoise;
 
             _kalmanFilter = new utils::KalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
         }
