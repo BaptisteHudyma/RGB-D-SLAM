@@ -144,6 +144,10 @@ add_executable(slam_freiburg1
     ${EXAMPLES}/main_freiburg1.cpp)
 target_link_libraries(slam_freiburg1 ${PROJECT_NAME})
 
+add_executable(slam_freiburg2
+    ${EXAMPLES}/main_freiburg2.cpp)
+target_link_libraries(slam_freiburg2 ${PROJECT_NAME})
+
 add_executable(test_p3p
     ${THIRD_PARTY}/p3p_test.cpp)
 target_link_libraries(test_p3p ${PROJECT_NAME})
