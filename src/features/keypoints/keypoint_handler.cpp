@@ -16,7 +16,7 @@ namespace rgbd_slam {
                     borderSize <= pt.y and
                     pt.x < static_cast<double>(im.cols) - borderSize and
                     pt.y < static_cast<double>(im.rows) - borderSize;
-            } 
+            }
 
             double get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates)
             {

@@ -36,7 +36,7 @@ namespace rgbd_slam {
              * \brief Estimates a new pose from the given images
              *
              * \param[in] inputRgbImage Raw RGB image
-             * \param[in] inputDepthImage Raw depth Image
+             * \param[in] inputDepthImage Raw depth Image, in millimeters
              * \param[in] shouldDetectLines Should we use line detection on the RGB image ?
              *
              * \return The new estimated pose 

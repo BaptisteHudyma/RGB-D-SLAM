@@ -46,29 +46,6 @@ inline bool is_file_valid (const std::string& fileName) {
     return (stat (fileName.c_str(), &buffer) == 0);
 }
 
-/**
- * \brief Load rgb and depth images from the folder dataPath at index imageIndex
- *
- * \return true is load is successful, else return false
- */
-bool load_images(const std::stringstream& dataPath, const int imageIndex, cv::Mat& rgbImage, cv::Mat& depthImage) 
-{
-    std::stringstream depthImagePath, rgbImgPath;
-    rgbImgPath << dataPath.str() << "rgb_"<< imageIndex <<".png";
-    depthImagePath << dataPath.str() << "depth_" << imageIndex << ".png";
-
-    if (is_file_valid(rgbImgPath.str()) and is_file_valid(depthImagePath.str()))
-    {
-
-        rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
-        depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
-        depthImage.convertTo(depthImage, CV_32F);
-
-        //check if images exists
-        return depthImage.data and rgbImage.data;
-    }
-    return false;
-}
 
 bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, unsigned int& fpsTarget, bool& shouldSavePoses) 
 {
@@ -193,12 +170,12 @@ int main(int argc, char* argv[])
         double rgbTimeStamp = 0;
         std::string rgbImagePath;
         inputRgbString >> rgbTimeStamp >> rgbImagePath;
-        rgbImagePath = dataPath.str() + rgbImagePath;
+        rgbImagePath += dataPath.str() + rgbImagePath;
 
         double depthTimeStamp = 0;
         std::string depthImagePath;
         inputDepthString >> depthTimeStamp >> depthImagePath;
-        depthImagePath = dataPath.str() + depthImagePath;
+        depthImagePath += dataPath.str() + depthImagePath;
 
         // Load images
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
