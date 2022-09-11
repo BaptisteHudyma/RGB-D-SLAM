@@ -116,6 +116,7 @@ add_library(utils SHARED
     ${UTILS}/motion_model.cpp
     ${UTILS}/triangulation.cpp
     ${UTILS}/map_writer.cpp
+    ${UTILS}/kalman_filter.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED

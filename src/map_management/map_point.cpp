@@ -42,7 +42,7 @@ namespace rgbd_slam {
         double IMap_Point_With_Tracking::track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance)
         {
             // Use a kalman filter to estimate this point position
-            const matrix33& identity = matrix33::Identity(); 
+            const matrix33& identity = matrix33::Identity();
             const matrix33 kalmanGain = _covariance * (_covariance + newPointCovariance).inverse();
 
             const vector3 newPosition = _coordinates + (kalmanGain * (newPointCoordinates - _coordinates));
