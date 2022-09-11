@@ -278,7 +278,7 @@ namespace rgbd_slam {
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
 
                     // update this map point errors & position
-                    mapPoint.update_matched(newCoordinates, worldPointCovariance + poseCovariance);
+                    mapPoint.update_matched(newCoordinates, worldPointCovariance);
 
                     // If a new descriptor is available, update it
                     if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -307,7 +307,7 @@ namespace rgbd_slam {
                             const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
 
                             // update this map point errors & position
-                            mapPoint.update_matched(triangulatedPoint, worldPointCovariance + poseCovariance);
+                            mapPoint.update_matched(triangulatedPoint, worldPointCovariance);
 
                             // If a new descriptor is available, update it
                             if (keypointObject.is_descriptor_computed(matchedPointIndex))

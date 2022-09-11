@@ -43,7 +43,7 @@ namespace rgbd_slam::utils {
         estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
         Eigen::VectorXd x0(stateDimension);
         x0 << originalState;
@@ -55,7 +55,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -97,7 +97,7 @@ namespace rgbd_slam::utils {
         estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
         Eigen::VectorXd x0(stateDimension);
         x0 << originalState;
@@ -109,7 +109,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -151,7 +151,7 @@ namespace rgbd_slam::utils {
         estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
         Eigen::VectorXd x0(stateDimension);
         x0 << originalState;
@@ -163,7 +163,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -211,7 +211,7 @@ namespace rgbd_slam::utils {
         processNoiseCovariance *= accelerationStd * accelerationStd;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
         Eigen::VectorXd x0(stateDimension);
         Eigen::MatrixXd x0ErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
@@ -269,7 +269,7 @@ namespace rgbd_slam::utils {
             y << measurement.first, measurement.second;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
         
         // estimate state position; 1.5 meters or so
@@ -345,7 +345,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
@@ -360,7 +360,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -405,7 +405,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
@@ -420,7 +420,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -465,7 +465,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
@@ -480,7 +480,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -525,7 +525,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
@@ -540,7 +540,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -585,7 +585,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
@@ -600,7 +600,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -645,7 +645,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
@@ -660,7 +660,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -705,7 +705,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
@@ -720,7 +720,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
 
         // estimate state position
@@ -761,7 +761,7 @@ namespace rgbd_slam::utils {
             .1, 10,    100;
 
         // Construct the filter
-        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+        KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
         // List of noisy position measurements (y)
         const std::vector<double> measurements = {
@@ -787,7 +787,7 @@ namespace rgbd_slam::utils {
             y << measurement;
 
             // update the model
-            kf.update(y);
+            kf.update(y, measurementNoiseCovariance);
         }
         
         // estimate end state position

@@ -52,25 +52,18 @@ namespace rgbd_slam {
             Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
             Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
             Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-            Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
 
             // Points are not supposed to move, so no dynamics
             systemDynamics.setIdentity();
             // we need all positions
             outputMatrix.setIdentity();
 
-            // Reasonable covariance matrices
-            measurementNoiseCovariance << 
-                0.1, 0.1, 0.1,
-                0.1, 0.1, 0.1,
-                0.1, 0.1, 0.1;
-
             processNoiseCovariance << 
                 0.05, 0, 0,
                 0, 0.05, 0,
                 0, 0, 0.05;
 
-            _kalmanFilter = new utils::KalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
+            _kalmanFilter = new utils::KalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
         }
 
         double IMap_Point_With_Tracking::track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance)
@@ -78,7 +71,7 @@ namespace rgbd_slam {
             assert(_kalmanFilter != nullptr);
             assert(_kalmanFilter->is_initialized());
 
-            _kalmanFilter->update(newPointCoordinates);
+            _kalmanFilter->update(newPointCoordinates, newPointCovariance);
 
             const double score = (_coordinates - _kalmanFilter->get_state()).norm();
             
