@@ -4,6 +4,8 @@
 #include "../types.hpp"
 #include <opencv2/opencv.hpp>
 
+#include "utils/kalman_filter.hpp"
+
 namespace rgbd_slam {
     namespace map_management {
 
@@ -86,7 +88,9 @@ namespace rgbd_slam {
              */
             virtual void update_unmatched(int removeNMatches = 1) = 0;
 
-            const matrix33 get_covariance_matrix() const { return _covariance; };
+            const Eigen::MatrixXd get_covariance_matrix() const { 
+                return _kalmanFilter->get_state_covariance(); 
+            };
 
             // an object referencing the last match for this point
             MatchedScreenPoint _matchedScreenPoint;
@@ -99,9 +103,13 @@ namespace rgbd_slam {
              */
             double track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance);
 
+            /**
+             * \brief Build the inputs caracteristics of the kalman filter
+             */
+            void build_kalman_filter();
+
             private:
-            // covariance matrix
-            matrix33 _covariance; 
+                utils::KalmanFilter* _kalmanFilter;
         };
 
         /**

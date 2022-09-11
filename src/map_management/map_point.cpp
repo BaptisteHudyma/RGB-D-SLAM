@@ -2,6 +2,7 @@
 #include "../parameters.hpp"
 
 #include <Eigen/LU>
+#include <oneapi/tbb/info.h>
 
 namespace rgbd_slam {
     namespace map_management {
@@ -27,35 +28,62 @@ namespace rgbd_slam {
          */
 
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor)
-            : Point(coordinates, descriptor),
-            _covariance(covariance)
+            : Point(coordinates, descriptor)
         {
             _matchedScreenPoint.mark_unmatched();
+            
+            build_kalman_filter();
+            _kalmanFilter->init(covariance, coordinates);
         }
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const vector3& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
-            : Point(coordinates, descriptor, id),
-            _covariance(covariance)
+            : Point(coordinates, descriptor, id)
         {
             _matchedScreenPoint.mark_unmatched();
+            
+            build_kalman_filter();
+            _kalmanFilter->init(covariance, coordinates);
+        }
+
+        void IMap_Point_With_Tracking::build_kalman_filter()
+        {
+            const size_t stateDimension = 3;        //x, y, z
+            const size_t measurementDimension = 3;  //x, y, z
+
+            Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+            Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
+            Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+            Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+
+            // Points are not supposed to move, so no dynamics
+            systemDynamics.setIdentity();
+            // we need all positions
+            outputMatrix.setIdentity();
+
+            // Reasonable covariance matrices
+            measurementNoiseCovariance << 
+                0.1, 0.1, 0.1,
+                0.1, 0.1, 0.1,
+                0.1, 0.1, 0.1;
+
+            processNoiseCovariance << 
+                0.05, 0, 0,
+                0, 0.05, 0,
+                0, 0, 0.05;
+
+            _kalmanFilter = new utils::KalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance, measurementNoiseCovariance);
         }
 
         double IMap_Point_With_Tracking::track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance)
         {
-            // Use a kalman filter to estimate this point position
-            const matrix33& identity = matrix33::Identity();
-            const matrix33 kalmanGain = _covariance * (_covariance + newPointCovariance).inverse();
+            assert(_kalmanFilter != nullptr);
+            assert(_kalmanFilter->is_initialized());
 
-            const vector3 newPosition = _coordinates + (kalmanGain * (newPointCoordinates - _coordinates));
-            const double score = (_coordinates - newPosition).norm();
+            _kalmanFilter->update(newPointCoordinates);
 
-            assert(not std::isnan(newPosition.x()) and not std::isnan(newPosition.y()) and not std::isnan(newPosition.z()));
-
-            // update this map point
-            const matrix33 invGain = identity - kalmanGain;
-            _covariance = (invGain * _covariance * invGain.transpose()) + (kalmanGain * newPointCovariance * kalmanGain.transpose());
-            _coordinates = newPosition;
-
-            return score; 
+            const double score = (_coordinates - _kalmanFilter->get_state()).norm();
+            
+            _coordinates = _kalmanFilter->get_state();
+            return score;
         }
 
 

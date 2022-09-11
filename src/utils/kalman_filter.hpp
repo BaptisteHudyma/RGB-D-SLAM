@@ -49,6 +49,9 @@ namespace rgbd_slam {
             Eigen::VectorXd get_state() const {
                 return stateEstimate;
             };
+            Eigen::MatrixXd get_state_covariance() const {
+                return estimateErrorCovariance;
+            };
 
             bool is_initialized() const {
                 return isInitialized;
