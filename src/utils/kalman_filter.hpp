@@ -16,13 +16,11 @@ namespace rgbd_slam {
             * \param[in] systemDynamics System dynamics matrix
             * \param[in] outputMatrix Output matrix
             * \param[in] processNoiseCovariance Process noise covariance
-            * \param[in] measurementNoiseCovariance Measurement noise covariance
             */
             KalmanFilter(
                     const Eigen::MatrixXd& systemDynamics,
                     const Eigen::MatrixXd& outputMatrix,
-                    const Eigen::MatrixXd& processNoiseCovariance,
-                    const Eigen::MatrixXd& measurementNoiseCovariance
+                    const Eigen::MatrixXd& processNoiseCovariance
             );
 
             /**
@@ -35,15 +33,17 @@ namespace rgbd_slam {
             /**
             * \brief Update the estimated state based on measured values. The time step is assumed to remain constant.
             * \param[in] newMeasurement new measurement
+            * \param[in] measurementNoiseCovariance Measurement noise covariance
             */
-            void update(const Eigen::VectorXd& newMeasurement);
+            void update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance);
 
             /**
             * \brief Update the estimated state based on measured values, using the given time step and dynamics matrix.
             * \param[in] newMeasurement new measurement
+            * \param[in] measurementNoiseCovariance Measurement noise covariance
             * \param[in] systemDynamics systemDynamics new system dynamics matrix 
             */
-            void update(const Eigen::VectorXd& y, const Eigen::MatrixXd& systemDynamics);
+            void update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance, const Eigen::MatrixXd& systemDynamics);
 
 
             Eigen::VectorXd get_state() const {
@@ -63,7 +63,6 @@ namespace rgbd_slam {
             Eigen::MatrixXd systemDynamics;
             const Eigen::MatrixXd outputMatrix;
             const Eigen::MatrixXd processNoiseCovariance;
-            const Eigen::MatrixXd measurementNoiseCovariance;
 
             // System dimensions
             const size_t measurementDimension;

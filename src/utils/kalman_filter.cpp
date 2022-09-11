@@ -8,10 +8,9 @@ namespace rgbd_slam {
 
         KalmanFilter::KalmanFilter(const Eigen::MatrixXd& systemDynamics,
                                     const Eigen::MatrixXd& outputMatrix,
-                                    const Eigen::MatrixXd& processNoiseCovariance,
-                                    const Eigen::MatrixXd& measurementNoiseCovariance):
+                                    const Eigen::MatrixXd& processNoiseCovariance):
                 systemDynamics(systemDynamics), outputMatrix(outputMatrix), 
-                processNoiseCovariance(processNoiseCovariance), measurementNoiseCovariance(measurementNoiseCovariance),
+                processNoiseCovariance(processNoiseCovariance),
                 measurementDimension(outputMatrix.rows()), stateDimension(systemDynamics.rows()),
                 isInitialized(false),
                 I(stateDimension, stateDimension), stateEstimate(stateDimension)
@@ -25,7 +24,7 @@ namespace rgbd_slam {
             isInitialized = true;
         }
 
-        void KalmanFilter::update(const Eigen::VectorXd& newMeasurement) {
+        void KalmanFilter::update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance) {
 
             if(not is_initialized())
                 throw std::runtime_error("Filter is not isInitialized!");
@@ -45,10 +44,10 @@ namespace rgbd_slam {
             stateEstimate = newStateEstimate;
         }
 
-        void KalmanFilter::update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& systemDynamics) {
+        void KalmanFilter::update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance, const Eigen::MatrixXd& systemDynamics) {
 
             this->systemDynamics = systemDynamics;
-            update(newMeasurement);
+            update(newMeasurement, measurementNoiseCovariance);
         }
  
     }
