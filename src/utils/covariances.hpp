@@ -20,6 +20,16 @@ namespace rgbd_slam {
         const matrix33 get_screen_point_covariance(const vector2& screenCoordinates, const double depth);
 
         /**
+         * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point.
+         *
+         * \param[in] screenPoint The 2D point in screen coordinates
+         * \param[in] depth The depth associated with this screen point
+         *
+         * \return the covariance of the 3D world point
+         */
+        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth);
+
+        /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
          *
          * \param[in] screenPoint The 2D point in screen coordinates

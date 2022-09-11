@@ -20,13 +20,17 @@ namespace rgbd_slam {
 
             matrix33 screenPointCovariance {
                 {xyVariance, 0,          0},
-                    {0,          xyVariance, 0},
-                    {0,          0,          depthVariance * depthVariance},
+                {0,          xyVariance, 0},
+                {0,          0,          depthVariance * depthVariance},
             };
             return screenPointCovariance;
         }
 
 
+        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth)
+        {
+            return get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(screenPoint, depth));
+        }
 
         const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)
         {
@@ -38,8 +42,8 @@ namespace rgbd_slam {
             // Jacobian of the screen to world function. Use absolutes to prevent negative variances
             const matrix33 jacobian {
                 {depth / cameraFX, 0.0,              abs(screenPoint.x() - cameraCX) / cameraFX },
-                    {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
-                    {0.0,              0.0,              1}
+                {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
+                {0.0,              0.0,              1}
             };
             const matrix33& worldPointCovariance = (jacobian.transpose() * jacobian).inverse() * screenPointCovariance;
             return worldPointCovariance;

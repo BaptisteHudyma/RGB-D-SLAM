@@ -273,12 +273,12 @@ namespace rgbd_slam {
                 if(utils::is_depth_valid(matchedPointDepth))
                 {
                     // transform screen point to world point
-                    const vector3& newCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
+                    const vector3& worldPointCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorldMatrix);
                     // get a measure of the estimated variance of the new world point
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth, utils::get_screen_point_covariance(matchedPointCoordinates, matchedPointDepth));
+                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth);
 
                     // update this map point errors & position
-                    mapPoint.update_matched(newCoordinates, worldPointCovariance);
+                    mapPoint.update_matched(worldPointCoordinates, worldPointCovariance);
 
                     // If a new descriptor is available, update it
                     if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -408,7 +408,7 @@ namespace rgbd_slam {
                     const vector3& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorldMatrix);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth, utils::get_screen_point_covariance(screenPoint, depth));
+                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth);
 
                     Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
                     _stagedPoints.emplace(
