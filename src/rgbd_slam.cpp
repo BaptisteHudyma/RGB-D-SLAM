@@ -58,18 +58,18 @@ namespace rgbd_slam {
                     Parameters::get_maximum_merge_distance()
                     );
 
-            // Line segment detector
-            //Should refine, scale, Gaussian filter sigma
-            _lineDetector = new cv::LSD(cv::LSD_REFINE_NONE, 0.3, 0.9);
-
             // Point detector and matcher
             _pointDetector = new features::keypoints::Key_Point_Extraction(Parameters::get_minimum_hessian());
-
-            // kernel for various operations
-            _kernel = cv::Mat::ones(3, 3, CV_8U);
+            
+            // Line segment detector
+            _lineDetector = new features::lines::Line_Detection(0.3, 0.9);
 
             if (_primitiveDetector == nullptr) {
                 outputs::log_error("Instanciation of Primitive_Detector failed");
+                exit(-1);
+            }
+            if (_pointDetector == nullptr) {
+                outputs::log_error("Instanciation of Key_Point_Extraction failed");
                 exit(-1);
             }
             if (_lineDetector == nullptr) {
@@ -116,7 +116,11 @@ namespace rgbd_slam {
 
         if(shouldDetectLines) { //detect lines in image
             cv::Mat outImage;
-            compute_lines(grayImage, depthImage, outImage);
+
+            const double lineDetectionStartTime = cv::getTickCount();
+            _lineDetector->detect_lines(grayImage, depthImage, outImage);
+            _meanLineTreatmentDuration += (cv::getTickCount() - lineDetectionStartTime) / (double)cv::getTickFrequency();
+            
             cv::imshow("line", outImage);
         }
 
@@ -262,45 +266,6 @@ namespace rgbd_slam {
             const double localMapUpdateDuration = _meanLocalMapUpdateDuration / _totalFrameTreated;
             std::cout << "\tMean local map update duration is " << localMapUpdateDuration << " seconds (" << get_percent_of_elapsed_time(localMapUpdateDuration, meanFrameTreatmentDuration) << "%)" << std::endl;
         }
-    }
-
-
-    void RGBD_SLAM::compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage)
-    {
-        const double lineDetectionStartTime = cv::getTickCount();
-        outImage = grayImage.clone();
-
-        //get lines
-        line_vector lines;
-        cv::Mat mask = depthImage > 0;
-
-        _lineDetector->detect(grayImage, lines);
-
-        //fill holes
-        cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, _kernel);
-
-        //draw lines with associated depth data
-        for(line_vector::size_type i = 0; i < lines.size(); i++) {
-            cv::Vec4f& pts = lines.at(i);
-            cv::Point pt1(pts[0], pts[1]);
-            cv::Point pt2(pts[2], pts[3]);
-            if (mask.at<uchar>(pt1) == 0  or mask.at<uchar>(pt2) == 0) {
-                //no depth at extreme points, check first and second quarter
-                cv::Point firstQuart = 0.25 * pt1 + 0.75 * pt2;
-                cv::Point secQuart = 0.75 * pt1 + 0.25 * pt2;
-
-                //at least a point with depth data
-                if (mask.at<uchar>(firstQuart) != 0  or mask.at<uchar>(secQuart) != 0) 
-                    cv::line(outImage, pt1, pt2, cv::Scalar(0, 0, 255), 1);
-                else    //no depth data
-                    cv::line(outImage, pt1, pt2, cv::Scalar(255, 0, 255), 1);
-            }
-            else
-                //line with associated depth
-                cv::line(outImage, pt1, pt2, cv::Scalar(0, 255, 255), 1);
-
-        }
-        _meanLineTreatmentDuration += (cv::getTickCount() - lineDetectionStartTime) / (double)cv::getTickFrequency();
     }
 
 

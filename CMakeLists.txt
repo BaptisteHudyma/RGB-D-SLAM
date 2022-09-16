@@ -52,14 +52,18 @@ enable_testing()
 # Compile main program
 set(SRC src)
 set(THIRD_PARTY third_party)
+
 set(FEATS       ${SRC}/features)
 set(KEYPOINTS   ${FEATS}/keypoints)
+set(LINES       ${FEATS}/lines)
 set(PRIMITIVES  ${FEATS}/primitives)
+
 set(POSE_OPTI   ${SRC}/pose_optimization)
 set(MAP         ${SRC}/map_management)
 set(TRACKING    ${SRC}/tracking)
 set(OUTPUTS     ${SRC}/outputs)
 set(UTILS       ${SRC}/utils)
+
 set(EXAMPLES    examples)
 
 include_directories(SYSTEM
@@ -69,6 +73,7 @@ include_directories(SYSTEM
 include_directories(
     ${SRC}
     ${KEYPOINTS}
+    ${LINES}
     ${PRIMITIVES}
     ${POSE_OPTI}
     ${MAP}
@@ -82,6 +87,10 @@ include_directories(
 add_library(keypoints SHARED
     ${KEYPOINTS}/keypoint_handler.cpp
     ${KEYPOINTS}/keypoint_detection.cpp
+    )
+
+add_library(lines SHARED
+    ${LINES}/line_detection.cpp
     )
 
 add_library(primitives SHARED
@@ -136,6 +145,7 @@ add_library(${PROJECT_NAME} SHARED
 
 target_link_libraries(${PROJECT_NAME}
     keypoints
+    lines
     primitives
     mapManagement
     poseOptimization

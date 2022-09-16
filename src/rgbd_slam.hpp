@@ -6,24 +6,23 @@
 
 #include <Eigen/Dense>
 
+#include "features/lines/line_detection.hpp"
 #include "features/primitives/depth_map_transformation.hpp"
 #include "features/primitives/primitive_detection.hpp"
 #include "features/keypoints/keypoint_detection.hpp"
+#include "features/lines/line_detection.hpp"
 
 #include "map_management/local_map.hpp"
 
 #include "tracking/motion_model.hpp"
 #include "utils/pose.hpp"
 
-#include "../third_party/line_segment_detector.hpp"
-
 
 namespace rgbd_slam {
 
     class RGBD_SLAM {
         public:
-            typedef std::vector<cv::Vec4f> line_vector;
-
+            
             /**
              * \param[in] startPose the initial pose
              * \param[in] imageWidth The width of the depth images (fixed)
@@ -87,12 +86,10 @@ namespace rgbd_slam {
 
             /* Detectors */
             features::primitives::Primitive_Detection* _primitiveDetector;
-            cv::LSD* _lineDetector;
 
             map_management::Local_Map* _localMap;
             features::keypoints::Key_Point_Extraction* _pointDetector;
-
-            cv::Mat _kernel;
+            features::lines::Line_Detection* _lineDetector;
 
             utils::Pose _currentPose;
             tracking::Motion_Model _motionModel;

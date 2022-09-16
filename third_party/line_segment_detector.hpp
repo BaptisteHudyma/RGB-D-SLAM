@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <opencv2/opencv.hpp>
+#include <opencv2/line_descriptor/descriptor.hpp>
 
 namespace cv {
 
@@ -30,7 +31,7 @@ namespace cv {
                     double _log_eps = 0, double _density_th = 0.7, int _n_bins = 1024);
 
 
-            void detect(const Mat& imageSrc, std::vector<line_descriptor::KeyLine>& keylines, int numOctaves, int scale, const Mat& mask);
+            void detect(const Mat& imageSrc, std::vector<cv::line_descriptor::KeyLine>& keylines, int numOctaves, int scale, const Mat& mask);
 
             /**
              * Draw lines on the given canvas.
