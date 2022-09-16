@@ -106,10 +106,11 @@ namespace rgbd_slam {
                  * \param[in] detectedKeypointsObject An object to handle all detected points in an image
                  * \param[in] worldToCamMatrix A matrix to transform a world point to a camera point
                  * \param[in, out] matchedPoints A container associating the detected to the map points
+                 * \param[in] shouldAddMatchToContainer If this flag is false, this point will not be inserted in matchedPoints.
                  *
                  * \return A boolean indicating if this point was matched or not
                  */
-                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints);
+                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer=true);
 
                 /**
                  * \brief Compute a match for a given primitive, and update this primitive match status.

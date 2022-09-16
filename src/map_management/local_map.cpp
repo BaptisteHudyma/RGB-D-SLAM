@@ -56,7 +56,7 @@ namespace rgbd_slam {
             delete _mapWriter;
         }
 
-        bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints)
+        bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer)
         {
             int matchIndex = detectedKeypointsObject.get_tracking_match_index(point._id, _isPointMatched);
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
@@ -86,7 +86,10 @@ namespace rgbd_slam {
                 match._matchIndex = matchIndex;
                 point._matchedScreenPoint = match;
 
-                matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
+                if(shouldAddMatchToContainer)
+                {
+                    matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
+                }
                 return true;
             }
             else {
@@ -99,7 +102,10 @@ namespace rgbd_slam {
                 match._matchIndex = matchIndex;
                 point._matchedScreenPoint = match;
 
-                matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
+                if(shouldAddMatchToContainer)
+                {
+                    matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
+                }
                 return true;
             }
             return false;
@@ -146,11 +152,15 @@ namespace rgbd_slam {
                 find_match(mapPoint, detectedKeypointsObject, worldToCamMatrix, matchedPoints);
             }
 
+            // if we have enough points from local map to run the optimization, no need to add the staged points
+            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
+            const bool shouldUseStagedPoints = matchedPoints.size() < minimumPointsForOptimization;
+
             // Try to find matches in staged points
             for(auto& [pointId, stagedPoint] : _stagedPoints)
             {
                 assert(pointId == stagedPoint._id);
-                find_match(stagedPoint, detectedKeypointsObject, worldToCamMatrix, matchedPoints);
+                find_match(stagedPoint, detectedKeypointsObject, worldToCamMatrix, matchedPoints, shouldUseStagedPoints);
             }
 
             return matchedPoints;
