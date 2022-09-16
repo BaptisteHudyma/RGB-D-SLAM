@@ -120,7 +120,7 @@ namespace rgbd_slam {
             const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, depthImage);
             _meanLineTreatmentDuration += (cv::getTickCount() - lineDetectionStartTime) / (double)cv::getTickFrequency();
             
-            cv::Mat outImage = grayImage.clone();
+            cv::Mat outImage = inputRgbImage.clone();
             _lineDetector->get_image_with_lines(detectedLines, depthImage, outImage); 
 
             cv::imshow("line", outImage);

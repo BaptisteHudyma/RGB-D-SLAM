@@ -585,7 +585,9 @@ namespace rgbd_slam {
             {
                 for (const auto& [pointId, stagedPoint] : _stagedPoints) {
                     assert(pointId == stagedPoint._id);
-                    draw_point_on_image(stagedPoint, worldToCamMatrix, cv::Scalar(0, 200, 255), debugImage);
+
+                    const cv::Scalar pointColor = (stagedPoint._matchedScreenPoint.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);
+                    draw_point_on_image(stagedPoint, worldToCamMatrix, pointColor, debugImage);
                 }
             }
         }
