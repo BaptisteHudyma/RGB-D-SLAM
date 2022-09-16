@@ -7,7 +7,7 @@
 #include "shape_primitives.hpp"
 
 #include "../../parameters.hpp"
-#include "../../utils/logger.hpp"
+#include "../../outputs/logger.hpp"
 
 //index offset of a cylinder to a plane: used for masks display purposes
 const uint CYLINDER_CODE_OFFSET = 50;
@@ -202,7 +202,7 @@ namespace rgbd_slam {
                     }
                     if (minMSE >= std::numeric_limits<double>::max())
                     {
-                        utils::log_error("Could not find a single plane segment");
+                        outputs::log_error("Could not find a single plane segment");
                         break;
                     }
 

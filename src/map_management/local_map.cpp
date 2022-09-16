@@ -4,7 +4,7 @@
 #include "../utils/triangulation.hpp"
 #include "../utils/camera_transformation.hpp"
 #include "../utils/covariances.hpp"
-#include "../utils/logger.hpp"
+#include "../outputs/logger.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -43,7 +43,7 @@ namespace rgbd_slam {
             // Check constants
             assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
 
-            _mapWriter = new utils::XYZ_Map_Writer("out");
+            _mapWriter = new outputs::XYZ_Map_Writer("out");
         }
 
         Local_Map::~Local_Map()
@@ -167,7 +167,7 @@ namespace rgbd_slam {
                 if (not _unmatchedPrimitiveIds.insert(primitiveId).second)
                 {
                     // This element was already in the map
-                    utils::log_error("A primitive index was already maintained in set");
+                    outputs::log_error("A primitive index was already maintained in set");
                 }
             }
 
@@ -549,7 +549,7 @@ namespace rgbd_slam {
                         break;
                     default:
                         labelPosition = -1;
-                        utils::log_error("Invalid enum value");
+                        outputs::log_error("Invalid enum value");
                         continue;
                 }
 

@@ -8,7 +8,7 @@
 #include "../utils/camera_transformation.hpp"
 #include "../utils/distance_utils.hpp"
 #include "../utils/covariances.hpp"
-#include "../utils/logger.hpp"
+#include "../outputs/logger.hpp"
 
 #include "../../third_party/p3p.hpp"
 
@@ -89,7 +89,7 @@ namespace rgbd_slam {
 
             if (inlierMatchedPoints.size() < minimumPointsForOptimization)
             {
-                utils::log_error("Could not find a transformation with enough inliers");
+                outputs::log_error("Could not find a transformation with enough inliers");
                 // error case
                 return false;
             }
@@ -105,7 +105,7 @@ namespace rgbd_slam {
                     return true;
                 }
                 else
-                    utils::log_error("Could not compute pose variance, as we only work with 2D points");
+                    outputs::log_error("Could not compute pose variance, as we only work with 2D points");
             }
 
             return false;
@@ -194,7 +194,7 @@ namespace rgbd_slam {
             {
                 // Error while optimizing 
                 const std::string message = get_human_readable_end_message(endStatus);
-                utils::log("Failed to converge with " + std::to_string(matchedPoints.size()) + " points | Status " + message);
+                outputs::log("Failed to converge with " + std::to_string(matchedPoints.size()) + " points | Status " + message);
                 return false;
             }
 

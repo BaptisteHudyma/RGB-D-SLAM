@@ -3,7 +3,7 @@
 #include "logger.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace outputs {
 
         IMap_Writer::IMap_Writer(const std::string& filename)
         {
@@ -87,5 +87,5 @@ namespace rgbd_slam {
         }
 
 
-    }   // utils
+    }   // outputs
 }   // rgbd_slam

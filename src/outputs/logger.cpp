@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace outputs {
 
         void log(const std::string_view& message, const std::source_location& location)
         {

@@ -1,7 +1,7 @@
 #include "cylinder_segment.hpp"
 
 #include "../../parameters.hpp"
-#include "../../utils/logger.hpp"
+#include "../../outputs/logger.hpp"
 
 
 namespace rgbd_slam {

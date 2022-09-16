@@ -1,7 +1,7 @@
 #include "keypoint_detection.hpp"
 
 #include "../../parameters.hpp"
-#include "../../utils/logger.hpp"
+#include "../../outputs/logger.hpp"
 
 // circle
 #include <opencv2/opencv.hpp>
@@ -112,7 +112,7 @@ namespace rgbd_slam {
                     }
                     else
                     {
-                        utils::log_error("No keypoints available to use optical flow algorithm");
+                        outputs::log_error("No keypoints available to use optical flow algorithm");
                     }
                 }
                 //else: No optical flow for the first frame
@@ -179,7 +179,7 @@ namespace rgbd_slam {
                 const std::vector<cv::Point2f>& lastKeypoints = lastKeypointsWithIds._keypoints;
                 if (imagePreviousPyramide.empty() or imageCurrentPyramide.empty() or errorThreshold < 0 or lastKeypoints.empty())
                 {
-                    utils::log_error("OpticalFlow: invalid parameters");
+                    outputs::log_error("OpticalFlow: invalid parameters");
                     return keypointStruct;
                 }
 
@@ -227,7 +227,7 @@ namespace rgbd_slam {
 
                 if (newKeypoints.empty())
                 {
-                    utils::log("No new points detected for backtracking");
+                    outputs::log("No new points detected for backtracking");
                     return keypointStruct;
                 }
 

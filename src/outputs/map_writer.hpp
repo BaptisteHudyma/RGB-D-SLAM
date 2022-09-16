@@ -1,11 +1,11 @@
-#ifndef RGBDSLAM_UTILS_MAP_WRITER_HPP
-#define RGBDSLAM_UTILS_MAP_WRITER_HPP
+#ifndef RGBDSLAM_OUTPUTS_MAP_WRITER_HPP
+#define RGBDSLAM_OUTPUTS_MAP_WRITER_HPP
 
 #include <fstream>
 #include "../types.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace outputs {
 
         class IMap_Writer
         {
@@ -38,7 +38,7 @@ namespace rgbd_slam {
                 void add_point(const vector3& pointCoordinates) override;
         };
 
-    }   // utils
+    }   // outputs
 }   // rgbd_slam
 
 #endif

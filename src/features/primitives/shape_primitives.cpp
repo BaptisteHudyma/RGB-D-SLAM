@@ -1,6 +1,6 @@
 #include "shape_primitives.hpp"
 
-#include "../../utils/logger.hpp"
+#include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
 
 namespace rgbd_slam {
@@ -75,12 +75,12 @@ namespace rgbd_slam {
                         {
                             return std::abs( _normal.dot( cylinder->_normal ) ) > Parameters::get_minimum_normals_dot_difference();
                         }
-                        utils::log_error("Failed attempt to convert a primitive indicated as a cylinder to a cylinder");
+                        outputs::log_error("Failed attempt to convert a primitive indicated as a cylinder to a cylinder");
                         break;
                     }
                     default:
                     {
-                        utils::log_error("Unknown primitive type");
+                        outputs::log_error("Unknown primitive type");
                         break;
                     }
                 }
@@ -89,7 +89,7 @@ namespace rgbd_slam {
 
             double Cylinder::get_distance(const vector3& point) {
                 //TODO implement
-                utils::log_error("Error: get_point_distance is not implemented for Cylinder objects");
+                outputs::log_error("Error: get_point_distance is not implemented for Cylinder objects");
                 return 0;
             }
 
@@ -130,12 +130,12 @@ namespace rgbd_slam {
                         {
                             return (_normal.dot(plane->_normal) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
                         }
-                        utils::log_error("Failed attempt to convert a primitive indicated as a plane to a plane");
+                        outputs::log_error("Failed attempt to convert a primitive indicated as a plane to a plane");
                         break;
                     }
                     default:
                     {
-                        utils::log_error("Unknown primitive type");
+                        outputs::log_error("Unknown primitive type");
                         break;
                     }
                 }

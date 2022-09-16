@@ -1,12 +1,12 @@
-#ifndef RGBDSLAM_UTILS_LOGGER_HPP
-#define RGBDSLAM_UTILS_LOGGER_HPP
+#ifndef RGBDSLAM_OUTPUTS_LOGGER_HPP
+#define RGBDSLAM_OUTPUTS_LOGGER_HPP
 
 #include <string_view>
 #include <source_location>
 
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace outputs {
 
         /**
          * Log an error line
@@ -14,7 +14,7 @@ namespace rgbd_slam {
         void log(const std::string_view& message, const std::source_location& location = std::source_location::current());
         void log_error(const std::string_view& message, const std::source_location& location = std::source_location::current());
 
-    }   // utils
+    }   // outputs
 }   // rgbd_slam
 
 #endif

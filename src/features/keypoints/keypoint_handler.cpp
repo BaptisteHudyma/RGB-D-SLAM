@@ -1,7 +1,7 @@
 #include "keypoint_handler.hpp"
 
 #include "../../parameters.hpp"
-#include "../../utils/logger.hpp"
+#include "../../outputs/logger.hpp"
 
 namespace rgbd_slam {
     namespace features {
@@ -43,7 +43,7 @@ namespace rgbd_slam {
                 _maxMatchDistance(maxMatchDistance)
             {
                 if (_maxMatchDistance <= 0) {
-                    utils::log_error("Maximum matching distance must be > 0");
+                    outputs::log_error("Maximum matching distance must be > 0");
                     exit(-1);
                 }
                 // knn matcher
@@ -96,7 +96,7 @@ namespace rgbd_slam {
                         _uniqueIdsToKeypointIndex[uniqueIndex] = newKeypointIndex;
                     }
                     else {
-                        utils::log_error("A keypoint detected by optical flow does nothave a valid keypoint id");
+                        outputs::log_error("A keypoint detected by optical flow does nothave a valid keypoint id");
                     }
 
                     const cv::Point2f& pt = lastKeypointsWithIds._keypoints[pointIndex];;
@@ -210,7 +210,7 @@ namespace rgbd_slam {
                         }
                         else {
                             // Somehow, this unique index is already associated with another keypoint
-                            utils::log_error("The requested point unique index is already matched");
+                            outputs::log_error("The requested point unique index is already matched");
                         }
                     }
                 }

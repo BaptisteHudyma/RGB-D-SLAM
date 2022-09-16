@@ -3,9 +3,10 @@
 
 #include "parameters.hpp"
 #include "pose_optimization/pose_optimization.hpp"
+#include "outputs/logger.hpp"
+
 #include "utils/pose.hpp"
 #include "utils/camera_transformation.hpp"
-#include "utils/logger.hpp"
 #include "utils/angle_utils.hpp"
 
 namespace rgbd_slam {
@@ -95,7 +96,7 @@ namespace rgbd_slam {
         }
         if (invalidPointsCounter != 0)
         {
-            utils::log_error("The chosen transformation is not valid, as some points hand up behind the camera");
+            outputs::log_error("The chosen transformation is not valid, as some points hand up behind the camera");
         }
         return matchedPoints;
     }

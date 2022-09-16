@@ -11,7 +11,7 @@ build
 TODO*.*
 *.pptx
 *.pdf
-.xyz
+*.xyz
 test.log
 
 ################################

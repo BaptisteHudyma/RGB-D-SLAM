@@ -2,7 +2,7 @@
 #include "eig33sym.hpp"
 
 #include "../../parameters.hpp"
-#include "../../utils/logger.hpp"
+#include "../../outputs/logger.hpp"
 
 namespace rgbd_slam {
     namespace features {
@@ -211,7 +211,7 @@ namespace rgbd_slam {
                 vector3 v = vector3::Zero();
                 // Pass those vectors as C style arrays of 3 elements
                 if(not LA::eig33sym(cov, &sv(0), &v(0)))
-                    utils::log("Too much error");
+                    outputs::log("Too much error");
 
                 _d = -v.dot(_mean);
 

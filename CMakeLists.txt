@@ -57,6 +57,7 @@ set(KEYPOINTS   ${FEATS}/keypoints)
 set(PRIMITIVES  ${FEATS}/primitives)
 set(POSE_OPTI   ${SRC}/pose_optimization)
 set(MAP         ${SRC}/map_management)
+set(OUTPUTS     ${SRC}/outputs)
 set(UTILS       ${SRC}/utils)
 set(EXAMPLES    examples)
 
@@ -71,6 +72,7 @@ include_directories(
     ${POSE_OPTI}
     ${MAP}
     ${THIRD_PARTY}
+    ${OUTPUTS}
     ${UTILS}
     ${EXAMPLES}
     )
@@ -106,16 +108,19 @@ add_library(poseOptimization SHARED
     ${POSE_OPTI}/pose_optimization.cpp
     )
 
+add_library(outputs SHARED
+    ${OUTPUTS}/map_writer.cpp
+    ${OUTPUTS}/logger.cpp
+    )
+
 add_library(utils SHARED
     ${UTILS}/angle_utils.cpp
     ${UTILS}/distance_utils.cpp
     ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
-    ${UTILS}/logger.cpp
     ${UTILS}/pose.cpp
     ${UTILS}/motion_model.cpp
     ${UTILS}/triangulation.cpp
-    ${UTILS}/map_writer.cpp
     ${UTILS}/kalman_filter.cpp
     )
 
@@ -130,6 +135,7 @@ target_link_libraries(${PROJECT_NAME}
     mapManagement
     poseOptimization
     thirdParty
+    outputs
     utils
     ${LINK_LIBS} 
     )

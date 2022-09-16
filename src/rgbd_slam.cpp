@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "parameters.hpp"
-#include "utils/logger.hpp"
+#include "outputs/logger.hpp"
 #include "utils/matches_containers.hpp"
 
 #include "pose_optimization/pose_optimization.hpp"
@@ -30,10 +30,10 @@ namespace rgbd_slam {
                 Parameters::load_defaut();
                 if (not Parameters::is_valid())
                 {
-                    utils::log_error("Invalid default parameters. Check your static parameters configuration");
+                    outputs::log_error("Invalid default parameters. Check your static parameters configuration");
                     exit(-1);
                 }
-                utils::log("Invalid parameters. Switching to default parameters");
+                outputs::log("Invalid parameters. Switching to default parameters");
             }
             // primitive connected graph creator
             _depthOps = new features::primitives::Depth_Map_Transformation(
@@ -42,7 +42,7 @@ namespace rgbd_slam {
                     Parameters::get_depth_map_patch_size()
                     );
             if (_depthOps == nullptr or not _depthOps->is_ok()) {
-                utils::log_error("Cannot load parameter files, exiting");
+                outputs::log_error("Cannot load parameter files, exiting");
                 exit(-1);
             }
 
@@ -69,11 +69,11 @@ namespace rgbd_slam {
             _kernel = cv::Mat::ones(3, 3, CV_8U);
 
             if (_primitiveDetector == nullptr) {
-                utils::log_error("Instanciation of Primitive_Detector failed");
+                outputs::log_error("Instanciation of Primitive_Detector failed");
                 exit(-1);
             }
             if (_lineDetector == nullptr) {
-                utils::log_error("Instanciation of Line_Detector failed");
+                outputs::log_error("Instanciation of Line_Detector failed");
                 exit(-1);
             }
 
@@ -200,7 +200,7 @@ namespace rgbd_slam {
             else
             {
                 // Not enough matches
-                utils::log("Not enough points match for pose estimation: " + std::to_string(matchedPoints.size()) + " matches with " + std::to_string(keypointObject.get_keypoint_count()) + " detected or tracked points");
+                outputs::log("Not enough points match for pose estimation: " + std::to_string(matchedPoints.size()) + " matches with " + std::to_string(keypointObject.get_keypoint_count()) + " detected or tracked points");
             }
         }
         //else: first call: no optimization

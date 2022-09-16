@@ -11,8 +11,9 @@
 
 #include "../types.hpp"
 
+#include "../outputs/map_writer.hpp"
+
 #include "../utils/pose.hpp"
-#include "../utils/map_writer.hpp"
 #include "../utils/matches_containers.hpp"
 
 #include "../features/keypoints/keypoint_detection.hpp"
@@ -223,7 +224,7 @@ namespace rgbd_slam {
                 primitive_map_container _localPrimitiveMap;
                 std::unordered_map<int, uint> _previousPrimitiveAssociation;
 
-                utils::XYZ_Map_Writer* _mapWriter; 
+                outputs::XYZ_Map_Writer* _mapWriter; 
 
                 // Remove copy operators
                 Local_Map(const Local_Map& map) = delete;

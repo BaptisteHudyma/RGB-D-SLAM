@@ -1,7 +1,7 @@
 #include "histogram.hpp"
 
 #include <cstddef>
-#include "../../utils/logger.hpp"
+#include "../../outputs/logger.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -73,7 +73,7 @@ namespace primitives {
 
     void Histogram::remove_point(const uint pointId) {
         if(pointId > _B.size()) {
-            utils::log_error("Histogram: remove_point called on invalid ID");
+            outputs::log_error("Histogram: remove_point called on invalid ID");
             exit(-1);
         }
         if(_H[_B[pointId]] != 0)
