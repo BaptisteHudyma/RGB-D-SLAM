@@ -9,7 +9,76 @@ See the Doxygen documentation on [GitHub Pages](https://baptistehudyma.github.io
 
 For now, we are at the state of visual odometry with local mapping.
 
-## Process
+# Architectural description
+
+## Sources
+The program source files are organized as so:
+- **features**: Handles the feature detection and matching.
+    - **keypoints**: detect and match keypoints, using their descriptors and short term optical flow
+    - **primitives**: Handle the detection and tracking of planes and cylinders, based on a connected graph technique described in [Fast Cylinder and Plane Extraction from Depth Cameras for Visua Odometry](https://arxiv.org/pdf/1803.02380.pdf).
+- **map_management** The "Mapping" part of SLAM. It's a local map implementation, with no loop closures
+- **outputs** All the outputs that this program produces are stored here EXCEPT the images, that are handled by their classes (the map display is handled by the map class)
+- **pose_optimization** Contains all the pose optimization functions. The optimization process uses a Levenberg-Marquardt algorithm for frame to frame optimization
+- **tracking** The tracking functions, as Kalman filters and observers motion model
+- **utils** Math and cameras utils functions. Also contains the main types (eg: Pose)
+
+A folder **third_party** for third party algorithms. This code is not mine, and source is given if available.
+
+## Examples
+Some examples are given, but their dataset are not given.
+A configuration file must be given for every example, based on the model given in **configuration_example.yaml**.
+This configuration file must be placed in the **data/my_dataset** folder.
+
+- **CAPE** : The CAPE dataset contains RGB-D (size: 640x480) sequences of low textured environments, that are challenging for point-based SLAMs. It contains planes and cylinders, initially to test the CAPE process.
+The groundtrut trajectory are given for some sequences. 
+- **freiburg-Berkeley** : The Freiburg-Berkeley datasets are sequences of raw RGB-D (size: 640x480), with accelerometers data and groundtruth trajectories. Their is a lot of different videos, with different conditions (translation/rotations only, dynamic environments, ...)
+
+## packages
+```
+opencv
+Eigen
+g2o
+pugixml
+```
+
+## Build and Run
+```
+mkdir build && cd build
+cmake ..
+make
+```
+
+### Run the tests
+```
+./test_p3p
+./testPoseOptimization
+./testKalmanFiltering
+```
+
+When all the tests are validated, you can run the main SLAM algorithm
+
+### How to use
+```
+./slam_freiburg1 desk
+```
+Parameters
+```
+-h Display the help
+-d displays the staged features (not yet in local map)
+-f path to the file containing the data (depth, rgb, cam parameters)
+-c use cylinder detection 
+-j Drop j frames between slam process
+-i index of starting frame (> 0)
+-l compute line features
+-s Save the trajectory in an output file
+```
+
+Check memory errors
+```
+valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./slam_freiburg1 desk
+```
+
+## Detailed process
 ### feature detection & matching
 The system starts by splitting the depth image as a 2D connected graph, and run a primitive analysis on it.
 This analysis extract local planar features, that are merged into bigger planes.
@@ -41,44 +110,6 @@ The complete systems runs in real time, between 30FPS and 60FPS for images of 64
 - Loop closing based on multiscale neural network 
 - Use a graph between keyframe to represent the trajectory, and close the loop easily (using bundle adjustment)
 - Create a new separate trajectory when loosing track of features, and merge it to the main trajectory when possible
-
-
-## packages
-```
-opencv
-Eigen
-g2o
-pugixml
-```
-
-How to build Build
-```
-mkdir build && cd build
-cmake ..
-make
-```
-
-How to use
-```
-./slam_freiburg1 desk
-```
-Parameters
-```
--h Display the help
--d displays the staged features (not yet in local map)
--f path to the file containing the data (depth, rgb, cam parameters)
--c use cylinder detection 
--j Drop j frames between slam process
--i index of starting frame (> 0)
--l compute line features
--s Save the trajectory in an output file
-```
-
-Check mem errors
-```
-valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./slam_freiburg1 desk
-```
-
 
 
 # References:
