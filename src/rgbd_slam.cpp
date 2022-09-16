@@ -115,12 +115,14 @@ namespace rgbd_slam {
         cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
         if(shouldDetectLines) { //detect lines in image
-            cv::Mat outImage;
 
             const double lineDetectionStartTime = cv::getTickCount();
-            _lineDetector->detect_lines(grayImage, depthImage, outImage);
+            const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, depthImage);
             _meanLineTreatmentDuration += (cv::getTickCount() - lineDetectionStartTime) / (double)cv::getTickFrequency();
             
+            cv::Mat outImage = grayImage.clone();
+            _lineDetector->get_image_with_lines(detectedLines, depthImage, outImage); 
+
             cv::imshow("line", outImage);
         }
 
