@@ -86,10 +86,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_map___point.html">Map_Point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map point structure, containing all the necessary informations to identify a map point.  <a href="classrgbd__slam_1_1map__management_1_1_map___point.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_matched_primitive.html">MatchedPrimitive</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_matched_screen_point.html">MatchedScreenPoint</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">Point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic keypoint class.  <a href="structrgbd__slam_1_1map__management_1_1_point.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_primitive.html">Primitive</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_staged___point.html">Staged_Point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concurrent for a map point.  <a href="classrgbd__slam_1_1map__management_1_1_staged___point.html#details">More...</a><br /></td></tr>
@@ -103,10 +107,14 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a831f7b27be382c98022de647e6d29abc"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#a831f7b27be382c98022de647e6d29abc">pointProcessNoise</a> = 0.6</td></tr>
+<tr class="separator:a831f7b27be382c98022de647e6d29abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad715b0460102980c8d6fcaa81b1107d3"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#ad715b0460102980c8d6fcaa81b1107d3">INVALID_POINT_UNIQ_ID</a> = 0</td></tr>
 <tr class="separator:ad715b0460102980c8d6fcaa81b1107d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4b9445dc894687f9645da2c1d7fb3df"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#ac4b9445dc894687f9645da2c1d7fb3df">UNMATCHED_POINT_INDEX</a> = -1</td></tr>
 <tr class="separator:ac4b9445dc894687f9645da2c1d7fb3df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98995d16892884117ea909064c6b41c"><td class="memItemLeft" align="right" valign="top">const uchar&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1map__management.html#ad98995d16892884117ea909064c6b41c">UNMATCHED_PRIMITIVE_ID</a> = 0</td></tr>
+<tr class="separator:ad98995d16892884117ea909064c6b41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aa9d854ab517611e578813e309aa66ed8" name="aa9d854ab517611e578813e309aa66ed8"></a>
@@ -155,6 +163,20 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a831f7b27be382c98022de647e6d29abc" name="a831f7b27be382c98022de647e6d29abc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a831f7b27be382c98022de647e6d29abc">&#9670;&nbsp;</a></span>pointProcessNoise</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double rgbd_slam::map_management::pointProcessNoise = 0.6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac4b9445dc894687f9645da2c1d7fb3df" name="ac4b9445dc894687f9645da2c1d7fb3df"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac4b9445dc894687f9645da2c1d7fb3df">&#9670;&nbsp;</a></span>UNMATCHED_POINT_INDEX</h2>
 
@@ -163,6 +185,20 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">const int rgbd_slam::map_management::UNMATCHED_POINT_INDEX = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad98995d16892884117ea909064c6b41c" name="ad98995d16892884117ea909064c6b41c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad98995d16892884117ea909064c6b41c">&#9670;&nbsp;</a></span>UNMATCHED_PRIMITIVE_ID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uchar rgbd_slam::map_management::UNMATCHED_PRIMITIVE_ID = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">

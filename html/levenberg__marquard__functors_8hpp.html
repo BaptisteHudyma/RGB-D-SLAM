@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/levenberg_marquard_functors.hpp File Reference</title>
+<title>RGB-D SLAM: /home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/levenberg_marquard_functors.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,8 +74,8 @@ $(function() {
   <div class="headertitle"><div class="title">levenberg_marquard_functors.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="types_8hpp_source.html">types.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="matches__containers_8hpp_source.html">matches_containers.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="types_8hpp_source.html">../types.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="matches__containers_8hpp_source.html">../utils/matches_containers.hpp</a>&quot;</code><br />
 <code>#include &lt;unsupported/Eigen/NonLinearOptimization&gt;</code><br />
 </div>
 <p><a href="levenberg__marquard__functors_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -103,9 +103,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a5631cae47389e44a75b184bf60db8201"><td class="memItemLeft" align="right" valign="top">vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a5631cae47389e44a75b184bf60db8201">rgbd_slam::pose_optimization::get_scaled_axis_coefficients_from_quaternion</a> (const quaternion &amp;quat)</td></tr>
 <tr class="memdesc:a5631cae47389e44a75b184bf60db8201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-Marquardt algorithm.  <a href="namespacergbd__slam_1_1pose__optimization.html#a5631cae47389e44a75b184bf60db8201">More...</a><br /></td></tr>
 <tr class="separator:a5631cae47389e44a75b184bf60db8201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeee6808d772dc72ceac7fd61a3564eca"><td class="memItemLeft" align="right" valign="top">quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#aeee6808d772dc72ceac7fd61a3564eca">rgbd_slam::pose_optimization::get_quaternion_from_scale_axis_coefficients</a> (const vector3 optimizationCoefficients)</td></tr>
-<tr class="memdesc:aeee6808d772dc72ceac7fd61a3564eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from it's scaled axis representation.  <a href="namespacergbd__slam_1_1pose__optimization.html#aeee6808d772dc72ceac7fd61a3564eca">More...</a><br /></td></tr>
-<tr class="separator:aeee6808d772dc72ceac7fd61a3564eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="memItemLeft" align="right" valign="top">quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#aa1b3f2a476887ecd8c938a73f1ca57da">rgbd_slam::pose_optimization::get_quaternion_from_scale_axis_coefficients</a> (const vector3 &amp;optimizationCoefficients)</td></tr>
+<tr class="memdesc:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from it's scaled axis representation.  <a href="namespacergbd__slam_1_1pose__optimization.html#aa1b3f2a476887ecd8c938a73f1ca57da">More...</a><br /></td></tr>
+<tr class="separator:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memItemLeft" align="right" valign="top">quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a60b66cfa4c51c64babcb5ad9b259c1ba">rgbd_slam::pose_optimization::get_quaternion_exponential</a> (const quaternion &amp;quat)</td></tr>
 <tr class="separator:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memItemLeft" align="right" valign="top">quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae2acb81b214e548bffd58f4ebf90d2f5">rgbd_slam::pose_optimization::get_quaternion_logarithm</a> (const quaternion &amp;quat)</td></tr>

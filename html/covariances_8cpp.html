@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/covariances.cpp File Reference</title>
+<title>RGB-D SLAM: /home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/covariances.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,8 +74,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="covariances_8hpp_source.html">covariances.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="camera__transformation_8hpp_source.html">camera_transformation.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">../parameters.hpp</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -89,15 +89,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a6881ff8fc4349b095eda7e107e8b38c0"><td class="memItemLeft" align="right" valign="top">const matrix33&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a6881ff8fc4349b095eda7e107e8b38c0">rgbd_slam::utils::get_screen_point_covariance</a> (const vector2 &amp;screenCoordinates, const double depth)</td></tr>
 <tr class="memdesc:a6881ff8fc4349b095eda7e107e8b38c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute a covariance matrix for a screen point associated with a depth measurement  <a href="namespacergbd__slam_1_1utils.html#a6881ff8fc4349b095eda7e107e8b38c0">More...</a><br /></td></tr>
 <tr class="separator:a6881ff8fc4349b095eda7e107e8b38c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a9a5cb4c504a476f73d5396b70378e9"><td class="memItemLeft" align="right" valign="top">const matrix33&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a9a9a5cb4c504a476f73d5396b70378e9">rgbd_slam::utils::get_world_point_covariance</a> (const vector2 &amp;screenPoint, const double depth)</td></tr>
+<tr class="memdesc:a9a9a5cb4c504a476f73d5396b70378e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point.  <a href="namespacergbd__slam_1_1utils.html#a9a9a5cb4c504a476f73d5396b70378e9">More...</a><br /></td></tr>
+<tr class="separator:a9a9a5cb4c504a476f73d5396b70378e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09dda9d0924d503bab6cec2b6663e179"><td class="memItemLeft" align="right" valign="top">const matrix33&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">rgbd_slam::utils::get_world_point_covariance</a> (const vector2 &amp;screenPoint, const double depth, const matrix33 &amp;screenPointCovariance)</td></tr>
 <tr class="memdesc:a09dda9d0924d503bab6cec2b6663e179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point.  <a href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">More...</a><br /></td></tr>
 <tr class="separator:a09dda9d0924d503bab6cec2b6663e179"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22065d1036a7b1f6b9cf9f79cca09bf7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a22065d1036a7b1f6b9cf9f79cca09bf7">rgbd_slam::utils::compute_pose_variance</a> (const utils::Pose &amp;pose, const matches_containers::match_point_container &amp;matchedPoints, vector3 &amp;poseVariance)</td></tr>
-<tr class="memdesc:a22065d1036a7b1f6b9cf9f79cca09bf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the variance of the final pose in X Y Z.  <a href="namespacergbd__slam_1_1utils.html#a22065d1036a7b1f6b9cf9f79cca09bf7">More...</a><br /></td></tr>
-<tr class="separator:a22065d1036a7b1f6b9cf9f79cca09bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85dff6fcf36f784135436ffc74443d3a"><td class="memItemLeft" align="right" valign="top">const matrix33&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a85dff6fcf36f784135436ffc74443d3a">rgbd_slam::utils::compute_pose_covariance</a> (const utils::Pose &amp;pose)</td></tr>
-<tr class="memdesc:a85dff6fcf36f784135436ffc74443d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a pose covariance matrix from a pose.  <a href="namespacergbd__slam_1_1utils.html#a85dff6fcf36f784135436ffc74443d3a">More...</a><br /></td></tr>
-<tr class="separator:a85dff6fcf36f784135436ffc74443d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58e29e70d22c5d0a1b86c820acb7159e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a58e29e70d22c5d0a1b86c820acb7159e">rgbd_slam::utils::compute_pose_variance</a> (const Pose &amp;pose, const matches_containers::match_point_container &amp;matchedPoints, vector3 &amp;poseVariance)</td></tr>
+<tr class="memdesc:a58e29e70d22c5d0a1b86c820acb7159e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the variance of the final pose in X Y Z.  <a href="namespacergbd__slam_1_1utils.html#a58e29e70d22c5d0a1b86c820acb7159e">More...</a><br /></td></tr>
+<tr class="separator:a58e29e70d22c5d0a1b86c820acb7159e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25aefd4d0548c521c2fc7818f3ace9c5"><td class="memItemLeft" align="right" valign="top">const matrix33&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a25aefd4d0548c521c2fc7818f3ace9c5">rgbd_slam::utils::compute_pose_covariance</a> (const Pose &amp;pose)</td></tr>
+<tr class="memdesc:a25aefd4d0548c521c2fc7818f3ace9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a pose covariance matrix from a pose.  <a href="namespacergbd__slam_1_1utils.html#a25aefd4d0548c521c2fc7818f3ace9c5">More...</a><br /></td></tr>
+<tr class="separator:a25aefd4d0548c521c2fc7818f3ace9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

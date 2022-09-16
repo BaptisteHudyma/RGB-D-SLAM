@@ -7,5 +7,6 @@ var searchData=
   ['display_4',['display',['../classrgbd__slam_1_1utils_1_1_pose_base.html#af5ee912b9584944e862e27dd7075662b',1,'rgbd_slam::utils::PoseBase::display()'],['../classrgbd__slam_1_1utils_1_1_pose.html#a2e0fc4113367a9b843df5493e410577e',1,'rgbd_slam::utils::Pose::display()']]],
   ['distance_5futils_2ecpp_5',['distance_utils.cpp',['../distance__utils_8cpp.html',1,'']]],
   ['distance_5futils_2ehpp_6',['distance_utils.hpp',['../distance__utils_8hpp.html',1,'']]],
-  ['draw_5fpoint_5fon_5fimage_7',['draw_point_on_image',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a162e33d06a66cceb6396ee123ed24ba4',1,'rgbd_slam::map_management::Local_Map']]]
+  ['draw_5fpoint_5fon_5fimage_7',['draw_point_on_image',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a162e33d06a66cceb6396ee123ed24ba4',1,'rgbd_slam::map_management::Local_Map']]],
+  ['draw_5fprimitives_5fon_5fimage_8',['draw_primitives_on_image',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a09a76354c2a474eb3466bb424616709d',1,'rgbd_slam::map_management::Local_Map']]]
 ];

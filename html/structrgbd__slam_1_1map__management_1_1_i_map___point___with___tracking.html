@@ -107,8 +107,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2627b0500cbeff88570ad7017153465"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#aa2627b0500cbeff88570ad7017153465">update_unmatched</a> (int removeNMatches=1)=0</td></tr>
 <tr class="memdesc:aa2627b0500cbeff88570ad7017153465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call when this point was not matched to anything.  <a href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#aa2627b0500cbeff88570ad7017153465">More...</a><br /></td></tr>
 <tr class="separator:aa2627b0500cbeff88570ad7017153465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114df6422d2b509705c729b3b779049d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#a114df6422d2b509705c729b3b779049d">get_covariance_matrix</a> () const</td></tr>
-<tr class="separator:a114df6422d2b509705c729b3b779049d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff109476c87863343387ae6f883594d8"><td class="memItemLeft" align="right" valign="top">const Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#aff109476c87863343387ae6f883594d8">get_covariance_matrix</a> () const</td></tr>
+<tr class="separator:aff109476c87863343387ae6f883594d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -127,6 +127,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:acb0b13b394f349fbc9695dd92affc738"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#acb0b13b394f349fbc9695dd92affc738">track_point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;newPointCoordinates, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;newPointCovariance)</td></tr>
 <tr class="memdesc:acb0b13b394f349fbc9695dd92affc738"><td class="mdescLeft">&#160;</td><td class="mdescRight">update the current point by tracking with a kalman filter. Will update the point position &amp; covariance  <a href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#acb0b13b394f349fbc9695dd92affc738">More...</a><br /></td></tr>
 <tr class="separator:acb0b13b394f349fbc9695dd92affc738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01ff63fa4bb67b9e3456bb202cf0df12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#a01ff63fa4bb67b9e3456bb202cf0df12">build_kalman_filter</a> ()</td></tr>
+<tr class="memdesc:a01ff63fa4bb67b9e3456bb202cf0df12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the inputs caracteristics of the kalman filter.  <a href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html#a01ff63fa4bb67b9e3456bb202cf0df12">More...</a><br /></td></tr>
+<tr class="separator:a01ff63fa4bb67b9e3456bb202cf0df12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structrgbd__slam_1_1map__management_1_1_point')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html">rgbd_slam::map_management::Point</a></td></tr>
 <tr class="memitem:ad10397c518c35773877ede14306f1a7e inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#ad10397c518c35773877ede14306f1a7e">Point</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;coordinates, const cv::Mat &amp;descriptor)</td></tr>
 <tr class="separator:ad10397c518c35773877ede14306f1a7e inherit pro_methods_structrgbd__slam_1_1map__management_1_1_point"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +221,33 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a01ff63fa4bb67b9e3456bb202cf0df12" name="a01ff63fa4bb67b9e3456bb202cf0df12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01ff63fa4bb67b9e3456bb202cf0df12">&#9670;&nbsp;</a></span>build_kalman_filter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::map_management::IMap_Point_With_Tracking::build_kalman_filter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build the inputs caracteristics of the kalman filter. </p>
+
+</div>
+</div>
 <a id="a858f10fd0a6661b1d434e82dfa1f6d68" name="a858f10fd0a6661b1d434e82dfa1f6d68"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a858f10fd0a6661b1d434e82dfa1f6d68">&#9670;&nbsp;</a></span>get_confidence()</h2>
 
@@ -247,8 +277,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a114df6422d2b509705c729b3b779049d" name="a114df6422d2b509705c729b3b779049d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a114df6422d2b509705c729b3b779049d">&#9670;&nbsp;</a></span>get_covariance_matrix()</h2>
+<a id="aff109476c87863343387ae6f883594d8" name="aff109476c87863343387ae6f883594d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff109476c87863343387ae6f883594d8">&#9670;&nbsp;</a></span>get_covariance_matrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,7 +287,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::map_management::IMap_Point_With_Tracking::get_covariance_matrix </td>
+          <td class="memname">const Eigen::MatrixXd rgbd_slam::map_management::IMap_Point_With_Tracking::get_covariance_matrix </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -397,8 +427,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/<a class="el" href="map__point_8hpp_source.html">map_point.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/<a class="el" href="map__point_8cpp.html">map_point.cpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/<a class="el" href="map__point_8hpp_source.html">map_point.hpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/<a class="el" href="map__point_8cpp.html">map_point.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

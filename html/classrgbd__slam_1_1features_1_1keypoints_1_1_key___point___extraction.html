@@ -88,9 +88,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aca210323ab089b71468435f136d96aad"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">Keypoint_Handler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#aca210323ab089b71468435f136d96aad">compute_keypoints</a> (const cv::Mat &amp;grayImage, const cv::Mat &amp;depthImage, const <a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">KeypointsWithIdStruct</a> &amp;lastKeypointsWithIds, const bool forceKeypointDetection=false)</td></tr>
 <tr class="memdesc:aca210323ab089b71468435f136d96aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the keypoints in the gray image, using optical flow and/or generic feature detectors  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#aca210323ab089b71468435f136d96aad">More...</a><br /></td></tr>
 <tr class="separator:aca210323ab089b71468435f136d96aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6021194e12c30e48d9a9c1658501183d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a6021194e12c30e48d9a9c1658501183d">show_statistics</a> (const double meanFrameTreatmentTime, const uint frameCount) const</td></tr>
-<tr class="memdesc:a6021194e12c30e48d9a9c1658501183d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the time statistics for certain parts of the program. Kind of a basic profiler.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a6021194e12c30e48d9a9c1658501183d">More...</a><br /></td></tr>
-<tr class="separator:a6021194e12c30e48d9a9c1658501183d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1fbb870b6cde4b7ed30fc3195d669e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a7c1fbb870b6cde4b7ed30fc3195d669e">show_statistics</a> (const double meanFrameTreatmentDuration, const uint frameCount) const</td></tr>
+<tr class="memdesc:a7c1fbb870b6cde4b7ed30fc3195d669e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the time statistics for certain parts of the program. Kind of a basic profiler.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a7c1fbb870b6cde4b7ed30fc3195d669e">More...</a><br /></td></tr>
+<tr class="separator:a7c1fbb870b6cde4b7ed30fc3195d669e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -350,8 +350,8 @@ Static Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6021194e12c30e48d9a9c1658501183d" name="a6021194e12c30e48d9a9c1658501183d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6021194e12c30e48d9a9c1658501183d">&#9670;&nbsp;</a></span>show_statistics()</h2>
+<a id="a7c1fbb870b6cde4b7ed30fc3195d669e" name="a7c1fbb870b6cde4b7ed30fc3195d669e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c1fbb870b6cde4b7ed30fc3195d669e">&#9670;&nbsp;</a></span>show_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,7 +360,7 @@ Static Protected Member Functions</h2></td></tr>
           <td class="memname">void rgbd_slam::features::keypoints::Key_Point_Extraction::show_statistics </td>
           <td>(</td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>meanFrameTreatmentTime</em>, </td>
+          <td class="paramname"><em>meanFrameTreatmentDuration</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -379,7 +379,7 @@ Static Protected Member Functions</h2></td></tr>
 <p>Show the time statistics for certain parts of the program. Kind of a basic profiler. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">meanFrameTreatmentTime</td><td>The mean time in seconds that this program used to treat one frame </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">meanFrameTreatmentDuration</td><td>The mean duration in seconds that this program used to treat one frame </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">frameCount</td><td>Total of frame treated by the program </td></tr>
   </table>
   </dd>
@@ -388,8 +388,8 @@ Static Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/keypoints/<a class="el" href="keypoint__detection_8hpp_source.html">keypoint_detection.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/keypoints/<a class="el" href="keypoint__detection_8cpp.html">keypoint_detection.cpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/keypoints/<a class="el" href="keypoint__detection_8hpp_source.html">keypoint_detection.hpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/keypoints/<a class="el" href="keypoint__detection_8cpp.html">keypoint_detection.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

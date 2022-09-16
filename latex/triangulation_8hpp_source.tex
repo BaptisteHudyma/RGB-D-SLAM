@@ -1,23 +1,23 @@
 \hypertarget{triangulation_8hpp_source}{}\doxysection{triangulation.\+hpp}
-\label{triangulation_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/triangulation.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/triangulation.hpp}}
+\label{triangulation_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/triangulation.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/triangulation.hpp}}
 \mbox{\hyperlink{triangulation_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_TRIANGULATION\_HPP}}
 \DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_TRIANGULATION\_HPP}}
 \DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{pose_8hpp}{pose.hpp}}"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}../types.hpp"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{pose_8hpp}{utils/pose.hpp}}"{}}}
 \DoxyCodeLine{6 }
 \DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{8     \textcolor{keyword}{namespace }utils \{}
+\DoxyCodeLine{8     \textcolor{keyword}{namespace }tracking \{}
 \DoxyCodeLine{9 }
-\DoxyCodeLine{10         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation}{Triangulation}}}
+\DoxyCodeLine{10         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation}{Triangulation}}}
 \DoxyCodeLine{11         \{}
 \DoxyCodeLine{12             \textcolor{keyword}{public}:}
 \DoxyCodeLine{13 }
-\DoxyCodeLine{25                 \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation_a94ee5519310f6c56e45a034c32ad93c8}{triangulate}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& currentWorldToCameraMatrix, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& newWorldToCameraMatrix, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& point2Da, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& point2Db, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& triangulatedPoint);}
+\DoxyCodeLine{25                 \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a7d93e6a304ee80ccc8b1ecaa49029e0e}{triangulate}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& currentWorldToCameraMatrix, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& newWorldToCameraMatrix, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& point2Da, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& point2Db, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& triangulatedPoint);}
 \DoxyCodeLine{26 }
-\DoxyCodeLine{30                 \textcolor{keyword}{static} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_triangulation_ac4b5d4f83c1def50857b591a0c8dd4dc}{get\_supposed\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& pose, \textcolor{keyword}{const} \textcolor{keywordtype}{double} baselinePoseSupposition);}
+\DoxyCodeLine{30                 \textcolor{keyword}{static} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a8033f57b4e72fd466722553e72654081}{get\_supposed\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& pose, \textcolor{keyword}{const} \textcolor{keywordtype}{double} baselinePoseSupposition);}
 \DoxyCodeLine{31 }
 \DoxyCodeLine{32             \textcolor{keyword}{private}:}
 \DoxyCodeLine{33                 }

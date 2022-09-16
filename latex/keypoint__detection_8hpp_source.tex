@@ -1,5 +1,5 @@
 \hypertarget{keypoint__detection_8hpp_source}{}\doxysection{keypoint\+\_\+detection.\+hpp}
-\label{keypoint__detection_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.hpp}}
+\label{keypoint__detection_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.hpp}}
 \mbox{\hyperlink{keypoint__detection_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_FEATURES\_KEYPOINTS\_KEYPOINTS\_DETECTION\_HPP}}
@@ -20,7 +20,7 @@
 \DoxyCodeLine{32                     \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aca210323ab089b71468435f136d96aad}{compute\_keypoints}}(\textcolor{keyword}{const} cv::Mat\& grayImage, \textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\& lastKeypointsWithIds, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} forceKeypointDetection = \textcolor{keyword}{false});}
 \DoxyCodeLine{33 }
 \DoxyCodeLine{34 }
-\DoxyCodeLine{41                     \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6021194e12c30e48d9a9c1658501183d}{show\_statistics}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} meanFrameTreatmentTime, \textcolor{keyword}{const} uint frameCount) \textcolor{keyword}{const};}
+\DoxyCodeLine{41                     \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a7c1fbb870b6cde4b7ed30fc3195d669e}{show\_statistics}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} meanFrameTreatmentDuration, \textcolor{keyword}{const} uint frameCount) \textcolor{keyword}{const};}
 \DoxyCodeLine{42 }
 \DoxyCodeLine{43                 \textcolor{keyword}{protected}:}
 \DoxyCodeLine{44 }
@@ -38,7 +38,7 @@
 \DoxyCodeLine{76 }
 \DoxyCodeLine{77                     std::vector<cv::Mat> \_lastFramePyramide;}
 \DoxyCodeLine{78 }
-\DoxyCodeLine{79                     \textcolor{keywordtype}{double} \_meanPointExtractionTime;}
+\DoxyCodeLine{79                     \textcolor{keywordtype}{double} \_meanPointExtractionDuration;}
 \DoxyCodeLine{80 }
 \DoxyCodeLine{81             \};}
 \DoxyCodeLine{82 }

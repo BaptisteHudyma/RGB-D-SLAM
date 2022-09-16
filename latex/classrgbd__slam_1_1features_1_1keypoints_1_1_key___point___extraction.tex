@@ -16,7 +16,7 @@ A class to detect and store keypoints.
 \item 
 const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\+\_\+\+Handler}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aca210323ab089b71468435f136d96aad}{compute\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&depth\+Image, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const bool force\+Keypoint\+Detection=false)
 \begin{DoxyCompactList}\small\item\em compute the keypoints in the gray image, using optical flow and/or generic feature detectors \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6021194e12c30e48d9a9c1658501183d}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Time, const uint frame\+Count) const
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a7c1fbb870b6cde4b7ed30fc3195d669e}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Duration, const uint frame\+Count) const
 \begin{DoxyCompactList}\small\item\em Show the time statistics for certain parts of the program. Kind of a basic profiler. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -124,11 +124,11 @@ Compute the current frame keypoints from optical flow. There is need for matchin
 \mbox{\texttt{ in}}  & {\em max\+Distance\+Threshold} & a distance threshold, in pixels \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6021194e12c30e48d9a9c1658501183d}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6021194e12c30e48d9a9c1658501183d}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a7c1fbb870b6cde4b7ed30fc3195d669e}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a7c1fbb870b6cde4b7ed30fc3195d669e}} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!show\_statistics@{show\_statistics}}
 \index{show\_statistics@{show\_statistics}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Time,  }\item[{const uint}]{frame\+Count }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Duration,  }\item[{const uint}]{frame\+Count }\end{DoxyParamCaption}) const}
 
 
 
@@ -136,7 +136,7 @@ Show the time statistics for certain parts of the program. Kind of a basic profi
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em mean\+Frame\+Treatment\+Time} & The mean time in seconds that this program used to treat one frame \\
+\mbox{\texttt{ in}}  & {\em mean\+Frame\+Treatment\+Duration} & The mean duration in seconds that this program used to treat one frame \\
 \hline
 \mbox{\texttt{ in}}  & {\em frame\+Count} & Total of frame treated by the program \\
 \hline
@@ -145,5 +145,5 @@ Show the time statistics for certain parts of the program. Kind of a basic profi
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/\mbox{\hyperlink{keypoint__detection_8hpp}{keypoint\+\_\+detection.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/\mbox{\hyperlink{keypoint__detection_8cpp}{keypoint\+\_\+detection.\+cpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/\mbox{\hyperlink{keypoint__detection_8hpp}{keypoint\+\_\+detection.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/\mbox{\hyperlink{keypoint__detection_8cpp}{keypoint\+\_\+detection.\+cpp}}\end{DoxyCompactItemize}

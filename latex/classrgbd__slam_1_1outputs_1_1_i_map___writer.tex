@@ -1,0 +1,69 @@
+\hypertarget{classrgbd__slam_1_1outputs_1_1_i_map___writer}{}\doxysection{rgbd\+\_\+slam\+::outputs\+::IMap\+\_\+\+Writer Class Reference}
+\label{classrgbd__slam_1_1outputs_1_1_i_map___writer}\index{rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}}
+
+
+{\ttfamily \#include $<$map\+\_\+writer.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::outputs\+::IMap\+\_\+\+Writer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrgbd__slam_1_1outputs_1_1_i_map___writer}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a5991f574cd767f4e1c1276b365bc63ea}{IMap\+\_\+\+Writer}} (const std\+::string \&filename)
+\item 
+virtual \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a3f091381128f79f0999f8a2c5367c449}{$\sim$\+IMap\+\_\+\+Writer}} ()
+\item 
+virtual void \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a6399594c5e5dad73cb6b127e4d50b173}{add\+\_\+point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point\+Coordinates)=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ofstream \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a324d33f96a95b4d833dbb1cdf5bcd931}{\+\_\+file}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1outputs_1_1_i_map___writer_a5991f574cd767f4e1c1276b365bc63ea}\label{classrgbd__slam_1_1outputs_1_1_i_map___writer_a5991f574cd767f4e1c1276b365bc63ea}} 
+\index{rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}!IMap\_Writer@{IMap\_Writer}}
+\index{IMap\_Writer@{IMap\_Writer}!rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}}
+\doxysubsubsection{\texorpdfstring{IMap\_Writer()}{IMap\_Writer()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::outputs\+::\+IMap\+\_\+\+Writer\+::\+IMap\+\_\+\+Writer (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1outputs_1_1_i_map___writer_a3f091381128f79f0999f8a2c5367c449}\label{classrgbd__slam_1_1outputs_1_1_i_map___writer_a3f091381128f79f0999f8a2c5367c449}} 
+\index{rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}!````~IMap\_Writer@{$\sim$IMap\_Writer}}
+\index{````~IMap\_Writer@{$\sim$IMap\_Writer}!rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}}
+\doxysubsubsection{\texorpdfstring{$\sim$IMap\_Writer()}{~IMap\_Writer()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::outputs\+::\+IMap\+\_\+\+Writer\+::$\sim$\+IMap\+\_\+\+Writer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1outputs_1_1_i_map___writer_a6399594c5e5dad73cb6b127e4d50b173}\label{classrgbd__slam_1_1outputs_1_1_i_map___writer_a6399594c5e5dad73cb6b127e4d50b173}} 
+\index{rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}!add\_point@{add\_point}}
+\index{add\_point@{add\_point}!rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}}
+\doxysubsubsection{\texorpdfstring{add\_point()}{add\_point()}}
+{\footnotesize\ttfamily virtual void rgbd\+\_\+slam\+::outputs\+::\+IMap\+\_\+\+Writer\+::add\+\_\+point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{point\+Coordinates }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer_a0249bcfd9e6fdec2ff5e674df8904b6b}{rgbd\+\_\+slam\+::outputs\+::\+XYZ\+\_\+\+Map\+\_\+\+Writer}}, and \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer_abf9a9bf1964974fbca4e9aada2cd7f4d}{rgbd\+\_\+slam\+::outputs\+::\+PCD\+\_\+\+Map\+\_\+\+Writer}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1outputs_1_1_i_map___writer_a324d33f96a95b4d833dbb1cdf5bcd931}\label{classrgbd__slam_1_1outputs_1_1_i_map___writer_a324d33f96a95b4d833dbb1cdf5bcd931}} 
+\index{rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}!\_file@{\_file}}
+\index{\_file@{\_file}!rgbd\_slam::outputs::IMap\_Writer@{rgbd\_slam::outputs::IMap\_Writer}}
+\doxysubsubsection{\texorpdfstring{\_file}{\_file}}
+{\footnotesize\ttfamily std\+::ofstream rgbd\+\_\+slam\+::outputs\+::\+IMap\+\_\+\+Writer\+::\+\_\+file\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/outputs/\mbox{\hyperlink{map__writer_8hpp}{map\+\_\+writer.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/outputs/\mbox{\hyperlink{map__writer_8cpp}{map\+\_\+writer.\+cpp}}\end{DoxyCompactItemize}

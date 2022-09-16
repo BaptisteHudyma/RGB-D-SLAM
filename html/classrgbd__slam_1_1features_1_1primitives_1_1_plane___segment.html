@@ -69,6 +69,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::features::primitives::Plane_Segment Class Reference</div></div>
 </div><!--header-->
@@ -95,9 +96,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b1e72fb7ce2a37682169726012392cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a8b1e72fb7ce2a37682169726012392cd">expand_segment</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;planeSegment)</td></tr>
 <tr class="memdesc:a8b1e72fb7ce2a37682169726012392cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a8b1e72fb7ce2a37682169726012392cd">More...</a><br /></td></tr>
 <tr class="separator:a8b1e72fb7ce2a37682169726012392cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7e557b15828188b43abb01e12cfbf3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#aa7e557b15828188b43abb01e12cfbf3e">expand_segment</a> (const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &gt; &amp;planeSegment)</td></tr>
-<tr class="memdesc:aa7e557b15828188b43abb01e12cfbf3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#aa7e557b15828188b43abb01e12cfbf3e">More...</a><br /></td></tr>
-<tr class="separator:aa7e557b15828188b43abb01e12cfbf3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf772b88ea844ed2b2c01739ef7644b2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#acf772b88ea844ed2b2c01739ef7644b2">get_normal_similarity</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;p) const</td></tr>
 <tr class="memdesc:acf772b88ea844ed2b2c01739ef7644b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dot product of two plane normals.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#acf772b88ea844ed2b2c01739ef7644b2">More...</a><br /></td></tr>
 <tr class="separator:acf772b88ea844ed2b2c01739ef7644b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,6 +120,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2746bf24bf12a0932ab2544a40c409ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4777ebf46540b6c0d3fe4a811d4c6ab"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#aa4777ebf46540b6c0d3fe4a811d4c6ab">get_score</a> () const</td></tr>
 <tr class="separator:aa4777ebf46540b6c0d3fe4a811d4c6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:abfbb8c5d63f373ea05167d0cbd29adab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#abfbb8c5d63f373ea05167d0cbd29adab">is_cell_vertical_continuous</a> (const Eigen::MatrixXf &amp;depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const</td></tr>
+<tr class="separator:abfbb8c5d63f373ea05167d0cbd29adab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6667b3609f694954c3e604d71f72ee7f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a6667b3609f694954c3e604d71f72ee7f">is_cell_horizontal_continuous</a> (const Eigen::MatrixXf &amp;depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const</td></tr>
+<tr class="separator:a6667b3609f694954c3e604d71f72ee7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program. </p>
@@ -202,7 +207,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a8b1e72fb7ce2a37682169726012392cd" name="a8b1e72fb7ce2a37682169726012392cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b1e72fb7ce2a37682169726012392cd">&#9670;&nbsp;</a></span>expand_segment() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b1e72fb7ce2a37682169726012392cd">&#9670;&nbsp;</a></span>expand_segment()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,32 +216,6 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void rgbd_slam::features::primitives::Plane_Segment::expand_segment </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &amp;&#160;</td>
-          <td class="paramname"><em>planeSegment</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">planeSegment</td><td>Another plane segment </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aa7e557b15828188b43abb01e12cfbf3e" name="aa7e557b15828188b43abb01e12cfbf3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7e557b15828188b43abb01e12cfbf3e">&#9670;&nbsp;</a></span>expand_segment() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rgbd_slam::features::primitives::Plane_Segment::expand_segment </td>
-          <td>(</td>
-          <td class="paramtype">const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>planeSegment</em></td><td>)</td>
           <td></td>
         </tr>
@@ -466,6 +445,90 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a6667b3609f694954c3e604d71f72ee7f" name="a6667b3609f694954c3e604d71f72ee7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6667b3609f694954c3e604d71f72ee7f">&#9670;&nbsp;</a></span>is_cell_horizontal_continuous()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rgbd_slam::features::primitives::Plane_Segment::is_cell_horizontal_continuous </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixXf &amp;&#160;</td>
+          <td class="paramname"><em>depthMatrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>depthAlphaValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>depthDiscontinuityLimit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abfbb8c5d63f373ea05167d0cbd29adab" name="abfbb8c5d63f373ea05167d0cbd29adab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfbb8c5d63f373ea05167d0cbd29adab">&#9670;&nbsp;</a></span>is_cell_vertical_continuous()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rgbd_slam::features::primitives::Plane_Segment::is_cell_vertical_continuous </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixXf &amp;&#160;</td>
+          <td class="paramname"><em>depthMatrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>depthAlphaValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>depthDiscontinuityLimit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4b5957552d2fc15f93cf3131bfef1e29" name="a4b5957552d2fc15f93cf3131bfef1e29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4b5957552d2fc15f93cf3131bfef1e29">&#9670;&nbsp;</a></span>is_depth_discontinuous() <span class="overload">[1/2]</span></h2>
 
@@ -529,8 +592,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="plane__segment_8hpp_source.html">plane_segment.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="plane__segment_8cpp.html">plane_segment.cpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="plane__segment_8hpp_source.html">plane_segment.hpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="plane__segment_8cpp.html">plane_segment.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

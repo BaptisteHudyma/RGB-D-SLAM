@@ -178,9 +178,9 @@
 \chapter{RGB-\/D SLAM Documentation}
 \label{index}\hypertarget{index}{}\input{index}
 \chapter{RGB-\/\+D-\/\+SLAM}
-\label{md__home_baptou__documents_code_robots__r_g_b__s_l_a_m__r_g_b__d__s_l_a_m__r_e_a_d_m_e}
-\Hypertarget{md__home_baptou__documents_code_robots__r_g_b__s_l_a_m__r_g_b__d__s_l_a_m__r_e_a_d_m_e}
-\input{md__home_baptou__documents_code_robots__r_g_b__s_l_a_m__r_g_b__d__s_l_a_m__r_e_a_d_m_e}
+\label{md__home_baptisteh__documents_code_robots__r_g_b__s_l_a_m__r_g_b__d__s_l_a_m__r_e_a_d_m_e}
+\Hypertarget{md__home_baptisteh__documents_code_robots__r_g_b__s_l_a_m__r_g_b__d__s_l_a_m__r_e_a_d_m_e}
+\input{md__home_baptisteh__documents_code_robots__r_g_b__s_l_a_m__r_g_b__d__s_l_a_m__r_e_a_d_m_e}
 \chapter{Namespace Index}
 \input{namespaces}
 \chapter{Hierarchical Index}
@@ -196,7 +196,10 @@
 \input{namespacergbd__slam_1_1features_1_1primitives}
 \input{namespacergbd__slam_1_1map__management}
 \input{namespacergbd__slam_1_1matches__containers}
+\input{namespacergbd__slam_1_1outputs}
 \input{namespacergbd__slam_1_1pose__optimization}
+\input{namespacergbd__slam_1_1pose__optimization_1_1ransac}
+\input{namespacergbd__slam_1_1tracking}
 \input{namespacergbd__slam_1_1utils}
 \chapter{Class Documentation}
 \input{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}
@@ -207,7 +210,8 @@
 \input{structrgbd__slam_1_1pose__optimization_1_1_global___pose___functor}
 \input{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}
 \input{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}
-\input{classrgbd__slam_1_1utils_1_1_i_map___writer}
+\input{classrgbd__slam_1_1outputs_1_1_i_map___writer}
+\input{classrgbd__slam_1_1tracking_1_1_kalman_filter}
 \input{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction}
 \input{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}
 \input{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}
@@ -215,10 +219,11 @@
 \input{classrgbd__slam_1_1map__management_1_1_local___map}
 \input{classrgbd__slam_1_1map__management_1_1_map___point}
 \input{structrgbd__slam_1_1matches__containers_1_1_match}
+\input{structrgbd__slam_1_1map__management_1_1_matched_primitive}
 \input{structrgbd__slam_1_1map__management_1_1_matched_screen_point}
-\input{classrgbd__slam_1_1utils_1_1_motion___model}
+\input{classrgbd__slam_1_1tracking_1_1_motion___model}
 \input{classrgbd__slam_1_1_parameters}
-\input{classrgbd__slam_1_1utils_1_1_p_c_d___map___writer}
+\input{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer}
 \input{classrgbd__slam_1_1features_1_1primitives_1_1_plane}
 \input{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}
 \input{structrgbd__slam_1_1map__management_1_1_point}
@@ -226,11 +231,12 @@
 \input{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}
 \input{classrgbd__slam_1_1utils_1_1_pose_base}
 \input{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}
+\input{structrgbd__slam_1_1map__management_1_1_primitive}
 \input{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}
 \input{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}
 \input{classrgbd__slam_1_1map__management_1_1_staged___point}
-\input{classrgbd__slam_1_1utils_1_1_triangulation}
-\input{classrgbd__slam_1_1utils_1_1_x_y_z___map___writer}
+\input{classrgbd__slam_1_1tracking_1_1_triangulation}
+\input{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer}
 \chapter{File Documentation}
 \input{mainpage_8md}
 \input{_r_e_a_d_m_e_8md}
@@ -264,6 +270,14 @@
 \input{map__point_8cpp}
 \input{map__point_8hpp}
 \input{map__point_8hpp_source}
+\input{map__primitive_8hpp}
+\input{map__primitive_8hpp_source}
+\input{logger_8cpp}
+\input{logger_8hpp}
+\input{logger_8hpp_source}
+\input{map__writer_8cpp}
+\input{map__writer_8hpp}
+\input{map__writer_8hpp_source}
 \input{parameters_8cpp}
 \input{parameters_8hpp}
 \input{parameters_8hpp_source}
@@ -278,6 +292,15 @@
 \input{rgbd__slam_8cpp}
 \input{rgbd__slam_8hpp}
 \input{rgbd__slam_8hpp_source}
+\input{kalman__filter_8cpp}
+\input{kalman__filter_8hpp}
+\input{kalman__filter_8hpp_source}
+\input{motion__model_8cpp}
+\input{motion__model_8hpp}
+\input{motion__model_8hpp_source}
+\input{triangulation_8cpp}
+\input{triangulation_8hpp}
+\input{triangulation_8hpp_source}
 \input{types_8hpp}
 \input{types_8hpp_source}
 \input{angle__utils_8cpp}
@@ -292,23 +315,11 @@
 \input{distance__utils_8cpp}
 \input{distance__utils_8hpp}
 \input{distance__utils_8hpp_source}
-\input{logger_8cpp}
-\input{logger_8hpp}
-\input{logger_8hpp_source}
-\input{map__writer_8cpp}
-\input{map__writer_8hpp}
-\input{map__writer_8hpp_source}
 \input{matches__containers_8hpp}
 \input{matches__containers_8hpp_source}
-\input{motion__model_8cpp}
-\input{motion__model_8hpp}
-\input{motion__model_8hpp_source}
 \input{pose_8cpp}
 \input{pose_8hpp}
 \input{pose_8hpp_source}
-\input{triangulation_8cpp}
-\input{triangulation_8hpp}
-\input{triangulation_8hpp_source}
 %--- End generated contents ---
 % Index
   \backmatter

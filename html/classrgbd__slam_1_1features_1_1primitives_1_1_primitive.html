@@ -94,9 +94,9 @@ Inheritance diagram for rgbd_slam::features::primitives::Primitive:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a07e7678584cd03660df651b28d0f03ae"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a07e7678584cd03660df651b28d0f03ae">is_similar</a> (const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &gt; &amp;prim)=0</td></tr>
-<tr class="memdesc:a07e7678584cd03660df651b28d0f03ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the similarity of two primitives.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a07e7678584cd03660df651b28d0f03ae">More...</a><br /></td></tr>
-<tr class="separator:a07e7678584cd03660df651b28d0f03ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53479b4b4bf59c798bb366bc8d30fa41"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a53479b4b4bf59c798bb366bc8d30fa41">is_similar</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &amp;prim)=0</td></tr>
+<tr class="memdesc:a53479b4b4bf59c798bb366bc8d30fa41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the similarity of two primitives.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a53479b4b4bf59c798bb366bc8d30fa41">More...</a><br /></td></tr>
+<tr class="separator:a53479b4b4bf59c798bb366bc8d30fa41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6537b793a2db1e5fb5009b5ddcf4fdb8"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a6537b793a2db1e5fb5009b5ddcf4fdb8">get_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;point)=0</td></tr>
 <tr class="memdesc:a6537b793a2db1e5fb5009b5ddcf4fdb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the distance of a point to the primitive.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a6537b793a2db1e5fb5009b5ddcf4fdb8">More...</a><br /></td></tr>
 <tr class="separator:a6537b793a2db1e5fb5009b5ddcf4fdb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,10 +110,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3276e6ceeb3acdb1026d2321d5e1db33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e68351289ffa71627e206144f9fdda4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a6e68351289ffa71627e206144f9fdda4">set_id</a> (const uint id)</td></tr>
 <tr class="separator:a6e68351289ffa71627e206144f9fdda4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac63de09a9c24d5842f67a6a4c3770f49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ac63de09a9c24d5842f67a6a4c3770f49">is_matched</a> () const</td></tr>
-<tr class="separator:ac63de09a9c24d5842f67a6a4c3770f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fd9f0eaeecf13541bc44c960a2aa723"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a2fd9f0eaeecf13541bc44c960a2aa723">set_is_matched</a> (const bool isMatched)</td></tr>
-<tr class="separator:a2fd9f0eaeecf13541bc44c960a2aa723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88cc5a27f28ac286c862e4e96f426d32"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a88cc5a27f28ac286c862e4e96f426d32">get_shape_mask</a> () const</td></tr>
+<tr class="separator:a88cc5a27f28ac286c862e4e96f426d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a9654a1428408b9b83ca83a9f4b7efe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a0a9654a1428408b9b83ca83a9f4b7efe">set_shape_mask</a> (const cv::Mat &amp;mask)</td></tr>
+<tr class="separator:a0a9654a1428408b9b83ca83a9f4b7efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -125,9 +125,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a729381920ba721a402e94922b5a21a4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a729381920ba721a402e94922b5a21a4e">Primitive</a> (const uint id, const cv::Mat &amp;shapeMask)</td></tr>
 <tr class="memdesc:a729381920ba721a402e94922b5a21a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hidden constructor, to set _id and shape.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a729381920ba721a402e94922b5a21a4e">More...</a><br /></td></tr>
 <tr class="separator:a729381920ba721a402e94922b5a21a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad325f4611aa50db9c4da0ed933a3a777"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ad325f4611aa50db9c4da0ed933a3a777">get_IOU</a> (const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &gt; &amp;prim) const</td></tr>
-<tr class="memdesc:ad325f4611aa50db9c4da0ed933a3a777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the Inter over Union factor of two masks.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ad325f4611aa50db9c4da0ed933a3a777">More...</a><br /></td></tr>
-<tr class="separator:ad325f4611aa50db9c4da0ed933a3a777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad52a9c4cfaeffdeb081d0027730c5051"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ad52a9c4cfaeffdeb081d0027730c5051">get_IOU</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &amp;prim) const</td></tr>
+<tr class="memdesc:ad52a9c4cfaeffdeb081d0027730c5051"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the Inter over Union factor of two masks.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ad52a9c4cfaeffdeb081d0027730c5051">More...</a><br /></td></tr>
+<tr class="separator:ad52a9c4cfaeffdeb081d0027730c5051"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -137,8 +137,6 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a59e1eb452738a0e25b06b0f44edf9fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae33b300ad292c6a9e2effb274f23bfe9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a9536701fa588803b6da36eaf6b25d741">PrimitiveType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ae33b300ad292c6a9e2effb274f23bfe9">_primitiveType</a></td></tr>
 <tr class="separator:ae33b300ad292c6a9e2effb274f23bfe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab515b16113280ca91b4983984a4f64e2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ab515b16113280ca91b4983984a4f64e2">_isMatched</a></td></tr>
-<tr class="separator:ab515b16113280ca91b4983984a4f64e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A base class used to compute the tracking analysis. It is a pure virtual class. </p>
@@ -271,8 +269,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad325f4611aa50db9c4da0ed933a3a777" name="ad325f4611aa50db9c4da0ed933a3a777"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad325f4611aa50db9c4da0ed933a3a777">&#9670;&nbsp;</a></span>get_IOU()</h2>
+<a id="ad52a9c4cfaeffdeb081d0027730c5051" name="ad52a9c4cfaeffdeb081d0027730c5051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad52a9c4cfaeffdeb081d0027730c5051">&#9670;&nbsp;</a></span>get_IOU()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +281,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">double rgbd_slam::features::primitives::Primitive::get_IOU </td>
           <td>(</td>
-          <td class="paramtype">const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &amp;&#160;</td>
           <td class="paramname"><em>prim</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -333,8 +331,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac63de09a9c24d5842f67a6a4c3770f49" name="ac63de09a9c24d5842f67a6a4c3770f49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac63de09a9c24d5842f67a6a4c3770f49">&#9670;&nbsp;</a></span>is_matched()</h2>
+<a id="a88cc5a27f28ac286c862e4e96f426d32" name="a88cc5a27f28ac286c862e4e96f426d32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88cc5a27f28ac286c862e4e96f426d32">&#9670;&nbsp;</a></span>get_shape_mask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -343,7 +341,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool rgbd_slam::features::primitives::Primitive::is_matched </td>
+          <td class="memname">cv::Mat rgbd_slam::features::primitives::Primitive::get_shape_mask </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -358,8 +356,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a07e7678584cd03660df651b28d0f03ae" name="a07e7678584cd03660df651b28d0f03ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07e7678584cd03660df651b28d0f03ae">&#9670;&nbsp;</a></span>is_similar()</h2>
+<a id="a53479b4b4bf59c798bb366bc8d30fa41" name="a53479b4b4bf59c798bb366bc8d30fa41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53479b4b4bf59c798bb366bc8d30fa41">&#9670;&nbsp;</a></span>is_similar()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -370,7 +368,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">virtual bool rgbd_slam::features::primitives::Primitive::is_similar </td>
           <td>(</td>
-          <td class="paramtype">const std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html">Primitive</a> &amp;&#160;</td>
           <td class="paramname"><em>prim</em></td><td>)</td>
           <td></td>
         </tr>
@@ -385,7 +383,7 @@ Protected Attributes</h2></td></tr>
 <p>Get the similarity of two primitives. </p>
 <dl class="section return"><dt>Returns</dt><dd>A double between 0 and 1, with 1 indicating identical primitives </dd></dl>
 
-<p>Implemented in <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder.html#ae35b127b0fc095912ff1dc5b3aa98520">rgbd_slam::features::primitives::Cylinder</a>, and <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane.html#a66e77ae84ff5929262109109d893f0b6">rgbd_slam::features::primitives::Plane</a>.</p>
+<p>Implemented in <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder.html#a57a48c9117254d24e161447fcc606970">rgbd_slam::features::primitives::Cylinder</a>, and <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane.html#a6599e52c069b47d77d5a930b717967ee">rgbd_slam::features::primitives::Plane</a>.</p>
 
 </div>
 </div>
@@ -415,8 +413,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2fd9f0eaeecf13541bc44c960a2aa723" name="a2fd9f0eaeecf13541bc44c960a2aa723"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fd9f0eaeecf13541bc44c960a2aa723">&#9670;&nbsp;</a></span>set_is_matched()</h2>
+<a id="a0a9654a1428408b9b83ca83a9f4b7efe" name="a0a9654a1428408b9b83ca83a9f4b7efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a9654a1428408b9b83ca83a9f4b7efe">&#9670;&nbsp;</a></span>set_shape_mask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -425,10 +423,10 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rgbd_slam::features::primitives::Primitive::set_is_matched </td>
+          <td class="memname">void rgbd_slam::features::primitives::Primitive::set_shape_mask </td>
           <td>(</td>
-          <td class="paramtype">const bool&#160;</td>
-          <td class="paramname"><em>isMatched</em></td><td>)</td>
+          <td class="paramtype">const cv::Mat &amp;&#160;</td>
+          <td class="paramname"><em>mask</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -453,28 +451,6 @@ Protected Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">uint rgbd_slam::features::primitives::Primitive::_id</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab515b16113280ca91b4983984a4f64e2" name="ab515b16113280ca91b4983984a4f64e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab515b16113280ca91b4983984a4f64e2">&#9670;&nbsp;</a></span>_isMatched</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool rgbd_slam::features::primitives::Primitive::_isMatched</td>
         </tr>
       </table>
   </td>
@@ -545,8 +521,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="shape__primitives_8hpp_source.html">shape_primitives.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="shape__primitives_8cpp.html">shape_primitives.cpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="shape__primitives_8hpp_source.html">shape_primitives.hpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="shape__primitives_8cpp.html">shape_primitives.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

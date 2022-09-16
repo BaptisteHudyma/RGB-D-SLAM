@@ -1,0 +1,31 @@
+\hypertarget{namespacergbd__slam_1_1pose__optimization_1_1ransac}{}\doxysection{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::ransac Namespace Reference}
+\label{namespacergbd__slam_1_1pose__optimization_1_1ransac}\index{rgbd\_slam::pose\_optimization::ransac@{rgbd\_slam::pose\_optimization::ransac}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$template$<$ typename $>$ class Container, typename T $>$ }\\Container$<$ T $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_1_1ransac_a132ebe7760df9a95d9a89f41136453d1}{get\+\_\+random\+\_\+subset}} (const Container$<$ T $>$ \&in\+Container, const uint number\+Of\+Elements\+To\+Choose)
+\begin{DoxyCompactList}\small\item\em Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to in\+Container.\+size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_1_1ransac_a132ebe7760df9a95d9a89f41136453d1}\label{namespacergbd__slam_1_1pose__optimization_1_1ransac_a132ebe7760df9a95d9a89f41136453d1}} 
+\index{rgbd\_slam::pose\_optimization::ransac@{rgbd\_slam::pose\_optimization::ransac}!get\_random\_subset@{get\_random\_subset}}
+\index{get\_random\_subset@{get\_random\_subset}!rgbd\_slam::pose\_optimization::ransac@{rgbd\_slam::pose\_optimization::ransac}}
+\doxysubsubsection{\texorpdfstring{get\_random\_subset()}{get\_random\_subset()}}
+{\footnotesize\ttfamily template$<$template$<$ typename $>$ class Container, typename T $>$ \\
+Container$<$ T $>$ rgbd\+\_\+slam\+::pose\+\_\+optimization\+::ransac\+::get\+\_\+random\+\_\+subset (\begin{DoxyParamCaption}\item[{const Container$<$ T $>$ \&}]{in\+Container,  }\item[{const uint}]{number\+Of\+Elements\+To\+Choose }\end{DoxyParamCaption})}
+
+
+
+Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to in\+Container.\+size. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em in\+Container} & A container of size \texorpdfstring{$>$}{>} number\+Of\+Elements\+To\+Choose, in which this function will pick elements \\
+\hline
+\mbox{\texttt{ in}}  & {\em number\+Of\+Elements\+To\+Choose} & The number of elements we which to find in the final container \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A container of size number\+Of\+Elements\+To\+Choose, with no duplicated elements. 
+\end{DoxyReturn}

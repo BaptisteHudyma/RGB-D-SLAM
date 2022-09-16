@@ -30,8 +30,15 @@ double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad71e
 \begin{DoxyCompactList}\small\item\em Update this map point with the given informations\+: it is matched with another point. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a78264c7d69160b1838f7e454ccdd6a2f}{get\+\_\+age}} () const
 \end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+Scalar \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a76fabb3c547894e2da6de607dcb927ff}{\+\_\+color}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a4908daca5b3596dd5abeef30d30bf287}{set\+\_\+random\+\_\+color}} ()
 \item 
 double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a721c25c90375f259fa7a53080014e948}{get\+\_\+confidence}} () const override
 \begin{DoxyCompactList}\small\item\em Compute a confidence score (-\/1, 1) \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -87,6 +94,12 @@ Implements \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___poin
 
 True is this point is lost \+: should be removed from local map. Should be used only for map points. 
 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_a4908daca5b3596dd5abeef30d30bf287}\label{classrgbd__slam_1_1map__management_1_1_map___point_a4908daca5b3596dd5abeef30d30bf287}} 
+\index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}!set\_random\_color@{set\_random\_color}}
+\index{set\_random\_color@{set\_random\_color}!rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{set\_random\_color()}{set\_random\_color()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::set\+\_\+random\+\_\+color (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
 \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_ad71e7f37511fa245cbc69254b8c9cde2}\label{classrgbd__slam_1_1map__management_1_1_map___point_ad71e7f37511fa245cbc69254b8c9cde2}} 
 \index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}!update\_matched@{update\_matched}}
 \index{update\_matched@{update\_matched}!rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}}
@@ -117,7 +130,16 @@ Implements \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___poin
 
 
 
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_a76fabb3c547894e2da6de607dcb927ff}\label{classrgbd__slam_1_1map__management_1_1_map___point_a76fabb3c547894e2da6de607dcb927ff}} 
+\index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}!\_color@{\_color}}
+\index{\_color@{\_color}!rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}}
+\doxysubsubsection{\texorpdfstring{\_color}{\_color}}
+{\footnotesize\ttfamily cv\+::\+Scalar rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::\+\_\+color}
+
+
+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8hpp}{map\+\_\+point.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8cpp}{map\+\_\+point.\+cpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8hpp}{map\+\_\+point.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8cpp}{map\+\_\+point.\+cpp}}\end{DoxyCompactItemize}

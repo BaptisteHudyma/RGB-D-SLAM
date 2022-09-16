@@ -18,9 +18,9 @@ Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Cylinder\+:\
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_aa2a4d80c850eca45548d55d447bea6e5}{Cylinder}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} $>$ \&cylinder\+Seg, uint id, const cv\+::\+Mat \&shape\+Mask)
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a743fc844099b6383e6f1685fc4b252d4}{Cylinder}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&cylinder\+Seg, uint id, const cv\+::\+Mat \&shape\+Mask)
 \begin{DoxyCompactList}\small\item\em Construct a cylinder object. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}{is\+\_\+similar}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} $>$ \&prim) override
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a57a48c9117254d24e161447fcc606970}{is\+\_\+similar}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} \&prim) override
 \begin{DoxyCompactList}\small\item\em Get the similarity of two cylinders, based on normal direction and radius. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a118fff7905ebb024914fad065d456e0e}{get\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) override
 \begin{DoxyCompactList}\small\item\em Get the distance of a point to the surface of the cylinder. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -31,11 +31,11 @@ virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cy
 Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} class. Handles cylinder primitives. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_aa2a4d80c850eca45548d55d447bea6e5}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_aa2a4d80c850eca45548d55d447bea6e5}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a743fc844099b6383e6f1685fc4b252d4}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a743fc844099b6383e6f1685fc4b252d4}} 
 \index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!Cylinder@{Cylinder}}
 \index{Cylinder@{Cylinder}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
 \doxysubsubsection{\texorpdfstring{Cylinder()}{Cylinder()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::\+Cylinder (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} $>$ \&}]{cylinder\+Seg,  }\item[{uint}]{id,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::\+Cylinder (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&}]{cylinder\+Seg,  }\item[{uint}]{id,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})}
 
 
 
@@ -70,11 +70,11 @@ The signed distance of the point to the surface, 0 if the point is on the surfac
 
 Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6537b793a2db1e5fb5009b5ddcf4fdb8}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ae35b127b0fc095912ff1dc5b3aa98520}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a57a48c9117254d24e161447fcc606970}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a57a48c9117254d24e161447fcc606970}} 
 \index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!is\_similar@{is\_similar}}
 \index{is\_similar@{is\_similar}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
 \doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} $>$ \&}]{prim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} \&}]{prim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -90,11 +90,11 @@ A double between 0 and 1, with 1 indicating identical cylinders
 \end{DoxyReturn}
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a07e7678584cd03660df651b28d0f03ae}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a53479b4b4bf59c798bb366bc8d30fa41}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
 
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{shape__primitives_8hpp}{shape\+\_\+primitives.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{shape__primitives_8cpp}{shape\+\_\+primitives.\+cpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{shape__primitives_8hpp}{shape\+\_\+primitives.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{shape__primitives_8cpp}{shape\+\_\+primitives.\+cpp}}\end{DoxyCompactItemize}

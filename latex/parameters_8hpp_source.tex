@@ -1,9 +1,9 @@
 \hypertarget{parameters_8hpp_source}{}\doxysection{parameters.\+hpp}
-\label{parameters_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp}}
+\label{parameters_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp}}
 \mbox{\hyperlink{parameters_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_PARAMETERS\_HPP}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGDBSLAM\_PARAMETERS\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_PARAMETERS\_HPP}}
 \DoxyCodeLine{3 }
 \DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
 \DoxyCodeLine{5 }
@@ -97,120 +97,124 @@
 \DoxyCodeLine{102 }
 \DoxyCodeLine{103             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4cb40ff3ae97b22ca42dcf20bee15ed6}{get\_cylinder\_ransac\_max\_distance}}() \{ \textcolor{keywordflow}{return} \_cylinderRansacSqrtMaxDistance; \};}
 \DoxyCodeLine{104             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae1190b01216e37255a79ed33740bdf3c}{get\_cylinder\_ransac\_minimm\_score}}() \{ \textcolor{keywordflow}{return} \_cylinderRansacMinimumScore; \};}
-\DoxyCodeLine{105 }
-\DoxyCodeLine{106             \textcolor{comment}{// Map}}
+\DoxyCodeLine{105             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae7b100200c06a3e739cef60bd2fca567}{get\_cylinder\_ransac\_inlier\_proportion}} () \{ \textcolor{keywordflow}{return} \_cylinderRansacInlierProportions; \};}
+\DoxyCodeLine{106             \textcolor{keyword}{static} \textcolor{keywordtype}{float} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_abdda23d3d10c13ca696d3dc94a27afff}{get\_cylinder\_ransac\_probability\_of\_success}} () \{ \textcolor{keywordflow}{return} \_cylinderRansacProbabilityOfSuccess; \};}
 \DoxyCodeLine{107 }
-\DoxyCodeLine{108             \textcolor{comment}{// Max unmatched points to consider this map point as lost}}
-\DoxyCodeLine{109             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3be7111a9c245fdc4330d26da4193b6d}{get\_maximum\_unmatched\_before\_removal}}() \{ \textcolor{keywordflow}{return} \_pointUnmatchedCountToLoose; \};}
-\DoxyCodeLine{110             \textcolor{comment}{//Observe a point for N frames to gain max liability}}
-\DoxyCodeLine{111             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae5705b7f677376e5c7ce01248a24e543}{get\_point\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointAgeConfidence; \};}
-\DoxyCodeLine{112             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a754162a46c3dda3643df55c6e873d328}{get\_point\_staged\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointStagedAgeConfidence; \};}
-\DoxyCodeLine{113             \textcolor{comment}{// Minimum point liability for the local map}}
-\DoxyCodeLine{114             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4743d8efa22ba16a704875096d7817a3}{get\_minimum\_confidence\_for\_local\_map}}() \{ \textcolor{keywordflow}{return} \_pointMinimumConfidenceForMap; \};}
-\DoxyCodeLine{115             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e0373a14804d1270}{get\_maximum\_map\_retroprojection\_error}}() \{ \textcolor{keywordflow}{return} \_mapMaximumRetroprojectionError; \};}
-\DoxyCodeLine{116 }
-\DoxyCodeLine{117         \textcolor{keyword}{private}:}
-\DoxyCodeLine{118             \textcolor{comment}{// Is this set of parameters valid}}
-\DoxyCodeLine{119             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \_isValid = \textcolor{keyword}{false}; }
-\DoxyCodeLine{120 }
-\DoxyCodeLine{121             \textcolor{comment}{// Starting position (m \& radians)}}
-\DoxyCodeLine{122             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionX;}
-\DoxyCodeLine{123             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionY;}
-\DoxyCodeLine{124             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionZ;}
-\DoxyCodeLine{125 }
-\DoxyCodeLine{126             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationX;}
-\DoxyCodeLine{127             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationY;}
-\DoxyCodeLine{128             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationZ;}
-\DoxyCodeLine{129 }
-\DoxyCodeLine{130             \textcolor{comment}{// Cameras intrinsics parameters}}
-\DoxyCodeLine{131             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1CenterX;}
-\DoxyCodeLine{132             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1CenterY;}
-\DoxyCodeLine{133             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1FocalX;}
-\DoxyCodeLine{134             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1FocalY;}
-\DoxyCodeLine{135 }
-\DoxyCodeLine{136             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2CenterX;}
-\DoxyCodeLine{137             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2CenterY;}
-\DoxyCodeLine{138             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2FocalX;}
-\DoxyCodeLine{139             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2FocalY;}
-\DoxyCodeLine{140 }
-\DoxyCodeLine{141             \textcolor{comment}{// Camera 2 position and rotation}}
-\DoxyCodeLine{142             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationX;}
-\DoxyCodeLine{143             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationY;}
-\DoxyCodeLine{144             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationZ;}
-\DoxyCodeLine{145 }
-\DoxyCodeLine{146             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationX;}
-\DoxyCodeLine{147             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationY;}
-\DoxyCodeLine{148             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationZ;}
-\DoxyCodeLine{149 }
-\DoxyCodeLine{150             \textcolor{comment}{// primitive matching}}
-\DoxyCodeLine{151             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_minimumIOUToConsiderMatch;    \textcolor{comment}{// Inter over Union of the two primitive masks, to consider a primitive match}}
-\DoxyCodeLine{152             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_minimumNormalsDotDifference;  \textcolor{comment}{// Minimum score of the normals of the two primitives (0 to 1)}}
-\DoxyCodeLine{153 }
-\DoxyCodeLine{154             \textcolor{comment}{// Position optimization}}
-\DoxyCodeLine{155             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumPointForOptimization;    \textcolor{comment}{// Minimum points to launch optimization}}
-\DoxyCodeLine{156             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_maximumPointPerFrame;           \textcolor{comment}{// maximum points per frame, over which we do not want to detect more points (optimization)}}
-\DoxyCodeLine{157 }
-\DoxyCodeLine{158             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacMaximumRetroprojectionErrorForInliers;  \textcolor{comment}{//Maximum retroprojection error in pixels to consider a point match as inlier}}
-\DoxyCodeLine{159             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacMinimumInliersProportionForEarlyStop; \textcolor{comment}{// Proportion of inliers to consider that a transformation is good enough to stop optimization}}
-\DoxyCodeLine{160             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacProbabilityOfSuccess; \textcolor{comment}{// Probability that the RANSAC process finds a good transformation}}
-\DoxyCodeLine{161             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacInlierProportion; \textcolor{comment}{// Proportion of inliers in original set}}
-\DoxyCodeLine{162 }
-\DoxyCodeLine{163             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfSolutionVectorNorm;    \textcolor{comment}{// tolerance for the norm of the solution vector}}
-\DoxyCodeLine{164             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfVectorFunction;        \textcolor{comment}{// tolerance for the norm of the vector function}}
-\DoxyCodeLine{165 }
-\DoxyCodeLine{166             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfErrorFunctionGradient; \textcolor{comment}{// tolerance for the norm of the gradient of the error function}}
-\DoxyCodeLine{167             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationDiagonalStepBoundShift;           \textcolor{comment}{// step bound for the diagonal shift}}
-\DoxyCodeLine{168             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationErrorPrecision;                   \textcolor{comment}{// error precision}}
-\DoxyCodeLine{169 }
-\DoxyCodeLine{170             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_optimizationMaximumIterations;              \textcolor{comment}{// Max iteration of the Levenberg Marquart optimisation}}
-\DoxyCodeLine{171             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_maximumRetroprojectionError;              \textcolor{comment}{// In pixel: maximum distance after which we can consider a retroprojection as invalid}}
-\DoxyCodeLine{172 }
-\DoxyCodeLine{173             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightThreshold;}
-\DoxyCodeLine{174             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightCoefficient;}
-\DoxyCodeLine{175             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointLossAlpha;   \textcolor{comment}{// loss steepness (\_infinity, infinity)}}
-\DoxyCodeLine{176             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointLossScale;   \textcolor{comment}{// loss scale (> 0), Unit: Pixels}}
-\DoxyCodeLine{177             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointErrorMultiplier; \textcolor{comment}{// multiplier of the final loss value (useful when  using primitives along with points)}}
-\DoxyCodeLine{178 }
-\DoxyCodeLine{179             \textcolor{comment}{// Point Detection \& matching}}
-\DoxyCodeLine{180             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_matchSearchRadius;    \textcolor{comment}{// Radius of the space around a point to search match points ins}}
-\DoxyCodeLine{181             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{int} \_matchSearchCellSize;     \textcolor{comment}{// Size of a search space divider }}
-\DoxyCodeLine{182             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_maximumMatchDistance; \textcolor{comment}{// Maximum distance between a point and his mach before refusing the match}}
-\DoxyCodeLine{183             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_detectorMinHessian;}
-\DoxyCodeLine{184             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_keypointRefreshFrequency;}
-\DoxyCodeLine{185             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowPyramidDepth;}
-\DoxyCodeLine{186             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowPyramidWindowSize;}
-\DoxyCodeLine{187             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowMaxError;}
-\DoxyCodeLine{188             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowMaxDistance;}
-\DoxyCodeLine{189             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_keypointMaskDiameter;}
-\DoxyCodeLine{190 }
-\DoxyCodeLine{191             \textcolor{comment}{// Primitive extraction parameters}}
-\DoxyCodeLine{192             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumCosAngle;         \textcolor{comment}{// Maximum angle between two planes to consider merging}}
-\DoxyCodeLine{193             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumMergeDistance;    \textcolor{comment}{// Maximum plane patch merge distance}}
-\DoxyCodeLine{194             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_depthMapPatchSize;         \textcolor{comment}{// Size of the minimum search area}}
-\DoxyCodeLine{195 }
-\DoxyCodeLine{196             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumPlaneSeedCount;     \textcolor{comment}{// Minimum plane patches in a set to consider merging }}
-\DoxyCodeLine{197             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumCellActivated;}
-\DoxyCodeLine{198             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaError;}
-\DoxyCodeLine{199             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaMargin;        \textcolor{comment}{// [3, 8]}}
-\DoxyCodeLine{200             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_depthDiscontinuityLimit; \textcolor{comment}{// Max number of discontinuities in a cell to reject it}}
-\DoxyCodeLine{201             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthAlpha;              \textcolor{comment}{// [0.02, 0.04]}}
-\DoxyCodeLine{202 }
-\DoxyCodeLine{203             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacSqrtMaxDistance;}
-\DoxyCodeLine{204             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacMinimumScore;}
-\DoxyCodeLine{205 }
-\DoxyCodeLine{206             \textcolor{comment}{// local map management}}
-\DoxyCodeLine{207             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointUnmatchedCountToLoose;    \textcolor{comment}{// Maximum unmatched times before removal}}
-\DoxyCodeLine{208             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointAgeConfidence;            \textcolor{comment}{// Minimum age of a point to consider it good }}
-\DoxyCodeLine{209             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointStagedAgeConfidence;        \textcolor{comment}{// Minimum age of a point in staged map to consider it good }}
-\DoxyCodeLine{210             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointMinimumConfidenceForMap;        \textcolor{comment}{// Minimum confidence of a staged point to add it to local map}}
-\DoxyCodeLine{211             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_mapMaximumRetroprojectionError;       \textcolor{comment}{// Maximum error between a map point retro projection and the new point position before removing it from the local map (in millimeters)}}
-\DoxyCodeLine{212 }
-\DoxyCodeLine{213 }
-\DoxyCodeLine{217             \textcolor{keyword}{static} \textcolor{keywordtype}{void} check\_parameters\_validity();}
-\DoxyCodeLine{218     \};}
-\DoxyCodeLine{219 }
-\DoxyCodeLine{220 \};}
-\DoxyCodeLine{221 }
-\DoxyCodeLine{222 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{108             \textcolor{comment}{// Map}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110             \textcolor{comment}{// Max unmatched points to consider this map point as lost}}
+\DoxyCodeLine{111             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3be7111a9c245fdc4330d26da4193b6d}{get\_maximum\_unmatched\_before\_removal}}() \{ \textcolor{keywordflow}{return} \_pointUnmatchedCountToLoose; \};}
+\DoxyCodeLine{112             \textcolor{comment}{//Observe a point for N frames to gain max liability}}
+\DoxyCodeLine{113             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_ae5705b7f677376e5c7ce01248a24e543}{get\_point\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointAgeConfidence; \};}
+\DoxyCodeLine{114             \textcolor{keyword}{static} uint \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a754162a46c3dda3643df55c6e873d328}{get\_point\_staged\_age\_confidence}}() \{ \textcolor{keywordflow}{return} \_pointStagedAgeConfidence; \};}
+\DoxyCodeLine{115             \textcolor{comment}{// Minimum point liability for the local map}}
+\DoxyCodeLine{116             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a4743d8efa22ba16a704875096d7817a3}{get\_minimum\_confidence\_for\_local\_map}}() \{ \textcolor{keywordflow}{return} \_pointMinimumConfidenceForMap; \};}
+\DoxyCodeLine{117             \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a6a37ff3b85ebb434e0373a14804d1270}{get\_maximum\_map\_retroprojection\_error}}() \{ \textcolor{keywordflow}{return} \_mapMaximumRetroprojectionError; \};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119         \textcolor{keyword}{private}:}
+\DoxyCodeLine{120             \textcolor{comment}{// Is this set of parameters valid}}
+\DoxyCodeLine{121             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \_isValid = \textcolor{keyword}{false}; }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123             \textcolor{comment}{// Starting position (m \& radians)}}
+\DoxyCodeLine{124             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionX;}
+\DoxyCodeLine{125             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionY;}
+\DoxyCodeLine{126             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingPositionZ;}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationX;}
+\DoxyCodeLine{129             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationY;}
+\DoxyCodeLine{130             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_startingRotationZ;}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132             \textcolor{comment}{// Cameras intrinsics parameters}}
+\DoxyCodeLine{133             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1CenterX;}
+\DoxyCodeLine{134             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1CenterY;}
+\DoxyCodeLine{135             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1FocalX;}
+\DoxyCodeLine{136             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera1FocalY;}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2CenterX;}
+\DoxyCodeLine{139             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2CenterY;}
+\DoxyCodeLine{140             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2FocalX;}
+\DoxyCodeLine{141             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2FocalY;}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143             \textcolor{comment}{// Camera 2 position and rotation}}
+\DoxyCodeLine{144             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationX;}
+\DoxyCodeLine{145             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationY;}
+\DoxyCodeLine{146             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2TranslationZ;}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationX;}
+\DoxyCodeLine{149             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationY;}
+\DoxyCodeLine{150             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_camera2RotationZ;}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152             \textcolor{comment}{// primitive matching}}
+\DoxyCodeLine{153             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_minimumIOUToConsiderMatch;    \textcolor{comment}{// Inter over Union of the two primitive masks, to consider a primitive match}}
+\DoxyCodeLine{154             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_minimumNormalsDotDifference;  \textcolor{comment}{// Minimum score of the normals of the two primitives (0 to 1)}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156             \textcolor{comment}{// Position optimization}}
+\DoxyCodeLine{157             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumPointForOptimization;    \textcolor{comment}{// Minimum points to launch optimization}}
+\DoxyCodeLine{158             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_maximumPointPerFrame;           \textcolor{comment}{// maximum points per frame, over which we do not want to detect more points (optimization)}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacMaximumRetroprojectionErrorForInliers;  \textcolor{comment}{//Maximum retroprojection error in pixels to consider a point match as inlier}}
+\DoxyCodeLine{161             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacMinimumInliersProportionForEarlyStop; \textcolor{comment}{// Proportion of inliers to consider that a transformation is good enough to stop optimization}}
+\DoxyCodeLine{162             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacProbabilityOfSuccess; \textcolor{comment}{// Probability that the RANSAC process finds a good transformation}}
+\DoxyCodeLine{163             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_ransacInlierProportion; \textcolor{comment}{// Proportion of inliers in original set}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfSolutionVectorNorm;    \textcolor{comment}{// tolerance for the norm of the solution vector}}
+\DoxyCodeLine{166             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfVectorFunction;        \textcolor{comment}{// tolerance for the norm of the vector function}}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationToleranceOfErrorFunctionGradient; \textcolor{comment}{// tolerance for the norm of the gradient of the error function}}
+\DoxyCodeLine{169             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationDiagonalStepBoundShift;           \textcolor{comment}{// step bound for the diagonal shift}}
+\DoxyCodeLine{170             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_optimizationErrorPrecision;                   \textcolor{comment}{// error precision}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_optimizationMaximumIterations;              \textcolor{comment}{// Max iteration of the Levenberg Marquart optimisation}}
+\DoxyCodeLine{173             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_maximumRetroprojectionError;              \textcolor{comment}{// In pixel: maximum distance after which we can consider a retroprojection as invalid}}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightThreshold;}
+\DoxyCodeLine{176             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointWeightCoefficient;}
+\DoxyCodeLine{177             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointLossAlpha;   \textcolor{comment}{// loss steepness (\_infinity, infinity)}}
+\DoxyCodeLine{178             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointLossScale;   \textcolor{comment}{// loss scale (> 0), Unit: Pixels}}
+\DoxyCodeLine{179             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointErrorMultiplier; \textcolor{comment}{// multiplier of the final loss value (useful when  using primitives along with points)}}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181             \textcolor{comment}{// Point Detection \& matching}}
+\DoxyCodeLine{182             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_matchSearchRadius;    \textcolor{comment}{// Radius of the space around a point to search match points ins}}
+\DoxyCodeLine{183             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{int} \_matchSearchCellSize;     \textcolor{comment}{// Size of a search space divider }}
+\DoxyCodeLine{184             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_maximumMatchDistance; \textcolor{comment}{// Maximum distance between a point and his mach before refusing the match}}
+\DoxyCodeLine{185             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_detectorMinHessian;}
+\DoxyCodeLine{186             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_keypointRefreshFrequency;}
+\DoxyCodeLine{187             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowPyramidDepth;}
+\DoxyCodeLine{188             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowPyramidWindowSize;}
+\DoxyCodeLine{189             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowMaxError;}
+\DoxyCodeLine{190             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_opticalFlowMaxDistance;}
+\DoxyCodeLine{191             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_keypointMaskDiameter;}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193             \textcolor{comment}{// Primitive extraction parameters}}
+\DoxyCodeLine{194             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumCosAngle;         \textcolor{comment}{// Maximum angle between two planes to consider merging}}
+\DoxyCodeLine{195             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_primitiveMaximumMergeDistance;    \textcolor{comment}{// Maximum plane patch merge distance}}
+\DoxyCodeLine{196             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_depthMapPatchSize;         \textcolor{comment}{// Size of the minimum search area}}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumPlaneSeedCount;     \textcolor{comment}{// Minimum plane patches in a set to consider merging }}
+\DoxyCodeLine{199             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_minimumCellActivated;}
+\DoxyCodeLine{200             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaError;}
+\DoxyCodeLine{201             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthSigmaMargin;        \textcolor{comment}{// [3, 8]}}
+\DoxyCodeLine{202             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_depthDiscontinuityLimit; \textcolor{comment}{// Max number of discontinuities in a cell to reject it}}
+\DoxyCodeLine{203             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_depthAlpha;              \textcolor{comment}{// [0.02, 0.04]}}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacSqrtMaxDistance;}
+\DoxyCodeLine{206             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacMinimumScore;}
+\DoxyCodeLine{207             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacInlierProportions;}
+\DoxyCodeLine{208             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{float} \_cylinderRansacProbabilityOfSuccess;}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210             \textcolor{comment}{// local map management}}
+\DoxyCodeLine{211             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointUnmatchedCountToLoose;    \textcolor{comment}{// Maximum unmatched times before removal}}
+\DoxyCodeLine{212             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointAgeConfidence;            \textcolor{comment}{// Minimum age of a point to consider it good }}
+\DoxyCodeLine{213             \textcolor{keyword}{inline} \textcolor{keyword}{static} uint \_pointStagedAgeConfidence;        \textcolor{comment}{// Minimum age of a point in staged map to consider it good }}
+\DoxyCodeLine{214             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_pointMinimumConfidenceForMap;        \textcolor{comment}{// Minimum confidence of a staged point to add it to local map}}
+\DoxyCodeLine{215             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{double} \_mapMaximumRetroprojectionError;       \textcolor{comment}{// Maximum error between a map point retro projection and the new point position before removing it from the local map (in millimeters)}}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 }
+\DoxyCodeLine{221             \textcolor{keyword}{static} \textcolor{keywordtype}{void} check\_parameters\_validity();}
+\DoxyCodeLine{222     \};}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 \};}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

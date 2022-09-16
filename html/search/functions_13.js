@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xyz_5fmap_5fwriter_0',['XYZ_Map_Writer',['../classrgbd__slam_1_1utils_1_1_x_y_z___map___writer.html#a71c92d7ae4d4be1081e6babac3801675',1,'rgbd_slam::utils::XYZ_Map_Writer']]]
+  ['world_5fto_5fscreen_5fcoordinates_0',['world_to_screen_coordinates',['../namespacergbd__slam_1_1utils.html#a5f33c26a7b68f18c379482984646ff47',1,'rgbd_slam::utils']]]
 ];

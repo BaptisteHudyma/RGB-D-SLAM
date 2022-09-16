@@ -1,8 +1,8 @@
-\hypertarget{keypoint__handler_8cpp}{}\doxysection{/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/keypoint\+\_\+handler.cpp File Reference}
-\label{keypoint__handler_8cpp}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.cpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.cpp}}
+\hypertarget{keypoint__handler_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/keypoint\+\_\+handler.cpp File Reference}
+\label{keypoint__handler_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.cpp}}
 {\ttfamily \#include \char`\"{}keypoint\+\_\+handler.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}logger.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../outputs/logger.\+hpp\char`\"{}}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -15,7 +15,7 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints}{rgbd\+\
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ad1e4b59b0306fab61597157a08378679}{rgbd\+\_\+slam\+::features\+::keypoints\+::is\+\_\+in\+\_\+border}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&im)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a6c6e02021b7ede338ae200ddad7645c5}{rgbd\+\_\+slam\+::features\+::keypoints\+::is\+\_\+in\+\_\+border}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&im, const double border\+Size=0)
 \begin{DoxyCompactList}\small\item\em checks if a point is in an image, a with border \end{DoxyCompactList}\item 
-float \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ae4c96326a1210562ae185fa60999ea86}{rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+depth\+\_\+approximation}} (const cv\+::\+Mat \&depth\+Image, const cv\+::\+Point2f \&depth\+Coordinates)
+double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad80397e4b7ec8be74317bf0}{rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+depth\+\_\+approximation}} (const cv\+::\+Mat \&depth\+Image, const cv\+::\+Point2f \&depth\+Coordinates)
 \begin{DoxyCompactList}\small\item\em Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth with the surrounding points to prevent invalid depth on edges. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -24,8 +24,6 @@ bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segm
 \item 
 void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}{expand\+\_\+segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+Segment)
 \begin{DoxyCompactList}\small\item\em Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa7e557b15828188b43abb01e12cfbf3e}{expand\+\_\+segment}} (const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \&plane\+Segment)
-\begin{DoxyCompactList}\small\item\em Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_acf772b88ea844ed2b2c01739ef7644b2}{get\+\_\+normal\+\_\+similarity}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&p) const
 \begin{DoxyCompactList}\small\item\em Compute the dot product of two plane normals. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ad29da0efc04a494eba4cf6ea8d02f7b7}{get\+\_\+signed\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) const
@@ -45,6 +43,13 @@ double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___se
 bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2746bf24bf12a0932ab2544a40c409ba}{is\+\_\+planar}} () const
 \item 
 double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa4777ebf46540b6c0d3fe4a811d4c6ab}{get\+\_\+score}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abfbb8c5d63f373ea05167d0cbd29adab}{is\+\_\+cell\+\_\+vertical\+\_\+continuous}} (const Eigen\+::\+Matrix\+Xf \&depth\+Matrix, const double depth\+Alpha\+Value, const uint depth\+Discontinuity\+Limit) const
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6667b3609f694954c3e604d71f72ee7f}{is\+\_\+cell\+\_\+horizontal\+\_\+continuous}} (const Eigen\+::\+Matrix\+Xf \&depth\+Matrix, const double depth\+Alpha\+Value, const uint depth\+Discontinuity\+Limit) const
 \end{DoxyCompactItemize}
 
 
@@ -91,23 +96,8 @@ Clears this segment parameters to restart analysis.
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!expand\_segment@{expand\_segment}}
 \index{expand\_segment@{expand\_segment}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
-\doxysubsubsection{\texorpdfstring{expand\_segment()}{expand\_segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\doxysubsubsection{\texorpdfstring{expand\_segment()}{expand\_segment()}}
 {\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::expand\+\_\+segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+Segment }\end{DoxyParamCaption})}
-
-
-
-Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em plane\+Segment} & Another plane segment \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa7e557b15828188b43abb01e12cfbf3e}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa7e557b15828188b43abb01e12cfbf3e}} 
-\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!expand\_segment@{expand\_segment}}
-\index{expand\_segment@{expand\_segment}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
-\doxysubsubsection{\texorpdfstring{expand\_segment()}{expand\_segment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::expand\+\_\+segment (\begin{DoxyParamCaption}\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \&}]{plane\+Segment }\end{DoxyParamCaption})}
 
 
 
@@ -187,6 +177,18 @@ Compute the signed distance from a plane to a point.
 \doxysubsubsection{\texorpdfstring{init\_plane\_segment()}{init\_plane\_segment()}}
 {\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::init\+\_\+plane\+\_\+segment (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xf \&}]{depth\+Cloud\+Array,  }\item[{const uint}]{cell\+Id }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6667b3609f694954c3e604d71f72ee7f}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6667b3609f694954c3e604d71f72ee7f}} 
+\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!is\_cell\_horizontal\_continuous@{is\_cell\_horizontal\_continuous}}
+\index{is\_cell\_horizontal\_continuous@{is\_cell\_horizontal\_continuous}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{is\_cell\_horizontal\_continuous()}{is\_cell\_horizontal\_continuous()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+cell\+\_\+horizontal\+\_\+continuous (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xf \&}]{depth\+Matrix,  }\item[{const double}]{depth\+Alpha\+Value,  }\item[{const uint}]{depth\+Discontinuity\+Limit }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abfbb8c5d63f373ea05167d0cbd29adab}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abfbb8c5d63f373ea05167d0cbd29adab}} 
+\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!is\_cell\_vertical\_continuous@{is\_cell\_vertical\_continuous}}
+\index{is\_cell\_vertical\_continuous@{is\_cell\_vertical\_continuous}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{is\_cell\_vertical\_continuous()}{is\_cell\_vertical\_continuous()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+cell\+\_\+vertical\+\_\+continuous (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xf \&}]{depth\+Matrix,  }\item[{const double}]{depth\+Alpha\+Value,  }\item[{const uint}]{depth\+Discontinuity\+Limit }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a4b5957552d2fc15f93cf3131bfef1e29}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a4b5957552d2fc15f93cf3131bfef1e29}} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!is\_depth\_discontinuous@{is\_depth\_discontinuous}}
 \index{is\_depth\_discontinuous@{is\_depth\_discontinuous}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
@@ -212,5 +214,5 @@ True if this plane segment presents a depth discontinuity with another one.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{plane__segment_8hpp}{plane\+\_\+segment.\+hpp}}\item 
-/home/baptou/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{plane__segment_8cpp}{plane\+\_\+segment.\+cpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{plane__segment_8hpp}{plane\+\_\+segment.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{plane__segment_8cpp}{plane\+\_\+segment.\+cpp}}\end{DoxyCompactItemize}

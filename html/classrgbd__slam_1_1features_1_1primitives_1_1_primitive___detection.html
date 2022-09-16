@@ -84,14 +84,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abfb0908a83fed889a0319370dd06e86c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#abfb0908a83fed889a0319370dd06e86c">Primitive_Detection</a> (const uint width, const uint height, const uint blocSize=20, const float minCosAngleForMerge=0.9659, const float maxMergeDistance=50)</td></tr>
-<tr class="separator:abfb0908a83fed889a0319370dd06e86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a911fc1929bc8ad43697ff1fecdd03570"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a911fc1929bc8ad43697ff1fecdd03570">find_primitives</a> (const Eigen::MatrixXf &amp;depthMatrix, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;primitiveSegments, cv::Mat &amp;segOut)</td></tr>
-<tr class="memdesc:a911fc1929bc8ad43697ff1fecdd03570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main compute function: computes the primitives in the depth imahe.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a911fc1929bc8ad43697ff1fecdd03570">More...</a><br /></td></tr>
-<tr class="separator:a911fc1929bc8ad43697ff1fecdd03570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea8e4490690542045678684c772108a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#aea8e4490690542045678684c772108a0">apply_masks</a> (const cv::Mat &amp;inputImage, const std::vector&lt; cv::Vec3b &gt; &amp;colors, const cv::Mat &amp;maskImage, const <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;primitiveSegments, const std::unordered_map&lt; int, uint &gt; &amp;associatedIds, const uint bandSize, cv::Mat &amp;labeledImage)</td></tr>
-<tr class="memdesc:aea8e4490690542045678684c772108a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply each plane and cylinder mask on the maskImage, with colors corresponding to the ids of colors vector.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#aea8e4490690542045678684c772108a0">More...</a><br /></td></tr>
-<tr class="separator:aea8e4490690542045678684c772108a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a820def3cf19e327da91dd115f2df1ed9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a820def3cf19e327da91dd115f2df1ed9">Primitive_Detection</a> (const uint width, const uint height, const uint blocSize=20, const float minCosAngleForMerge=0.9659f, const float maxMergeDistance=50.0f)</td></tr>
+<tr class="separator:a820def3cf19e327da91dd115f2df1ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeea3bf02c163af62c6f3e5be9078a6ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#aeea3bf02c163af62c6f3e5be9078a6ae">find_primitives</a> (const Eigen::MatrixXf &amp;depthMatrix, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a353a99b78e30a56a60d54a47cf318705">primitive_container</a> &amp;primitiveSegments)</td></tr>
+<tr class="memdesc:aeea3bf02c163af62c6f3e5be9078a6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main compute function: computes the primitives in the depth imahe.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#aeea3bf02c163af62c6f3e5be9078a6ae">More...</a><br /></td></tr>
+<tr class="separator:aeea3bf02c163af62c6f3e5be9078a6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f64424ca0ce70414c2df2022c32dc7f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a9f64424ca0ce70414c2df2022c32dc7f">~Primitive_Detection</a> ()</td></tr>
 <tr class="separator:a9f64424ca0ce70414c2df2022c32dc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -107,20 +104,18 @@ Public Attributes</h2></td></tr>
 <tr class="separator:afa8239c91447b7a5b6f2590a7024e5b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acee4e990aaeeec273775cf0fc944fa61"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#acee4e990aaeeec273775cf0fc944fa61">refineTime</a></td></tr>
 <tr class="separator:acee4e990aaeeec273775cf0fc944fa61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15e86c6c982aafda2c86c80e255cff98"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a15e86c6c982aafda2c86c80e255cff98">setMaskTime</a></td></tr>
-<tr class="separator:a15e86c6c982aafda2c86c80e255cff98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
 Protected Types</h2></td></tr>
 <tr class="memitem:ad96ff3c75c6a7784c3a8f1f4b0102a65"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; std::pair&lt; int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ad96ff3c75c6a7784c3a8f1f4b0102a65">intpair_vector</a></td></tr>
 <tr class="separator:ad96ff3c75c6a7784c3a8f1f4b0102a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65c1f8eea51000c775c6e2c024df7d8b"><td class="memItemLeft" align="right" valign="top">typedef std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a65c1f8eea51000c775c6e2c024df7d8b">plane_segment_unique_ptr</a></td></tr>
-<tr class="separator:a65c1f8eea51000c775c6e2c024df7d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5447caf12f82fefd49fa3a4b2e5d6eaf"><td class="memItemLeft" align="right" valign="top">typedef std::unique_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html">Cylinder_Segment</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a5447caf12f82fefd49fa3a4b2e5d6eaf">cylinder_segment_unique_ptr</a></td></tr>
-<tr class="separator:a5447caf12f82fefd49fa3a4b2e5d6eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c6de1dae1c5b4783520c1720ad1bd7b"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a65c1f8eea51000c775c6e2c024df7d8b">plane_segment_unique_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a1c6de1dae1c5b4783520c1720ad1bd7b">planes_ptr_vector</a></td></tr>
+<tr class="memitem:a201ea8e0b9952678eb64941e75c72a02"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a201ea8e0b9952678eb64941e75c72a02">plane_segment_unique_ptr</a></td></tr>
+<tr class="separator:a201ea8e0b9952678eb64941e75c72a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab465ee5f8b6cc649497f2d291e07de46"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html">Cylinder_Segment</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab465ee5f8b6cc649497f2d291e07de46">cylinder_segment_unique_ptr</a></td></tr>
+<tr class="separator:ab465ee5f8b6cc649497f2d291e07de46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c6de1dae1c5b4783520c1720ad1bd7b"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a201ea8e0b9952678eb64941e75c72a02">plane_segment_unique_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a1c6de1dae1c5b4783520c1720ad1bd7b">planes_ptr_vector</a></td></tr>
 <tr class="separator:a1c6de1dae1c5b4783520c1720ad1bd7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae175d07a6ac399887ee4cd473b76fa41"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a5447caf12f82fefd49fa3a4b2e5d6eaf">cylinder_segment_unique_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ae175d07a6ac399887ee4cd473b76fa41">cylinders_ptr_vector</a></td></tr>
+<tr class="memitem:ae175d07a6ac399887ee4cd473b76fa41"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab465ee5f8b6cc649497f2d291e07de46">cylinder_segment_unique_ptr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ae175d07a6ac399887ee4cd473b76fa41">cylinders_ptr_vector</a></td></tr>
 <tr class="separator:ae175d07a6ac399887ee4cd473b76fa41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3ed9416eca995f1a3dc2fc2795bb2db"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; uint &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab3ed9416eca995f1a3dc2fc2795bb2db">uint_vector</a></td></tr>
 <tr class="separator:ab3ed9416eca995f1a3dc2fc2795bb2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,18 +137,15 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a776295f859bf74f880c444ad54b3b5a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab3ed9416eca995f1a3dc2fc2795bb2db">uint_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a776295f859bf74f880c444ad54b3b5a1">merge_planes</a> ()</td></tr>
 <tr class="memdesc:a776295f859bf74f880c444ad54b3b5a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merge close planes by comparing normals and MSE.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a776295f859bf74f880c444ad54b3b5a1">More...</a><br /></td></tr>
 <tr class="separator:a776295f859bf74f880c444ad54b3b5a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac159d1a272e0e034615fdc53f52a290e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ac159d1a272e0e034615fdc53f52a290e">refine_plane_boundaries</a> (const Eigen::MatrixXf &amp;depthCloudArray, const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab3ed9416eca995f1a3dc2fc2795bb2db">uint_vector</a> &amp;planeMergeLabels, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;primitiveSegments)</td></tr>
-<tr class="memdesc:ac159d1a272e0e034615fdc53f52a290e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refine the final plane edges in mask images.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ac159d1a272e0e034615fdc53f52a290e">More...</a><br /></td></tr>
-<tr class="separator:ac159d1a272e0e034615fdc53f52a290e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14948317c7a4bd306aef1a23b401f2f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a14948317c7a4bd306aef1a23b401f2f6">refine_cylinder_boundaries</a> (const Eigen::MatrixXf &amp;depthCloudArray, const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ad96ff3c75c6a7784c3a8f1f4b0102a65">intpair_vector</a> &amp;cylinderToRegionMap, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;primitiveSegments)</td></tr>
-<tr class="memdesc:a14948317c7a4bd306aef1a23b401f2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refine the cylinder edges in mask images.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a14948317c7a4bd306aef1a23b401f2f6">More...</a><br /></td></tr>
-<tr class="separator:a14948317c7a4bd306aef1a23b401f2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43e507867cbf8d34e6931225971911f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a43e507867cbf8d34e6931225971911f0">set_masked_display</a> (cv::Mat &amp;segOut)</td></tr>
-<tr class="memdesc:a43e507867cbf8d34e6931225971911f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output image pixel value with the index of the detected shape.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a43e507867cbf8d34e6931225971911f0">More...</a><br /></td></tr>
-<tr class="separator:a43e507867cbf8d34e6931225971911f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac73bd13f1cce9a325b0a26a82efb189d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ac73bd13f1cce9a325b0a26a82efb189d">region_growing</a> (const unsigned short x, const unsigned short y, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;seedPlaneNormal, const double seedPlaneD)</td></tr>
-<tr class="memdesc:ac73bd13f1cce9a325b0a26a82efb189d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively Grow a plane seed and merge it with it's neighbors.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ac73bd13f1cce9a325b0a26a82efb189d">More...</a><br /></td></tr>
-<tr class="separator:ac73bd13f1cce9a325b0a26a82efb189d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7380a8da1013d394a0e890fc1ff9fa27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a7380a8da1013d394a0e890fc1ff9fa27">add_planes_to_primitives</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab3ed9416eca995f1a3dc2fc2795bb2db">uint_vector</a> &amp;planeMergeLabels, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a353a99b78e30a56a60d54a47cf318705">primitive_container</a> &amp;primitiveSegments)</td></tr>
+<tr class="memdesc:a7380a8da1013d394a0e890fc1ff9fa27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add final plane to primitives, compute a mask for display.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a7380a8da1013d394a0e890fc1ff9fa27">More...</a><br /></td></tr>
+<tr class="separator:a7380a8da1013d394a0e890fc1ff9fa27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2030d3307593d3a880dec07fe53d97c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#af2030d3307593d3a880dec07fe53d97c">add_cylinders_to_primitives</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ad96ff3c75c6a7784c3a8f1f4b0102a65">intpair_vector</a> &amp;cylinderToRegionMap, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a353a99b78e30a56a60d54a47cf318705">primitive_container</a> &amp;primitiveSegments)</td></tr>
+<tr class="memdesc:af2030d3307593d3a880dec07fe53d97c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add final cylinders to primitives, compute a mask for display.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#af2030d3307593d3a880dec07fe53d97c">More...</a><br /></td></tr>
+<tr class="separator:af2030d3307593d3a880dec07fe53d97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a602ab8dedad6aa64477ddd5c007ba8d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a602ab8dedad6aa64477ddd5c007ba8d1">region_growing</a> (const uint x, const uint y, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;seedPlaneNormal, const double seedPlaneD)</td></tr>
+<tr class="memdesc:a602ab8dedad6aa64477ddd5c007ba8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively Grow a plane seed and merge it with it's neighbors.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a602ab8dedad6aa64477ddd5c007ba8d1">More...</a><br /></td></tr>
+<tr class="separator:a602ab8dedad6aa64477ddd5c007ba8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9165bccb3b0055fa50bc7e14a8de1a24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53">Matrixb</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a9165bccb3b0055fa50bc7e14a8de1a24">get_connected_components_matrix</a> (const cv::Mat &amp;segmentMap, const size_t numberOfPlanes) const</td></tr>
 <tr class="memdesc:a9165bccb3b0055fa50bc7e14a8de1a24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill an association matrix that links connected plane components.  <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a9165bccb3b0055fa50bc7e14a8de1a24">More...</a><br /></td></tr>
 <tr class="separator:a9165bccb3b0055fa50bc7e14a8de1a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,8 +153,8 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Main extraction class. Extracts shape primitives from an organized cloud of points. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a5447caf12f82fefd49fa3a4b2e5d6eaf" name="a5447caf12f82fefd49fa3a4b2e5d6eaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5447caf12f82fefd49fa3a4b2e5d6eaf">&#9670;&nbsp;</a></span>cylinder_segment_unique_ptr</h2>
+<a id="ab465ee5f8b6cc649497f2d291e07de46" name="ab465ee5f8b6cc649497f2d291e07de46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab465ee5f8b6cc649497f2d291e07de46">&#9670;&nbsp;</a></span>cylinder_segment_unique_ptr</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,7 +163,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::unique_ptr&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html">Cylinder_Segment</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a5447caf12f82fefd49fa3a4b2e5d6eaf">rgbd_slam::features::primitives::Primitive_Detection::cylinder_segment_unique_ptr</a></td>
+          <td class="memname">typedef std::shared_ptr&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html">Cylinder_Segment</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab465ee5f8b6cc649497f2d291e07de46">rgbd_slam::features::primitives::Primitive_Detection::cylinder_segment_unique_ptr</a></td>
         </tr>
       </table>
   </td>
@@ -193,7 +185,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a5447caf12f82fefd49fa3a4b2e5d6eaf">cylinder_segment_unique_ptr</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ae175d07a6ac399887ee4cd473b76fa41">rgbd_slam::features::primitives::Primitive_Detection::cylinders_ptr_vector</a></td>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab465ee5f8b6cc649497f2d291e07de46">cylinder_segment_unique_ptr</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ae175d07a6ac399887ee4cd473b76fa41">rgbd_slam::features::primitives::Primitive_Detection::cylinders_ptr_vector</a></td>
         </tr>
       </table>
   </td>
@@ -227,8 +219,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a65c1f8eea51000c775c6e2c024df7d8b" name="a65c1f8eea51000c775c6e2c024df7d8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65c1f8eea51000c775c6e2c024df7d8b">&#9670;&nbsp;</a></span>plane_segment_unique_ptr</h2>
+<a id="a201ea8e0b9952678eb64941e75c72a02" name="a201ea8e0b9952678eb64941e75c72a02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a201ea8e0b9952678eb64941e75c72a02">&#9670;&nbsp;</a></span>plane_segment_unique_ptr</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,7 +229,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::unique_ptr&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a65c1f8eea51000c775c6e2c024df7d8b">rgbd_slam::features::primitives::Primitive_Detection::plane_segment_unique_ptr</a></td>
+          <td class="memname">typedef std::shared_ptr&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html">Plane_Segment</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a201ea8e0b9952678eb64941e75c72a02">rgbd_slam::features::primitives::Primitive_Detection::plane_segment_unique_ptr</a></td>
         </tr>
       </table>
   </td>
@@ -259,7 +251,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a65c1f8eea51000c775c6e2c024df7d8b">plane_segment_unique_ptr</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a1c6de1dae1c5b4783520c1720ad1bd7b">rgbd_slam::features::primitives::Primitive_Detection::planes_ptr_vector</a></td>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a201ea8e0b9952678eb64941e75c72a02">plane_segment_unique_ptr</a>&gt; <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a1c6de1dae1c5b4783520c1720ad1bd7b">rgbd_slam::features::primitives::Primitive_Detection::planes_ptr_vector</a></td>
         </tr>
       </table>
   </td>
@@ -294,8 +286,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abfb0908a83fed889a0319370dd06e86c" name="abfb0908a83fed889a0319370dd06e86c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfb0908a83fed889a0319370dd06e86c">&#9670;&nbsp;</a></span>Primitive_Detection()</h2>
+<a id="a820def3cf19e327da91dd115f2df1ed9" name="a820def3cf19e327da91dd115f2df1ed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a820def3cf19e327da91dd115f2df1ed9">&#9670;&nbsp;</a></span>Primitive_Detection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,13 +314,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const float&#160;</td>
-          <td class="paramname"><em>minCosAngleForMerge</em> = <code>0.9659</code>, </td>
+          <td class="paramname"><em>minCosAngleForMerge</em> = <code>0.9659f</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const float&#160;</td>
-          <td class="paramname"><em>maxMergeDistance</em> = <code>50</code>&#160;</td>
+          <td class="paramname"><em>maxMergeDistance</em> = <code>50.0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -368,53 +360,26 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aea8e4490690542045678684c772108a0" name="aea8e4490690542045678684c772108a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea8e4490690542045678684c772108a0">&#9670;&nbsp;</a></span>apply_masks()</h2>
+<a id="af2030d3307593d3a880dec07fe53d97c" name="af2030d3307593d3a880dec07fe53d97c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2030d3307593d3a880dec07fe53d97c">&#9670;&nbsp;</a></span>add_cylinders_to_primitives()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::apply_masks </td>
+          <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::add_cylinders_to_primitives </td>
           <td>(</td>
-          <td class="paramtype">const cv::Mat &amp;&#160;</td>
-          <td class="paramname"><em>inputImage</em>, </td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ad96ff3c75c6a7784c3a8f1f4b0102a65">intpair_vector</a> &amp;&#160;</td>
+          <td class="paramname"><em>cylinderToRegionMap</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; cv::Vec3b &gt; &amp;&#160;</td>
-          <td class="paramname"><em>colors</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const cv::Mat &amp;&#160;</td>
-          <td class="paramname"><em>maskImage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>primitiveSegments</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::unordered_map&lt; int, uint &gt; &amp;&#160;</td>
-          <td class="paramname"><em>associatedIds</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint&#160;</td>
-          <td class="paramname"><em>bandSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">cv::Mat &amp;&#160;</td>
-          <td class="paramname"><em>labeledImage</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a353a99b78e30a56a60d54a47cf318705">primitive_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>primitiveSegments</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -422,26 +387,71 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Apply each plane and cylinder mask on the maskImage, with colors corresponding to the ids of colors vector. </p>
+<p>Add final cylinders to primitives, compute a mask for display. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">inputImage</td><td>input RGB image on which to put the planes and cylinder masks </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">colors</td><td>A vector of colors, that must remain consistant at each call </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">maskImage</td><td>An image where each pixel is the index of a plane or cylinder </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">primitiveSegments</td><td>A container of the planes and cylinders detected in inputImage </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">associatedIds</td><td>A map associating each plane/cylinder index to the ids of last frame version of those planes/cylinders </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bandSize</td><td>Size in pixel of the black band on top of the debug image </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">labeledImage</td><td>The final result: an image with colored masks applied for each plane and cylinder, as well as a bar displaying informations on the top. Must be passed as an empty image of the same dimensions as labeledImage. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cylinderToRegionMap</td><td>Associate a cylinder ID with all the planes IDs that composes it </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">primitiveSegments</td><td>Container of shapes detected in this depth image </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a911fc1929bc8ad43697ff1fecdd03570" name="a911fc1929bc8ad43697ff1fecdd03570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a911fc1929bc8ad43697ff1fecdd03570">&#9670;&nbsp;</a></span>find_primitives()</h2>
+<a id="a7380a8da1013d394a0e890fc1ff9fa27" name="a7380a8da1013d394a0e890fc1ff9fa27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7380a8da1013d394a0e890fc1ff9fa27">&#9670;&nbsp;</a></span>add_planes_to_primitives()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::add_planes_to_primitives </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab3ed9416eca995f1a3dc2fc2795bb2db">uint_vector</a> &amp;&#160;</td>
+          <td class="paramname"><em>planeMergeLabels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a353a99b78e30a56a60d54a47cf318705">primitive_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>primitiveSegments</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add final plane to primitives, compute a mask for display. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">planeMergeLabels</td><td>Container associating plane ID to global plane IDs </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">primitiveSegments</td><td>Container of shapes detected in this depth image </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeea3bf02c163af62c6f3e5be9078a6ae" name="aeea3bf02c163af62c6f3e5be9078a6ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeea3bf02c163af62c6f3e5be9078a6ae">&#9670;&nbsp;</a></span>find_primitives()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -455,14 +465,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>primitiveSegments</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">cv::Mat &amp;&#160;</td>
-          <td class="paramname"><em>segOut</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a353a99b78e30a56a60d54a47cf318705">primitive_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>primitiveSegments</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -477,7 +481,6 @@ Protected Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">depthMatrix</td><td>Organized cloud of points, constructed from depth map </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">primitiveSegments</td><td>Container of detected segments in depth image </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">segOut</td><td>Output image, where each pixel is associated with a shape ID </td></tr>
   </table>
   </dd>
 </dl>
@@ -655,112 +658,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a14948317c7a4bd306aef1a23b401f2f6" name="a14948317c7a4bd306aef1a23b401f2f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14948317c7a4bd306aef1a23b401f2f6">&#9670;&nbsp;</a></span>refine_cylinder_boundaries()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::refine_cylinder_boundaries </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::MatrixXf &amp;&#160;</td>
-          <td class="paramname"><em>depthCloudArray</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ad96ff3c75c6a7784c3a8f1f4b0102a65">intpair_vector</a> &amp;&#160;</td>
-          <td class="paramname"><em>cylinderToRegionMap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>primitiveSegments</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Refine the cylinder edges in mask images. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">depthCloudArray</td><td>Organized cloud point </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cylinderToRegionMap</td><td>Associate a cylinder ID with all the planes IDs that composes it </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">primitiveSegments</td><td>Container of shapes detected in this depth image </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac159d1a272e0e034615fdc53f52a290e" name="ac159d1a272e0e034615fdc53f52a290e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac159d1a272e0e034615fdc53f52a290e">&#9670;&nbsp;</a></span>refine_plane_boundaries()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::refine_plane_boundaries </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::MatrixXf &amp;&#160;</td>
-          <td class="paramname"><em>depthCloudArray</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab3ed9416eca995f1a3dc2fc2795bb2db">uint_vector</a> &amp;&#160;</td>
-          <td class="paramname"><em>planeMergeLabels</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a82fffe54c97a2ecd30ab76c0b1b1d910">primitive_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>primitiveSegments</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Refine the final plane edges in mask images. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">depthCloudArray</td><td>Organized cloud point </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">planeMergeLabels</td><td>Container associating plane ID to global plane IDs </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">primitiveSegments</td><td>Container of shapes detected in this depth image </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac73bd13f1cce9a325b0a26a82efb189d" name="ac73bd13f1cce9a325b0a26a82efb189d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac73bd13f1cce9a325b0a26a82efb189d">&#9670;&nbsp;</a></span>region_growing()</h2>
+<a id="a602ab8dedad6aa64477ddd5c007ba8d1" name="a602ab8dedad6aa64477ddd5c007ba8d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a602ab8dedad6aa64477ddd5c007ba8d1">&#9670;&nbsp;</a></span>region_growing()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -771,13 +670,13 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::region_growing </td>
           <td>(</td>
-          <td class="paramtype">const unsigned short&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const unsigned short&#160;</td>
+          <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>y</em>, </td>
         </tr>
         <tr>
@@ -842,40 +741,6 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reset the stored data in prevision of another analysis. </p>
-
-</div>
-</div>
-<a id="a43e507867cbf8d34e6931225971911f0" name="a43e507867cbf8d34e6931225971911f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43e507867cbf8d34e6931225971911f0">&#9670;&nbsp;</a></span>set_masked_display()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::set_masked_display </td>
-          <td>(</td>
-          <td class="paramtype">cv::Mat &amp;&#160;</td>
-          <td class="paramname"><em>segOut</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set output image pixel value with the index of the detected shape. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">segOut</td><td>Image segmented by shapes ids: Associates an image coordinate to a shape ID </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -950,23 +815,9 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a15e86c6c982aafda2c86c80e255cff98" name="a15e86c6c982aafda2c86c80e255cff98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15e86c6c982aafda2c86c80e255cff98">&#9670;&nbsp;</a></span>setMaskTime</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::features::primitives::Primitive_Detection::setMaskTime</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="primitive__detection_8hpp_source.html">primitive_detection.hpp</a></li>
-<li>/home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="primitive__detection_8cpp.html">primitive_detection.cpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="primitive__detection_8hpp_source.html">primitive_detection.hpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/<a class="el" href="primitive__detection_8cpp.html">primitive_detection.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

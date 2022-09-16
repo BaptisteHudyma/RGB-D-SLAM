@@ -9,10 +9,14 @@ class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map}{Local
 \begin{DoxyCompactList}\small\item\em Maintain a local map around the camera. Can return matched features, and update the global map when features are estimated to be reliable. For now we dont have a global map. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{Map\+\_\+\+Point}}
 \begin{DoxyCompactList}\small\item\em A map point structure, containing all the necessary informations to identify a map point. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive}{Matched\+Primitive}}
+\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_screen_point}{Matched\+Screen\+Point}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}}
 \begin{DoxyCompactList}\small\item\em Basic keypoint class. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{Primitive}}
+\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point}{Staged\+\_\+\+Point}}
 \begin{DoxyCompactList}\small\item\em Concurrent for a map point. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
@@ -23,9 +27,13 @@ void \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aa9d854ab517611e578
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
+const double \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a831f7b27be382c98022de647e6d29abc}{point\+Process\+Noise}} = 0.\+6
+\item 
 const size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad715b0460102980c8d6fcaa81b1107d3}{INVALID\+\_\+\+POINT\+\_\+\+UNIQ\+\_\+\+ID}} = 0
 \item 
 const int \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ac4b9445dc894687f9645da2c1d7fb3df}{UNMATCHED\+\_\+\+POINT\+\_\+\+INDEX}} = -\/1
+\item 
+const uchar \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}{UNMATCHED\+\_\+\+PRIMITIVE\+\_\+\+ID}} = 0
 \end{DoxyCompactItemize}
 
 
@@ -49,9 +57,21 @@ LOCAL UTILS FUNCTIONS
 \doxysubsubsection{\texorpdfstring{INVALID\_POINT\_UNIQ\_ID}{INVALID\_POINT\_UNIQ\_ID}}
 {\footnotesize\ttfamily const size\+\_\+t rgbd\+\_\+slam\+::map\+\_\+management\+::\+INVALID\+\_\+\+POINT\+\_\+\+UNIQ\+\_\+\+ID = 0}
 
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_a831f7b27be382c98022de647e6d29abc}\label{namespacergbd__slam_1_1map__management_a831f7b27be382c98022de647e6d29abc}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!pointProcessNoise@{pointProcessNoise}}
+\index{pointProcessNoise@{pointProcessNoise}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{pointProcessNoise}{pointProcessNoise}}
+{\footnotesize\ttfamily const double rgbd\+\_\+slam\+::map\+\_\+management\+::point\+Process\+Noise = 0.\+6}
+
 \mbox{\Hypertarget{namespacergbd__slam_1_1map__management_ac4b9445dc894687f9645da2c1d7fb3df}\label{namespacergbd__slam_1_1map__management_ac4b9445dc894687f9645da2c1d7fb3df}} 
 \index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!UNMATCHED\_POINT\_INDEX@{UNMATCHED\_POINT\_INDEX}}
 \index{UNMATCHED\_POINT\_INDEX@{UNMATCHED\_POINT\_INDEX}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
 \doxysubsubsection{\texorpdfstring{UNMATCHED\_POINT\_INDEX}{UNMATCHED\_POINT\_INDEX}}
 {\footnotesize\ttfamily const int rgbd\+\_\+slam\+::map\+\_\+management\+::\+UNMATCHED\+\_\+\+POINT\+\_\+\+INDEX = -\/1}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}\label{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}} 
+\index{rgbd\_slam::map\_management@{rgbd\_slam::map\_management}!UNMATCHED\_PRIMITIVE\_ID@{UNMATCHED\_PRIMITIVE\_ID}}
+\index{UNMATCHED\_PRIMITIVE\_ID@{UNMATCHED\_PRIMITIVE\_ID}!rgbd\_slam::map\_management@{rgbd\_slam::map\_management}}
+\doxysubsubsection{\texorpdfstring{UNMATCHED\_PRIMITIVE\_ID}{UNMATCHED\_PRIMITIVE\_ID}}
+{\footnotesize\ttfamily const uchar rgbd\+\_\+slam\+::map\+\_\+management\+::\+UNMATCHED\+\_\+\+PRIMITIVE\+\_\+\+ID = 0}
 

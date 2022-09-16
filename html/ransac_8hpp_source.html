@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/ransac.hpp Source File</title>
+<title>RGB-D SLAM: /home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/ransac.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -73,33 +73,37 @@ $(function() {
 <a href="ransac_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef RGBDSLAM_POSEOPTIMIZATION_RANSAC_HPP</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define RGBDSLAM_POSEOPTIMIZATION_RANSAC_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacergbd__slam.html">rgbd_slam</a> {</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    <span class="keyword">namespace </span>pose_optimization {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        <span class="keyword">template</span>&lt; <span class="keyword">template</span>&lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>Container, <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespacergbd__slam_1_1pose__optimization.html#a37a8e81899ab799fbfa9cc5ad825707f">   15</a></span>            Container&lt;T&gt; <a class="code hl_function" href="namespacergbd__slam_1_1pose__optimization.html#a37a8e81899ab799fbfa9cc5ad825707f">get_random_subset</a>(<span class="keyword">const</span> Container&lt;T&gt;&amp; inContainer, <span class="keyword">const</span> uint numberOfElementsToChoose)</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                assert(numberOfElementsToChoose &lt;= inContainer.size());</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                <span class="comment">// get a vector of references and shuffle it</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                std::vector&lt;std::reference_wrapper&lt;const T&gt;&gt; copyVector(inContainer.cbegin(), inContainer.cend());</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                std::random_shuffle(copyVector.begin(), copyVector.end());</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                assert(copyVector.size() == inContainer.size());</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                <span class="comment">// copy the first matches, they will be randoms</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                Container&lt;T&gt; outContainer;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                <span class="keywordflow">for</span>(uint i = 0; i &lt; numberOfElementsToChoose; ++i)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                    outContainer.insert(outContainer.begin(), copyVector[i]);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                <span class="keywordflow">return</span> outContainer;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            }</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    }   <span class="comment">/* pose_optimization */</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}   <span class="comment">/* rgbd_slam */</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacergbd__slam.html">rgbd_slam</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">namespace </span>pose_optimization {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacergbd__slam_1_1pose__optimization_1_1ransac.html">    9</a></span>        <span class="keyword">namespace </span>ransac {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keyword">template</span>&lt; <span class="keyword">template</span>&lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>Container, <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespacergbd__slam_1_1pose__optimization_1_1ransac.html#a132ebe7760df9a95d9a89f41136453d1">   18</a></span>                Container&lt;T&gt; <a class="code hl_function" href="namespacergbd__slam_1_1pose__optimization_1_1ransac.html#a132ebe7760df9a95d9a89f41136453d1">get_random_subset</a>(<span class="keyword">const</span> Container&lt;T&gt;&amp; inContainer, <span class="keyword">const</span> uint numberOfElementsToChoose)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                    assert(numberOfElementsToChoose &lt;= inContainer.size());</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                    <span class="comment">// get a vector of references and shuffle it</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                    std::vector&lt;std::reference_wrapper&lt;const T&gt;&gt; copyVector(inContainer.cbegin(), inContainer.cend());</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                    std::random_shuffle(copyVector.begin(), copyVector.end());</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                    assert(copyVector.size() == inContainer.size());</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                    <span class="comment">// copy the first matches, they will be randoms</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                    Container&lt;T&gt; outContainer;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                    <span class="keywordflow">for</span>(uint i = 0; i &lt; numberOfElementsToChoose; ++i)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                        outContainer.insert(outContainer.begin(), copyVector[i]);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                    <span class="keywordflow">return</span> outContainer;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                }</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="anamespacergbd__slam_1_1pose__optimization_html_a37a8e81899ab799fbfa9cc5ad825707f"><div class="ttname"><a href="namespacergbd__slam_1_1pose__optimization.html#a37a8e81899ab799fbfa9cc5ad825707f">rgbd_slam::pose_optimization::get_random_subset</a></div><div class="ttdeci">Container&lt; T &gt; get_random_subset(const Container&lt; T &gt; &amp;inContainer, const uint numberOfElementsToChoose)</div><div class="ttdoc">Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to inCo...</div><div class="ttdef"><b>Definition:</b> ransac.hpp:15</div></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        } <span class="comment">/* ransac */</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }   <span class="comment">/* pose_optimization */</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}   <span class="comment">/* rgbd_slam */</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="anamespacergbd__slam_1_1pose__optimization_1_1ransac_html_a132ebe7760df9a95d9a89f41136453d1"><div class="ttname"><a href="namespacergbd__slam_1_1pose__optimization_1_1ransac.html#a132ebe7760df9a95d9a89f41136453d1">rgbd_slam::pose_optimization::ransac::get_random_subset</a></div><div class="ttdeci">Container&lt; T &gt; get_random_subset(const Container&lt; T &gt; &amp;inContainer, const uint numberOfElementsToChoose)</div><div class="ttdoc">Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to inCo...</div><div class="ttdef"><b>Definition:</b> ransac.hpp:18</div></div>
 <div class="ttc" id="anamespacergbd__slam_html"><div class="ttname"><a href="namespacergbd__slam.html">rgbd_slam</a></div><div class="ttdef"><b>Definition:</b> keypoint_detection.cpp:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

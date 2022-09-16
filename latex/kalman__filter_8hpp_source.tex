@@ -1,0 +1,68 @@
+\hypertarget{kalman__filter_8hpp_source}{}\doxysection{kalman\+\_\+filter.\+hpp}
+\label{kalman__filter_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/kalman\_filter.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/kalman\_filter.hpp}}
+\mbox{\hyperlink{kalman__filter_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_KALMAN\_FILTER\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_KALMAN\_FILTER\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{8     \textcolor{keyword}{namespace }tracking \{}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10         \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter}{KalmanFilter}} \{}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12         \textcolor{keyword}{public}:}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{20             \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_af9a4bdf2e6e27db0cbd5af53a329f3fa}{KalmanFilter}}(}
+\DoxyCodeLine{21                 \textcolor{keyword}{const} Eigen::MatrixXd\& systemDynamics,}
+\DoxyCodeLine{22                 \textcolor{keyword}{const} Eigen::MatrixXd\& outputMatrix,}
+\DoxyCodeLine{23                 \textcolor{keyword}{const} Eigen::MatrixXd\& processNoiseCovariance}
+\DoxyCodeLine{24             );}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{31             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a97551b6c785d3fc48cc75e7be24cdfe3}{init}}(\textcolor{keyword}{const} Eigen::MatrixXd\& firstEstimateErrorCovariance, \textcolor{keyword}{const} Eigen::VectorXd\& x0);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{38             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a41c8b92d77077cc8ef180ad5325ac7e0}{update}}(\textcolor{keyword}{const} Eigen::VectorXd\& newMeasurement, \textcolor{keyword}{const} Eigen::MatrixXd\& measurementNoiseCovariance);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{46             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a41c8b92d77077cc8ef180ad5325ac7e0}{update}}(\textcolor{keyword}{const} Eigen::VectorXd\& newMeasurement, \textcolor{keyword}{const} Eigen::MatrixXd\& measurementNoiseCovariance, \textcolor{keyword}{const} Eigen::MatrixXd\& systemDynamics);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49             Eigen::VectorXd \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_ad6d36d58c47772a301710793b0efe339}{get\_state}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{50                 \textcolor{keywordflow}{return} stateEstimate;}
+\DoxyCodeLine{51             \};}
+\DoxyCodeLine{52             Eigen::MatrixXd \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a5bf7d08f11fc455b169c33a47f1cdf37}{get\_state\_covariance}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{53                 \textcolor{keywordflow}{return} estimateErrorCovariance;}
+\DoxyCodeLine{54             \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56             \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a5a92c84d4927d9c5ddf56b252b36a204}{is\_initialized}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{57                 \textcolor{keywordflow}{return} isInitialized;}
+\DoxyCodeLine{58             \}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60         \textcolor{keyword}{private}:}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62             \textcolor{comment}{// Matrices for computation}}
+\DoxyCodeLine{63             Eigen::MatrixXd systemDynamics;}
+\DoxyCodeLine{64             \textcolor{keyword}{const} Eigen::MatrixXd outputMatrix;}
+\DoxyCodeLine{65             \textcolor{keyword}{const} Eigen::MatrixXd processNoiseCovariance;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67             \textcolor{comment}{// System dimensions}}
+\DoxyCodeLine{68             \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} measurementDimension;}
+\DoxyCodeLine{69             \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} stateDimension;}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71             \textcolor{comment}{// Is the filter isInitialized?}}
+\DoxyCodeLine{72             \textcolor{keywordtype}{bool} isInitialized;}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74             \textcolor{comment}{// stateDimension-\/size identity}}
+\DoxyCodeLine{75             Eigen::MatrixXd I;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77             \textcolor{comment}{// Estimated state}}
+\DoxyCodeLine{78             Eigen::VectorXd stateEstimate;}
+\DoxyCodeLine{79             Eigen::MatrixXd estimateErrorCovariance;}
+\DoxyCodeLine{80         \};}
+\DoxyCodeLine{81     \}}
+\DoxyCodeLine{82 \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,84 @@
+\hypertarget{map__primitive_8hpp_source}{}\doxysection{map\+\_\+primitive.\+hpp}
+\label{map__primitive_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_primitive.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_primitive.hpp}}
+\mbox{\hyperlink{map__primitive_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_MAPMANAGEMENT\_MAPRIMITIVE\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_MAPMANAGEMENT\_MAPRIMITIVE\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}../features/primitives/shape\_primitives.hpp"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{parameters_8hpp}{parameters.hpp}}"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
+\DoxyCodeLine{8     \textcolor{keyword}{namespace }map\_management \{}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10         \textcolor{keyword}{const} uchar \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}{UNMATCHED\_PRIMITIVE\_ID}} = 0;}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12         \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive}{MatchedPrimitive}} }
+\DoxyCodeLine{13         \{}
+\DoxyCodeLine{14             \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_aa12eb7271fef2dd141a67eaa071ba632}{MatchedPrimitive}}():}
+\DoxyCodeLine{15                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_ad999a17f21a38030d3dd16e75842a614}{\_matchId}}(\mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}{UNMATCHED\_PRIMITIVE\_ID}}),}
+\DoxyCodeLine{16                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_a6fe89c60f93bfd686f45b40ac7bdb49d}{\_unmatchedCount}}(0)}
+\DoxyCodeLine{17             \{\};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19             \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_a4241990fa9d7a3ec90db448f91d842ac}{is\_matched}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{20 \textcolor{keyword}{            }\{}
+\DoxyCodeLine{21                 \textcolor{keywordflow}{return} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_ad999a17f21a38030d3dd16e75842a614}{\_matchId}} != \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}{UNMATCHED\_PRIMITIVE\_ID}};}
+\DoxyCodeLine{22             \}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24             \textcolor{keywordtype}{void} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_a7c033de2e0b254b40efc96215e64d909}{mark\_matched}}(\textcolor{keywordtype}{size\_t} matchId)}
+\DoxyCodeLine{25             \{}
+\DoxyCodeLine{26                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_ad999a17f21a38030d3dd16e75842a614}{\_matchId}} = matchId;}
+\DoxyCodeLine{27                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_a6fe89c60f93bfd686f45b40ac7bdb49d}{\_unmatchedCount}} = 0;}
+\DoxyCodeLine{28             \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30             \textcolor{keywordtype}{void} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_abf24cbe081b55b5c355ba80ca56ac2c8}{mark\_unmatched}}()}
+\DoxyCodeLine{31             \{}
+\DoxyCodeLine{32                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_ad999a17f21a38030d3dd16e75842a614}{\_matchId}} = \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}{UNMATCHED\_PRIMITIVE\_ID}};}
+\DoxyCodeLine{33                 ++\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_a6fe89c60f93bfd686f45b40ac7bdb49d}{\_unmatchedCount}};}
+\DoxyCodeLine{34             \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36             \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_aff653e187a9e4a388725fecd623f9d3a}{is\_lost}}()}
+\DoxyCodeLine{37             \{}
+\DoxyCodeLine{38                 \textcolor{keywordflow}{return} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_a6fe89c60f93bfd686f45b40ac7bdb49d}{\_unmatchedCount}} >= \mbox{\hyperlink{classrgbd__slam_1_1_parameters_a3be7111a9c245fdc4330d26da4193b6d}{Parameters::get\_maximum\_unmatched\_before\_removal}}();}
+\DoxyCodeLine{39             \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41             \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_ad999a17f21a38030d3dd16e75842a614}{\_matchId}}; \textcolor{comment}{// Id of the last match}}
+\DoxyCodeLine{42             \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive_a6fe89c60f93bfd686f45b40ac7bdb49d}{\_unmatchedCount}}; \textcolor{comment}{// count of unmatched iterations}}
+\DoxyCodeLine{43         \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45         \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{Primitive}} }
+\DoxyCodeLine{46         \{}
+\DoxyCodeLine{47             \textcolor{keyword}{explicit} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a0bb1b123d38fe2fd698c869682a8bae0}{Primitive}}(\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a0aa09aec2d1144a845fc0f65591ce93f}{features::primitives::primitive\_uniq\_ptr}} primitive) : }
+\DoxyCodeLine{48                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a76ab207a8cf2f0ef3ed45ae275c04c78}{\_id}}(\_currentPrimitiveId++),}
+\DoxyCodeLine{49                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a37aa660fdc25a26f266032cf8d2d3690}{\_primitive}}(std::move(primitive))}
+\DoxyCodeLine{50             \{}
+\DoxyCodeLine{51                 cv::Vec3b color;}
+\DoxyCodeLine{52                 color[0] = rand() \% 255;}
+\DoxyCodeLine{53                 color[1] = rand() \% 255;}
+\DoxyCodeLine{54                 color[2] = rand() \% 255;}
+\DoxyCodeLine{55                 \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a59614e39552efd40b2d3384958558154}{\_color}} = color;}
+\DoxyCodeLine{56             \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58             \textcolor{comment}{// Unique identifier of this primitive in map}}
+\DoxyCodeLine{59             \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a76ab207a8cf2f0ef3ed45ae275c04c78}{\_id}};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61             \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a0aa09aec2d1144a845fc0f65591ce93f}{features::primitives::primitive\_uniq\_ptr}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a37aa660fdc25a26f266032cf8d2d3690}{\_primitive}};}
+\DoxyCodeLine{62             \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive}{MatchedPrimitive}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a9e5e4906a325e487a17643c703575a27}{\_matchedPrimitive}};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64             cv::Scalar \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive_a59614e39552efd40b2d3384958558154}{\_color}};  \textcolor{comment}{// display color of this primitive}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67             \textcolor{keyword}{private}:}
+\DoxyCodeLine{68             \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} \_currentPrimitiveId = 1;   \textcolor{comment}{// 0 is invalid}}
+\DoxyCodeLine{69         \};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \}   \textcolor{comment}{// map\_management}}
+\DoxyCodeLine{74 \}       \textcolor{comment}{// rgbd\_slam}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unmatched_5fpoint_5findex_0',['UNMATCHED_POINT_INDEX',['../namespacergbd__slam_1_1map__management.html#ac4b9445dc894687f9645da2c1d7fb3df',1,'rgbd_slam::map_management']]]
+  ['yaw_0',['yaw',['../structrgbd__slam_1_1_euler_angles.html#aff48fb8c3f6813d864e22b562f6c9e27',1,'rgbd_slam::EulerAngles']]]
 ];

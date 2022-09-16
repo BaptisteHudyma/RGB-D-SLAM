@@ -10,8 +10,8 @@ var searchData=
   ['local_5fmap_7',['Local_Map',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a55f49d47df2e5c63d581786b64645ee6',1,'rgbd_slam::map_management::Local_Map::Local_Map()'],['../classrgbd__slam_1_1map__management_1_1_local___map.html',1,'rgbd_slam::map_management::Local_Map']]],
   ['local_5fmap_2ecpp_8',['local_map.cpp',['../local__map_8cpp.html',1,'']]],
   ['local_5fmap_2ehpp_9',['local_map.hpp',['../local__map_8hpp.html',1,'']]],
-  ['log_10',['log',['../namespacergbd__slam_1_1utils.html#a72367a9fbc89211876d694db36fe5e2c',1,'rgbd_slam::utils']]],
-  ['log_5ferror_11',['log_error',['../namespacergbd__slam_1_1utils.html#a5778047a8709e21d4237c292ee32756f',1,'rgbd_slam::utils']]],
+  ['log_10',['log',['../namespacergbd__slam_1_1outputs.html#ac481964e17f115af5414d23bdc2d97a7',1,'rgbd_slam::outputs']]],
+  ['log_5ferror_11',['log_error',['../namespacergbd__slam_1_1outputs.html#a7c11e499578358f64a58d71f5b0dfb4d',1,'rgbd_slam::outputs']]],
   ['logger_2ecpp_12',['logger.cpp',['../logger_8cpp.html',1,'']]],
   ['logger_2ehpp_13',['logger.hpp',['../logger_8hpp.html',1,'']]]
 ];

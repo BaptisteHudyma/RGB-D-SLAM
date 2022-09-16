@@ -1,5 +1,5 @@
 \hypertarget{keypoint__handler_8hpp_source}{}\doxysection{keypoint\+\_\+handler.\+hpp}
-\label{keypoint__handler_8hpp_source}\index{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp@{/home/baptou/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp}}
+\label{keypoint__handler_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp}}
 \mbox{\hyperlink{keypoint__handler_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_FEATURES\_KEYPOINTS\_KEYPOINTS\_HANDLER\_HPP}}
@@ -9,109 +9,109 @@
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include <vector>}}
 \DoxyCodeLine{6 \textcolor{preprocessor}{\#include <opencv2/xfeatures2d.hpp>}}
 \DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}../../types.hpp"{}}}
 \DoxyCodeLine{9 }
 \DoxyCodeLine{10 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
 \DoxyCodeLine{11     \textcolor{keyword}{namespace }features \{}
 \DoxyCodeLine{12         \textcolor{keyword}{namespace }keypoints \{}
 \DoxyCodeLine{13 }
-\DoxyCodeLine{14             \textcolor{keyword}{const} \textcolor{keywordtype}{float} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a27cc38a318a8d967aa0ba80d0b02223d}{BORDER\_SIZE}} = 1.; \textcolor{comment}{// Border of an image, in which points will be ignored}}
+\DoxyCodeLine{14             \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_aa2419fb1e607bada0d49a6afc37df62a}{BORDER\_SIZE}} = 1.; \textcolor{comment}{// Border of an image, in which points will be ignored}}
 \DoxyCodeLine{15             \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b}{INVALID\_MAP\_POINT\_ID}} = 0;  \textcolor{comment}{// should be the same as INVALID\_POINT\_UNIQ\_ID in map\_point.hpp}}
 \DoxyCodeLine{16             \textcolor{keyword}{const} \textcolor{keywordtype}{int} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a971a9b22938388e8501402da887c4bb1}{INVALID\_MATCH\_INDEX}} = -\/1;}
 \DoxyCodeLine{17 }
-\DoxyCodeLine{21             \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ad1e4b59b0306fab61597157a08378679}{is\_in\_border}}(\textcolor{keyword}{const} cv::Point2f \&pt, \textcolor{keyword}{const} cv::Mat \&im);}
+\DoxyCodeLine{21             \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a6c6e02021b7ede338ae200ddad7645c5}{is\_in\_border}}(\textcolor{keyword}{const} cv::Point2f \&pt, \textcolor{keyword}{const} cv::Mat \&im, \textcolor{keyword}{const} \textcolor{keywordtype}{double} borderSize = 0);}
 \DoxyCodeLine{22 }
-\DoxyCodeLine{27             \textcolor{keywordtype}{float} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ae4c96326a1210562ae185fa60999ea86}{get\_depth\_approximation}}(\textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} cv::Point2f\& depthCoordinates);}
-\DoxyCodeLine{28 }
-\DoxyCodeLine{32             \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}} \{}
-\DoxyCodeLine{33                 std::vector<cv::Point2f> \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ada3897aeb7c22d54019734a7b699d464}{\_keypoints}};}
-\DoxyCodeLine{34                 std::vector<size\_t> \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a509c8414107ea830162ef7b0142258e5}{\_ids}};}
-\DoxyCodeLine{35             \};}
-\DoxyCodeLine{36 }
-\DoxyCodeLine{40             \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}}}
-\DoxyCodeLine{41             \{}
-\DoxyCodeLine{42                 \textcolor{keyword}{public}:}
-\DoxyCodeLine{50                     \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a6ea38b39a6ae26a9525216ea2d63ee08}{Keypoint\_Handler}}(std::vector<cv::Point2f>\& inKeypoints, cv::Mat\& inDescriptors, \textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\& lastKeypointsWithIds, \textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxMatchDistance = 0.7);}
-\DoxyCodeLine{51 }
-\DoxyCodeLine{60                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a3bf3676adbaed6ab3ccf729ad0be6ba1}{get\_tracking\_match\_index}}(\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapPointId, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const};}
-\DoxyCodeLine{61                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a3bf3676adbaed6ab3ccf729ad0be6ba1}{get\_tracking\_match\_index}}(\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapPointId) \textcolor{keyword}{const};}
-\DoxyCodeLine{62 }
-\DoxyCodeLine{72                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa6ce94798a84592fde5b65381800a443}{get\_match\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& projectedMapPoint, \textcolor{keyword}{const} cv::Mat\& mapPointDescriptor, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const}; }
-\DoxyCodeLine{73 }
-\DoxyCodeLine{77                     \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a1f96599d7f04c7a90b124272246e1389}{get\_depth}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
-\DoxyCodeLine{78 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{79                         assert(index < \_depths.size());}
-\DoxyCodeLine{80 }
-\DoxyCodeLine{81                         \textcolor{keywordflow}{return} \_depths[index];}
-\DoxyCodeLine{82                     \}}
-\DoxyCodeLine{83 }
-\DoxyCodeLine{84                     \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a144b42745038ff79ab69be4cb010aec6}{get\_depth\_count}}()\textcolor{keyword}{ const}}
-\DoxyCodeLine{85 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{86                         \textcolor{keywordflow}{return} \_depths.size();}
-\DoxyCodeLine{87                     \}}
-\DoxyCodeLine{88 }
-\DoxyCodeLine{92                     \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a898c47165d2c6653f05c8f418256771b}{get\_keypoint}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const }}
-\DoxyCodeLine{93 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{94                         assert(index < \_keypoints.size());}
-\DoxyCodeLine{95                         \textcolor{keywordflow}{return} \_keypoints[index];}
-\DoxyCodeLine{96                     \}}
-\DoxyCodeLine{97 }
-\DoxyCodeLine{98                     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}{is\_descriptor\_computed}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
-\DoxyCodeLine{99 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{100                         \textcolor{keywordflow}{return} index < static\_cast<uint>(\_descriptors.rows);}
-\DoxyCodeLine{101                     \}}
-\DoxyCodeLine{102 }
-\DoxyCodeLine{103                     \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}{get\_descriptor}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
-\DoxyCodeLine{104 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{105                         assert(index < \textcolor{keyword}{static\_cast<}uint\textcolor{keyword}{>}(\_descriptors.rows));}
-\DoxyCodeLine{106 }
-\DoxyCodeLine{107                         \textcolor{keywordflow}{return} \_descriptors.row(index);}
-\DoxyCodeLine{108                     \}}
-\DoxyCodeLine{109 }
-\DoxyCodeLine{110                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aaef97472cf94cd95c72d90d0eb86c329}{get\_keypoint\_count}}()\textcolor{keyword}{ const}}
-\DoxyCodeLine{111 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{112                         \textcolor{keywordflow}{return} \_keypoints.size();}
-\DoxyCodeLine{113                     \}}
-\DoxyCodeLine{114 }
-\DoxyCodeLine{115                 \textcolor{keyword}{protected}:}
-\DoxyCodeLine{116 }
-\DoxyCodeLine{125                     \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad741c7ea236c946807d196e83cb7a233}{compute\_key\_point\_mask}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& pointToSearch, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const};}
-\DoxyCodeLine{126 }
-\DoxyCodeLine{127                     \textcolor{keyword}{typedef} std::pair<int, int> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\_pair}};}
-\DoxyCodeLine{131                     \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\_pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a32101e53653338c92ba5bf47bfbf8b77}{get\_search\_space\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& pointToPlace) \textcolor{keyword}{const};}
-\DoxyCodeLine{132 }
-\DoxyCodeLine{138                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a35aa9151e9cbdcde22ec57bcc8f25869}{get\_search\_space\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a566cc50761385b5f88404399abaf3132}{int\_pair}}\& searchSpaceIndex) \textcolor{keyword}{const};}
-\DoxyCodeLine{139                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a35aa9151e9cbdcde22ec57bcc8f25869}{get\_search\_space\_index}}(\textcolor{keyword}{const} uint x, \textcolor{keyword}{const} uint y) \textcolor{keyword}{const};}
+\DoxyCodeLine{26             \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad80397e4b7ec8be74317bf0}{get\_depth\_approximation}}(\textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} cv::Point2f\& depthCoordinates);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{31             \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}} \{}
+\DoxyCodeLine{32                 std::vector<cv::Point2f> \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ada3897aeb7c22d54019734a7b699d464}{\_keypoints}};}
+\DoxyCodeLine{33                 std::vector<size\_t> \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a509c8414107ea830162ef7b0142258e5}{\_ids}};}
+\DoxyCodeLine{34             \};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{39             \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}}}
+\DoxyCodeLine{40             \{}
+\DoxyCodeLine{41                 \textcolor{keyword}{public}:}
+\DoxyCodeLine{49                     \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a6ea38b39a6ae26a9525216ea2d63ee08}{Keypoint\_Handler}}(std::vector<cv::Point2f>\& inKeypoints, cv::Mat\& inDescriptors, \textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\& lastKeypointsWithIds, \textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxMatchDistance = 0.7);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{59                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a3bf3676adbaed6ab3ccf729ad0be6ba1}{get\_tracking\_match\_index}}(\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapPointId, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const};}
+\DoxyCodeLine{60                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a3bf3676adbaed6ab3ccf729ad0be6ba1}{get\_tracking\_match\_index}}(\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapPointId) \textcolor{keyword}{const};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{71                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa6ce94798a84592fde5b65381800a443}{get\_match\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& projectedMapPoint, \textcolor{keyword}{const} cv::Mat\& mapPointDescriptor, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const}; }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{76                     \textcolor{keywordtype}{double} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a1f96599d7f04c7a90b124272246e1389}{get\_depth}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
+\DoxyCodeLine{77 \textcolor{keyword}{                    }\{}
+\DoxyCodeLine{78                         assert(index < \_depths.size());}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80                         \textcolor{keywordflow}{return} \_depths[index];}
+\DoxyCodeLine{81                     \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83                     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad55a24e2b257297b3b2ac2e838ad2d8f}{get\_depth\_count}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{84 \textcolor{keyword}{                    }\{}
+\DoxyCodeLine{85                         \textcolor{keywordflow}{return} \_depths.size();}
+\DoxyCodeLine{86                     \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{91                     \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a898c47165d2c6653f05c8f418256771b}{get\_keypoint}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const }}
+\DoxyCodeLine{92 \textcolor{keyword}{                    }\{}
+\DoxyCodeLine{93                         assert(index < \_keypoints.size());}
+\DoxyCodeLine{94                         \textcolor{keywordflow}{return} \_keypoints[index];}
+\DoxyCodeLine{95                     \}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97                     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}{is\_descriptor\_computed}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
+\DoxyCodeLine{98 \textcolor{keyword}{                    }\{}
+\DoxyCodeLine{99                         \textcolor{keywordflow}{return} index < static\_cast<uint>(\_descriptors.rows);}
+\DoxyCodeLine{100                     \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102                     \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}{get\_descriptor}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
+\DoxyCodeLine{103 \textcolor{keyword}{                    }\{}
+\DoxyCodeLine{104                         assert(index < \textcolor{keyword}{static\_cast<}uint\textcolor{keyword}{>}(\_descriptors.rows));}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106                         \textcolor{keywordflow}{return} \_descriptors.row(index);}
+\DoxyCodeLine{107                     \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109                     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a213657ddbef0adb8d38b1c48a17f5b53}{get\_keypoint\_count}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{110 \textcolor{keyword}{                    }\{}
+\DoxyCodeLine{111                         \textcolor{keywordflow}{return} \_keypoints.size();}
+\DoxyCodeLine{112                     \}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114                 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{124                     \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad741c7ea236c946807d196e83cb7a233}{compute\_key\_point\_mask}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& pointToSearch, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126                     \textcolor{keyword}{typedef} std::pair<uint, uint> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}};}
+\DoxyCodeLine{130                     \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_adda5e314df49df52e499820671ea1bce}{get\_search\_space\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& pointToPlace) \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{137                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}{get\_search\_space\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}}\& searchSpaceIndex) \textcolor{keyword}{const};}
+\DoxyCodeLine{138                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}{get\_search\_space\_index}}(\textcolor{keyword}{const} uint x, \textcolor{keyword}{const} uint y) \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
 \DoxyCodeLine{140 }
-\DoxyCodeLine{141 }
-\DoxyCodeLine{142                 \textcolor{keyword}{private}:}
-\DoxyCodeLine{143                     cv::Ptr<cv::DescriptorMatcher> \_featuresMatcher;}
-\DoxyCodeLine{144 }
-\DoxyCodeLine{145                     \textcolor{keyword}{const} \textcolor{keywordtype}{double} \_maxMatchDistance;}
-\DoxyCodeLine{146 }
-\DoxyCodeLine{147                     \textcolor{comment}{//store current frame keypoints}}
-\DoxyCodeLine{148                     std::vector<vector2> \_keypoints;}
-\DoxyCodeLine{149                     std::vector<double> \_depths;}
-\DoxyCodeLine{150                     \textcolor{keyword}{typedef} std::unordered\_map<size\_t, size\_t> uintToUintContainer;}
-\DoxyCodeLine{151                     uintToUintContainer \_uniqueIdsToKeypointIndex;}
-\DoxyCodeLine{152                     cv::Mat \_descriptors;}
-\DoxyCodeLine{153 }
-\DoxyCodeLine{154                     \textcolor{comment}{// Number of image divisions (cells)}}
-\DoxyCodeLine{155                     \textcolor{keywordtype}{int} \_cellCountX;}
-\DoxyCodeLine{156                     \textcolor{keywordtype}{int} \_cellCountY;}
-\DoxyCodeLine{157                     \textcolor{keywordtype}{int} \_searchSpaceCellRadius; }
-\DoxyCodeLine{158 }
-\DoxyCodeLine{159                     \textcolor{comment}{// Corresponds to a 2D box containing index of key points in those boxes}}
-\DoxyCodeLine{160                     \textcolor{keyword}{typedef} std::list<uint> index\_container;}
-\DoxyCodeLine{161                     std::vector<index\_container> \_searchSpaceIndexContainer;}
+\DoxyCodeLine{141                 \textcolor{keyword}{private}:}
+\DoxyCodeLine{142                     cv::Ptr<cv::DescriptorMatcher> \_featuresMatcher;}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144                     \textcolor{keyword}{const} \textcolor{keywordtype}{double} \_maxMatchDistance;}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146                     \textcolor{comment}{//store current frame keypoints}}
+\DoxyCodeLine{147                     std::vector<vector2> \_keypoints;}
+\DoxyCodeLine{148                     std::vector<double> \_depths;}
+\DoxyCodeLine{149                     \textcolor{keyword}{typedef} std::unordered\_map<size\_t, size\_t> uintToUintContainer;}
+\DoxyCodeLine{150                     uintToUintContainer \_uniqueIdsToKeypointIndex;}
+\DoxyCodeLine{151                     cv::Mat \_descriptors;}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153                     \textcolor{comment}{// Number of image divisions (cells)}}
+\DoxyCodeLine{154                     uint \_cellCountX;}
+\DoxyCodeLine{155                     uint \_cellCountY;}
+\DoxyCodeLine{156                     uint \_searchSpaceCellRadius; }
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158                     \textcolor{comment}{// Corresponds to a 2D box containing index of key points in those boxes}}
+\DoxyCodeLine{159                     \textcolor{keyword}{typedef} std::list<uint> index\_container;}
+\DoxyCodeLine{160                     std::vector<index\_container> \_searchSpaceIndexContainer;}
+\DoxyCodeLine{161 }
 \DoxyCodeLine{162 }
-\DoxyCodeLine{163 }
-\DoxyCodeLine{164             \};}
-\DoxyCodeLine{165 }
-\DoxyCodeLine{166         \}}
-\DoxyCodeLine{167     \}}
-\DoxyCodeLine{168 \}}
-\DoxyCodeLine{169 }
-\DoxyCodeLine{170 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{163             \};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165         \}}
+\DoxyCodeLine{166     \}}
+\DoxyCodeLine{167 \}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

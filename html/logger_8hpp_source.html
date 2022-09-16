@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: /home/baptou/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/logger.hpp Source File</title>
+<title>RGB-D SLAM: /home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,32 +63,32 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_c9de52d4215f6e8365628700895a3af2.html">utils</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_b462bf1054eaee6851292fdd2cd05af2.html">RGB-D-SLAM</a></li><li class="navelem"><a class="el" href="dir_79b0aefa970f978b9ca730fc7c74c48d.html">src</a></li><li class="navelem"><a class="el" href="dir_766e8f01f248b94bf1b6906107510b90.html">outputs</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">logger.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="logger_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef RGBDSLAM_UTILS_LOGGER_HPP</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define RGBDSLAM_UTILS_LOGGER_HPP</span></div>
+<a href="logger_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef RGBDSLAM_OUTPUTS_LOGGER_HPP</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define RGBDSLAM_OUTPUTS_LOGGER_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string_view&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;source_location&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacergbd__slam.html">rgbd_slam</a> {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">namespace </span>utils {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">namespace </span>outputs {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="namespacergbd__slam_1_1utils.html#a72367a9fbc89211876d694db36fe5e2c">log</a>(<span class="keyword">const</span> std::string_view&amp; message, <span class="keyword">const</span> std::source_location&amp; location = std::source_location::current());</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="namespacergbd__slam_1_1utils.html#a5778047a8709e21d4237c292ee32756f">log_error</a>(<span class="keyword">const</span> std::string_view&amp; message, <span class="keyword">const</span> std::source_location&amp; location = std::source_location::current());</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="namespacergbd__slam_1_1outputs.html#ac481964e17f115af5414d23bdc2d97a7">log</a>(<span class="keyword">const</span> std::string_view&amp; message, <span class="keyword">const</span> std::source_location&amp; location = std::source_location::current());</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="namespacergbd__slam_1_1outputs.html#a7c11e499578358f64a58d71f5b0dfb4d">log_error</a>(<span class="keyword">const</span> std::string_view&amp; message, <span class="keyword">const</span> std::source_location&amp; location = std::source_location::current());</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    }   <span class="comment">// utils</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    }   <span class="comment">// outputs</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}   <span class="comment">// rgbd_slam</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="anamespacergbd__slam_1_1utils_html_a5778047a8709e21d4237c292ee32756f"><div class="ttname"><a href="namespacergbd__slam_1_1utils.html#a5778047a8709e21d4237c292ee32756f">rgbd_slam::utils::log_error</a></div><div class="ttdeci">void log_error(const std::string_view &amp;message, const std::source_location &amp;location)</div><div class="ttdef"><b>Definition:</b> logger.cpp:17</div></div>
-<div class="ttc" id="anamespacergbd__slam_1_1utils_html_a72367a9fbc89211876d694db36fe5e2c"><div class="ttname"><a href="namespacergbd__slam_1_1utils.html#a72367a9fbc89211876d694db36fe5e2c">rgbd_slam::utils::log</a></div><div class="ttdeci">void log(const std::string_view &amp;message, const std::source_location &amp;location)</div><div class="ttdef"><b>Definition:</b> logger.cpp:9</div></div>
+<div class="ttc" id="anamespacergbd__slam_1_1outputs_html_a7c11e499578358f64a58d71f5b0dfb4d"><div class="ttname"><a href="namespacergbd__slam_1_1outputs.html#a7c11e499578358f64a58d71f5b0dfb4d">rgbd_slam::outputs::log_error</a></div><div class="ttdeci">void log_error(const std::string_view &amp;message, const std::source_location &amp;location)</div><div class="ttdef"><b>Definition:</b> logger.cpp:17</div></div>
+<div class="ttc" id="anamespacergbd__slam_1_1outputs_html_ac481964e17f115af5414d23bdc2d97a7"><div class="ttname"><a href="namespacergbd__slam_1_1outputs.html#ac481964e17f115af5414d23bdc2d97a7">rgbd_slam::outputs::log</a></div><div class="ttdeci">void log(const std::string_view &amp;message, const std::source_location &amp;location)</div><div class="ttdef"><b>Definition:</b> logger.cpp:9</div></div>
 <div class="ttc" id="anamespacergbd__slam_html"><div class="ttname"><a href="namespacergbd__slam.html">rgbd_slam</a></div><div class="ttdef"><b>Definition:</b> keypoint_detection.cpp:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
