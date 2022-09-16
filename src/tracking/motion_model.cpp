@@ -1,7 +1,7 @@
 #include "motion_model.hpp"
 
 namespace rgbd_slam {
-namespace utils {
+namespace tracking {
 
 
     Motion_Model::Motion_Model() {
@@ -27,7 +27,7 @@ namespace utils {
 
 
 
-    const Pose Motion_Model::predict_next_pose(const Pose& currentPose) const {
+    const utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose) const {
         //compute next linear velocity
         vector3 newLinVelocity = currentPose.get_position() - _lastPosition;
         newLinVelocity = (newLinVelocity + _linearVelocity) * 0.5;
@@ -44,11 +44,11 @@ namespace utils {
         integralQ.normalize();
 
         // TODO: predict variance instead of copying ? 
-        return Pose(integralPos, integralQ, currentPose.get_position_variance());
+        return utils::Pose(integralPos, integralQ, currentPose.get_position_variance());
     }
 
 
-    void Motion_Model::update_model(const Pose& pose) {
+    void Motion_Model::update_model(const utils::Pose& pose) {
         //compute next linear velocity
         vector3 newLinVelocity = pose.get_position() - _lastPosition;
         newLinVelocity = (newLinVelocity + _linearVelocity) * 0.5;

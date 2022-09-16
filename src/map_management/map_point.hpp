@@ -4,7 +4,7 @@
 #include "../types.hpp"
 #include <opencv2/opencv.hpp>
 
-#include "utils/kalman_filter.hpp"
+#include "tracking/kalman_filter.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -109,7 +109,7 @@ namespace rgbd_slam {
             void build_kalman_filter();
 
             private:
-                utils::KalmanFilter* _kalmanFilter;
+                tracking::KalmanFilter* _kalmanFilter;
         };
 
         /**

@@ -66,7 +66,7 @@ namespace rgbd_slam {
                 0,   0,   1;
             processNoiseCovariance *= pointProcessNoise;
 
-            _kalmanFilter = new utils::KalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
+            _kalmanFilter = new tracking::KalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
         }
 
         double IMap_Point_With_Tracking::track_point(const vector3& newPointCoordinates, const matrix33& newPointCovariance)

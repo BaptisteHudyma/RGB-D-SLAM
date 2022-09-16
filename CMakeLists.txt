@@ -57,6 +57,7 @@ set(KEYPOINTS   ${FEATS}/keypoints)
 set(PRIMITIVES  ${FEATS}/primitives)
 set(POSE_OPTI   ${SRC}/pose_optimization)
 set(MAP         ${SRC}/map_management)
+set(TRACKING    ${SRC}/tracking)
 set(OUTPUTS     ${SRC}/outputs)
 set(UTILS       ${SRC}/utils)
 set(EXAMPLES    examples)
@@ -72,6 +73,7 @@ include_directories(
     ${POSE_OPTI}
     ${MAP}
     ${THIRD_PARTY}
+    ${TRACKING}
     ${OUTPUTS}
     ${UTILS}
     ${EXAMPLES}
@@ -108,6 +110,12 @@ add_library(poseOptimization SHARED
     ${POSE_OPTI}/pose_optimization.cpp
     )
 
+add_library(tracking SHARED
+    ${TRACKING}/motion_model.cpp
+    ${TRACKING}/triangulation.cpp
+    ${TRACKING}/kalman_filter.cpp
+)
+
 add_library(outputs SHARED
     ${OUTPUTS}/map_writer.cpp
     ${OUTPUTS}/logger.cpp
@@ -119,9 +127,6 @@ add_library(utils SHARED
     ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
     ${UTILS}/pose.cpp
-    ${UTILS}/motion_model.cpp
-    ${UTILS}/triangulation.cpp
-    ${UTILS}/kalman_filter.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED
@@ -135,6 +140,7 @@ target_link_libraries(${PROJECT_NAME}
     mapManagement
     poseOptimization
     thirdParty
+    tracking
     outputs
     utils
     ${LINK_LIBS} 

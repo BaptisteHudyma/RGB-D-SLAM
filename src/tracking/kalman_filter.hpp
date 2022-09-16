@@ -5,7 +5,7 @@
 #include <Eigen/Dense>
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace tracking {
 
         class KalmanFilter {
 

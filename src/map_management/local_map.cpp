@@ -1,7 +1,7 @@
 #include "local_map.hpp"
 
 #include "../parameters.hpp"
-#include "../utils/triangulation.hpp"
+#include "../tracking/triangulation.hpp"
 #include "../utils/camera_transformation.hpp"
 #include "../utils/covariances.hpp"
 #include "../outputs/logger.hpp"
@@ -297,7 +297,7 @@ namespace rgbd_slam {
                     if (isTransformationValid)
                     {
                         vector3 triangulatedPoint;
-                        const bool isTriangulationValid = utils::Triangulation::triangulate(previousCameraToWorldMatrix, cameraToWorldMatrix, previousPointScreenCoordinates, matchedPointCoordinates, triangulatedPoint);
+                        const bool isTriangulationValid = tracking::Triangulation::triangulate(previousCameraToWorldMatrix, cameraToWorldMatrix, previousPointScreenCoordinates, matchedPointCoordinates, triangulatedPoint);
                         // update the match
                         if (isTriangulationValid)
                         {

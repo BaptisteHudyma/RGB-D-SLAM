@@ -2,10 +2,10 @@
 #define RGBDSLAM_UTILS_TRIANGULATION_HPP
 
 #include "../types.hpp"
-#include "pose.hpp"
+#include "utils/pose.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace tracking {
 
         class Triangulation
         {
@@ -27,7 +27,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Return a weak supposition of a new pose, from an optimized pose
                  */
-                static Pose get_supposed_pose(const Pose& pose, const double baselinePoseSupposition);
+                static utils::Pose get_supposed_pose(const utils::Pose& pose, const double baselinePoseSupposition);
 
             private:
                 

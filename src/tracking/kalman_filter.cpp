@@ -4,7 +4,7 @@
 #include "kalman_filter.hpp"
 
 namespace rgbd_slam {
-    namespace utils {
+    namespace tracking {
 
         KalmanFilter::KalmanFilter(const Eigen::MatrixXd& systemDynamics,
                                     const Eigen::MatrixXd& outputMatrix,

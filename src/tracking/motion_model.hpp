@@ -2,10 +2,10 @@
 #define RGBDSLAM_UTILS_MOTIONMODEL_HPP
 
 #include "../types.hpp"
-#include "pose.hpp"
+#include "utils/pose.hpp"
 
 namespace rgbd_slam {
-namespace utils {
+namespace tracking {
 
     /**
      * \brief Dead reckoning class: guess next pose using a motion model
@@ -22,14 +22,14 @@ namespace utils {
              *
              * \param[in] currentPose Last frame pose
              */
-            const Pose predict_next_pose(const Pose& currentPose) const;
+            const utils::Pose predict_next_pose(const utils::Pose& currentPose) const;
 
             /**
              * \brief Update the motion model using the refined pose
              *
              * \param[in] pose Refined pose estimation
              */
-            void update_model(const Pose& pose);
+            void update_model(const utils::Pose& pose);
 
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 

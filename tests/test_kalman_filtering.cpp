@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
-#include "utils/kalman_filter.hpp"
+#include "tracking/kalman_filter.hpp"
 #include <Eigen/src/Core/Matrix.h>
 
 #include <list>
 #include <random>
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam::tracking {
 
     TEST(KalmanFilteringTests, BuildingHeightGuess)
     {

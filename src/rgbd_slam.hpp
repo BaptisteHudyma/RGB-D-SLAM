@@ -12,8 +12,8 @@
 
 #include "map_management/local_map.hpp"
 
+#include "tracking/motion_model.hpp"
 #include "utils/pose.hpp"
-#include "utils/motion_model.hpp"
 
 #include "../third_party/line_segment_detector.hpp"
 
@@ -95,7 +95,7 @@ namespace rgbd_slam {
             cv::Mat _kernel;
 
             utils::Pose _currentPose;
-            utils::Motion_Model _motionModel;
+            tracking::Motion_Model _motionModel;
 
             // debug
             uint _totalFrameTreated;
