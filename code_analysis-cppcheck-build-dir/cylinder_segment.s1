@@ -1,0 +1,93 @@
+EulerAngles
+EulerAngles
+get_MSE
+get_normal
+get_mean
+get_plane_d
+is_planar
+get_score
+is_valid
+get_starting_position_x
+get_starting_position_y
+get_starting_position_z
+get_starting_rotation_x
+get_starting_rotation_y
+get_starting_rotation_z
+get_camera_1_center_x
+get_camera_1_center_y
+get_camera_1_focal_x
+get_camera_1_focal_y
+get_camera_2_center_x
+get_camera_2_center_y
+get_camera_2_focal_x
+get_camera_2_focal_y
+get_camera_2_translation_x
+get_camera_2_translation_y
+get_camera_2_translation_z
+get_camera_2_rotation_x
+get_camera_2_rotation_y
+get_camera_2_rotation_z
+get_minimum_iou_for_match
+get_minimum_normals_dot_difference
+get_ransac_maximum_retroprojection_error_for_inliers
+get_ransac_minimum_inliers_proportion_for_early_stop
+get_ransac_probability_of_success
+get_ransac_inlier_proportion
+get_minimum_point_count_for_optimization
+get_maximum_point_count_per_frame
+get_optimization_maximum_iterations
+get_optimization_error_precision
+get_optimization_xtol
+get_optimization_ftol
+get_optimization_gtol
+get_optimization_factor
+get_maximum_retroprojection_error
+get_point_weight_threshold
+get_point_weight_coefficient
+get_point_loss_alpha
+get_point_loss_scale
+get_point_error_multiplier
+get_search_matches_distance
+get_search_matches_cell_size
+get_maximum_match_distance
+get_minimum_hessian
+get_keypoint_refresh_frequency
+get_optical_flow_pyramid_depth
+get_optical_flow_pyramid_windown_size
+get_optical_flow_max_error
+get_optical_flow_max_distance
+get_keypoint_mask_diameter
+get_maximum_plane_match_angle
+get_maximum_merge_distance
+get_depth_map_patch_size
+get_minimum_plane_seed_count
+get_minimum_cell_activated
+get_depth_sigma_error
+get_depth_sigma_margin
+get_depth_discontinuity_limit
+get_depth_alpha
+get_cylinder_ransac_max_distance
+get_cylinder_ransac_minimm_score
+get_cylinder_ransac_inlier_proportion
+get_cylinder_ransac_probability_of_success
+get_maximum_unmatched_before_removal
+get_point_age_confidence
+get_point_staged_age_confidence
+get_minimum_confidence_for_local_map
+get_maximum_map_retroprojection_error
+Cylinder_Segment call:[push_back]
+Cylinder_Segment
+run_ransac_loop call:[array,assert,col,dot,idsLeftMask,isInlierFinal,push_back,rand,setConstant,size,squaredNorm,sum,swap] noreturn:[push_back,size]
+get_distance call:[get_distance,size]
+get_distance call:[cross,norm]
+get_segment_count
+get_MSE_at call:[assert,size]
+is_inlier_at call:[assert,size]
+get_local_to_global_mapping call:[assert,size]
+get_axis1_point call:[assert,size]
+get_axis2_point call:[assert,size]
+get_axis_normal call:[assert,size]
+get_radius call:[assert,size]
+get_normal_similarity call:[abs,dot] noreturn:[abs]
+get_normal
+Cylinder_Segment

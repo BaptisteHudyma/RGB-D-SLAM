@@ -1,0 +1,2 @@
+log call:[column,file_name,filename,line,path,string]
+log_error call:[column,file_name,filename,line,path,string]

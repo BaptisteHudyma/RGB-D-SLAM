@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="6578837994099720246">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+        <error id="unusedPrivateFunction" severity="style" msg="Unused private function: &apos;Pose_Optimization::compute_p3p_pose&apos;" verbose="Unused private function: &apos;Pose_Optimization::compute_p3p_pose&apos;" cwe="398" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.hpp" line="51" column="29"/>
+            <symbol>Pose_Optimization::compute_p3p_pose</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/levenberg_marquard_functors.hpp:107:27" call-funcname="get_human_readable_end_message" call-argnr="1" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp" line="196" col="75" call-argexpr="endStatus" call-argvaluetype="0" call-argvalue="0" warning="true">
+  <path file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp" line="193" col="27" info="Assuming that condition &apos;endStatus&lt;=0&apos; is not redundant"/>
+</function-call>  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/ransac.hpp:18:30" my-argnr="1" my-argname="inContainer" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/ransac.hpp" line="20" col="56" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.hpp:49:29" my-argnr="2" my-argname="matchedPoints" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp" line="22" col="65" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.hpp:36:29" my-argnr="1" my-argname="currentPose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp" line="135" col="39" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.hpp:36:29" my-argnr="2" my-argname="matchedPoints" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp" line="133" col="20" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.hpp:51:29" my-argnr="1" my-argname="currentPose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp" line="230" col="43" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.hpp:51:29" my-argnr="2" my-argname="matchedPoints" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/pose_optimization/pose_optimization.cpp" line="208" col="20" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="compute_pose_with_ransac" lineNumber="20"/>
+    <functiondecl functionName="compute_optimized_pose" lineNumber="114"/>
+    <functiondecl functionName="compute_optimized_global_pose" lineNumber="131"/>
+    <functiondecl functionName="compute_p3p_pose" lineNumber="206"/>
+    <functioncall functionName="CameraPose"/>
+    <functioncall functionName="Dynamic"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="Global_Pose_Estimator"/>
+    <functioncall functionName="Global_Pose_Functor"/>
+    <functioncall functionName="Levenberg_Marquardt_Functor &lt; double , Eigen :: Dynamic , Eigen :: Dynamic &gt;"/>
+    <functioncall functionName="Match"/>
+    <functioncall functionName="Pose"/>
+    <functioncall functionName="PoseBase"/>
+    <functioncall functionName="R"/>
+    <functioncall functionName="T"/>
+    <functioncall functionName="Vector3d"/>
+    <functioncall functionName="_inputCount"/>
+    <functioncall functionName="_mapPointId"/>
+    <functioncall functionName="_outputCount"/>
+    <functioncall functionName="_screenPoint"/>
+    <functioncall functionName="_worldPoint"/>
+    <functioncall functionName="acceptableInliersForEarlyStop"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="begin"/>
+    <functioncall functionName="bestPose"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="cameraPoint"/>
+    <functioncall functionName="cameraPoints"/>
+    <functioncall functionName="cbegin"/>
+    <functioncall functionName="cend"/>
+    <functioncall functionName="compute_optimized_global_pose"/>
+    <functioncall functionName="compute_pose_variance"/>
+    <functioncall functionName="compute_pose_with_ransac"/>
+    <functioncall functionName="compute_world_to_camera_transform"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="copyVector"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="currentPose"/>
+    <functioncall functionName="distance"/>
+    <functioncall functionName="double"/>
+    <functioncall functionName="end"/>
+    <functioncall functionName="endPosition"/>
+    <functioncall functionName="endRotation"/>
+    <functioncall functionName="endStatus"/>
+    <functioncall functionName="estimatedPoseVariance"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="finalCameraPoses"/>
+    <functioncall functionName="finalPose"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="get_3D_to_2D_distance"/>
+    <functioncall functionName="get_camera_1_center_x"/>
+    <functioncall functionName="get_camera_1_center_y"/>
+    <functioncall functionName="get_camera_1_focal_x"/>
+    <functioncall functionName="get_camera_1_focal_y"/>
+    <functioncall functionName="get_human_readable_end_message"/>
+    <functioncall functionName="get_minimum_point_count_for_optimization"/>
+    <functioncall functionName="get_optimization_error_precision"/>
+    <functioncall functionName="get_optimization_factor"/>
+    <functioncall functionName="get_optimization_ftol"/>
+    <functioncall functionName="get_optimization_gtol"/>
+    <functioncall functionName="get_optimization_maximum_iterations"/>
+    <functioncall functionName="get_optimization_xtol"/>
+    <functioncall functionName="get_orientation_matrix"/>
+    <functioncall functionName="get_orientation_quaternion"/>
+    <functioncall functionName="get_position"/>
+    <functioncall functionName="get_position_variance"/>
+    <functioncall functionName="get_quaternion_from_scale_axis_coefficients"/>
+    <functioncall functionName="get_random_subset"/>
+    <functioncall functionName="get_ransac_inlier_proportion"/>
+    <functioncall functionName="get_ransac_maximum_retroprojection_error_for_inliers"/>
+    <functioncall functionName="get_ransac_minimum_inliers_proportion_for_early_stop"/>
+    <functioncall functionName="get_ransac_probability_of_success"/>
+    <functioncall functionName="get_scaled_axis_coefficients_from_quaternion"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="inlierMatchedPoints"/>
+    <functioncall functionName="input"/>
+    <functioncall functionName="inputCount"/>
+    <functioncall functionName="insert"/>
+    <functioncall functionName="isPoseValid"/>
+    <functioncall functionName="isnan"/>
+    <functioncall functionName="log"/>
+    <functioncall functionName="log_error"/>
+    <functioncall functionName="mapId"/>
+    <functioncall functionName="match"/>
+    <functioncall functionName="matchedPointSize"/>
+    <functioncall functionName="matchedPoints"/>
+    <functioncall functionName="max"/>
+    <functioncall functionName="maximumIterations"/>
+    <functioncall functionName="maximumRetroprojectionThreshold"/>
+    <functioncall functionName="message"/>
+    <functioncall functionName="minimize"/>
+    <functioncall functionName="minimumPointsForOptimization"/>
+    <functioncall functionName="multiplier"/>
+    <functioncall functionName="newPose"/>
+    <functioncall functionName="norm"/>
+    <functioncall functionName="normalized"/>
+    <functioncall functionName="outlierMatchedPoints"/>
+    <functioncall functionName="outputCount"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="p3p"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="pose"/>
+    <functioncall functionName="poseOptimizator"/>
+    <functioncall functionName="posePosition"/>
+    <functioncall functionName="poseRotation"/>
+    <functioncall functionName="pose_optimisation_functor"/>
+    <functioncall functionName="positionDistance"/>
+    <functioncall functionName="potentialInliersContainer"/>
+    <functioncall functionName="potentialOutliersContainer"/>
+    <functioncall functionName="pow"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="quaternion"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="random_shuffle"/>
+    <functioncall functionName="reference_wrapper"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="rotation"/>
+    <functioncall functionName="rotationDistance"/>
+    <functioncall functionName="score"/>
+    <functioncall functionName="screenPoint"/>
+    <functioncall functionName="selectedMatches"/>
+    <functioncall functionName="setZero"/>
+    <functioncall functionName="set_parameters"/>
+    <functioncall functionName="set_position_variance"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="swap"/>
+    <functioncall functionName="template"/>
+    <functioncall functionName="toRotationMatrix"/>
+    <functioncall functionName="to_string"/>
+    <functioncall functionName="transformationMatrix"/>
+    <functioncall functionName="typename"/>
+    <functioncall functionName="uint"/>
+    <functioncall functionName="variance"/>
+    <functioncall functionName="vector3"/>
+    <functioncall functionName="worldPoint"/>
+    <functioncall functionName="worldPoints"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+    <functioncall functionName="z"/>
+  </FileInfo>
+</analyzerinfo>

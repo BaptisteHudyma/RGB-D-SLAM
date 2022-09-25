@@ -1,0 +1,7 @@
+EulerAngles
+EulerAngles
+Motion_Model call:[reset] noreturn:[reset]
+reset call:[setIdentity] noreturn:[setIdentity]
+reset call:[setIdentity] noreturn:[setIdentity]
+predict_next_pose call:[Pose,get_orientation_quaternion,get_position,get_position_variance,inverse,normalize,slerp] noreturn:[Pose]
+update_model call:[get_orientation_quaternion,get_position,inverse,normalize,slerp]

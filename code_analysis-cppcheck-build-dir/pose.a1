@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="17624690617376263052">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.hpp:16:17" my-argnr="1" my-argname="position" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp" line="17" col="28" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.hpp:16:17" my-argnr="2" my-argname="orientation" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp" line="17" col="38" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.hpp:21:22" my-argnr="1" my-argname="position" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp" line="27" col="26" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.hpp:21:22" my-argnr="2" my-argname="orientation" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp" line="26" col="29" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.hpp:31:22" my-argnr="1" my-argname="os" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp" line="33" col="13" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.hpp:61:23" my-argnr="2" my-argname="pose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp" line="38" col="13" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.hpp:62:23" my-argnr="2" my-argname="pose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/pose.cpp" line="71" col="13" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="set_parameters" lineNumber="20"/>
+    <functiondecl functionName="update" lineNumber="25"/>
+    <functiondecl functionName="display" lineNumber="31"/>
+    <functiondecl functionName="display" lineNumber="65"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="Pose"/>
+    <functioncall functionName="PoseBase"/>
+    <functioncall functionName="_orientation"/>
+    <functioncall functionName="_positionVariance"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="cwiseSqrt"/>
+    <functioncall functionName="display"/>
+    <functioncall functionName="get_euler_angles_from_quaternion"/>
+    <functioncall functionName="orientation"/>
+    <functioncall functionName="os"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="poseVariance"/>
+    <functioncall functionName="position"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="setIdentity"/>
+    <functioncall functionName="setZero"/>
+    <functioncall functionName="set_parameters"/>
+    <functioncall functionName="toRotationMatrix"/>
+    <functioncall functionName="transpose"/>
+    <functioncall functionName="variance"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+  </FileInfo>
+</analyzerinfo>

@@ -187,7 +187,7 @@ namespace rgbd_slam {
                  * \param[in] pointColor The color of the point to draw
                  * \param[out] debugImage The image to draw the points modify
                  */
-                static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage);
+                static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius = 3);
 
                 void draw_primitives_on_image(const matrix44& worldToCameraMatrix, cv::Mat& debugImage) const;
 

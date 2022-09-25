@@ -1,0 +1,8 @@
+EulerAngles
+EulerAngles
+IMap_Writer call:[exit,is_open,log_error,open] noreturn:[exit]
+IMap_Writer call:[close,is_open] noreturn:[close]
+XYZ_Map_Writer
+add_point call:[exit,is_open,log_error,x,y,z] noreturn:[exit]
+PCD_Map_Writer
+add_point call:[exit,is_open,log_error,x,y,z] noreturn:[exit]

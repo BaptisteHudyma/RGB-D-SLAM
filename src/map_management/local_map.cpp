@@ -235,18 +235,18 @@ namespace rgbd_slam {
             {
                 if (mapPrimitive._matchedPrimitive.is_matched())
                 {
-                    const size_t primitiveId = mapPrimitive._matchedPrimitive._matchId;
-                    assert(primitiveId != UNMATCHED_PRIMITIVE_ID);
-                    assert(detectedPrimitives.contains(primitiveId));
+                    const size_t matchedPrimitiveId = mapPrimitive._matchedPrimitive._matchId;
+                    assert(matchedPrimitiveId != UNMATCHED_PRIMITIVE_ID);
+                    assert(detectedPrimitives.contains(matchedPrimitiveId));
 
                     // TODO update primitive 
-                    mapPrimitive._primitive->set_shape_mask(detectedPrimitives.at(primitiveId)->get_shape_mask());
+                    mapPrimitive._primitive->set_shape_mask(detectedPrimitives.at(matchedPrimitiveId)->get_shape_mask());
                 }
                 else if (mapPrimitive._matchedPrimitive.is_lost())
                 {
                     // add to primitives to remove
                     primitivesToRemove.emplace(primitiveId);
-                }   
+                }
             }
 
             // Remove umatched
@@ -474,7 +474,7 @@ namespace rgbd_slam {
             _stagedPoints.clear();
         }
 
-        void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage)
+        void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius)
         {
             if (mapPoint._matchedScreenPoint.is_matched())
             {
@@ -484,7 +484,7 @@ namespace rgbd_slam {
                 //Map Point are green 
                 if (isCoordinatesValid)
                 {
-                    cv::circle(debugImage, cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())), 3, pointColor, -1);
+                    cv::circle(debugImage, cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())), radius, pointColor, -1);
                 }
             }
         }
@@ -586,19 +586,20 @@ namespace rgbd_slam {
             if (shouldDisplayPrimitiveMasks)
                 draw_primitives_on_image(worldToCamMatrix, debugImage);
 
-            // Display keypoints
-            for (const auto& [pointId, mapPoint] : _localPointMap) {
-                assert(pointId == mapPoint._id);
-                draw_point_on_image(mapPoint, worldToCamMatrix, mapPoint._color, debugImage);
-            }
+            // Display stagged points if needed
             if (shouldDisplayStaged)
             {
                 for (const auto& [pointId, stagedPoint] : _stagedPoints) {
                     assert(pointId == stagedPoint._id);
 
                     const cv::Scalar pointColor = (stagedPoint._matchedScreenPoint.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);
-                    draw_point_on_image(stagedPoint, worldToCamMatrix, pointColor, debugImage);
+                    draw_point_on_image(stagedPoint, worldToCamMatrix, pointColor, debugImage, 2);
                 }
+            }
+            // Display true map points
+            for (const auto& [pointId, mapPoint] : _localPointMap) {
+                assert(pointId == mapPoint._id);
+                draw_point_on_image(mapPoint, worldToCamMatrix, mapPoint._color, debugImage);
             }
         }
 

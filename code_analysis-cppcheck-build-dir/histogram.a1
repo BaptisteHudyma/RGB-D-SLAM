@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="16331085180244008537">
+        <error id="containerOutOfBounds" severity="warning" msg="Either the condition &apos;pointId&gt;_B.size()&apos; is redundant or &apos;pointId&apos; can have the value _B.size(). Expression &apos;_B[pointId]&apos; cause access out of bounds." verbose="Either the condition &apos;pointId&gt;_B.size()&apos; is redundant or &apos;pointId&apos; can have the value _B.size(). Expression &apos;_B[pointId]&apos; cause access out of bounds." cwe="398" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/histogram.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/histogram.cpp" line="79" column="17" info="Access out of bounds"/>
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/histogram.cpp" line="75" column="20" info="Assuming that condition &apos;pointId&gt;_B.size()&apos; is not redundant"/>
+            <symbol>_B</symbol>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/histogram.hpp:27:18" my-argnr="1" my-argname="points" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/histogram.cpp" line="27" col="23" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/histogram.hpp:27:18" my-argnr="2" my-argname="isUnasignedMask" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/histogram.cpp" line="30" col="31" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="reset" lineNumber="20"/>
+    <functiondecl functionName="init_histogram" lineNumber="25"/>
+    <functiondecl functionName="get_points_from_most_frequent_bin" lineNumber="48"/>
+    <functiondecl functionName="remove_point" lineNumber="74"/>
+    <functioncall functionName="Histogram"/>
+    <functioncall functionName="_binPerCoordCount"/>
+    <functioncall functionName="_maxXminX"/>
+    <functioncall functionName="_maxYminY"/>
+    <functioncall functionName="_minX"/>
+    <functioncall functionName="_minY"/>
+    <functioncall functionName="_pointCount"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="assign"/>
+    <functioncall functionName="begin"/>
+    <functioncall functionName="bin"/>
+    <functioncall functionName="binPerCoordCount"/>
+    <functioncall functionName="bool"/>
+    <functioncall functionName="clear"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="exit"/>
+    <functioncall functionName="fill_n"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="log_error"/>
+    <functioncall functionName="pointId"/>
+    <functioncall functionName="points"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="reserve"/>
+    <functioncall functionName="reset"/>
+    <functioncall functionName="rows"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="uint"/>
+    <functioncall functionName="xQ"/>
+  </FileInfo>
+</analyzerinfo>

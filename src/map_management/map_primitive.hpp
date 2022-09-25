@@ -33,7 +33,7 @@ namespace rgbd_slam {
                 ++_unmatchedCount;
             }
 
-            bool is_lost()
+            bool is_lost() const
             {
                 return _unmatchedCount >= Parameters::get_maximum_unmatched_before_removal();
             }

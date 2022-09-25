@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="4113933564422112293">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.hpp:76:30" my-argnr="1" my-argname="depthMatrix" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp" line="56" col="40" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.hpp:77:30" my-argnr="1" my-argname="depthMatrix" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp" line="88" col="40" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.hpp:26:26" my-argnr="1" my-argname="depthCloudArray" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp" line="121" col="54" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.hpp:32:26" my-argnr="1" my-argname="planeSegment" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp" line="169" col="47" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.hpp:33:26" my-argnr="1" my-argname="planeMean" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp" line="173" col="40" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.hpp:40:26" my-argnr="1" my-argname="planeSegment" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/plane_segment.cpp" line="177" col="24" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="is_cell_vertical_continuous" lineNumber="50"/>
+    <functiondecl functionName="is_cell_horizontal_continuous" lineNumber="82"/>
+    <functiondecl functionName="init_plane_segment" lineNumber="113"/>
+    <functiondecl functionName="is_depth_discontinuous" lineNumber="167"/>
+    <functiondecl functionName="is_depth_discontinuous" lineNumber="171"/>
+    <functiondecl functionName="expand_segment" lineNumber="176"/>
+    <functiondecl functionName="fit_plane" lineNumber="192"/>
+    <functiondecl functionName="clear_plane_parameters" lineNumber="235"/>
+    <functiondecl functionName="get_normal_similarity" lineNumber="258"/>
+    <functiondecl functionName="get_signed_distance" lineNumber="263"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="Plane_Segment"/>
+    <functioncall functionName="Zero"/>
+    <functioncall functionName="_MSE"/>
+    <functioncall functionName="_Sx"/>
+    <functioncall functionName="_Sxs"/>
+    <functioncall functionName="_Sxy"/>
+    <functioncall functionName="_Sy"/>
+    <functioncall functionName="_Sys"/>
+    <functioncall functionName="_Syz"/>
+    <functioncall functionName="_Sz"/>
+    <functioncall functionName="_Szs"/>
+    <functioncall functionName="_Szx"/>
+    <functioncall functionName="_cellHeight"/>
+    <functioncall functionName="_cellWidth"/>
+    <functioncall functionName="_d"/>
+    <functioncall functionName="_isPlanar"/>
+    <functioncall functionName="_mean"/>
+    <functioncall functionName="_minZeroPointCount"/>
+    <functioncall functionName="_normal"/>
+    <functioncall functionName="_pointCount"/>
+    <functioncall functionName="_ptsPerCellCount"/>
+    <functioncall functionName="_score"/>
+    <functioncall functionName="abs"/>
+    <functioncall functionName="array"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="block"/>
+    <functioncall functionName="cellWidth"/>
+    <functioncall functionName="clear_plane_parameters"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="count"/>
+    <functioncall functionName="cov"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="depthAlphaValue"/>
+    <functioncall functionName="depthDiscontinuityLimit"/>
+    <functioncall functionName="depthMatrix"/>
+    <functioncall functionName="discontinuityCounter"/>
+    <functioncall functionName="dot"/>
+    <functioncall functionName="double"/>
+    <functioncall functionName="eig33sym"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="fit_plane"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="get_depth_alpha"/>
+    <functioncall functionName="get_depth_discontinuity_limit"/>
+    <functioncall functionName="get_depth_sigma_error"/>
+    <functioncall functionName="get_depth_sigma_margin"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="is_cell_horizontal_continuous"/>
+    <functioncall functionName="is_cell_vertical_continuous"/>
+    <functioncall functionName="is_depth_discontinuous"/>
+    <functioncall functionName="log"/>
+    <functioncall functionName="max"/>
+    <functioncall functionName="offset"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="pow"/>
+    <functioncall functionName="ptsPerCellCount"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="startValue"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="sum"/>
+    <functioncall functionName="sv"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="uint"/>
+    <functioncall functionName="v"/>
+    <functioncall functionName="vector3"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+    <functioncall functionName="z"/>
+    <functioncall functionName="zLast"/>
+  </FileInfo>
+</analyzerinfo>

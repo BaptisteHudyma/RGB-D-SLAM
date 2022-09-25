@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="8478932296889592022">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Cylinder_Segment::_pointsAxis1&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Cylinder_Segment::_pointsAxis1&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="27" column="31"/>
+            <symbol>Cylinder_Segment::_pointsAxis1</symbol>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Cylinder_Segment::_pointsAxis2&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Cylinder_Segment::_pointsAxis2&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="27" column="31"/>
+            <symbol>Cylinder_Segment::_pointsAxis2</symbol>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Cylinder_Segment::_normalsAxis1Axis2&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Cylinder_Segment::_normalsAxis1Axis2&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="27" column="31"/>
+            <symbol>Cylinder_Segment::_normalsAxis1Axis2</symbol>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Cylinder_Segment::_inliers&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Cylinder_Segment::_inliers&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="27" column="31"/>
+            <symbol>Cylinder_Segment::_inliers</symbol>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Cylinder_Segment::_MSE&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Cylinder_Segment::_MSE&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="27" column="31"/>
+            <symbol>Cylinder_Segment::_MSE</symbol>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &apos;Cylinder_Segment::_local2globalMap&apos; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &apos;Cylinder_Segment::_local2globalMap&apos; is not assigned in the copy constructor. Should it be copied?" cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="27" column="31"/>
+            <symbol>Cylinder_Segment::_local2globalMap</symbol>
+        </error>
+        <error id="useInitializationList" severity="performance" msg="Variable &apos;_axis&apos; is assigned in constructor body. Consider performing initialization in initialization list." verbose="When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;_axis&apos; a value by passing the value to the constructor in the initialization list." cwe="398" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="36" column="17"/>
+            <symbol>_axis</symbol>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &apos;rgbd_slam::features::primitives::Cylinder_Segment::run_ransac_loop&apos; can be const." verbose="The member function &apos;rgbd_slam::features::primitives::Cylinder_Segment::run_ransac_loop&apos; can be made a const function. Making this function &apos;const&apos; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.hpp" line="160" column="32"/>
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="223" column="38"/>
+            <symbol>rgbd_slam::features::primitives::Cylinder_Segment::run_ransac_loop</symbol>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &apos;run_ransac_loop&apos; argument 7 names different: declaration &apos;IFinal&apos; definition &apos;isInlierFinal&apos;." verbose="Function &apos;run_ransac_loop&apos; argument 7 names different: declaration &apos;IFinal&apos; definition &apos;isInlierFinal&apos;." cwe="628" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="223" column="267"/>
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.hpp" line="160" column="261"/>
+            <symbol>run_ransac_loop</symbol>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.hpp:44:21" my-argnr="1" my-argname="seg" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="16" col="35" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.hpp:51:21" my-argnr="1" my-argname="seg" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="36" col="25" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.hpp:160:32" my-argnr="2" my-argname="idsLeft" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="226" col="24" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.hpp:160:32" my-argnr="7" my-argname="isInlierFinal" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="304" col="17" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.hpp:60:28" my-argnr="1" my-argname="point" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/cylinder_segment.cpp" line="313" col="53" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="run_ransac_loop" lineNumber="223"/>
+    <functiondecl functionName="get_distance" lineNumber="311"/>
+    <functiondecl functionName="get_distance" lineNumber="323"/>
+    <functiondecl functionName="get_segment_count" lineNumber="334"/>
+    <functiondecl functionName="get_MSE_at" lineNumber="339"/>
+    <functiondecl functionName="is_inlier_at" lineNumber="345"/>
+    <functiondecl functionName="get_local_to_global_mapping" lineNumber="351"/>
+    <functiondecl functionName="get_axis1_point" lineNumber="357"/>
+    <functiondecl functionName="get_axis2_point" lineNumber="363"/>
+    <functiondecl functionName="get_axis_normal" lineNumber="368"/>
+    <functiondecl functionName="get_radius" lineNumber="374"/>
+    <functiondecl functionName="get_normal_similarity" lineNumber="380"/>
+    <functiondecl functionName="get_normal" lineNumber="385"/>
+    <functioncall functionName="Cylinder_Segment"/>
+    <functioncall functionName="Dynamic"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="Matrix"/>
+    <functioncall functionName="MatrixXd"/>
+    <functioncall functionName="NCpy"/>
+    <functioncall functionName="P1P2d"/>
+    <functioncall functionName="P1d"/>
+    <functioncall functionName="P2d"/>
+    <functioncall functionName="Plane_Segment"/>
+    <functioncall functionName="Zero"/>
+    <functioncall functionName="_axis"/>
+    <functioncall functionName="_cellActivatedCount"/>
+    <functioncall functionName="_centers"/>
+    <functioncall functionName="_radius"/>
+    <functioncall functionName="_segmentCount"/>
+    <functioncall functionName="a"/>
+    <functioncall functionName="abs"/>
+    <functioncall functionName="adjoint"/>
+    <functioncall functionName="array"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="assign"/>
+    <functioncall functionName="block"/>
+    <functioncall functionName="bool"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="cellActivatedCount"/>
+    <functioncall functionName="center"/>
+    <functioncall functionName="centroid3"/>
+    <functioncall functionName="clear"/>
+    <functioncall functionName="col"/>
+    <functioncall functionName="cols"/>
+    <functioncall functionName="colwise"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="cov"/>
+    <functioncall functionName="cross"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="cylinderAxis"/>
+    <functioncall functionName="dist"/>
+    <functioncall functionName="dot"/>
+    <functioncall functionName="double"/>
+    <functioncall functionName="eigenSolver"/>
+    <functioncall functionName="eigenValues"/>
+    <functioncall functionName="eigenvalues"/>
+    <functioncall functionName="eigenvectors"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="finalInlierIndexes"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="get_cylinder_ransac_inlier_proportion"/>
+    <functioncall functionName="get_cylinder_ransac_max_distance"/>
+    <functioncall functionName="get_cylinder_ransac_minimm_score"/>
+    <functioncall functionName="get_cylinder_ransac_probability_of_success"/>
+    <functioncall functionName="get_distance"/>
+    <functioncall functionName="get_mean"/>
+    <functioncall functionName="get_minimum_cell_activated"/>
+    <functioncall functionName="get_normal"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="id1"/>
+    <functioncall functionName="id2"/>
+    <functioncall functionName="id3"/>
+    <functioncall functionName="idsLeft"/>
+    <functioncall functionName="idsLeftMask"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="index"/>
+    <functioncall functionName="indexA"/>
+    <functioncall functionName="indexB"/>
+    <functioncall functionName="inlierIndex"/>
+    <functioncall functionName="inlierIndexes"/>
+    <functioncall functionName="isInlierFinal"/>
+    <functioncall functionName="j"/>
+    <functioncall functionName="logf"/>
+    <functioncall functionName="matrix33"/>
+    <functioncall functionName="maxInliersCount"/>
+    <functioncall functionName="maximumIterations"/>
+    <functioncall functionName="maximumSqrtDistance"/>
+    <functioncall functionName="minDist"/>
+    <functioncall functionName="mse"/>
+    <functioncall functionName="nd"/>
+    <functioncall functionName="norm"/>
+    <functioncall functionName="normal3"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pSuccess"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="planeCentroids"/>
+    <functioncall functionName="planeNormals"/>
+    <functioncall functionName="planeSegmentsLeft"/>
+    <functioncall functionName="plane_segment_unique_ptr"/>
+    <functioncall functionName="point"/>
+    <functioncall functionName="pointAxisTo2"/>
+    <functioncall functionName="pow"/>
+    <functioncall functionName="powf"/>
+    <functioncall functionName="projectedCentroids"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="radius"/>
+    <functioncall functionName="rand"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="row"/>
+    <functioncall functionName="run_ransac_loop"/>
+    <functioncall functionName="segmentId"/>
+    <functioncall functionName="setConstant"/>
+    <functioncall functionName="shared_ptr"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="squaredNorm"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="subRegionId"/>
+    <functioncall functionName="sum"/>
+    <functioncall functionName="sumOfCenters"/>
+    <functioncall functionName="swap"/>
+    <functioncall functionName="transpose"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="uint"/>
+    <functioncall functionName="w"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+    <functioncall functionName="z"/>
+  </FileInfo>
+</analyzerinfo>

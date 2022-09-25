@@ -1,0 +1,300 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="10528383444415918259">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+        <error id="functionStatic" severity="performance" msg="Technically the member function &apos;rgbd_slam::map_management::Local_Map::update_local_to_global&apos; can be static (but you may consider moving to unnamed namespace)." verbose="The member function &apos;rgbd_slam::map_management::Local_Map::update_local_to_global&apos; can be made a static function. Making a function static can bring a performance benefit since no &apos;this&apos; instance is passed to the function. This change should not cause compiler errors but it does not necessarily make sense conceptually. Think about your design and the task of the function first - is it a function that must not access members of class instances? And maybe it is more appropriate to move this function to a unnamed namespace." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp" line="179" column="22"/>
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="465" column="25"/>
+            <symbol>rgbd_slam::map_management::Local_Map::update_local_to_global</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Key_Point_Extraction&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Key_Point_Extraction&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/keypoints/keypoint_detection.hpp" line="20" column="21"/>
+            <symbol>Key_Point_Extraction</symbol>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/shape_primitives.hpp:62:26" my-argnr="1" my-argname="mask" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/primitives/shape_primitives.hpp" line="62" col="77" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:113:22" my-argnr="1" my-argname="point" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="61" col="79" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:113:22" my-argnr="2" my-argname="detectedKeypointsObject" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="61" col="30" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:125:22" my-argnr="2" my-argname="detectedPrimitives" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="117" col="61" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:43:59" my-argnr="1" my-argname="currentPose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="146" col="89" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:43:59" my-argnr="2" my-argname="detectedKeypointsObject" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="143" col="36" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:53:63" my-argnr="1" my-argname="currentPose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="185" col="92" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:53:63" my-argnr="2" my-argname="detectedPrimitives" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="173" col="61" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:65:22" my-argnr="1" my-argname="previousPose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="210" col="100" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:65:22" my-argnr="2" my-argname="optimizedPose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="204" col="35" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:136:22" my-argnr="1" my-argname="mapPoint" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="272" col="17" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:190:29" my-argnr="1" my-argname="mapPoint" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="479" col="17" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:192:22" my-argnr="2" my-argname="debugImage" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="494" col="24" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:88:22" my-argnr="1" my-argname="camPose" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="583" col="89" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.hpp:212:22" my-argnr="2" my-argname="point" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/map_management/local_map.cpp" line="644" col="31" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="add_point_to_tracked_features" lineNumber="20"/>
+    <functiondecl functionName="find_match" lineNumber="59"/>
+    <functiondecl functionName="find_match" lineNumber="114"/>
+    <functiondecl functionName="find_keypoint_matches" lineNumber="140"/>
+    <functiondecl functionName="find_primitive_matches" lineNumber="169"/>
+    <functiondecl functionName="update" lineNumber="201"/>
+    <functiondecl functionName="update_local_primitive_map" lineNumber="229"/>
+    <functiondecl functionName="update_point_match_status" lineNumber="270"/>
+    <functiondecl functionName="update_local_keypoint_map" lineNumber="336"/>
+    <functiondecl functionName="update_staged_keypoints_map" lineNumber="361"/>
+    <functiondecl functionName="add_umatched_keypoints_to_staged_map" lineNumber="398"/>
+    <functiondecl functionName="get_tracked_keypoints_features" lineNumber="439"/>
+    <functiondecl functionName="update_local_to_global" lineNumber="465"/>
+    <functiondecl functionName="reset" lineNumber="471"/>
+    <functiondecl functionName="draw_point_on_image" lineNumber="477"/>
+    <functiondecl functionName="draw_primitives_on_image" lineNumber="492"/>
+    <functiondecl functionName="get_debug_image" lineNumber="581"/>
+    <functiondecl functionName="mark_outliers_as_unmatched" lineNumber="605"/>
+    <functiondecl functionName="mark_point_with_id_as_unmatched" lineNumber="616"/>
+    <functiondecl functionName="mark_point_with_id_as_unmatched" lineNumber="642"/>
+    <functioncall functionName="COLOR_GRAY2BGR"/>
+    <functioncall functionName="Cylinder"/>
+    <functioncall functionName="Cylinder_Segment"/>
+    <functioncall functionName="DescriptorExtractor"/>
+    <functioncall functionName="DescriptorMatcher"/>
+    <functioncall functionName="Dynamic"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="FONT_HERSHEY_SIMPLEX"/>
+    <functioncall functionName="FeatureDetector"/>
+    <functioncall functionName="IMap_Point_With_Tracking"/>
+    <functioncall functionName="INTER_NEAREST"/>
+    <functioncall functionName="Invalid"/>
+    <functioncall functionName="Local_Map"/>
+    <functioncall functionName="Map_Point"/>
+    <functioncall functionName="Mat"/>
+    <functioncall functionName="Match"/>
+    <functioncall functionName="MatchedPrimitive"/>
+    <functioncall functionName="MatchedScreenPoint"/>
+    <functioncall functionName="Matrix"/>
+    <functioncall functionName="MatrixXd"/>
+    <functioncall functionName="Plane"/>
+    <functioncall functionName="Plane_Segment"/>
+    <functioncall functionName="Point"/>
+    <functioncall functionName="Point2f"/>
+    <functioncall functionName="Pose"/>
+    <functioncall functionName="PoseBase"/>
+    <functioncall functionName="Primitive"/>
+    <functioncall functionName="Scalar"/>
+    <functioncall functionName="Staged_Point"/>
+    <functioncall functionName="UNMATCHED_POINT_INDEX"/>
+    <functioncall functionName="UNMATCHED_PRIMITIVE_ID"/>
+    <functioncall functionName="XYZ_Map_Writer"/>
+    <functioncall functionName="_color"/>
+    <functioncall functionName="_coordinates"/>
+    <functioncall functionName="_descriptor"/>
+    <functioncall functionName="_id"/>
+    <functioncall functionName="_isPointMatched"/>
+    <functioncall functionName="_localPointMap"/>
+    <functioncall functionName="_localPrimitiveMap"/>
+    <functioncall functionName="_mapPointId"/>
+    <functioncall functionName="_matchId"/>
+    <functioncall functionName="_matchIndex"/>
+    <functioncall functionName="_matchedScreenPoint"/>
+    <functioncall functionName="_normal"/>
+    <functioncall functionName="_primitive"/>
+    <functioncall functionName="_screenCoordinates"/>
+    <functioncall functionName="_screenPoint"/>
+    <functioncall functionName="_stagedPoints"/>
+    <functioncall functionName="_unmatchedCount"/>
+    <functioncall functionName="_unmatchedPrimitiveIds"/>
+    <functioncall functionName="_worldPoint"/>
+    <functioncall functionName="addWeighted"/>
+    <functioncall functionName="add_point"/>
+    <functioncall functionName="add_point_to_tracked_features"/>
+    <functioncall functionName="add_umatched_keypoints_to_staged_map"/>
+    <functioncall functionName="allPrimitiveMasks"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="assign"/>
+    <functioncall functionName="at"/>
+    <functioncall functionName="begin"/>
+    <functioncall functionName="bool"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="cameraToWorldMatrix"/>
+    <functioncall functionName="circle"/>
+    <functioncall functionName="clear"/>
+    <functioncall functionName="clone"/>
+    <functioncall functionName="color"/>
+    <functioncall functionName="compute_camera_to_world_transform"/>
+    <functioncall functionName="compute_pose_covariance"/>
+    <functioncall functionName="compute_world_to_camera_transform"/>
+    <functioncall functionName="compute_world_to_screen_coordinates"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="contains"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="cvtColor"/>
+    <functioncall functionName="cylinderLabelPosition"/>
+    <functioncall functionName="debugImage"/>
+    <functioncall functionName="debugImageSize"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="delete"/>
+    <functioncall functionName="depth"/>
+    <functioncall functionName="detectedKeypointsObject"/>
+    <functioncall functionName="detectedPrimitive"/>
+    <functioncall functionName="detectedPrimitives"/>
+    <functioncall functionName="double"/>
+    <functioncall functionName="draw_point_on_image"/>
+    <functioncall functionName="draw_primitives_on_image"/>
+    <functioncall functionName="emplace"/>
+    <functioncall functionName="empty"/>
+    <functioncall functionName="end"/>
+    <functioncall functionName="erase"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="finalPlaceInBand"/>
+    <functioncall functionName="find"/>
+    <functioncall functionName="find_match"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="get_covariance_matrix"/>
+    <functioncall functionName="get_depth"/>
+    <functioncall functionName="get_descriptor"/>
+    <functioncall functionName="get_id"/>
+    <functioncall functionName="get_keypoint"/>
+    <functioncall functionName="get_keypoint_count"/>
+    <functioncall functionName="get_match_index"/>
+    <functioncall functionName="get_maximum_unmatched_before_removal"/>
+    <functioncall functionName="get_minimum_point_count_for_optimization"/>
+    <functioncall functionName="get_orientation_quaternion"/>
+    <functioncall functionName="get_position"/>
+    <functioncall functionName="get_primitive_type"/>
+    <functioncall functionName="get_shape_mask"/>
+    <functioncall functionName="get_state_covariance"/>
+    <functioncall functionName="get_tracking_match_index"/>
+    <functioncall functionName="get_world_point_covariance"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="id"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="imageWidth"/>
+    <functioncall functionName="index"/>
+    <functioncall functionName="insert"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="isCoordinatesValid"/>
+    <functioncall functionName="isScreenCoordinatesValid"/>
+    <functioncall functionName="is_depth_valid"/>
+    <functioncall functionName="is_descriptor_computed"/>
+    <functioncall functionName="is_lost"/>
+    <functioncall functionName="is_matched"/>
+    <functioncall functionName="is_similar"/>
+    <functioncall functionName="isnan"/>
+    <functioncall functionName="keypointObject"/>
+    <functioncall functionName="keypointsWithIds"/>
+    <functioncall functionName="labelSquareSize"/>
+    <functioncall functionName="list"/>
+    <functioncall functionName="log_error"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="mapId"/>
+    <functioncall functionName="mapPoint"/>
+    <functioncall functionName="mapPrimitive"/>
+    <functioncall functionName="mark_matched"/>
+    <functioncall functionName="mark_outliers_as_unmatched"/>
+    <functioncall functionName="mark_point_with_id_as_unmatched"/>
+    <functioncall functionName="mark_unmatched"/>
+    <functioncall functionName="maskAlpha"/>
+    <functioncall functionName="match"/>
+    <functioncall functionName="matchId"/>
+    <functioncall functionName="matchIndex"/>
+    <functioncall functionName="matchedPointCoordinates"/>
+    <functioncall functionName="matchedPointDepth"/>
+    <functioncall functionName="matchedPointIndex"/>
+    <functioncall functionName="matchedPoints"/>
+    <functioncall functionName="matchedPrimitiveContainer"/>
+    <functioncall functionName="matchedPrimitiveId"/>
+    <functioncall functionName="move"/>
+    <functioncall functionName="newMapPrimitive"/>
+    <functioncall functionName="newStagedPoint"/>
+    <functioncall functionName="numberOfNewKeypoints"/>
+    <functioncall functionName="optimizedPose"/>
+    <functioncall functionName="outlierMatchedPoints"/>
+    <functioncall functionName="override"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pair"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="placeInBand"/>
+    <functioncall functionName="planeLabelPosition"/>
+    <functioncall functionName="point"/>
+    <functioncall functionName="pointColor"/>
+    <functioncall functionName="pointId"/>
+    <functioncall functionName="pointMapIterator"/>
+    <functioncall functionName="poseCovariance"/>
+    <functioncall functionName="previousCameraToWorldMatrix"/>
+    <functioncall functionName="primitive"/>
+    <functioncall functionName="primitiveColor"/>
+    <functioncall functionName="primitiveId"/>
+    <functioncall functionName="primitiveMask"/>
+    <functioncall functionName="primitivesToRemove"/>
+    <functioncall functionName="projectedMapPoint"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="putText"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="rand"/>
+    <functioncall functionName="rectangle"/>
+    <functioncall functionName="reserve"/>
+    <functioncall functionName="resize"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="row"/>
+    <functioncall functionName="rows"/>
+    <functioncall functionName="screenCoordinates"/>
+    <functioncall functionName="screenPoint"/>
+    <functioncall functionName="screenPointDepth"/>
+    <functioncall functionName="screen_to_world_coordinates"/>
+    <functioncall functionName="second"/>
+    <functioncall functionName="setTo"/>
+    <functioncall functionName="setZero"/>
+    <functioncall functionName="set_shape_mask"/>
+    <functioncall functionName="shapePrimitive"/>
+    <functioncall functionName="shared_ptr"/>
+    <functioncall functionName="shouldAddMatchToContainer"/>
+    <functioncall functionName="shouldDisplayPrimitiveMasks"/>
+    <functioncall functionName="shouldDisplayStaged"/>
+    <functioncall functionName="shouldUseStagedPoints"/>
+    <functioncall functionName="should_add_to_local_map"/>
+    <functioncall functionName="should_remove_from_staged"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="stagedPoint"/>
+    <functioncall functionName="stagedPointCoordinates"/>
+    <functioncall functionName="stagedPointIterator"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="str"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="toRotationMatrix"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="type"/>
+    <functioncall functionName="uchar"/>
+    <functioncall functionName="uint"/>
+    <functioncall functionName="unmatchedDetectedPrimitiveId"/>
+    <functioncall functionName="update_local_keypoint_map"/>
+    <functioncall functionName="update_local_primitive_map"/>
+    <functioncall functionName="update_local_to_global"/>
+    <functioncall functionName="update_matched"/>
+    <functioncall functionName="update_point_match_status"/>
+    <functioncall functionName="update_staged_keypoints_map"/>
+    <functioncall functionName="update_unmatched"/>
+    <functioncall functionName="variance"/>
+    <functioncall functionName="vector2"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="width"/>
+    <functioncall functionName="worldPoint"/>
+    <functioncall functionName="worldPointCoordinates"/>
+    <functioncall functionName="worldPointCovariance"/>
+    <functioncall functionName="worldToCamMatrix"/>
+    <functioncall functionName="worldToCameraMatrix"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+    <functioncall functionName="z"/>
+    <functioncall functionName="zeros"/>
+  </FileInfo>
+</analyzerinfo>

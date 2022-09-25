@@ -1,0 +1,3 @@
+Line_Detection call:[LSD,assert,exit,log_error,ones] noreturn:[exit,ones]
+detect_lines call:[detect]
+get_image_with_lines call:[Scalar,empty,line,morphologyEx,pt1,pt2] noreturn:[line]

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="10559329891129459296">
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Line_Detection&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Line_Detection&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/lines/line_detection.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/lines/line_detection.hpp" line="19" column="21"/>
+            <symbol>Line_Detection</symbol>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/lines/line_detection.hpp:38:26" my-argnr="1" my-argname="linesToDisplay" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/features/lines/line_detection.cpp" line="37" col="25" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="detect_lines" lineNumber="26"/>
+    <functiondecl functionName="get_image_with_lines" lineNumber="34"/>
+    <functioncall functionName="CV_8U"/>
+    <functioncall functionName="LSD"/>
+    <functioncall functionName="LSD_REFINE_NONE"/>
+    <functioncall functionName="Line_Detection"/>
+    <functioncall functionName="MORPH_CLOSE"/>
+    <functioncall functionName="Scalar"/>
+    <functioncall functionName="Vec4f"/>
+    <functioncall functionName="_kernel"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="at"/>
+    <functioncall functionName="delete"/>
+    <functioncall functionName="depthImage"/>
+    <functioncall functionName="detect"/>
+    <functioncall functionName="empty"/>
+    <functioncall functionName="exit"/>
+    <functioncall functionName="firstQuart"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="grayImage"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="line"/>
+    <functioncall functionName="linesToDisplay"/>
+    <functioncall functionName="log_error"/>
+    <functioncall functionName="mask"/>
+    <functioncall functionName="morphologyEx"/>
+    <functioncall functionName="ones"/>
+    <functioncall functionName="outImage"/>
+    <functioncall functionName="pt1"/>
+    <functioncall functionName="pt2"/>
+    <functioncall functionName="rawLines"/>
+    <functioncall functionName="scale"/>
+    <functioncall functionName="secQuart"/>
+    <functioncall functionName="sigmaScale"/>
+    <functioncall functionName="uchar"/>
+  </FileInfo>
+</analyzerinfo>

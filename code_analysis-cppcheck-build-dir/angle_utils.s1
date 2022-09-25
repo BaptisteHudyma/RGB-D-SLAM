@@ -1,0 +1,5 @@
+EulerAngles
+EulerAngles
+get_quaternion_from_euler_angles call:[cos,quat,sin]
+get_euler_angles_from_quaternion call:[abs,asin,atan2,copysign,w,x,y,z] noreturn:[asin,copysign]
+get_rotation_matrix_from_euler_angles call:[cos,sin]

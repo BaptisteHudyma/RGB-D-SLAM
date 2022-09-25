@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="1854133601776480181">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="src/rgbd_slam.cpp">
+            <location file="src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="src/rgbd_slam.cpp">
+            <location file="src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="src/rgbd_slam.cpp">
+            <location file="src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Line_Detection&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Line_Detection&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="src/rgbd_slam.cpp">
+            <location file="src/features/lines/line_detection.hpp" line="19" column="21"/>
+            <symbol>Line_Detection</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;Key_Point_Extraction&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;Key_Point_Extraction&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="src/rgbd_slam.cpp">
+            <location file="src/features/keypoints/keypoint_detection.hpp" line="20" column="21"/>
+            <symbol>Key_Point_Extraction</symbol>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;!Parameters::is_valid()&apos; is always true" verbose="Condition &apos;!Parameters::is_valid()&apos; is always true" cwe="571" file0="src/rgbd_slam.cpp">
+            <location file="src/rgbd_slam.cpp" line="28" column="17" info="Condition &apos;!Parameters::is_valid()&apos; is always true"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;!Parameters::is_valid()&apos; is always true" verbose="Condition &apos;!Parameters::is_valid()&apos; is always true" cwe="571" file0="src/rgbd_slam.cpp">
+            <location file="src/rgbd_slam.cpp" line="31" column="21" info="Condition &apos;!Parameters::is_valid()&apos; is always true"/>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="src/features/primitives/shape_primitives.hpp:62:26" my-argnr="1" my-argname="mask" file="src/features/primitives/shape_primitives.hpp" line="62" col="77" value="0"/>
+    <unsafe-usage my-id="src/rgbd_slam.hpp:43:31" my-argnr="1" my-argname="inputRgbImage" file="src/rgbd_slam.cpp" line="101" col="36" value="0"/>
+    <unsafe-usage my-id="src/rgbd_slam.hpp:43:31" my-argnr="2" my-argname="inputDepthImage" file="src/rgbd_slam.cpp" line="99" col="36" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="track" lineNumber="97"/>
+    <functiondecl functionName="get_debug_image" lineNumber="144"/>
+    <functiondecl functionName="compute_new_pose" lineNumber="165"/>
+    <functiondecl functionName="get_percent_of_elapsed_time" lineNumber="233"/>
+    <functiondecl functionName="show_statistics" lineNumber="241"/>
+    <functioncall functionName="COLOR_BGR2GRAY"/>
+    <functioncall functionName="Cylinder"/>
+    <functioncall functionName="Cylinder_Segment"/>
+    <functioncall functionName="Depth_Map_Transformation"/>
+    <functioncall functionName="DescriptorExtractor"/>
+    <functioncall functionName="DescriptorMatcher"/>
+    <functioncall functionName="Dynamic"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="FONT_HERSHEY_SIMPLEX"/>
+    <functioncall functionName="FeatureDetector"/>
+    <functioncall functionName="IMap_Point_With_Tracking"/>
+    <functioncall functionName="Invalid"/>
+    <functioncall functionName="Key_Point_Extraction"/>
+    <functioncall functionName="Line_Detection"/>
+    <functioncall functionName="Local_Map"/>
+    <functioncall functionName="Map_Point"/>
+    <functioncall functionName="Mat"/>
+    <functioncall functionName="Match"/>
+    <functioncall functionName="MatchedPrimitive"/>
+    <functioncall functionName="MatchedScreenPoint"/>
+    <functioncall functionName="Matrix"/>
+    <functioncall functionName="MatrixXd"/>
+    <functioncall functionName="Plane"/>
+    <functioncall functionName="Plane_Segment"/>
+    <functioncall functionName="Point"/>
+    <functioncall functionName="Point2f"/>
+    <functioncall functionName="Pose"/>
+    <functioncall functionName="PoseBase"/>
+    <functioncall functionName="Primitive"/>
+    <functioncall functionName="Primitive_Detection"/>
+    <functioncall functionName="RGBD_SLAM"/>
+    <functioncall functionName="Scalar"/>
+    <functioncall functionName="Staged_Point"/>
+    <functioncall functionName="UNMATCHED_POINT_INDEX"/>
+    <functioncall functionName="UNMATCHED_PRIMITIVE_ID"/>
+    <functioncall functionName="Vec4f"/>
+    <functioncall functionName="_currentPose"/>
+    <functioncall functionName="_height"/>
+    <functioncall functionName="_id"/>
+    <functioncall functionName="_mapPointId"/>
+    <functioncall functionName="_matchId"/>
+    <functioncall functionName="_matchIndex"/>
+    <functioncall functionName="_meanDepthMapTreatmentDuration"/>
+    <functioncall functionName="_meanFindMatchTime"/>
+    <functioncall functionName="_meanLineTreatmentDuration"/>
+    <functioncall functionName="_meanLocalMapUpdateDuration"/>
+    <functioncall functionName="_meanPoseOptimizationDuration"/>
+    <functioncall functionName="_meanPoseOptimizationFromFeatures"/>
+    <functioncall functionName="_meanPrimitiveTreatmentDuration"/>
+    <functioncall functionName="_primitive"/>
+    <functioncall functionName="_screenCoordinates"/>
+    <functioncall functionName="_screenPoint"/>
+    <functioncall functionName="_totalFrameTreated"/>
+    <functioncall functionName="_unmatchedCount"/>
+    <functioncall functionName="_width"/>
+    <functioncall functionName="_worldPoint"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="bandSize"/>
+    <functioncall functionName="bool"/>
+    <functioncall functionName="camPose"/>
+    <functioncall functionName="clone"/>
+    <functioncall functionName="cloudArrayOrganized"/>
+    <functioncall functionName="color"/>
+    <functioncall functionName="cols"/>
+    <functioncall functionName="computePoseStartTime"/>
+    <functioncall functionName="compute_keypoints"/>
+    <functioncall functionName="compute_new_pose"/>
+    <functioncall functionName="compute_optimized_pose"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="cvtColor"/>
+    <functioncall functionName="debugImage"/>
+    <functioncall functionName="delete"/>
+    <functioncall functionName="depthImage"/>
+    <functioncall functionName="depthImageTreatmentStartTime"/>
+    <functioncall functionName="detect_lines"/>
+    <functioncall functionName="detectedLines"/>
+    <functioncall functionName="detectedPrimitives"/>
+    <functioncall functionName="double"/>
+    <functioncall functionName="elapsedTime"/>
+    <functioncall functionName="exit"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="findMatchDuration"/>
+    <functioncall functionName="findMatchesStartTime"/>
+    <functioncall functionName="find_keypoint_matches"/>
+    <functioncall functionName="find_primitive_matches"/>
+    <functioncall functionName="find_primitives"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="getTickCount"/>
+    <functioncall functionName="getTickFrequency"/>
+    <functioncall functionName="get_debug_image"/>
+    <functioncall functionName="get_depth_map_patch_size"/>
+    <functioncall functionName="get_image_with_lines"/>
+    <functioncall functionName="get_keypoint_count"/>
+    <functioncall functionName="get_keypoint_refresh_frequency"/>
+    <functioncall functionName="get_maximum_merge_distance"/>
+    <functioncall functionName="get_maximum_plane_match_angle"/>
+    <functioncall functionName="get_maximum_unmatched_before_removal"/>
+    <functioncall functionName="get_minimum_hessian"/>
+    <functioncall functionName="get_minimum_point_count_for_optimization"/>
+    <functioncall functionName="get_organized_cloud_array"/>
+    <functioncall functionName="get_orientation_quaternion"/>
+    <functioncall functionName="get_percent_of_elapsed_time"/>
+    <functioncall functionName="get_position"/>
+    <functioncall functionName="get_state_covariance"/>
+    <functioncall functionName="get_tracked_keypoints_features"/>
+    <functioncall functionName="grayImage"/>
+    <functioncall functionName="id"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="imageHeight"/>
+    <functioncall functionName="imageWidth"/>
+    <functioncall functionName="imshow"/>
+    <functioncall functionName="index"/>
+    <functioncall functionName="inputRgbImage"/>
+    <functioncall functionName="int"/>
+    <functioncall functionName="is_ok"/>
+    <functioncall functionName="is_valid"/>
+    <functioncall functionName="keypointObject"/>
+    <functioncall functionName="lineDetectionDuration"/>
+    <functioncall functionName="lineDetectionStartTime"/>
+    <functioncall functionName="list"/>
+    <functioncall functionName="load_defaut"/>
+    <functioncall functionName="localMapUpdateDuration"/>
+    <functioncall functionName="log"/>
+    <functioncall functionName="log_error"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="mapId"/>
+    <functioncall functionName="matchId"/>
+    <functioncall functionName="matchIndex"/>
+    <functioncall functionName="matchedPoints"/>
+    <functioncall functionName="meanFrameTreatmentDuration"/>
+    <functioncall functionName="move"/>
+    <functioncall functionName="optimizePoseStartTime"/>
+    <functioncall functionName="optimizedPose"/>
+    <functioncall functionName="outImage"/>
+    <functioncall functionName="outlierMatchedPoints"/>
+    <functioncall functionName="override"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pair"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="pointCloudTreatmentDuration"/>
+    <functioncall functionName="poseOptimizationDuration"/>
+    <functioncall functionName="poseTreatmentDuration"/>
+    <functioncall functionName="predict_next_pose"/>
+    <functioncall functionName="primitive"/>
+    <functioncall functionName="primitiveDetectionStartTime"/>
+    <functioncall functionName="primitiveTreatmentDuration"/>
+    <functioncall functionName="putText"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="rand"/>
+    <functioncall functionName="rectangle"/>
+    <functioncall functionName="refinedPose"/>
+    <functioncall functionName="reset"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="round"/>
+    <functioncall functionName="row"/>
+    <functioncall functionName="rows"/>
+    <functioncall functionName="screenCoordinates"/>
+    <functioncall functionName="screenPoint"/>
+    <functioncall functionName="setZero"/>
+    <functioncall functionName="shared_ptr"/>
+    <functioncall functionName="shouldDetectLines"/>
+    <functioncall functionName="shouldDisplayPrimitiveMasks"/>
+    <functioncall functionName="shouldDisplayStagedPoints"/>
+    <functioncall functionName="shouldRecomputeKeypoints"/>
+    <functioncall functionName="shouldUpdateMap"/>
+    <functioncall functionName="show_statistics"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="startPose"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="str"/>
+    <functioncall functionName="toRotationMatrix"/>
+    <functioncall functionName="to_string"/>
+    <functioncall functionName="trackedKeypointContainer"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="uchar"/>
+    <functioncall functionName="uint"/>
+    <functioncall functionName="update"/>
+    <functioncall functionName="updateLocalMapStartTime"/>
+    <functioncall functionName="update_model"/>
+    <functioncall functionName="variance"/>
+    <functioncall functionName="vector2"/>
+    <functioncall functionName="worldPoint"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="923092530030371970">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.hpp:13:17" my-argnr="1" my-argname="filename" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.cpp" line="10" col="24" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.hpp:13:17" my-argnr="1" my-argname="filename" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.cpp" line="10" col="24" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.hpp:29:22" my-argnr="1" my-argname="pointCoordinates" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.cpp" line="41" col="17" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.hpp:38:22" my-argnr="1" my-argname="pointCoordinates" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/map_writer.cpp" line="84" col="17" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="add_point" lineNumber="32"/>
+    <functiondecl functionName="add_point" lineNumber="65"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="IMap_Writer"/>
+    <functioncall functionName="PCD_Map_Writer"/>
+    <functioncall functionName="XYZ_Map_Writer"/>
+    <functioncall functionName="close"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="exit"/>
+    <functioncall functionName="filename"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="is_open"/>
+    <functioncall functionName="log_error"/>
+    <functioncall functionName="open"/>
+    <functioncall functionName="out"/>
+    <functioncall functionName="override"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+    <functioncall functionName="z"/>
+  </FileInfo>
+</analyzerinfo>

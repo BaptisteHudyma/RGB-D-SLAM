@@ -29,7 +29,7 @@ namespace rgbd_slam {
         double pitch;
         double roll;
 
-        EulerAngles() {};
+        EulerAngles(): yaw(0.0), pitch(0.0), roll(0.0) {};
 
         EulerAngles(const double y, const double p, const double r):
             yaw(y),

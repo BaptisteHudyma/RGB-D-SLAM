@@ -126,7 +126,7 @@ namespace rgbd_slam {
         _pointErrorMultiplier = 0.5;  // > 0
 
         // Local map
-        _pointUnmatchedCountToLoose = 10;
+        _pointUnmatchedCountToLoose = 60;   // consecutive unmatched frames before removing from local map
         _pointAgeConfidence = 15;
         _pointStagedAgeConfidence = 10;
         _pointMinimumConfidenceForMap = 0.9;

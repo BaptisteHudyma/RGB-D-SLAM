@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="13136805032847071575">
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.hpp:14:14" my-argnr="1" my-argname="message" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.cpp" line="15" col="20" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.hpp:14:14" my-argnr="2" my-argname="location" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.cpp" line="12" col="42" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.hpp:15:14" my-argnr="1" my-argname="message" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.cpp" line="23" col="20" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.hpp:15:14" my-argnr="2" my-argname="location" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/outputs/logger.cpp" line="20" col="42" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="log" lineNumber="9"/>
+    <functiondecl functionName="log_error" lineNumber="17"/>
+    <functioncall functionName="column"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="file_name"/>
+    <functioncall functionName="filename"/>
+    <functioncall functionName="line"/>
+    <functioncall functionName="path"/>
+    <functioncall functionName="string"/>
+  </FileInfo>
+</analyzerinfo>

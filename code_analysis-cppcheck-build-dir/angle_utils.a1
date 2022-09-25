@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="12020852698557712151">
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::yaw&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::yaw</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::pitch&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::pitch</symbol>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." verbose="Member variable &apos;EulerAngles::roll&apos; is not initialized in the constructor." cwe="398" inconclusive="true" file0="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.cpp">
+            <location file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/types.hpp" line="32" column="9"/>
+            <symbol>EulerAngles::roll</symbol>
+        </error>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.hpp:12:26" my-argnr="1" my-argname="eulerAngles" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.cpp" line="8" col="35" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.hpp:17:27" my-argnr="1" my-argname="quat" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.cpp" line="28" col="26" value="0"/>
+    <unsafe-usage my-id="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.hpp:22:24" my-argnr="1" my-argname="eulerAngles" file="/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/angle_utils.cpp" line="48" col="35" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="get_quaternion_from_euler_angles" lineNumber="6"/>
+    <functiondecl functionName="get_euler_angles_from_quaternion" lineNumber="24"/>
+    <functiondecl functionName="get_rotation_matrix_from_euler_angles" lineNumber="46"/>
+    <functioncall functionName="EulerAngles"/>
+    <functioncall functionName="abs"/>
+    <functioncall functionName="asin"/>
+    <functioncall functionName="atan2"/>
+    <functioncall functionName="copysign"/>
+    <functioncall functionName="cos"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pitch"/>
+    <functioncall functionName="quat"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="roll"/>
+    <functioncall functionName="sa"/>
+    <functioncall functionName="sin"/>
+    <functioncall functionName="sinp"/>
+    <functioncall functionName="w"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yaw"/>
+    <functioncall functionName="z"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.9"/>
+    <errors>
+        <error id="noExplicitConstructor" severity="style" msg="Class &amp;#039;Line_Detection&amp;#039; has a constructor with 1 argument that is not explicit." verbose="Class &amp;#039;Line_Detection&amp;#039; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="src/features/lines/line_detection.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/lines/line_detection.hpp" line="19"/>
+        </error>
+        <error id="returnDanglingLifetime" severity="error" msg="Returning object that points to local variable &amp;#039;detectedKeypoints&amp;#039; that will be invalid when returning." verbose="Returning object that points to local variable &amp;#039;detectedKeypoints&amp;#039; that will be invalid when returning." inconclusive="true" cwe="562" file0="src/features/keypoints/keypoint_detection.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/keypoints/keypoint_detection.cpp" line="168" info=""/>
+            <location file="src/features/keypoints/keypoint_detection.cpp" line="130" info="Variable created here."/>
+            <location file="src/features/keypoints/keypoint_detection.cpp" line="166" info="Passed to constructor of &amp;#039;Keypoint_Handler&amp;#039;."/>
+        </error>
+        <error id="returnDanglingLifetime" severity="error" msg="Returning object that points to local variable &amp;#039;keypointDescriptors&amp;#039; that will be invalid when returning." verbose="Returning object that points to local variable &amp;#039;keypointDescriptors&amp;#039; that will be invalid when returning." inconclusive="true" cwe="562" file0="src/features/keypoints/keypoint_detection.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/keypoints/keypoint_detection.cpp" line="168" info=""/>
+            <location file="src/features/keypoints/keypoint_detection.cpp" line="82" info="Variable created here."/>
+            <location file="src/features/keypoints/keypoint_detection.cpp" line="166" info="Passed to constructor of &amp;#039;Keypoint_Handler&amp;#039;."/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &amp;#039;EulerAngles::yaw&amp;#039; is not initialized in the constructor." verbose="Member variable &amp;#039;EulerAngles::yaw&amp;#039; is not initialized in the constructor." inconclusive="true" cwe="398" file0="src/features/keypoints/keypoint_detection.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/types.hpp" line="32"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &amp;#039;EulerAngles::pitch&amp;#039; is not initialized in the constructor." verbose="Member variable &amp;#039;EulerAngles::pitch&amp;#039; is not initialized in the constructor." inconclusive="true" cwe="398" file0="src/features/keypoints/keypoint_detection.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/types.hpp" line="32"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &amp;#039;EulerAngles::roll&amp;#039; is not initialized in the constructor." verbose="Member variable &amp;#039;EulerAngles::roll&amp;#039; is not initialized in the constructor." inconclusive="true" cwe="398" file0="src/features/keypoints/keypoint_detection.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/types.hpp" line="32"/>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &amp;#039;Key_Point_Extraction&amp;#039; has a constructor with 1 argument that is not explicit." verbose="Class &amp;#039;Key_Point_Extraction&amp;#039; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="src/features/keypoints/keypoint_detection.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/keypoints/keypoint_detection.hpp" line="20"/>
+        </error>
+        <error id="containerOutOfBounds" severity="warning" msg="Either the condition &amp;#039;pointId&amp;gt;_B.size()&amp;#039; is redundant or &amp;#039;pointId&amp;#039; can have the value _B.size(). Expression &amp;#039;_B[pointId]&amp;#039; cause access out of bounds." verbose="Either the condition &amp;#039;pointId&amp;gt;_B.size()&amp;#039; is redundant or &amp;#039;pointId&amp;#039; can have the value _B.size(). Expression &amp;#039;_B[pointId]&amp;#039; cause access out of bounds." cwe="398" file0="src/features/primitives/histogram.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/histogram.cpp" line="79" info="Access out of bounds"/>
+            <location file="src/features/primitives/histogram.cpp" line="75" info="Assuming that condition &amp;#039;pointId&amp;gt;_B.size()&amp;#039; is not redundant"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;!Parameters::is_valid()&amp;#039; is always true" verbose="Condition &amp;#039;!Parameters::is_valid()&amp;#039; is always true" cwe="571" file0="src/rgbd_slam.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/rgbd_slam.cpp" line="28"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;!Parameters::is_valid()&amp;#039; is always true" verbose="Condition &amp;#039;!Parameters::is_valid()&amp;#039; is always true" cwe="571" file0="src/rgbd_slam.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/rgbd_slam.cpp" line="31"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;track&amp;#039; is never used." verbose="The function &amp;#039;track&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/rgbd_slam.cpp" line="97"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &amp;#039;Cylinder_Segment::_pointsAxis1&amp;#039; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &amp;#039;Cylinder_Segment::_pointsAxis1&amp;#039; is not assigned in the copy constructor. Should it be copied?" inconclusive="true" cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="27"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &amp;#039;Cylinder_Segment::_pointsAxis2&amp;#039; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &amp;#039;Cylinder_Segment::_pointsAxis2&amp;#039; is not assigned in the copy constructor. Should it be copied?" inconclusive="true" cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="27"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &amp;#039;Cylinder_Segment::_normalsAxis1Axis2&amp;#039; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &amp;#039;Cylinder_Segment::_normalsAxis1Axis2&amp;#039; is not assigned in the copy constructor. Should it be copied?" inconclusive="true" cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="27"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &amp;#039;Cylinder_Segment::_inliers&amp;#039; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &amp;#039;Cylinder_Segment::_inliers&amp;#039; is not assigned in the copy constructor. Should it be copied?" inconclusive="true" cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="27"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &amp;#039;Cylinder_Segment::_MSE&amp;#039; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &amp;#039;Cylinder_Segment::_MSE&amp;#039; is not assigned in the copy constructor. Should it be copied?" inconclusive="true" cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="27"/>
+        </error>
+        <error id="missingMemberCopy" severity="warning" msg="Member variable &amp;#039;Cylinder_Segment::_local2globalMap&amp;#039; is not assigned in the copy constructor. Should it be copied?" verbose="Member variable &amp;#039;Cylinder_Segment::_local2globalMap&amp;#039; is not assigned in the copy constructor. Should it be copied?" inconclusive="true" cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="27"/>
+        </error>
+        <error id="useInitializationList" severity="performance" msg="Variable &amp;#039;_axis&amp;#039; is assigned in constructor body. Consider performing initialization in initialization list." verbose="When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&amp;#039;t explicitly write them to the initialization list. You could avoid assigning &amp;#039;_axis&amp;#039; a value by passing the value to the constructor in the initialization list." cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="36"/>
+        </error>
+        <error id="funcArgNamesDifferent" severity="style" msg="Function &amp;#039;run_ransac_loop&amp;#039; argument 7 names different: declaration &amp;#039;IFinal&amp;#039; definition &amp;#039;isInlierFinal&amp;#039;." verbose="Function &amp;#039;run_ransac_loop&amp;#039; argument 7 names different: declaration &amp;#039;IFinal&amp;#039; definition &amp;#039;isInlierFinal&amp;#039;." inconclusive="true" cwe="628" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="223" info=""/>
+            <location file="src/features/primitives/cylinder_segment.hpp" line="160" info=""/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_axis1_point&amp;#039; is never used." verbose="The function &amp;#039;get_axis1_point&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="357"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_axis2_point&amp;#039; is never used." verbose="The function &amp;#039;get_axis2_point&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="363"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_axis_normal&amp;#039; is never used." verbose="The function &amp;#039;get_axis_normal&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.cpp" line="368"/>
+        </error>
+        <error id="functionConst" severity="style" msg="Technically the member function &amp;#039;rgbd_slam::features::primitives::Cylinder_Segment::run_ransac_loop&amp;#039; can be const." verbose="The member function &amp;#039;rgbd_slam::features::primitives::Cylinder_Segment::run_ransac_loop&amp;#039; can be made a const function. Making this function &amp;#039;const&amp;#039; should not cause compiler errors. Even though the function can be made const function technically it may not make sense conceptually. Think about your design and the task of the function first - is it a function that must not change object internal state?" inconclusive="true" cwe="398" file0="src/features/primitives/cylinder_segment.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/cylinder_segment.hpp" line="160" info=""/>
+            <location file="src/features/primitives/cylinder_segment.cpp" line="223" info=""/>
+        </error>
+        <error id="unusedPrivateFunction" severity="style" msg="Unused private function: &amp;#039;Pose_Optimization::compute_p3p_pose&amp;#039;" verbose="Unused private function: &amp;#039;Pose_Optimization::compute_p3p_pose&amp;#039;" cwe="398" file0="src/pose_optimization/pose_optimization.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/pose_optimization/pose_optimization.hpp" line="51"/>
+        </error>
+        <error id="functionStatic" severity="performance" msg="Technically the member function &amp;#039;rgbd_slam::map_management::Local_Map::update_local_to_global&amp;#039; can be static (but you may consider moving to unnamed namespace)." verbose="The member function &amp;#039;rgbd_slam::map_management::Local_Map::update_local_to_global&amp;#039; can be made a static function. Making a function static can bring a performance benefit since no &amp;#039;this&amp;#039; instance is passed to the function. This change should not cause compiler errors but it does not necessarily make sense conceptually. Think about your design and the task of the function first - is it a function that must not access members of class instances? And maybe it is more appropriate to move this function to a unnamed namespace." inconclusive="true" cwe="398" file0="src/map_management/local_map.cpp" sinceDate="dd/MM/yyyy">
+            <location file="src/map_management/local_map.hpp" line="179" info=""/>
+            <location file="src/map_management/local_map.cpp" line="465" info=""/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;compute_p3p_pose&amp;#039; is never used." verbose="The function &amp;#039;compute_p3p_pose&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/pose_optimization/pose_optimization.cpp" line="206"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_3D_to_3D_distance&amp;#039; is never used." verbose="The function &amp;#039;get_3D_to_3D_distance&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/utils/distance_utils.cpp" line="33"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_distance_euclidean&amp;#039; is never used." verbose="The function &amp;#039;get_distance_euclidean&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/utils/distance_utils.cpp" line="8"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_normal_similarity&amp;#039; is never used." verbose="The function &amp;#039;get_normal_similarity&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/plane_segment.cpp" line="258"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_signed_distance&amp;#039; is never used." verbose="The function &amp;#039;get_signed_distance&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/features/primitives/plane_segment.cpp" line="263"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_quaternion_from_euler_angles&amp;#039; is never used." verbose="The function &amp;#039;get_quaternion_from_euler_angles&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/utils/angle_utils.cpp" line="6"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_supposed_pose&amp;#039; is never used." verbose="The function &amp;#039;get_supposed_pose&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/tracking/triangulation.cpp" line="9"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;triangulate&amp;#039; is never used." verbose="The function &amp;#039;triangulate&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/tracking/triangulation.cpp" line="30"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;parse_file&amp;#039; is never used." verbose="The function &amp;#039;parse_file&amp;#039; is never used." cwe="561" sinceDate="dd/MM/yyyy">
+            <location file="src/parameters.cpp" line="11"/>
+        </error>
+    </errors>
+</results>

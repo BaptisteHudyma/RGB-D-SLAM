@@ -1,0 +1,119 @@
+is_ok
+get_rgb_fx
+get_rgb_fy
+get_rgb_cx
+get_rgb_cy
+EulerAngles
+EulerAngles
+get_MSE
+get_normal
+get_mean
+get_plane_d
+is_planar
+get_score
+Primitive
+get_primitive_type
+get_id
+set_id
+get_shape_mask
+set_shape_mask call:[clone] noreturn:[clone]
+get_depth call:[assert,size]
+get_depth_count call:[size] noreturn:[size]
+get_keypoint call:[assert,size]
+is_descriptor_computed
+get_descriptor call:[assert,row] noreturn:[row]
+get_keypoint_count call:[size] noreturn:[size]
+MatchedScreenPoint call:[setZero] noreturn:[setZero]
+MatchedScreenPoint
+is_matched
+mark_unmatched call:[setZero] noreturn:[setZero]
+get_covariance_matrix call:[get_state_covariance] noreturn:[get_state_covariance]
+get_age
+MatchedPrimitive
+is_matched
+mark_matched
+mark_unmatched
+is_lost call:[get_maximum_unmatched_before_removal] noreturn:[get_maximum_unmatched_before_removal]
+Primitive call:[rand]
+get_position
+get_orientation_matrix call:[toRotationMatrix] noreturn:[toRotationMatrix]
+get_orientation_quaternion
+set_position_variance
+get_position_variance
+Match
+is_valid
+get_starting_position_x
+get_starting_position_y
+get_starting_position_z
+get_starting_rotation_x
+get_starting_rotation_y
+get_starting_rotation_z
+get_camera_1_center_x
+get_camera_1_center_y
+get_camera_1_focal_x
+get_camera_1_focal_y
+get_camera_2_center_x
+get_camera_2_center_y
+get_camera_2_focal_x
+get_camera_2_focal_y
+get_camera_2_translation_x
+get_camera_2_translation_y
+get_camera_2_translation_z
+get_camera_2_rotation_x
+get_camera_2_rotation_y
+get_camera_2_rotation_z
+get_minimum_iou_for_match
+get_minimum_normals_dot_difference
+get_ransac_maximum_retroprojection_error_for_inliers
+get_ransac_minimum_inliers_proportion_for_early_stop
+get_ransac_probability_of_success
+get_ransac_inlier_proportion
+get_minimum_point_count_for_optimization
+get_maximum_point_count_per_frame
+get_optimization_maximum_iterations
+get_optimization_error_precision
+get_optimization_xtol
+get_optimization_ftol
+get_optimization_gtol
+get_optimization_factor
+get_maximum_retroprojection_error
+get_point_weight_threshold
+get_point_weight_coefficient
+get_point_loss_alpha
+get_point_loss_scale
+get_point_error_multiplier
+get_search_matches_distance
+get_search_matches_cell_size
+get_maximum_match_distance
+get_minimum_hessian
+get_keypoint_refresh_frequency
+get_optical_flow_pyramid_depth
+get_optical_flow_pyramid_windown_size
+get_optical_flow_max_error
+get_optical_flow_max_distance
+get_keypoint_mask_diameter
+get_maximum_plane_match_angle
+get_maximum_merge_distance
+get_depth_map_patch_size
+get_minimum_plane_seed_count
+get_minimum_cell_activated
+get_depth_sigma_error
+get_depth_sigma_margin
+get_depth_discontinuity_limit
+get_depth_alpha
+get_cylinder_ransac_max_distance
+get_cylinder_ransac_minimm_score
+get_cylinder_ransac_inlier_proportion
+get_cylinder_ransac_probability_of_success
+get_maximum_unmatched_before_removal
+get_point_age_confidence
+get_point_staged_age_confidence
+get_minimum_confidence_for_local_map
+get_maximum_map_retroprojection_error
+RGBD_SLAM call:[Depth_Map_Transformation,Key_Point_Extraction,Line_Detection,Local_Map,Primitive_Detection,exit,get_depth_map_patch_size,get_maximum_merge_distance,get_maximum_plane_match_angle,get_minimum_hessian,get_orientation_quaternion,get_position,is_ok,is_valid,load_defaut,log,log_error,reset] noreturn:[exit,log,reset]
+RGBD_SLAM
+track call:[assert,clone,cloudArrayOrganized,compute_new_pose,cvtColor,detect_lines,getTickCount,getTickFrequency,get_image_with_lines,get_organized_cloud_array,imshow,update_model] noreturn:[imshow]
+get_debug_image call:[Point,Scalar,clone,get_debug_image,putText,rectangle,str] noreturn:[get_debug_image,putText]
+compute_new_pose call:[compute_keypoints,compute_optimized_pose,find_keypoint_matches,find_primitive_matches,find_primitives,getTickCount,getTickFrequency,get_keypoint_count,get_keypoint_refresh_frequency,get_minimum_point_count_for_optimization,get_tracked_keypoints_features,log,predict_next_pose,size,to_string,update] noreturn:[log]
+get_percent_of_elapsed_time call:[round]
+show_statistics call:[get_percent_of_elapsed_time,show_statistics]
