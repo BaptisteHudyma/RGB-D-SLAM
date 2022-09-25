@@ -1,6 +1,0 @@
-Histogram call:[assign,reset] noreturn:[reset]
-reset call:[begin,clear,fill_n,size] noreturn:[clear]
-init_histogram call:[assert,assign,points,rows,size]
-get_points_from_most_frequent_bin call:[push_back,reserve,size] noreturn:[push_back]
-remove_point call:[exit,log_error,size] noreturn:[exit]
-Histogram

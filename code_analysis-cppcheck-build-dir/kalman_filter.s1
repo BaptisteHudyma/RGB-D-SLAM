@@ -1,7 +1,0 @@
-get_state
-get_state_covariance
-is_initialized
-KalmanFilter call:[setIdentity] noreturn:[setIdentity]
-init
-update call:[assert,inverse,is_initialized,transpose]
-update call:[update] noreturn:[update]

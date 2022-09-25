@@ -1,6 +1,0 @@
-EulerAngles
-EulerAngles
-get_distance_euclidean call:[norm,return] noreturn:[norm]
-get_distance_manhattan call:[return]
-get_3D_to_2D_distance call:[assert,cameraPointAs2D,compute_world_to_screen_coordinates,get_distance_manhattan,isnan,max,x,y] noreturn:[max]
-get_3D_to_3D_distance call:[get_distance_manhattan,screen_to_world_coordinates,x,y,z] noreturn:[get_distance_manhattan]

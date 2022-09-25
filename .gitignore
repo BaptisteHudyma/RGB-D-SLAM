@@ -4,6 +4,7 @@ build
 .clang*
 .editorconfig
 .gitattributes
+code_analysis-cppcheck-build-dir/*
 
 ################################
 ###########  FILES  ############
