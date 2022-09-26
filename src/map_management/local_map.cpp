@@ -5,6 +5,7 @@
 #include "../utils/camera_transformation.hpp"
 #include "../utils/covariances.hpp"
 #include "../outputs/logger.hpp"
+#include <cstdlib>
 
 namespace rgbd_slam {
     namespace map_management {
@@ -16,17 +17,21 @@ namespace rgbd_slam {
 
         /**
          * \brief My add a point to the tracked feature object, used to add optical flow tracking
+         *
+         * \param[in] mapPoint The map point, to add to the tracked features depending on some conditions
+         * \param[in, out] keypointsWithIds The association structure for keypoints and their uniq ids
+         * \param[in] dropChance 1/dropChance that this point can be randomly dropped, and will not be added to the keypointsWithIds object
          */
-        void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds)
+        void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds, const uint dropChance = 1000)
         {
             const vector3& coordinates = mapPoint._coordinates;
             assert(not std::isnan(coordinates.x()) and not std::isnan(coordinates.y()) and not std::isnan(coordinates.z()));
-            if (mapPoint._matchedScreenPoint.is_matched())
+            if (mapPoint._matchedScreenPoint.is_matched() and (rand()%dropChance) != 0)
             {
                 // use previously known screen coordinates
                 keypointsWithIds._keypoints.push_back(
                     cv::Point2f(
-                                static_cast<float>(mapPoint._matchedScreenPoint._screenCoordinates.x()), 
+                                static_cast<float>(mapPoint._matchedScreenPoint._screenCoordinates.x()),
                                 static_cast<float>(mapPoint._matchedScreenPoint._screenCoordinates.y())
                                 )
                         );
@@ -201,7 +206,7 @@ namespace rgbd_slam {
         void Local_Map::update(const utils::Pose& previousPose, const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::primitive_container& detectedPrimitives, const matches_containers::match_point_container& outlierMatchedPoints)
         {
             // TODO find a better way to display trajectory than just a new map point
-            _mapWriter->add_point(optimizedPose.get_position());
+            // _mapWriter->add_point(optimizedPose.get_position());
 
             // Unmatch detected outliers
             mark_outliers_as_unmatched(outlierMatchedPoints);
@@ -447,17 +452,19 @@ namespace rgbd_slam {
             keypointsWithIds._ids.reserve(numberOfNewKeypoints);
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
 
+            const uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
+
             // add map points with valid retroprojected coordinates
             for (const auto& [pointId, point]  : _localPointMap)
             {
                 assert(pointId == point._id);
-                add_point_to_tracked_features(point, keypointsWithIds);
+                add_point_to_tracked_features(point, keypointsWithIds, refreshFrequency * 2);
             }
             // add staged points with valid retroprojected coordinates
             for (const auto& [pointId, point] : _stagedPoints)
             {
                 assert(pointId == point._id);
-                add_point_to_tracked_features(point, keypointsWithIds);
+                add_point_to_tracked_features(point, keypointsWithIds, refreshFrequency);
             }
             return keypointsWithIds;
         }

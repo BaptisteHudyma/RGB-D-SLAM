@@ -102,7 +102,7 @@ namespace rgbd_slam {
                 std::vector<cv::Mat> newImagePyramide;
                 cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
                 // TODO: when the optical flow will not show so much drift, maybe we could remove the tracked keypoint redetection
-                if (not forceKeypointDetection and _lastFramePyramide.size() > 0)
+                if (_lastFramePyramide.size() > 0)
                 {
                     if (lastKeypointsWithIds._keypoints.size() > 0) {
                         newKeypointsObject = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance);
