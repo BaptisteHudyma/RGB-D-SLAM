@@ -147,6 +147,27 @@ namespace rgbd_slam {
         }
 
 
+        double get_transformation_score(const matches_containers::match_point_container& points, const utils::Pose& finalPose)
+        {
+            // Get the new estimated pose
+            const quaternion& rotation = finalPose.get_orientation_quaternion();
+            const vector3& translation = finalPose.get_position();
+
+            const matrix44& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+            double meanOfDistances = 0;
+
+            // Compute retroprojection distances
+            for(const matches_containers::Match& match : points) {
+                // Compute retroprojected distance
+                const double distance = utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, transformationMatrix);
+                assert(distance >= 0.0);
+
+                meanOfDistances += distance; 
+            }
+            return meanOfDistances / static_cast<double>(points.size());
+        }
+
+
         /**
          * \brief Return a string corresponding to the end status of the optimization
          */

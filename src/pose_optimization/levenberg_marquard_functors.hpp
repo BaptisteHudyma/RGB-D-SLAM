@@ -3,6 +3,7 @@
 
 #include "../types.hpp"
 #include "../utils/matches_containers.hpp"
+#include "../utils/pose.hpp"
 
 // types
 #include <unsupported/Eigen/NonLinearOptimization>
@@ -99,6 +100,10 @@ namespace rgbd_slam {
 
         struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};
 
+        /**
+         * \brief Compute a mean transformation score for a pose and a set of point matches
+         */
+        double get_transformation_score(const matches_containers::match_point_container& points, const utils::Pose& finalPose);
 
         /**
          * \brief Use for debug.

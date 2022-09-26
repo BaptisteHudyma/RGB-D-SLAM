@@ -29,7 +29,7 @@ namespace rgbd_slam {
             assert(minimumPointsForOptimization > 0);
             assert(maximumRetroprojectionThreshold > 0);
             assert(acceptableInliersForEarlyStop > 0);
-            
+
             // Compute maximum iteration with the original RANSAC formula
             const uint maximumIterations = static_cast<uint>(log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization)));
             assert(maximumIterations > 0);
