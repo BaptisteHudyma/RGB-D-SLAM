@@ -79,7 +79,6 @@ namespace rgbd_slam {
                 assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
 
                 KeypointsWithIdStruct newKeypointsObject;
-                cv::Mat keypointDescriptors;
 
                 //detect keypoints
                 const int64 keypointDetectionStartTime = cv::getTickCount();
@@ -128,6 +127,7 @@ namespace rgbd_slam {
 
                 // detect keypoint if: it is requested OR not enough points were detected
                 std::vector<cv::Point2f> detectedKeypoints;
+                cv::Mat keypointDescriptors;
                 const bool shouldDetectKeypoints = opticalFlowTrackedPointCount < minimumPointsForOptimization and opticalFlowTrackedPointCount < maximumPointsForLocalMap;
                 if (forceKeypointDetection or shouldDetectKeypoints)
                 {
@@ -136,30 +136,30 @@ namespace rgbd_slam {
 
                     // get new keypoints
                     detectedKeypoints = detect_keypoints(grayImage, keypointMask, minimumPointsForOptimization);
-                }
 
-                cv::Mat detectedKeypointDescriptors;
-                if (detectedKeypoints.size() > 0)
-                {
-                    /**
-                     *  DESCRIPTORS
-                     */
-                    std::vector<cv::KeyPoint> frameKeypoints;
-                    cv::KeyPoint::convert(detectedKeypoints, frameKeypoints);
+                    if (detectedKeypoints.size() > 0)
+                    {
+                        /**
+                        *  DESCRIPTORS
+                        */
+                        std::vector<cv::KeyPoint> frameKeypoints;
+                        cv::KeyPoint::convert(detectedKeypoints, frameKeypoints);
 
-                    // Compute descriptors
-                    // Caution: the frameKeypoints list is mutable by this function
-                    //          The bad points will be removed by the compute descriptor function
-                    _descriptorExtractor->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
+                        // Compute descriptors
+                        // Caution: the frameKeypoints list is mutable by this function
+                        //          The bad points will be removed by the compute descriptor function
+                        cv::Mat detectedKeypointDescriptors;
+                        _descriptorExtractor->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
 
-                    // convert back to keypoint list
-                    detectedKeypoints.clear();
-                    cv::KeyPoint::convert(frameKeypoints, detectedKeypoints);
+                        // convert back to keypoint list
+                        detectedKeypoints.clear();
+                        cv::KeyPoint::convert(frameKeypoints, detectedKeypoints);
 
-                    if (keypointDescriptors.rows > 0)
-                        cv::vconcat(detectedKeypointDescriptors, keypointDescriptors, keypointDescriptors);
-                    else
-                        keypointDescriptors = detectedKeypointDescriptors;
+                        if (keypointDescriptors.rows > 0)
+                            cv::vconcat(detectedKeypointDescriptors, keypointDescriptors, keypointDescriptors);
+                        else
+                            keypointDescriptors = detectedKeypointDescriptors;
+                    }
                 }
 
                 // Update last keypoint struct
