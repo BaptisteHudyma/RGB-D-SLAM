@@ -1,6 +1,10 @@
 #include "rgbd_slam.hpp"
 
 //circle imshow
+#include <opencv2/core.hpp>
+#include <opencv2/core/hal/interface.h>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core/types.hpp>
 #include <opencv2/opencv.hpp>
 
 #include "parameters.hpp"
@@ -14,6 +18,7 @@ namespace rgbd_slam {
     RGBD_SLAM::RGBD_SLAM(const utils::Pose &startPose, const uint imageWidth, const uint imageHeight) :
         _width(imageWidth),
         _height(imageHeight),
+        isTrackingLost(true),
 
         _totalFrameTreated(0),
         _meanDepthMapTreatmentDuration(0.0),
@@ -96,6 +101,7 @@ namespace rgbd_slam {
 
     const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool shouldDetectLines) 
     {
+        isTrackingLost = true;
         assert(static_cast<size_t>(inputDepthImage.rows) == _height);
         assert(static_cast<size_t>(inputDepthImage.cols) == _width);
         assert(static_cast<size_t>(inputRgbImage.rows) == _height);
@@ -158,7 +164,13 @@ namespace rgbd_slam {
 
         //_primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
 
-        _localMap->get_debug_image(camPose, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks, debugImage); 
+        _localMap->get_debug_image(camPose, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks, debugImage);
+
+        if (isTrackingLost)
+        {
+            const cv::Size& debugImageSize = debugImage.size();
+            cv::addWeighted(debugImage, 0.8, cv::Mat(debugImageSize, CV_8UC3, cv::Scalar(0, 0, 255)), 0.2, 1, debugImage);
+        }
     }
 
 
@@ -199,6 +211,7 @@ namespace rgbd_slam {
                 if (shouldUpdateMap)
                 {
                     refinedPose = optimizedPose;
+                    isTrackingLost = false;
                 }
                 // else the refined pose will follow the motion model
                 _meanPoseOptimizationFromFeatures += (cv::getTickCount() - optimizePoseStartTime) / static_cast<double>(cv::getTickFrequency());
