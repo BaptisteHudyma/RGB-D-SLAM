@@ -52,7 +52,7 @@ namespace rgbd_slam {
              * \param[in] shouldDisplayStagedPoints Display the points that are not map points yet
              * \param[in] shouldDisplayPrimitiveMasks Display the detected primitive masks
              */
-            void get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool shouldDisplayStagedPoints = false, const bool shouldDisplayPrimitiveMasks = false);
+            void get_debug_image(const utils::Pose& camPose, const cv::Mat& originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool shouldDisplayStagedPoints = false, const bool shouldDisplayPrimitiveMasks = false);
 
             /**
              * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler

@@ -141,7 +141,7 @@ namespace rgbd_slam {
         return refinedPose;
     }
 
-    void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool shouldDisplayStagedPoints, const bool shouldDisplayPrimitiveMasks) 
+    void RGBD_SLAM::get_debug_image(const utils::Pose& camPose, const cv::Mat& originalRGB, cv::Mat& debugImage, const double elapsedTime, const bool shouldDisplayStagedPoints, const bool shouldDisplayPrimitiveMasks) 
     {
         debugImage = originalRGB.clone();
 
@@ -152,7 +152,7 @@ namespace rgbd_slam {
         if(elapsedTime > 0) 
         {
             std::stringstream fps;
-            fps << static_cast<int>((1 / elapsedTime + 0.5)) << " fps";
+            fps << round(1 / elapsedTime + 0.5) << " fps";
             cv::putText(debugImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
         }
 
