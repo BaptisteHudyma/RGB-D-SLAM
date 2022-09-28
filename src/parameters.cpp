@@ -119,12 +119,6 @@ namespace rgbd_slam {
         _optimizationDiagonalStepBoundShift = 100;
         _maximumRetroprojectionError = 3;
 
-        _pointWeightThreshold = 1.345;
-        _pointWeightCoefficient = 1.4826;
-        _pointLossAlpha = 2;    // -infinity, infinity
-        _pointLossScale = 100; // Unit: Pixel
-        _pointErrorMultiplier = 0.5;  // > 0
-
         // Local map
         _pointUnmatchedCountToLoose = 60;   // consecutive unmatched frames before removing from local map
         _pointAgeConfidence = 15;
@@ -267,33 +261,6 @@ namespace rgbd_slam {
         if (_maximumRetroprojectionError <= 0)
         {
             outputs::log_error("The maximum retroprojection error  must be > 0");
-            _isValid = false;
-        }
-
-
-        if (_pointWeightThreshold <= 0)
-        {
-            outputs::log_error("Point weight threshold must be > 0");
-            _isValid = false;
-        }
-        if (_pointWeightCoefficient <= 0)
-        {
-            outputs::log_error("The point weight coefficient must be > 0");
-            _isValid = false;
-        }
-        if (std::isnan(_pointLossAlpha))
-        {
-            outputs::log_error("The point loss alpha parameter must be a real number");
-            _isValid = false;
-        }
-        if (_pointLossScale <= 0)
-        {
-            outputs::log_error("The point loss scale parameter must be > 0");
-            _isValid = false;
-        }
-        if (_pointErrorMultiplier <= 0)
-        {
-            outputs::log_error("Point error multiplier must be > 0");
             _isValid = false;
         }
 

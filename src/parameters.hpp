@@ -72,12 +72,6 @@ namespace rgbd_slam {
             static double get_optimization_factor() { return _optimizationDiagonalStepBoundShift; };
             static double get_maximum_retroprojection_error() { return _maximumRetroprojectionError; };
 
-            static double get_point_weight_threshold() { return _pointWeightThreshold; };
-            static double get_point_weight_coefficient() { return _pointWeightCoefficient; };
-            static double get_point_loss_alpha() { return _pointLossAlpha; };
-            static double get_point_loss_scale() { return _pointLossScale; };
-            static double get_point_error_multiplier() { return _pointErrorMultiplier; };
-
             static double get_search_matches_distance() { return _matchSearchRadius; };
             static double get_search_matches_cell_size() { return _matchSearchCellSize; };
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
@@ -171,12 +165,6 @@ namespace rgbd_slam {
 
             inline static uint _optimizationMaximumIterations;              // Max iteration of the Levenberg Marquart optimisation
             inline static double _maximumRetroprojectionError;              // In pixel: maximum distance after which we can consider a retroprojection as invalid
-
-            inline static double _pointWeightThreshold;
-            inline static double _pointWeightCoefficient;
-            inline static double _pointLossAlpha;   // loss steepness (_infinity, infinity)
-            inline static double _pointLossScale;   // loss scale (> 0), Unit: Pixels
-            inline static double _pointErrorMultiplier; // multiplier of the final loss value (useful when  using primitives along with points)
 
             // Point Detection & matching
             inline static double _matchSearchRadius;    // Radius of the space around a point to search match points ins

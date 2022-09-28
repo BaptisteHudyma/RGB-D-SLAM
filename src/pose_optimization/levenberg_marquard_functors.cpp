@@ -8,46 +8,6 @@ namespace rgbd_slam {
     namespace pose_optimization {
 
         /**
-         * \brief Implementation of "A General and Adaptive Robust Loss Function" (2019)
-         * By Jonathan T. Barron
-         *
-         * \param[in] error The error to pass to the loss function
-         * \param[in] alpha The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == - infinity is Welsch loss
-         * \param[in] scale Standard deviation of the error, as a scale parameter
-         *
-         * \return A weight for the current error
-         */
-        double get_generalized_loss_estimator(const double error, const double alpha = 1, const double scale = 1)
-        {
-            assert(scale > 0);
-
-            const double scaledSquaredError = (error * error) / (scale * scale);
-
-            // ]2, oo[
-            if (alpha > 2)
-            {
-                const double internalTerm = scaledSquaredError / abs(alpha - 2) + 1;
-                return (abs(alpha - 2) / alpha) * ( pow(internalTerm, alpha / 2.0) - 1);
-            }
-            // ]0, 2]
-            else if (alpha > 0)
-            {
-                return 0.5 * scaledSquaredError;
-            }
-            // ]-100, 0]
-            else if (alpha > -100)
-            {
-                // log(1 + 0.5 * error)
-                return log1p(0.5 * scaledSquaredError);
-            }
-            // ]-oo, -100]
-            else 
-            {
-                return 1 - exp( -0.5 * scaledSquaredError);
-            }
-        }
-
-        /**
          * \brief Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-Marquardt algorithm
          */
         vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
@@ -85,16 +45,11 @@ namespace rgbd_slam {
          */
 
         Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
-            Levenberg_Marquardt_Functor<double>(n, points.size()),
+            Levenberg_Marquardt_Functor<double>(n, points.size() * 2),
             _points(points),
             _rotation(worldRotation),
-            _position(worldPosition),
-            _pointErrorMultiplier( sqrt(Parameters::get_point_error_multiplier() / static_cast<double>(points.size())) ),
-            _lossScale(Parameters::get_point_loss_scale()),
-            _lossAlpha(Parameters::get_point_loss_alpha())
+            _position(worldPosition)
         {
-            assert(_lossScale > 0);
-            assert(_pointErrorMultiplier > 0);
             assert(not _points.empty());
         }
 
@@ -103,45 +58,21 @@ namespace rgbd_slam {
         {
             assert(not _points.empty());
             assert(x.size() == 6);
-            assert(static_cast<size_t>(fvec.size()) == _points.size());
+            assert(static_cast<size_t>(fvec.size()) == _points.size() * 2);
 
             // Get the new estimated pose
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
             const vector3 translation(x(0), x(1), x(2));
 
             const matrix44& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-            double meanOfDistances = 0;
             size_t pointIndex = 0;  // index of the match being treated
-
             // Compute retroprojection distances
-            for(matches_containers::match_point_container::const_iterator pointIterator = _points.cbegin(); pointIterator != _points.cend(); ++pointIterator, ++pointIndex) {
+            for(const matches_containers::Match& match : _points) {
                 // Compute retroprojected distance
-                const double distance = utils::get_3D_to_2D_distance(pointIterator->_worldPoint, pointIterator->_screenPoint, transformationMatrix);
-                assert(distance >= 0.0);
+                const vector2& distance = utils::get_3D_to_2D_distance_2D(match._worldPoint, match._screenPoint, transformationMatrix);
 
-                meanOfDistances += distance; 
-                fvec(pointIndex) = distance;
-            }
-
-            const size_t pointContainerSize = _points.size();
-            meanOfDistances /= static_cast<double>(pointContainerSize);
-
-            // If the mean of distance is 0, no need to continue 
-            assert(meanOfDistances >= 0);
-            if (meanOfDistances > 0)
-            {
-                // Compute distance scores
-                for(size_t i = 0; i < pointContainerSize; ++i)
-                {
-                    // distance squared divided by mean of all distances
-                    const double distance = (fvec(i) * fvec(i)) / meanOfDistances;
-
-                    // Pass it to loss function
-                    const double weightedLoss = get_generalized_loss_estimator(distance, _lossAlpha, _lossScale);
-
-                    // Compute the final error
-                    fvec(i) = _pointErrorMultiplier * weightedLoss; 
-                }
+                fvec(pointIndex++) = distance.x();
+                fvec(pointIndex++) = distance.y();
             }
             return 0;
         }

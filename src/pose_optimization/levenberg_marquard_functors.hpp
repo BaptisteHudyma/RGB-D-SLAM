@@ -91,11 +91,6 @@ namespace rgbd_slam {
             const matches_containers::match_point_container& _points; 
             const quaternion _rotation;
             const vector3 _position;
-
-            // Error function parameters
-            const double _pointErrorMultiplier;
-            const double _lossScale;
-            const double _lossAlpha;
         };
 
         struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};
