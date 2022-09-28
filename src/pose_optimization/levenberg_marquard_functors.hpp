@@ -59,11 +59,6 @@ namespace rgbd_slam {
         quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients);
 
 
-        quaternion get_quaternion_exponential(const quaternion& quat);
-        quaternion get_quaternion_logarithm(const quaternion& quat);
-
-
-
         /**
          * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
          */
@@ -72,20 +67,18 @@ namespace rgbd_slam {
         {
             // Simple constructor
             /**
-             * \param[in] n Number of input parameters 
+             * \param[in] inputParametersSize Number of input parameters 
              * \param[in,out] points Matched 2D (screen) to 3D (world) points
-             * \param[in] worldPosition Position of the observer in the world
-             * \param[in] worldRotation Orientation of the observer in the world
              */
-            Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points);
+            Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points);
 
             /**
              * \brief Implementation of the objective function
              *
-             * \param[in] x The vector of parameters to optimize (Size M)
-             * \param[out] fvec The vector of errors, of size N (N the number of points) 
+             * \param[in] optimizedParameters The vector of parameters to optimize (Size M)
+             * \param[out] outputScores The vector of errors, of size N (N the number of points) 
              */
-            int operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const;
+            int operator()(const Eigen::VectorXd& optimizedParameters, Eigen::VectorXd& outputScores) const;
 
             private:
             const matches_containers::match_point_container& _points;

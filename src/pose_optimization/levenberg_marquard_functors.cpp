@@ -44,23 +44,25 @@ namespace rgbd_slam {
          * GLOBAL POSE ESTIMATOR members
          */
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points) :
-            Levenberg_Marquardt_Functor<double>(n, points.size() * 2),
+        Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points) :
+            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2),
             _points(points)
         {
             assert(not _points.empty());
         }
 
         // Implementation of the objective function
-        int Global_Pose_Estimator::operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const 
+        int Global_Pose_Estimator::operator()(const Eigen::VectorXd& optimizedParameters, Eigen::VectorXd& outputScores) const 
         {
             assert(not _points.empty());
-            assert(x.size() == 6);
-            assert(static_cast<size_t>(fvec.size()) == _points.size() * 2);
+            assert(optimizedParameters.size() == 6);
+            assert(static_cast<size_t>(outputScores.size()) == _points.size() * 2);
 
             // Get the new estimated pose
-            const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(vector3(x(3), x(4), x(5)));
-            const vector3 translation(x(0), x(1), x(2));
+            const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
+                vector3(optimizedParameters(3), optimizedParameters(4), optimizedParameters(5))
+            );
+            const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
 
             const matrix44& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
             size_t pointIndex = 0;  // index of the match being treated
@@ -69,8 +71,8 @@ namespace rgbd_slam {
                 // Compute retroprojected distance
                 const vector2& distance = utils::get_3D_to_2D_distance_2D(match._worldPoint, match._screenPoint, transformationMatrix);
 
-                fvec(pointIndex++) = distance.x();
-                fvec(pointIndex++) = distance.y();
+                outputScores(pointIndex++) = distance.x();
+                outputScores(pointIndex++) = distance.y();
             }
             return 0;
         }
