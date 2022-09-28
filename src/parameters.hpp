@@ -108,7 +108,6 @@ namespace rgbd_slam {
             static uint get_point_staged_age_confidence() { return _pointStagedAgeConfidence; };
             // Minimum point liability for the local map
             static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
-            static double get_maximum_map_retroprojection_error() { return _mapMaximumRetroprojectionError; };
 
         private:
             // Is this set of parameters valid
@@ -200,8 +199,6 @@ namespace rgbd_slam {
             inline static uint _pointAgeConfidence;            // Minimum age of a point to consider it good 
             inline static uint _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
             inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
-            inline static double _mapMaximumRetroprojectionError;       // Maximum error between a map point retro projection and the new point position before removing it from the local map (in millimeters)
-
 
             /**
               * \brief Update the _isValid attribute

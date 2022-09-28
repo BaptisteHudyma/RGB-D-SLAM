@@ -105,13 +105,13 @@ namespace rgbd_slam {
         _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
-        _ransacMaximumRetroprojectionErrorForInliers = 20;   // Retroprojection error between two screen points, in pixels
+        _ransacMaximumRetroprojectionErrorForInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
         _ransacMinimumInliersProportionForEarlyStop = 0.90; // proportion of inliers in total set, to stop RANSAC early
         _ransacProbabilityOfSuccess = 0.8;   // probability of having at least one correct transformation
         _ransacInlierProportion = 0.6;       // number of inliers in data / number of points in data 
 
         _minimumPointForOptimization = 6;   // Should be >= 6
-        _optimizationMaximumIterations = 1024;
+        _optimizationMaximumIterations = 64;
         _optimizationErrorPrecision = 0;
         _optimizationToleranceOfSolutionVectorNorm = 1e-4;  // Smallest delta of doubles
         _optimizationToleranceOfVectorFunction = 1e-3;
@@ -124,7 +124,6 @@ namespace rgbd_slam {
         _pointAgeConfidence = 15;
         _pointStagedAgeConfidence = 10;
         _pointMinimumConfidenceForMap = 0.9;
-        _mapMaximumRetroprojectionError = 150;
         _maximumPointPerFrame = 200;
 
         // Primitive extraction
@@ -283,11 +282,6 @@ namespace rgbd_slam {
         if (_pointMinimumConfidenceForMap <= 0)
         {
             outputs::log_error("Minimum confidence to add staged point to map  must be > 0");
-            _isValid = false;
-        }
-        if (_mapMaximumRetroprojectionError <= 0)
-        {
-            outputs::log_error("Maximum retroprojection must be > 0");
             _isValid = false;
         }
 
