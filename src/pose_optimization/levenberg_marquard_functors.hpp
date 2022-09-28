@@ -77,7 +77,7 @@ namespace rgbd_slam {
              * \param[in] worldPosition Position of the observer in the world
              * \param[in] worldRotation Orientation of the observer in the world
              */
-            Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation);
+            Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points);
 
             /**
              * \brief Implementation of the objective function
@@ -88,9 +88,7 @@ namespace rgbd_slam {
             int operator()(const Eigen::VectorXd& x, Eigen::VectorXd& fvec) const;
 
             private:
-            const matches_containers::match_point_container& _points; 
-            const quaternion _rotation;
-            const vector3 _position;
+            const matches_containers::match_point_container& _points;
         };
 
         struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};

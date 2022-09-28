@@ -44,11 +44,9 @@ namespace rgbd_slam {
          * GLOBAL POSE ESTIMATOR members
          */
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points, const vector3& worldPosition, const quaternion& worldRotation) :
+        Global_Pose_Estimator::Global_Pose_Estimator(const size_t n, const matches_containers::match_point_container& points) :
             Levenberg_Marquardt_Functor<double>(n, points.size() * 2),
-            _points(points),
-            _rotation(worldRotation),
-            _position(worldPosition)
+            _points(points)
         {
             assert(not _points.empty());
         }

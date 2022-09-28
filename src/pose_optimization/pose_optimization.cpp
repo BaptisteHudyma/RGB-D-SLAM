@@ -152,9 +152,7 @@ namespace rgbd_slam {
             Global_Pose_Functor pose_optimisation_functor(
                     Global_Pose_Estimator(
                         input.size(), 
-                        matchedPoints, 
-                        currentPose.get_position(),
-                        currentPose.get_orientation_quaternion()
+                        matchedPoints
                         )
                     );
             // Optimization algorithm
