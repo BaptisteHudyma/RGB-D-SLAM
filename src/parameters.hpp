@@ -25,14 +25,6 @@ namespace rgbd_slam {
 
             static bool is_valid() { return _isValid; };
 
-            static double get_starting_position_x() { return _startingPositionX; };
-            static double get_starting_position_y() { return _startingPositionY; };
-            static double get_starting_position_z() { return _startingPositionZ; };
-
-            static double get_starting_rotation_x() { return _startingRotationX; };
-            static double get_starting_rotation_y() { return _startingRotationY; };
-            static double get_starting_rotation_z() { return _startingRotationZ; };
-
             // Camera 1 is the left camera in stereo, and the color camera in RGBD
             static double get_camera_1_center_x() { return _camera1CenterX; };
             static double get_camera_1_center_y() { return _camera1CenterY; };
@@ -112,15 +104,6 @@ namespace rgbd_slam {
         private:
             // Is this set of parameters valid
             inline static bool _isValid = false; 
-
-            // Starting position (m & radians)
-            inline static double _startingPositionX;
-            inline static double _startingPositionY;
-            inline static double _startingPositionZ;
-
-            inline static double _startingRotationX;
-            inline static double _startingRotationY;
-            inline static double _startingRotationZ;
 
             // Cameras intrinsics parameters
             inline static double _camera1CenterX;

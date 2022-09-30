@@ -94,13 +94,13 @@ rgbd_slam::utils::Pose get_ground_truth(const std::string& groundTruthLine)
     std::istringstream inputGroundTruth(groundTruthLine);
     double timestamp = 0;
     rgbd_slam::vector3 groundTruthPosition;
-    rgbd_slam::quaternion froundTruthRotation;
+    rgbd_slam::quaternion groundTruthRotation;
     inputGroundTruth >> 
         timestamp >>
         groundTruthPosition.x() >> groundTruthPosition.y() >> groundTruthPosition.z() >>
-        froundTruthRotation.x() >> froundTruthRotation.y() >> froundTruthRotation.z() >> froundTruthRotation.w();
+        groundTruthRotation.x() >> groundTruthRotation.y() >> groundTruthRotation.z() >> groundTruthRotation.w();
 
-    return rgbd_slam::utils::Pose(groundTruthPosition * 1000, froundTruthRotation);
+    return rgbd_slam::utils::Pose(groundTruthPosition * 1000, groundTruthRotation);
 }
 
 int main(int argc, char* argv[]) 
@@ -131,12 +131,16 @@ int main(int argc, char* argv[])
     std::string firstGroundTruthLine;
     std::ifstream initGroundTruth(groundTruthPath);
     while (std::getline(initGroundTruth, firstGroundTruthLine) and firstGroundTruthLine[0] == '#');
-    const rgbd_slam::utils::Pose& groundTruthPose = get_ground_truth(firstGroundTruthLine);
+    const rgbd_slam::utils::Pose& initialGroundTruthPose = get_ground_truth(firstGroundTruthLine);
+
+    //start with ground truth pose
+    rgbd_slam::utils::Pose pose(
+        initialGroundTruthPose.get_position(),
+        initialGroundTruthPose.get_orientation_quaternion()
+    );
 
     // Load a default set of parameters
     rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
-    //start with identity pose
-    rgbd_slam::utils::Pose pose(groundTruthPose.get_position(), groundTruthPose.get_orientation_quaternion());
 
     rgbd_slam::RGBD_SLAM RGBD_Slam (pose, width, height);
 
@@ -170,10 +174,10 @@ int main(int argc, char* argv[])
         // skip comments    
         if (rgbLine[0] == '#' or depthLine[0] == '#')
             continue;
-        
+
         // get the ground truth from file
         std::string groundTruthLine;
-        while (std::getline(groundTruthFile, groundTruthLine) and groundTruthLine[0] == '#');
+        std::getline(groundTruthFile, groundTruthLine);
         const rgbd_slam::utils::Pose& groundTruthPose = get_ground_truth(groundTruthLine);
 
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
@@ -224,6 +228,7 @@ int main(int argc, char* argv[])
         const double trackingDuration = (cv::getTickCount() - trackingStartTime) / (double)cv::getTickFrequency();
         meanTreatmentDuration += trackingDuration;
 
+        // estimate error to ground truth
         const double positionError = pose.get_position_error(groundTruthPose);
         const double rotationError = pose.get_rotation_error(groundTruthPose);
         //std::cout << "Pose error: " << positionError/10.0 << " cm | " << rotationError << " °" << std::endl;

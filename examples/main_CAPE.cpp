@@ -108,8 +108,6 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& shouldD
     return parser.check();
 }
 
-
-
 int main(int argc, char* argv[]) {
     std::string dataset;
     bool shouldDisplayPrimitiveMasks, shouldDisplayStagedPoints, shouldUseLineDetection, shouldSavePoses;
@@ -131,23 +129,11 @@ int main(int argc, char* argv[]) {
     width = rgbImage.cols;
     height = rgbImage.rows;
 
-
     // Load a default set of parameters
     rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
-    //start with identity pose
+
+    //start with ground truth pose
     rgbd_slam::utils::Pose pose;
-    const rgbd_slam::vector3 startingPosition(
-            rgbd_slam::Parameters::get_starting_position_x(),
-            rgbd_slam::Parameters::get_starting_position_y(),
-            rgbd_slam::Parameters::get_starting_position_z()
-            );
-    const rgbd_slam::EulerAngles startingRotationEuler(
-            rgbd_slam::Parameters::get_starting_rotation_x(),
-            rgbd_slam::Parameters::get_starting_rotation_y(),
-            rgbd_slam::Parameters::get_starting_rotation_z()
-            );
-    const rgbd_slam::quaternion& startingRotation = rgbd_slam::utils::get_quaternion_from_euler_angles(startingRotationEuler);
-    pose.set_parameters(startingPosition, startingRotation);
 
     rgbd_slam::RGBD_SLAM RGBD_Slam (pose, width, height);
 
@@ -177,7 +163,6 @@ int main(int argc, char* argv[]) {
     //stop condition
     bool shouldStop = true;
     while(shouldStop) {
-
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
             ++frameIndex;

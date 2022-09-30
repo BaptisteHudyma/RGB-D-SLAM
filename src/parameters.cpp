@@ -21,13 +21,6 @@ namespace rgbd_slam {
             check_parameters_validity();
             return false;
         }
-        // Load start pose
-        _startingPositionX = configFile["starting_position_x"];
-        _startingPositionY = configFile["starting_position_y"];
-        _startingPositionZ = configFile["starting_position_z"];
-        _startingRotationX = configFile["starting_rotation_x"];
-        _startingRotationY = configFile["starting_rotation_y"];
-        _startingRotationZ = configFile["starting_rotation_z"];
 
         // Load Camera 1 parameters
         _camera1FocalX = configFile["camera_1_focal_x"];
@@ -59,15 +52,6 @@ namespace rgbd_slam {
     {
         // set the global parameters
         set_parameters();
-
-        // Initial position & rotation, if necessary
-        _startingPositionX = 0;
-        _startingPositionY = 0;
-        _startingPositionZ = 0;
-
-        _startingRotationX = 0;
-        _startingRotationY = 0;
-        _startingRotationZ = 0;
 
         // Camera intrinsic parameters
         _camera1FocalX = 548.86723733696215;

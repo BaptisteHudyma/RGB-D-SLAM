@@ -85,6 +85,23 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPri
     return parser.check();
 }
 
+rgbd_slam::utils::Pose get_ground_truth(const std::string& groundTruthLine)
+{
+    assert(groundTruthLine != "");
+
+    // parse ground truth
+    std::istringstream inputGroundTruth(groundTruthLine);
+    double timestamp = 0;
+    rgbd_slam::vector3 groundTruthPosition;
+    rgbd_slam::quaternion groundTruthRotation;
+    inputGroundTruth >> 
+        timestamp >>
+        groundTruthPosition.x() >> groundTruthPosition.y() >> groundTruthPosition.z() >>
+        groundTruthRotation.x() >> groundTruthRotation.y() >> groundTruthRotation.z() >> groundTruthRotation.w();
+
+    return rgbd_slam::utils::Pose(groundTruthPosition * 1000, groundTruthRotation);
+}
+
 int main(int argc, char* argv[]) 
 {
     std::string dataset;
@@ -100,30 +117,29 @@ int main(int argc, char* argv[])
     // Get file & folder names
     const std::string rgbImageListPath = dataPath.str() + "rgb.txt";
     const std::string depthImageListPath = dataPath.str() + "depth.txt";
+    const std::string groundTruthPath = dataPath.str() + "groundtruth.txt";
 
     std::ifstream rgbImagesFile(rgbImageListPath);
     std::ifstream depthImagesFile(depthImageListPath);
+    std::ifstream groundTruthFile(groundTruthPath);
 
-    const int width  = 640; 
+    const int width  = 640;
     const int height = 480;
 
+    // get the first ground truth from file
+    std::string firstGroundTruthLine;
+    std::ifstream initGroundTruth(groundTruthPath);
+    while (std::getline(initGroundTruth, firstGroundTruthLine) and firstGroundTruthLine[0] == '#');
+    const rgbd_slam::utils::Pose& initialGroundTruthPose = get_ground_truth(firstGroundTruthLine);
+
+    //start with ground truth pose
+    rgbd_slam::utils::Pose pose(
+        initialGroundTruthPose.get_position(),
+        initialGroundTruthPose.get_orientation_quaternion()
+    );
 
     // Load a default set of parameters
     rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
-    //start with identity pose
-    rgbd_slam::utils::Pose pose;
-    const rgbd_slam::vector3 startingPosition(
-            rgbd_slam::Parameters::get_starting_position_x(),
-            rgbd_slam::Parameters::get_starting_position_y(),
-            rgbd_slam::Parameters::get_starting_position_z()
-            );
-    const rgbd_slam::EulerAngles startingRotationEuler(
-            rgbd_slam::Parameters::get_starting_rotation_x(),
-            rgbd_slam::Parameters::get_starting_rotation_y(),
-            rgbd_slam::Parameters::get_starting_rotation_z()
-            );
-    const rgbd_slam::quaternion& startingRotation = rgbd_slam::utils::get_quaternion_from_euler_angles(startingRotationEuler);
-    pose.set_parameters(startingPosition, startingRotation);
 
     rgbd_slam::RGBD_SLAM RGBD_Slam (pose, width, height);
 
@@ -157,6 +173,12 @@ int main(int argc, char* argv[])
         // skip comments    
         if (rgbLine[0] == '#' or depthLine[0] == '#')
             continue;
+
+        // get the ground truth from file
+        std::string groundTruthLine;
+        std::getline(groundTruthFile, groundTruthLine);
+        const rgbd_slam::utils::Pose& groundTruthPose = get_ground_truth(groundTruthLine);
+
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
             ++frameIndex;
@@ -204,6 +226,11 @@ int main(int argc, char* argv[])
         pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
         const double trackingDuration = (cv::getTickCount() - trackingStartTime) / (double)cv::getTickFrequency();
         meanTreatmentDuration += trackingDuration;
+
+        // estimate error to ground truth
+        const double positionError = pose.get_position_error(groundTruthPose);
+        const double rotationError = pose.get_rotation_error(groundTruthPose);
+        // std::cout << "Pose error: " << positionError/10.0 << " cm | " << rotationError << " °" << std::endl;
 
         // display masks on image
         cv::Mat segRgb = rgbImage.clone();
