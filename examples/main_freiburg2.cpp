@@ -166,6 +166,9 @@ int main(int argc, char* argv[])
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
     }
 
+    double positionError = 0;
+    double rotationError = 0;
+
     //stop condition
     bool shouldRunLoop = true;
     for(std::string rgbLine, depthLine; shouldRunLoop and std::getline(rgbImagesFile, rgbLine) and std::getline(depthImagesFile, depthLine); ) 
@@ -228,9 +231,8 @@ int main(int argc, char* argv[])
         meanTreatmentDuration += trackingDuration;
 
         // estimate error to ground truth
-        const double positionError = pose.get_position_error(groundTruthPose);
-        const double rotationError = pose.get_rotation_error(groundTruthPose);
-        // std::cout << "Pose error: " << positionError/10.0 << " cm | " << rotationError << " °" << std::endl;
+        positionError = pose.get_position_error(groundTruthPose);
+        rotationError = pose.get_rotation_error(groundTruthPose);
 
         // display masks on image
         cv::Mat segRgb = rgbImage.clone();
@@ -265,6 +267,7 @@ int main(int argc, char* argv[])
         trajectoryFile.close();
 
     std::cout << std::endl;
+    std::cout << "Pose error: " << positionError/10.0 << " cm | " << rotationError << " °" << std::endl;
     std::cout << "End pose : " << pose << std::endl;
     std::cout << "Process terminated at frame " << frameIndex << std::endl;
     std::cout << std::endl;
