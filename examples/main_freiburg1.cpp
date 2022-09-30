@@ -16,6 +16,7 @@
 #include "pose.hpp"
 #include "parameters.hpp"
 #include "angle_utils.hpp"
+#include "types.hpp"
 
 
 void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
@@ -100,9 +101,11 @@ int main(int argc, char* argv[])
     // Get file & folder names
     const std::string rgbImageListPath = dataPath.str() + "rgb.txt";
     const std::string depthImageListPath = dataPath.str() + "depth.txt";
+    const std::string groundTruthPath = dataPath.str() + "groundtruth.txt";
 
     std::ifstream rgbImagesFile(rgbImageListPath);
     std::ifstream depthImagesFile(depthImageListPath);
+    std::ifstream groundTruthFile(groundTruthPath);
 
     const int width  = 640; 
     const int height = 480;
@@ -157,6 +160,12 @@ int main(int argc, char* argv[])
         // skip comments    
         if (rgbLine[0] == '#' or depthLine[0] == '#')
             continue;
+        
+        // get next ground truth
+        std::string groundTruth;
+        while (std::getline(groundTruthFile, groundTruth) and groundTruth[0] == '#');
+
+
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
             ++frameIndex;
@@ -176,6 +185,17 @@ int main(int argc, char* argv[])
         std::string depthImagePath;
         inputDepthString >> depthTimeStamp >> depthImagePath;
         depthImagePath.insert(0, dataPath.str());
+
+        // parse ground truth
+        std::istringstream inputGroundTruth(groundTruth);
+        double timestamp = 0;
+        rgbd_slam::vector3 groundTruthPosition;
+        rgbd_slam::quaternion froundTruthRotation;
+        inputGroundTruth >> 
+            timestamp >> 
+            groundTruthPosition.x() >> groundTruthPosition.y() >> groundTruthPosition.z() >>
+            froundTruthRotation.x() >> froundTruthRotation.y() >> froundTruthRotation.z() >> froundTruthRotation.w();
+        groundTruthPosition *= 1000.0;
 
         // Load images
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
