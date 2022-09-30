@@ -39,6 +39,17 @@ namespace rgbd_slam {
             return os;
         }
 
+        double PoseBase::get_position_error(const PoseBase& pose) const
+        {
+            return (pose.get_position() - _position).norm();
+        }
+
+        double PoseBase::get_rotation_error(const PoseBase& pose) const
+        {
+            const double distanceRadian = _orientation.angularDistance(pose.get_orientation_quaternion());
+            return distanceRadian / EulerToRadian;
+        }
+
 
         /**
          * Pose

@@ -26,6 +26,15 @@ namespace rgbd_slam {
                 const quaternion get_orientation_quaternion() const { return _orientation; }
 
                 /**
+                 * \brief compute a position error (Units are the same as the position units)
+                 */
+                double get_position_error(const PoseBase& pose) const;
+                /**
+                 * \brief compute a rotation error (degrees)
+                 */
+                double get_rotation_error(const PoseBase& pose) const;
+
+                /**
                  * \brief A display function, to avoid a friend operator function
                  */
                 void display(std::ostream& os) const;
