@@ -27,14 +27,10 @@ namespace rgbd_slam {
 
             const cameraCoordinates cameraPoint(x, y, screenPoint.z());
 
-            return worldCoordinates(camera_to_world_coordinates(cameraPoint, cameraToWorld).head<3>());
+            const vector4 homogenousWorldCoords = cameraToWorld * cameraPoint.get_homogenous();
+            return worldCoordinates(homogenousWorldCoords.head<3>());
         }
-
-        const vector4 camera_to_world_coordinates(const cameraCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
-        {
-            return cameraToWorld * cameraPoint.get_homogenous();
-        }
-
+        
         bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenPoint)
         {
             assert( not std::isnan(position3D.x()) and not std::isnan(position3D.y()) and not std::isnan(position3D.z()) );

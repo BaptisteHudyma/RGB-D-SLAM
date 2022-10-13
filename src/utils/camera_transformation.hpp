@@ -22,16 +22,6 @@ namespace rgbd_slam {
         const worldCoordinates screen_to_world_coordinates(const screenCoordinates& screenPoint, const cameraToWorldMatrix& cameraToWorld);
 
         /**
-         * \brief Transform a vector in camera space to a vector in world space
-         *
-         * \param[in] cameraPoint A vector in camera space
-         * \param[in] cameraToWorld Matrix to transform local to world coordinates
-         *
-         * \return A vector in world space
-         */
-        const vector4 camera_to_world_coordinates(const cameraCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld);
-
-        /**
          * \brief Transform a point from world to screen coordinate system
          *
          * \param[in] position3D Coordinates of the detected point (world coordinates)
