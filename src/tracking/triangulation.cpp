@@ -50,9 +50,10 @@ namespace rgbd_slam {
                                 pointBy * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
             // singular value decomposition
-            worldCoordinates worldPoint;
-            worldPoint << triangulationMatrix.leftCols<3>().jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV).solve(-triangulationMatrix.col(3));
-            
+            const worldCoordinates worldPoint (
+                triangulationMatrix.leftCols<3>().jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV).solve(-triangulationMatrix.col(3))
+            );
+
             if (std::isfinite(worldPoint.x()) and std::isfinite(worldPoint.y()) and std::isfinite(worldPoint.z()))
             {
                 // We have a good triangulation ! Maybe not good enough but still usable

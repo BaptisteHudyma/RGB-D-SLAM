@@ -28,9 +28,7 @@ namespace rgbd_slam {
             vector4 worldPoint;
             worldPoint << x, y, measuredZ, 1.0;
 
-            worldCoordinates worldPointCoordinates;
-            worldPointCoordinates << screen_to_world_coordinates(worldPoint, cameraToWorld).head<3>();
-            return worldPointCoordinates;
+            return worldCoordinates(screen_to_world_coordinates(worldPoint, cameraToWorld).head<3>());
         }
 
         const vector4 screen_to_world_coordinates(const vector4& vector4d, const cameraToWorldMatrix& cameraToWorld)
@@ -42,17 +40,15 @@ namespace rgbd_slam {
         {
             assert( not std::isnan(position3D.x()) and not std::isnan(position3D.y()) and not std::isnan(position3D.z()) );
 
-            const cameraCoordinates& point4d = world_to_camera_coordinates(position3D, worldToCamera);
-            assert(point4d[3] != 0);
-            vector3 point3D;
-            point3D << (point4d.head<3>() / point4d[3]); 
+            const cameraCoordinates& cameraPoint = world_to_camera_coordinates(position3D, worldToCamera);
+            assert(cameraPoint.get_homogenous()[3] != 0);
 
-            if (point3D.z() <= 0) {
+            if (cameraPoint.z() <= 0) {
                 return false;
             }
 
-            const double screenX = Parameters::get_camera_1_focal_x() * point3D.x() / point3D.z() + Parameters::get_camera_1_center_x();
-            const double screenY = Parameters::get_camera_1_focal_y() * point3D.y() / point3D.z() + Parameters::get_camera_1_center_y();
+            const double screenX = Parameters::get_camera_1_focal_x() * cameraPoint.x() / cameraPoint.z() + Parameters::get_camera_1_center_x();
+            const double screenY = Parameters::get_camera_1_focal_y() * cameraPoint.y() / cameraPoint.z() + Parameters::get_camera_1_center_y();
 
             if (not std::isnan(screenX) and not std::isnan(screenY))
             {
@@ -68,9 +64,8 @@ namespace rgbd_slam {
             vector4 homogenousWorldCoordinates;
             homogenousWorldCoordinates << worldCoordinates, 1.0;
 
-            cameraCoordinates camCoordinates;
-            camCoordinates << worldToCamera * homogenousWorldCoordinates;
-            return camCoordinates;
+            const vector4& cameraHomogenousCoordinates = worldToCamera * homogenousWorldCoordinates;
+            return cameraCoordinates(cameraHomogenousCoordinates);
         }
 
         const cameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)

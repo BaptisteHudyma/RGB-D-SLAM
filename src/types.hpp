@@ -33,7 +33,16 @@ namespace rgbd_slam {
         screenCoordinates(const vector2& coords) : vector2(coords) {};
         screenCoordinates(const double x, const double y) : vector2(x, y) {};
     };
-    struct cameraCoordinates : public vector4 {};
+    struct cameraCoordinates : public vector3 {
+        cameraCoordinates() {};
+        cameraCoordinates(const vector3& coords) : vector3(coords) {};
+        cameraCoordinates(const vector4& homegenousCoordinates) : vector3(
+            homegenousCoordinates.x()/homegenousCoordinates[3],
+            homegenousCoordinates.y()/homegenousCoordinates[3],
+            homegenousCoordinates.z()/homegenousCoordinates[3]
+        ) {};
+        vector4 get_homogenous() const { return vector4(x(), y(), z(), 1);};
+    };
     struct worldCoordinates : public vector3 {
         worldCoordinates() {};
         worldCoordinates(const vector3& coords) : vector3(coords) {};

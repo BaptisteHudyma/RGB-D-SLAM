@@ -492,6 +492,9 @@ namespace rgbd_slam {
                 //Map Point are green 
                 if (isCoordinatesValid)
                 {
+                    //const cameraCoordinates& cameraPoint = utils::world_to_camera_coordinates(mapPoint._coordinates, worldToCameraMatrix);
+                    //std::cout << utils::get_screen_point_covariance(cameraPoint, mapPoint.get_covariance_matrix()) << "\n" << std::endl;
+                    
                     cv::circle(debugImage, cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())), radius, pointColor, -1);
                 }
             }
