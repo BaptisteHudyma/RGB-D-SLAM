@@ -273,7 +273,6 @@ namespace rgbd_slam {
                                     rowPtr[col] = currentPlaneCount;
                             }
                         }
-
                     }
                     else if(cellActivatedCount > 5) 
                     {

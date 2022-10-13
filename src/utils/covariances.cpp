@@ -11,10 +11,9 @@ namespace rgbd_slam {
             // Quadratic error model (uses depth as meters)
             const double depthMeters = depth / 1000.0;
             // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = std::max(0.0001, utils::is_depth_valid(depth) ? (-0.58 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
+            const double depthVariance = std::max(1.0, utils::is_depth_valid(depth) ? (0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
             // a zero variance will break the kalman gain
             assert(depthVariance > 0);
-
             // TODO xy variance should also depend on the placement of the pixel in x and y
             const double xyVariance = pow(0.1, 2.0);
 
@@ -23,6 +22,21 @@ namespace rgbd_slam {
                 {0,          xyVariance, 0},
                 {0,          0,          depthVariance * depthVariance},
             };
+            return screenPointCovariance;
+        }
+
+        const matrix33 get_screen_point_covariance(const vector3& worldPoint, const matrix33& worldPointCovariance)
+        {
+            const double cameraFX = Parameters::get_camera_1_focal_x();
+            const double cameraFY = Parameters::get_camera_1_focal_y();
+
+            // Jacobian of the world to screen function. Use absolutes to prevent negative variances
+            const matrix33 jacobian {
+                {cameraFX/worldPoint.z(), 0.0,                     - cameraFX * worldPoint.x() / pow(worldPoint.z(), 2.0)},
+                {0.0,                     cameraFY/worldPoint.z(), - cameraFY * worldPoint.y() / pow(worldPoint.z(), 2.0)},
+                {0.0,                     0.0,                     1}
+            };
+            matrix33 screenPointCovariance = jacobian * worldPointCovariance * jacobian.transpose();
             return screenPointCovariance;
         }
 
@@ -45,7 +59,8 @@ namespace rgbd_slam {
                 {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
                 {0.0,              0.0,              1}
             };
-            const matrix33& worldPointCovariance = (jacobian.transpose() * jacobian).inverse() * screenPointCovariance;
+            
+            matrix33 worldPointCovariance = jacobian * screenPointCovariance * jacobian.transpose();
             return worldPointCovariance;
         }
 
