@@ -7,7 +7,41 @@
 namespace rgbd_slam {
     namespace tracking {
 
-        class KalmanFilter {
+        class SharedKalmanFilter {
+
+        public:
+
+            /**
+            * \brief Create a Kalman filter with the specified matrices.
+            * \param[in] systemDynamics System dynamics matrix
+            * \param[in] outputMatrix Output matrix
+            * \param[in] processNoiseCovariance Process noise covariance
+            */
+            SharedKalmanFilter(
+                const Eigen::MatrixXd& systemDynamics,
+                const Eigen::MatrixXd& outputMatrix,
+                const Eigen::MatrixXd& processNoiseCovariance
+            );
+
+            /**
+            * \brief Update the estimated state based on measured values. The time step is assumed to remain constant.
+            * \param[in] newMeasurement new measurement
+            * \param[in] measurementNoiseCovariance Measurement noise covariance
+            */
+            std::pair<Eigen::VectorXd, Eigen::MatrixXd> get_new_state(const Eigen::VectorXd& currentState, const Eigen::MatrixXd& currentMeasurementNoiseCovariance, const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance);
+
+        protected:
+
+            // Matrices for computation
+            Eigen::MatrixXd systemDynamics;
+            const Eigen::MatrixXd outputMatrix;
+            const Eigen::MatrixXd processNoiseCovariance;
+
+            // stateDimension-size identity
+            Eigen::MatrixXd I;
+        };
+
+        class KalmanFilter : public SharedKalmanFilter {
 
         public:
 
@@ -58,21 +92,8 @@ namespace rgbd_slam {
             }
 
         private:
-
-            // Matrices for computation
-            Eigen::MatrixXd systemDynamics;
-            const Eigen::MatrixXd outputMatrix;
-            const Eigen::MatrixXd processNoiseCovariance;
-
-            // System dimensions
-            const size_t measurementDimension;
-            const size_t stateDimension;
-
             // Is the filter isInitialized?
             bool isInitialized;
-
-            // stateDimension-size identity
-            Eigen::MatrixXd I;
 
             // Estimated state
             Eigen::VectorXd stateEstimate;

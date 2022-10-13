@@ -1,5 +1,6 @@
 #include "map_point.hpp"
 #include "../parameters.hpp"
+#include "kalman_filter.hpp"
 
 #include <Eigen/LU>
 #include <oneapi/tbb/info.h>
@@ -32,19 +33,23 @@ namespace rgbd_slam {
         {
             _matchedScreenPoint.mark_unmatched();
             
-            build_kalman_filter();
-            _kalmanFilter->init(covariance, coordinates);
+            if (IMap_Point_With_Tracking::_kalmanFilter == nullptr)
+                build_kalman_filter();
+
+            _pointCovariance = covariance;
         }
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
             : Point(coordinates, descriptor, id)
         {
             _matchedScreenPoint.mark_unmatched();
             
-            build_kalman_filter();
-            _kalmanFilter->init(covariance, coordinates);
+            if (IMap_Point_With_Tracking::_kalmanFilter == nullptr)
+                build_kalman_filter();
+            
+            _pointCovariance = covariance;
         }
 
-        const double pointProcessNoise = 0.6;   // TODO set in parameters
+        const double pointProcessNoise = 10;   // TODO set in parameters
         void IMap_Point_With_Tracking::build_kalman_filter()
         {
             const size_t stateDimension = 3;        //x, y, z
@@ -59,26 +64,22 @@ namespace rgbd_slam {
             // we need all positions
             outputMatrix.setIdentity();
 
-            processNoiseCovariance << 
-            //  x    y    z
-                1,   0,   0,
-                0,   1,   0,
-                0,   0,   1;
+            processNoiseCovariance.setIdentity();
             processNoiseCovariance *= pointProcessNoise;
 
-            _kalmanFilter = new tracking::KalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
+            IMap_Point_With_Tracking::_kalmanFilter = new tracking::SharedKalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
         }
 
         double IMap_Point_With_Tracking::track_point(const worldCoordinates& newPointCoordinates, const matrix33& newPointCovariance)
         {
-            assert(_kalmanFilter != nullptr);
-            assert(_kalmanFilter->is_initialized());
+            assert(IMap_Point_With_Tracking::_kalmanFilter != nullptr);
 
-            _kalmanFilter->update(newPointCoordinates, newPointCovariance);
+            const std::pair<vector3, matrix33>& res = IMap_Point_With_Tracking::_kalmanFilter->get_new_state(_coordinates, _pointCovariance, newPointCoordinates, newPointCovariance);
 
-            const double score = (_coordinates - _kalmanFilter->get_state()).norm();
+            const double score = (_coordinates - res.first).norm();
             
-            _coordinates << _kalmanFilter->get_state();
+            _coordinates = res.first;
+            _pointCovariance = res.second;
             return score;
         }
 
