@@ -104,25 +104,25 @@ namespace rgbd_slam {
                  *
                  * \param[in, out] point A map point that we want to match to detected points
                  * \param[in] detectedKeypointsObject An object to handle all detected points in an image
-                 * \param[in] worldToCamMatrix A matrix to transform a world point to a camera point
+                 * \param[in] worldToCamera A matrix to transform a world point to a camera point
                  * \param[in, out] matchedPoints A container associating the detected to the map points
                  * \param[in] shouldAddMatchToContainer If this flag is false, this point will not be inserted in matchedPoints.
                  *
                  * \return A boolean indicating if this point was matched or not
                  */
-                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const matrix44& worldToCamMatrix, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer=true);
+                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const worldToCameraMatrix& worldToCamera, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer=true);
 
                 /**
                  * \brief Compute a match for a given primitive, and update this primitive match status.
                  *
                  * \param[in, out] mapPrimitive A map primitive  that we want to match to a detected primitive
                  * \param[in] detectedPrimitives A container that stores all the detected primitives
-                 * \param[in] worldToCameraMatrix A matrix to transform a world point to a camera point
+                 * \param[in] worldToCamera A matrix to transform a world point to a camera point
                  * \param[in, out] matchedPrimitives A container associating the detected primitives to the map primitives
                  *
                  * \return A boolean indicating if this primitive was matched or not
                  */
-                bool find_match(Primitive& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const matrix44& worldToCameraMatrix, matches_containers::match_primitive_container& matchedPrimitives);
+                bool find_match(Primitive& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const worldToCameraMatrix& worldToCamera, matches_containers::match_primitive_container& matchedPrimitives);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
@@ -131,47 +131,47 @@ namespace rgbd_slam {
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] keypointObject An object to handle all detected points in an image
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
-                 * \param[in] cameraToWorldMatrix A transformation matrix to convert a camera point to a world point
+                 * \param[in] cameraToWorld A transformation matrix to convert a camera point to a world point
                  */
-                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix);
+                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& previousCameraToWorld, const cameraToWorldMatrix& cameraToWorld);
 
                 /**
                  * \brief Update local keypoint map features 
                  *
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
-                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
+                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_keypoint_map(const matrix33& poseCovariance, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const matrix33& poseCovariance, const cameraToWorldMatrix& previousCameraToWorld, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Update the local primitive map features
                  *
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
-                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
+                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] A container that stores the detected primitives in the depth image
                  */
-                void update_local_primitive_map(const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::primitives::primitive_container& detectedPrimitives);
+                void update_local_primitive_map(const cameraToWorldMatrix& previousCameraToWorldMatrix, const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
                  *
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization
-                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
+                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged_keypoints_map(const matrix33& poseCovariance, const matrix44& previousCameraToWorldMatrix, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_staged_keypoints_map(const matrix33& poseCovariance, const cameraToWorldMatrix& previousCameraToWorld, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Add unmatched detected points to the staged map
                  *
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
-                 * \param[in] cameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
+                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void add_umatched_keypoints_to_staged_map(const matrix33& poseCovariance, const matrix44& cameraToWorldMatrix, const features::keypoints::Keypoint_Handler& keypointObject);
+                void add_umatched_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
@@ -187,9 +187,9 @@ namespace rgbd_slam {
                  * \param[in] pointColor The color of the point to draw
                  * \param[out] debugImage The image to draw the points modify
                  */
-                static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const matrix44& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius = 3);
+                static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius = 3);
 
-                void draw_primitives_on_image(const matrix44& worldToCameraMatrix, cv::Mat& debugImage) const;
+                void draw_primitives_on_image(const worldToCameraMatrix& worldToCamera, cv::Mat& debugImage) const;
 
 
                 /**

@@ -23,6 +23,11 @@ namespace rgbd_slam {
     typedef Eigen::Matrix4d matrix44;
     typedef Eigen::Quaternion<double> quaternion;
 
+    
+    //define new classes to not mix types
+    class worldToCameraMatrix : public matrix44 {};
+    class cameraToWorldMatrix : public matrix44 {};
+
     struct EulerAngles
     {
         double yaw;

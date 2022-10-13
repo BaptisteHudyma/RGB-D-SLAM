@@ -48,7 +48,7 @@ namespace rgbd_slam {
                 if (not isPoseValid)
                     continue;
 
-                const matrix44& transformationMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
+                const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
 
                 // Select inliers by retroprojection threshold
                 matches_containers::match_point_container potentialInliersContainer;

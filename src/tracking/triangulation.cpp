@@ -13,10 +13,10 @@ namespace rgbd_slam {
             return utils::Pose(newPosition, pose.get_orientation_quaternion());
         }
 
-        bool Triangulation::is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const matrix44& worldToCameraMatrix, const double& maximumRetroprojectionError)
+        bool Triangulation::is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
         {
             vector2 projectedScreenPoint;
-            const bool isRetroprojectionValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCameraMatrix, projectedScreenPoint);
+            const bool isRetroprojectionValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCamera, projectedScreenPoint);
             if (not isRetroprojectionValid)
             {
                 return false;
@@ -27,7 +27,7 @@ namespace rgbd_slam {
             return (retroprojectionError > maximumRetroprojectionError);
         }
 
-        bool Triangulation::triangulate(const matrix44& currentWorldToCameraMatrix, const matrix44& newWorldToCameraMatrix, const vector2& point2Da, const vector2& point2Db, vector3& triangulatedPoint) 
+        bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const vector2& point2Da, const vector2& point2Db, vector3& triangulatedPoint) 
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -43,10 +43,10 @@ namespace rgbd_slam {
 
             // Linear-LS triangulation
             Eigen::Matrix<double, 4, 4> triangulationMatrix;
-            triangulationMatrix << pointAx * currentWorldToCameraMatrix.row(2) - currentWorldToCameraMatrix.row(0),
-                                pointAy * currentWorldToCameraMatrix.row(2) - currentWorldToCameraMatrix.row(1),
-                                pointBx * newWorldToCameraMatrix.row(2) - newWorldToCameraMatrix.row(0),
-                                pointBy * newWorldToCameraMatrix.row(2) - newWorldToCameraMatrix.row(1);
+            triangulationMatrix << pointAx * currentWorldToCamera.row(2) - currentWorldToCamera.row(0),
+                                pointAy * currentWorldToCamera.row(2) - currentWorldToCamera.row(1),
+                                pointBx * newWorldToCamera.row(2) - newWorldToCamera.row(0),
+                                pointBy * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
             // singular value decomposition
             const vector3& worldPoint = triangulationMatrix.leftCols<3>().jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV).solve(-triangulationMatrix.col(3));
@@ -56,12 +56,12 @@ namespace rgbd_slam {
                 triangulatedPoint = worldPoint;
 
                 // Check retroprojection of point in frame A
-                const bool isRetroprojectionPointAValid = Triangulation::is_retroprojection_valid(worldPoint, point2Da, currentWorldToCameraMatrix, maximumRetroprojectionError);
+                const bool isRetroprojectionPointAValid = Triangulation::is_retroprojection_valid(worldPoint, point2Da, currentWorldToCamera, maximumRetroprojectionError);
                 if (not isRetroprojectionPointAValid)
                     return false;
 
                 // Check retroprojection of point in frame B
-                const bool isRetroprojectionPointBValid = Triangulation::is_retroprojection_valid(worldPoint, point2Db, newWorldToCameraMatrix, maximumRetroprojectionError);
+                const bool isRetroprojectionPointBValid = Triangulation::is_retroprojection_valid(worldPoint, point2Db, newWorldToCamera, maximumRetroprojectionError);
                 if (not isRetroprojectionPointBValid)
                     return false;
 

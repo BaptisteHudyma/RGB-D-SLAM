@@ -1,6 +1,7 @@
 #include "camera_transformation.hpp"
 
 #include "../parameters.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
     namespace utils {
@@ -15,7 +16,7 @@ namespace rgbd_slam {
         }
 
         
-        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const matrix44& cameraToWorldMatrix) 
+        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const cameraToWorldMatrix& cameraToWorld) 
         {
             assert(measuredZ > 0);
             assert(screenX >= 0 and screenY >= 0);
@@ -25,21 +26,21 @@ namespace rgbd_slam {
 
             vector4 worldPoint;
             worldPoint << x, y, measuredZ, 1.0;
-            return screen_to_world_coordinates(worldPoint, cameraToWorldMatrix).head<3>();
+            return screen_to_world_coordinates(worldPoint, cameraToWorld).head<3>();
         }
 
-        const vector4 screen_to_world_coordinates(const vector4& vector4d, const matrix44& cameraToWorldMatrix)
+        const vector4 screen_to_world_coordinates(const vector4& vector4d, const cameraToWorldMatrix& cameraToWorld)
         {
-            return cameraToWorldMatrix * vector4d;
+            return cameraToWorld * vector4d;
         }
 
-        bool compute_world_to_screen_coordinates(const vector3& position3D, const matrix44& worldToScreenMatrix, vector2& screenCoordinates)
+        bool compute_world_to_screen_coordinates(const vector3& position3D, const worldToCameraMatrix& worldToCamera, vector2& screenCoordinates)
         {
             assert( not std::isnan(position3D.x()) and not std::isnan(position3D.y()) and not std::isnan(position3D.z()) );
 
             vector4 ptH;
             ptH << position3D, 1.0;
-            const vector4& point4d = world_to_screen_coordinates(ptH, worldToScreenMatrix);
+            const vector4& point4d = world_to_screen_coordinates(ptH, worldToCamera);
             assert(point4d[3] != 0);
             const vector3& point3D = point4d.head<3>() / point4d[3]; 
 
@@ -58,26 +59,28 @@ namespace rgbd_slam {
             return false;
         }
 
-        const vector4 world_to_screen_coordinates(const vector4& worldVector4, const matrix44& worldToScreenMatrix)
+        const vector4 world_to_screen_coordinates(const vector4& worldVector4, const worldToCameraMatrix& worldToCamera)
         {
-            return worldToScreenMatrix * worldVector4;
+            return worldToCamera * worldVector4;
         }
 
-        const matrix44 compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
+        const cameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
         {
-            matrix44 screenToWorldMatrix;
-            screenToWorldMatrix << rotation.toRotationMatrix(), position,  0, 0, 0, 1;
-            return screenToWorldMatrix;
+            cameraToWorldMatrix cameraToWorld;
+            cameraToWorld << rotation.toRotationMatrix(), position,  0, 0, 0, 1;
+            return cameraToWorld;
         }
 
-        const matrix44 compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
+        const worldToCameraMatrix compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
         {
             return compute_world_to_camera_transform(compute_camera_to_world_transform(rotation, position));
         }
 
-        const matrix44 compute_world_to_camera_transform(const matrix44& cameraToWorldMatrix)
+        const worldToCameraMatrix compute_world_to_camera_transform(const cameraToWorldMatrix& cameraToWorld)
         {
-            return cameraToWorldMatrix.inverse();
+            worldToCameraMatrix worldToCamera;
+            worldToCamera << cameraToWorld.inverse();
+            return worldToCamera;
         }
 
     }   // utils

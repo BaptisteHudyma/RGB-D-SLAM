@@ -64,7 +64,7 @@ namespace rgbd_slam {
             );
             const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
 
-            const matrix44& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+            const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
             size_t pointIndex = 0;  // index of the match being treated
             // Compute retroprojection distances
             for(const matches_containers::Match& match : _points) {
@@ -84,7 +84,7 @@ namespace rgbd_slam {
             const quaternion& rotation = finalPose.get_orientation_quaternion();
             const vector3& translation = finalPose.get_position();
 
-            const matrix44& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+            const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
             double meanOfDistances = 0;
 
             // Compute retroprojection distances

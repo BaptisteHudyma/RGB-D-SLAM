@@ -5,6 +5,7 @@
 #include "pose_optimization/pose_optimization.hpp"
 #include "outputs/logger.hpp"
 
+#include "types.hpp"
 #include "utils/pose.hpp"
 #include "utils/camera_transformation.hpp"
 #include "utils/angle_utils.hpp"
@@ -71,7 +72,7 @@ namespace rgbd_slam {
     const matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
     {
         assert(error >= 0);
-        const matrix44& W2CtransformationMatrix = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
+        const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
         uint invalidPointsCounter = 0;
 
         matches_containers::match_point_container matchedPoints;
@@ -81,7 +82,7 @@ namespace rgbd_slam {
             const vector3 worldPointStart(point.x, point.y, point.z);
             //
             vector2 transformedPoint; 
-            const bool isScreenCoordinatesValid = utils::compute_world_to_screen_coordinates(worldPointStart, W2CtransformationMatrix, transformedPoint);
+            const bool isScreenCoordinatesValid = utils::compute_world_to_screen_coordinates(worldPointStart, worldToCamera, transformedPoint);
             if (isScreenCoordinatesValid)
             {
                 // screen coordinates

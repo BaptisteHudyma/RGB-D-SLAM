@@ -2,6 +2,7 @@
 
 #include "camera_transformation.hpp"
 #include "../parameters.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
     namespace utils {
@@ -69,7 +70,7 @@ namespace rgbd_slam {
         {
             assert(not matchedPoints.empty());
 
-            const matrix44& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
+            const cameraToWorldMatrix& transformationMatrix = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
 
             vector3 sumOfErrors = vector3::Zero();
             vector3 sumOfSquaredErrors = vector3::Zero();
