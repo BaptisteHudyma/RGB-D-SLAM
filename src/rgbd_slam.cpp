@@ -234,7 +234,7 @@ namespace rgbd_slam {
         if (shouldUpdateMap)
         {
             const double updateLocalMapStartTime = cv::getTickCount();
-            _localMap->update(_currentPose, refinedPose, keypointObject, detectedPrimitives, outlierMatchedPoints);
+            _localMap->update(refinedPose, keypointObject, detectedPrimitives, outlierMatchedPoints);
             _meanLocalMapUpdateDuration += (cv::getTickCount() - updateLocalMapStartTime) / static_cast<double>(cv::getTickFrequency());
         }
 
