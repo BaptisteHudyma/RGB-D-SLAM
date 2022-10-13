@@ -75,6 +75,15 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="kalman__filter_8hpp_source.html">kalman_filter.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for rgbd_slam::tracking::KalmanFilter:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classrgbd__slam_1_1tracking_1_1_kalman_filter.png" usemap="#rgbd_5Fslam::tracking::KalmanFilter_map" alt=""/>
+  <map id="rgbd_5Fslam::tracking::KalmanFilter_map" name="rgbd_5Fslam::tracking::KalmanFilter_map">
+<area href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html" alt="rgbd_slam::tracking::SharedKalmanFilter" shape="rect" coords="0,0,238,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -96,6 +105,25 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5bf7d08f11fc455b169c33a47f1cdf37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a92c84d4927d9c5ddf56b252b36a204"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_kalman_filter.html#a5a92c84d4927d9c5ddf56b252b36a204">is_initialized</a> () const</td></tr>
 <tr class="separator:a5a92c84d4927d9c5ddf56b252b36a204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html">rgbd_slam::tracking::SharedKalmanFilter</a></td></tr>
+<tr class="memitem:a3259e3651b7d00ab2bfe83de03f6a649 inherit pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#a3259e3651b7d00ab2bfe83de03f6a649">SharedKalmanFilter</a> (const Eigen::MatrixXd &amp;systemDynamics, const Eigen::MatrixXd &amp;outputMatrix, const Eigen::MatrixXd &amp;processNoiseCovariance)</td></tr>
+<tr class="memdesc:a3259e3651b7d00ab2bfe83de03f6a649 inherit pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Kalman filter with the specified matrices.  <a href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#a3259e3651b7d00ab2bfe83de03f6a649">More...</a><br /></td></tr>
+<tr class="separator:a3259e3651b7d00ab2bfe83de03f6a649 inherit pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf74d1ae9cfc1522d858a6560543deeb inherit pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memItemLeft" align="right" valign="top">std::pair&lt; Eigen::VectorXd, Eigen::MatrixXd &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#adf74d1ae9cfc1522d858a6560543deeb">get_new_state</a> (const Eigen::VectorXd &amp;currentState, const Eigen::MatrixXd &amp;stateNoiseCovariance, const Eigen::VectorXd &amp;newMeasurement, const Eigen::MatrixXd &amp;measurementNoiseCovariance)</td></tr>
+<tr class="memdesc:adf74d1ae9cfc1522d858a6560543deeb inherit pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the estimated state based on measured values. The time step is assumed to remain constant.  <a href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#adf74d1ae9cfc1522d858a6560543deeb">More...</a><br /></td></tr>
+<tr class="separator:adf74d1ae9cfc1522d858a6560543deeb inherit pub_methods_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html">rgbd_slam::tracking::SharedKalmanFilter</a></td></tr>
+<tr class="memitem:a51fb2810c5904ce29207d1297e131e8f inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#a51fb2810c5904ce29207d1297e131e8f">_systemDynamics</a></td></tr>
+<tr class="separator:a51fb2810c5904ce29207d1297e131e8f inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a4778e13f0ffba576f995062dd5094f inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memItemLeft" align="right" valign="top">const Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#a4a4778e13f0ffba576f995062dd5094f">_outputMatrix</a></td></tr>
+<tr class="separator:a4a4778e13f0ffba576f995062dd5094f inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a7eac7a3a96076918ae05bac66e187a inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memItemLeft" align="right" valign="top">const Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#a1a7eac7a3a96076918ae05bac66e187a">_processNoiseCovariance</a></td></tr>
+<tr class="separator:a1a7eac7a3a96076918ae05bac66e187a inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8613451c5f4b1af0b88ce6765728660b inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_shared_kalman_filter.html#a8613451c5f4b1af0b88ce6765728660b">_identity</a></td></tr>
+<tr class="separator:a8613451c5f4b1af0b88ce6765728660b inherit pro_attribs_classrgbd__slam_1_1tracking_1_1_shared_kalman_filter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af9a4bdf2e6e27db0cbd5af53a329f3fa" name="af9a4bdf2e6e27db0cbd5af53a329f3fa"></a>

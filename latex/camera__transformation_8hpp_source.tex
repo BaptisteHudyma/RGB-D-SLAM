@@ -22,22 +22,20 @@
 \DoxyCodeLine{21 \textcolor{comment}{         */}}
 \DoxyCodeLine{22         \textcolor{keyword}{const} worldCoordinates \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9dbca5ba1fde9dede66b983bcdd6b8d0}{screen\_to\_world\_coordinates}}(\textcolor{keyword}{const} screenCoordinates\& screenPoint, \textcolor{keyword}{const} cameraToWorldMatrix\& cameraToWorld);}
 \DoxyCodeLine{23 }
-\DoxyCodeLine{32         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a31acbfa81adc70ed7a028aee25347ac0}{camera\_to\_world\_coordinates}}(\textcolor{keyword}{const} cameraCoordinates\& cameraPoint, \textcolor{keyword}{const} cameraToWorldMatrix\& cameraToWorld);}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{43         \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac606f34d58a2c38df57f52586971f41c}{compute\_world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} worldCoordinates\& position3D, \textcolor{keyword}{const} worldToCameraMatrix\& worldToCamera, screenCoordinates\& screenPoint);}
+\DoxyCodeLine{33         \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac606f34d58a2c38df57f52586971f41c}{compute\_world\_to\_screen\_coordinates}}(\textcolor{keyword}{const} worldCoordinates\& position3D, \textcolor{keyword}{const} worldToCameraMatrix\& worldToCamera, screenCoordinates\& screenPoint);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{43         \textcolor{keyword}{const} cameraCoordinates \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa4613bdb56bd3012bd4efae167362569}{world\_to\_camera\_coordinates}}(\textcolor{keyword}{const} worldCoordinates\& worldCoordinates, \textcolor{keyword}{const} worldToCameraMatrix\& worldToCamera);}
 \DoxyCodeLine{44 }
-\DoxyCodeLine{53         \textcolor{keyword}{const} cameraCoordinates \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa4613bdb56bd3012bd4efae167362569}{world\_to\_camera\_coordinates}}(\textcolor{keyword}{const} worldCoordinates\& worldCoordinates, \textcolor{keyword}{const} worldToCameraMatrix\& worldToCamera);}
-\DoxyCodeLine{54 }
-\DoxyCodeLine{58         \textcolor{keyword}{const} worldToCameraMatrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80a5c96230a6cced4d4999c60ea659e9}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
+\DoxyCodeLine{48         \textcolor{keyword}{const} worldToCameraMatrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80a5c96230a6cced4d4999c60ea659e9}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50         \textcolor{keyword}{const} worldToCameraMatrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80a5c96230a6cced4d4999c60ea659e9}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} cameraToWorldMatrix\& cameraToWorld);}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{55         \textcolor{keyword}{const} cameraToWorldMatrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_acf2041d958f5f63468f142a85b634587}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \}   \textcolor{comment}{// utils}}
+\DoxyCodeLine{58 \}       \textcolor{comment}{// rgbd\_slam}}
 \DoxyCodeLine{59 }
-\DoxyCodeLine{60         \textcolor{keyword}{const} worldToCameraMatrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80a5c96230a6cced4d4999c60ea659e9}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const} cameraToWorldMatrix\& cameraToWorld);}
-\DoxyCodeLine{61 }
-\DoxyCodeLine{65         \textcolor{keyword}{const} cameraToWorldMatrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_acf2041d958f5f63468f142a85b634587}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& rotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& position);}
-\DoxyCodeLine{66 }
-\DoxyCodeLine{67     \}   \textcolor{comment}{// utils}}
-\DoxyCodeLine{68 \}       \textcolor{comment}{// rgbd\_slam}}
-\DoxyCodeLine{69 }
-\DoxyCodeLine{70 }
-\DoxyCodeLine{71 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

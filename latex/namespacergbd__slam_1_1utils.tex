@@ -25,8 +25,6 @@ bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc49
 \begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9dbca5ba1fde9dede66b983bcdd6b8d0}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
 \item 
-const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a31acbfa81adc70ed7a028aee25347ac0}{camera\+\_\+to\+\_\+world\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{camera\+Coordinates}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
-\begin{DoxyCompactList}\small\item\em Transform a vector in camera space to a vector in world space. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac606f34d58a2c38df57f52586971f41c}{compute\+\_\+world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&position3D, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&screen\+Point)
 \begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{camera\+Coordinates}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa4613bdb56bd3012bd4efae167362569}{world\+\_\+to\+\_\+camera\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&\mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}}, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera)
@@ -86,26 +84,6 @@ const double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7c711197a8776f474dea
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a31acbfa81adc70ed7a028aee25347ac0}\label{namespacergbd__slam_1_1utils_a31acbfa81adc70ed7a028aee25347ac0}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!camera\_to\_world\_coordinates@{camera\_to\_world\_coordinates}}
-\index{camera\_to\_world\_coordinates@{camera\_to\_world\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{camera\_to\_world\_coordinates()}{camera\_to\_world\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} rgbd\+\_\+slam\+::utils\+::camera\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{camera\+Coordinates}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})}
-
-
-
-Transform a vector in camera space to a vector in world space. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em camera\+Point} & A vector in camera space \\
-\hline
-\mbox{\texttt{ in}}  & {\em camera\+To\+World} & Matrix to transform local to world coordinates\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-A vector in world space 
-\end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_acf2041d958f5f63468f142a85b634587}\label{namespacergbd__slam_1_1utils_acf2041d958f5f63468f142a85b634587}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}}
 \index{compute\_camera\_to\_world\_transform@{compute\_camera\_to\_world\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
