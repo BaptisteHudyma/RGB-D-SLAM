@@ -130,7 +130,7 @@ namespace rgbd_slam {
                  * \param[in, out] mapPoint the map point to update
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] keypointObject An object to handle all detected points in an image
-                 * \param[in] previousCameraToWorldMatrix A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
+                 * \param[in] previousCameraToWorld A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose
                  * \param[in] cameraToWorld A transformation matrix to convert a camera point to a world point
                  */
                 void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& previousCameraToWorld, const cameraToWorldMatrix& cameraToWorld);
@@ -139,7 +139,7 @@ namespace rgbd_slam {
                  * \brief Update local keypoint map features 
                  *
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
-                 * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
+                 * \param[in] previousCameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
@@ -148,17 +148,17 @@ namespace rgbd_slam {
                 /**
                  * \brief Update the local primitive map features
                  *
-                 * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
+                 * \param[in] previousCameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
-                 * \param[in] A container that stores the detected primitives in the depth image
+                 * \param[in] detectedPrimitives A container that stores the detected primitives in the depth image
                  */
-                void update_local_primitive_map(const cameraToWorldMatrix& previousCameraToWorldMatrix, const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives);
+                void update_local_primitive_map(const cameraToWorldMatrix& previousCameraToWorld, const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
                  *
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
-                 * \param[in] previousCameraToWorldMatrix A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization
+                 * \param[in] previousCameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
@@ -185,6 +185,7 @@ namespace rgbd_slam {
                  * \param[in] mapPoint The 3D world point
                  * \param[in] worldToCameraMatrix A matrix to transforme a world point to a camera point
                  * \param[in] pointColor The color of the point to draw
+                 * \param[in] radius The radius of the point to display
                  * \param[out] debugImage The image to draw the points modify
                  */
                 static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius = 3);
