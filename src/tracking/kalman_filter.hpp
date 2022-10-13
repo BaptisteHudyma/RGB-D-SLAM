@@ -7,6 +7,7 @@
 namespace rgbd_slam {
     namespace tracking {
 
+        // Implement a Kalman filter that can be shared by multiple systems, if they share the same dimentions
         class SharedKalmanFilter {
 
         public:
@@ -25,26 +26,29 @@ namespace rgbd_slam {
 
             /**
             * \brief Update the estimated state based on measured values. The time step is assumed to remain constant.
+            * \param[in] currentState The current system state
+            * \param[in] stateNoiseCovariance The current state covariance
             * \param[in] newMeasurement new measurement
             * \param[in] measurementNoiseCovariance Measurement noise covariance
+            *
+            * \return A pair of the new state and covariance matrix
             */
-            std::pair<Eigen::VectorXd, Eigen::MatrixXd> get_new_state(const Eigen::VectorXd& currentState, const Eigen::MatrixXd& currentMeasurementNoiseCovariance, const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance);
+            std::pair<Eigen::VectorXd, Eigen::MatrixXd> get_new_state(const Eigen::VectorXd& currentState, const Eigen::MatrixXd& stateNoiseCovariance, const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance);
 
         protected:
 
             // Matrices for computation
-            Eigen::MatrixXd systemDynamics;
-            const Eigen::MatrixXd outputMatrix;
-            const Eigen::MatrixXd processNoiseCovariance;
+            Eigen::MatrixXd _systemDynamics;
+            const Eigen::MatrixXd _outputMatrix;
+            const Eigen::MatrixXd _processNoiseCovariance;
 
             // stateDimension-size identity
-            Eigen::MatrixXd I;
+            Eigen::MatrixXd _identity;
         };
 
         class KalmanFilter : public SharedKalmanFilter {
 
         public:
-
             /**
             * \brief Create a Kalman filter with the specified matrices.
             * \param[in] systemDynamics System dynamics matrix
@@ -81,23 +85,23 @@ namespace rgbd_slam {
 
 
             Eigen::VectorXd get_state() const {
-                return stateEstimate;
+                return _stateEstimate;
             };
             Eigen::MatrixXd get_state_covariance() const {
-                return estimateErrorCovariance;
+                return _estimateErrorCovariance;
             };
 
             bool is_initialized() const {
-                return isInitialized;
+                return _isInitialized;
             }
 
         private:
             // Is the filter isInitialized?
-            bool isInitialized;
+            bool _isInitialized;
 
             // Estimated state
-            Eigen::VectorXd stateEstimate;
-            Eigen::MatrixXd estimateErrorCovariance;
+            Eigen::VectorXd _stateEstimate;
+            Eigen::MatrixXd _estimateErrorCovariance;
         };
     }
 }

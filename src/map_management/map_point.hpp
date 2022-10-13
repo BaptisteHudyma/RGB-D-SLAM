@@ -110,6 +110,8 @@ namespace rgbd_slam {
 
             private:
                 matrix33 _pointCovariance;
+
+                // shared kalman filter, between all points
                 inline static tracking::SharedKalmanFilter* _kalmanFilter = nullptr;
         };
 

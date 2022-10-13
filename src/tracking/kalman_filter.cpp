@@ -9,26 +9,26 @@ namespace rgbd_slam {
         SharedKalmanFilter::SharedKalmanFilter(const Eigen::MatrixXd& systemDynamics,
                                     const Eigen::MatrixXd& outputMatrix,
                                     const Eigen::MatrixXd& processNoiseCovariance):
-                systemDynamics(systemDynamics), outputMatrix(outputMatrix), 
-                processNoiseCovariance(processNoiseCovariance),
-                I(systemDynamics.rows(), systemDynamics.rows())
+                _systemDynamics(systemDynamics), _outputMatrix(outputMatrix), 
+                _processNoiseCovariance(processNoiseCovariance),
+                _identity(systemDynamics.rows(), systemDynamics.rows())
         {
-            I.setIdentity();
+            _identity.setIdentity();
         }
 
-        std::pair<Eigen::VectorXd, Eigen::MatrixXd> SharedKalmanFilter::get_new_state(const Eigen::VectorXd& currentState, const Eigen::MatrixXd& currentMeasurementNoiseCovariance, const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance) 
+        std::pair<Eigen::VectorXd, Eigen::MatrixXd> SharedKalmanFilter::get_new_state(const Eigen::VectorXd& currentState, const Eigen::MatrixXd& stateNoiseCovariance, const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance) 
         {
             // Get new raw estimate
-            const Eigen::VectorXd& newStateEstimate = systemDynamics * currentState;
-            const Eigen::MatrixXd& estimateErrorCovariance = systemDynamics * currentMeasurementNoiseCovariance * systemDynamics.transpose() + processNoiseCovariance;
+            const Eigen::VectorXd& newStateEstimate = _systemDynamics * currentState;
+            const Eigen::MatrixXd& estimateErrorCovariance = _systemDynamics * stateNoiseCovariance * _systemDynamics.transpose() + _processNoiseCovariance;
             
             // compute Kalman gain
-            const Eigen::MatrixXd kalmanGain = estimateErrorCovariance * outputMatrix.transpose() * (outputMatrix * estimateErrorCovariance * outputMatrix.transpose() + measurementNoiseCovariance).inverse();
+            const Eigen::MatrixXd& kalmanGain = estimateErrorCovariance * _outputMatrix.transpose() * (_outputMatrix * estimateErrorCovariance * _outputMatrix.transpose() + measurementNoiseCovariance).inverse();
 
             // return the covariance and state estimation
             return std::make_pair(
-                newStateEstimate + kalmanGain * (newMeasurement - outputMatrix * newStateEstimate), 
-                (I - kalmanGain * outputMatrix) * estimateErrorCovariance
+                newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate), 
+                (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance
             );
         }
 
@@ -37,31 +37,31 @@ namespace rgbd_slam {
                                     const Eigen::MatrixXd& outputMatrix,
                                     const Eigen::MatrixXd& processNoiseCovariance):
                 SharedKalmanFilter(systemDynamics, outputMatrix,processNoiseCovariance),
-                isInitialized(false), stateEstimate(systemDynamics.rows())
+                _isInitialized(false), _stateEstimate(systemDynamics.rows())
         {}
 
         void KalmanFilter::init(const Eigen::MatrixXd& firstEstimateErrorCovariance, const Eigen::VectorXd& x0)
         {
-            estimateErrorCovariance = firstEstimateErrorCovariance;
-            stateEstimate = x0;
-            isInitialized = true;
+            _estimateErrorCovariance = firstEstimateErrorCovariance;
+            _stateEstimate = x0;
+            _isInitialized = true;
         }
 
         void KalmanFilter::update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance) 
         {
             assert(is_initialized());
 
-            const std::pair<Eigen::VectorXd, Eigen::MatrixXd>& res = get_new_state(stateEstimate, estimateErrorCovariance, newMeasurement,measurementNoiseCovariance);
+            const std::pair<Eigen::VectorXd, Eigen::MatrixXd>& res = get_new_state(_stateEstimate, _estimateErrorCovariance, newMeasurement,measurementNoiseCovariance);
 
             // update the covariance and state estimation
-            estimateErrorCovariance = res.second;
-            stateEstimate = res.first;
+            _estimateErrorCovariance = res.second;
+            _stateEstimate = res.first;
         }
 
         void KalmanFilter::update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance, const Eigen::MatrixXd& systemDynamics)
         {
 
-            this->systemDynamics = systemDynamics;
+            _systemDynamics = systemDynamics;
             update(newMeasurement, measurementNoiseCovariance);
         }
  
