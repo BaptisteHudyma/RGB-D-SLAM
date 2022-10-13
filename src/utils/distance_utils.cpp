@@ -21,10 +21,10 @@ namespace rgbd_slam {
             return get_distance(pointA, pointB).lpNorm<1>();
         }
 
-        vector2 get_3D_to_2D_distance_2D(const vector3& worldPoint, const Eigen::VectorXd& cameraPoint, const worldToCameraMatrix& worldToCamera)
+        vector2 get_3D_to_2D_distance_2D(const worldCoordinates& worldPoint, const Eigen::VectorXd& cameraPoint, const worldToCameraMatrix& worldToCamera)
         {
             const vector2 cameraPointAs2D(cameraPoint.x(), cameraPoint.y());
-            vector2 worldPointAs2D; 
+            screenCoordinates worldPointAs2D; 
             const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCamera, worldPointAs2D);
             if(isCoordinatesValid)
             {
@@ -37,10 +37,10 @@ namespace rgbd_slam {
             return vector2(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
         }
 
-        double get_3D_to_2D_distance(const vector3& worldPoint, const Eigen::VectorXd& cameraPoint, const worldToCameraMatrix& worldToCamera)
+        double get_3D_to_2D_distance(const worldCoordinates& worldPoint, const Eigen::VectorXd& cameraPoint, const worldToCameraMatrix& worldToCamera)
         {
             const vector2 cameraPointAs2D(cameraPoint.x(), cameraPoint.y());
-            vector2 worldPointAs2D; 
+            screenCoordinates worldPointAs2D; 
             const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCamera, worldPointAs2D);
             if(isCoordinatesValid)
             {

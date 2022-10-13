@@ -2,6 +2,7 @@
 
 #include "../parameters.hpp"
 #include "types.hpp"
+#include <memory>
 
 namespace rgbd_slam {
     namespace utils {
@@ -16,7 +17,7 @@ namespace rgbd_slam {
         }
 
         
-        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const cameraToWorldMatrix& cameraToWorld) 
+        const worldCoordinates screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const cameraToWorldMatrix& cameraToWorld) 
         {
             assert(measuredZ > 0);
             assert(screenX >= 0 and screenY >= 0);
@@ -26,7 +27,10 @@ namespace rgbd_slam {
 
             vector4 worldPoint;
             worldPoint << x, y, measuredZ, 1.0;
-            return screen_to_world_coordinates(worldPoint, cameraToWorld).head<3>();
+
+            worldCoordinates worldPointCoordinates;
+            worldPointCoordinates << screen_to_world_coordinates(worldPoint, cameraToWorld).head<3>();
+            return worldPointCoordinates;
         }
 
         const vector4 screen_to_world_coordinates(const vector4& vector4d, const cameraToWorldMatrix& cameraToWorld)
@@ -34,15 +38,14 @@ namespace rgbd_slam {
             return cameraToWorld * vector4d;
         }
 
-        bool compute_world_to_screen_coordinates(const vector3& position3D, const worldToCameraMatrix& worldToCamera, vector2& screenCoordinates)
+        bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenCoordinates)
         {
             assert( not std::isnan(position3D.x()) and not std::isnan(position3D.y()) and not std::isnan(position3D.z()) );
 
-            vector4 ptH;
-            ptH << position3D, 1.0;
-            const vector4& point4d = world_to_screen_coordinates(ptH, worldToCamera);
+            const cameraCoordinates& point4d = world_to_camera_coordinates(position3D, worldToCamera);
             assert(point4d[3] != 0);
-            const vector3& point3D = point4d.head<3>() / point4d[3]; 
+            vector3 point3D;
+            point3D << (point4d.head<3>() / point4d[3]); 
 
             if (point3D.z() <= 0) {
                 return false;
@@ -53,15 +56,21 @@ namespace rgbd_slam {
 
             if (not std::isnan(screenX) and not std::isnan(screenY))
             {
-                screenCoordinates = vector2(screenX, screenY);
+                screenCoordinates << screenX, screenY;
                 return true;
             }
             return false;
         }
 
-        const vector4 world_to_screen_coordinates(const vector4& worldVector4, const worldToCameraMatrix& worldToCamera)
+        const cameraCoordinates world_to_camera_coordinates(const worldCoordinates& worldCoordinates, const worldToCameraMatrix& worldToCamera)
         {
-            return worldToCamera * worldVector4;
+            //worldCoordinates
+            vector4 homogenousWorldCoordinates;
+            homogenousWorldCoordinates << worldCoordinates, 1.0;
+
+            cameraCoordinates camCoordinates;
+            camCoordinates << worldToCamera * homogenousWorldCoordinates;
+            return camCoordinates;
         }
 
         const cameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)

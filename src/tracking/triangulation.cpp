@@ -1,5 +1,6 @@
 #include "triangulation.hpp"
 
+#include "types.hpp"
 #include "utils/camera_transformation.hpp"
 #include "../parameters.hpp"
 
@@ -13,9 +14,9 @@ namespace rgbd_slam {
             return utils::Pose(newPosition, pose.get_orientation_quaternion());
         }
 
-        bool Triangulation::is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
+        bool Triangulation::is_retroprojection_valid(const worldCoordinates& worldPoint, const screenCoordinates& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
         {
-            vector2 projectedScreenPoint;
+            screenCoordinates projectedScreenPoint;
             const bool isRetroprojectionValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCamera, projectedScreenPoint);
             if (not isRetroprojectionValid)
             {
@@ -27,7 +28,7 @@ namespace rgbd_slam {
             return (retroprojectionError > maximumRetroprojectionError);
         }
 
-        bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const vector2& point2Da, const vector2& point2Db, vector3& triangulatedPoint) 
+        bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const screenCoordinates& point2Da, const screenCoordinates& point2Db, worldCoordinates& triangulatedPoint) 
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -49,7 +50,9 @@ namespace rgbd_slam {
                                 pointBy * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
             // singular value decomposition
-            const vector3& worldPoint = triangulationMatrix.leftCols<3>().jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV).solve(-triangulationMatrix.col(3));
+            worldCoordinates worldPoint;
+            worldPoint << triangulationMatrix.leftCols<3>().jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV).solve(-triangulationMatrix.col(3));
+            
             if (std::isfinite(worldPoint.x()) and std::isfinite(worldPoint.y()) and std::isfinite(worldPoint.z()))
             {
                 // We have a good triangulation ! Maybe not good enough but still usable

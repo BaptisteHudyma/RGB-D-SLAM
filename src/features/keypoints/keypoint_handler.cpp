@@ -2,6 +2,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
     namespace features {
@@ -65,13 +66,13 @@ namespace rgbd_slam {
                 // Fill depth values, add points to image boxes
                 const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
                 _depths = std::vector<double>(allKeypointSize, 0.0);
-                _keypoints = std::vector<vector2>(allKeypointSize);
+                _keypoints = std::vector<screenCoordinates>(allKeypointSize);
 
                 // Add detected keypoints first
                 const uint keypointIndexOffset = static_cast<uint>(inKeypoints.size());
                 for(uint pointIndex = 0; pointIndex < keypointIndexOffset; ++pointIndex) {
                     const cv::Point2f& pt = inKeypoints[pointIndex];;
-                    const vector2 vectorKeypoint(pt.x, pt.y); 
+                    const screenCoordinates vectorKeypoint(pt.x, pt.y); 
 
                     _keypoints[pointIndex] = vectorKeypoint; 
 
@@ -100,7 +101,7 @@ namespace rgbd_slam {
                     }
 
                     const cv::Point2f& pt = lastKeypointsWithIds._keypoints[pointIndex];;
-                    const vector2 vectorKeypoint(pt.x, pt.y); 
+                    const screenCoordinates vectorKeypoint(pt.x, pt.y); 
 
 #if 0
                     // add to matcher (not activated = never matched with descriptors)
@@ -128,7 +129,7 @@ namespace rgbd_slam {
             }
 
 
-            const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(const vector2& pointToPlace) const
+            const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(const screenCoordinates& pointToPlace) const
             {
                 const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 const uint_pair cellCoordinates(
@@ -138,7 +139,7 @@ namespace rgbd_slam {
                 return cellCoordinates;
             }
 
-            const cv::Mat Keypoint_Handler::compute_key_point_mask(const vector2& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
+            const cv::Mat Keypoint_Handler::compute_key_point_mask(const screenCoordinates& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
             {
                 const uint_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
 
@@ -164,7 +165,7 @@ namespace rgbd_slam {
                         {
                             if (not isKeyPointMatchedContainer[keypointIndex])
                             {
-                                const vector2& keypoint = get_keypoint(keypointIndex);
+                                const screenCoordinates& keypoint = get_keypoint(keypointIndex);
                                 const double squarredDistance = 
                                     pow(keypoint.x() - pointToSearch.x(), 2.0) + 
                                     pow(keypoint.y() - pointToSearch.y(), 2.0);
@@ -217,7 +218,7 @@ namespace rgbd_slam {
                 return INVALID_MATCH_INDEX;
             }
 
-            int Keypoint_Handler::get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
+            int Keypoint_Handler::get_match_index(const screenCoordinates& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
             {
                 assert(isKeyPointMatchedContainer.size() == _keypoints.size());
                 // cannot compute matches without a match or descriptors

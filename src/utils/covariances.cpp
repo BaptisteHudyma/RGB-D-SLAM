@@ -7,7 +7,7 @@
 namespace rgbd_slam {
     namespace utils {
 
-        const matrix33 get_screen_point_covariance(const vector2& screenCoordinates, const double depth) 
+        const matrix33 get_screen_point_covariance(const screenCoordinates& screenCoordinates, const double depth) 
         {
             // Quadratic error model (uses depth as meters)
             const double depthMeters = depth / 1000.0;
@@ -26,7 +26,7 @@ namespace rgbd_slam {
             return screenPointCovariance;
         }
 
-        const matrix33 get_screen_point_covariance(const vector3& worldPoint, const matrix33& worldPointCovariance)
+        const matrix33 get_screen_point_covariance(const worldCoordinates& worldPoint, const matrix33& worldPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -42,12 +42,12 @@ namespace rgbd_slam {
         }
 
 
-        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth)
+        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const double depth)
         {
             return get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(screenPoint, depth));
         }
 
-        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance)
+        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const double depth, const matrix33& screenPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -84,7 +84,7 @@ namespace rgbd_slam {
                     continue;
 
                 // Convert to world coordinates
-                const vector3& matchedPoint3d = utils::screen_to_world_coordinates(match._screenPoint.x(), match._screenPoint.y(), match._screenPoint.z(), transformationMatrix);
+                const worldCoordinates& matchedPoint3d = utils::screen_to_world_coordinates(match._screenPoint.x(), match._screenPoint.y(), match._screenPoint.z(), transformationMatrix);
 
                 // absolute of (world map Point - new world point)
                 const vector3& matchError = (match._worldPoint - matchedPoint3d).cwiseAbs();

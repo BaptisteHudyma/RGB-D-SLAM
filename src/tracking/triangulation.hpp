@@ -22,7 +22,7 @@ namespace rgbd_slam {
                  *
                  * \return True is the triangulation was successful
                  */
-                static bool triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const vector2& point2Da, const vector2& point2Db, vector3& triangulatedPoint);
+                static bool triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const screenCoordinates& point2Da, const screenCoordinates& point2Db, worldCoordinates& triangulatedPoint);
 
                 /**
                  * \brief Return a weak supposition of a new pose, from an optimized pose
@@ -36,7 +36,7 @@ namespace rgbd_slam {
                   *
                   * \return True if the retroprojection is valid
                   */
-                static bool is_retroprojection_valid(const vector3& worldPoint, const vector2& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError);
+                static bool is_retroprojection_valid(const worldCoordinates& worldPoint, const screenCoordinates& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError);
 
         };
 

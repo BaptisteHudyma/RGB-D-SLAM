@@ -17,7 +17,7 @@ namespace rgbd_slam {
          *
          * \return A 3x3 covariance matrix. It should be diagonal
          */
-        const matrix33 get_screen_point_covariance(const vector2& screenCoordinates, const double depth);
+        const matrix33 get_screen_point_covariance(const screenCoordinates& screenCoordinates, const double depth);
 
         /**
          * \brief Compute a screen point covariance from a given world point
@@ -25,7 +25,7 @@ namespace rgbd_slam {
          * \param[in] worldPoint The coordinates of this 3D point, in world space
          * \param[in] worldPointCovariance The covariance associated with this world point 
          */
-        const matrix33 get_screen_point_covariance(const vector3& worldPoint, const matrix33& worldPointCovariance);
+        const matrix33 get_screen_point_covariance(const worldCoordinates& worldPoint, const matrix33& worldPointCovariance);
 
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point.
@@ -35,7 +35,7 @@ namespace rgbd_slam {
          *
          * \return the covariance of the 3D world point
          */
-        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth);
+        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const double depth);
 
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
@@ -46,7 +46,7 @@ namespace rgbd_slam {
          *
          * \return the covariance of the 3D world point
          */
-        const matrix33 get_world_point_covariance(const vector2& screenPoint, const double depth, const matrix33& screenPointCovariance);
+        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const double depth, const matrix33& screenPointCovariance);
 
         /**
          * \brief Compute the variance of the final pose in X Y Z

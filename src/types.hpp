@@ -25,8 +25,20 @@ namespace rgbd_slam {
 
     
     //define new classes to not mix types
-    class worldToCameraMatrix : public matrix44 {};
-    class cameraToWorldMatrix : public matrix44 {};
+    struct worldToCameraMatrix : public matrix44 {};
+    struct cameraToWorldMatrix : public matrix44 {};
+
+    struct screenCoordinates : public vector2 {
+        screenCoordinates() {};
+        screenCoordinates(const vector2& coords) : vector2(coords) {};
+        screenCoordinates(const double x, const double y) : vector2(x, y) {};
+    };
+    struct cameraCoordinates : public vector4 {};
+    struct worldCoordinates : public vector3 {
+        worldCoordinates() {};
+        worldCoordinates(const vector3& coords) : vector3(coords) {};
+        worldCoordinates(const double x, const double y, const double z) : vector3(x, y, z) {};
+    };
 
     struct EulerAngles
     {

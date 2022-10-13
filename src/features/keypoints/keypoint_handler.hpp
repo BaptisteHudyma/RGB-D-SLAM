@@ -68,7 +68,7 @@ namespace rgbd_slam {
                      *
                      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
                      */
-                    int get_match_index(const vector2& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const; 
+                    int get_match_index(const screenCoordinates& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const; 
 
                     /**
                      * \brief Return the depth associated with a certain keypoint
@@ -88,7 +88,7 @@ namespace rgbd_slam {
                     /**
                      * \brief return the keypoint associated with the index
                      */
-                    const vector2 get_keypoint(const uint index) const 
+                    const screenCoordinates get_keypoint(const uint index) const 
                     {
                         assert(index < _keypoints.size());
                         return _keypoints[index];
@@ -121,13 +121,13 @@ namespace rgbd_slam {
                      *
                      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
                      */
-                    const cv::Mat compute_key_point_mask(const vector2& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const;
+                    const cv::Mat compute_key_point_mask(const screenCoordinates& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const;
 
                     typedef std::pair<uint, uint> uint_pair;
                     /**
                      * \brief Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with _searchSpaceIndexContainer
                      */
-                    const uint_pair get_search_space_coordinates(const vector2& pointToPlace) const;
+                    const uint_pair get_search_space_coordinates(const screenCoordinates& pointToPlace) const;
 
                     /**
                      * \brief Compute an 1D array index from a 2D array index.
@@ -144,7 +144,7 @@ namespace rgbd_slam {
                     const double _maxMatchDistance;
 
                     //store current frame keypoints
-                    std::vector<vector2> _keypoints;
+                    std::vector<screenCoordinates> _keypoints;
                     std::vector<double> _depths;
                     typedef std::unordered_map<size_t, size_t> uintToUintContainer;
                     uintToUintContainer _uniqueIdsToKeypointIndex;

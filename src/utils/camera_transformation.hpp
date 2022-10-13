@@ -21,7 +21,7 @@ namespace rgbd_slam {
          *
          * \return A 3D point in frame coordinates
          */
-        const vector3 screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const cameraToWorldMatrix& cameraToWorld);
+        const worldCoordinates screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const cameraToWorldMatrix& cameraToWorld);
 
         /**
          * \brief Transform a vector in screen space to a vector in world space
@@ -43,17 +43,17 @@ namespace rgbd_slam {
          *
          * \return True if the screen position is valid
          */
-        bool compute_world_to_screen_coordinates(const vector3& position3D, const worldToCameraMatrix& worldToCamera, vector2& screenCoordinates);
+        bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenCoordinates);
 
         /**
-         * \brief Transform a vector in world space to a vector in screen space
+         * \brief Transform a vector in world space to a vector in camera space
          *
-         * \param[in] worldVector4 A vector in screen space
+         * \param[in] worldCoordinates A vector in world space
          * \param[in] worldToCamera Matrix to transform the world to a local coordinate system
          *
-         * \return The input vector transformed to screen space
+         * \return The input vector transformed to camera space
          */
-        const vector4 world_to_screen_coordinates(const vector4& worldVector4, const worldToCameraMatrix& worldToCamera);
+        const cameraCoordinates world_to_camera_coordinates(const worldCoordinates& worldCoordinates, const worldToCameraMatrix& worldToCamera);
 
         /**
          * \brief Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd)
