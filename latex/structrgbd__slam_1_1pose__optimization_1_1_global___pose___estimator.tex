@@ -18,9 +18,9 @@ Inheritance diagram for rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1fcc96ee2aeb8832ffbf9c2187890622}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const size\+\_\+t n, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&world\+Position, const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&world\+Rotation)
+\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a8ef26df23e63e98c6bd5347cbd341780}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const size\+\_\+t input\+Parameters\+Size, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points)
 \item 
-int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1413e702e0a1c579b72e20a2901d0679}{operator()}} (const Eigen\+::\+Vector\+Xd \&x, Eigen\+::\+Vector\+Xd \&fvec) const
+int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a5638ba06da5e5d30234522fab3014029}{operator()}} (const Eigen\+::\+Vector\+Xd \&optimized\+Parameters, Eigen\+::\+Vector\+Xd \&output\+Scores) const
 \begin{DoxyCompactList}\small\item\em Implementation of the objective function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
@@ -29,31 +29,27 @@ int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___
 Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1fcc96ee2aeb8832ffbf9c2187890622}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1fcc96ee2aeb8832ffbf9c2187890622}} 
+\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a8ef26df23e63e98c6bd5347cbd341780}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a8ef26df23e63e98c6bd5347cbd341780}} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!Global\_Pose\_Estimator@{Global\_Pose\_Estimator}}
 \index{Global\_Pose\_Estimator@{Global\_Pose\_Estimator}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{Global\_Pose\_Estimator()}{Global\_Pose\_Estimator()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{n,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{world\+Position,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{world\+Rotation }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{input\+Parameters\+Size,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em n} & Number of input parameters \\
+\mbox{\texttt{ in}}  & {\em input\+Parameters\+Size} & Number of input parameters \\
 \hline
-\mbox{\texttt{ in,out}}  & {\em points} & Matched 2D (screen) to 3D (world) points \\
-\hline
-\mbox{\texttt{ in}}  & {\em world\+Position} & Position of the observer in the world \\
-\hline
-\mbox{\texttt{ in}}  & {\em world\+Rotation} & Orientation of the observer in the world\\
+\mbox{\texttt{ in,out}}  & {\em points} & Matched 2D (screen) to 3D (world) points\\
 \hline
 \end{DoxyParams}
 GLOBAL POSE ESTIMATOR members 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1413e702e0a1c579b72e20a2901d0679}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a1413e702e0a1c579b72e20a2901d0679}} 
+\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a5638ba06da5e5d30234522fab3014029}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a5638ba06da5e5d30234522fab3014029}} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!operator()@{operator()}}
 \index{operator()@{operator()}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
-{\footnotesize\ttfamily int rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::operator() (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{x,  }\item[{Eigen\+::\+Vector\+Xd \&}]{fvec }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::operator() (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{optimized\+Parameters,  }\item[{Eigen\+::\+Vector\+Xd \&}]{output\+Scores }\end{DoxyParamCaption}) const}
 
 
 
@@ -61,9 +57,9 @@ Implementation of the objective function.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em x} & The vector of parameters to optimize (Size M) \\
+\mbox{\texttt{ in}}  & {\em optimized\+Parameters} & The vector of parameters to optimize (Size M) \\
 \hline
-\mbox{\texttt{ out}}  & {\em fvec} & The vector of errors, of size N (N the number of points) \\
+\mbox{\texttt{ out}}  & {\em output\+Scores} & The vector of errors, of size N (N the number of points) \\
 \hline
 \end{DoxyParams}
 

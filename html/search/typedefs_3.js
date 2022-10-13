@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['line_5fvector_0',['line_vector',['../classrgbd__slam_1_1_r_g_b_d___s_l_a_m.html#a994e8053356d67ca9ea175e59149dfdc',1,'rgbd_slam::RGBD_SLAM']]]
+  ['line_5fcontainer_0',['line_container',['../namespacergbd__slam_1_1features_1_1lines.html#abdfd61c4861cd95714920422d0d8764d',1,'rgbd_slam::features::lines']]]
 ];

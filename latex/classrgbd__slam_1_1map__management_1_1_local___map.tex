@@ -40,23 +40,23 @@ typedef std\+::map$<$ size\+\_\+t, \mbox{\hyperlink{structrgbd__slam_1_1map__man
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_af8e865f1f1022cdc347e6e6023999a48}{find\+\_\+match}} (\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&point, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&detected\+Keypoints\+Object, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Cam\+Matrix, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points)
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a651e03a4d513833bddadfe118a4abfa4}{find\+\_\+match}} (\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&point, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&detected\+Keypoints\+Object, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, const bool should\+Add\+Match\+To\+Container=true)
 \begin{DoxyCompactList}\small\item\em Compute a match for a given point, and update this point match index. It will update the \+\_\+is\+Point\+Matched object if a point is matched. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a696dbe816e538caafe652b2cdaf44544}{find\+\_\+match}} (\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{Primitive}} \&map\+Primitive, const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&detected\+Primitives, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Camera\+Matrix, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{matches\+\_\+containers\+::match\+\_\+primitive\+\_\+container}} \&matched\+Primitives)
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a0f942acc2be0afa10590feb0db4dedd7}{find\+\_\+match}} (\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{Primitive}} \&map\+Primitive, const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&detected\+Primitives, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{matches\+\_\+containers\+::match\+\_\+primitive\+\_\+container}} \&matched\+Primitives)
 \begin{DoxyCompactList}\small\item\em Compute a match for a given primitive, and update this primitive match status. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a3b4e7b3ef6b097f5fd41144127c3febe}{update\+\_\+point\+\_\+match\+\_\+status}} (\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&previous\+Camera\+To\+World\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix)
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_af6a7fa524d4b0e75c422d0e52228693c}{update\+\_\+point\+\_\+match\+\_\+status}} (\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&previous\+Camera\+To\+World, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
 \begin{DoxyCompactList}\small\item\em Update the Matched/\+Unmatched status of a map point. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a9fa0963d137eee15a2eb9d25c8884039}{update\+\_\+local\+\_\+keypoint\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&previous\+Camera\+To\+World\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object)
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a0584903fa15fadfb0c46467bf88b6044}{update\+\_\+local\+\_\+keypoint\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&previous\+Camera\+To\+World, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object)
 \begin{DoxyCompactList}\small\item\em Update local keypoint map features. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_aea537d35733e7be8058ae4d2c58222c4}{update\+\_\+local\+\_\+primitive\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&previous\+Camera\+To\+World\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&detected\+Primitives)
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a691d5735c2ba2ff668e7aceb77411358}{update\+\_\+local\+\_\+primitive\+\_\+map}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&previous\+Camera\+To\+World, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&detected\+Primitives)
 \begin{DoxyCompactList}\small\item\em Update the local primitive map features. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a5b98f8c35f26a98bf33708e5006f1b9a}{update\+\_\+staged\+\_\+keypoints\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&previous\+Camera\+To\+World\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object)
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a71cb3d7d7889af1c1e497f80441f3887}{update\+\_\+staged\+\_\+keypoints\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&previous\+Camera\+To\+World, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object)
 \begin{DoxyCompactList}\small\item\em Add previously uncertain keypoint features to the local map. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a748a8d6a9575e8dad87269be79f09c6d}{add\+\_\+umatched\+\_\+keypoints\+\_\+to\+\_\+staged\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&camera\+To\+World\+Matrix, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object)
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_afa16b8fb191721f4816665699487637a}{add\+\_\+umatched\+\_\+keypoints\+\_\+to\+\_\+staged\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&keypoint\+Object)
 \begin{DoxyCompactList}\small\item\em Add unmatched detected points to the staged map. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_af62ebdf2d7be0eca02c759a8cc1ea602}{update\+\_\+local\+\_\+to\+\_\+global}} ()
 \begin{DoxyCompactList}\small\item\em Clean the local map so it stays local, and update the global map with the good features. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a09a76354c2a474eb3466bb424616709d}{draw\+\_\+primitives\+\_\+on\+\_\+image}} (const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Camera\+Matrix, cv\+::\+Mat \&debug\+Image) const
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_aa88d3bebb9fd431e703eca40cb1782e5}{draw\+\_\+primitives\+\_\+on\+\_\+image}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, cv\+::\+Mat \&debug\+Image) const
 \item 
 void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a6922aeab012e88206c07c2079eef442e}{mark\+\_\+outliers\+\_\+as\+\_\+unmatched}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&outlier\+Matched\+Points)
 \begin{DoxyCompactList}\small\item\em Mark all the outliers detected during optimization as unmatched. \end{DoxyCompactList}\item 
@@ -67,7 +67,7 @@ void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a92d78d
 \doxysubsection*{Static Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_a162e33d06a66cceb6396ee123ed24ba4}{draw\+\_\+point\+\_\+on\+\_\+image}} (const \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&map\+Point, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&world\+To\+Camera\+Matrix, const cv\+::\+Scalar \&point\+Color, cv\+::\+Mat \&debug\+Image)
+static void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map_aafa460db9ab6ac5ac627341d6862546d}{draw\+\_\+point\+\_\+on\+\_\+image}} (const \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&map\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&\mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}}, const cv\+::\+Scalar \&point\+Color, cv\+::\+Mat \&debug\+Image, const size\+\_\+t radius=3)
 \begin{DoxyCompactList}\small\item\em Draw a given map point on the given debug image. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -111,11 +111,11 @@ LOCAL MAP MEMBERS \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_loca
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a748a8d6a9575e8dad87269be79f09c6d}\label{classrgbd__slam_1_1map__management_1_1_local___map_a748a8d6a9575e8dad87269be79f09c6d}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_afa16b8fb191721f4816665699487637a}\label{classrgbd__slam_1_1map__management_1_1_local___map_afa16b8fb191721f4816665699487637a}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!add\_umatched\_keypoints\_to\_staged\_map@{add\_umatched\_keypoints\_to\_staged\_map}}
 \index{add\_umatched\_keypoints\_to\_staged\_map@{add\_umatched\_keypoints\_to\_staged\_map}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{add\_umatched\_keypoints\_to\_staged\_map()}{add\_umatched\_keypoints\_to\_staged\_map()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::add\+\_\+umatched\+\_\+keypoints\+\_\+to\+\_\+staged\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::add\+\_\+umatched\+\_\+keypoints\+\_\+to\+\_\+staged\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -125,16 +125,16 @@ Add unmatched detected points to the staged map.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em pose\+Covariance} & The covariance matrix of the optimized position of the observer \\
 \hline
-\mbox{\texttt{ in}}  & {\em camera\+To\+World\+Matrix} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization \\
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization \\
 \hline
 \mbox{\texttt{ in}}  & {\em keypoint\+Object} & An object containing the detected key points in the rgbd frame. Must be the same as in find\+\_\+matches \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a162e33d06a66cceb6396ee123ed24ba4}\label{classrgbd__slam_1_1map__management_1_1_local___map_a162e33d06a66cceb6396ee123ed24ba4}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_aafa460db9ab6ac5ac627341d6862546d}\label{classrgbd__slam_1_1map__management_1_1_local___map_aafa460db9ab6ac5ac627341d6862546d}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!draw\_point\_on\_image@{draw\_point\_on\_image}}
 \index{draw\_point\_on\_image@{draw\_point\_on\_image}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{draw\_point\_on\_image()}{draw\_point\_on\_image()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::draw\+\_\+point\+\_\+on\+\_\+image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Camera\+Matrix,  }\item[{const cv\+::\+Scalar \&}]{point\+Color,  }\item[{cv\+::\+Mat \&}]{debug\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::draw\+\_\+point\+\_\+on\+\_\+image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera\+Matrix,  }\item[{const cv\+::\+Scalar \&}]{point\+Color,  }\item[{cv\+::\+Mat \&}]{debug\+Image,  }\item[{const size\+\_\+t}]{radius = {\ttfamily 3} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
 
 
 
@@ -144,18 +144,20 @@ Draw a given map point on the given debug image.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em map\+Point} & The 3D world point \\
 \hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera\+Matrix} & A matrix to transforme a world point to a camera point \\
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}}} & A matrix to transforme a world point to a camera point \\
 \hline
 \mbox{\texttt{ in}}  & {\em point\+Color} & The color of the point to draw \\
+\hline
+\mbox{\texttt{ in}}  & {\em radius} & The radius of the point to display \\
 \hline
 \mbox{\texttt{ out}}  & {\em debug\+Image} & The image to draw the points modify \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a09a76354c2a474eb3466bb424616709d}\label{classrgbd__slam_1_1map__management_1_1_local___map_a09a76354c2a474eb3466bb424616709d}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_aa88d3bebb9fd431e703eca40cb1782e5}\label{classrgbd__slam_1_1map__management_1_1_local___map_aa88d3bebb9fd431e703eca40cb1782e5}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!draw\_primitives\_on\_image@{draw\_primitives\_on\_image}}
 \index{draw\_primitives\_on\_image@{draw\_primitives\_on\_image}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{draw\_primitives\_on\_image()}{draw\_primitives\_on\_image()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::draw\+\_\+primitives\+\_\+on\+\_\+image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Camera\+Matrix,  }\item[{cv\+::\+Mat \&}]{debug\+Image }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::draw\+\_\+primitives\+\_\+on\+\_\+image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{cv\+::\+Mat \&}]{debug\+Image }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a2eea86fc9a19a1ea877215dc3da6d240}\label{classrgbd__slam_1_1map__management_1_1_local___map_a2eea86fc9a19a1ea877215dc3da6d240}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!find\_keypoint\_matches@{find\_keypoint\_matches}}
@@ -177,11 +179,11 @@ Compute the point feature matches between the local map and a given set of point
 \begin{DoxyReturn}{Returns}
 A container associating the map/staged points to detected key points 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_af8e865f1f1022cdc347e6e6023999a48}\label{classrgbd__slam_1_1map__management_1_1_local___map_af8e865f1f1022cdc347e6e6023999a48}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a651e03a4d513833bddadfe118a4abfa4}\label{classrgbd__slam_1_1map__management_1_1_local___map_a651e03a4d513833bddadfe118a4abfa4}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!find\_match@{find\_match}}
 \index{find\_match@{find\_match}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{find\_match()}{find\_match()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::find\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&}]{point,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{detected\+Keypoints\+Object,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Cam\+Matrix,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::find\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&}]{point,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{detected\+Keypoints\+Object,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{matched\+Points,  }\item[{const bool}]{should\+Add\+Match\+To\+Container = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -193,19 +195,21 @@ Compute a match for a given point, and update this point match index. It will up
 \hline
 \mbox{\texttt{ in}}  & {\em detected\+Keypoints\+Object} & An object to handle all detected points in an image \\
 \hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Cam\+Matrix} & A matrix to transform a world point to a camera point \\
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A matrix to transform a world point to a camera point \\
 \hline
-\mbox{\texttt{ in,out}}  & {\em matched\+Points} & A container associating the detected to the map points\\
+\mbox{\texttt{ in,out}}  & {\em matched\+Points} & A container associating the detected to the map points \\
+\hline
+\mbox{\texttt{ in}}  & {\em should\+Add\+Match\+To\+Container} & If this flag is false, this point will not be inserted in matched\+Points.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 A boolean indicating if this point was matched or not 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a696dbe816e538caafe652b2cdaf44544}\label{classrgbd__slam_1_1map__management_1_1_local___map_a696dbe816e538caafe652b2cdaf44544}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a0f942acc2be0afa10590feb0db4dedd7}\label{classrgbd__slam_1_1map__management_1_1_local___map_a0f942acc2be0afa10590feb0db4dedd7}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!find\_match@{find\_match}}
 \index{find\_match@{find\_match}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{find\_match()}{find\_match()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::find\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{Primitive}} \&}]{map\+Primitive,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&}]{detected\+Primitives,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{world\+To\+Camera\+Matrix,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{matches\+\_\+containers\+::match\+\_\+primitive\+\_\+container}} \&}]{matched\+Primitives }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::find\+\_\+match (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{Primitive}} \&}]{map\+Primitive,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&}]{detected\+Primitives,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{matches\+\_\+containers\+::match\+\_\+primitive\+\_\+container}} \&}]{matched\+Primitives }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -217,7 +221,7 @@ Compute a match for a given primitive, and update this primitive match status.
 \hline
 \mbox{\texttt{ in}}  & {\em detected\+Primitives} & A container that stores all the detected primitives \\
 \hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera\+Matrix} & A matrix to transform a world point to a camera point \\
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A matrix to transform a world point to a camera point \\
 \hline
 \mbox{\texttt{ in,out}}  & {\em matched\+Primitives} & A container associating the detected primitives to the map primitives\\
 \hline
@@ -352,11 +356,11 @@ Update the local and global map. Add new points to staged and map container.
 \mbox{\texttt{ in}}  & {\em outlier\+Matched\+Points} & A container for all the wrongly associated points detected in the pose optimization process. They should be marked as invalid matches \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a9fa0963d137eee15a2eb9d25c8884039}\label{classrgbd__slam_1_1map__management_1_1_local___map_a9fa0963d137eee15a2eb9d25c8884039}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a0584903fa15fadfb0c46467bf88b6044}\label{classrgbd__slam_1_1map__management_1_1_local___map_a0584903fa15fadfb0c46467bf88b6044}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!update\_local\_keypoint\_map@{update\_local\_keypoint\_map}}
 \index{update\_local\_keypoint\_map@{update\_local\_keypoint\_map}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{update\_local\_keypoint\_map()}{update\_local\_keypoint\_map()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+local\+\_\+keypoint\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{previous\+Camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+local\+\_\+keypoint\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{previous\+Camera\+To\+World,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -366,18 +370,18 @@ Update local keypoint map features.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em pose\+Covariance} & The covariance matrix of the optimized position of the observer \\
 \hline
-\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World\+Matrix} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization \\
+\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization \\
 \hline
-\mbox{\texttt{ in}}  & {\em camera\+To\+World\+Matrix} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization \\
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization \\
 \hline
 \mbox{\texttt{ in}}  & {\em keypoint\+Object} & An object containing the detected key points in the rgbd frame. Must be the same as in find\+\_\+matches \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_aea537d35733e7be8058ae4d2c58222c4}\label{classrgbd__slam_1_1map__management_1_1_local___map_aea537d35733e7be8058ae4d2c58222c4}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a691d5735c2ba2ff668e7aceb77411358}\label{classrgbd__slam_1_1map__management_1_1_local___map_a691d5735c2ba2ff668e7aceb77411358}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!update\_local\_primitive\_map@{update\_local\_primitive\_map}}
 \index{update\_local\_primitive\_map@{update\_local\_primitive\_map}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{update\_local\_primitive\_map()}{update\_local\_primitive\_map()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+local\+\_\+primitive\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{previous\+Camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&}]{detected\+Primitives }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+local\+\_\+primitive\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{previous\+Camera\+To\+World,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{features\+::primitives\+::primitive\+\_\+container}} \&}]{detected\+Primitives }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -385,11 +389,11 @@ Update the local primitive map features.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World\+Matrix} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization \\
+\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization \\
 \hline
-\mbox{\texttt{ in}}  & {\em camera\+To\+World\+Matrix} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization \\
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization \\
 \hline
-\mbox{\texttt{ in}}  & {\em A} & container that stores the detected primitives in the depth image \\
+\mbox{\texttt{ in}}  & {\em detected\+Primitives} & A container that stores the detected primitives in the depth image \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_af62ebdf2d7be0eca02c759a8cc1ea602}\label{classrgbd__slam_1_1map__management_1_1_local___map_af62ebdf2d7be0eca02c759a8cc1ea602}} 
@@ -402,11 +406,11 @@ Update the local primitive map features.
 
 Clean the local map so it stays local, and update the global map with the good features. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a3b4e7b3ef6b097f5fd41144127c3febe}\label{classrgbd__slam_1_1map__management_1_1_local___map_a3b4e7b3ef6b097f5fd41144127c3febe}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_af6a7fa524d4b0e75c422d0e52228693c}\label{classrgbd__slam_1_1map__management_1_1_local___map_af6a7fa524d4b0e75c422d0e52228693c}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!update\_point\_match\_status@{update\_point\_match\_status}}
 \index{update\_point\_match\_status@{update\_point\_match\_status}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{update\_point\_match\_status()}{update\_point\_match\_status()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+point\+\_\+match\+\_\+status (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{previous\+Camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+point\+\_\+match\+\_\+status (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}} \&}]{map\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{previous\+Camera\+To\+World,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -420,16 +424,16 @@ Update the Matched/\+Unmatched status of a map point.
 \hline
 \mbox{\texttt{ in}}  & {\em keypoint\+Object} & An object to handle all detected points in an image \\
 \hline
-\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World\+Matrix} & A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose \\
+\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World} & A transformation matrix to convert a camera point to a world point. It represent the last optimized camera pose \\
 \hline
-\mbox{\texttt{ in}}  & {\em camera\+To\+World\+Matrix} & A transformation matrix to convert a camera point to a world point \\
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A transformation matrix to convert a camera point to a world point \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a5b98f8c35f26a98bf33708e5006f1b9a}\label{classrgbd__slam_1_1map__management_1_1_local___map_a5b98f8c35f26a98bf33708e5006f1b9a}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local___map_a71cb3d7d7889af1c1e497f80441f3887}\label{classrgbd__slam_1_1map__management_1_1_local___map_a71cb3d7d7889af1c1e497f80441f3887}} 
 \index{rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}!update\_staged\_keypoints\_map@{update\_staged\_keypoints\_map}}
 \index{update\_staged\_keypoints\_map@{update\_staged\_keypoints\_map}!rgbd\_slam::map\_management::Local\_Map@{rgbd\_slam::map\_management::Local\_Map}}
 \doxysubsubsection{\texorpdfstring{update\_staged\_keypoints\_map()}{update\_staged\_keypoints\_map()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+staged\+\_\+keypoints\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{previous\+Camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{camera\+To\+World\+Matrix,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map\+::update\+\_\+staged\+\_\+keypoints\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{previous\+Camera\+To\+World,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}} \&}]{keypoint\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -439,9 +443,9 @@ Add previously uncertain keypoint features to the local map.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em pose\+Covariance} & The covariance matrix of the optimized position of the observer \\
 \hline
-\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World\+Matrix} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization \\
+\mbox{\texttt{ in}}  & {\em previous\+Camera\+To\+World} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the last pose after optimization \\
 \hline
-\mbox{\texttt{ in}}  & {\em camera\+To\+World\+Matrix} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization \\
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization \\
 \hline
 \mbox{\texttt{ in}}  & {\em keypoint\+Object} & An object containing the detected key points in the rgbd frame. Must be the same as in find\+\_\+matches \\
 \hline

@@ -90,11 +90,11 @@ Inheritance diagram for rgbd_slam::pose_optimization::Global_Pose_Estimator:</di
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1fcc96ee2aeb8832ffbf9c2187890622"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1fcc96ee2aeb8832ffbf9c2187890622">Global_Pose_Estimator</a> (const size_t n, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;points, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;worldPosition, const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;worldRotation)</td></tr>
-<tr class="separator:a1fcc96ee2aeb8832ffbf9c2187890622"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1413e702e0a1c579b72e20a2901d0679"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1413e702e0a1c579b72e20a2901d0679">operator()</a> (const Eigen::VectorXd &amp;x, Eigen::VectorXd &amp;fvec) const</td></tr>
-<tr class="memdesc:a1413e702e0a1c579b72e20a2901d0679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the objective function.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a1413e702e0a1c579b72e20a2901d0679">More...</a><br /></td></tr>
-<tr class="separator:a1413e702e0a1c579b72e20a2901d0679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ef26df23e63e98c6bd5347cbd341780"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a8ef26df23e63e98c6bd5347cbd341780">Global_Pose_Estimator</a> (const size_t inputParametersSize, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;points)</td></tr>
+<tr class="separator:a8ef26df23e63e98c6bd5347cbd341780"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5638ba06da5e5d30234522fab3014029"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a5638ba06da5e5d30234522fab3014029">operator()</a> (const Eigen::VectorXd &amp;optimizedParameters, Eigen::VectorXd &amp;outputScores) const</td></tr>
+<tr class="memdesc:a5638ba06da5e5d30234522fab3014029"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the objective function.  <a href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a5638ba06da5e5d30234522fab3014029">More...</a><br /></td></tr>
+<tr class="separator:a5638ba06da5e5d30234522fab3014029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html">rgbd_slam::pose_optimization::Levenberg_Marquardt_Functor&lt; double &gt;</a></td></tr>
 <tr class="memitem:af4f370c6c3ccf4cc97fcfe53f83323ca inherit pub_methods_structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html#af4f370c6c3ccf4cc97fcfe53f83323ca">Levenberg_Marquardt_Functor</a> (const uint inputCount, const uint outputCount)</td></tr>
 <tr class="separator:af4f370c6c3ccf4cc97fcfe53f83323ca inherit pub_methods_structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,8 +125,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1fcc96ee2aeb8832ffbf9c2187890622" name="a1fcc96ee2aeb8832ffbf9c2187890622"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fcc96ee2aeb8832ffbf9c2187890622">&#9670;&nbsp;</a></span>Global_Pose_Estimator()</h2>
+<a id="a8ef26df23e63e98c6bd5347cbd341780" name="a8ef26df23e63e98c6bd5347cbd341780"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ef26df23e63e98c6bd5347cbd341780">&#9670;&nbsp;</a></span>Global_Pose_Estimator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,25 +135,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">rgbd_slam::pose_optimization::Global_Pose_Estimator::Global_Pose_Estimator </td>
           <td>(</td>
           <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
+          <td class="paramname"><em>inputParametersSize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;&#160;</td>
-          <td class="paramname"><em>points</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldPosition</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldRotation</em>&#160;</td>
+          <td class="paramname"><em>points</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -164,10 +152,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>Number of input parameters </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">points</td><td>Matched 2D (screen) to 3D (world) points </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldPosition</td><td>Position of the observer in the world </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldRotation</td><td>Orientation of the observer in the world</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">inputParametersSize</td><td>Number of input parameters </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">points</td><td>Matched 2D (screen) to 3D (world) points</td></tr>
   </table>
   </dd>
 </dl>
@@ -176,8 +162,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1413e702e0a1c579b72e20a2901d0679" name="a1413e702e0a1c579b72e20a2901d0679"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1413e702e0a1c579b72e20a2901d0679">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a5638ba06da5e5d30234522fab3014029" name="a5638ba06da5e5d30234522fab3014029"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5638ba06da5e5d30234522fab3014029">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,13 +172,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">int rgbd_slam::pose_optimization::Global_Pose_Estimator::operator() </td>
           <td>(</td>
           <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
+          <td class="paramname"><em>optimizedParameters</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>fvec</em>&#160;</td>
+          <td class="paramname"><em>outputScores</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -205,8 +191,8 @@ Additional Inherited Members</h2></td></tr>
 <p>Implementation of the objective function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>The vector of parameters to optimize (Size M) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">fvec</td><td>The vector of errors, of size N (N the number of points) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">optimizedParameters</td><td>The vector of parameters to optimize (Size M) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outputScores</td><td>The vector of errors, of size N (N the number of points) </td></tr>
   </table>
   </dd>
 </dl>

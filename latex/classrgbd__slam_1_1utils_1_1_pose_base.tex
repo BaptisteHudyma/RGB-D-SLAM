@@ -32,6 +32,10 @@ const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{ma
 \item 
 const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_a2b80066cc6773d5dbf4f8d470534c1bc}{get\+\_\+orientation\+\_\+quaternion}} () const
 \item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_a4b01a7063d9250252cad45ceb488ce35}{get\+\_\+position\+\_\+error}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&pose) const
+\begin{DoxyCompactList}\small\item\em compute a position error (Units are the same as the position units) \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_a2f524eb98caec1e353c2802088ef7919}{get\+\_\+rotation\+\_\+error}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&pose) const
+\begin{DoxyCompactList}\small\item\em compute a rotation error (degrees) \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_af5ee912b9584944e862e27dd7075662b}{display}} (std\+::ostream \&os) const
 \begin{DoxyCompactList}\small\item\em A display function, to avoid a friend operator function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -82,6 +86,26 @@ A display function, to avoid a friend operator function.
 \index{get\_position@{get\_position}!rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}}
 \doxysubsubsection{\texorpdfstring{get\_position()}{get\_position()}}
 {\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Pose\+Base\+::get\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_base_a4b01a7063d9250252cad45ceb488ce35}\label{classrgbd__slam_1_1utils_1_1_pose_base_a4b01a7063d9250252cad45ceb488ce35}} 
+\index{rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}!get\_position\_error@{get\_position\_error}}
+\index{get\_position\_error@{get\_position\_error}!rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}}
+\doxysubsubsection{\texorpdfstring{get\_position\_error()}{get\_position\_error()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Pose\+Base\+::get\+\_\+position\+\_\+error (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&}]{pose }\end{DoxyParamCaption}) const}
+
+
+
+compute a position error (Units are the same as the position units) 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_base_a2f524eb98caec1e353c2802088ef7919}\label{classrgbd__slam_1_1utils_1_1_pose_base_a2f524eb98caec1e353c2802088ef7919}} 
+\index{rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}!get\_rotation\_error@{get\_rotation\_error}}
+\index{get\_rotation\_error@{get\_rotation\_error}!rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}}
+\doxysubsubsection{\texorpdfstring{get\_rotation\_error()}{get\_rotation\_error()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Pose\+Base\+::get\+\_\+rotation\+\_\+error (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&}]{pose }\end{DoxyParamCaption}) const}
+
+
+
+compute a rotation error (degrees) 
 
 \mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_base_aa37ceeef0e2c56ae729cd4de27afa3f5}\label{classrgbd__slam_1_1utils_1_1_pose_base_aa37ceeef0e2c56ae729cd4de27afa3f5}} 
 \index{rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}!set\_parameters@{set\_parameters}}

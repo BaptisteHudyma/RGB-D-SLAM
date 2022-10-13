@@ -78,9 +78,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7d93e6a304ee80ccc8b1ecaa49029e0e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a7d93e6a304ee80ccc8b1ecaa49029e0e">triangulate</a> (const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;currentWorldToCameraMatrix, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;newWorldToCameraMatrix, const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;point2Da, const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;point2Db, <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;triangulatedPoint)</td></tr>
-<tr class="memdesc:a7d93e6a304ee80ccc8b1ecaa49029e0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulate a world point from two successive 2D matches, with an already known pose.  <a href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a7d93e6a304ee80ccc8b1ecaa49029e0e">More...</a><br /></td></tr>
-<tr class="separator:a7d93e6a304ee80ccc8b1ecaa49029e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4cf42f2235d0dedf7c3c7580dbcb141"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_triangulation.html#af4cf42f2235d0dedf7c3c7580dbcb141">triangulate</a> (const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;currentWorldToCamera, const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;newWorldToCamera, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;point2Da, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;point2Db, <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;triangulatedPoint)</td></tr>
+<tr class="memdesc:af4cf42f2235d0dedf7c3c7580dbcb141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulate a world point from two successive 2D matches, with an already known pose.  <a href="classrgbd__slam_1_1tracking_1_1_triangulation.html#af4cf42f2235d0dedf7c3c7580dbcb141">More...</a><br /></td></tr>
+<tr class="separator:af4cf42f2235d0dedf7c3c7580dbcb141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8033f57b4e72fd466722553e72654081"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a8033f57b4e72fd466722553e72654081">get_supposed_pose</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;pose, const double baselinePoseSupposition)</td></tr>
 <tr class="memdesc:a8033f57b4e72fd466722553e72654081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a weak supposition of a new pose, from an optimized pose.  <a href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a8033f57b4e72fd466722553e72654081">More...</a><br /></td></tr>
 <tr class="separator:a8033f57b4e72fd466722553e72654081"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,8 +124,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7d93e6a304ee80ccc8b1ecaa49029e0e" name="a7d93e6a304ee80ccc8b1ecaa49029e0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d93e6a304ee80ccc8b1ecaa49029e0e">&#9670;&nbsp;</a></span>triangulate()</h2>
+<a id="af4cf42f2235d0dedf7c3c7580dbcb141" name="af4cf42f2235d0dedf7c3c7580dbcb141"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4cf42f2235d0dedf7c3c7580dbcb141">&#9670;&nbsp;</a></span>triangulate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -136,31 +136,31 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool rgbd_slam::tracking::Triangulation::triangulate </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>currentWorldToCameraMatrix</em>, </td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>currentWorldToCamera</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>newWorldToCameraMatrix</em>, </td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>newWorldToCamera</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>point2Da</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>point2Db</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>triangulatedPoint</em>&#160;</td>
         </tr>
         <tr>
@@ -179,8 +179,8 @@ Static Public Member Functions</h2></td></tr>
 <p>Triangulate a world point from two successive 2D matches, with an already known pose. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">currentWorldToCameraMatrix</td><td>The world to camera transform matrix of the current optimised pose of the observer </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">newWorldToCameraMatrix</td><td>The world to camera transform matrix of the new observer pose, already optimized </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">currentWorldToCamera</td><td>The world to camera transform matrix of the current optimised pose of the observer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">newWorldToCamera</td><td>The world to camera transform matrix of the new observer pose, already optimized </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">point2Da</td><td>A 2D point observed with the reference pose </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">point2Db</td><td>A 2D point, observed with the new pose, matched with point2Da </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">triangulatedPoint</td><td>The 3D world point, if this function returned true</td></tr>

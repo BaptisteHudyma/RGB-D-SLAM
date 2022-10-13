@@ -1,7 +1,7 @@
 var searchData=
 [
   ['_5fcolor_0',['_color',['../structrgbd__slam_1_1map__management_1_1_primitive.html#a59614e39552efd40b2d3384958558154',1,'rgbd_slam::map_management::Primitive::_color()'],['../classrgbd__slam_1_1map__management_1_1_map___point.html#a76fabb3c547894e2da6de607dcb927ff',1,'rgbd_slam::map_management::Map_Point::_color()']]],
-  ['_5fcoordinates_1',['_coordinates',['../structrgbd__slam_1_1map__management_1_1_point.html#ac2682cd3df4a66c4a25c4275c8acab54',1,'rgbd_slam::map_management::Point']]],
+  ['_5fcoordinates_1',['_coordinates',['../structrgbd__slam_1_1map__management_1_1_point.html#a5d0ab6d39764679d98d54e27cb2025df',1,'rgbd_slam::map_management::Point']]],
   ['_5fcurrentpointid_2',['_currentPointId',['../structrgbd__slam_1_1map__management_1_1_point.html#a2ae8c3099aa67ce9925cc448c8cbfa56',1,'rgbd_slam::map_management::Point']]],
   ['_5fd_3',['_d',['../classrgbd__slam_1_1features_1_1primitives_1_1_plane.html#a320a470f59b6f322894162a8ea17576c',1,'rgbd_slam::features::primitives::Plane']]],
   ['_5fdescriptor_4',['_descriptor',['../structrgbd__slam_1_1map__management_1_1_point.html#acb78f641c06c5c7ad59b03bc4cebed47',1,'rgbd_slam::map_management::Point']]],
@@ -20,9 +20,9 @@ var searchData=
   ['_5foutputcount_17',['_outputCount',['../structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html#a484d665c3300570e6fe93554fc6c1a4d',1,'rgbd_slam::pose_optimization::Levenberg_Marquardt_Functor']]],
   ['_5fprimitive_18',['_primitive',['../structrgbd__slam_1_1map__management_1_1_primitive.html#a37aa660fdc25a26f266032cf8d2d3690',1,'rgbd_slam::map_management::Primitive']]],
   ['_5fprimitivetype_19',['_primitiveType',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#ae33b300ad292c6a9e2effb274f23bfe9',1,'rgbd_slam::features::primitives::Primitive']]],
-  ['_5fscreencoordinates_20',['_screenCoordinates',['../structrgbd__slam_1_1map__management_1_1_matched_screen_point.html#ae73a1880af9cf233239bc4c66c96bebd',1,'rgbd_slam::map_management::MatchedScreenPoint']]],
-  ['_5fscreenpoint_21',['_screenPoint',['../structrgbd__slam_1_1matches__containers_1_1_match.html#a5c4f80706c5b95ff83af44744177b8c6',1,'rgbd_slam::matches_containers::Match']]],
+  ['_5fscreencoordinates_20',['_screenCoordinates',['../structrgbd__slam_1_1map__management_1_1_matched_screen_point.html#a7fa74166454bbdb32cb264660d28846d',1,'rgbd_slam::map_management::MatchedScreenPoint']]],
+  ['_5fscreenpoint_21',['_screenPoint',['../structrgbd__slam_1_1matches__containers_1_1_match.html#a692bb0c358b947f5ebb022e69775e4ae',1,'rgbd_slam::matches_containers::Match']]],
   ['_5fshapemask_22',['_shapeMask',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive.html#a59e1eb452738a0e25b06b0f44edf9fde',1,'rgbd_slam::features::primitives::Primitive']]],
   ['_5funmatchedcount_23',['_unmatchedCount',['../structrgbd__slam_1_1map__management_1_1_matched_primitive.html#a6fe89c60f93bfd686f45b40ac7bdb49d',1,'rgbd_slam::map_management::MatchedPrimitive']]],
-  ['_5fworldpoint_24',['_worldPoint',['../structrgbd__slam_1_1matches__containers_1_1_match.html#a911fc865210d18d825b46ccafbf0e5cc',1,'rgbd_slam::matches_containers::Match']]]
+  ['_5fworldpoint_24',['_worldPoint',['../structrgbd__slam_1_1matches__containers_1_1_match.html#ad8e1b44c64995c827d8f9e2553eae917',1,'rgbd_slam::matches_containers::Match']]]
 ];

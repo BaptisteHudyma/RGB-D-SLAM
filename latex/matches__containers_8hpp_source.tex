@@ -14,14 +14,14 @@
 \DoxyCodeLine{10         \textcolor{comment}{//      -\/ the coordinates of the detected point in screen space}}
 \DoxyCodeLine{11         \textcolor{comment}{//      -\/ the coordinates of the matched point in world space}}
 \DoxyCodeLine{12         \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match}{Match}} \{}
-\DoxyCodeLine{13             \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a03fae9791a2ffab8ea0b25ecb8788b58}{Match}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& screenPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& worldPoint, \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapId) :}
-\DoxyCodeLine{14                 \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a911fc865210d18d825b46ccafbf0e5cc}{\_worldPoint}}(worldPoint),}
-\DoxyCodeLine{15                 \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a5c4f80706c5b95ff83af44744177b8c6}{\_screenPoint}}(screenPoint),}
+\DoxyCodeLine{13             \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a04b440ffd0318c49400ce5dc4ca94de5}{Match}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screenCoordinates}}\& screenPoint, \textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{worldCoordinates}}\& worldPoint, \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapId) :}
+\DoxyCodeLine{14                 \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_ad8e1b44c64995c827d8f9e2553eae917}{\_worldPoint}}(worldPoint),}
+\DoxyCodeLine{15                 \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a692bb0c358b947f5ebb022e69775e4ae}{\_screenPoint}}(screenPoint),}
 \DoxyCodeLine{16                 \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_ae473155bc09fca30fce6e40e07be537d}{\_mapPointId}}(mapId)}
 \DoxyCodeLine{17             \{\};}
 \DoxyCodeLine{18 }
-\DoxyCodeLine{19             \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a911fc865210d18d825b46ccafbf0e5cc}{\_worldPoint}};    \textcolor{comment}{// coordinates of the local world point}}
-\DoxyCodeLine{20             \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a5c4f80706c5b95ff83af44744177b8c6}{\_screenPoint}};   \textcolor{comment}{// Coordinates of the detected screen point}}
+\DoxyCodeLine{19             \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{worldCoordinates}} \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_ad8e1b44c64995c827d8f9e2553eae917}{\_worldPoint}};    \textcolor{comment}{// coordinates of the local world point}}
+\DoxyCodeLine{20             \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screenCoordinates}} \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_a692bb0c358b947f5ebb022e69775e4ae}{\_screenPoint}};   \textcolor{comment}{// Coordinates of the detected screen point}}
 \DoxyCodeLine{21             \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_ae473155bc09fca30fce6e40e07be537d}{\_mapPointId}};     \textcolor{comment}{// Id of the world point in the local map }}
 \DoxyCodeLine{22         \};}
 \DoxyCodeLine{23         \textcolor{keyword}{typedef} std::list<Match> \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{match\_point\_container}};}

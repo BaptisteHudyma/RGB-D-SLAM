@@ -10,18 +10,24 @@
 \DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
 \DoxyCodeLine{7     \textcolor{keyword}{namespace }utils \{}
 \DoxyCodeLine{8 }
-\DoxyCodeLine{13         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a173685d2c7d390b356cbb92a2fc6f34e}{get\_distance\_euclidean}}(\textcolor{keyword}{const} Eigen::VectorXd\& pointA, \textcolor{keyword}{const} Eigen::VectorXd\& pointB);}
-\DoxyCodeLine{14 }
-\DoxyCodeLine{19         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a02f7a096d8a6742b7f6a4f375771d0cc}{get\_distance\_manhattan}}(\textcolor{keyword}{const} Eigen::VectorXd\& pointA, \textcolor{keyword}{const} Eigen::VectorXd\& pointB);}
-\DoxyCodeLine{20 }
-\DoxyCodeLine{28         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a35743118f9724893e86e6920b281c5cc}{get\_3D\_to\_2D\_distance}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& worldPoint, \textcolor{keyword}{const} Eigen::VectorXd\& cameraPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& worldToCameraTransformationMatrix);}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{37         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_afeafca9da8645b7c4b95f9b7cfd3cb45}{get\_3D\_to\_3D\_distance}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& worldPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& cameraPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}\& cameraToWorldTransformationMatrix);}
-\DoxyCodeLine{38 }
-\DoxyCodeLine{39     \}   \textcolor{comment}{// utils}}
-\DoxyCodeLine{40 \}       \textcolor{comment}{// rgbd\_slam}}
-\DoxyCodeLine{41 }
-\DoxyCodeLine{42 }
-\DoxyCodeLine{43 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{12         Eigen::VectorXd \mbox{\hyperlink{namespacergbd__slam_1_1utils_a59cfb8a0e06b13de53e5a3a82719ca7c}{get\_distance}}(\textcolor{keyword}{const} Eigen::VectorXd\& pointA, \textcolor{keyword}{const} Eigen::VectorXd\& pointB);}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{18         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a173685d2c7d390b356cbb92a2fc6f34e}{get\_distance\_euclidean}}(\textcolor{keyword}{const} Eigen::VectorXd\& pointA, \textcolor{keyword}{const} Eigen::VectorXd\& pointB);}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{24         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a02f7a096d8a6742b7f6a4f375771d0cc}{get\_distance\_manhattan}}(\textcolor{keyword}{const} Eigen::VectorXd\& pointA, \textcolor{keyword}{const} Eigen::VectorXd\& pointB);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{33         \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a85e268d155d8c8f2b4fdb5ee0b1c8554}{get\_3D\_to\_2D\_distance\_2D}}(\textcolor{keyword}{const} worldCoordinates\& worldPoint, \textcolor{keyword}{const} screenCoordinates\& cameraPoint, \textcolor{keyword}{const} worldToCameraMatrix\& worldToCamera);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{42         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae3480fca10bc94fc032ec4092eeae805}{get\_3D\_to\_2D\_distance}}(\textcolor{keyword}{const} worldCoordinates\& worldPoint, \textcolor{keyword}{const} screenCoordinates\& cameraPoint, \textcolor{keyword}{const} worldToCameraMatrix\& worldToCamera);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{51         \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_add957a0c9ceca7d234d4fe19140a1bc9}{get\_3D\_to\_3D\_distance\_3D}}(\textcolor{keyword}{const} worldCoordinates\& worldPoint, \textcolor{keyword}{const} screenCoordinates\& cameraPoint, \textcolor{keyword}{const} cameraToWorldMatrix\& cameraToWorld);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{60         \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a714b3583dcb988faab880c694598b1eb}{get\_3D\_to\_3D\_distance}}(\textcolor{keyword}{const} worldCoordinates\& worldPoint, \textcolor{keyword}{const} screenCoordinates\& cameraPoint, \textcolor{keyword}{const} cameraToWorldMatrix\& cameraToWorld);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \}   \textcolor{comment}{// utils}}
+\DoxyCodeLine{63 \}       \textcolor{comment}{// rgbd\_slam}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

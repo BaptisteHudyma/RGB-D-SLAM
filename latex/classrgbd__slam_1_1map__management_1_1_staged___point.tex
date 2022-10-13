@@ -18,9 +18,9 @@ Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+\_\+\+P
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a4d8bf6f24d6fe4842d57895fea31ede5}{Staged\+\_\+\+Point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a1a058533d07a2b38eececb5a8d8d2dc2}{Staged\+\_\+\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a66bd5ffaa65b1dc1a16bd7901fdddb05}{Staged\+\_\+\+Point}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor, const size\+\_\+t id)
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a9ea86d100e729bc756680abb8c1ac5a3}{Staged\+\_\+\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor, const size\+\_\+t id)
 \item 
 bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a86d7b31ec5f8aedfb1275c56845fe1f7}{should\+\_\+add\+\_\+to\+\_\+local\+\_\+map}} () const
 \begin{DoxyCompactList}\small\item\em Should add this staged point to the local map. \end{DoxyCompactList}\item 
@@ -28,7 +28,7 @@ bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a57f
 \begin{DoxyCompactList}\small\item\em True if this staged point should not be added to local map. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_ac9b2b8aed6f7cb409b8baf6afd48d875}{update\+\_\+unmatched}} (int remove\+NMatches=1) override
 \begin{DoxyCompactList}\small\item\em Call when this point was not matched to anything. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a6c21ed525c2f98bc47f98ce704f62cb7}{update\+\_\+matched}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&new\+Point\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance) override
+double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a69ec322ce684b0daf47c3f702bfc74a8}{update\+\_\+matched}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&new\+Point\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance) override
 \begin{DoxyCompactList}\small\item\em Call when this point was matched to another point. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -42,17 +42,17 @@ int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point_a9aa1
 Concurrent for a map point. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged___point_a4d8bf6f24d6fe4842d57895fea31ede5}\label{classrgbd__slam_1_1map__management_1_1_staged___point_a4d8bf6f24d6fe4842d57895fea31ede5}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged___point_a1a058533d07a2b38eececb5a8d8d2dc2}\label{classrgbd__slam_1_1map__management_1_1_staged___point_a1a058533d07a2b38eececb5a8d8d2dc2}} 
 \index{rgbd\_slam::map\_management::Staged\_Point@{rgbd\_slam::map\_management::Staged\_Point}!Staged\_Point@{Staged\_Point}}
 \index{Staged\_Point@{Staged\_Point}!rgbd\_slam::map\_management::Staged\_Point@{rgbd\_slam::map\_management::Staged\_Point}}
 \doxysubsubsection{\texorpdfstring{Staged\_Point()}{Staged\_Point()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point\+::\+Staged\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point\+::\+Staged\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
 
-\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point}{Staged\+\_\+\+Point}} \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged___point_a66bd5ffaa65b1dc1a16bd7901fdddb05}\label{classrgbd__slam_1_1map__management_1_1_staged___point_a66bd5ffaa65b1dc1a16bd7901fdddb05}} 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point}{Staged\+\_\+\+Point}} \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged___point_a9ea86d100e729bc756680abb8c1ac5a3}\label{classrgbd__slam_1_1map__management_1_1_staged___point_a9ea86d100e729bc756680abb8c1ac5a3}} 
 \index{rgbd\_slam::map\_management::Staged\_Point@{rgbd\_slam::map\_management::Staged\_Point}!Staged\_Point@{Staged\_Point}}
 \index{Staged\_Point@{Staged\_Point}!rgbd\_slam::map\_management::Staged\_Point@{rgbd\_slam::map\_management::Staged\_Point}}
 \doxysubsubsection{\texorpdfstring{Staged\_Point()}{Staged\_Point()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point\+::\+Staged\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor,  }\item[{const size\+\_\+t}]{id }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point\+::\+Staged\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor,  }\item[{const size\+\_\+t}]{id }\end{DoxyParamCaption})}
 
 
 
@@ -77,11 +77,11 @@ Should add this staged point to the local map.
 
 True if this staged point should not be added to local map. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged___point_a6c21ed525c2f98bc47f98ce704f62cb7}\label{classrgbd__slam_1_1map__management_1_1_staged___point_a6c21ed525c2f98bc47f98ce704f62cb7}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged___point_a69ec322ce684b0daf47c3f702bfc74a8}\label{classrgbd__slam_1_1map__management_1_1_staged___point_a69ec322ce684b0daf47c3f702bfc74a8}} 
 \index{rgbd\_slam::map\_management::Staged\_Point@{rgbd\_slam::map\_management::Staged\_Point}!update\_matched@{update\_matched}}
 \index{update\_matched@{update\_matched}!rgbd\_slam::map\_management::Staged\_Point@{rgbd\_slam::map\_management::Staged\_Point}}
 \doxysubsubsection{\texorpdfstring{update\_matched()}{update\_matched()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point\+::update\+\_\+matched (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{new\+Point\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point\+::update\+\_\+matched (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{new\+Point\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -89,7 +89,7 @@ Call when this point was matched to another point.
 
 
 
-Implements \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a6dac46e7bd635ca1c3f2f9798feb73c7}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}.
+Implements \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a29e7179834e7e42b0454bbd8c6bece6e}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}.
 
 \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged___point_ac9b2b8aed6f7cb409b8baf6afd48d875}\label{classrgbd__slam_1_1map__management_1_1_staged___point_ac9b2b8aed6f7cb409b8baf6afd48d875}} 
 \index{rgbd\_slam::map\_management::Staged\_Point@{rgbd\_slam::map\_management::Staged\_Point}!update\_unmatched@{update\_unmatched}}

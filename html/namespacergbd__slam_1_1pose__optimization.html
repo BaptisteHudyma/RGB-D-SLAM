@@ -95,69 +95,20 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1c5baaf110f1e80eb1c0a168f313f031"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a1c5baaf110f1e80eb1c0a168f313f031">get_generalized_loss_estimator</a> (const double error, const double alpha=1, const double scale=1)</td></tr>
-<tr class="memdesc:a1c5baaf110f1e80eb1c0a168f313f031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of "A General and Adaptive Robust Loss Function" (2019) By Jonathan T. Barron.  <a href="namespacergbd__slam_1_1pose__optimization.html#a1c5baaf110f1e80eb1c0a168f313f031">More...</a><br /></td></tr>
-<tr class="separator:a1c5baaf110f1e80eb1c0a168f313f031"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5631cae47389e44a75b184bf60db8201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a5631cae47389e44a75b184bf60db8201">get_scaled_axis_coefficients_from_quaternion</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;quat)</td></tr>
 <tr class="memdesc:a5631cae47389e44a75b184bf60db8201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-Marquardt algorithm.  <a href="namespacergbd__slam_1_1pose__optimization.html#a5631cae47389e44a75b184bf60db8201">More...</a><br /></td></tr>
 <tr class="separator:a5631cae47389e44a75b184bf60db8201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#aa1b3f2a476887ecd8c938a73f1ca57da">get_quaternion_from_scale_axis_coefficients</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;optimizationCoefficients)</td></tr>
 <tr class="memdesc:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from it's scaled axis representation.  <a href="namespacergbd__slam_1_1pose__optimization.html#aa1b3f2a476887ecd8c938a73f1ca57da">More...</a><br /></td></tr>
 <tr class="separator:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9c8ca146c62743ad50683aad87acee8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ad9c8ca146c62743ad50683aad87acee8">get_transformation_score</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;points, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;finalPose)</td></tr>
+<tr class="memdesc:ad9c8ca146c62743ad50683aad87acee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a mean transformation score for a pose and a set of point matches.  <a href="namespacergbd__slam_1_1pose__optimization.html#ad9c8ca146c62743ad50683aad87acee8">More...</a><br /></td></tr>
+<tr class="separator:ad9c8ca146c62743ad50683aad87acee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7a23970392763710a2096a10bbdb68a"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ac7a23970392763710a2096a10bbdb68a">get_human_readable_end_message</a> (Eigen::LevenbergMarquardtSpace::Status status)</td></tr>
 <tr class="memdesc:ac7a23970392763710a2096a10bbdb68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a string corresponding to the end status of the optimization.  <a href="namespacergbd__slam_1_1pose__optimization.html#ac7a23970392763710a2096a10bbdb68a">More...</a><br /></td></tr>
 <tr class="separator:ac7a23970392763710a2096a10bbdb68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a60b66cfa4c51c64babcb5ad9b259c1ba">get_quaternion_exponential</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;quat)</td></tr>
-<tr class="separator:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae2acb81b214e548bffd58f4ebf90d2f5">get_quaternion_logarithm</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;quat)</td></tr>
-<tr class="separator:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a1c5baaf110f1e80eb1c0a168f313f031" name="a1c5baaf110f1e80eb1c0a168f313f031"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c5baaf110f1e80eb1c0a168f313f031">&#9670;&nbsp;</a></span>get_generalized_loss_estimator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::pose_optimization::get_generalized_loss_estimator </td>
-          <td>(</td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>error</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>alpha</em> = <code>1</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>scale</em> = <code>1</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Implementation of "A General and Adaptive Robust Loss Function" (2019) By Jonathan T. Barron. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">error</td><td>The error to pass to the loss function </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alpha</td><td>The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == - infinity is Welsch loss </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">scale</td><td>Standard deviation of the error, as a scale parameter</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A weight for the current error </dd></dl>
-
-</div>
-</div>
 <a id="ac7a23970392763710a2096a10bbdb68a" name="ac7a23970392763710a2096a10bbdb68a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac7a23970392763710a2096a10bbdb68a">&#9670;&nbsp;</a></span>get_human_readable_end_message()</h2>
 
@@ -177,24 +128,6 @@ Functions</h2></td></tr>
 <p>Return a string corresponding to the end status of the optimization. </p>
 <p >Use for debug.</p>
 <dl class="section return"><dt>Returns</dt><dd>Returns a string with the human readable version of Eigen LevenbergMarquardt output status </dd></dl>
-
-</div>
-</div>
-<a id="a60b66cfa4c51c64babcb5ad9b259c1ba" name="a60b66cfa4c51c64babcb5ad9b259c1ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60b66cfa4c51c64babcb5ad9b259c1ba">&#9670;&nbsp;</a></span>get_quaternion_exponential()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> rgbd_slam::pose_optimization::get_quaternion_exponential </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
-          <td class="paramname"><em>quat</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -219,24 +152,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae2acb81b214e548bffd58f4ebf90d2f5" name="ae2acb81b214e548bffd58f4ebf90d2f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2acb81b214e548bffd58f4ebf90d2f5">&#9670;&nbsp;</a></span>get_quaternion_logarithm()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> rgbd_slam::pose_optimization::get_quaternion_logarithm </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
-          <td class="paramname"><em>quat</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a5631cae47389e44a75b184bf60db8201" name="a5631cae47389e44a75b184bf60db8201"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5631cae47389e44a75b184bf60db8201">&#9670;&nbsp;</a></span>get_scaled_axis_coefficients_from_quaternion()</h2>
 
@@ -255,6 +170,36 @@ Functions</h2></td></tr>
 
 <p>Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-Marquardt algorithm. </p>
 <p >Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) </p>
+
+</div>
+</div>
+<a id="ad9c8ca146c62743ad50683aad87acee8" name="ad9c8ca146c62743ad50683aad87acee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9c8ca146c62743ad50683aad87acee8">&#9670;&nbsp;</a></span>get_transformation_score()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rgbd_slam::pose_optimization::get_transformation_score </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;&#160;</td>
+          <td class="paramname"><em>finalPose</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute a mean transformation score for a pose and a set of point matches. </p>
 
 </div>
 </div>

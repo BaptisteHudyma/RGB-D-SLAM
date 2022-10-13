@@ -19,43 +19,17 @@ class \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimiza
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}{get\+\_\+generalized\+\_\+loss\+\_\+estimator}} (const double error, const double alpha=1, const double scale=1)
-\begin{DoxyCompactList}\small\item\em Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
 \begin{DoxyCompactList}\small\item\em Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}{get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&optimization\+Coefficients)
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from it\textquotesingle{}s scaled axis representation. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9c8ca146c62743ad50683aad87acee8}{get\+\_\+transformation\+\_\+score}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&final\+Pose)
+\begin{DoxyCompactList}\small\item\em Compute a mean transformation score for a pose and a set of point matches. \end{DoxyCompactList}\item 
 const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
-\begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}{get\+\_\+quaternion\+\_\+exponential}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
-\item 
-\mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}{get\+\_\+quaternion\+\_\+logarithm}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}\label{namespacergbd__slam_1_1pose__optimization_a1c5baaf110f1e80eb1c0a168f313f031}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_generalized\_loss\_estimator@{get\_generalized\_loss\_estimator}}
-\index{get\_generalized\_loss\_estimator@{get\_generalized\_loss\_estimator}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_generalized\_loss\_estimator()}{get\_generalized\_loss\_estimator()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+generalized\+\_\+loss\+\_\+estimator (\begin{DoxyParamCaption}\item[{const double}]{error,  }\item[{const double}]{alpha = {\ttfamily 1},  }\item[{const double}]{scale = {\ttfamily 1} }\end{DoxyParamCaption})}
-
-
-
-Implementation of \char`\"{}\+A General and Adaptive Robust Loss Function\char`\"{} (2019) By Jonathan T. Barron. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em error} & The error to pass to the loss function \\
-\hline
-\mbox{\texttt{ in}}  & {\em alpha} & The steepness of the loss function. For alpha == 2, this is a L2 loss, alpha == 1 is Charbonnier loss, alpha == 0 is Cauchy loss, alpha == 0 is a German MCClure and alpha == -\/ infinity is Welsch loss \\
-\hline
-\mbox{\texttt{ in}}  & {\em scale} & Standard deviation of the error, as a scale parameter\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-A weight for the current error 
-\end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}\label{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}}
 \index{get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -71,12 +45,6 @@ Use for debug.
 \begin{DoxyReturn}{Returns}
 Returns a string with the human readable version of Eigen Levenberg\+Marquardt output status 
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}\label{namespacergbd__slam_1_1pose__optimization_a60b66cfa4c51c64babcb5ad9b259c1ba}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_exponential@{get\_quaternion\_exponential}}
-\index{get\_quaternion\_exponential@{get\_quaternion\_exponential}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_quaternion\_exponential()}{get\_quaternion\_exponential()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+exponential (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
-
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}\label{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_from\_scale\_axis\_coefficients@{get\_quaternion\_from\_scale\_axis\_coefficients}}
 \index{get\_quaternion\_from\_scale\_axis\_coefficients@{get\_quaternion\_from\_scale\_axis\_coefficients}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -87,13 +55,7 @@ Returns a string with the human readable version of Eigen Levenberg\+Marquardt o
 
 Compute a quaternion from it\textquotesingle{}s scaled axis representation. 
 
-Compute a quaternion from the Lie projection (Scaled Axis representation) \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}\label{namespacergbd__slam_1_1pose__optimization_ae2acb81b214e548bffd58f4ebf90d2f5}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_logarithm@{get\_quaternion\_logarithm}}
-\index{get\_quaternion\_logarithm@{get\_quaternion\_logarithm}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_quaternion\_logarithm()}{get\_quaternion\_logarithm()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+logarithm (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{quat }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}\label{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}} 
+Compute a quaternion from the Lie projection (Scaled Axis representation) \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}\label{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}}
 \index{get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_scaled\_axis\_coefficients\_from\_quaternion()}{get\_scaled\_axis\_coefficients\_from\_quaternion()}}
@@ -103,4 +65,13 @@ Compute a quaternion from the Lie projection (Scaled Axis representation) \mbox{
 
 Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. 
 
-Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) 
+Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ad9c8ca146c62743ad50683aad87acee8}\label{namespacergbd__slam_1_1pose__optimization_ad9c8ca146c62743ad50683aad87acee8}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_transformation\_score@{get\_transformation\_score}}
+\index{get\_transformation\_score@{get\_transformation\_score}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_transformation\_score()}{get\_transformation\_score()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+transformation\+\_\+score (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{final\+Pose }\end{DoxyParamCaption})}
+
+
+
+Compute a mean transformation score for a pose and a set of point matches. 
+

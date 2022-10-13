@@ -104,52 +104,64 @@ Functions</h2></td></tr>
 <tr class="memitem:adba3e96e0d019dbd7284e4a6dc4911f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#adba3e96e0d019dbd7284e4a6dc4911f3">is_depth_valid</a> (const double depth)</td></tr>
 <tr class="memdesc:adba3e96e0d019dbd7284e4a6dc4911f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true is a measurement is in the measurement range.  <a href="namespacergbd__slam_1_1utils.html#adba3e96e0d019dbd7284e4a6dc4911f3">More...</a><br /></td></tr>
 <tr class="separator:adba3e96e0d019dbd7284e4a6dc4911f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6dd19d1fead39267cf42ef78b08a5cb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ab6dd19d1fead39267cf42ef78b08a5cb">screen_to_world_coordinates</a> (const double screenX, const double screenY, const double measuredZ, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix)</td></tr>
-<tr class="separator:ab6dd19d1fead39267cf42ef78b08a5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb50425c88603d51b0f82f0d8abadc46"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#afb50425c88603d51b0f82f0d8abadc46">screen_to_world_coordinates</a> (const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> &amp;vector4d, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix)</td></tr>
-<tr class="memdesc:afb50425c88603d51b0f82f0d8abadc46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a vector in screen space to a vector in world space.  <a href="namespacergbd__slam_1_1utils.html#afb50425c88603d51b0f82f0d8abadc46">More...</a><br /></td></tr>
-<tr class="separator:afb50425c88603d51b0f82f0d8abadc46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bfd9d52d0bc829c2eb67fd22d96fa5d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a0bfd9d52d0bc829c2eb67fd22d96fa5d">compute_world_to_screen_coordinates</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position3D, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToScreenMatrix, <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenCoordinates)</td></tr>
-<tr class="memdesc:a0bfd9d52d0bc829c2eb67fd22d96fa5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a point from world to screen coordinate system.  <a href="namespacergbd__slam_1_1utils.html#a0bfd9d52d0bc829c2eb67fd22d96fa5d">More...</a><br /></td></tr>
-<tr class="separator:a0bfd9d52d0bc829c2eb67fd22d96fa5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f33c26a7b68f18c379482984646ff47"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a5f33c26a7b68f18c379482984646ff47">world_to_screen_coordinates</a> (const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> &amp;worldVector4, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToScreenMatrix)</td></tr>
-<tr class="memdesc:a5f33c26a7b68f18c379482984646ff47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a vector in world space to a vector in screen space.  <a href="namespacergbd__slam_1_1utils.html#a5f33c26a7b68f18c379482984646ff47">More...</a><br /></td></tr>
-<tr class="separator:a5f33c26a7b68f18c379482984646ff47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aead20ffa20ef5ce19fb642babfd16a76"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#aead20ffa20ef5ce19fb642babfd16a76">compute_camera_to_world_transform</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position)</td></tr>
-<tr class="memdesc:aead20ffa20ef5ce19fb642babfd16a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz)  <a href="namespacergbd__slam_1_1utils.html#aead20ffa20ef5ce19fb642babfd16a76">More...</a><br /></td></tr>
-<tr class="separator:aead20ffa20ef5ce19fb642babfd16a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae084f160a8b3b4955c68984f20b907d1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ae084f160a8b3b4955c68984f20b907d1">compute_world_to_camera_transform</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position)</td></tr>
-<tr class="memdesc:ae084f160a8b3b4955c68984f20b907d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd)  <a href="namespacergbd__slam_1_1utils.html#ae084f160a8b3b4955c68984f20b907d1">More...</a><br /></td></tr>
-<tr class="separator:ae084f160a8b3b4955c68984f20b907d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ccc734fdffb0bef51e333ad5de60e56"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a8ccc734fdffb0bef51e333ad5de60e56">compute_world_to_camera_transform</a> (const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldMatrix)</td></tr>
-<tr class="separator:a8ccc734fdffb0bef51e333ad5de60e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6881ff8fc4349b095eda7e107e8b38c0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a6881ff8fc4349b095eda7e107e8b38c0">get_screen_point_covariance</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenCoordinates, const double depth)</td></tr>
-<tr class="memdesc:a6881ff8fc4349b095eda7e107e8b38c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute a covariance matrix for a screen point associated with a depth measurement  <a href="namespacergbd__slam_1_1utils.html#a6881ff8fc4349b095eda7e107e8b38c0">More...</a><br /></td></tr>
-<tr class="separator:a6881ff8fc4349b095eda7e107e8b38c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a9a5cb4c504a476f73d5396b70378e9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a9a9a5cb4c504a476f73d5396b70378e9">get_world_point_covariance</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenPoint, const double depth)</td></tr>
-<tr class="memdesc:a9a9a5cb4c504a476f73d5396b70378e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point.  <a href="namespacergbd__slam_1_1utils.html#a9a9a5cb4c504a476f73d5396b70378e9">More...</a><br /></td></tr>
-<tr class="separator:a9a9a5cb4c504a476f73d5396b70378e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09dda9d0924d503bab6cec2b6663e179"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">get_world_point_covariance</a> (const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;screenPoint, const double depth, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;screenPointCovariance)</td></tr>
-<tr class="memdesc:a09dda9d0924d503bab6cec2b6663e179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point.  <a href="namespacergbd__slam_1_1utils.html#a09dda9d0924d503bab6cec2b6663e179">More...</a><br /></td></tr>
-<tr class="separator:a09dda9d0924d503bab6cec2b6663e179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dbca5ba1fde9dede66b983bcdd6b8d0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a9dbca5ba1fde9dede66b983bcdd6b8d0">screen_to_world_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;screenPoint, const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;cameraToWorld)</td></tr>
+<tr class="separator:a9dbca5ba1fde9dede66b983bcdd6b8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31acbfa81adc70ed7a028aee25347ac0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a31acbfa81adc70ed7a028aee25347ac0">camera_to_world_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1camera_coordinates.html">cameraCoordinates</a> &amp;cameraPoint, const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;cameraToWorld)</td></tr>
+<tr class="memdesc:a31acbfa81adc70ed7a028aee25347ac0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a vector in camera space to a vector in world space.  <a href="namespacergbd__slam_1_1utils.html#a31acbfa81adc70ed7a028aee25347ac0">More...</a><br /></td></tr>
+<tr class="separator:a31acbfa81adc70ed7a028aee25347ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac606f34d58a2c38df57f52586971f41c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ac606f34d58a2c38df57f52586971f41c">compute_world_to_screen_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;position3D, const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;worldToCamera, <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;screenPoint)</td></tr>
+<tr class="memdesc:ac606f34d58a2c38df57f52586971f41c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a point from world to screen coordinate system.  <a href="namespacergbd__slam_1_1utils.html#ac606f34d58a2c38df57f52586971f41c">More...</a><br /></td></tr>
+<tr class="separator:ac606f34d58a2c38df57f52586971f41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4613bdb56bd3012bd4efae167362569"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1camera_coordinates.html">cameraCoordinates</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#aa4613bdb56bd3012bd4efae167362569">world_to_camera_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;<a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a>, const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;worldToCamera)</td></tr>
+<tr class="memdesc:aa4613bdb56bd3012bd4efae167362569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a vector in world space to a vector in camera space.  <a href="namespacergbd__slam_1_1utils.html#aa4613bdb56bd3012bd4efae167362569">More...</a><br /></td></tr>
+<tr class="separator:aa4613bdb56bd3012bd4efae167362569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf2041d958f5f63468f142a85b634587"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#acf2041d958f5f63468f142a85b634587">compute_camera_to_world_transform</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position)</td></tr>
+<tr class="memdesc:acf2041d958f5f63468f142a85b634587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz)  <a href="namespacergbd__slam_1_1utils.html#acf2041d958f5f63468f142a85b634587">More...</a><br /></td></tr>
+<tr class="separator:acf2041d958f5f63468f142a85b634587"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80a5c96230a6cced4d4999c60ea659e9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a80a5c96230a6cced4d4999c60ea659e9">compute_world_to_camera_transform</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;position)</td></tr>
+<tr class="memdesc:a80a5c96230a6cced4d4999c60ea659e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd)  <a href="namespacergbd__slam_1_1utils.html#a80a5c96230a6cced4d4999c60ea659e9">More...</a><br /></td></tr>
+<tr class="separator:a80a5c96230a6cced4d4999c60ea659e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0374f99788406cd572d51692961af33a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a0374f99788406cd572d51692961af33a">compute_world_to_camera_transform</a> (const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;cameraToWorld)</td></tr>
+<tr class="separator:a0374f99788406cd572d51692961af33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65406b55752913e8a72b15c732fcd699"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a65406b55752913e8a72b15c732fcd699">get_screen_point_covariance</a> (const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;<a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a>)</td></tr>
+<tr class="memdesc:a65406b55752913e8a72b15c732fcd699"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute a covariance matrix for a screen point associated with a depth measurement  <a href="namespacergbd__slam_1_1utils.html#a65406b55752913e8a72b15c732fcd699">More...</a><br /></td></tr>
+<tr class="separator:a65406b55752913e8a72b15c732fcd699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f2bd96814341dcb6a1418fce8e842df"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a3f2bd96814341dcb6a1418fce8e842df">get_screen_point_covariance</a> (const <a class="el" href="structrgbd__slam_1_1camera_coordinates.html">cameraCoordinates</a> &amp;cameraPoint, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;worldPointCovariance)</td></tr>
+<tr class="memdesc:a3f2bd96814341dcb6a1418fce8e842df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a screen point covariance from a given camera point.  <a href="namespacergbd__slam_1_1utils.html#a3f2bd96814341dcb6a1418fce8e842df">More...</a><br /></td></tr>
+<tr class="separator:a3f2bd96814341dcb6a1418fce8e842df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1c875ecbbef7363643107ddd5b8fdbb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#af1c875ecbbef7363643107ddd5b8fdbb">get_world_point_covariance</a> (const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;screenPoint)</td></tr>
+<tr class="memdesc:af1c875ecbbef7363643107ddd5b8fdbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point.  <a href="namespacergbd__slam_1_1utils.html#af1c875ecbbef7363643107ddd5b8fdbb">More...</a><br /></td></tr>
+<tr class="separator:af1c875ecbbef7363643107ddd5b8fdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15a5da9934a8f4ec423e77e26bff88ba"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a15a5da9934a8f4ec423e77e26bff88ba">get_world_point_covariance</a> (const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;screenPoint, const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;screenPointCovariance)</td></tr>
+<tr class="memdesc:a15a5da9934a8f4ec423e77e26bff88ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the associated Gaussian error of a screen point when it will be transformed to world point.  <a href="namespacergbd__slam_1_1utils.html#a15a5da9934a8f4ec423e77e26bff88ba">More...</a><br /></td></tr>
+<tr class="separator:a15a5da9934a8f4ec423e77e26bff88ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58e29e70d22c5d0a1b86c820acb7159e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a58e29e70d22c5d0a1b86c820acb7159e">compute_pose_variance</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a> &amp;pose, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a69e137115cf0342c9d0dcc61d0823af9">matches_containers::match_point_container</a> &amp;matchedPoints, <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;poseVariance)</td></tr>
 <tr class="memdesc:a58e29e70d22c5d0a1b86c820acb7159e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the variance of the final pose in X Y Z.  <a href="namespacergbd__slam_1_1utils.html#a58e29e70d22c5d0a1b86c820acb7159e">More...</a><br /></td></tr>
 <tr class="separator:a58e29e70d22c5d0a1b86c820acb7159e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25aefd4d0548c521c2fc7818f3ace9c5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a25aefd4d0548c521c2fc7818f3ace9c5">compute_pose_covariance</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a> &amp;pose)</td></tr>
 <tr class="memdesc:a25aefd4d0548c521c2fc7818f3ace9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a pose covariance matrix from a pose.  <a href="namespacergbd__slam_1_1utils.html#a25aefd4d0548c521c2fc7818f3ace9c5">More...</a><br /></td></tr>
 <tr class="separator:a25aefd4d0548c521c2fc7818f3ace9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59cfb8a0e06b13de53e5a3a82719ca7c"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a59cfb8a0e06b13de53e5a3a82719ca7c">get_distance</a> (const Eigen::VectorXd &amp;pointA, const Eigen::VectorXd &amp;pointB)</td></tr>
+<tr class="memdesc:a59cfb8a0e06b13de53e5a3a82719ca7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a signed distance between two points.  <a href="namespacergbd__slam_1_1utils.html#a59cfb8a0e06b13de53e5a3a82719ca7c">More...</a><br /></td></tr>
+<tr class="separator:a59cfb8a0e06b13de53e5a3a82719ca7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a173685d2c7d390b356cbb92a2fc6f34e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a173685d2c7d390b356cbb92a2fc6f34e">get_distance_euclidean</a> (const Eigen::VectorXd &amp;pointA, const Eigen::VectorXd &amp;pointB)</td></tr>
 <tr class="memdesc:a173685d2c7d390b356cbb92a2fc6f34e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a distance between two 3D points.  <a href="namespacergbd__slam_1_1utils.html#a173685d2c7d390b356cbb92a2fc6f34e">More...</a><br /></td></tr>
 <tr class="separator:a173685d2c7d390b356cbb92a2fc6f34e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02f7a096d8a6742b7f6a4f375771d0cc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a02f7a096d8a6742b7f6a4f375771d0cc">get_distance_manhattan</a> (const Eigen::VectorXd &amp;pointA, const Eigen::VectorXd &amp;pointB)</td></tr>
 <tr class="memdesc:a02f7a096d8a6742b7f6a4f375771d0cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a distance between two 3D points.  <a href="namespacergbd__slam_1_1utils.html#a02f7a096d8a6742b7f6a4f375771d0cc">More...</a><br /></td></tr>
 <tr class="separator:a02f7a096d8a6742b7f6a4f375771d0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35743118f9724893e86e6920b281c5cc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a35743118f9724893e86e6920b281c5cc">get_3D_to_2D_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;worldPoint, const Eigen::VectorXd &amp;cameraPoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;worldToCameraTransformationMatrix)</td></tr>
-<tr class="memdesc:a35743118f9724893e86e6920b281c5cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a distance between a world point and a camera point, by retroprojecting the world point to camera space.  <a href="namespacergbd__slam_1_1utils.html#a35743118f9724893e86e6920b281c5cc">More...</a><br /></td></tr>
-<tr class="separator:a35743118f9724893e86e6920b281c5cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afeafca9da8645b7c4b95f9b7cfd3cb45"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#afeafca9da8645b7c4b95f9b7cfd3cb45">get_3D_to_3D_distance</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;worldPoint, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;cameraPoint, const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;cameraToWorldTransformationMatrix)</td></tr>
-<tr class="memdesc:afeafca9da8645b7c4b95f9b7cfd3cb45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a distance between a world point and a 3D point in camera space, by projecting the camera point to world space.  <a href="namespacergbd__slam_1_1utils.html#afeafca9da8645b7c4b95f9b7cfd3cb45">More...</a><br /></td></tr>
-<tr class="separator:afeafca9da8645b7c4b95f9b7cfd3cb45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85e268d155d8c8f2b4fdb5ee0b1c8554"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a85e268d155d8c8f2b4fdb5ee0b1c8554">get_3D_to_2D_distance_2D</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;worldPoint, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;cameraPoint, const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;worldToCamera)</td></tr>
+<tr class="memdesc:a85e268d155d8c8f2b4fdb5ee0b1c8554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a signed 2D distance between a world point and a camera point, by retroprojecting the world point to camera space.  <a href="namespacergbd__slam_1_1utils.html#a85e268d155d8c8f2b4fdb5ee0b1c8554">More...</a><br /></td></tr>
+<tr class="separator:a85e268d155d8c8f2b4fdb5ee0b1c8554"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3480fca10bc94fc032ec4092eeae805"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ae3480fca10bc94fc032ec4092eeae805">get_3D_to_2D_distance</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;worldPoint, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;cameraPoint, const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;worldToCamera)</td></tr>
+<tr class="memdesc:ae3480fca10bc94fc032ec4092eeae805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a distance between a world point and a camera point, by retroprojecting the world point to camera space.  <a href="namespacergbd__slam_1_1utils.html#ae3480fca10bc94fc032ec4092eeae805">More...</a><br /></td></tr>
+<tr class="separator:ae3480fca10bc94fc032ec4092eeae805"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add957a0c9ceca7d234d4fe19140a1bc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#add957a0c9ceca7d234d4fe19140a1bc9">get_3D_to_3D_distance_3D</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;worldPoint, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;cameraPoint, const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;cameraToWorld)</td></tr>
+<tr class="memdesc:add957a0c9ceca7d234d4fe19140a1bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a signed distance between a world point and a 3D point in camera space, by projecting the camera point to world space.  <a href="namespacergbd__slam_1_1utils.html#add957a0c9ceca7d234d4fe19140a1bc9">More...</a><br /></td></tr>
+<tr class="separator:add957a0c9ceca7d234d4fe19140a1bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a714b3583dcb988faab880c694598b1eb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a714b3583dcb988faab880c694598b1eb">get_3D_to_3D_distance</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;worldPoint, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;cameraPoint, const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;cameraToWorld)</td></tr>
+<tr class="memdesc:a714b3583dcb988faab880c694598b1eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a distance between a world point and a 3D point in camera space, by projecting the camera point to world space.  <a href="namespacergbd__slam_1_1utils.html#a714b3583dcb988faab880c694598b1eb">More...</a><br /></td></tr>
+<tr class="separator:a714b3583dcb988faab880c694598b1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7830f2322d077dd3b0659ac1226daa5f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a7830f2322d077dd3b0659ac1226daa5f">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">PoseBase</a> &amp;pose)</td></tr>
 <tr class="separator:a7830f2322d077dd3b0659ac1226daa5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f943d571d918b61309edcd6d98f848a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a1f943d571d918b61309edcd6d98f848a">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">Pose</a> &amp;pose)</td></tr>
@@ -178,14 +190,52 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aead20ffa20ef5ce19fb642babfd16a76" name="aead20ffa20ef5ce19fb642babfd16a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aead20ffa20ef5ce19fb642babfd16a76">&#9670;&nbsp;</a></span>compute_camera_to_world_transform()</h2>
+<a id="a31acbfa81adc70ed7a028aee25347ac0" name="a31acbfa81adc70ed7a028aee25347ac0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31acbfa81adc70ed7a028aee25347ac0">&#9670;&nbsp;</a></span>camera_to_world_coordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> rgbd_slam::utils::compute_camera_to_world_transform </td>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> rgbd_slam::utils::camera_to_world_coordinates </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1camera_coordinates.html">cameraCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transform a vector in camera space to a vector in world space. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraPoint</td><td>A vector in camera space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorld</td><td>Matrix to transform local to world coordinates</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A vector in world space </dd></dl>
+
+</div>
+</div>
+<a id="acf2041d958f5f63468f142a85b634587" name="acf2041d958f5f63468f142a85b634587"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf2041d958f5f63468f142a85b634587">&#9670;&nbsp;</a></span>compute_camera_to_world_transform()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> rgbd_slam::utils::compute_camera_to_world_transform </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
@@ -279,17 +329,17 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a8ccc734fdffb0bef51e333ad5de60e56" name="a8ccc734fdffb0bef51e333ad5de60e56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ccc734fdffb0bef51e333ad5de60e56">&#9670;&nbsp;</a></span>compute_world_to_camera_transform() <span class="overload">[1/2]</span></h2>
+<a id="a0374f99788406cd572d51692961af33a" name="a0374f99788406cd572d51692961af33a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0374f99788406cd572d51692961af33a">&#9670;&nbsp;</a></span>compute_world_to_camera_transform() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> rgbd_slam::utils::compute_world_to_camera_transform </td>
+          <td class="memname">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> rgbd_slam::utils::compute_world_to_camera_transform </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>cameraToWorldMatrix</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -297,14 +347,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ae084f160a8b3b4955c68984f20b907d1" name="ae084f160a8b3b4955c68984f20b907d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae084f160a8b3b4955c68984f20b907d1">&#9670;&nbsp;</a></span>compute_world_to_camera_transform() <span class="overload">[2/2]</span></h2>
+<a id="a80a5c96230a6cced4d4999c60ea659e9" name="a80a5c96230a6cced4d4999c60ea659e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80a5c96230a6cced4d4999c60ea659e9">&#9670;&nbsp;</a></span>compute_world_to_camera_transform() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> rgbd_slam::utils::compute_world_to_camera_transform </td>
+          <td class="memname">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> rgbd_slam::utils::compute_world_to_camera_transform </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
           <td class="paramname"><em>rotation</em>, </td>
@@ -327,8 +377,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a0bfd9d52d0bc829c2eb67fd22d96fa5d" name="a0bfd9d52d0bc829c2eb67fd22d96fa5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bfd9d52d0bc829c2eb67fd22d96fa5d">&#9670;&nbsp;</a></span>compute_world_to_screen_coordinates()</h2>
+<a id="ac606f34d58a2c38df57f52586971f41c" name="ac606f34d58a2c38df57f52586971f41c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac606f34d58a2c38df57f52586971f41c">&#9670;&nbsp;</a></span>compute_world_to_screen_coordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,20 +386,20 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">bool rgbd_slam::utils::compute_world_to_screen_coordinates </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>position3D</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldToScreenMatrix</em>, </td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldToCamera</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
-          <td class="paramname"><em>screenCoordinates</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>screenPoint</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -363,8 +413,8 @@ Variables</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">position3D</td><td>Coordinates of the detected point (world coordinates) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldToScreenMatrix</td><td>Matrix to transform the world to a local coordinate system </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">screenCoordinates</td><td>The point screen coordinates, if the function returned true</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCamera</td><td>Matrix to transform the world to a local coordinate system </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">screenPoint</td><td>The point screen coordinates, if the function returned true</td></tr>
   </table>
   </dd>
 </dl>
@@ -372,8 +422,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a35743118f9724893e86e6920b281c5cc" name="a35743118f9724893e86e6920b281c5cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35743118f9724893e86e6920b281c5cc">&#9670;&nbsp;</a></span>get_3D_to_2D_distance()</h2>
+<a id="ae3480fca10bc94fc032ec4092eeae805" name="ae3480fca10bc94fc032ec4092eeae805"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3480fca10bc94fc032ec4092eeae805">&#9670;&nbsp;</a></span>get_3D_to_2D_distance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -381,20 +431,20 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">double rgbd_slam::utils::get_3D_to_2D_distance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>worldPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>cameraPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldToCameraTransformationMatrix</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldToCamera</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -409,7 +459,7 @@ Variables</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">worldPoint</td><td>A 3D point in world space </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cameraPoint</td><td>A point in camera space. Only the x and y components will be used </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCameraTransformationMatrix</td><td>A transformation matrix to convert from world to camera space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCamera</td><td>A transformation matrix to convert from world to camera space </td></tr>
   </table>
   </dd>
 </dl>
@@ -417,8 +467,53 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="afeafca9da8645b7c4b95f9b7cfd3cb45" name="afeafca9da8645b7c4b95f9b7cfd3cb45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afeafca9da8645b7c4b95f9b7cfd3cb45">&#9670;&nbsp;</a></span>get_3D_to_3D_distance()</h2>
+<a id="a85e268d155d8c8f2b4fdb5ee0b1c8554" name="a85e268d155d8c8f2b4fdb5ee0b1c8554"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85e268d155d8c8f2b4fdb5ee0b1c8554">&#9670;&nbsp;</a></span>get_3D_to_2D_distance_2D()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> rgbd_slam::utils::get_3D_to_2D_distance_2D </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldToCamera</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute a signed 2D distance between a world point and a camera point, by retroprojecting the world point to camera space. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldPoint</td><td>A 3D point in world space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraPoint</td><td>A point in camera space. Only the x and y components will be used </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCamera</td><td>A transformation matrix to convert from world to camera space </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a 2D signed distance in camera space (pixels) </dd></dl>
+
+</div>
+</div>
+<a id="a714b3583dcb988faab880c694598b1eb" name="a714b3583dcb988faab880c694598b1eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a714b3583dcb988faab880c694598b1eb">&#9670;&nbsp;</a></span>get_3D_to_3D_distance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -426,20 +521,20 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">double rgbd_slam::utils::get_3D_to_3D_distance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>worldPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>cameraPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>cameraToWorldTransformationMatrix</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -454,11 +549,86 @@ Variables</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">worldPoint</td><td>A 3D point in world space </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cameraPoint</td><td>A 3D point in camera space </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorldTransformationMatrix</td><td>A matrix to convert from camera to world space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorld</td><td>A matrix to convert from camera to world space </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The unsigned distance in world space </dd></dl>
+
+</div>
+</div>
+<a id="add957a0c9ceca7d234d4fe19140a1bc9" name="add957a0c9ceca7d234d4fe19140a1bc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add957a0c9ceca7d234d4fe19140a1bc9">&#9670;&nbsp;</a></span>get_3D_to_3D_distance_3D()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> rgbd_slam::utils::get_3D_to_3D_distance_3D </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute a signed distance between a world point and a 3D point in camera space, by projecting the camera point to world space. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldPoint</td><td>A 3D point in world space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraPoint</td><td>A 3D point in camera space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorld</td><td>A matrix to convert from camera to world space </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 3D signed distance in world space </dd></dl>
+
+</div>
+</div>
+<a id="a59cfb8a0e06b13de53e5a3a82719ca7c" name="a59cfb8a0e06b13de53e5a3a82719ca7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59cfb8a0e06b13de53e5a3a82719ca7c">&#9670;&nbsp;</a></span>get_distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::VectorXd rgbd_slam::utils::get_distance </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramname"><em>pointA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramname"><em>pointB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute a signed distance between two points. </p>
 
 </div>
 </div>
@@ -584,8 +754,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a6881ff8fc4349b095eda7e107e8b38c0" name="a6881ff8fc4349b095eda7e107e8b38c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6881ff8fc4349b095eda7e107e8b38c0">&#9670;&nbsp;</a></span>get_screen_point_covariance()</h2>
+<a id="a3f2bd96814341dcb6a1418fce8e842df" name="a3f2bd96814341dcb6a1418fce8e842df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f2bd96814341dcb6a1418fce8e842df">&#9670;&nbsp;</a></span>get_screen_point_covariance() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -593,19 +763,46 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::utils::get_screen_point_covariance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
-          <td class="paramname"><em>screenCoordinates</em>, </td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1camera_coordinates.html">cameraCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>depth</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldPointCovariance</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute a screen point covariance from a given camera point. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraPoint</td><td>The coordinates of this 3D point, in camera space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldPointCovariance</td><td>The covariance associated with this world point </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a65406b55752913e8a72b15c732fcd699" name="a65406b55752913e8a72b15c732fcd699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65406b55752913e8a72b15c732fcd699">&#9670;&nbsp;</a></span>get_screen_point_covariance() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::utils::get_screen_point_covariance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>screenCoordinates</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -613,8 +810,7 @@ Variables</h2></td></tr>
 <p>compute a covariance matrix for a screen point associated with a depth measurement </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">screenCoordinates</td><td>The coordinates of this 2D point, in screen space </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">depth</td><td>The depth associated to this 2D point</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a></td><td>The coordinates of this point, in screen space</td></tr>
   </table>
   </dd>
 </dl>
@@ -622,8 +818,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a9a9a5cb4c504a476f73d5396b70378e9" name="a9a9a5cb4c504a476f73d5396b70378e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a9a5cb4c504a476f73d5396b70378e9">&#9670;&nbsp;</a></span>get_world_point_covariance() <span class="overload">[1/2]</span></h2>
+<a id="af1c875ecbbef7363643107ddd5b8fdbb" name="af1c875ecbbef7363643107ddd5b8fdbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c875ecbbef7363643107ddd5b8fdbb">&#9670;&nbsp;</a></span>get_world_point_covariance() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -631,19 +827,9 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::utils::get_world_point_covariance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
-          <td class="paramname"><em>screenPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>screenPoint</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>depth</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -651,8 +837,7 @@ Variables</h2></td></tr>
 <p>Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">screenPoint</td><td>The 2D point in screen coordinates </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">depth</td><td>The depth associated with this screen point</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">screenPoint</td><td>The 2D point in screen coordinates</td></tr>
   </table>
   </dd>
 </dl>
@@ -660,8 +845,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a09dda9d0924d503bab6cec2b6663e179" name="a09dda9d0924d503bab6cec2b6663e179"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09dda9d0924d503bab6cec2b6663e179">&#9670;&nbsp;</a></span>get_world_point_covariance() <span class="overload">[2/2]</span></h2>
+<a id="a15a5da9934a8f4ec423e77e26bff88ba" name="a15a5da9934a8f4ec423e77e26bff88ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15a5da9934a8f4ec423e77e26bff88ba">&#9670;&nbsp;</a></span>get_world_point_covariance() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -669,14 +854,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69">matrix33</a> rgbd_slam::utils::get_world_point_covariance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#acbfe158267b4d08e84815de6e0fc4cda">vector2</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>screenPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>depth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -696,7 +875,6 @@ Variables</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">screenPoint</td><td>The 2D point in screen coordinates </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">depth</td><td>The depth associated with this screen point </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">screenPointCovariance</td><td>The covariance matrix associated with a point in screen space</td></tr>
   </table>
   </dd>
@@ -781,35 +959,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ab6dd19d1fead39267cf42ef78b08a5cb" name="ab6dd19d1fead39267cf42ef78b08a5cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6dd19d1fead39267cf42ef78b08a5cb">&#9670;&nbsp;</a></span>screen_to_world_coordinates() <span class="overload">[1/2]</span></h2>
+<a id="a9dbca5ba1fde9dede66b983bcdd6b8d0" name="a9dbca5ba1fde9dede66b983bcdd6b8d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dbca5ba1fde9dede66b983bcdd6b8d0">&#9670;&nbsp;</a></span>screen_to_world_coordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> rgbd_slam::utils::screen_to_world_coordinates </td>
+          <td class="memname">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> rgbd_slam::utils::screen_to_world_coordinates </td>
           <td>(</td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>screenX</em>, </td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>screenPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>screenY</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>measuredZ</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>cameraToWorldMatrix</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1camera_to_world_matrix.html">cameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -821,23 +987,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="afb50425c88603d51b0f82f0d8abadc46" name="afb50425c88603d51b0f82f0d8abadc46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb50425c88603d51b0f82f0d8abadc46">&#9670;&nbsp;</a></span>screen_to_world_coordinates() <span class="overload">[2/2]</span></h2>
+<a id="aa4613bdb56bd3012bd4efae167362569" name="aa4613bdb56bd3012bd4efae167362569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4613bdb56bd3012bd4efae167362569">&#9670;&nbsp;</a></span>world_to_camera_coordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> rgbd_slam::utils::screen_to_world_coordinates </td>
+          <td class="memname">const <a class="el" href="structrgbd__slam_1_1camera_coordinates.html">cameraCoordinates</a> rgbd_slam::utils::world_to_camera_coordinates </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> &amp;&#160;</td>
-          <td class="paramname"><em>vector4d</em>, </td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldCoordinates</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>cameraToWorldMatrix</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldToCamera</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -847,53 +1013,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Transform a vector in screen space to a vector in world space. </p>
+<p>Transform a vector in world space to a vector in camera space. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">vector4d</td><td>A vector in screen space </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cameraToWorldMatrix</td><td>Matrix to transform local to world coordinates</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a></td><td>A vector in world space </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCamera</td><td>Matrix to transform the world to a local coordinate system</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A vector in world space </dd></dl>
-
-</div>
-</div>
-<a id="a5f33c26a7b68f18c379482984646ff47" name="a5f33c26a7b68f18c379482984646ff47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f33c26a7b68f18c379482984646ff47">&#9670;&nbsp;</a></span>world_to_screen_coordinates()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> rgbd_slam::utils::world_to_screen_coordinates </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a5cbcd8eb5bdfc3609954483b8c18b675">vector4</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldVector4</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a">matrix44</a> &amp;&#160;</td>
-          <td class="paramname"><em>worldToScreenMatrix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Transform a vector in world space to a vector in screen space. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldVector4</td><td>A vector in screen space </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">worldToScreenMatrix</td><td>Matrix to transform the world to a local coordinate system</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The input vector transformed to screen space </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The input vector transformed to camera space </dd></dl>
 
 </div>
 </div>

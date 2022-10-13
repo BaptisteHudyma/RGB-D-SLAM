@@ -76,6 +76,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="types_8hpp_source.html">../types.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="matches__containers_8hpp_source.html">../utils/matches_containers.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="pose_8hpp_source.html">../utils/pose.hpp</a>&quot;</code><br />
 <code>#include &lt;unsupported/Eigen/NonLinearOptimization&gt;</code><br />
 </div>
 <p><a href="levenberg__marquard__functors_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -106,10 +107,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="memItemLeft" align="right" valign="top">quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#aa1b3f2a476887ecd8c938a73f1ca57da">rgbd_slam::pose_optimization::get_quaternion_from_scale_axis_coefficients</a> (const vector3 &amp;optimizationCoefficients)</td></tr>
 <tr class="memdesc:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a quaternion from it's scaled axis representation.  <a href="namespacergbd__slam_1_1pose__optimization.html#aa1b3f2a476887ecd8c938a73f1ca57da">More...</a><br /></td></tr>
 <tr class="separator:aa1b3f2a476887ecd8c938a73f1ca57da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memItemLeft" align="right" valign="top">quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a60b66cfa4c51c64babcb5ad9b259c1ba">rgbd_slam::pose_optimization::get_quaternion_exponential</a> (const quaternion &amp;quat)</td></tr>
-<tr class="separator:a60b66cfa4c51c64babcb5ad9b259c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memItemLeft" align="right" valign="top">quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae2acb81b214e548bffd58f4ebf90d2f5">rgbd_slam::pose_optimization::get_quaternion_logarithm</a> (const quaternion &amp;quat)</td></tr>
-<tr class="separator:ae2acb81b214e548bffd58f4ebf90d2f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9c8ca146c62743ad50683aad87acee8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ad9c8ca146c62743ad50683aad87acee8">rgbd_slam::pose_optimization::get_transformation_score</a> (const matches_containers::match_point_container &amp;points, const utils::Pose &amp;finalPose)</td></tr>
+<tr class="memdesc:ad9c8ca146c62743ad50683aad87acee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a mean transformation score for a pose and a set of point matches.  <a href="namespacergbd__slam_1_1pose__optimization.html#ad9c8ca146c62743ad50683aad87acee8">More...</a><br /></td></tr>
+<tr class="separator:ad9c8ca146c62743ad50683aad87acee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7a23970392763710a2096a10bbdb68a"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ac7a23970392763710a2096a10bbdb68a">rgbd_slam::pose_optimization::get_human_readable_end_message</a> (Eigen::LevenbergMarquardtSpace::Status status)</td></tr>
 <tr class="memdesc:ac7a23970392763710a2096a10bbdb68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a string corresponding to the end status of the optimization.  <a href="namespacergbd__slam_1_1pose__optimization.html#ac7a23970392763710a2096a10bbdb68a">More...</a><br /></td></tr>
 <tr class="separator:ac7a23970392763710a2096a10bbdb68a"><td class="memSeparator" colspan="2">&#160;</td></tr>

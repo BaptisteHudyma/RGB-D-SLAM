@@ -6,6 +6,8 @@
 {\ttfamily \#include \char`\"{}../utils/camera\+\_\+transformation.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../utils/covariances.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../outputs/logger.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -16,5 +18,5 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\+\_\+sla
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aa9d854ab517611e578813e309aa66ed8}{rgbd\+\_\+slam\+::map\+\_\+management\+::add\+\_\+point\+\_\+to\+\_\+tracked\+\_\+features}} (const IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking \&map\+Point, features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct \&keypoints\+With\+Ids)
+void \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ab94ef1eb15622ffcd915d7bc4e5f6256}{rgbd\+\_\+slam\+::map\+\_\+management\+::add\+\_\+point\+\_\+to\+\_\+tracked\+\_\+features}} (const IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking \&map\+Point, features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct \&keypoints\+With\+Ids, const uint drop\+Chance=1000)
 \begin{DoxyCompactList}\small\item\em My add a point to the tracked feature object, used to add optical flow tracking. \end{DoxyCompactList}\end{DoxyCompactItemize}
