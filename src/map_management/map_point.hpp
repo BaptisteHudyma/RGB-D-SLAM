@@ -20,8 +20,8 @@ namespace rgbd_slam {
                 _screenCoordinates.setZero();
             };
 
-            explicit MatchedScreenPoint(const vector3& screenCoordinates, const int matchIndex = UNMATCHED_POINT_INDEX):
-                _screenCoordinates(screenCoordinates),
+            explicit MatchedScreenPoint(const screenCoordinates& screenPoint, const int matchIndex = UNMATCHED_POINT_INDEX):
+                _screenCoordinates(screenPoint),
                 _matchIndex(matchIndex)
             {};
 
@@ -37,7 +37,7 @@ namespace rgbd_slam {
             }
 
             // matched point coordinates in screen space
-            vector3 _screenCoordinates;
+            screenCoordinates _screenCoordinates;
 
             // Match index in the detected point object (can be UNMATCHED_POINT_INDEX);
             int _matchIndex;

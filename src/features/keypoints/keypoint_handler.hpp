@@ -71,21 +71,6 @@ namespace rgbd_slam {
                     int get_match_index(const screenCoordinates& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const; 
 
                     /**
-                     * \brief Return the depth associated with a certain keypoint
-                     */
-                    double get_depth(const uint index) const
-                    {
-                        assert(index < _depths.size());
-
-                        return _depths[index];
-                    }
-
-                    size_t get_depth_count() const
-                    {
-                        return _depths.size();
-                    }
-
-                    /**
                      * \brief return the keypoint associated with the index
                      */
                     const screenCoordinates get_keypoint(const uint index) const 
@@ -145,7 +130,6 @@ namespace rgbd_slam {
 
                     //store current frame keypoints
                     std::vector<screenCoordinates> _keypoints;
-                    std::vector<double> _depths;
                     typedef std::unordered_map<size_t, size_t> uintToUintContainer;
                     uintToUintContainer _uniqueIdsToKeypointIndex;
                     cv::Mat _descriptors;

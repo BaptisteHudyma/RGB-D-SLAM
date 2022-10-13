@@ -28,10 +28,11 @@ namespace rgbd_slam {
     struct worldToCameraMatrix : public matrix44 {};
     struct cameraToWorldMatrix : public matrix44 {};
 
-    struct screenCoordinates : public vector2 {
+    struct screenCoordinates : public vector3 {
         screenCoordinates() {};
-        screenCoordinates(const vector2& coords) : vector2(coords) {};
-        screenCoordinates(const double x, const double y) : vector2(x, y) {};
+        screenCoordinates(const vector2& coords, const double depth = 0) : vector3(coords.x(), coords.y(), depth) {};
+        screenCoordinates(const double x, const double y) : vector3(x, y, 0) {};
+        screenCoordinates(const double x, const double y, const double z) : vector3(x, y, z) {};
     };
     struct cameraCoordinates : public vector3 {
         cameraCoordinates() {};
@@ -41,6 +42,7 @@ namespace rgbd_slam {
             homegenousCoordinates.y()/homegenousCoordinates[3],
             homegenousCoordinates.z()/homegenousCoordinates[3]
         ) {};
+        cameraCoordinates(const double x, const double y, const double z) : vector3(x, y, z) {};
         vector4 get_homogenous() const { return vector4(x(), y(), z(), 1);};
     };
     struct worldCoordinates : public vector3 {

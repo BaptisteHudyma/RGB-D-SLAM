@@ -86,7 +86,7 @@ namespace rgbd_slam {
             if (isScreenCoordinatesValid)
             {
                 // screen coordinates
-                const vector3 screenPointEnd(transformedPoint.x(), transformedPoint.y(), worldPointStart.z());
+                const screenCoordinates screenPointEnd(transformedPoint.x(), transformedPoint.y(), worldPointStart.z());
                 // Dont care about the map id
                 matchedPoints.emplace(matchedPoints.end(), screenPointEnd, worldPointStart, 0);
             }

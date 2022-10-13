@@ -81,14 +81,14 @@ namespace rgbd_slam {
 
             assert(matchIndex >= 0);
 
-            const double screenPointDepth = detectedKeypointsObject.get_depth(matchIndex);
-            if (utils::is_depth_valid(screenPointDepth) ) {
+            const screenCoordinates& matchedScreenpoint = detectedKeypointsObject.get_keypoint(matchIndex);
+            if (utils::is_depth_valid(matchedScreenpoint.z()) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
 
                 // update index and screen coordinates 
                 MatchedScreenPoint match;
-                match._screenCoordinates << detectedKeypointsObject.get_keypoint(matchIndex), screenPointDepth;
+                match._screenCoordinates = matchedScreenpoint;
                 match._matchIndex = matchIndex;
                 point._matchedScreenPoint = match;
 
@@ -104,7 +104,7 @@ namespace rgbd_slam {
 
                 // update index and screen coordinates 
                 MatchedScreenPoint match;
-                match._screenCoordinates << detectedKeypointsObject.get_keypoint(matchIndex), 0;
+                match._screenCoordinates = matchedScreenpoint;
                 match._matchIndex = matchIndex;
                 point._matchedScreenPoint = match;
 
@@ -284,14 +284,13 @@ namespace rgbd_slam {
 
                 // get match coordinates, transform them to world coordinates
                 const screenCoordinates& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
-                const double matchedPointDepth = keypointObject.get_depth(matchedPointIndex);
 
-                if(utils::is_depth_valid(matchedPointDepth))
+                if(utils::is_depth_valid(matchedPointCoordinates.z()))
                 {
                     // transform screen point to world point
-                    const worldCoordinates& worldPointCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates.x(), matchedPointCoordinates.y(), matchedPointDepth, cameraToWorld);
+                    const worldCoordinates& worldPointCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates, cameraToWorld);
                     // get a measure of the estimated variance of the new world point
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates, matchedPointDepth);
+                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates);
 
                     // update this map point errors & position
                     mapPoint.update_matched(worldPointCoordinates, worldPointCovariance);
@@ -414,17 +413,16 @@ namespace rgbd_slam {
                         continue;
                     }
 
-                    const double depth = keypointObject.get_depth(i);
-                    if (not utils::is_depth_valid(depth))
+                    const screenCoordinates& screenPoint = keypointObject.get_keypoint(i);
+                    if (not utils::is_depth_valid(screenPoint.z()))
                     {
                         continue;
                     }
 
-                    const screenCoordinates& screenPoint = keypointObject.get_keypoint(i);
-                    const worldCoordinates& worldPoint = utils::screen_to_world_coordinates(screenPoint.x(), screenPoint.y(), depth, cameraToWorld);
+                    const worldCoordinates& worldPoint = utils::screen_to_world_coordinates(screenPoint, cameraToWorld);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint, depth);
+                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint);
 
                     Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
                     _stagedPoints.emplace(
@@ -432,7 +430,7 @@ namespace rgbd_slam {
                             newStagedPoint);
 
                     MatchedScreenPoint match;
-                    match._screenCoordinates << screenPoint, depth;
+                    match._screenCoordinates = screenPoint;
                     // This id is to unsure the tracking of this staged point for it's first detection
                     match._matchIndex = 0;
                     _stagedPoints.at(newStagedPoint._id)._matchedScreenPoint = match;

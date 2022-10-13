@@ -21,14 +21,15 @@ namespace rgbd_slam {
             return get_distance(pointA, pointB).lpNorm<1>();
         }
 
-        vector2 get_3D_to_2D_distance_2D(const worldCoordinates& worldPoint, const Eigen::VectorXd& cameraPoint, const worldToCameraMatrix& worldToCamera)
+        vector2 get_3D_to_2D_distance_2D(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const worldToCameraMatrix& worldToCamera)
         {
             const vector2 cameraPointAs2D(cameraPoint.x(), cameraPoint.y());
-            screenCoordinates worldPointAs2D; 
-            const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCamera, worldPointAs2D);
+            screenCoordinates projectedScreenPoint; 
+            const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCamera, projectedScreenPoint);
             if(isCoordinatesValid)
             {
-                const vector2& distance = get_distance(cameraPointAs2D, worldPointAs2D);
+                const vector2 screenPoint(projectedScreenPoint.x(), projectedScreenPoint.y());
+                const vector2& distance = get_distance(cameraPointAs2D, screenPoint);
                 assert (not std::isnan(distance.x()));
                 assert (not std::isnan(distance.y()));
                 return distance;
@@ -37,14 +38,15 @@ namespace rgbd_slam {
             return vector2(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
         }
 
-        double get_3D_to_2D_distance(const worldCoordinates& worldPoint, const Eigen::VectorXd& cameraPoint, const worldToCameraMatrix& worldToCamera)
+        double get_3D_to_2D_distance(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const worldToCameraMatrix& worldToCamera)
         {
             const vector2 cameraPointAs2D(cameraPoint.x(), cameraPoint.y());
-            screenCoordinates worldPointAs2D; 
-            const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCamera, worldPointAs2D);
+            screenCoordinates projectedScreenPoint; 
+            const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCamera, projectedScreenPoint);
             if(isCoordinatesValid)
             {
-                const double distance = get_distance_manhattan(cameraPointAs2D, worldPointAs2D);
+                const vector2 screenPoint(projectedScreenPoint.x(), projectedScreenPoint.y());
+                const double distance = get_distance_manhattan(cameraPointAs2D, screenPoint);
                 assert (not std::isnan(distance) and distance >= 0);
                 return distance;
             }
@@ -52,16 +54,16 @@ namespace rgbd_slam {
             return std::numeric_limits<double>::max();
         }
 
-        vector3 get_3D_to_3D_distance_3D(const vector3& worldPoint, const vector3& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
+        vector3 get_3D_to_3D_distance_3D(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
         {
-            const vector3& cameraPointAs3D = screen_to_world_coordinates( cameraPoint.x(), cameraPoint.y(), cameraPoint.z(), cameraToWorld);
+            const worldCoordinates& cameraPointAs3D = screen_to_world_coordinates(cameraPoint, cameraToWorld);
 
             return get_distance(worldPoint, cameraPointAs3D);
         }
 
-        double get_3D_to_3D_distance(const vector3& worldPoint, const vector3& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
+        double get_3D_to_3D_distance(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
         {
-            const vector3& cameraPointAs3D = screen_to_world_coordinates( cameraPoint.x(), cameraPoint.y(), cameraPoint.z(), cameraToWorld);
+            const worldCoordinates& cameraPointAs3D = screen_to_world_coordinates(cameraPoint, cameraToWorld);
 
             return get_distance_manhattan(worldPoint, cameraPointAs3D);
         }

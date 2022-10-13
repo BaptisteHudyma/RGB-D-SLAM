@@ -7,12 +7,12 @@
 namespace rgbd_slam {
     namespace utils {
 
-        const matrix33 get_screen_point_covariance(const screenCoordinates& screenCoordinates, const double depth) 
+        const matrix33 get_screen_point_covariance(const screenCoordinates& screenCoordinates) 
         {
             // Quadratic error model (uses depth as meters)
-            const double depthMeters = depth / 1000.0;
+            const double depthMeters = screenCoordinates.z() / 1000.0;
             // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = std::max(1.0, utils::is_depth_valid(depth) ? (0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
+            const double depthVariance = std::max(1.0, utils::is_depth_valid(screenCoordinates.z()) ? (0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
             // a zero variance will break the kalman gain
             assert(depthVariance > 0);
             // TODO xy variance should also depend on the placement of the pixel in x and y
@@ -42,12 +42,12 @@ namespace rgbd_slam {
         }
 
 
-        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const double depth)
+        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint)
         {
-            return get_world_point_covariance(screenPoint, depth, get_screen_point_covariance(screenPoint, depth));
+            return get_world_point_covariance(screenPoint, get_screen_point_covariance(screenPoint));
         }
 
-        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const double depth, const matrix33& screenPointCovariance)
+        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const matrix33& screenPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -56,9 +56,9 @@ namespace rgbd_slam {
 
             // Jacobian of the screen to world function. Use absolutes to prevent negative variances
             const matrix33 jacobian {
-                {depth / cameraFX, 0.0,              abs(screenPoint.x() - cameraCX) / cameraFX },
-                {0.0,              depth / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
-                {0.0,              0.0,              1}
+                {screenPoint.z() / cameraFX, 0.0,              abs(screenPoint.x() - cameraCX) / cameraFX },
+                {0.0,              screenPoint.z() / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
+                {0.0,              0.0,                        1}
             };
             
             matrix33 worldPointCovariance = jacobian * screenPointCovariance * jacobian.transpose();
@@ -84,7 +84,7 @@ namespace rgbd_slam {
                     continue;
 
                 // Convert to world coordinates
-                const worldCoordinates& matchedPoint3d = utils::screen_to_world_coordinates(match._screenPoint.x(), match._screenPoint.y(), match._screenPoint.z(), transformationMatrix);
+                const worldCoordinates& matchedPoint3d = utils::screen_to_world_coordinates(match._screenPoint, transformationMatrix);
 
                 // absolute of (world map Point - new world point)
                 const vector3& matchError = (match._worldPoint - matchedPoint3d).cwiseAbs();

@@ -17,26 +17,25 @@ namespace rgbd_slam {
         }
 
         
-        const worldCoordinates screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const cameraToWorldMatrix& cameraToWorld) 
+        const worldCoordinates screen_to_world_coordinates(const screenCoordinates& screenPoint, const cameraToWorldMatrix& cameraToWorld) 
         {
-            assert(measuredZ > 0);
-            assert(screenX >= 0 and screenY >= 0);
+            assert(screenPoint.z() > 0);
+            assert(screenPoint.x() >= 0 and screenPoint.y() >= 0);
 
-            const double x = (screenX - Parameters::get_camera_1_center_x()) * measuredZ / Parameters::get_camera_1_focal_x();
-            const double y = (screenY - Parameters::get_camera_1_center_y()) * measuredZ / Parameters::get_camera_1_focal_y();
+            const double x = (screenPoint.x() - Parameters::get_camera_1_center_x()) * screenPoint.z() / Parameters::get_camera_1_focal_x();
+            const double y = (screenPoint.y() - Parameters::get_camera_1_center_y()) * screenPoint.z() / Parameters::get_camera_1_focal_y();
 
-            vector4 worldPoint;
-            worldPoint << x, y, measuredZ, 1.0;
+            const cameraCoordinates cameraPoint(x, y, screenPoint.z());
 
-            return worldCoordinates(screen_to_world_coordinates(worldPoint, cameraToWorld).head<3>());
+            return worldCoordinates(camera_to_world_coordinates(cameraPoint, cameraToWorld).head<3>());
         }
 
-        const vector4 screen_to_world_coordinates(const vector4& vector4d, const cameraToWorldMatrix& cameraToWorld)
+        const vector4 camera_to_world_coordinates(const cameraCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
         {
-            return cameraToWorld * vector4d;
+            return cameraToWorld * cameraPoint.get_homogenous();
         }
 
-        bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenCoordinates)
+        bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenPoint)
         {
             assert( not std::isnan(position3D.x()) and not std::isnan(position3D.y()) and not std::isnan(position3D.z()) );
 
@@ -52,7 +51,7 @@ namespace rgbd_slam {
 
             if (not std::isnan(screenX) and not std::isnan(screenY))
             {
-                screenCoordinates << screenX, screenY;
+                screenPoint = screenCoordinates(screenX, screenY, cameraPoint.z());
                 return true;
             }
             return false;

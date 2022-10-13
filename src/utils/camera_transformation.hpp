@@ -14,36 +14,33 @@ namespace rgbd_slam {
         /*
          * \brief Transform a screen point with a depth value to a 3D point
          *
-         * \param[in] screenX X coordinates of the 2D point (double because we can have sub pixel accuracy)
-         * \param[in] screenY Y coordinates of the 2D point (double because we can have sub pixel accuracy)
-         * \param[in] measuredZ Measured z depth of the point, in millimeters
+         * \param[in] screenPoint The screen point to convert 
          * \param[in] cameraToWorld Matrix to transform local to world coordinates
          *
          * \return A 3D point in frame coordinates
          */
-        const worldCoordinates screen_to_world_coordinates(const double screenX, const double screenY, const double measuredZ, const cameraToWorldMatrix& cameraToWorld);
+        const worldCoordinates screen_to_world_coordinates(const screenCoordinates& screenPoint, const cameraToWorldMatrix& cameraToWorld);
 
         /**
-         * \brief Transform a vector in screen space to a vector in world space
+         * \brief Transform a vector in camera space to a vector in world space
          *
-         * \param[in] vector4d A vector in screen space
+         * \param[in] cameraPoint A vector in camera space
          * \param[in] cameraToWorld Matrix to transform local to world coordinates
          *
          * \return A vector in world space
          */
-        const vector4 screen_to_world_coordinates(const vector4& vector4d, const cameraToWorldMatrix& cameraToWorld);
-
+        const vector4 camera_to_world_coordinates(const cameraCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld);
 
         /**
          * \brief Transform a point from world to screen coordinate system
          *
          * \param[in] position3D Coordinates of the detected point (world coordinates)
          * \param[in] worldToCamera Matrix to transform the world to a local coordinate system
-         * \param[out] screenCoordinates The point screen coordinates, if the function returned true
+         * \param[out] screenPoint The point screen coordinates, if the function returned true
          *
          * \return True if the screen position is valid
          */
-        bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenCoordinates);
+        bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenPoint);
 
         /**
          * \brief Transform a vector in world space to a vector in camera space

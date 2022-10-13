@@ -65,14 +65,15 @@ namespace rgbd_slam {
 
                 // Fill depth values, add points to image boxes
                 const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
-                _depths = std::vector<double>(allKeypointSize, 0.0);
                 _keypoints = std::vector<screenCoordinates>(allKeypointSize);
 
                 // Add detected keypoints first
                 const uint keypointIndexOffset = static_cast<uint>(inKeypoints.size());
                 for(uint pointIndex = 0; pointIndex < keypointIndexOffset; ++pointIndex) {
-                    const cv::Point2f& pt = inKeypoints[pointIndex];;
-                    const screenCoordinates vectorKeypoint(pt.x, pt.y); 
+                    const cv::Point2f& pt = inKeypoints[pointIndex];
+                    // Depths are in millimeters, will be 0 if coordinates are invalid
+                    const double associatedDepth = get_depth_approximation(depthImage, pt);
+                    const screenCoordinates vectorKeypoint(pt.x, pt.y, associatedDepth); 
 
                     _keypoints[pointIndex] = vectorKeypoint; 
 
@@ -80,9 +81,6 @@ namespace rgbd_slam {
                     assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
 
                     _searchSpaceIndexContainer[searchSpaceIndex].push_back(pointIndex);
-
-                    // Depths are in millimeters, will be 0 if coordinates are invalid
-                    _depths[pointIndex] = get_depth_approximation(depthImage, pt);
                 }
 
 
@@ -100,8 +98,10 @@ namespace rgbd_slam {
                         outputs::log_error("A keypoint detected by optical flow does nothave a valid keypoint id");
                     }
 
-                    const cv::Point2f& pt = lastKeypointsWithIds._keypoints[pointIndex];;
-                    const screenCoordinates vectorKeypoint(pt.x, pt.y); 
+                    const cv::Point2f& pt = lastKeypointsWithIds._keypoints[pointIndex];
+                    // Depths are in millimeters, will be 0 if coordinates are invalid
+                    const double depthApproximation = get_depth_approximation(depthImage, pt);
+                    const screenCoordinates vectorKeypoint(pt.x, pt.y, depthApproximation); 
 
 #if 0
                     // add to matcher (not activated = never matched with descriptors)
@@ -111,10 +111,7 @@ namespace rgbd_slam {
                     _searchSpaceIndexContainer[searchSpaceIndex].push_back(newKeypointIndex);
 #endif
 
-                    _keypoints[newKeypointIndex] = vectorKeypoint; 
-
-                    // Depths are in millimeters, will be 0 if coordinates are invalid
-                    _depths[newKeypointIndex] = get_depth_approximation(depthImage, pt);
+                    _keypoints[newKeypointIndex] = vectorKeypoint;
                 }
             }
 
