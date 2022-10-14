@@ -102,10 +102,12 @@ namespace rgbd_slam {
                 if (utils::compute_pose_variance(finalPose, inlierMatchedPoints, estimatedPoseVariance))
                 {
                     finalPose.set_position_variance( estimatedPoseVariance + currentPose.get_position_variance());
-                    return true;
                 }
                 else
-                    outputs::log_error("Could not compute pose variance, as we only work with 2D points");
+                {
+                    outputs::log_warning("Could not compute pose variance, as we only work with 2D points");
+                }
+                return true;
             }
 
             return false;

@@ -14,6 +14,14 @@ namespace rgbd_slam {
                 //<< location.function_name() << " | "
                 << message << std::endl;
         }
+        void log_warning(const std::string_view& message, const std::source_location& location)
+        {
+            std::cerr << "[WARN] "
+                << std::filesystem::path(location.file_name()).filename().string() << "("
+                << location.line() << ":" << location.column() <<  ") "
+                //<< location.function_name() << " | "
+                << message << std::endl;
+        }
         void log_error(const std::string_view& message, const std::source_location& location)
         {
             std::cerr << "[ERR] "
