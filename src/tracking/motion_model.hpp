@@ -35,6 +35,9 @@ namespace tracking {
 
         protected:
 
+            const quaternion get_rotational_velocity(const quaternion& lastRotation, const quaternion& lastVelocity, const quaternion& currentRotation) const;
+            const vector3 get_position_velocity(const vector3& lastPosition, const vector3& lastVelocity, const vector3& currentPosition) const;
+
         private:
                 // Last known rotation quaternion estimated by the motion model (set by update_model)
                 quaternion _lastQ;
