@@ -215,7 +215,7 @@ int main(int argc, char* argv[])
         if (depthImage.empty())
         {
             std::cerr << "Could not load depth image " << depthImagePath << std::endl;
-            depthImage = cv::Mat(480, 640, CV_8UC1);
+            depthImage = cv::Mat(480, 640, CV_8UC1, cv::Scalar(0.0));
         }
         // convert to mm & float 32
         depthImage.convertTo(depthImage, CV_32FC1);
