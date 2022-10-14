@@ -206,16 +206,17 @@ int main(int argc, char* argv[])
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
         cv::Mat depthImage = cv::imread(depthImagePath, cv::IMREAD_GRAYSCALE);
 
-        if (rgbImage.empty() or depthImage.empty())
+        if (rgbImage.empty())// or depthImage.empty())
         {
-            std::cerr << "Cannot load ";
-            if (rgbImage.empty())
-                std::cerr << ", rgb image " << rgbImagePath;
-            if (depthImage.empty())
-                std::cerr << ", depth image " << depthImagePath;
-            std::cerr << std::endl;
+            std::cerr << "Cannot load rgb image " << rgbImagePath<< std::endl;
             continue;
         }
+        if (depthImage.empty())
+        {
+            std::cerr << "Could not load depth image " << depthImagePath << std::endl;
+            depthImage = cv::Mat(480, 640, CV_8UC1);
+        }
+
         // convert to mm & float 32
         depthImage.convertTo(depthImage, CV_32FC1);
         depthImage *= 100.0 / 5.0;
