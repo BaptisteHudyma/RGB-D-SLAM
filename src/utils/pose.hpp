@@ -51,7 +51,7 @@ namespace rgbd_slam {
             public PoseBase
         {
             public:
-                Pose(); 
+                Pose();
                 Pose(const vector3& position, const quaternion& orientation);
                 Pose(const vector3& position, const quaternion& orientation, const vector3& poseVariance);
 

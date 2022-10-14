@@ -131,13 +131,14 @@ int main(int argc, char* argv[])
     std::string firstGroundTruthLine;
     std::ifstream initGroundTruth(groundTruthPath);
     while (std::getline(initGroundTruth, firstGroundTruthLine) and firstGroundTruthLine[0] == '#');
-    const rgbd_slam::utils::Pose& initialGroundTruthPose = get_ground_truth(firstGroundTruthLine);
-
-    //start with ground truth pose
-    rgbd_slam::utils::Pose pose(
-        initialGroundTruthPose.get_position(),
-        initialGroundTruthPose.get_orientation_quaternion()
-    );
+    const bool isGroundTruthAvailable = firstGroundTruthLine != "";
+    
+    rgbd_slam::utils::Pose pose;
+    if (isGroundTruthAvailable)
+    {
+        const rgbd_slam::utils::Pose& initialGroundTruthPose = get_ground_truth(firstGroundTruthLine);
+        pose.set_parameters(initialGroundTruthPose.get_position(), initialGroundTruthPose.get_orientation_quaternion());
+    }
 
     // Load a default set of parameters
     rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
@@ -179,9 +180,8 @@ int main(int argc, char* argv[])
             continue;
 
         // get the ground truth from file
-        std::string groundTruthLine;
+        std::string groundTruthLine = "";
         std::getline(groundTruthFile, groundTruthLine);
-        const rgbd_slam::utils::Pose& groundTruthPose = get_ground_truth(groundTruthLine);
 
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
@@ -209,7 +209,12 @@ int main(int argc, char* argv[])
 
         if (rgbImage.empty() or depthImage.empty())
         {
-            std::cerr << "Cannot load " << rgbImagePath << " or " << depthImagePath << std::endl;
+            std::cerr << "Cannot load ";
+            if (rgbImage.empty())
+                std::cerr << ", rgb image " << rgbImagePath;
+            if (depthImage.empty())
+                std::cerr << ", depth image " << depthImagePath;
+            std::cerr << std::endl;
             continue;
         }
         // convert to mm & float 32
@@ -232,8 +237,12 @@ int main(int argc, char* argv[])
         meanTreatmentDuration += trackingDuration;
 
         // estimate error to ground truth
-        positionError = pose.get_position_error(groundTruthPose);
-        rotationError = pose.get_rotation_error(groundTruthPose);
+        if (isGroundTruthAvailable)
+        {
+            const rgbd_slam::utils::Pose& groundTruthPose = get_ground_truth(groundTruthLine);
+            positionError = pose.get_position_error(groundTruthPose);
+            rotationError = pose.get_rotation_error(groundTruthPose);
+        }
 
         // display masks on image
         cv::Mat segRgb = rgbImage.clone();
@@ -268,7 +277,8 @@ int main(int argc, char* argv[])
         trajectoryFile.close();
 
     std::cout << std::endl;
-    std::cout << "Pose error: " << positionError/10.0 << " cm | " << rotationError << " °" << std::endl;
+    if (isGroundTruthAvailable)
+        std::cout << "Pose error: " << positionError/10.0 << " cm | " << rotationError << " °" << std::endl;
     std::cout << "End pose : " << pose << std::endl;
     std::cout << "Process terminated at frame " << frameIndex << std::endl;
     std::cout << std::endl;
