@@ -9,19 +9,7 @@ namespace rgbd_slam {
         /**
          * \brief Compute a signed distance between two points
          */
-        Eigen::VectorXd get_distance(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB);
-
-        /**
-         * \brief Compute a distance between two 3D points
-         * \return an unsigned euclidean distance
-         */
-        double get_distance_euclidean(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB);
-
-        /**
-         * \brief Compute a distance between two 3D points
-         * \return an unsigned manhattan distance
-         */
-        double get_distance_manhattan(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB);
+        Eigen::VectorXd get_signed_distance(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB);
 
         /**
          * \brief Compute a signed 2D distance between a world point and a camera point, by retroprojecting the world point to camera space.

@@ -36,6 +36,7 @@ namespace tracking {
     const vector3 Motion_Model::get_position_velocity(const vector3& lastPosition, const vector3& lastVelocity, const vector3& currentPosition) const
     {
         const vector3 newLinVelocity = currentPosition - lastPosition;
+        // smooth velocity over time (decaying model)
         return (newLinVelocity + lastVelocity) * 0.5;
     }
 
@@ -46,7 +47,6 @@ namespace tracking {
 
         //compute next linear velocity
         const vector3& newLinVelocity = get_position_velocity(_lastPosition, _linearVelocity, currentPosition);
-
         //compute new angular velocity
         const quaternion& newVelocity = get_rotational_velocity(_lastQ, _angularVelocity, currentRotation);
 
@@ -64,6 +64,7 @@ namespace tracking {
         const quaternion& currentRotation = pose.get_orientation_quaternion();
         const vector3& currentPosition = pose.get_position();
 
+        //compute next linear velocities
         _angularVelocity = get_rotational_velocity(_lastQ, _angularVelocity, currentRotation);
         _linearVelocity = get_position_velocity(_lastPosition, _linearVelocity, currentPosition);
 

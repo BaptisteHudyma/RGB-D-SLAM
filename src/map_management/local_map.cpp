@@ -332,6 +332,7 @@ namespace rgbd_slam {
                         }
                     }
 #endif
+                    return;
                 }
             }
 
@@ -414,6 +415,7 @@ namespace rgbd_slam {
                         continue;
                     }
 
+                    // TODO: add points with invalid depth to stagged map  ?
                     const screenCoordinates& screenPoint = keypointObject.get_keypoint(i);
                     if (not utils::is_depth_valid(screenPoint.z()))
                     {

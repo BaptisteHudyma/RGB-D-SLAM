@@ -37,7 +37,9 @@ namespace rgbd_slam {
             const double a = optimizationCoefficients.norm();
             const double ha = a * 0.5;
             const double scale = (a > 0) ? (sin(ha) / a) : 0.5;
-            return quaternion(cos(ha), optimizationCoefficients.x() * scale, optimizationCoefficients.y() * scale, optimizationCoefficients.z() * scale);
+            quaternion rotation(cos(ha), optimizationCoefficients.x() * scale, optimizationCoefficients.y() * scale, optimizationCoefficients.z() * scale);
+            rotation.normalize();
+            return rotation;
         }
 
         /**
