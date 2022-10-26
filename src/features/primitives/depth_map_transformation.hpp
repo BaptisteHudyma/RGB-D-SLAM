@@ -9,7 +9,8 @@ namespace features {
 namespace primitives {
 
     /**
-      * \brief Handles operations on the initial depth image, to transform it on a connected cloud points. It also handles the loading of the camera parameters from the configuration file
+      * \brief Handles operations on the initial depth image, to transform it on a connected cloud points.
+      * It also handles the loading of the camera parameters from the configuration file
       */
     class Depth_Map_Transformation {
         public:

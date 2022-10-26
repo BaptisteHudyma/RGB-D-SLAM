@@ -7,6 +7,9 @@
 namespace rgbd_slam {
     namespace outputs {
 
+        /**
+         * \brief Interface for the map writter classes
+         */
         class IMap_Writer
         {
             public:
@@ -20,6 +23,10 @@ namespace rgbd_slam {
 
         };
 
+        /**
+         * Writes .xyz file formats.
+         * Stores only 3D points
+         */
         class XYZ_Map_Writer :
             public IMap_Writer
         {
@@ -29,6 +36,10 @@ namespace rgbd_slam {
                 void add_point(const vector3& pointCoordinates) override;
         };
 
+        /**
+         * Writes .pcd file formats.
+         * Point Cloud Data format
+         */
         class PCD_Map_Writer:
             public IMap_Writer
         {

@@ -24,7 +24,8 @@ namespace rgbd_slam {
 
 
             /**
-             * \brief A base class used to compute the tracking analysis. It is a pure virtual class.
+             * \brief A base class used to compute the tracking analysis.
+             * It is a pure virtual class.
              */
             class Primitive 
             {
@@ -90,7 +91,8 @@ namespace rgbd_slam {
             };
 
             /**
-             * \brief Specification of the Primitive class. Handles cylinder primitives.
+             * \brief Specification of the Primitive class.
+             * Handles cylinder primitives.
              */
             class Cylinder : public Primitive
             {
@@ -127,7 +129,8 @@ namespace rgbd_slam {
             };
 
             /**
-             * \brief Specification of the Primitive class. Handles planes.
+             * \brief Specification of the Primitive class.
+             * Handles planes.
              */
             class Plane : public Primitive 
             {

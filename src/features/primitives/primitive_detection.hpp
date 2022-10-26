@@ -22,7 +22,8 @@ namespace rgbd_slam {
             typedef std::map<uchar, primitive_uniq_ptr> primitive_container; 
 
             /**
-             * \brief Main extraction class. Extracts shape primitives from an organized cloud of points
+             * \brief Main extraction class.
+             * Extracts shape primitives from an organized cloud of points
              */
             class Primitive_Detection {
                 //check for planes in an organized depth points matrix 

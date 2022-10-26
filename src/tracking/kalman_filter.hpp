@@ -7,9 +7,10 @@
 namespace rgbd_slam {
     namespace tracking {
 
-        // Implement a Kalman filter that can be shared by multiple systems, if they share the same dimentions
+        /**
+         * \brief Implement a Kalman filter that can be shared by multiple systems, if they share the same dimentions
+         */
         class SharedKalmanFilter {
-
         public:
 
             /**
@@ -46,8 +47,11 @@ namespace rgbd_slam {
             Eigen::MatrixXd _identity;
         };
 
-        class KalmanFilter : public SharedKalmanFilter {
 
+        /**
+         * \brief Implement a Kalman filter, to track a single system
+         */
+        class KalmanFilter : public SharedKalmanFilter {
         public:
             /**
             * \brief Create a Kalman filter with the specified matrices.

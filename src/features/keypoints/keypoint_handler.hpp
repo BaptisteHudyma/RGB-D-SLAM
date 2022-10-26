@@ -34,7 +34,7 @@ namespace rgbd_slam {
             };
 
             /**
-             * \brief Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association
+             * \brief Handler object to store a reference to detected key points. Passed to other classes for data association purposes
              */
             class Keypoint_Handler
             {

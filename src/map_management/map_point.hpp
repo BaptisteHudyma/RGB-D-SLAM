@@ -116,7 +116,7 @@ namespace rgbd_slam {
         };
 
         /**
-         * \brief Concurrent for a map point
+         * \brief Candidate for a map point
          */
         class Staged_Point
             : public IMap_Point_With_Tracking
@@ -157,7 +157,7 @@ namespace rgbd_slam {
 
 
         /**
-         * \brief A map point structure, containing all the necessary informations to identify a map point
+         * \brief A map point structure, containing all the necessary informations to identify a map point in local map
          */
         class Map_Point 
             : public IMap_Point_With_Tracking 

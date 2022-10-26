@@ -25,7 +25,9 @@ namespace rgbd_slam {
     namespace map_management {
 
         /**
-         * \brief Maintain a local map around the camera. Can return matched features, and update the global map when features are estimated to be reliable. For now we dont have a global map
+         * \brief Maintain a local (around the camera) map.
+         * Handle the feature association and tracking in local space. 
+         * Can return matched features, and update the global map when features are estimated to be reliable.
          */
         class Local_Map {
             public:

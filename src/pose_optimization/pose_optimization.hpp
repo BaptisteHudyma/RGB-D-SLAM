@@ -8,6 +8,9 @@
 namespace rgbd_slam {
     namespace pose_optimization {
 
+        /**
+         * \brief Find the transformation between a matches feature sets, using a custom Levenberg Marquardt method
+         */
         class Pose_Optimization
         {
             public:

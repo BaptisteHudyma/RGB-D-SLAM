@@ -6,7 +6,10 @@
 
 namespace rgbd_slam {
     namespace tracking {
-
+        
+        /**
+         * \brief Triangulate 2D point (screen space) to find 3D correspondances (camera space)
+         */
         class Triangulation
         {
             public:

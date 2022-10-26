@@ -20,6 +20,10 @@
 
 namespace rgbd_slam {
 
+    /**
+     * \brief Main Simultaneous localisation and tracking class.
+     * This is the input of the program, the only needed interaction from a user view point.
+     */
     class RGBD_SLAM {
         public:
             

@@ -19,7 +19,8 @@ namespace rgbd_slam {
 
 
             /**
-             * \brief Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting
+             * \brief Stored a cylinder segment.
+             * Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting
              */
             class Cylinder_Segment {
                 protected:

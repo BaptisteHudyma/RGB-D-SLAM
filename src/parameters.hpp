@@ -5,6 +5,11 @@
 
 namespace rgbd_slam {
 
+    /**
+     * \brief Store all parameters of this SLAM program.
+     * It should be used as a static class everywhere in the program.
+     * If the parameters are not loaded from a file, a set of default parameters will be used.
+     */
     class Parameters
     {
         public:

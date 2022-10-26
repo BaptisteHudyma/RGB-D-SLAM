@@ -8,14 +8,15 @@ namespace rgbd_slam {
         namespace keypoints {
 
             /**
-             * \brief A class to detect and store keypoints
+             * \brief A class to detect and track keypoints.
+             * This class will detect keypoints in gray images, compute descriptors and track those points using optical flow and/or descriptor matching
              */
             class Key_Point_Extraction 
             {
                 public:
 
                     /**
-                     *
+                     * \param[in] minHessian The "precision" of the keypoint descriptor
                      */
                     Key_Point_Extraction(const uint minHessian = 25);
 

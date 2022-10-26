@@ -10,7 +10,9 @@ namespace rgbd_slam {
         namespace primitives {
 
             /**
-             * \brief Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program
+             * \brief Node class representing a depth graph point.
+             * Used to find planes in a depth image.
+             * Mainly inspired from CAPE program
              */
             class Plane_Segment {
                 public:
