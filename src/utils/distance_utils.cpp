@@ -1,7 +1,7 @@
 #include "distance_utils.hpp"
 
 #include "camera_transformation.hpp"
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace rgbd_slam {
     namespace utils {
@@ -15,7 +15,7 @@ namespace rgbd_slam {
         {
             const vector2 cameraPointAs2D(cameraPoint.x(), cameraPoint.y());
             screenCoordinates projectedScreenPoint; 
-            const bool isCoordinatesValid = compute_world_to_screen_coordinates(worldPoint, worldToCamera, projectedScreenPoint);
+            const bool isCoordinatesValid = worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint);
             if(isCoordinatesValid)
             {
                 const vector2 screenPoint(projectedScreenPoint.x(), projectedScreenPoint.y());
@@ -40,14 +40,14 @@ namespace rgbd_slam {
 
         vector3 get_3D_to_3D_distance_3D(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
         {
-            const worldCoordinates& cameraPointAs3D = screen_to_world_coordinates(cameraPoint, cameraToWorld);
+            const worldCoordinates& cameraPointAs3D = cameraPoint.to_world_coordinates(cameraToWorld);
 
             return get_signed_distance(worldPoint, cameraPointAs3D);
         }
 
         double get_3D_to_3D_distance(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
         {
-            const worldCoordinates& cameraPointAs3D = screen_to_world_coordinates(cameraPoint, cameraToWorld);
+            const worldCoordinates& cameraPointAs3D = cameraPoint.to_world_coordinates(cameraToWorld);
 
             return get_signed_distance(worldPoint, cameraPointAs3D).lpNorm<1>();
         }

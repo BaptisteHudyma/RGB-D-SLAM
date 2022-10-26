@@ -70,7 +70,7 @@ namespace rgbd_slam {
             {
                 // No match: try to find match in a window around the point
                 utils::screenCoordinates projectedMapPoint;
-                const bool isScreenCoordinatesValid = utils::compute_world_to_screen_coordinates(point._coordinates, worldToCamera, projectedMapPoint);
+                const bool isScreenCoordinatesValid = (point._coordinates).to_screen_coordinates(worldToCamera, projectedMapPoint);
                 if (isScreenCoordinatesValid)
                     matchIndex = detectedKeypointsObject.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
             }
@@ -289,7 +289,7 @@ namespace rgbd_slam {
                 if(utils::is_depth_valid(matchedPointCoordinates.z()))
                 {
                     // transform screen point to world point
-                    const utils::worldCoordinates& worldPointCoordinates = utils::screen_to_world_coordinates(matchedPointCoordinates, cameraToWorld);
+                    const utils::worldCoordinates& worldPointCoordinates = matchedPointCoordinates.to_world_coordinates(cameraToWorld);
                     // get a measure of the estimated variance of the new world point
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates);
 
@@ -422,7 +422,7 @@ namespace rgbd_slam {
                         continue;
                     }
 
-                    const utils::worldCoordinates& worldPoint = utils::screen_to_world_coordinates(screenPoint, cameraToWorld);
+                    const utils::worldCoordinates& worldPoint = screenPoint.to_world_coordinates(cameraToWorld);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint);
@@ -488,7 +488,7 @@ namespace rgbd_slam {
             if (mapPoint._matchedScreenPoint.is_matched())
             {
                 utils::screenCoordinates screenPoint; 
-                const bool isCoordinatesValid = utils::compute_world_to_screen_coordinates(mapPoint._coordinates, worldToCameraMatrix, screenPoint);
+                const bool isCoordinatesValid = (mapPoint._coordinates).to_screen_coordinates(worldToCameraMatrix, screenPoint);
 
                 //Map Point are green 
                 if (isCoordinatesValid)

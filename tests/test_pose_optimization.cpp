@@ -82,7 +82,7 @@ namespace rgbd_slam {
             const utils::worldCoordinates worldPointStart(point.x, point.y, point.z);
             //
             utils::screenCoordinates transformedPoint; 
-            const bool isScreenCoordinatesValid = utils::compute_world_to_screen_coordinates(worldPointStart, worldToCamera, transformedPoint);
+            const bool isScreenCoordinatesValid = worldPointStart.to_screen_coordinates(worldToCamera, transformedPoint);
             if (isScreenCoordinatesValid)
             {
                 // Dont care about the map id

@@ -136,6 +136,7 @@ add_library(utils SHARED
     ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
     ${UTILS}/pose.cpp
+    ${UTILS}/coordinates.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED

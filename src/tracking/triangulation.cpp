@@ -1,7 +1,7 @@
 #include "triangulation.hpp"
 
-#include "types.hpp"
-#include "utils/camera_transformation.hpp"
+#include "../types.hpp"
+#include "../utils/camera_transformation.hpp"
 #include "../parameters.hpp"
 
 namespace rgbd_slam {
@@ -17,7 +17,7 @@ namespace rgbd_slam {
         bool Triangulation::is_retroprojection_valid(const utils::worldCoordinates& worldPoint, const utils::screenCoordinates& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
         {
             utils::screenCoordinates projectedScreenPoint;
-            const bool isRetroprojectionValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCamera, projectedScreenPoint);
+            const bool isRetroprojectionValid = worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint);
             if (not isRetroprojectionValid)
             {
                 return false;

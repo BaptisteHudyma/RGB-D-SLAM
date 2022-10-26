@@ -2,7 +2,7 @@
 
 #include "camera_transformation.hpp"
 #include "../parameters.hpp"
-#include "types.hpp"
+#include "../types.hpp"
 
 namespace rgbd_slam {
     namespace utils {
@@ -84,7 +84,7 @@ namespace rgbd_slam {
                     continue;
 
                 // Convert to world coordinates
-                const worldCoordinates& matchedPoint3d = utils::screen_to_world_coordinates(match._screenPoint, transformationMatrix);
+                const worldCoordinates& matchedPoint3d = (match._screenPoint).to_world_coordinates(transformationMatrix);
 
                 // absolute of (world map Point - new world point)
                 const vector3& matchError = (match._worldPoint - matchedPoint3d).cwiseAbs();
