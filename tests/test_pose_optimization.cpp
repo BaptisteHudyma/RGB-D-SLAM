@@ -5,7 +5,7 @@
 #include "pose_optimization/pose_optimization.hpp"
 #include "outputs/logger.hpp"
 
-#include "types.hpp"
+#include "utils/coordinates.hpp"
 #include "utils/pose.hpp"
 #include "utils/camera_transformation.hpp"
 #include "utils/angle_utils.hpp"
@@ -79,9 +79,9 @@ namespace rgbd_slam {
         for (const Point point : get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error))
         {
             // world coordinates
-            const worldCoordinates worldPointStart(point.x, point.y, point.z);
+            const utils::worldCoordinates worldPointStart(point.x, point.y, point.z);
             //
-            screenCoordinates transformedPoint; 
+            utils::screenCoordinates transformedPoint; 
             const bool isScreenCoordinatesValid = utils::compute_world_to_screen_coordinates(worldPointStart, worldToCamera, transformedPoint);
             if (isScreenCoordinatesValid)
             {

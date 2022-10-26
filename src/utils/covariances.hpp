@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_UTILS_COVARIANCES_HPP
 #define RGBDSLAM_UTILS_COVARIANCES_HPP
 
-#include "../types.hpp"
+#include "coordinates.hpp"
 
 #include "pose.hpp"
 #include "matches_containers.hpp"

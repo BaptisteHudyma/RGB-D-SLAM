@@ -8,7 +8,7 @@
 namespace rgbd_slam {
     namespace map_management {
 
-        Point::Point (const worldCoordinates& coordinates, const cv::Mat& descriptor) :
+        Point::Point (const utils::worldCoordinates& coordinates, const cv::Mat& descriptor) :
             _coordinates(coordinates), 
             _descriptor(descriptor),
             _id(Point::_currentPointId)
@@ -16,7 +16,7 @@ namespace rgbd_slam {
             Point::_currentPointId += 1;
         }
 
-        Point::Point (const worldCoordinates& coordinates, const cv::Mat& descriptor, const size_t id) :
+        Point::Point (const utils::worldCoordinates& coordinates, const cv::Mat& descriptor, const size_t id) :
             _coordinates(coordinates), 
             _descriptor(descriptor),
             _id(id)
@@ -28,7 +28,7 @@ namespace rgbd_slam {
          *     Tracked point
          */
 
-        IMap_Point_With_Tracking::IMap_Point_With_Tracking(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor)
+        IMap_Point_With_Tracking::IMap_Point_With_Tracking(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor)
             : Point(coordinates, descriptor)
         {
             _matchedScreenPoint.mark_unmatched();
@@ -38,7 +38,7 @@ namespace rgbd_slam {
 
             _pointCovariance = covariance;
         }
-        IMap_Point_With_Tracking::IMap_Point_With_Tracking(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
+        IMap_Point_With_Tracking::IMap_Point_With_Tracking(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
             : Point(coordinates, descriptor, id)
         {
             _matchedScreenPoint.mark_unmatched();
@@ -70,7 +70,7 @@ namespace rgbd_slam {
             IMap_Point_With_Tracking::_kalmanFilter = new tracking::SharedKalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
         }
 
-        double IMap_Point_With_Tracking::track_point(const worldCoordinates& newPointCoordinates, const matrix33& newPointCovariance)
+        double IMap_Point_With_Tracking::track_point(const utils::worldCoordinates& newPointCoordinates, const matrix33& newPointCovariance)
         {
             assert(IMap_Point_With_Tracking::_kalmanFilter != nullptr);
 
@@ -89,14 +89,14 @@ namespace rgbd_slam {
          *      Staged_Point
          */
 
-        Staged_Point::Staged_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+        Staged_Point::Staged_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
             IMap_Point_With_Tracking(coordinates, covariance, descriptor),
 
             _matchesCount(0)
             {
             }
 
-        Staged_Point::Staged_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
+        Staged_Point::Staged_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
             IMap_Point_With_Tracking(coordinates, covariance, descriptor, id),
 
             _matchesCount(0)
@@ -120,7 +120,7 @@ namespace rgbd_slam {
             _matchesCount -= removeNMatches;
         }
 
-        double Staged_Point::update_matched(const worldCoordinates& newPointCoordinates, const matrix33& covariance)
+        double Staged_Point::update_matched(const utils::worldCoordinates& newPointCoordinates, const matrix33& covariance)
         {
             _matchesCount += 1;
 
@@ -137,7 +137,7 @@ namespace rgbd_slam {
          */
 
 
-        Map_Point::Map_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+        Map_Point::Map_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
             IMap_Point_With_Tracking(coordinates, covariance, descriptor),
 
             _failTrackingCount(0),
@@ -146,7 +146,7 @@ namespace rgbd_slam {
                 set_random_color();
             }
 
-        Map_Point::Map_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
+        Map_Point::Map_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
             IMap_Point_With_Tracking(coordinates, covariance, descriptor, id),
 
             _failTrackingCount(0),
@@ -190,7 +190,7 @@ namespace rgbd_slam {
         /**
          * \brief Update this map point with the given informations: it is matched with another point
          */
-        double Map_Point::update_matched(const worldCoordinates& newPointCoordinates, const matrix33& covariance) 
+        double Map_Point::update_matched(const utils::worldCoordinates& newPointCoordinates, const matrix33& covariance) 
         {
             _failTrackingCount = 0;
             _age += 1;

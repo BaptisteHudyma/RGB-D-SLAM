@@ -1,10 +1,10 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
-#include "../types.hpp"
 #include <opencv2/opencv.hpp>
 
-#include "tracking/kalman_filter.hpp"
+#include "../utils/coordinates.hpp"
+#include "../tracking/kalman_filter.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -20,7 +20,7 @@ namespace rgbd_slam {
                 _screenCoordinates.setZero();
             };
 
-            explicit MatchedScreenPoint(const screenCoordinates& screenPoint, const int matchIndex = UNMATCHED_POINT_INDEX):
+            explicit MatchedScreenPoint(const utils::screenCoordinates& screenPoint, const int matchIndex = UNMATCHED_POINT_INDEX):
                 _screenCoordinates(screenPoint),
                 _matchIndex(matchIndex)
             {};
@@ -37,7 +37,7 @@ namespace rgbd_slam {
             }
 
             // matched point coordinates in screen space
-            screenCoordinates _screenCoordinates;
+            utils::screenCoordinates _screenCoordinates;
 
             // Match index in the detected point object (can be UNMATCHED_POINT_INDEX);
             int _matchIndex;
@@ -49,7 +49,7 @@ namespace rgbd_slam {
         struct Point 
         {
             // world coordinates
-            worldCoordinates _coordinates;
+            utils::worldCoordinates _coordinates;
 
             // 3D descriptor (SURF)
             cv::Mat _descriptor;
@@ -58,9 +58,9 @@ namespace rgbd_slam {
             const size_t _id;
 
             protected:
-            Point (const worldCoordinates& coordinates, const cv::Mat& descriptor);
+            Point (const utils::worldCoordinates& coordinates, const cv::Mat& descriptor);
             // copy constructor
-            Point (const worldCoordinates& coordinates, const cv::Mat& descriptor, const size_t id);
+            Point (const utils::worldCoordinates& coordinates, const cv::Mat& descriptor, const size_t id);
 
             inline static size_t _currentPointId = 1;   // 0 is invalid
         };
@@ -71,8 +71,8 @@ namespace rgbd_slam {
         struct IMap_Point_With_Tracking
             : public Point
         {
-            IMap_Point_With_Tracking(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
-            IMap_Point_With_Tracking(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
+            IMap_Point_With_Tracking(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
+            IMap_Point_With_Tracking(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
             /**
              * \brief Compute a confidence in this point (-1, 1)
              */
@@ -81,7 +81,7 @@ namespace rgbd_slam {
             /**
              * \brief Call when this point was matched to another point
              */
-            virtual double update_matched(const worldCoordinates& newPointCoordinates, const matrix33& covariance) = 0;
+            virtual double update_matched(const utils::worldCoordinates& newPointCoordinates, const matrix33& covariance) = 0;
 
             /**
              * \brief Call when this point was not matched to anything
@@ -101,7 +101,7 @@ namespace rgbd_slam {
              * \brief update the current point by tracking with a kalman filter. Will update the point position & covariance
              * \return The distance between the new position ans the previous one
              */
-            double track_point(const worldCoordinates& newPointCoordinates, const matrix33& newPointCovariance);
+            double track_point(const utils::worldCoordinates& newPointCoordinates, const matrix33& newPointCovariance);
 
             /**
              * \brief Build the inputs caracteristics of the kalman filter
@@ -122,8 +122,8 @@ namespace rgbd_slam {
             : public IMap_Point_With_Tracking
         {
             public:
-                Staged_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
-                Staged_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
+                Staged_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
+                Staged_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
 
                 // Count the number of times his points was matched
                 int _matchesCount;
@@ -146,7 +146,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Call when this point was matched to another point
                  */
-                double update_matched(const worldCoordinates& newPointCoordinates, const matrix33& covariance) override;
+                double update_matched(const utils::worldCoordinates& newPointCoordinates, const matrix33& covariance) override;
 
             private:
                 /**
@@ -164,8 +164,8 @@ namespace rgbd_slam {
         {
 
             public:
-                Map_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
-                Map_Point(const worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
+                Map_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
+                Map_Point(const utils::worldCoordinates& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
 
 
                 /**
@@ -181,7 +181,7 @@ namespace rgbd_slam {
                 /**
                  * \brief Update this map point with the given informations: it is matched with another point
                  */
-                double update_matched(const worldCoordinates& newPointCoordinates, const matrix33& covariance) override;
+                double update_matched(const utils::worldCoordinates& newPointCoordinates, const matrix33& covariance) override;
 
                 int get_age() const {
                     return _age;

@@ -14,9 +14,9 @@ namespace rgbd_slam {
             return utils::Pose(newPosition, pose.get_orientation_quaternion());
         }
 
-        bool Triangulation::is_retroprojection_valid(const worldCoordinates& worldPoint, const screenCoordinates& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
+        bool Triangulation::is_retroprojection_valid(const utils::worldCoordinates& worldPoint, const utils::screenCoordinates& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
         {
-            screenCoordinates projectedScreenPoint;
+            utils::screenCoordinates projectedScreenPoint;
             const bool isRetroprojectionValid = utils::compute_world_to_screen_coordinates(worldPoint, worldToCamera, projectedScreenPoint);
             if (not isRetroprojectionValid)
             {
@@ -28,7 +28,7 @@ namespace rgbd_slam {
             return (retroprojectionError > maximumRetroprojectionError);
         }
 
-        bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const screenCoordinates& point2Da, const screenCoordinates& point2Db, worldCoordinates& triangulatedPoint) 
+        bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const utils::screenCoordinates& point2Da, const utils::screenCoordinates& point2Db, utils::worldCoordinates& triangulatedPoint) 
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -50,7 +50,7 @@ namespace rgbd_slam {
                                 pointBy * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
             // singular value decomposition
-            const worldCoordinates worldPoint (
+            const utils::worldCoordinates worldPoint (
                 triangulationMatrix.leftCols<3>().jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV).solve(-triangulationMatrix.col(3))
             );
 

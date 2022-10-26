@@ -1,7 +1,7 @@
 #include "camera_transformation.hpp"
 
 #include "../parameters.hpp"
-#include "types.hpp"
+#include "../types.hpp"
 #include <memory>
 
 namespace rgbd_slam {
@@ -30,7 +30,7 @@ namespace rgbd_slam {
             const vector4 homogenousWorldCoords = cameraToWorld * cameraPoint.get_homogenous();
             return worldCoordinates(homogenousWorldCoords.head<3>());
         }
-        
+
         bool compute_world_to_screen_coordinates(const worldCoordinates& position3D, const worldToCameraMatrix& worldToCamera, screenCoordinates& screenPoint)
         {
             assert( not std::isnan(position3D.x()) and not std::isnan(position3D.y()) and not std::isnan(position3D.z()) );
