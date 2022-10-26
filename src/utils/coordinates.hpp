@@ -15,6 +15,9 @@ namespace utils {
     */
     bool is_depth_valid(const double depth);
 
+    /**
+     * \brief Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters)
+     */
     struct ScreenCoordinate : public vector3 {
         /**
          * \brief Scores a 3D coordinate in screenspace (screen x, screen y, depth)
@@ -35,6 +38,9 @@ namespace utils {
     };
 
 
+    /**
+     * \brief Contains a single of coordinate in camera space. Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center
+     */
     struct CameraCoordinate : public vector3 {
         /**
          * \brief Scores a 3D coordinate in camera (x, y, depth). It can be projected to world space using a pose transformation
@@ -55,6 +61,9 @@ namespace utils {
     };
 
 
+    /**
+     * \brief Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center
+     */
     struct WorldCoordinate : public vector3 {
         /**
          * \brief Scores a 3D coordinate in world space (x, y, depth).
