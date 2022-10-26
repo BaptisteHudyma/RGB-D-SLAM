@@ -25,7 +25,7 @@ namespace rgbd_slam {
          */
         void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds, const uint dropChance = 1000)
         {
-            const utils::worldCoordinates& coordinates = mapPoint._coordinates;
+            const utils::WorldCoordinate& coordinates = mapPoint._coordinates;
             assert(not std::isnan(coordinates.x()) and not std::isnan(coordinates.y()) and not std::isnan(coordinates.z()));
             if (mapPoint._matchedScreenPoint.is_matched() and (rand()%dropChance) != 0)
             {
@@ -69,7 +69,7 @@ namespace rgbd_slam {
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
             {
                 // No match: try to find match in a window around the point
-                utils::screenCoordinates projectedMapPoint;
+                utils::ScreenCoordinate projectedMapPoint;
                 const bool isScreenCoordinatesValid = (point._coordinates).to_screen_coordinates(worldToCamera, projectedMapPoint);
                 if (isScreenCoordinatesValid)
                     matchIndex = detectedKeypointsObject.get_match_index(projectedMapPoint, point._descriptor, _isPointMatched);
@@ -83,7 +83,7 @@ namespace rgbd_slam {
 
             assert(matchIndex >= 0);
 
-            const utils::screenCoordinates& matchedScreenpoint = detectedKeypointsObject.get_keypoint(matchIndex);
+            const utils::ScreenCoordinate& matchedScreenpoint = detectedKeypointsObject.get_keypoint(matchIndex);
             if (utils::is_depth_valid(matchedScreenpoint.z()) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
@@ -284,12 +284,12 @@ namespace rgbd_slam {
                 assert(matchedPointIndex < keypointObject.get_keypoint_count()); 
 
                 // get match coordinates, transform them to world coordinates
-                const utils::screenCoordinates& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
+                const utils::ScreenCoordinate& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
 
                 if(utils::is_depth_valid(matchedPointCoordinates.z()))
                 {
                     // transform screen point to world point
-                    const utils::worldCoordinates& worldPointCoordinates = matchedPointCoordinates.to_world_coordinates(cameraToWorld);
+                    const utils::WorldCoordinate& worldPointCoordinates = matchedPointCoordinates.to_world_coordinates(cameraToWorld);
                     // get a measure of the estimated variance of the new world point
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates);
 
@@ -379,7 +379,7 @@ namespace rgbd_slam {
 
                 if (stagedPoint.should_add_to_local_map())
                 {
-                    const utils::worldCoordinates& stagedPointCoordinates = stagedPoint._coordinates;
+                    const utils::WorldCoordinate& stagedPointCoordinates = stagedPoint._coordinates;
                     assert(not std::isnan(stagedPointCoordinates.x()) and not std::isnan(stagedPointCoordinates.y()) and not std::isnan(stagedPointCoordinates.z()));
                     // Add to local map, remove from staged points, with a copy of the id affected to the local map
                     _localPointMap.emplace(
@@ -416,13 +416,13 @@ namespace rgbd_slam {
                     }
 
                     // TODO: add points with invalid depth to stagged map  ?
-                    const utils::screenCoordinates& screenPoint = keypointObject.get_keypoint(i);
+                    const utils::ScreenCoordinate& screenPoint = keypointObject.get_keypoint(i);
                     if (not utils::is_depth_valid(screenPoint.z()))
                     {
                         continue;
                     }
 
-                    const utils::worldCoordinates& worldPoint = screenPoint.to_world_coordinates(cameraToWorld);
+                    const utils::WorldCoordinate& worldPoint = screenPoint.to_world_coordinates(cameraToWorld);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint);
@@ -487,7 +487,7 @@ namespace rgbd_slam {
         {
             if (mapPoint._matchedScreenPoint.is_matched())
             {
-                utils::screenCoordinates screenPoint; 
+                utils::ScreenCoordinate screenPoint; 
                 const bool isCoordinatesValid = (mapPoint._coordinates).to_screen_coordinates(worldToCameraMatrix, screenPoint);
 
                 //Map Point are green 

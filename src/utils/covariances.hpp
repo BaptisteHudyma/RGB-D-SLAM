@@ -12,11 +12,11 @@ namespace rgbd_slam {
         /**
          * \brief compute a covariance matrix for a screen point associated with a depth measurement
          *
-         * \param[in] screenCoordinates The coordinates of this point, in screen space
+         * \param[in] ScreenCoordinate The coordinates of this point, in screen space
          *
          * \return A 3x3 covariance matrix. It should be diagonal
          */
-        const matrix33 get_screen_point_covariance(const screenCoordinates& screenCoordinates);
+        const matrix33 get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate);
 
         /**
          * \brief Compute a screen point covariance from a given camera point
@@ -24,7 +24,7 @@ namespace rgbd_slam {
          * \param[in] cameraPoint The coordinates of this 3D point, in camera space
          * \param[in] worldPointCovariance The covariance associated with this world point 
          */
-        const matrix33 get_screen_point_covariance(const cameraCoordinates& cameraPoint, const matrix33& worldPointCovariance);
+        const matrix33 get_screen_point_covariance(const CameraCoordinate& cameraPoint, const matrix33& worldPointCovariance);
 
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point.
@@ -33,7 +33,7 @@ namespace rgbd_slam {
          *
          * \return the covariance of the 3D world point
          */
-        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint);
+        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint);
 
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
@@ -43,7 +43,7 @@ namespace rgbd_slam {
          *
          * \return the covariance of the 3D world point
          */
-        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const matrix33& screenPointCovariance);
+        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint, const matrix33& screenPointCovariance);
 
         /**
          * \brief Compute the variance of the final pose in X Y Z

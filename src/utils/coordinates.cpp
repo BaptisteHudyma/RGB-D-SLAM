@@ -14,7 +14,7 @@ namespace utils {
         }
 
 
-        worldCoordinates screenCoordinates::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+        WorldCoordinate ScreenCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
             assert(z() > 0);
             assert(x() >= 0 and y() >= 0);
@@ -22,34 +22,34 @@ namespace utils {
             const double x = (this->x() - Parameters::get_camera_1_center_x()) * this->z() / Parameters::get_camera_1_focal_x();
             const double y = (this->y() - Parameters::get_camera_1_center_y()) * this->z() / Parameters::get_camera_1_focal_y();
 
-            const cameraCoordinates cameraPoint(x, y, z());
+            const CameraCoordinate cameraPoint(x, y, z());
             return cameraPoint.to_world_coordinates(cameraToWorld);
         }
 
-        worldCoordinates cameraCoordinates::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+        WorldCoordinate CameraCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
             const vector4 homogenousWorldCoords = cameraToWorld * this->get_homogenous();
-            return worldCoordinates(homogenousWorldCoords.head<3>());
+            return WorldCoordinate(homogenousWorldCoords.head<3>());
         }
 
-        bool cameraCoordinates::to_screen_coordinates(screenCoordinates& screenPoint) const
+        bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const
         {
             const double screenX = Parameters::get_camera_1_focal_x() * x() / z() + Parameters::get_camera_1_center_x();
             const double screenY = Parameters::get_camera_1_focal_y() * y() / z() + Parameters::get_camera_1_center_y();
 
             if (not std::isnan(screenX) and not std::isnan(screenY))
             {
-                screenPoint = screenCoordinates(screenX, screenY, z());
+                screenPoint = ScreenCoordinate(screenX, screenY, z());
                 return true;
             }
             return false;
         }
 
-        bool worldCoordinates::to_screen_coordinates(const worldToCameraMatrix& worldToCamera, screenCoordinates& screenPoint) const
+        bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate& screenPoint) const
         {
             assert( not std::isnan(x()) and not std::isnan(y()) and not std::isnan(z()) );
 
-            const cameraCoordinates& cameraPoint = this->to_camera_coordinates(worldToCamera);
+            const CameraCoordinate& cameraPoint = this->to_camera_coordinates(worldToCamera);
             assert(cameraPoint.get_homogenous()[3] != 0);
 
             if (cameraPoint.z() <= 0) {
@@ -59,14 +59,14 @@ namespace utils {
             return cameraPoint.to_screen_coordinates(screenPoint);
         }
 
-        cameraCoordinates worldCoordinates::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
+        CameraCoordinate WorldCoordinate::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
         {
-            //worldCoordinates
+            //WorldCoordinate
             vector4 homogenousWorldCoordinates;
             homogenousWorldCoordinates << this->base(), 1.0;
 
             const vector4& cameraHomogenousCoordinates = worldToCamera * homogenousWorldCoordinates;
-            return cameraCoordinates(cameraHomogenousCoordinates);
+            return CameraCoordinate(cameraHomogenousCoordinates);
         }
 
 }

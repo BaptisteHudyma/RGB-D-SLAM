@@ -18,7 +18,7 @@ namespace rgbd_slam {
          * \param[in] worldToCamera A transformation matrix to convert from world to camera space
          * \return a 2D signed distance in camera space (pixels)
          */
-        vector2 get_3D_to_2D_distance_2D(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const worldToCameraMatrix& worldToCamera);
+        vector2 get_3D_to_2D_distance_2D(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const worldToCameraMatrix& worldToCamera);
 
         /**
          * \brief Compute a distance between a world point and a camera point, by retroprojecting the world point to camera space.
@@ -27,7 +27,7 @@ namespace rgbd_slam {
          * \param[in] worldToCamera A transformation matrix to convert from world to camera space
          * \return an unsigned distance in camera space (pixels)
          */
-        double get_3D_to_2D_distance(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const worldToCameraMatrix& worldToCamera);
+        double get_3D_to_2D_distance(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const worldToCameraMatrix& worldToCamera);
 
         /**
          * \brief Compute a signed distance between a world point and a 3D point in camera space, by projecting the camera point to world space
@@ -36,7 +36,7 @@ namespace rgbd_slam {
          * \param[in] cameraToWorld A matrix to convert from camera to world space
          * \return The 3D signed distance in world space
          */
-        vector3 get_3D_to_3D_distance_3D(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld);
+        vector3 get_3D_to_3D_distance_3D(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const cameraToWorldMatrix& cameraToWorld);
 
         /**
          * \brief Compute a distance between a world point and a 3D point in camera space, by projecting the camera point to world space
@@ -45,7 +45,7 @@ namespace rgbd_slam {
          * \param[in] cameraToWorld A matrix to convert from camera to world space
          * \return The unsigned distance in world space
          */
-        double get_3D_to_3D_distance(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld);
+        double get_3D_to_3D_distance(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const cameraToWorldMatrix& cameraToWorld);
 
     }   // utils
 }       // rgbd_slam

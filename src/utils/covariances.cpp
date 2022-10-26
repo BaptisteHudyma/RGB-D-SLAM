@@ -7,12 +7,12 @@
 namespace rgbd_slam {
     namespace utils {
 
-        const matrix33 get_screen_point_covariance(const screenCoordinates& screenCoordinates) 
+        const matrix33 get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate) 
         {
             // Quadratic error model (uses depth as meters)
-            const double depthMeters = screenCoordinates.z() / 1000.0;
+            const double depthMeters = ScreenCoordinate.z() / 1000.0;
             // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = std::max(1.0, utils::is_depth_valid(screenCoordinates.z()) ? (0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
+            const double depthVariance = std::max(1.0, utils::is_depth_valid(ScreenCoordinate.z()) ? (0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
             // a zero variance will break the kalman gain
             assert(depthVariance > 0);
             // TODO xy variance should also depend on the placement of the pixel in x and y
@@ -26,7 +26,7 @@ namespace rgbd_slam {
             return screenPointCovariance;
         }
 
-        const matrix33 get_screen_point_covariance(const cameraCoordinates& cameraPoint, const matrix33& worldPointCovariance)
+        const matrix33 get_screen_point_covariance(const CameraCoordinate& cameraPoint, const matrix33& worldPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -42,12 +42,12 @@ namespace rgbd_slam {
         }
 
 
-        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint)
+        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint)
         {
             return get_world_point_covariance(screenPoint, get_screen_point_covariance(screenPoint));
         }
 
-        const matrix33 get_world_point_covariance(const screenCoordinates& screenPoint, const matrix33& screenPointCovariance)
+        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint, const matrix33& screenPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -84,7 +84,7 @@ namespace rgbd_slam {
                     continue;
 
                 // Convert to world coordinates
-                const worldCoordinates& matchedPoint3d = (match._screenPoint).to_world_coordinates(transformationMatrix);
+                const WorldCoordinate& matchedPoint3d = (match._screenPoint).to_world_coordinates(transformationMatrix);
 
                 // absolute of (world map Point - new world point)
                 const vector3& matchError = (match._worldPoint - matchedPoint3d).cwiseAbs();

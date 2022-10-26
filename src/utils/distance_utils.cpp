@@ -11,10 +11,10 @@ namespace rgbd_slam {
             return (pointA - pointB);
         }
 
-        vector2 get_3D_to_2D_distance_2D(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const worldToCameraMatrix& worldToCamera)
+        vector2 get_3D_to_2D_distance_2D(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const worldToCameraMatrix& worldToCamera)
         {
             const vector2 cameraPointAs2D(cameraPoint.x(), cameraPoint.y());
-            screenCoordinates projectedScreenPoint; 
+            ScreenCoordinate projectedScreenPoint; 
             const bool isCoordinatesValid = worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint);
             if(isCoordinatesValid)
             {
@@ -28,7 +28,7 @@ namespace rgbd_slam {
             return vector2(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
         }
 
-        double get_3D_to_2D_distance(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const worldToCameraMatrix& worldToCamera)
+        double get_3D_to_2D_distance(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const worldToCameraMatrix& worldToCamera)
         {
             const vector2& distance2D = get_3D_to_2D_distance_2D(worldPoint, cameraPoint, worldToCamera);
             if (distance2D.x() >= std::numeric_limits<double>::max() or distance2D.y() >= std::numeric_limits<double>::max())
@@ -38,16 +38,16 @@ namespace rgbd_slam {
             return distance2D.lpNorm<1>();
         }
 
-        vector3 get_3D_to_3D_distance_3D(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
+        vector3 get_3D_to_3D_distance_3D(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
         {
-            const worldCoordinates& cameraPointAs3D = cameraPoint.to_world_coordinates(cameraToWorld);
+            const WorldCoordinate& cameraPointAs3D = cameraPoint.to_world_coordinates(cameraToWorld);
 
             return get_signed_distance(worldPoint, cameraPointAs3D);
         }
 
-        double get_3D_to_3D_distance(const worldCoordinates& worldPoint, const screenCoordinates& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
+        double get_3D_to_3D_distance(const WorldCoordinate& worldPoint, const ScreenCoordinate& cameraPoint, const cameraToWorldMatrix& cameraToWorld)
         {
-            const worldCoordinates& cameraPointAs3D = cameraPoint.to_world_coordinates(cameraToWorld);
+            const WorldCoordinate& cameraPointAs3D = cameraPoint.to_world_coordinates(cameraToWorld);
 
             return get_signed_distance(worldPoint, cameraPointAs3D).lpNorm<1>();
         }

@@ -14,9 +14,9 @@ namespace rgbd_slam {
             return utils::Pose(newPosition, pose.get_orientation_quaternion());
         }
 
-        bool Triangulation::is_retroprojection_valid(const utils::worldCoordinates& worldPoint, const utils::screenCoordinates& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
+        bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& worldPoint, const utils::ScreenCoordinate& screenPoint, const worldToCameraMatrix& worldToCamera, const double& maximumRetroprojectionError)
         {
-            utils::screenCoordinates projectedScreenPoint;
+            utils::ScreenCoordinate projectedScreenPoint;
             const bool isRetroprojectionValid = worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint);
             if (not isRetroprojectionValid)
             {
@@ -28,7 +28,7 @@ namespace rgbd_slam {
             return (retroprojectionError > maximumRetroprojectionError);
         }
 
-        bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const utils::screenCoordinates& point2Da, const utils::screenCoordinates& point2Db, utils::worldCoordinates& triangulatedPoint) 
+        bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const utils::ScreenCoordinate& point2Da, const utils::ScreenCoordinate& point2Db, utils::WorldCoordinate& triangulatedPoint) 
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -50,7 +50,7 @@ namespace rgbd_slam {
                                 pointBy * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
             // singular value decomposition
-            const utils::worldCoordinates worldPoint (
+            const utils::WorldCoordinate worldPoint (
                 triangulationMatrix.leftCols<3>().jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV).solve(-triangulationMatrix.col(3))
             );
 

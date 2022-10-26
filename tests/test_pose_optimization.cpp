@@ -79,9 +79,9 @@ namespace rgbd_slam {
         for (const Point point : get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error))
         {
             // world coordinates
-            const utils::worldCoordinates worldPointStart(point.x, point.y, point.z);
+            const utils::WorldCoordinate worldPointStart(point.x, point.y, point.z);
             //
-            utils::screenCoordinates transformedPoint; 
+            utils::ScreenCoordinate transformedPoint; 
             const bool isScreenCoordinatesValid = worldPointStart.to_screen_coordinates(worldToCamera, transformedPoint);
             if (isScreenCoordinatesValid)
             {
