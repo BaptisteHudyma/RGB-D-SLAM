@@ -48,6 +48,10 @@ namespace utils {
         ) {};
         cameraCoordinates(const double x, const double y, const double z) : vector3(x, y, z) {};
         vector4 get_homogenous() const { return vector4(x(), y(), z(), 1);};
+
+        worldCoordinates to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
+
+        bool to_screen_coordinates(screenCoordinates& screenPoint) const;
     };
 
 

@@ -23,9 +23,26 @@ namespace utils {
             const double y = (this->y() - Parameters::get_camera_1_center_y()) * this->z() / Parameters::get_camera_1_focal_y();
 
             const cameraCoordinates cameraPoint(x, y, z());
+            return cameraPoint.to_world_coordinates(cameraToWorld);
+        }
 
-            const vector4 homogenousWorldCoords = cameraToWorld * cameraPoint.get_homogenous();
+        worldCoordinates cameraCoordinates::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+        {
+            const vector4 homogenousWorldCoords = cameraToWorld * this->get_homogenous();
             return worldCoordinates(homogenousWorldCoords.head<3>());
+        }
+
+        bool cameraCoordinates::to_screen_coordinates(screenCoordinates& screenPoint) const
+        {
+            const double screenX = Parameters::get_camera_1_focal_x() * x() / z() + Parameters::get_camera_1_center_x();
+            const double screenY = Parameters::get_camera_1_focal_y() * y() / z() + Parameters::get_camera_1_center_y();
+
+            if (not std::isnan(screenX) and not std::isnan(screenY))
+            {
+                screenPoint = screenCoordinates(screenX, screenY, z());
+                return true;
+            }
+            return false;
         }
 
         bool worldCoordinates::to_screen_coordinates(const worldToCameraMatrix& worldToCamera, screenCoordinates& screenPoint) const
@@ -39,15 +56,7 @@ namespace utils {
                 return false;
             }
 
-            const double screenX = Parameters::get_camera_1_focal_x() * cameraPoint.x() / cameraPoint.z() + Parameters::get_camera_1_center_x();
-            const double screenY = Parameters::get_camera_1_focal_y() * cameraPoint.y() / cameraPoint.z() + Parameters::get_camera_1_center_y();
-
-            if (not std::isnan(screenX) and not std::isnan(screenY))
-            {
-                screenPoint = screenCoordinates(screenX, screenY, cameraPoint.z());
-                return true;
-            }
-            return false;
+            return cameraPoint.to_screen_coordinates(screenPoint);
         }
 
         cameraCoordinates worldCoordinates::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
