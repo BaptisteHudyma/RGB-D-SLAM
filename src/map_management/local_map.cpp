@@ -6,7 +6,6 @@
 #include "../utils/covariances.hpp"
 #include "../utils/coordinates.hpp"
 #include "../outputs/logger.hpp"
-#include <cstdlib>
 
 namespace rgbd_slam {
     namespace map_management {

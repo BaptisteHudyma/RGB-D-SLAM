@@ -2,7 +2,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
-#include "types.hpp"
+#include "../../types.hpp"
 
 namespace rgbd_slam {
     namespace features {

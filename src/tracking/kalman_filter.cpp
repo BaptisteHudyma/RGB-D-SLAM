@@ -1,6 +1,3 @@
-#include <iostream>
-#include <stdexcept>
-
 #include "kalman_filter.hpp"
 
 namespace rgbd_slam {

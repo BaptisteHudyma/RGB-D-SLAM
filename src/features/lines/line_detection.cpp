@@ -1,6 +1,6 @@
 #include "line_detection.hpp"
 
-#include "outputs/logger.hpp"
+#include "../../outputs/logger.hpp"
 
 namespace rgbd_slam {
     namespace features {

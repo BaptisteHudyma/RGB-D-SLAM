@@ -1,9 +1,6 @@
 #include "map_point.hpp"
 #include "../parameters.hpp"
-#include "kalman_filter.hpp"
-
-#include <Eigen/LU>
-#include <oneapi/tbb/info.h>
+#include "../tracking/kalman_filter.hpp"
 
 namespace rgbd_slam {
     namespace map_management {

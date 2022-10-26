@@ -1,6 +1,5 @@
 #include "histogram.hpp"
 
-#include <cstddef>
 #include "../../outputs/logger.hpp"
 
 namespace rgbd_slam {
