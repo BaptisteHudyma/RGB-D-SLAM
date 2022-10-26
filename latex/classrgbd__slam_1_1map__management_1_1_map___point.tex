@@ -2,7 +2,7 @@
 \label{classrgbd__slam_1_1map__management_1_1_map___point}\index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}}
 
 
-A map point structure, containing all the necessary informations to identify a map point.  
+A map point structure, containing all the necessary informations to identify a map point in local map.  
 
 
 
@@ -18,15 +18,15 @@ Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+\_\+\+Poin
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a796e0fd9dc5edbe1f35187329ff02702}{Map\+\_\+\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_acb52bd481b0b039d77af647b13665b97}{Map\+\_\+\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a0b3c197885821b0c7f9af64fd0c38ce9}{Map\+\_\+\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor, const size\+\_\+t id)
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_aea2638e5bcd14ecc99d14355abf287e1}{Map\+\_\+\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor, const size\+\_\+t id)
 \item 
 bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad492ba9b9000d85b97cbb18bc2f11c52}{is\+\_\+lost}} () const
 \begin{DoxyCompactList}\small\item\em True is this point is lost \+: should be removed from local map. Should be used only for map points. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ac295737d57b95dfcb00645ff3be3e597}{update\+\_\+unmatched}} (int remove\+NMatches=1) override
 \begin{DoxyCompactList}\small\item\em Update this point without it being detected/matched. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_ad0e06035f47dbbe5f3905085992b3d3c}{update\+\_\+matched}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&new\+Point\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance) override
+double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a5d603821c521237dcdd70e9fab26c674}{update\+\_\+matched}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&new\+Point\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance) override
 \begin{DoxyCompactList}\small\item\em Update this map point with the given informations\+: it is matched with another point. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a78264c7d69160b1838f7e454ccdd6a2f}{get\+\_\+age}} () const
 \end{DoxyCompactItemize}
@@ -46,20 +46,20 @@ double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point_a721c
 
 
 \doxysubsection{Detailed Description}
-A map point structure, containing all the necessary informations to identify a map point. 
+A map point structure, containing all the necessary informations to identify a map point in local map. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_a796e0fd9dc5edbe1f35187329ff02702}\label{classrgbd__slam_1_1map__management_1_1_map___point_a796e0fd9dc5edbe1f35187329ff02702}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_acb52bd481b0b039d77af647b13665b97}\label{classrgbd__slam_1_1map__management_1_1_map___point_acb52bd481b0b039d77af647b13665b97}} 
 \index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}!Map\_Point@{Map\_Point}}
 \index{Map\_Point@{Map\_Point}!rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}}
 \doxysubsubsection{\texorpdfstring{Map\_Point()}{Map\_Point()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::\+Map\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::\+Map\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
 
-\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{Map\+\_\+\+Point}} \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_a0b3c197885821b0c7f9af64fd0c38ce9}\label{classrgbd__slam_1_1map__management_1_1_map___point_a0b3c197885821b0c7f9af64fd0c38ce9}} 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{Map\+\_\+\+Point}} \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_aea2638e5bcd14ecc99d14355abf287e1}\label{classrgbd__slam_1_1map__management_1_1_map___point_aea2638e5bcd14ecc99d14355abf287e1}} 
 \index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}!Map\_Point@{Map\_Point}}
 \index{Map\_Point@{Map\_Point}!rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}}
 \doxysubsubsection{\texorpdfstring{Map\_Point()}{Map\_Point()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::\+Map\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor,  }\item[{const size\+\_\+t}]{id }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::\+Map\+\_\+\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor,  }\item[{const size\+\_\+t}]{id }\end{DoxyParamCaption})}
 
 
 
@@ -100,11 +100,11 @@ True is this point is lost \+: should be removed from local map. Should be used 
 \doxysubsubsection{\texorpdfstring{set\_random\_color()}{set\_random\_color()}}
 {\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::set\+\_\+random\+\_\+color (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_ad0e06035f47dbbe5f3905085992b3d3c}\label{classrgbd__slam_1_1map__management_1_1_map___point_ad0e06035f47dbbe5f3905085992b3d3c}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_a5d603821c521237dcdd70e9fab26c674}\label{classrgbd__slam_1_1map__management_1_1_map___point_a5d603821c521237dcdd70e9fab26c674}} 
 \index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}!update\_matched@{update\_matched}}
 \index{update\_matched@{update\_matched}!rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}}
 \doxysubsubsection{\texorpdfstring{update\_matched()}{update\_matched()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::update\+\_\+matched (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{new\+Point\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point\+::update\+\_\+matched (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{new\+Point\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -112,7 +112,7 @@ Update this map point with the given informations\+: it is matched with another 
 
 
 
-Implements \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a29e7179834e7e42b0454bbd8c6bece6e}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}.
+Implements \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking_a45815b0b3a008b03776472b6131cdfe8}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}.
 
 \mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map___point_ac295737d57b95dfcb00645ff3be3e597}\label{classrgbd__slam_1_1map__management_1_1_map___point_ac295737d57b95dfcb00645ff3be3e597}} 
 \index{rgbd\_slam::map\_management::Map\_Point@{rgbd\_slam::map\_management::Map\_Point}!update\_unmatched@{update\_unmatched}}

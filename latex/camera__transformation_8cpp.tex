@@ -2,7 +2,7 @@
 \label{camera__transformation_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.cpp}}
 {\ttfamily \#include \char`\"{}camera\+\_\+transformation.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../parameters.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
 {\ttfamily \#include $<$memory$>$}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
@@ -14,24 +14,9 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{rgbd\+\_\+slam\+::utils\+::is\+\_\+depth\+\_\+valid}} (const double depth)
-\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
-const world\+Coordinates \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9dbca5ba1fde9dede66b983bcdd6b8d0}{rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const screen\+Coordinates \&screen\+Point, const camera\+To\+World\+Matrix \&camera\+To\+World)
-\item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac606f34d58a2c38df57f52586971f41c}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const world\+Coordinates \&position3D, const world\+To\+Camera\+Matrix \&world\+To\+Camera, screen\+Coordinates \&screen\+Point)
-\begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
-const camera\+Coordinates \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa4613bdb56bd3012bd4efae167362569}{rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+camera\+\_\+coordinates}} (const world\+Coordinates \&world\+Coordinates, const world\+To\+Camera\+Matrix \&world\+To\+Camera)
-\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in camera space. \end{DoxyCompactList}\item 
 const camera\+To\+World\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_acf2041d958f5f63468f142a85b634587}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
 const world\+To\+Camera\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80a5c96230a6cced4d4999c60ea659e9}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
 const world\+To\+Camera\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a0374f99788406cd572d51692961af33a}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const camera\+To\+World\+Matrix \&camera\+To\+World)
-\end{DoxyCompactItemize}
-\doxysubsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-const double \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb0e42e07f9e12d67543af504e440506}{rgbd\+\_\+slam\+::utils\+::\+MIN\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 40
-\item 
-const double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7c711197a8776f474dea42a34838b675}{rgbd\+\_\+slam\+::utils\+::\+MAX\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 6000
 \end{DoxyCompactItemize}

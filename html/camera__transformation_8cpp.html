@@ -69,14 +69,13 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">camera_transformation.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="camera__transformation_8hpp_source.html">camera_transformation.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="parameters_8hpp_source.html">../parameters.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="types_8hpp_source.html">types.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="types_8hpp_source.html">../types.hpp</a>&quot;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -88,17 +87,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adba3e96e0d019dbd7284e4a6dc4911f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#adba3e96e0d019dbd7284e4a6dc4911f3">rgbd_slam::utils::is_depth_valid</a> (const double depth)</td></tr>
-<tr class="memdesc:adba3e96e0d019dbd7284e4a6dc4911f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true is a measurement is in the measurement range.  <a href="namespacergbd__slam_1_1utils.html#adba3e96e0d019dbd7284e4a6dc4911f3">More...</a><br /></td></tr>
-<tr class="separator:adba3e96e0d019dbd7284e4a6dc4911f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dbca5ba1fde9dede66b983bcdd6b8d0"><td class="memItemLeft" align="right" valign="top">const worldCoordinates&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a9dbca5ba1fde9dede66b983bcdd6b8d0">rgbd_slam::utils::screen_to_world_coordinates</a> (const screenCoordinates &amp;screenPoint, const cameraToWorldMatrix &amp;cameraToWorld)</td></tr>
-<tr class="separator:a9dbca5ba1fde9dede66b983bcdd6b8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac606f34d58a2c38df57f52586971f41c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ac606f34d58a2c38df57f52586971f41c">rgbd_slam::utils::compute_world_to_screen_coordinates</a> (const worldCoordinates &amp;position3D, const worldToCameraMatrix &amp;worldToCamera, screenCoordinates &amp;screenPoint)</td></tr>
-<tr class="memdesc:ac606f34d58a2c38df57f52586971f41c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a point from world to screen coordinate system.  <a href="namespacergbd__slam_1_1utils.html#ac606f34d58a2c38df57f52586971f41c">More...</a><br /></td></tr>
-<tr class="separator:ac606f34d58a2c38df57f52586971f41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4613bdb56bd3012bd4efae167362569"><td class="memItemLeft" align="right" valign="top">const cameraCoordinates&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#aa4613bdb56bd3012bd4efae167362569">rgbd_slam::utils::world_to_camera_coordinates</a> (const worldCoordinates &amp;worldCoordinates, const worldToCameraMatrix &amp;worldToCamera)</td></tr>
-<tr class="memdesc:aa4613bdb56bd3012bd4efae167362569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a vector in world space to a vector in camera space.  <a href="namespacergbd__slam_1_1utils.html#aa4613bdb56bd3012bd4efae167362569">More...</a><br /></td></tr>
-<tr class="separator:aa4613bdb56bd3012bd4efae167362569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf2041d958f5f63468f142a85b634587"><td class="memItemLeft" align="right" valign="top">const cameraToWorldMatrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#acf2041d958f5f63468f142a85b634587">rgbd_slam::utils::compute_camera_to_world_transform</a> (const quaternion &amp;rotation, const vector3 &amp;position)</td></tr>
 <tr class="memdesc:acf2041d958f5f63468f142a85b634587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz)  <a href="namespacergbd__slam_1_1utils.html#acf2041d958f5f63468f142a85b634587">More...</a><br /></td></tr>
 <tr class="separator:acf2041d958f5f63468f142a85b634587"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,13 +95,6 @@ Functions</h2></td></tr>
 <tr class="separator:a80a5c96230a6cced4d4999c60ea659e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0374f99788406cd572d51692961af33a"><td class="memItemLeft" align="right" valign="top">const worldToCameraMatrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a0374f99788406cd572d51692961af33a">rgbd_slam::utils::compute_world_to_camera_transform</a> (const cameraToWorldMatrix &amp;cameraToWorld)</td></tr>
 <tr class="separator:a0374f99788406cd572d51692961af33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:afb0e42e07f9e12d67543af504e440506"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#afb0e42e07f9e12d67543af504e440506">rgbd_slam::utils::MIN_DEPTH_DISTANCE</a> = 40</td></tr>
-<tr class="separator:afb0e42e07f9e12d67543af504e440506"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c711197a8776f474dea42a34838b675"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a7c711197a8776f474dea42a34838b675">rgbd_slam::utils::MAX_DEPTH_DISTANCE</a> = 6000</td></tr>
-<tr class="separator:a7c711197a8776f474dea42a34838b675"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

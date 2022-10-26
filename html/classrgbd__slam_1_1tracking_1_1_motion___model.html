@@ -69,6 +69,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1tracking_1_1_motion___model-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::tracking::Motion_Model Class Reference</div></div>
 </div><!--header-->
@@ -93,6 +94,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a618116afe541a872964daed45135e575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_motion___model.html#a618116afe541a872964daed45135e575">update_model</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;pose)</td></tr>
 <tr class="memdesc:a618116afe541a872964daed45135e575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the motion model using the refined pose.  <a href="classrgbd__slam_1_1tracking_1_1_motion___model.html#a618116afe541a872964daed45135e575">More...</a><br /></td></tr>
 <tr class="separator:a618116afe541a872964daed45135e575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a8e90aaa35f2e712262c6ed347389356c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_motion___model.html#a8e90aaa35f2e712262c6ed347389356c">get_rotational_velocity</a> (const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;lastRotation, const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;lastVelocity, const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;currentRotation) const</td></tr>
+<tr class="separator:a8e90aaa35f2e712262c6ed347389356c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2efd6fd4ba9ec78cb19093d83f2eb498"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_motion___model.html#a2efd6fd4ba9ec78cb19093d83f2eb498">get_position_velocity</a> (const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;lastPosition, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;lastVelocity, const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;currentPosition) const</td></tr>
+<tr class="separator:a2efd6fd4ba9ec78cb19093d83f2eb498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Dead reckoning class: guess next pose using a motion model. </p>
@@ -115,6 +123,90 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2efd6fd4ba9ec78cb19093d83f2eb498" name="a2efd6fd4ba9ec78cb19093d83f2eb498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2efd6fd4ba9ec78cb19093d83f2eb498">&#9670;&nbsp;</a></span>get_position_velocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> rgbd_slam::tracking::Motion_Model::get_position_velocity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>lastPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>lastVelocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a1c642e1c4dfceaa8c7409331bfc10b6b">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>currentPosition</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8e90aaa35f2e712262c6ed347389356c" name="a8e90aaa35f2e712262c6ed347389356c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e90aaa35f2e712262c6ed347389356c">&#9670;&nbsp;</a></span>get_rotational_velocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> rgbd_slam::tracking::Motion_Model::get_rotational_velocity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>lastRotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>lastVelocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a078420ee4217ebf095ba100570679827">quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>currentRotation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="afe4b38ff40ff2445b9979ca3665ae030" name="afe4b38ff40ff2445b9979ca3665ae030"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe4b38ff40ff2445b9979ca3665ae030">&#9670;&nbsp;</a></span>predict_next_pose()</h2>
 

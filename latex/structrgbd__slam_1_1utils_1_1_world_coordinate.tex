@@ -1,0 +1,105 @@
+\hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate}{}\doxysection{rgbd\+\_\+slam\+::utils\+::World\+Coordinate Struct Reference}
+\label{structrgbd__slam_1_1utils_1_1_world_coordinate}\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+
+
+Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center.  
+
+
+
+
+{\ttfamily \#include $<$coordinates.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::World\+Coordinate\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structrgbd__slam_1_1utils_1_1_world_coordinate}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a4c91ee8ba105188bd820fc5f42423d71}{World\+Coordinate}} ()
+\begin{DoxyCompactList}\small\item\em Scores a 3D coordinate in world space (x, y, depth). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_ae616cff6d615e8eb326bcae8d50b6cca}{World\+Coordinate}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&coords)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_af93a851cb45a3ef0571c8532b992332c}{World\+Coordinate}} (const double x, const double y, const double z)
+\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}{to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point) const
+\begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}{to\+\_\+camera\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera) const
+\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in camera space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a4c91ee8ba105188bd820fc5f42423d71}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a4c91ee8ba105188bd820fc5f42423d71}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!WorldCoordinate@{WorldCoordinate}}
+\index{WorldCoordinate@{WorldCoordinate}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{WorldCoordinate()}{WorldCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::\+World\+Coordinate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scores a 3D coordinate in world space (x, y, depth). 
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_ae616cff6d615e8eb326bcae8d50b6cca}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_ae616cff6d615e8eb326bcae8d50b6cca}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!WorldCoordinate@{WorldCoordinate}}
+\index{WorldCoordinate@{WorldCoordinate}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{WorldCoordinate()}{WorldCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::\+World\+Coordinate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{coords }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_af93a851cb45a3ef0571c8532b992332c}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_af93a851cb45a3ef0571c8532b992332c}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!WorldCoordinate@{WorldCoordinate}}
+\index{WorldCoordinate@{WorldCoordinate}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{WorldCoordinate()}{WorldCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::\+World\+Coordinate (\begin{DoxyParamCaption}\item[{const double}]{x,  }\item[{const double}]{y,  }\item[{const double}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!to\_camera\_coordinates@{to\_camera\_coordinates}}
+\index{to\_camera\_coordinates@{to\_camera\_coordinates}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{to\_camera\_coordinates()}{to\_camera\_coordinates()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::to\+\_\+camera\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption}) const}
+
+
+
+Transform a vector in world space to a vector in camera space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & Matrix to transform the world to a local coordinate system\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The input vector transformed to camera space 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!to\_screen\_coordinates@{to\_screen\_coordinates}}
+\index{to\_screen\_coordinates@{to\_screen\_coordinates}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point }\end{DoxyParamCaption}) const}
+
+
+
+Transform a point from world to screen coordinate system. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & Matrix to transform the world to a local coordinate system \\
+\hline
+\mbox{\texttt{ out}}  & {\em screen\+Point} & The point screen coordinates, if the function returned true\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the screen position is valid 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{coordinates_8hpp}{coordinates.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{coordinates_8cpp}{coordinates.\+cpp}}\end{DoxyCompactItemize}

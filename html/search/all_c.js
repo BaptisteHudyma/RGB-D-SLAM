@@ -15,6 +15,7 @@ var searchData=
   ['local_5fmap_2ehpp_12',['local_map.hpp',['../local__map_8hpp.html',1,'']]],
   ['log_13',['log',['../namespacergbd__slam_1_1outputs.html#ac481964e17f115af5414d23bdc2d97a7',1,'rgbd_slam::outputs']]],
   ['log_5ferror_14',['log_error',['../namespacergbd__slam_1_1outputs.html#a7c11e499578358f64a58d71f5b0dfb4d',1,'rgbd_slam::outputs']]],
-  ['logger_2ecpp_15',['logger.cpp',['../logger_8cpp.html',1,'']]],
-  ['logger_2ehpp_16',['logger.hpp',['../logger_8hpp.html',1,'']]]
+  ['log_5fwarning_15',['log_warning',['../namespacergbd__slam_1_1outputs.html#a854c348cba8433fee04b58feb5054cc6',1,'rgbd_slam::outputs']]],
+  ['logger_2ecpp_16',['logger.cpp',['../logger_8cpp.html',1,'']]],
+  ['logger_2ehpp_17',['logger.hpp',['../logger_8hpp.html',1,'']]]
 ];

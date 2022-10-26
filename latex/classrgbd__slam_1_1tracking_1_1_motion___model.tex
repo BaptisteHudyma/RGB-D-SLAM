@@ -22,6 +22,13 @@ const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbo
 \begin{DoxyCompactList}\small\item\em Predicts next pose with motion model (dead reckoning) \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a618116afe541a872964daed45135e575}{update\+\_\+model}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose)
 \begin{DoxyCompactList}\small\item\em Update the motion model using the refined pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a8e90aaa35f2e712262c6ed347389356c}{get\+\_\+rotational\+\_\+velocity}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&last\+Rotation, const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&last\+Velocity, const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&current\+Rotation) const
+\item 
+const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a2efd6fd4ba9ec78cb19093d83f2eb498}{get\+\_\+position\+\_\+velocity}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&last\+Position, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&last\+Velocity, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&current\+Position) const
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -37,6 +44,18 @@ Dead reckoning class\+: guess next pose using a motion model.
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_motion___model_a2efd6fd4ba9ec78cb19093d83f2eb498}\label{classrgbd__slam_1_1tracking_1_1_motion___model_a2efd6fd4ba9ec78cb19093d83f2eb498}} 
+\index{rgbd\_slam::tracking::Motion\_Model@{rgbd\_slam::tracking::Motion\_Model}!get\_position\_velocity@{get\_position\_velocity}}
+\index{get\_position\_velocity@{get\_position\_velocity}!rgbd\_slam::tracking::Motion\_Model@{rgbd\_slam::tracking::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{get\_position\_velocity()}{get\_position\_velocity()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::tracking\+::\+Motion\+\_\+\+Model\+::get\+\_\+position\+\_\+velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{last\+Position,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{last\+Velocity,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{current\+Position }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_motion___model_a8e90aaa35f2e712262c6ed347389356c}\label{classrgbd__slam_1_1tracking_1_1_motion___model_a8e90aaa35f2e712262c6ed347389356c}} 
+\index{rgbd\_slam::tracking::Motion\_Model@{rgbd\_slam::tracking::Motion\_Model}!get\_rotational\_velocity@{get\_rotational\_velocity}}
+\index{get\_rotational\_velocity@{get\_rotational\_velocity}!rgbd\_slam::tracking::Motion\_Model@{rgbd\_slam::tracking::Motion\_Model}}
+\doxysubsubsection{\texorpdfstring{get\_rotational\_velocity()}{get\_rotational\_velocity()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} rgbd\+\_\+slam\+::tracking\+::\+Motion\+\_\+\+Model\+::get\+\_\+rotational\+\_\+velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{last\+Rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{last\+Velocity,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&}]{current\+Rotation }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
 \mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_motion___model_afe4b38ff40ff2445b9979ca3665ae030}\label{classrgbd__slam_1_1tracking_1_1_motion___model_afe4b38ff40ff2445b9979ca3665ae030}} 
 \index{rgbd\_slam::tracking::Motion\_Model@{rgbd\_slam::tracking::Motion\_Model}!predict\_next\_pose@{predict\_next\_pose}}
 \index{predict\_next\_pose@{predict\_next\_pose}!rgbd\_slam::tracking::Motion\_Model@{rgbd\_slam::tracking::Motion\_Model}}

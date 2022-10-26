@@ -1,0 +1,79 @@
+\hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Screen\+Coordinate Struct Reference}
+\label{structrgbd__slam_1_1utils_1_1_screen_coordinate}\index{rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}}
+
+
+Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters)  
+
+
+
+
+{\ttfamily \#include $<$coordinates.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::Screen\+Coordinate\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structrgbd__slam_1_1utils_1_1_screen_coordinate}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a06c1768dfc9473375e5f758ff4e0c6a6}{Screen\+Coordinate}} ()
+\begin{DoxyCompactList}\small\item\em Scores a 3D coordinate in screenspace (screen x, screen y, depth) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_afd07ed55581a6f534a659717a56a96aa}{Screen\+Coordinate}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&coords, const double depth=0)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_ac6adcae9cd8e0389bf8e0cd1b0e604c2}{Screen\+Coordinate}} (const double x, const double y)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_aca0c8432fdddbed04d3b86e2422c428a}{Screen\+Coordinate}} (const double x, const double y, const double z)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a0f9594f0fb42f01cefa0ef4a3defd80a}{to\+\_\+world\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters) 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate_a06c1768dfc9473375e5f758ff4e0c6a6}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate_a06c1768dfc9473375e5f758ff4e0c6a6}} 
+\index{rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}!ScreenCoordinate@{ScreenCoordinate}}
+\index{ScreenCoordinate@{ScreenCoordinate}!rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}}
+\doxysubsubsection{\texorpdfstring{ScreenCoordinate()}{ScreenCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate\+::\+Screen\+Coordinate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scores a 3D coordinate in screenspace (screen x, screen y, depth) 
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate_afd07ed55581a6f534a659717a56a96aa}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate_afd07ed55581a6f534a659717a56a96aa}} 
+\index{rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}!ScreenCoordinate@{ScreenCoordinate}}
+\index{ScreenCoordinate@{ScreenCoordinate}!rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}}
+\doxysubsubsection{\texorpdfstring{ScreenCoordinate()}{ScreenCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate\+::\+Screen\+Coordinate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{coords,  }\item[{const double}]{depth = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate_ac6adcae9cd8e0389bf8e0cd1b0e604c2}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate_ac6adcae9cd8e0389bf8e0cd1b0e604c2}} 
+\index{rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}!ScreenCoordinate@{ScreenCoordinate}}
+\index{ScreenCoordinate@{ScreenCoordinate}!rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}}
+\doxysubsubsection{\texorpdfstring{ScreenCoordinate()}{ScreenCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate\+::\+Screen\+Coordinate (\begin{DoxyParamCaption}\item[{const double}]{x,  }\item[{const double}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate_aca0c8432fdddbed04d3b86e2422c428a}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate_aca0c8432fdddbed04d3b86e2422c428a}} 
+\index{rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}!ScreenCoordinate@{ScreenCoordinate}}
+\index{ScreenCoordinate@{ScreenCoordinate}!rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}}
+\doxysubsubsection{\texorpdfstring{ScreenCoordinate()}{ScreenCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate\+::\+Screen\+Coordinate (\begin{DoxyParamCaption}\item[{const double}]{x,  }\item[{const double}]{y,  }\item[{const double}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate_a0f9594f0fb42f01cefa0ef4a3defd80a}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate_a0f9594f0fb42f01cefa0ef4a3defd80a}} 
+\index{rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}!to\_world\_coordinates@{to\_world\_coordinates}}
+\index{to\_world\_coordinates@{to\_world\_coordinates}!rgbd\_slam::utils::ScreenCoordinate@{rgbd\_slam::utils::ScreenCoordinate}}
+\doxysubsubsection{\texorpdfstring{to\_world\_coordinates()}{to\_world\_coordinates()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate\+::to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{coordinates_8hpp}{coordinates.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{coordinates_8cpp}{coordinates.\+cpp}}\end{DoxyCompactItemize}

@@ -5,7 +5,7 @@
 \DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_COVARIANCES\_HPP}}
 \DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_COVARIANCES\_HPP}}
 \DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}../types.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{coordinates_8hpp}{coordinates.hpp}}"{}}}
 \DoxyCodeLine{5 }
 \DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{pose_8hpp}{pose.hpp}}"{}}}
 \DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{matches__containers_8hpp}{matches\_containers.hpp}}"{}}}
@@ -13,13 +13,13 @@
 \DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
 \DoxyCodeLine{10     \textcolor{keyword}{namespace }utils \{}
 \DoxyCodeLine{11 }
-\DoxyCodeLine{19         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a65406b55752913e8a72b15c732fcd699}{get\_screen\_point\_covariance}}(\textcolor{keyword}{const} screenCoordinates\& screenCoordinates);}
+\DoxyCodeLine{19         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a735eb52dd2f316b4f402b3efeea5e524}{get\_screen\_point\_covariance}}(\textcolor{keyword}{const} ScreenCoordinate\& ScreenCoordinate);}
 \DoxyCodeLine{20 }
-\DoxyCodeLine{27         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a65406b55752913e8a72b15c732fcd699}{get\_screen\_point\_covariance}}(\textcolor{keyword}{const} cameraCoordinates\& cameraPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& worldPointCovariance);}
+\DoxyCodeLine{27         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a735eb52dd2f316b4f402b3efeea5e524}{get\_screen\_point\_covariance}}(\textcolor{keyword}{const} CameraCoordinate\& cameraPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& worldPointCovariance);}
 \DoxyCodeLine{28 }
-\DoxyCodeLine{36         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_af1c875ecbbef7363643107ddd5b8fdbb}{get\_world\_point\_covariance}}(\textcolor{keyword}{const} screenCoordinates\& screenPoint);}
+\DoxyCodeLine{36         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_acd862c5bf78564bf9ba508bfc7c32d69}{get\_world\_point\_covariance}}(\textcolor{keyword}{const} ScreenCoordinate\& screenPoint);}
 \DoxyCodeLine{37 }
-\DoxyCodeLine{46         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_af1c875ecbbef7363643107ddd5b8fdbb}{get\_world\_point\_covariance}}(\textcolor{keyword}{const} screenCoordinates\& screenPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& screenPointCovariance);}
+\DoxyCodeLine{46         \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_acd862c5bf78564bf9ba508bfc7c32d69}{get\_world\_point\_covariance}}(\textcolor{keyword}{const} ScreenCoordinate\& screenPoint, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\& screenPointCovariance);}
 \DoxyCodeLine{47 }
 \DoxyCodeLine{57         \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a58e29e70d22c5d0a1b86c820acb7159e}{compute\_pose\_variance}}(\textcolor{keyword}{const} Pose\& pose, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\_containers::match\_point\_container}}\& matchedPoints, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& poseVariance);}
 \DoxyCodeLine{58 }

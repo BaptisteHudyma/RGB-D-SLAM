@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association.  
+<p>Handler object to store a reference to detected key points. Passed to other classes for data association purposes.  
  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="keypoint__handler_8hpp_source.html">keypoint_handler.hpp</a>&gt;</code></p>
@@ -90,12 +90,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3bf3676adbaed6ab3ccf729ad0be6ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa158b851bacc9286979fce533cb38e09"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#aa158b851bacc9286979fce533cb38e09">get_tracking_match_index</a> (const size_t mapPointId) const</td></tr>
 <tr class="separator:aa158b851bacc9286979fce533cb38e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8c072afb5d3ac81b576e4b24a003033"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#ab8c072afb5d3ac81b576e4b24a003033">get_match_index</a> (const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;projectedMapPoint, const cv::Mat &amp;mapPointDescriptor, const std::vector&lt; bool &gt; &amp;isKeyPointMatchedContainer) const</td></tr>
-<tr class="memdesc:ab8c072afb5d3ac81b576e4b24a003033"><td class="mdescLeft">&#160;</td><td class="mdescRight">get an index corresponding to the index of the point matches.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#ab8c072afb5d3ac81b576e4b24a003033">More...</a><br /></td></tr>
-<tr class="separator:ab8c072afb5d3ac81b576e4b24a003033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e41460a2b485ef957ebdd187ac5f6af"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a3e41460a2b485ef957ebdd187ac5f6af">get_keypoint</a> (const uint index) const</td></tr>
-<tr class="memdesc:a3e41460a2b485ef957ebdd187ac5f6af"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the keypoint associated with the index  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a3e41460a2b485ef957ebdd187ac5f6af">More...</a><br /></td></tr>
-<tr class="separator:a3e41460a2b485ef957ebdd187ac5f6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa546aea8b245f2c2770775e5365bb191"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#aa546aea8b245f2c2770775e5365bb191">get_match_index</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;projectedMapPoint, const cv::Mat &amp;mapPointDescriptor, const std::vector&lt; bool &gt; &amp;isKeyPointMatchedContainer) const</td></tr>
+<tr class="memdesc:aa546aea8b245f2c2770775e5365bb191"><td class="mdescLeft">&#160;</td><td class="mdescRight">get an index corresponding to the index of the point matches.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#aa546aea8b245f2c2770775e5365bb191">More...</a><br /></td></tr>
+<tr class="separator:aa546aea8b245f2c2770775e5365bb191"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9633779b8e95af25326b1b7bb89ebe62"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a9633779b8e95af25326b1b7bb89ebe62">get_keypoint</a> (const uint index) const</td></tr>
+<tr class="memdesc:a9633779b8e95af25326b1b7bb89ebe62"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the keypoint associated with the index  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a9633779b8e95af25326b1b7bb89ebe62">More...</a><br /></td></tr>
+<tr class="separator:a9633779b8e95af25326b1b7bb89ebe62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84f4e67e3c3e4e459d7398a2310cacf5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a84f4e67e3c3e4e459d7398a2310cacf5">is_descriptor_computed</a> (const uint index) const</td></tr>
 <tr class="separator:a84f4e67e3c3e4e459d7398a2310cacf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66fbc904e5696804ad81a889fc44a475"><td class="memItemLeft" align="right" valign="top">const cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a66fbc904e5696804ad81a889fc44a475">get_descriptor</a> (const uint index) const</td></tr>
@@ -110,12 +110,12 @@ Protected Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ab325a9ec64679bb35e79ec240b1a34f2"><td class="memItemLeft" align="right" valign="top">const cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#ab325a9ec64679bb35e79ec240b1a34f2">compute_key_point_mask</a> (const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;pointToSearch, const std::vector&lt; bool &gt; &amp;isKeyPointMatchedContainer) const</td></tr>
-<tr class="memdesc:ab325a9ec64679bb35e79ec240b1a34f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a mask eliminating the keypoints to far from the point to match.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#ab325a9ec64679bb35e79ec240b1a34f2">More...</a><br /></td></tr>
-<tr class="separator:ab325a9ec64679bb35e79ec240b1a34f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6853cdd7b7491b4adbbcdce5ede80a43"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a40a257eb2b5d17ea2645b84e662f1133">uint_pair</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a6853cdd7b7491b4adbbcdce5ede80a43">get_search_space_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;pointToPlace) const</td></tr>
-<tr class="memdesc:a6853cdd7b7491b4adbbcdce5ede80a43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with _searchSpaceIndexContainer.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a6853cdd7b7491b4adbbcdce5ede80a43">More...</a><br /></td></tr>
-<tr class="separator:a6853cdd7b7491b4adbbcdce5ede80a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d2bd180c24ff535615eb91da77953b6"><td class="memItemLeft" align="right" valign="top">const cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a4d2bd180c24ff535615eb91da77953b6">compute_key_point_mask</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;pointToSearch, const std::vector&lt; bool &gt; &amp;isKeyPointMatchedContainer) const</td></tr>
+<tr class="memdesc:a4d2bd180c24ff535615eb91da77953b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a mask eliminating the keypoints to far from the point to match.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a4d2bd180c24ff535615eb91da77953b6">More...</a><br /></td></tr>
+<tr class="separator:a4d2bd180c24ff535615eb91da77953b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a996addaac61eb12c1a151a344dc7b901"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a40a257eb2b5d17ea2645b84e662f1133">uint_pair</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a996addaac61eb12c1a151a344dc7b901">get_search_space_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;pointToPlace) const</td></tr>
+<tr class="memdesc:a996addaac61eb12c1a151a344dc7b901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with _searchSpaceIndexContainer.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a996addaac61eb12c1a151a344dc7b901">More...</a><br /></td></tr>
+<tr class="separator:a996addaac61eb12c1a151a344dc7b901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80d54ffd5dafe3ced9a90848f8a11327"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a80d54ffd5dafe3ced9a90848f8a11327">get_search_space_index</a> (const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a40a257eb2b5d17ea2645b84e662f1133">uint_pair</a> &amp;searchSpaceIndex) const</td></tr>
 <tr class="memdesc:a80d54ffd5dafe3ced9a90848f8a11327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute an 1D array index from a 2D array index.  <a href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a80d54ffd5dafe3ced9a90848f8a11327">More...</a><br /></td></tr>
 <tr class="separator:a80d54ffd5dafe3ced9a90848f8a11327"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,7 +123,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a8afbfa646282d48643f7c56a80bbfb0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Handler object to store a reference to detected key points. Passed to classes like Local_Map for data association. </p>
+<div class="textblock"><p >Handler object to store a reference to detected key points. Passed to other classes for data association purposes. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a40a257eb2b5d17ea2645b84e662f1133" name="a40a257eb2b5d17ea2645b84e662f1133"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a40a257eb2b5d17ea2645b84e662f1133">&#9670;&nbsp;</a></span>uint_pair</h2>
@@ -205,8 +205,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab325a9ec64679bb35e79ec240b1a34f2" name="ab325a9ec64679bb35e79ec240b1a34f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab325a9ec64679bb35e79ec240b1a34f2">&#9670;&nbsp;</a></span>compute_key_point_mask()</h2>
+<a id="a4d2bd180c24ff535615eb91da77953b6" name="a4d2bd180c24ff535615eb91da77953b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2bd180c24ff535615eb91da77953b6">&#9670;&nbsp;</a></span>compute_key_point_mask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,7 +217,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const cv::Mat rgbd_slam::features::keypoints::Keypoint_Handler::compute_key_point_mask </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>pointToSearch</em>, </td>
         </tr>
         <tr>
@@ -277,8 +277,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3e41460a2b485ef957ebdd187ac5f6af" name="a3e41460a2b485ef957ebdd187ac5f6af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e41460a2b485ef957ebdd187ac5f6af">&#9670;&nbsp;</a></span>get_keypoint()</h2>
+<a id="a9633779b8e95af25326b1b7bb89ebe62" name="a9633779b8e95af25326b1b7bb89ebe62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9633779b8e95af25326b1b7bb89ebe62">&#9670;&nbsp;</a></span>get_keypoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -287,7 +287,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> rgbd_slam::features::keypoints::Keypoint_Handler::get_keypoint </td>
+          <td class="memname">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> rgbd_slam::features::keypoints::Keypoint_Handler::get_keypoint </td>
           <td>(</td>
           <td class="paramtype">const uint&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -330,8 +330,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab8c072afb5d3ac81b576e4b24a003033" name="ab8c072afb5d3ac81b576e4b24a003033"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8c072afb5d3ac81b576e4b24a003033">&#9670;&nbsp;</a></span>get_match_index()</h2>
+<a id="aa546aea8b245f2c2770775e5365bb191" name="aa546aea8b245f2c2770775e5365bb191"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa546aea8b245f2c2770775e5365bb191">&#9670;&nbsp;</a></span>get_match_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -339,7 +339,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">int rgbd_slam::features::keypoints::Keypoint_Handler::get_match_index </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>projectedMapPoint</em>, </td>
         </tr>
         <tr>
@@ -375,8 +375,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6853cdd7b7491b4adbbcdce5ede80a43" name="a6853cdd7b7491b4adbbcdce5ede80a43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6853cdd7b7491b4adbbcdce5ede80a43">&#9670;&nbsp;</a></span>get_search_space_coordinates()</h2>
+<a id="a996addaac61eb12c1a151a344dc7b901" name="a996addaac61eb12c1a151a344dc7b901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a996addaac61eb12c1a151a344dc7b901">&#9670;&nbsp;</a></span>get_search_space_coordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -387,7 +387,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a40a257eb2b5d17ea2645b84e662f1133">Keypoint_Handler::uint_pair</a> rgbd_slam::features::keypoints::Keypoint_Handler::get_search_space_coordinates </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>pointToPlace</em></td><td>)</td>
           <td> const</td>
         </tr>

@@ -1,0 +1,95 @@
+\hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Camera\+Coordinate Struct Reference}
+\label{structrgbd__slam_1_1utils_1_1_camera_coordinate}\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+
+
+Contains a single of coordinate in camera space. Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center.  
+
+
+
+
+{\ttfamily \#include $<$coordinates.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::Camera\+Coordinate\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structrgbd__slam_1_1utils_1_1_camera_coordinate}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a2f9b8d619ae652abf7b7c601f6415d13}{Camera\+Coordinate}} ()
+\begin{DoxyCompactList}\small\item\em Scores a 3D coordinate in camera (x, y, depth). It can be projected to world space using a pose transformation. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a1ab926926ef3d3bbbb4081e4c41a9704}{Camera\+Coordinate}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&coords)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_afec38c0949fc16849add6211f66af1f3}{Camera\+Coordinate}} (const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \&homegenous\+Coordinates)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_ae3bb1a7cffafa05daf9daedab5043bd6}{Camera\+Coordinate}} (const double x, const double y, const double z)
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a3dd5f12c57f9fad736ef9de9dce459d7}{get\+\_\+homogenous}} () const
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a879b77b2a8ebaaa2419bd7625d0ba9c0}{to\+\_\+world\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World) const
+\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a95e23682ed9c58bda423b3249c094aba}{to\+\_\+screen\+\_\+coordinates}} (\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains a single of coordinate in camera space. Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate_a2f9b8d619ae652abf7b7c601f6415d13}\label{structrgbd__slam_1_1utils_1_1_camera_coordinate_a2f9b8d619ae652abf7b7c601f6415d13}} 
+\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}!CameraCoordinate@{CameraCoordinate}}
+\index{CameraCoordinate@{CameraCoordinate}!rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+\doxysubsubsection{\texorpdfstring{CameraCoordinate()}{CameraCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate\+::\+Camera\+Coordinate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scores a 3D coordinate in camera (x, y, depth). It can be projected to world space using a pose transformation. 
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate_a1ab926926ef3d3bbbb4081e4c41a9704}\label{structrgbd__slam_1_1utils_1_1_camera_coordinate_a1ab926926ef3d3bbbb4081e4c41a9704}} 
+\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}!CameraCoordinate@{CameraCoordinate}}
+\index{CameraCoordinate@{CameraCoordinate}!rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+\doxysubsubsection{\texorpdfstring{CameraCoordinate()}{CameraCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate\+::\+Camera\+Coordinate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{coords }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate_afec38c0949fc16849add6211f66af1f3}\label{structrgbd__slam_1_1utils_1_1_camera_coordinate_afec38c0949fc16849add6211f66af1f3}} 
+\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}!CameraCoordinate@{CameraCoordinate}}
+\index{CameraCoordinate@{CameraCoordinate}!rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+\doxysubsubsection{\texorpdfstring{CameraCoordinate()}{CameraCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate\+::\+Camera\+Coordinate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \&}]{homegenous\+Coordinates }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate_ae3bb1a7cffafa05daf9daedab5043bd6}\label{structrgbd__slam_1_1utils_1_1_camera_coordinate_ae3bb1a7cffafa05daf9daedab5043bd6}} 
+\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}!CameraCoordinate@{CameraCoordinate}}
+\index{CameraCoordinate@{CameraCoordinate}!rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+\doxysubsubsection{\texorpdfstring{CameraCoordinate()}{CameraCoordinate()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate\+::\+Camera\+Coordinate (\begin{DoxyParamCaption}\item[{const double}]{x,  }\item[{const double}]{y,  }\item[{const double}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate_a3dd5f12c57f9fad736ef9de9dce459d7}\label{structrgbd__slam_1_1utils_1_1_camera_coordinate_a3dd5f12c57f9fad736ef9de9dce459d7}} 
+\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}!get\_homogenous@{get\_homogenous}}
+\index{get\_homogenous@{get\_homogenous}!rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+\doxysubsubsection{\texorpdfstring{get\_homogenous()}{get\_homogenous()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate\+::get\+\_\+homogenous (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate_a95e23682ed9c58bda423b3249c094aba}\label{structrgbd__slam_1_1utils_1_1_camera_coordinate_a95e23682ed9c58bda423b3249c094aba}} 
+\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}!to\_screen\_coordinates@{to\_screen\_coordinates}}
+\index{to\_screen\_coordinates@{to\_screen\_coordinates}!rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate\+::to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_camera_coordinate_a879b77b2a8ebaaa2419bd7625d0ba9c0}\label{structrgbd__slam_1_1utils_1_1_camera_coordinate_a879b77b2a8ebaaa2419bd7625d0ba9c0}} 
+\index{rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}!to\_world\_coordinates@{to\_world\_coordinates}}
+\index{to\_world\_coordinates@{to\_world\_coordinates}!rgbd\_slam::utils::CameraCoordinate@{rgbd\_slam::utils::CameraCoordinate}}
+\doxysubsubsection{\texorpdfstring{to\_world\_coordinates()}{to\_world\_coordinates()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate\+::to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{coordinates_8hpp}{coordinates.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{coordinates_8cpp}{coordinates.\+cpp}}\end{DoxyCompactItemize}

@@ -2,7 +2,7 @@
 \label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction}\index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 
 
-A class to detect and store keypoints.  
+A class to detect and track keypoints. This class will detect keypoints in gray images, compute descriptors and track those points using optical flow and/or descriptor matching.  
 
 
 
@@ -33,7 +33,7 @@ static \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_
 
 
 \doxysubsection{Detailed Description}
-A class to detect and store keypoints. 
+A class to detect and track keypoints. This class will detect keypoints in gray images, compute descriptors and track those points using optical flow and/or descriptor matching. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5254682f0f79e0810606b7339857a50d}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5254682f0f79e0810606b7339857a50d}} 
@@ -42,6 +42,11 @@ A class to detect and store keypoints.
 \doxysubsubsection{\texorpdfstring{Key\_Point\_Extraction()}{Key\_Point\_Extraction()}}
 {\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::\+Key\+\_\+\+Point\+\_\+\+Extraction (\begin{DoxyParamCaption}\item[{const uint}]{min\+Hessian = {\ttfamily 25} }\end{DoxyParamCaption})}
 
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em min\+Hessian} & The \char`\"{}precision\char`\"{} of the keypoint descriptor \\
+\hline
+\end{DoxyParams}
 
 
 \doxysubsection{Member Function Documentation}

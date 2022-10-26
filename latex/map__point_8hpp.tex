@@ -1,8 +1,8 @@
 \hypertarget{map__point_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/map\+\_\+point.hpp File Reference}
 \label{map__point_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_point.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_point.hpp}}
-{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
 {\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
-{\ttfamily \#include \char`\"{}tracking/kalman\+\_\+filter.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/coordinates.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../tracking/kalman\+\_\+filter.\+hpp\char`\"{}}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -13,9 +13,9 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{rgbd\+\_\
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}
 \begin{DoxyCompactList}\small\item\em Prepare the basic functions for a staged/map point. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point}}
-\begin{DoxyCompactList}\small\item\em Concurrent for a map point. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Candidate for a map point. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point}}
-\begin{DoxyCompactList}\small\item\em A map point structure, containing all the necessary informations to identify a map point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em A map point structure, containing all the necessary informations to identify a map point in local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 

@@ -6,9 +6,9 @@
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}
 \begin{DoxyCompactList}\small\item\em Prepare the basic functions for a staged/map point. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map}{Local\+\_\+\+Map}}
-\begin{DoxyCompactList}\small\item\em Maintain a local map around the camera. Can return matched features, and update the global map when features are estimated to be reliable. For now we dont have a global map. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Maintain a local (around the camera) map. Handle the feature association and tracking in local space. Can return matched features, and update the global map when features are estimated to be reliable. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{Map\+\_\+\+Point}}
-\begin{DoxyCompactList}\small\item\em A map point structure, containing all the necessary informations to identify a map point. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em A map point structure, containing all the necessary informations to identify a map point in local map. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive}{Matched\+Primitive}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_screen_point}{Matched\+Screen\+Point}}
@@ -18,7 +18,7 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}}
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{Primitive}}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point}{Staged\+\_\+\+Point}}
-\begin{DoxyCompactList}\small\item\em Concurrent for a map point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Candidate for a map point. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 

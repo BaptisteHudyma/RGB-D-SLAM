@@ -3,10 +3,16 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in camera space. Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}
 \begin{DoxyCompactList}\small\item\em Store a position with variance estimations. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}}
-\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
@@ -21,45 +27,35 @@ const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \mbox{
 \begin{DoxyCompactList}\small\item\em Compute euler angles from a given quaternion. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a07db914662571bbec6e8a1911fa8a117}{get\+\_\+rotation\+\_\+matrix\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles)
 \begin{DoxyCompactList}\small\item\em Compute a rotation matrix from a euler angle container. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{is\+\_\+depth\+\_\+valid}} (const double depth)
-\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9dbca5ba1fde9dede66b983bcdd6b8d0}{screen\+\_\+to\+\_\+world\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
-\item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac606f34d58a2c38df57f52586971f41c}{compute\+\_\+world\+\_\+to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&position3D, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&screen\+Point)
-\begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{camera\+Coordinates}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa4613bdb56bd3012bd4efae167362569}{world\+\_\+to\+\_\+camera\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&\mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}}, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera)
-\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in camera space. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_acf2041d958f5f63468f142a85b634587}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80a5c96230a6cced4d4999c60ea659e9}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&position)
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a0374f99788406cd572d51692961af33a}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
 \item 
-const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a65406b55752913e8a72b15c732fcd699}{get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&\mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}})
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{is\+\_\+depth\+\_\+valid}} (const double depth)
+\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a735eb52dd2f316b4f402b3efeea5e524}{get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}})
 \begin{DoxyCompactList}\small\item\em compute a covariance matrix for a screen point associated with a depth measurement \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3f2bd96814341dcb6a1418fce8e842df}{get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{camera\+Coordinates}} \&camera\+Point, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&world\+Point\+Covariance)
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a74331ed538d26f84e263c632da076f02}{get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} \&camera\+Point, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&world\+Point\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute a screen point covariance from a given camera point. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_af1c875ecbbef7363643107ddd5b8fdbb}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&screen\+Point)
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_acd862c5bf78564bf9ba508bfc7c32d69}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a15a5da9934a8f4ec423e77e26bff88ba}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&screen\+Point, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&screen\+Point\+Covariance)
+const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5169c9a45bacd1ff12039e2522344efe}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&screen\+Point\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a58e29e70d22c5d0a1b86c820acb7159e}{compute\+\_\+pose\+\_\+variance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&pose\+Variance)
 \begin{DoxyCompactList}\small\item\em Compute the variance of the final pose in X Y Z. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a25aefd4d0548c521c2fc7818f3ace9c5}{compute\+\_\+pose\+\_\+covariance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose)
 \begin{DoxyCompactList}\small\item\em Compute a pose covariance matrix from a pose. \end{DoxyCompactList}\item 
-Eigen\+::\+Vector\+Xd \mbox{\hyperlink{namespacergbd__slam_1_1utils_a59cfb8a0e06b13de53e5a3a82719ca7c}{get\+\_\+distance}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
+Eigen\+::\+Vector\+Xd \mbox{\hyperlink{namespacergbd__slam_1_1utils_a477393006dbc7176069ab906c9d71de0}{get\+\_\+signed\+\_\+distance}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
 \begin{DoxyCompactList}\small\item\em Compute a signed distance between two points. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a173685d2c7d390b356cbb92a2fc6f34e}{get\+\_\+distance\+\_\+euclidean}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
-\begin{DoxyCompactList}\small\item\em Compute a distance between two 3D points. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a02f7a096d8a6742b7f6a4f375771d0cc}{get\+\_\+distance\+\_\+manhattan}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
-\begin{DoxyCompactList}\small\item\em Compute a distance between two 3D points. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a85e268d155d8c8f2b4fdb5ee0b1c8554}{get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance\+\_\+2D}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera)
+\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a801ddab347a34f9751bc34d986a54a94}{get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance\+\_\+2D}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera)
 \begin{DoxyCompactList}\small\item\em Compute a signed 2D distance between a world point and a camera point, by retroprojecting the world point to camera space. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_ae3480fca10bc94fc032ec4092eeae805}{get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera)
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_adb50cd04e7f8326de182132457b47bca}{get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera)
 \begin{DoxyCompactList}\small\item\em Compute a distance between a world point and a camera point, by retroprojecting the world point to camera space. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_add957a0c9ceca7d234d4fe19140a1bc9}{get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance\+\_\+3D}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
+\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aebd0eb5e51aa0589be2606a3c8a393fd}{get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance\+\_\+3D}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
 \begin{DoxyCompactList}\small\item\em Compute a signed distance between a world point and a 3D point in camera space, by projecting the camera point to world space. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a714b3583dcb988faab880c694598b1eb}{get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2afb7eac5e5a965281a356e386468b5d}{get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&world\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&camera\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
 \begin{DoxyCompactList}\small\item\em Compute a distance between a world point and a 3D point in camera space, by projecting the camera point to world space. \end{DoxyCompactList}\item 
 std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7830f2322d077dd3b0659ac1226daa5f}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&pose)
 \item 
@@ -147,33 +143,11 @@ True if the variance was estimated
 
 Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) 
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ac606f34d58a2c38df57f52586971f41c}\label{namespacergbd__slam_1_1utils_ac606f34d58a2c38df57f52586971f41c}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_screen\_coordinates@{compute\_world\_to\_screen\_coordinates}}
-\index{compute\_world\_to\_screen\_coordinates@{compute\_world\_to\_screen\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{compute\_world\_to\_screen\_coordinates()}{compute\_world\_to\_screen\_coordinates()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{position3D,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{screen\+Point }\end{DoxyParamCaption})}
-
-
-
-Transform a point from world to screen coordinate system. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em position3D} & Coordinates of the detected point (world coordinates) \\
-\hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & Matrix to transform the world to a local coordinate system \\
-\hline
-\mbox{\texttt{ out}}  & {\em screen\+Point} & The point screen coordinates, if the function returned true\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-True if the screen position is valid 
-\end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_ae3480fca10bc94fc032ec4092eeae805}\label{namespacergbd__slam_1_1utils_ae3480fca10bc94fc032ec4092eeae805}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_adb50cd04e7f8326de182132457b47bca}\label{namespacergbd__slam_1_1utils_adb50cd04e7f8326de182132457b47bca}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_3D\_to\_2D\_distance@{get\_3D\_to\_2D\_distance}}
 \index{get\_3D\_to\_2D\_distance@{get\_3D\_to\_2D\_distance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_3D\_to\_2D\_distance()}{get\_3D\_to\_2D\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption})}
 
 
 
@@ -191,11 +165,11 @@ Compute a distance between a world point and a camera point, by retroprojecting 
 \begin{DoxyReturn}{Returns}
 an unsigned distance in camera space (pixels) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a85e268d155d8c8f2b4fdb5ee0b1c8554}\label{namespacergbd__slam_1_1utils_a85e268d155d8c8f2b4fdb5ee0b1c8554}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a801ddab347a34f9751bc34d986a54a94}\label{namespacergbd__slam_1_1utils_a801ddab347a34f9751bc34d986a54a94}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_3D\_to\_2D\_distance\_2D@{get\_3D\_to\_2D\_distance\_2D}}
 \index{get\_3D\_to\_2D\_distance\_2D@{get\_3D\_to\_2D\_distance\_2D}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_3D\_to\_2D\_distance\_2D()}{get\_3D\_to\_2D\_distance\_2D()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance\+\_\+2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance\+\_\+2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption})}
 
 
 
@@ -213,11 +187,11 @@ Compute a signed 2D distance between a world point and a camera point, by retrop
 \begin{DoxyReturn}{Returns}
 a 2D signed distance in camera space (pixels) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a714b3583dcb988faab880c694598b1eb}\label{namespacergbd__slam_1_1utils_a714b3583dcb988faab880c694598b1eb}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a2afb7eac5e5a965281a356e386468b5d}\label{namespacergbd__slam_1_1utils_a2afb7eac5e5a965281a356e386468b5d}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_3D\_to\_3D\_distance@{get\_3D\_to\_3D\_distance}}
 \index{get\_3D\_to\_3D\_distance@{get\_3D\_to\_3D\_distance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_3D\_to\_3D\_distance()}{get\_3D\_to\_3D\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})}
 
 
 
@@ -235,11 +209,11 @@ Compute a distance between a world point and a 3D point in camera space, by proj
 \begin{DoxyReturn}{Returns}
 The unsigned distance in world space 
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_add957a0c9ceca7d234d4fe19140a1bc9}\label{namespacergbd__slam_1_1utils_add957a0c9ceca7d234d4fe19140a1bc9}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_aebd0eb5e51aa0589be2606a3c8a393fd}\label{namespacergbd__slam_1_1utils_aebd0eb5e51aa0589be2606a3c8a393fd}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_3D\_to\_3D\_distance\_3D@{get\_3D\_to\_3D\_distance\_3D}}
 \index{get\_3D\_to\_3D\_distance\_3D@{get\_3D\_to\_3D\_distance\_3D}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_3D\_to\_3D\_distance\_3D()}{get\_3D\_to\_3D\_distance\_3D()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance\+\_\+3D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance\+\_\+3D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&}]{world\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})}
 
 
 
@@ -256,42 +230,6 @@ Compute a signed distance between a world point and a 3D point in camera space, 
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 The 3D signed distance in world space 
-\end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a59cfb8a0e06b13de53e5a3a82719ca7c}\label{namespacergbd__slam_1_1utils_a59cfb8a0e06b13de53e5a3a82719ca7c}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_distance@{get\_distance}}
-\index{get\_distance@{get\_distance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
-{\footnotesize\ttfamily Eigen\+::\+Vector\+Xd rgbd\+\_\+slam\+::utils\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
-
-
-
-Compute a signed distance between two points. 
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a173685d2c7d390b356cbb92a2fc6f34e}\label{namespacergbd__slam_1_1utils_a173685d2c7d390b356cbb92a2fc6f34e}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_distance\_euclidean@{get\_distance\_euclidean}}
-\index{get\_distance\_euclidean@{get\_distance\_euclidean}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_euclidean()}{get\_distance\_euclidean()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+distance\+\_\+euclidean (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
-
-
-
-Compute a distance between two 3D points. 
-
-\begin{DoxyReturn}{Returns}
-an unsigned euclidean distance 
-\end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a02f7a096d8a6742b7f6a4f375771d0cc}\label{namespacergbd__slam_1_1utils_a02f7a096d8a6742b7f6a4f375771d0cc}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_distance\_manhattan@{get\_distance\_manhattan}}
-\index{get\_distance\_manhattan@{get\_distance\_manhattan}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_distance\_manhattan()}{get\_distance\_manhattan()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::get\+\_\+distance\+\_\+manhattan (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
-
-
-
-Compute a distance between two 3D points. 
-
-\begin{DoxyReturn}{Returns}
-an unsigned manhattan distance 
 \end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}\label{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_euler\_angles\_from\_quaternion@{get\_euler\_angles\_from\_quaternion}}
@@ -323,11 +261,11 @@ Compute a quaternion from the given euler angles, in radians.
 
 Compute a rotation matrix from a euler angle container. 
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a3f2bd96814341dcb6a1418fce8e842df}\label{namespacergbd__slam_1_1utils_a3f2bd96814341dcb6a1418fce8e842df}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a74331ed538d26f84e263c632da076f02}\label{namespacergbd__slam_1_1utils_a74331ed538d26f84e263c632da076f02}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_screen\_point\_covariance@{get\_screen\_point\_covariance}}
 \index{get\_screen\_point\_covariance@{get\_screen\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_screen\_point\_covariance()}{get\_screen\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{camera\+Coordinates}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{world\+Point\+Covariance }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} \&}]{camera\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{world\+Point\+Covariance }\end{DoxyParamCaption})}
 
 
 
@@ -340,11 +278,11 @@ Compute a screen point covariance from a given camera point.
 \mbox{\texttt{ in}}  & {\em world\+Point\+Covariance} & The covariance associated with this world point \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a65406b55752913e8a72b15c732fcd699}\label{namespacergbd__slam_1_1utils_a65406b55752913e8a72b15c732fcd699}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a735eb52dd2f316b4f402b3efeea5e524}\label{namespacergbd__slam_1_1utils_a735eb52dd2f316b4f402b3efeea5e524}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_screen\_point\_covariance@{get\_screen\_point\_covariance}}
 \index{get\_screen\_point\_covariance@{get\_screen\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_screen\_point\_covariance()}{get\_screen\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{screen\+Coordinates }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{Screen\+Coordinate }\end{DoxyParamCaption})}
 
 
 
@@ -352,17 +290,27 @@ compute a covariance matrix for a screen point associated with a depth measureme
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}}} & The coordinates of this point, in screen space\\
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}}} & The coordinates of this point, in screen space\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 A 3x3 covariance matrix. It should be diagonal 
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_af1c875ecbbef7363643107ddd5b8fdbb}\label{namespacergbd__slam_1_1utils_af1c875ecbbef7363643107ddd5b8fdbb}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a477393006dbc7176069ab906c9d71de0}\label{namespacergbd__slam_1_1utils_a477393006dbc7176069ab906c9d71de0}} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_signed\_distance@{get\_signed\_distance}}
+\index{get\_signed\_distance@{get\_signed\_distance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{get\_signed\_distance()}{get\_signed\_distance()}}
+{\footnotesize\ttfamily Eigen\+::\+Vector\+Xd rgbd\+\_\+slam\+::utils\+::get\+\_\+signed\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{pointA,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{pointB }\end{DoxyParamCaption})}
+
+
+
+Compute a signed distance between two points. 
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_acd862c5bf78564bf9ba508bfc7c32d69}\label{namespacergbd__slam_1_1utils_acd862c5bf78564bf9ba508bfc7c32d69}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_world\_point\_covariance@{get\_world\_point\_covariance}}
 \index{get\_world\_point\_covariance@{get\_world\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_world\_point\_covariance()}{get\_world\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{screen\+Point }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point }\end{DoxyParamCaption})}
 
 
 
@@ -376,11 +324,11 @@ Compute the associated Gaussian error of a screen point when it will be transfor
 \begin{DoxyReturn}{Returns}
 the covariance of the 3D world point 
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a15a5da9934a8f4ec423e77e26bff88ba}\label{namespacergbd__slam_1_1utils_a15a5da9934a8f4ec423e77e26bff88ba}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a5169c9a45bacd1ff12039e2522344efe}\label{namespacergbd__slam_1_1utils_a5169c9a45bacd1ff12039e2522344efe}} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_world\_point\_covariance@{get\_world\_point\_covariance}}
 \index{get\_world\_point\_covariance@{get\_world\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{get\_world\_point\_covariance()}{get\_world\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{screen\+Point\+Covariance }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{screen\+Point\+Covariance }\end{DoxyParamCaption})}
 
 
 
@@ -418,32 +366,6 @@ Return true is a measurement is in the measurement range.
 \doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily std\+::ostream \& rgbd\+\_\+slam\+::utils\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&}]{pose }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_a9dbca5ba1fde9dede66b983bcdd6b8d0}\label{namespacergbd__slam_1_1utils_a9dbca5ba1fde9dede66b983bcdd6b8d0}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}}
-\index{screen\_to\_world\_coordinates@{screen\_to\_world\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{screen\_to\_world\_coordinates()}{screen\_to\_world\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} rgbd\+\_\+slam\+::utils\+::screen\+\_\+to\+\_\+world\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screen\+Coordinates}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{namespacergbd__slam_1_1utils_aa4613bdb56bd3012bd4efae167362569}\label{namespacergbd__slam_1_1utils_aa4613bdb56bd3012bd4efae167362569}} 
-\index{rgbd\_slam::utils@{rgbd\_slam::utils}!world\_to\_camera\_coordinates@{world\_to\_camera\_coordinates}}
-\index{world\_to\_camera\_coordinates@{world\_to\_camera\_coordinates}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{world\_to\_camera\_coordinates()}{world\_to\_camera\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{camera\+Coordinates}} rgbd\+\_\+slam\+::utils\+::world\+\_\+to\+\_\+camera\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}} \&}]{world\+Coordinates,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption})}
-
-
-
-Transform a vector in world space to a vector in camera space. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{world\+Coordinates}}} & A vector in world space \\
-\hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & Matrix to transform the world to a local coordinate system\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-The input vector transformed to camera space 
-\end{DoxyReturn}
 
 
 \doxysubsection{Variable Documentation}

@@ -1,0 +1,24 @@
+\hypertarget{coordinates_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates.hpp File Reference}
+\label{coordinates_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates.hpp}}
+{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in camera space. Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{rgbd\+\_\+slam\+::utils\+::is\+\_\+depth\+\_\+valid}} (const double depth)
+\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\end{DoxyCompactItemize}

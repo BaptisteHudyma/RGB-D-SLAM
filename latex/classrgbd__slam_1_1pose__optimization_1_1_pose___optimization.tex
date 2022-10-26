@@ -2,6 +2,11 @@
 \label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}\index{rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}}
 
 
+Find the transformation between a matches feature sets, using a custom Levenberg Marquardt method.  
+
+
+
+
 {\ttfamily \#include $<$pose\+\_\+optimization.\+hpp$>$}
 
 \doxysubsection*{Static Public Member Functions}
@@ -10,6 +15,9 @@
 static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a9ed6833fe8e6e26183af96d803e821b4}{compute\+\_\+optimized\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&current\+Pose, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&matched\+Points, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&optimized\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&outlier\+Matched\+Points)
 \begin{DoxyCompactList}\small\item\em Compute a new observer global pose, to replace the current estimated pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Find the transformation between a matches feature sets, using a custom Levenberg Marquardt method. 
 
 \doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a9ed6833fe8e6e26183af96d803e821b4}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a9ed6833fe8e6e26183af96d803e821b4}} 

@@ -74,18 +74,23 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Triangulate 2D point (screen space) to find 3D correspondances (camera space)  
+ <a href="classrgbd__slam_1_1tracking_1_1_triangulation.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="triangulation_8hpp_source.html">triangulation.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af4cf42f2235d0dedf7c3c7580dbcb141"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_triangulation.html#af4cf42f2235d0dedf7c3c7580dbcb141">triangulate</a> (const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;currentWorldToCamera, const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;newWorldToCamera, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;point2Da, const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;point2Db, <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;triangulatedPoint)</td></tr>
-<tr class="memdesc:af4cf42f2235d0dedf7c3c7580dbcb141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulate a world point from two successive 2D matches, with an already known pose.  <a href="classrgbd__slam_1_1tracking_1_1_triangulation.html#af4cf42f2235d0dedf7c3c7580dbcb141">More...</a><br /></td></tr>
-<tr class="separator:af4cf42f2235d0dedf7c3c7580dbcb141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b291289bc277fe1429aac15c34c52c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a06b291289bc277fe1429aac15c34c52c">triangulate</a> (const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;currentWorldToCamera, const <a class="el" href="structrgbd__slam_1_1world_to_camera_matrix.html">worldToCameraMatrix</a> &amp;newWorldToCamera, const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;point2Da, const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;point2Db, <a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> &amp;triangulatedPoint)</td></tr>
+<tr class="memdesc:a06b291289bc277fe1429aac15c34c52c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulate a world point from two successive 2D matches, with an already known pose.  <a href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a06b291289bc277fe1429aac15c34c52c">More...</a><br /></td></tr>
+<tr class="separator:a06b291289bc277fe1429aac15c34c52c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8033f57b4e72fd466722553e72654081"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a8033f57b4e72fd466722553e72654081">get_supposed_pose</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;pose, const double baselinePoseSupposition)</td></tr>
 <tr class="memdesc:a8033f57b4e72fd466722553e72654081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a weak supposition of a new pose, from an optimized pose.  <a href="classrgbd__slam_1_1tracking_1_1_triangulation.html#a8033f57b4e72fd466722553e72654081">More...</a><br /></td></tr>
 <tr class="separator:a8033f57b4e72fd466722553e72654081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Triangulate 2D point (screen space) to find 3D correspondances (camera space) </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8033f57b4e72fd466722553e72654081" name="a8033f57b4e72fd466722553e72654081"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8033f57b4e72fd466722553e72654081">&#9670;&nbsp;</a></span>get_supposed_pose()</h2>
 
@@ -124,8 +129,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af4cf42f2235d0dedf7c3c7580dbcb141" name="af4cf42f2235d0dedf7c3c7580dbcb141"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4cf42f2235d0dedf7c3c7580dbcb141">&#9670;&nbsp;</a></span>triangulate()</h2>
+<a id="a06b291289bc277fe1429aac15c34c52c" name="a06b291289bc277fe1429aac15c34c52c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06b291289bc277fe1429aac15c34c52c">&#9670;&nbsp;</a></span>triangulate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,19 +153,19 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>point2Da</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1screen_coordinates.html">screenCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate.html">utils::ScreenCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>point2Db</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>triangulatedPoint</em>&#160;</td>
         </tr>
         <tr>

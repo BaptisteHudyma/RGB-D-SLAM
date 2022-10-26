@@ -32,53 +32,30 @@
 \DoxyCodeLine{28     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \{\};}
 \DoxyCodeLine{29     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{cameraToWorldMatrix}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \{\};}
 \DoxyCodeLine{30 }
-\DoxyCodeLine{31     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates}{screenCoordinates}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \{}
-\DoxyCodeLine{32         \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates_a46aa9b3135fbe0c6b88bd898e08692a9}{screenCoordinates}}() \{\};}
-\DoxyCodeLine{33         \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates_ad91720ac0853fcbd35236c0a957cb9c2}{screenCoordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& coords, \textcolor{keyword}{const} \textcolor{keywordtype}{double} depth = 0) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(coords.x(), coords.y(), depth) \{\};}
-\DoxyCodeLine{34         \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates_a446db190f1df8e7666a3c150717b3ed8}{screenCoordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, 0) \{\};}
-\DoxyCodeLine{35         \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinates_a612d6e4bf972ee86ca3964f09889fd2c}{screenCoordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} z) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, z) \{\};}
-\DoxyCodeLine{36     \};}
-\DoxyCodeLine{37     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates}{cameraCoordinates}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \{}
-\DoxyCodeLine{38         \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates_aab50ca477751c8944636f5294b1c5401}{cameraCoordinates}}() \{\};}
-\DoxyCodeLine{39         \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates_acdf9f79a2470d59c533719acbee94300}{cameraCoordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coords) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(coords) \{\};}
-\DoxyCodeLine{40         \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates_ac139a07e4b78015bdc494f987ab2ece1}{cameraCoordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\& homegenousCoordinates) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(}
-\DoxyCodeLine{41             homegenousCoordinates.x()/homegenousCoordinates[3],}
-\DoxyCodeLine{42             homegenousCoordinates.y()/homegenousCoordinates[3],}
-\DoxyCodeLine{43             homegenousCoordinates.z()/homegenousCoordinates[3]}
-\DoxyCodeLine{44         ) \{\};}
-\DoxyCodeLine{45         \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates_a0991780f1bfa8934706c9276b9d91449}{cameraCoordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} z) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, z) \{\};}
-\DoxyCodeLine{46         \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinates_ac8874591a687697c7345e49c2cb14015}{get\_homogenous}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(x(), y(), z(), 1);\};}
-\DoxyCodeLine{47     \};}
-\DoxyCodeLine{48     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1world_coordinates}{worldCoordinates}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \{}
-\DoxyCodeLine{49         \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates_afd934751afd4ad880a0d02ae302592c8}{worldCoordinates}}() \{\};}
-\DoxyCodeLine{50         \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates_aec4da9e3a6108037d88bb67dc457f13b}{worldCoordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coords) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(coords) \{\};}
-\DoxyCodeLine{51         \mbox{\hyperlink{structrgbd__slam_1_1world_coordinates_af1960ba3469d6fc763ff0ab8e3c12127}{worldCoordinates}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} z) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, z) \{\};}
-\DoxyCodeLine{52     \};}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{54     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{EulerAngles}}}
-\DoxyCodeLine{55     \{}
-\DoxyCodeLine{56         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}};}
-\DoxyCodeLine{57         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}};}
-\DoxyCodeLine{58         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}};}
-\DoxyCodeLine{59 }
-\DoxyCodeLine{60         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a7264afdffca3e88fe5a5f66b0c426bda}{EulerAngles}}(): \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}}(0.0), \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}}(0.0), \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}}(0.0) \{\};}
-\DoxyCodeLine{61 }
-\DoxyCodeLine{62         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a662462d5be7bf3543fb0010b9950bb4c}{EulerAngles}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} p, \textcolor{keyword}{const} \textcolor{keywordtype}{double} r):}
-\DoxyCodeLine{63             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}}(y),}
-\DoxyCodeLine{64             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}}(p),}
-\DoxyCodeLine{65             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}}(r)}
-\DoxyCodeLine{66         \{\};}
-\DoxyCodeLine{67     \};}
-\DoxyCodeLine{68 }
-\DoxyCodeLine{69     \textcolor{keyword}{typedef} std::vector<vector2, Eigen::aligned\_allocator<vector2>> \mbox{\hyperlink{namespacergbd__slam_a67952da6f144367a173fb51b3fd47c6e}{vector2\_vector}};}
-\DoxyCodeLine{70     \textcolor{keyword}{typedef} std::vector<vector3, Eigen::aligned\_allocator<vector3>> \mbox{\hyperlink{namespacergbd__slam_ae6859425949b304e9b491455312fea52}{vector3\_vector}};}
-\DoxyCodeLine{71     \textcolor{keyword}{typedef} std::vector<vector4, Eigen::aligned\_allocator<vector4>> \mbox{\hyperlink{namespacergbd__slam_ad351d2e6546c9bf619f06e4b0fe26ce6}{vector4\_vector}};}
-\DoxyCodeLine{72     \textcolor{keyword}{typedef} std::vector<matrix33, Eigen::aligned\_allocator<matrix33>> \mbox{\hyperlink{namespacergbd__slam_acf5b5b3fbd3b0a6fa0893ab150650dd3}{matrix33\_vector}};}
-\DoxyCodeLine{73     \textcolor{keyword}{typedef} std::vector<matrix34, Eigen::aligned\_allocator<matrix34>> \mbox{\hyperlink{namespacergbd__slam_aa80e2a59978f0997c0fe22f8ffe32e06}{matrix34\_vector}};}
-\DoxyCodeLine{74     \textcolor{keyword}{typedef} std::vector<matrix44, Eigen::aligned\_allocator<matrix44>> \mbox{\hyperlink{namespacergbd__slam_a9609c7829c28a3a2fb81151c1527417d}{matrix44\_vector}};}
-\DoxyCodeLine{75     \textcolor{keyword}{typedef} std::vector<quaternion, Eigen::aligned\_allocator<quaternion>> \mbox{\hyperlink{namespacergbd__slam_a621ea1422d69227eecd1931a93238b98}{quaternion\_vector}};}
-\DoxyCodeLine{76 \}}
-\DoxyCodeLine{77 }
-\DoxyCodeLine{78 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{31     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{EulerAngles}}}
+\DoxyCodeLine{32     \{}
+\DoxyCodeLine{33         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}};}
+\DoxyCodeLine{34         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}};}
+\DoxyCodeLine{35         \textcolor{keywordtype}{double} \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a7264afdffca3e88fe5a5f66b0c426bda}{EulerAngles}}(): \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}}(0.0), \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}}(0.0), \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}}(0.0) \{\};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39         \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a662462d5be7bf3543fb0010b9950bb4c}{EulerAngles}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} p, \textcolor{keyword}{const} \textcolor{keywordtype}{double} r):}
+\DoxyCodeLine{40             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_aff48fb8c3f6813d864e22b562f6c9e27}{yaw}}(y),}
+\DoxyCodeLine{41             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_af4363faefdf4c1540c39b1f9b740fc95}{pitch}}(p),}
+\DoxyCodeLine{42             \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles_a3dc1511a2d1c5f2c004e9578e8de6b24}{roll}}(r)}
+\DoxyCodeLine{43         \{\};}
+\DoxyCodeLine{44     \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keyword}{typedef} std::vector<vector2, Eigen::aligned\_allocator<vector2>> \mbox{\hyperlink{namespacergbd__slam_a67952da6f144367a173fb51b3fd47c6e}{vector2\_vector}};}
+\DoxyCodeLine{47     \textcolor{keyword}{typedef} std::vector<vector3, Eigen::aligned\_allocator<vector3>> \mbox{\hyperlink{namespacergbd__slam_ae6859425949b304e9b491455312fea52}{vector3\_vector}};}
+\DoxyCodeLine{48     \textcolor{keyword}{typedef} std::vector<vector4, Eigen::aligned\_allocator<vector4>> \mbox{\hyperlink{namespacergbd__slam_ad351d2e6546c9bf619f06e4b0fe26ce6}{vector4\_vector}};}
+\DoxyCodeLine{49     \textcolor{keyword}{typedef} std::vector<matrix33, Eigen::aligned\_allocator<matrix33>> \mbox{\hyperlink{namespacergbd__slam_acf5b5b3fbd3b0a6fa0893ab150650dd3}{matrix33\_vector}};}
+\DoxyCodeLine{50     \textcolor{keyword}{typedef} std::vector<matrix34, Eigen::aligned\_allocator<matrix34>> \mbox{\hyperlink{namespacergbd__slam_aa80e2a59978f0997c0fe22f8ffe32e06}{matrix34\_vector}};}
+\DoxyCodeLine{51     \textcolor{keyword}{typedef} std::vector<matrix44, Eigen::aligned\_allocator<matrix44>> \mbox{\hyperlink{namespacergbd__slam_a9609c7829c28a3a2fb81151c1527417d}{matrix44\_vector}};}
+\DoxyCodeLine{52     \textcolor{keyword}{typedef} std::vector<quaternion, Eigen::aligned\_allocator<quaternion>> \mbox{\hyperlink{namespacergbd__slam_a621ea1422d69227eecd1931a93238b98}{quaternion\_vector}};}
+\DoxyCodeLine{53 \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

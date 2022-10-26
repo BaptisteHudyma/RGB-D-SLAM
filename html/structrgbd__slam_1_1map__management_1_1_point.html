@@ -87,15 +87,15 @@ Inheritance diagram for rgbd_slam::map_management::Point:</div>
   <img src="structrgbd__slam_1_1map__management_1_1_point.png" usemap="#rgbd_5Fslam::map_5Fmanagement::Point_map" alt=""/>
   <map id="rgbd_5Fslam::map_5Fmanagement::Point_map" name="rgbd_5Fslam::map_5Fmanagement::Point_map">
 <area href="structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking.html" title="Prepare the basic functions for a staged/map point." alt="rgbd_slam::map_management::IMap_Point_With_Tracking" shape="rect" coords="171,56,503,80"/>
-<area href="classrgbd__slam_1_1map__management_1_1_map___point.html" title="A map point structure, containing all the necessary informations to identify a map point." alt="rgbd_slam::map_management::Map_Point" shape="rect" coords="0,112,332,136"/>
-<area href="classrgbd__slam_1_1map__management_1_1_staged___point.html" title="Concurrent for a map point." alt="rgbd_slam::map_management::Staged_Point" shape="rect" coords="342,112,674,136"/>
+<area href="classrgbd__slam_1_1map__management_1_1_map___point.html" title="A map point structure, containing all the necessary informations to identify a map point in local map..." alt="rgbd_slam::map_management::Map_Point" shape="rect" coords="0,112,332,136"/>
+<area href="classrgbd__slam_1_1map__management_1_1_staged___point.html" title="Candidate for a map point." alt="rgbd_slam::map_management::Staged_Point" shape="rect" coords="342,112,674,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5d0ab6d39764679d98d54e27cb2025df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a5d0ab6d39764679d98d54e27cb2025df">_coordinates</a></td></tr>
-<tr class="separator:a5d0ab6d39764679d98d54e27cb2025df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa538c84e53a30f94804c77fbfa6dda0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#aa538c84e53a30f94804c77fbfa6dda0c">_coordinates</a></td></tr>
+<tr class="separator:aa538c84e53a30f94804c77fbfa6dda0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb78f641c06c5c7ad59b03bc4cebed47"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#acb78f641c06c5c7ad59b03bc4cebed47">_descriptor</a></td></tr>
 <tr class="separator:acb78f641c06c5c7ad59b03bc4cebed47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46b70bcf21a3209e077989ca4559d8e8"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a46b70bcf21a3209e077989ca4559d8e8">_id</a></td></tr>
@@ -103,10 +103,10 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a7b976d3458c6f0b2bcc7d314016c700b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a7b976d3458c6f0b2bcc7d314016c700b">Point</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;coordinates, const cv::Mat &amp;descriptor)</td></tr>
-<tr class="separator:a7b976d3458c6f0b2bcc7d314016c700b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66728379d201a805707f781038eadae9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a66728379d201a805707f781038eadae9">Point</a> (const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;coordinates, const cv::Mat &amp;descriptor, const size_t id)</td></tr>
-<tr class="separator:a66728379d201a805707f781038eadae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fcec4d83cc8f70a2e6a95f9577edc54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#a5fcec4d83cc8f70a2e6a95f9577edc54">Point</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> &amp;coordinates, const cv::Mat &amp;descriptor)</td></tr>
+<tr class="separator:a5fcec4d83cc8f70a2e6a95f9577edc54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad770046d683fe6187f75757d03e1b656"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1map__management_1_1_point.html#ad770046d683fe6187f75757d03e1b656">Point</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> &amp;coordinates, const cv::Mat &amp;descriptor, const size_t id)</td></tr>
+<tr class="separator:ad770046d683fe6187f75757d03e1b656"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -116,8 +116,8 @@ Static Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Basic keypoint class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7b976d3458c6f0b2bcc7d314016c700b" name="a7b976d3458c6f0b2bcc7d314016c700b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b976d3458c6f0b2bcc7d314016c700b">&#9670;&nbsp;</a></span>Point() <span class="overload">[1/2]</span></h2>
+<a id="a5fcec4d83cc8f70a2e6a95f9577edc54" name="a5fcec4d83cc8f70a2e6a95f9577edc54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fcec4d83cc8f70a2e6a95f9577edc54">&#9670;&nbsp;</a></span>Point() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -128,7 +128,7 @@ Static Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::map_management::Point::Point </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>coordinates</em>, </td>
         </tr>
         <tr>
@@ -152,8 +152,8 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a66728379d201a805707f781038eadae9" name="a66728379d201a805707f781038eadae9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66728379d201a805707f781038eadae9">&#9670;&nbsp;</a></span>Point() <span class="overload">[2/2]</span></h2>
+<a id="ad770046d683fe6187f75757d03e1b656" name="ad770046d683fe6187f75757d03e1b656"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad770046d683fe6187f75757d03e1b656">&#9670;&nbsp;</a></span>Point() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,7 +164,7 @@ Static Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::map_management::Point::Point </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> &amp;&#160;</td>
           <td class="paramname"><em>coordinates</em>, </td>
         </tr>
         <tr>
@@ -195,14 +195,14 @@ Static Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a5d0ab6d39764679d98d54e27cb2025df" name="a5d0ab6d39764679d98d54e27cb2025df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d0ab6d39764679d98d54e27cb2025df">&#9670;&nbsp;</a></span>_coordinates</h2>
+<a id="aa538c84e53a30f94804c77fbfa6dda0c" name="aa538c84e53a30f94804c77fbfa6dda0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa538c84e53a30f94804c77fbfa6dda0c">&#9670;&nbsp;</a></span>_coordinates</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structrgbd__slam_1_1world_coordinates.html">worldCoordinates</a> rgbd_slam::map_management::Point::_coordinates</td>
+          <td class="memname"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> rgbd_slam::map_management::Point::_coordinates</td>
         </tr>
       </table>
 </div><div class="memdoc">
