@@ -5,8 +5,8 @@
 namespace rgbd_slam {
 namespace utils {
 
-        const double MIN_DEPTH_DISTANCE = 40;   // M millimeters is the depth camera minimum reliable distance
-        const double MAX_DEPTH_DISTANCE = 6000; // N meters is the depth camera maximum reliable distance
+        const double MIN_DEPTH_DISTANCE = 40;   // (millimeters) is the depth camera minimum reliable distance
+        const double MAX_DEPTH_DISTANCE = 6000; // (millimeters) is the depth camera maximum reliable distance
 
         bool is_depth_valid(const double depth)
         {
@@ -16,14 +16,20 @@ namespace utils {
 
         WorldCoordinate ScreenCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
+            const CameraCoordinate& cameraPoint = this->to_camera_coordinates();
+            return cameraPoint.to_world_coordinates(cameraToWorld);
+        }
+
+        CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
+        {
             assert(z() > 0);
             assert(x() >= 0 and y() >= 0);
 
             const double x = (this->x() - Parameters::get_camera_1_center_x()) * this->z() / Parameters::get_camera_1_focal_x();
             const double y = (this->y() - Parameters::get_camera_1_center_y()) * this->z() / Parameters::get_camera_1_focal_y();
 
-            const CameraCoordinate cameraPoint(x, y, z());
-            return cameraPoint.to_world_coordinates(cameraToWorld);
+            CameraCoordinate cameraPoint(x, y, z());
+            return cameraPoint;
         }
 
         WorldCoordinate CameraCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const

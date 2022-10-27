@@ -28,14 +28,21 @@ namespace utils {
         ScreenCoordinate(const double x, const double y) : vector3(x, y, 0) {};
         ScreenCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
 
-        /*
-         * \brief Transform a screen point with a value to a 3D world point
+        /**
+         * \brief Transform a screen point with a depth value to a 3D world point
          *
          * \param[in] cameraToWorld Matrix to transform local to world coordinates
          *
-         * \return A 3D point in frame coordinates
+         * \return A 3D point in world coordinates
          */
         WorldCoordinate to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
+
+        /**
+         * \brief Transform a screen point with a depth value to a 3D camera point
+         *
+         * \return A 3D point in camera coordinates
+         */
+        CameraCoordinate to_camera_coordinates() const;
     };
 
 
@@ -57,8 +64,22 @@ namespace utils {
         CameraCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
         vector4 get_homogenous() const { return vector4(x(), y(), z(), 1);};
 
+        /**
+         * \brief Transform a camera point to a 3D world point
+         *
+         * \param[in] cameraToWorld Matrix to transform local to world coordinates
+         *
+         * \return A 3D point in world coordinates
+         */
         WorldCoordinate to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
 
+        /**
+         * \brief Transform a point from camera to screen coordinate system
+         *
+         * \param[out] screenPoint The point screen coordinates, if the function returned true
+         *
+         * \return True if the screen position is valid
+         */
         bool to_screen_coordinates(ScreenCoordinate& screenPoint) const;
     };
 
