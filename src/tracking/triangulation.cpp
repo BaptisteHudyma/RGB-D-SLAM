@@ -3,6 +3,7 @@
 #include "../types.hpp"
 #include "../utils/camera_transformation.hpp"
 #include "../parameters.hpp"
+#include "coordinates.hpp"
 
 namespace rgbd_slam {
     namespace tracking {
@@ -30,24 +31,18 @@ namespace rgbd_slam {
 
         bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const utils::ScreenCoordinate& point2Da, const utils::ScreenCoordinate& point2Db, utils::WorldCoordinate& triangulatedPoint) 
         {
-            const double cameraFX = Parameters::get_camera_1_focal_x();
-            const double cameraFY = Parameters::get_camera_1_focal_y();
-            const double cameraCX = Parameters::get_camera_1_center_x();
-            const double cameraCY = Parameters::get_camera_1_center_y();
             const double maximumRetroprojectionError = Parameters::get_maximum_retroprojection_error();
 
             // project x and y coordinates
-            const double pointAx = (point2Da.x() - cameraCX) / cameraFX;
-            const double pointAy = (point2Da.y() - cameraCY) / cameraFY;
-            const double pointBx = (point2Db.x() - cameraCX) / cameraFX;
-            const double pointBy = (point2Db.y() - cameraCY) / cameraFY;
+            const utils::CameraCoordinate& pointA = point2Da.to_camera_coordinates();
+            const utils::CameraCoordinate& pointB = point2Db.to_camera_coordinates();
 
             // Linear-LS triangulation
             Eigen::Matrix<double, 4, 4> triangulationMatrix;
-            triangulationMatrix << pointAx * currentWorldToCamera.row(2) - currentWorldToCamera.row(0),
-                                pointAy * currentWorldToCamera.row(2) - currentWorldToCamera.row(1),
-                                pointBx * newWorldToCamera.row(2) - newWorldToCamera.row(0),
-                                pointBy * newWorldToCamera.row(2) - newWorldToCamera.row(1);
+            triangulationMatrix << pointA.x() * currentWorldToCamera.row(2) - currentWorldToCamera.row(0),
+                                   pointA.y() * currentWorldToCamera.row(2) - currentWorldToCamera.row(1),
+                                   pointB.x() * newWorldToCamera.row(2) - newWorldToCamera.row(0),
+                                   pointB.x() * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
             // singular value decomposition
             const utils::WorldCoordinate worldPoint (

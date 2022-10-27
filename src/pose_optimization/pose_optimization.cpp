@@ -214,11 +214,7 @@ namespace rgbd_slam {
 
             for (const matches_containers::Match& match : matchedPoints)
             {
-                const vector3 cameraPoint (
-                        (match._screenPoint.x() - Parameters::get_camera_1_center_x()) / Parameters::get_camera_1_focal_x(),
-                        (match._screenPoint.y() - Parameters::get_camera_1_center_y()) / Parameters::get_camera_1_focal_y(),
-                        1
-                        );
+                const vector3& cameraPoint = match._screenPoint.to_camera_coordinates();
 
                 cameraPoints.push_back(cameraPoint.normalized());
                 worldPoints.push_back(match._worldPoint / multiplier);

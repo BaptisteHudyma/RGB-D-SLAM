@@ -308,7 +308,7 @@ namespace rgbd_slam {
                     // inefficient...
                     const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(previousCameraToWorldMatrix);
                     vector2 previousPointScreenCoordinates;
-                    const bool isTransformationValid = utils::compute_world_to_screen_coordinates(mapPoint._coordinates, worldToCamera, previousPointScreenCoordinates);
+                    const bool isTransformationValid = (mapPoint._coordinates).to_screen_coordinates(worldToCamera, previousPointScreenCoordinates);
                     if (isTransformationValid)
                     {
                         worldPointCoordinates triangulatedPoint;
