@@ -84,7 +84,7 @@ namespace utils {
             assert( not std::isnan(x()) and not std::isnan(y()) and not std::isnan(z()) );
 
             const CameraCoordinate& cameraPoint = this->to_camera_coordinates(worldToCamera);
-            assert(cameraPoint.get_homogenous()[3] != 0);
+            assert(cameraPoint.get_homogenous()[3] > 0);
 
             if (cameraPoint.z() <= 0) {
                 return false;
