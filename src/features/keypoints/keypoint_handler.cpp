@@ -27,10 +27,10 @@ namespace rgbd_slam {
                 {
                     const cv::Mat roi(depthImage(
                                 cv::Rect(
-                                    std::max(depthCoordinates.x - border, 0.0),
-                                    std::max(depthCoordinates.y - border, 0.0),
-                                    (border * 2.0), 
-                                    (border * 2.0))
+                                    std::max(int(depthCoordinates.x - border), 0),
+                                    std::max(int(depthCoordinates.y - border), 0),
+                                    int(border * 2.0), 
+                                    int(border * 2.0))
                                 ));
                     double min, max;
                     cv::minMaxLoc(roi, &min, &max);

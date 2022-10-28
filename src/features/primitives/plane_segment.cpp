@@ -47,22 +47,26 @@ namespace rgbd_slam {
             {
             }
 
+            /**
+             * \brief Runs a check on a depth value, and increment a discontinuity counter if needed
+             *
+             * \param[in] depthAlphaValue
+             * \param[in] depthDiscontinuityLimit Limit of maximum depth discontinuities
+             * \param[in] z The depth value to check
+             * \param[in,out] discontinuityCounter The count of discontinuities
+             * \param[in,out] zLast Last depht value to pass the continuity test
+             *
+             * \return False if too much continuities are detected
+             */
             bool check_discontinuities(const double depthAlphaValue, const uint depthDiscontinuityLimit, const float z, uint& discontinuityCounter, float& zLast)
             {
-                if(z > 0)
+                if(z > 0 and abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) 
                 {
-                    if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) 
-                    {
-                        zLast = z;
-                    }
-                    else 
-                    {
-                        discontinuityCounter += 1;
-                        if(discontinuityCounter > depthDiscontinuityLimit) 
-                        {
-                            return false;
-                        }
-                    }
+                    zLast = z;
+                }
+                else if(++discontinuityCounter > depthDiscontinuityLimit)
+                {
+                    return false;
                 }
                 return true;
             }

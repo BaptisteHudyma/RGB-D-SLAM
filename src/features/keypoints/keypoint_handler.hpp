@@ -11,7 +11,7 @@ namespace rgbd_slam {
     namespace features {
         namespace keypoints {
 
-            const double BORDER_SIZE = 1.; // Border of an image, in which points will be ignored
+            const int BORDER_SIZE = 1; // Border of an image, in which points will be ignored
             const size_t INVALID_MAP_POINT_ID = 0;  // should be the same as INVALID_POINT_UNIQ_ID in map_point.hpp
             const int INVALID_MATCH_INDEX = -1;
 
