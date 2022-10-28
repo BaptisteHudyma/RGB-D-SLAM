@@ -126,7 +126,7 @@ namespace rgbd_slam {
             }
 
 
-            const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(const utils::ScreenCoordinate& pointToPlace) const
+            const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const
             {
                 const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 const uint_pair cellCoordinates(
@@ -136,7 +136,7 @@ namespace rgbd_slam {
                 return cellCoordinates;
             }
 
-            const cv::Mat Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
+            const cv::Mat Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
             {
                 const uint_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
 
@@ -162,7 +162,7 @@ namespace rgbd_slam {
                         {
                             if (not isKeyPointMatchedContainer[keypointIndex])
                             {
-                                const utils::ScreenCoordinate& keypoint = get_keypoint(keypointIndex);
+                                const utils::ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex);
                                 const double squarredDistance = 
                                     pow(keypoint.x() - pointToSearch.x(), 2.0) + 
                                     pow(keypoint.y() - pointToSearch.y(), 2.0);
@@ -215,7 +215,7 @@ namespace rgbd_slam {
                 return INVALID_MATCH_INDEX;
             }
 
-            int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
+            int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
             {
                 assert(isKeyPointMatchedContainer.size() == _keypoints.size());
                 // cannot compute matches without a match or descriptors

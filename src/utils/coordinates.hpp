@@ -6,8 +6,12 @@
 namespace rgbd_slam {
 namespace utils {
 
+    struct ScreenCoordinate2D;
     struct ScreenCoordinate;
+
+    struct CameraCoordinate2D;
     struct CameraCoordinate;
+
     struct WorldCoordinate;
 
     /**
@@ -17,16 +21,29 @@ namespace utils {
 
     /**
      * \brief Contains a single of coordinate in screen space.
+     * Screen space is defined as (x, y) in pixels
+     */
+    struct ScreenCoordinate2D : public vector2 {
+        ScreenCoordinate2D() {};
+        ScreenCoordinate2D(const vector2& coords) : vector2(coords) {};
+        ScreenCoordinate2D(const double x, const double y) : vector2(x, y) {};
+
+        /**
+         * \brief Transform a screen point with a depth value to a 3D camera point
+         *
+         * \return A 3D point in camera coordinates
+         */
+        CameraCoordinate2D to_camera_coordinates() const;
+    };
+
+    /**
+     * \brief Contains a single of coordinate in screen space.
      * Screen space is defined as (x, y) in pixels, and z in distance (millimeters)
      */
-    struct ScreenCoordinate : public vector3 {
-        /**
-         * \brief Scores a 3D coordinate in screenspace (screen x, screen y, depth)
-         */
+    struct ScreenCoordinate : public ScreenCoordinate2D {
         ScreenCoordinate() {};
-        ScreenCoordinate(const vector2& coords, const double depth = 0) : vector3(coords.x(), coords.y(), depth) {};
-        ScreenCoordinate(const double x, const double y) : vector3(x, y, 0) {};
-        ScreenCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
+        //ScreenCoordinate(const ScreenCoordinate& screenCoordinates) : ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y()), _z(screenCoordinates.z()) {};
+        ScreenCoordinate(const double x, const double y, const double z) : ScreenCoordinate2D(x, y), _z(z) {};
 
         /**
          * \brief Transform a screen point with a depth value to a 3D world point
@@ -43,6 +60,33 @@ namespace utils {
          * \return A 3D point in camera coordinates
          */
         CameraCoordinate to_camera_coordinates() const;
+
+        double z() const { return _z; };
+
+        vector3 vector() const { return vector3(x(), y(), z()); };
+
+    private:
+        double _z;
+    };
+
+
+    /**
+     * \brief Contains a single of coordinate in camera space.
+     * Camera space is defined as (x, y), relative to the camera center
+     */
+    struct CameraCoordinate2D : public vector2 {
+        CameraCoordinate2D() {};
+        CameraCoordinate2D(const vector2& coords) : vector2(coords) {};
+        CameraCoordinate2D(const double x, const double y) : vector2(x, y) {};
+
+        /**
+         * \brief Transform a point from camera to screen coordinate system
+         *
+         * \param[out] screenPoint The point screen coordinates, if the function returned true
+         *
+         * \return True if the screen position is valid
+         */
+        bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const;
     };
 
 
@@ -50,18 +94,17 @@ namespace utils {
      * \brief Contains a single of coordinate in camera space.
      * Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center
      */
-    struct CameraCoordinate : public vector3 {
+    struct CameraCoordinate : public CameraCoordinate2D {
         /**
          * \brief Scores a 3D coordinate in camera (x, y, depth). It can be projected to world space using a pose transformation
          */
         CameraCoordinate() {};
-        CameraCoordinate(const vector3& coords) : vector3(coords) {};
-        CameraCoordinate(const vector4& homegenousCoordinates) : vector3(
+        CameraCoordinate(const vector3& coords) : CameraCoordinate2D(coords.x(), coords.y()), _z(coords.z()) {};
+        CameraCoordinate(const vector4& homegenousCoordinates) : CameraCoordinate2D(
             homegenousCoordinates.x()/homegenousCoordinates[3],
-            homegenousCoordinates.y()/homegenousCoordinates[3],
-            homegenousCoordinates.z()/homegenousCoordinates[3]
-        ) {};
-        CameraCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
+            homegenousCoordinates.y()/homegenousCoordinates[3]
+        ), _z(homegenousCoordinates.z()/homegenousCoordinates[3]) {};
+        CameraCoordinate(const double x, const double y, const double z) : CameraCoordinate2D(x, y), _z(z) {};
         vector4 get_homogenous() const { return vector4(x(), y(), z(), 1);};
 
         /**
@@ -81,6 +124,14 @@ namespace utils {
          * \return True if the screen position is valid
          */
         bool to_screen_coordinates(ScreenCoordinate& screenPoint) const;
+        bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const;
+
+        double z() const { return _z; };
+
+        vector3 vector() const { return vector3(x(), y(), z()); };
+
+    private:
+        double _z;
     };
 
 
@@ -105,6 +156,7 @@ namespace utils {
          * \return True if the screen position is valid
          */
         bool to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate& screenPoint) const;
+        bool to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate2D& screenPoint) const;
 
         /**
          * \brief Transform a vector in world space to a vector in camera space

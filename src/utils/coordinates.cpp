@@ -14,6 +14,18 @@ namespace utils {
         }
 
 
+        CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
+        {
+            assert(x() >= 0 and y() >= 0);
+
+            const double x = (this->x() - Parameters::get_camera_1_center_x()) / Parameters::get_camera_1_focal_x();
+            const double y = (this->y() - Parameters::get_camera_1_center_y()) / Parameters::get_camera_1_focal_y();
+
+            CameraCoordinate2D cameraPoint(x, y);
+            return cameraPoint;
+        }
+
+
         WorldCoordinate ScreenCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
             const CameraCoordinate& cameraPoint = this->to_camera_coordinates();
@@ -22,7 +34,6 @@ namespace utils {
 
         CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
         {
-            assert(z() > 0);
             assert(x() >= 0 and y() >= 0);
 
             const double x = (this->x() - Parameters::get_camera_1_center_x()) * this->z() / Parameters::get_camera_1_focal_x();
@@ -31,6 +42,23 @@ namespace utils {
             CameraCoordinate cameraPoint(x, y, z());
             return cameraPoint;
         }
+
+
+
+        bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const
+        {
+            const double screenX = Parameters::get_camera_1_focal_x() * x() + Parameters::get_camera_1_center_x();
+            const double screenY = Parameters::get_camera_1_focal_y() * y() + Parameters::get_camera_1_center_y();
+
+            if (not std::isnan(screenX) and not std::isnan(screenY))
+            {
+                screenPoint = ScreenCoordinate2D(screenX, screenY);
+                return true;
+            }
+            return false;
+        }
+
+
 
         WorldCoordinate CameraCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
@@ -63,6 +91,17 @@ namespace utils {
             }
 
             return cameraPoint.to_screen_coordinates(screenPoint);
+        }
+
+        bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate2D& screenPoint) const
+        {
+            ScreenCoordinate screenCoordinates;
+            if (to_screen_coordinates(worldToCamera, screenCoordinates))
+            {
+                screenPoint = ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y());
+                return true;
+            }
+            return false;
         }
 
         CameraCoordinate WorldCoordinate::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const

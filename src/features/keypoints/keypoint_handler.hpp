@@ -68,7 +68,7 @@ namespace rgbd_slam {
                      *
                      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
                      */
-                    int get_match_index(const utils::ScreenCoordinate& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const; 
+                    int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const; 
 
                     /**
                      * \brief return the keypoint associated with the index
@@ -106,13 +106,13 @@ namespace rgbd_slam {
                      *
                      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
                      */
-                    const cv::Mat compute_key_point_mask(const utils::ScreenCoordinate& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const;
+                    const cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const;
 
                     typedef std::pair<uint, uint> uint_pair;
                     /**
                      * \brief Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with _searchSpaceIndexContainer
                      */
-                    const uint_pair get_search_space_coordinates(const utils::ScreenCoordinate& pointToPlace) const;
+                    const uint_pair get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const;
 
                     /**
                      * \brief Compute an 1D array index from a 2D array index.
