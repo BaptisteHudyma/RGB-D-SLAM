@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_UTILS_CAMERA_TRANSFORMATION_HPP
 #define RGBDSLAM_UTILS_CAMERA_TRANSFORMATION_HPP
 
-#include "coordinates.hpp"
+#include "../types.hpp"
 
 namespace rgbd_slam {
     namespace utils {

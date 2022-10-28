@@ -1,7 +1,6 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 
-#include <memory>
 #include "../../types.hpp"
 
 

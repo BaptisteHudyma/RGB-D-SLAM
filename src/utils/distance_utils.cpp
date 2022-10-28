@@ -1,6 +1,5 @@
 #include "distance_utils.hpp"
 
-#include "camera_transformation.hpp"
 #include "../types.hpp"
 
 namespace rgbd_slam {

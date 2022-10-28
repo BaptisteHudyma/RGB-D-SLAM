@@ -4,7 +4,6 @@
 
 #include <opencv2/line_descriptor.hpp>
 
-#include "features/lines/line_detection.hpp"
 #include "features/primitives/depth_map_transformation.hpp"
 #include "features/primitives/primitive_detection.hpp"
 #include "features/keypoints/keypoint_detection.hpp"

@@ -4,7 +4,6 @@
 #include "plane_segment.hpp"
 
 #include "../../types.hpp"
-#include "Eigen/Dense"
 
 #include <vector>
 #include <memory>

@@ -9,14 +9,12 @@
 #include "map_point.hpp"
 #include "map_primitive.hpp"
 
-#include "../types.hpp"
-
 #include "../outputs/map_writer.hpp"
 
 #include "../utils/pose.hpp"
 #include "../utils/matches_containers.hpp"
 
-#include "../features/keypoints/keypoint_detection.hpp"
+#include "../features/keypoints/keypoint_handler.hpp"
 #include "../features/primitives/primitive_detection.hpp"
 
 

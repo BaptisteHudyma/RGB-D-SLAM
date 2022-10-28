@@ -1,9 +1,6 @@
 #include "triangulation.hpp"
 
-#include "../types.hpp"
-#include "../utils/camera_transformation.hpp"
 #include "../parameters.hpp"
-#include "coordinates.hpp"
 
 namespace rgbd_slam {
     namespace tracking {

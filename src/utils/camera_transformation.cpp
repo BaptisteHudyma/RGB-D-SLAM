@@ -1,9 +1,5 @@
 #include "camera_transformation.hpp"
 
-#include "../parameters.hpp"
-#include "../types.hpp"
-#include <memory>
-
 namespace rgbd_slam {
     namespace utils {
 

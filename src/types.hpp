@@ -3,8 +3,6 @@
 
 
 #include <Eigen/Dense>
-#include <Eigen/StdVector>
-#include <Eigen/Geometry>
 #include <vector>
 
 namespace rgbd_slam {

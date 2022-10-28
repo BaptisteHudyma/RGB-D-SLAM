@@ -2,7 +2,6 @@
 
 #include "../utils/camera_transformation.hpp"
 #include "../utils/distance_utils.hpp"
-#include "../parameters.hpp"
 
 namespace rgbd_slam {
     namespace pose_optimization {

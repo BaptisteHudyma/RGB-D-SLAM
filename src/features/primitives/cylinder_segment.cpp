@@ -1,5 +1,7 @@
 #include "cylinder_segment.hpp"
 
+#include "Eigen/Eigenvalues"
+
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
 
