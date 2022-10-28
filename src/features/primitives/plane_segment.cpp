@@ -47,33 +47,40 @@ namespace rgbd_slam {
             {
             }
 
+            bool check_discontinuities(const double depthAlphaValue, const uint depthDiscontinuityLimit, const float z, uint& discontinuityCounter, float& zLast)
+            {
+                if(z > 0)
+                {
+                    if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) 
+                    {
+                        zLast = z;
+                    }
+                    else 
+                    {
+                        discontinuityCounter += 1;
+                        if(discontinuityCounter > depthDiscontinuityLimit) 
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
             bool Plane_Segment::is_cell_vertical_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
             {
                 const uint startValue = _cellWidth / 2;
-                const uint j = _ptsPerCellCount - startValue;
+                const uint endValue = _ptsPerCellCount - startValue;
 
                 uint discontinuityCounter = 0;
                 float zLast = std::max(depthMatrix(startValue), depthMatrix(startValue + _cellWidth));  /* handles missing pixels on the borders*/
 
                 // Scan vertically through the middle
-                for(uint i = startValue + _cellWidth; i < j; i += _cellWidth)
+                for(uint i = startValue + _cellWidth; i < endValue; i += _cellWidth)
                 {
                     const float z = depthMatrix(i);
-                    if(z > 0)
-                    {
-                        if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) 
-                        {
-                            zLast = z;
-                        }
-                        else 
-                        {
-                            discontinuityCounter += 1;
-                            if(discontinuityCounter > depthDiscontinuityLimit) 
-                            {
-                                return false;
-                            }
-                        }
-                    }
+                    if (not check_discontinuities(depthAlphaValue, depthDiscontinuityLimit, z, discontinuityCounter, zLast))
+                        return false;
                 }
                 // continuous
                 return true;
@@ -82,29 +89,17 @@ namespace rgbd_slam {
             bool Plane_Segment::is_cell_horizontal_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
             {
                 const uint startValue = static_cast<uint>(_cellWidth * (_cellHeight / 2.0));
-                const uint j = startValue + _cellWidth;
+                const uint endValue = startValue + _cellWidth;
 
                 uint discontinuityCounter = 0;
                 float zLast = std::max(depthMatrix(startValue), depthMatrix(startValue + 1)); /* handles missing pixels on the borders*/
 
                 // Scan horizontally through the middle
-                for(uint i = startValue + 1; i < j; ++i) 
+                for(uint i = startValue + 1; i < endValue; ++i) 
                 {
                     const float z = depthMatrix(i);
-                    if(z > 0)
-                    {
-                        if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5))
-                        {
-                            zLast = z;
-                        }
-                        else { 
-                            discontinuityCounter += 1;
-                            if(discontinuityCounter > depthDiscontinuityLimit) 
-                            {
-                                return false;
-                            }
-                        }
-                    }
+                    if (not check_discontinuities(depthAlphaValue, depthDiscontinuityLimit, z, discontinuityCounter, zLast))
+                        return false;
                 }
                 // continuous
                 return true;
