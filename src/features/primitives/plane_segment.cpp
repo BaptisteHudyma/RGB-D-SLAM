@@ -47,6 +47,26 @@ namespace rgbd_slam {
             {
             }
 
+            bool check_discontinuities(const double depthAlphaValue, const uint depthDiscontinuityLimit, const float z, uint& discontinuityCounter, float& zLast)
+            {
+                if(z > 0)
+                {
+                    if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) 
+                    {
+                        zLast = z;
+                    }
+                    else 
+                    {
+                        discontinuityCounter += 1;
+                        if(discontinuityCounter > depthDiscontinuityLimit) 
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
             bool Plane_Segment::is_cell_vertical_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
             {
                 const uint startValue = _cellWidth / 2;
@@ -59,21 +79,8 @@ namespace rgbd_slam {
                 for(uint i = startValue + _cellWidth; i < j; i += _cellWidth)
                 {
                     const float z = depthMatrix(i);
-                    if(z > 0)
-                    {
-                        if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) 
-                        {
-                            zLast = z;
-                        }
-                        else 
-                        {
-                            discontinuityCounter += 1;
-                            if(discontinuityCounter > depthDiscontinuityLimit) 
-                            {
-                                return false;
-                            }
-                        }
-                    }
+                    if (not check_discontinuities(depthAlphaValue, depthDiscontinuityLimit, z, discontinuityCounter, zLast))
+                        return false;
                 }
                 // continuous
                 return true;
@@ -91,20 +98,8 @@ namespace rgbd_slam {
                 for(uint i = startValue + 1; i < j; ++i) 
                 {
                     const float z = depthMatrix(i);
-                    if(z > 0)
-                    {
-                        if(abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5))
-                        {
-                            zLast = z;
-                        }
-                        else { 
-                            discontinuityCounter += 1;
-                            if(discontinuityCounter > depthDiscontinuityLimit) 
-                            {
-                                return false;
-                            }
-                        }
-                    }
+                    if (not check_discontinuities(depthAlphaValue, depthDiscontinuityLimit, z, discontinuityCounter, zLast))
+                        return false;
                 }
                 // continuous
                 return true;
