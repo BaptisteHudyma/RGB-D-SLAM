@@ -49,8 +49,8 @@ namespace rgbd_slam {
 
                 _local2globalMap.assign(_cellActivatedCount, 0);
 
-                Eigen::MatrixXd planeNormals(3, 2 * _cellActivatedCount);
-                Eigen::MatrixXd planeCentroids(3, _cellActivatedCount);
+                matrixd planeNormals(3, 2 * _cellActivatedCount);
+                matrixd planeCentroids(3, _cellActivatedCount);
 
                 // Init. normals and centroids
                 size_t j = 0;
@@ -91,7 +91,7 @@ namespace rgbd_slam {
                 }
 
                 // Compute covariance
-                const Eigen::MatrixXd cov = (planeNormals * planeNormals.adjoint()) / static_cast<double>(planeNormals.cols() - 1);
+                const matrixd cov = (planeNormals * planeNormals.adjoint()) / static_cast<double>(planeNormals.cols() - 1);
 
                 // PCA using QR decomposition for symmetric matrices
                 Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(cov);
@@ -105,22 +105,22 @@ namespace rgbd_slam {
                 const vector3& cylinderAxis = eigenSolver.eigenvectors().col(0);
                 _axis = cylinderAxis; 
 
-                Eigen::MatrixXd NCpy = planeNormals.block(0, 0, 3, _cellActivatedCount);
+                matrixd NCpy = planeNormals.block(0, 0, 3, _cellActivatedCount);
                 planeNormals = NCpy; /* This avoids memory issues */
-                Eigen::MatrixXd projectedCentroids(3, _cellActivatedCount);
+                matrixd projectedCentroids(3, _cellActivatedCount);
 
                 // Projection to plane: P' = P-theta*<P.theta>
-                const Eigen::MatrixXd& centroidsDotTheta = cylinderAxis.transpose() * planeCentroids;
+                const matrixd& centroidsDotTheta = cylinderAxis.transpose() * planeCentroids;
                 projectedCentroids.row(0) = planeCentroids.row(0) - centroidsDotTheta * cylinderAxis(0);
                 projectedCentroids.row(1) = planeCentroids.row(1) - centroidsDotTheta * cylinderAxis(1);
                 projectedCentroids.row(2) = planeCentroids.row(2) - centroidsDotTheta * cylinderAxis(2);
-                const Eigen::MatrixXd& normalsDotTheta = cylinderAxis.transpose() * planeNormals;
+                const matrixd& normalsDotTheta = cylinderAxis.transpose() * planeNormals;
                 planeNormals.row(0) -= normalsDotTheta * cylinderAxis(0);
                 planeNormals.row(1) -= normalsDotTheta * cylinderAxis(1);
                 planeNormals.row(2) -= normalsDotTheta * cylinderAxis(2);
 
                 // Normalize projected normals
-                const Eigen::MatrixXd& normalsNorm = planeNormals.colwise().norm();
+                const matrixd& normalsNorm = planeNormals.colwise().norm();
                 planeNormals.row(0) = planeNormals.row(0).array() / normalsNorm.array();
                 planeNormals.row(1) = planeNormals.row(1).array() / normalsNorm.array();
                 planeNormals.row(2) = planeNormals.row(2).array() / normalsNorm.array();
@@ -179,7 +179,7 @@ namespace rgbd_slam {
                     b /= maxInliersCount;
                     b -= sumOfNormals.dot(sumOfCenters) * oneOverMaxInliersCountSquared;
                     double radius = b / a;
-                    const Eigen::MatrixXd center = (sumOfCenters - radius * sumOfNormals) / maxInliersCount;
+                    const matrixd center = (sumOfCenters - radius * sumOfNormals) / maxInliersCount;
 
                     // Rectify radius if concave
                     if (radius < 0)
@@ -220,7 +220,7 @@ namespace rgbd_slam {
                 }
             }
 
-            size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& isInlierFinal)
+            size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const matrixd& planeNormals, const matrixd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& isInlierFinal)
             {
                 assert(maximumIterations > 0);
                 assert(idsLeft.size() > 3);

@@ -1,8 +1,8 @@
 #ifndef RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 #define RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 
+#include "../../types.hpp"
 
-#include <Eigen/Dense>
 
 namespace rgbd_slam {
     namespace tracking {
@@ -20,9 +20,9 @@ namespace rgbd_slam {
             * \param[in] processNoiseCovariance Process noise covariance
             */
             SharedKalmanFilter(
-                const Eigen::MatrixXd& systemDynamics,
-                const Eigen::MatrixXd& outputMatrix,
-                const Eigen::MatrixXd& processNoiseCovariance
+                const matrixd& systemDynamics,
+                const matrixd& outputMatrix,
+                const matrixd& processNoiseCovariance
             );
 
             /**
@@ -34,17 +34,17 @@ namespace rgbd_slam {
             *
             * \return A pair of the new state and covariance matrix
             */
-            std::pair<Eigen::VectorXd, Eigen::MatrixXd> get_new_state(const Eigen::VectorXd& currentState, const Eigen::MatrixXd& stateNoiseCovariance, const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance);
+            std::pair<vectorxd, matrixd> get_new_state(const vectorxd& currentState, const matrixd& stateNoiseCovariance, const vectorxd& newMeasurement, const matrixd& measurementNoiseCovariance);
 
         protected:
 
             // Matrices for computation
-            Eigen::MatrixXd _systemDynamics;
-            const Eigen::MatrixXd _outputMatrix;
-            const Eigen::MatrixXd _processNoiseCovariance;
+            matrixd _systemDynamics;
+            const matrixd _outputMatrix;
+            const matrixd _processNoiseCovariance;
 
             // stateDimension-size identity
-            Eigen::MatrixXd _identity;
+            matrixd _identity;
         };
 
 
@@ -60,9 +60,9 @@ namespace rgbd_slam {
             * \param[in] processNoiseCovariance Process noise covariance
             */
             KalmanFilter(
-                const Eigen::MatrixXd& systemDynamics,
-                const Eigen::MatrixXd& outputMatrix,
-                const Eigen::MatrixXd& processNoiseCovariance
+                const matrixd& systemDynamics,
+                const matrixd& outputMatrix,
+                const matrixd& processNoiseCovariance
             );
 
             /**
@@ -70,14 +70,14 @@ namespace rgbd_slam {
             * \param[in] firstEstimateErrorCovariance Estimate error covariance for the first guess
             * \param[in] x0 The original state estimate
             */
-            void init(const Eigen::MatrixXd& firstEstimateErrorCovariance, const Eigen::VectorXd& x0);
+            void init(const matrixd& firstEstimateErrorCovariance, const vectorxd& x0);
 
             /**
             * \brief Update the estimated state based on measured values. The time step is assumed to remain constant.
             * \param[in] newMeasurement new measurement
             * \param[in] measurementNoiseCovariance Measurement noise covariance
             */
-            void update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance);
+            void update(const vectorxd& newMeasurement, const matrixd& measurementNoiseCovariance);
 
             /**
             * \brief Update the estimated state based on measured values, using the given time step and dynamics matrix.
@@ -85,13 +85,13 @@ namespace rgbd_slam {
             * \param[in] measurementNoiseCovariance Measurement noise covariance
             * \param[in] systemDynamics systemDynamics new system dynamics matrix 
             */
-            void update(const Eigen::VectorXd& newMeasurement, const Eigen::MatrixXd& measurementNoiseCovariance, const Eigen::MatrixXd& systemDynamics);
+            void update(const vectorxd& newMeasurement, const matrixd& measurementNoiseCovariance, const matrixd& systemDynamics);
 
 
-            Eigen::VectorXd get_state() const {
+            vectorxd get_state() const {
                 return _stateEstimate;
             };
-            Eigen::MatrixXd get_state_covariance() const {
+            matrixd get_state_covariance() const {
                 return _estimateErrorCovariance;
             };
 
@@ -104,8 +104,8 @@ namespace rgbd_slam {
             bool _isInitialized;
 
             // Estimated state
-            Eigen::VectorXd _stateEstimate;
-            Eigen::MatrixXd _estimateErrorCovariance;
+            vectorxd _stateEstimate;
+            matrixd _estimateErrorCovariance;
         };
     }
 }

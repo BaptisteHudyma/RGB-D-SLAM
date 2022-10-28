@@ -2,9 +2,10 @@
 #define RGBDSLAM_TYPES_HPP 
 
 
+#include <Eigen/Dense>
 #include <Eigen/StdVector>
 #include <Eigen/Geometry>
-#include <list>
+#include <vector>
 
 namespace rgbd_slam {
     /*
@@ -14,7 +15,10 @@ namespace rgbd_slam {
     const double EulerToRadian = M_PI/180.0;
 
     typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> Matrixb;
+    typedef Eigen::MatrixXf matrixf;
+    typedef Eigen::MatrixXd matrixd;
     typedef Eigen::Vector2d vector2;
+    typedef Eigen::VectorXd vectorxd;
     typedef Eigen::Matrix<double, 3, 1> vector3;
     typedef Eigen::Vector4d vector4;
     typedef Eigen::Matrix3d matrix33;
@@ -43,13 +47,7 @@ namespace rgbd_slam {
         {};
     };
 
-    typedef std::vector<vector2, Eigen::aligned_allocator<vector2>> vector2_vector;
     typedef std::vector<vector3, Eigen::aligned_allocator<vector3>> vector3_vector;
-    typedef std::vector<vector4, Eigen::aligned_allocator<vector4>> vector4_vector;
-    typedef std::vector<matrix33, Eigen::aligned_allocator<matrix33>> matrix33_vector;
-    typedef std::vector<matrix34, Eigen::aligned_allocator<matrix34>> matrix34_vector;
-    typedef std::vector<matrix44, Eigen::aligned_allocator<matrix44>> matrix44_vector;
-    typedef std::vector<quaternion, Eigen::aligned_allocator<quaternion>> quaternion_vector;
 }
 
 #endif

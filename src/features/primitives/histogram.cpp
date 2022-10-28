@@ -21,7 +21,7 @@ namespace primitives {
         _B.clear();
     }
 
-    void Histogram::init_histogram(const Eigen::MatrixXd& points, const std::vector<bool>& isUnasignedMask) {
+    void Histogram::init_histogram(const matrixd& points, const std::vector<bool>& isUnasignedMask) {
         //_reset();
         _pointCount = points.rows();
         _B.assign(_pointCount, -1);

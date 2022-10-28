@@ -65,7 +65,7 @@ namespace rgbd_slam {
 
             // Point detector and matcher
             _pointDetector = new features::keypoints::Key_Point_Extraction(Parameters::get_minimum_hessian());
-            
+
             // Line segment detector
             _lineDetector = new features::lines::Line_Detection(0.3, 0.9);
 
@@ -112,7 +112,7 @@ namespace rgbd_slam {
         //project depth image in an organized cloud
         const double depthImageTreatmentStartTime = cv::getTickCount();
         // organized 3D depth image
-        Eigen::MatrixXf cloudArrayOrganized(_width * _height, 3);
+        matrixf cloudArrayOrganized(_width * _height, 3);
         _depthOps->get_organized_cloud_array(depthImage, cloudArrayOrganized);
         _meanDepthMapTreatmentDuration += (cv::getTickCount() - depthImageTreatmentStartTime) / static_cast<double>(cv::getTickFrequency());
         
@@ -174,7 +174,7 @@ namespace rgbd_slam {
     }
 
 
-    const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage, const Eigen::MatrixXf& cloudArrayOrganized) 
+    const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage, const matrixf& cloudArrayOrganized) 
     {
         //get a pose with the motion model
         utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);

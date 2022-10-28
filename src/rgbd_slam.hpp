@@ -4,8 +4,6 @@
 
 #include <opencv2/line_descriptor.hpp>
 
-#include <Eigen/Dense>
-
 #include "features/lines/line_detection.hpp"
 #include "features/primitives/depth_map_transformation.hpp"
 #include "features/primitives/primitive_detection.hpp"
@@ -74,7 +72,7 @@ namespace rgbd_slam {
              *
              * \return The new estimated pose from points positions
              */
-            const utils::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage, const Eigen::MatrixXf& cloudArrayOrganized);
+            const utils::Pose compute_new_pose (const cv::Mat& grayImage, const cv::Mat& depthImage, const matrixf& cloudArrayOrganized);
 
             void compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage);
 

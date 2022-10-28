@@ -3,14 +3,11 @@
 
 #include "plane_segment.hpp"
 
-#include "types.hpp"
-
+#include "../../types.hpp"
 #include "Eigen/Dense"
 
 #include <vector>
 #include <memory>
-
-#include "../../types.hpp"
 
 
 namespace rgbd_slam {
@@ -158,14 +155,14 @@ namespace rgbd_slam {
                          *
                          * \brief Return the number of inliers of this cylinder fitting
                          */
-                        size_t run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const Eigen::MatrixXd& planeNormals, const Eigen::MatrixXd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& IFinal);
+                        size_t run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const matrixd& planeNormals, const matrixd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& IFinal);
 
                         double get_distance(const vector3& point, const size_t segmentId) const;
 
                 private:
                         vector3 _axis;
 
-                        std::vector<Eigen::MatrixXd> _centers;
+                        std::vector<matrixd> _centers;
                         vector3_vector _pointsAxis1;
                         vector3_vector _pointsAxis2;
                         std::vector<double> _normalsAxis1Axis2;

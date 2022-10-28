@@ -25,10 +25,10 @@ namespace rgbd_slam::tracking {
         const int stateDimension = 1; // Number of states
         const int measurementDimension = 1; // Number of measurements
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension);
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension);
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension);
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension);
+        matrixd systemDynamics(stateDimension, stateDimension);
+        matrixd outputMatrix(measurementDimension, stateDimension);
+        matrixd processNoiseCovariance(stateDimension, stateDimension);
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
 
         // no dynamics
         systemDynamics << 1;
@@ -39,19 +39,19 @@ namespace rgbd_slam::tracking {
         processNoiseCovariance << 0;
 
         // Only speed and position are related
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
         estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
 
         // Construct the filter
         KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << originalState;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : measurments) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -79,10 +79,10 @@ namespace rgbd_slam::tracking {
         const int stateDimension = 1; // Number of states
         const int measurementDimension = 1; // Number of measurements
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension);
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension);
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension);
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension);
+        matrixd systemDynamics(stateDimension, stateDimension);
+        matrixd outputMatrix(measurementDimension, stateDimension);
+        matrixd processNoiseCovariance(stateDimension, stateDimension);
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
 
         // no dynamics
         systemDynamics << 1;
@@ -93,19 +93,19 @@ namespace rgbd_slam::tracking {
         processNoiseCovariance << 0;
 
         // Only speed and position are related
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
         estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
 
         // Construct the filter
         KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << originalState;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : measurments) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -133,10 +133,10 @@ namespace rgbd_slam::tracking {
         const int stateDimension = 1; // Number of states
         const int measurementDimension = 1; // Number of measurements
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension);
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension);
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension);
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension);
+        matrixd systemDynamics(stateDimension, stateDimension);
+        matrixd outputMatrix(measurementDimension, stateDimension);
+        matrixd processNoiseCovariance(stateDimension, stateDimension);
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
 
         // no dynamics
         systemDynamics << 1;
@@ -147,19 +147,19 @@ namespace rgbd_slam::tracking {
         processNoiseCovariance << 0.15;
 
         // Only speed and position are related
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
         estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
 
         // Construct the filter
         KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << originalState;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : measurments) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -179,10 +179,10 @@ namespace rgbd_slam::tracking {
         const double accelerationStd = 0.2; //m/s²
         const double measurementError = 3;  // meters
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension);
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension);
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension);
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension);
+        matrixd systemDynamics(stateDimension, stateDimension);
+        matrixd outputMatrix(measurementDimension, stateDimension);
+        matrixd processNoiseCovariance(stateDimension, stateDimension);
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
 
         // no dynamics
         systemDynamics << 
@@ -213,8 +213,8 @@ namespace rgbd_slam::tracking {
         // Construct the filter
         KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
         
-        Eigen::VectorXd x0(stateDimension);
-        Eigen::MatrixXd x0ErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        vectorxd x0(stateDimension);
+        matrixd x0ErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
         x0 << 0, 0, 0, 0, 0 ,0;
         x0ErrorCovariance << 
             500, 0,   0,   0,   0,   0,
@@ -265,7 +265,7 @@ namespace rgbd_slam::tracking {
 
         // Feed measurements into filter, output estimated states
         for(const std::pair<double, double>& measurement : measurements) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement.first, measurement.second;
 
             // update the model
@@ -318,11 +318,11 @@ namespace rgbd_slam::tracking {
         const double measurementNoise = 0.0;
         const double expectedNoise = 0.0;
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -350,13 +350,13 @@ namespace rgbd_slam::tracking {
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << 0, 0, gravityConst;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : trajectoryPoints) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -378,11 +378,11 @@ namespace rgbd_slam::tracking {
         const double measurementNoise = 0.0;
         const double expectedNoise = 0.001;
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -410,13 +410,13 @@ namespace rgbd_slam::tracking {
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << 0, 0, gravityConst;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : trajectoryPoints) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -438,11 +438,11 @@ namespace rgbd_slam::tracking {
         const double measurementNoise = 0.0;
         const double expectedNoise = 0.01;
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -470,13 +470,13 @@ namespace rgbd_slam::tracking {
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << 0, 0, gravityConst;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : trajectoryPoints) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -498,11 +498,11 @@ namespace rgbd_slam::tracking {
         const double measurementNoise = 0.0;
         const double expectedNoise = 0.1;
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -530,13 +530,13 @@ namespace rgbd_slam::tracking {
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << 0, 0, gravityConst;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : trajectoryPoints) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -558,11 +558,11 @@ namespace rgbd_slam::tracking {
         const double measurementNoise = 0.001;
         const double expectedNoise = 0.001;
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -590,13 +590,13 @@ namespace rgbd_slam::tracking {
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << 0, 0, gravityConst;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : trajectoryPoints) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -618,11 +618,11 @@ namespace rgbd_slam::tracking {
         const double measurementNoise = 0.01;
         const double expectedNoise = 0.01;
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -650,13 +650,13 @@ namespace rgbd_slam::tracking {
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << 0, 0, gravityConst;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : trajectoryPoints) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -678,11 +678,11 @@ namespace rgbd_slam::tracking {
         const double measurementNoise = 0.1;
         const double expectedNoise = 0.1;
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -710,13 +710,13 @@ namespace rgbd_slam::tracking {
         std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << 0, 0, gravityConst;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : trajectoryPoints) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model
@@ -734,11 +734,11 @@ namespace rgbd_slam::tracking {
 
         const double dt = 1.0/30; // Time step
 
-        Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-        Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-        Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-        Eigen::MatrixXd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-        Eigen::MatrixXd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+        matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+        matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+        matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+        matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
+        matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
 
         // Discrete LTI projectile motion, measuring position only
         systemDynamics << 
@@ -777,13 +777,13 @@ namespace rgbd_slam::tracking {
         };
 
         // Best guess of initial states
-        Eigen::VectorXd x0(stateDimension);
+        vectorxd x0(stateDimension);
         x0 << measurements[0], 0, -9.81;
         kf.init(estimateErrorCovariance, x0);
 
         // Feed measurements into filter, output estimated states
         for(const double measurement : measurements) {
-            Eigen::VectorXd y(measurementDimension);
+            vectorxd y(measurementDimension);
             y << measurement;
 
             // update the model

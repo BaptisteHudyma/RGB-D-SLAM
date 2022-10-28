@@ -2,7 +2,7 @@
 #define RGBDSLAM_FEATURES_PRIMITIVES_DEPTHOPERATIONS_HPP
 
 #include <opencv2/opencv.hpp>
-#include <Eigen/Dense>
+#include "../../types.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -30,7 +30,7 @@ namespace primitives {
              * \param[in, out] depthImage Input depth image representation, transformed to align to rgb image at output
              * \param[out] organizedCloudArray A cloud point divided in blocs of cellSize * cellSize
              */
-            void get_organized_cloud_array(cv::Mat& depthImage, Eigen::MatrixXf& organizedCloudArray);
+            void get_organized_cloud_array(cv::Mat& depthImage, matrixf& organizedCloudArray);
 
             /**
               * \brief Controls the state of this class.
@@ -62,7 +62,7 @@ namespace primitives {
             uint _cellSize;
             bool _isOk;
 
-            Eigen::MatrixXf _cloudArray;
+            matrixf _cloudArray;
 
             //cam parameters
             float _fxIr;

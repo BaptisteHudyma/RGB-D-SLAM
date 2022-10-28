@@ -62,7 +62,7 @@ namespace rgbd_slam {
                 refineTime = 0;
             }
 
-            void Primitive_Detection::find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments) 
+            void Primitive_Detection::find_primitives(const matrixf& depthMatrix, primitive_container& primitiveSegments) 
             {
                 //reset used data structures
                 reset_data();
@@ -126,7 +126,7 @@ namespace rgbd_slam {
                 //kernels should not be cleared
             }
 
-            void Primitive_Detection::init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray) 
+            void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) 
             {
                 const float sinCosAngleForMerge = sqrtf(1.0f - powf(_minCosAngleForMerge, 2.0f));
 
@@ -151,7 +151,7 @@ namespace rgbd_slam {
             uint Primitive_Detection::init_histogram() 
             {
                 uint remainingPlanarCells = 0;
-                Eigen::MatrixXd histBins(_totalCellCount, 2);
+                matrixd histBins(_totalCellCount, 2);
 
                 const size_t planeGridSize = _planeGrid.size();
                 for(uint cellId = 0; cellId < planeGridSize; ++cellId) 

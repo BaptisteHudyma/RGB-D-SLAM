@@ -25,7 +25,7 @@ namespace primitives {
                 init_matrices();
         }
 
-        void Depth_Map_Transformation::get_organized_cloud_array(cv::Mat& depthImage, Eigen::MatrixXf& organizedCloudArray) {
+        void Depth_Map_Transformation::get_organized_cloud_array(cv::Mat& depthImage, matrixf& organizedCloudArray) {
             if(not this->is_ok())
                 return;
 

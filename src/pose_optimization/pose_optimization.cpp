@@ -139,7 +139,7 @@ namespace rgbd_slam {
 
             // Vector to optimize: (0, 1, 2) is position,
             // Vector (3, 4, 5) is a rotation parametrization, representing a delta in rotation in the tangential hyperplane -From Using Quaternions for Parametrizing 3-D Rotation in Unconstrained Nonlinear Optimization)
-            Eigen::VectorXd input(6);
+            vectorxd input(6);
             // 3D pose
             input[0] = position.x();
             input[1] = position.y();

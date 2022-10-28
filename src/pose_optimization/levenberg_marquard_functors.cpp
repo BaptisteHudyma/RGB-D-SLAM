@@ -54,7 +54,7 @@ namespace rgbd_slam {
         }
 
         // Implementation of the objective function
-        int Global_Pose_Estimator::operator()(const Eigen::VectorXd& optimizedParameters, Eigen::VectorXd& outputScores) const 
+        int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vectorxd& outputScores) const 
         {
             assert(not _points.empty());
             assert(optimizedParameters.size() == 6);

@@ -3,6 +3,8 @@
 
 #include "coordinates.hpp"
 
+#include <list>
+
 namespace rgbd_slam {
     namespace matches_containers {
 

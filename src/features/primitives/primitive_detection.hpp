@@ -53,7 +53,7 @@ namespace rgbd_slam {
                      * \param[in] depthMatrix Organized cloud of points, constructed from depth map
                      * \param[out] primitiveSegments Container of detected segments in depth image
                      */
-                    void find_primitives(const Eigen::MatrixXf& depthMatrix, primitive_container& primitiveSegments);
+                    void find_primitives(const matrixf& depthMatrix, primitive_container& primitiveSegments);
 
                     ~Primitive_Detection();
 
@@ -76,7 +76,7 @@ namespace rgbd_slam {
                      *
                      * \param[in] depthCloudArray Organized point cloud extracted from depth images
                      */
-                    void init_planar_cell_fitting(const Eigen::MatrixXf& depthCloudArray);
+                    void init_planar_cell_fitting(const matrixf& depthCloudArray);
 
                     /**
                      * \brief Initialize and fill the histogram bins

@@ -2,7 +2,7 @@
 #define RGBDSLAM_FEATURES_PRIMITIVES_HISTOGRAM_HPP
 
 #include <vector>
-#include <Eigen/Dense>
+#include "../../types.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -24,7 +24,7 @@ namespace primitives {
               * \param[in] points Points to put directly in the histogram bins
               * \param[in] isUnasignedMask Array of size points.rows(), indicating which point is in a planar segment
               */
-            void init_histogram(const Eigen::MatrixXd& points, const std::vector<bool>& isUnasignedMask);
+            void init_histogram(const matrixd& points, const std::vector<bool>& isUnasignedMask);
 
             /**
               * \brief Return the points in the bin containing the most points

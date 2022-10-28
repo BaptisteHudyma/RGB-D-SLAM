@@ -71,7 +71,7 @@ namespace rgbd_slam {
                 return true;
             }
 
-            bool Plane_Segment::is_cell_vertical_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
+            bool Plane_Segment::is_cell_vertical_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
             {
                 const uint startValue = _cellWidth / 2;
                 const uint endValue = _ptsPerCellCount - startValue;
@@ -90,7 +90,7 @@ namespace rgbd_slam {
                 return true;
             }
 
-            bool Plane_Segment::is_cell_horizontal_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
+            bool Plane_Segment::is_cell_horizontal_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
             {
                 const uint startValue = static_cast<uint>(_cellWidth * (_cellHeight / 2.0));
                 const uint endValue = startValue + _cellWidth;
@@ -109,7 +109,7 @@ namespace rgbd_slam {
                 return true;
             }
 
-            void Plane_Segment::init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const uint cellId) 
+            void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uint cellId) 
             {
                 clear_plane_parameters();
                 _isPlanar = true;
@@ -117,7 +117,7 @@ namespace rgbd_slam {
                 const uint offset = cellId * _ptsPerCellCount;
 
                 //get z of depth points
-                const Eigen::MatrixXf& depthMatrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
+                const matrixf& depthMatrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
 
                 // Check number of missing depth points
                 _pointCount =  (depthMatrix.array() > 0).count();
@@ -127,8 +127,8 @@ namespace rgbd_slam {
                 }
 
                 //get points x and y coords
-                const Eigen::MatrixXf& xMatrix = depthCloudArray.block(offset, 0, _ptsPerCellCount, 1);
-                const Eigen::MatrixXf& yMatrix = depthCloudArray.block(offset, 1, _ptsPerCellCount, 1);
+                const matrixf& xMatrix = depthCloudArray.block(offset, 0, _ptsPerCellCount, 1);
+                const matrixf& yMatrix = depthCloudArray.block(offset, 1, _ptsPerCellCount, 1);
 
                 // Check for discontinuities using cross search
                 //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.

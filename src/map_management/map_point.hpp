@@ -88,7 +88,7 @@ namespace rgbd_slam {
              */
             virtual void update_unmatched(int removeNMatches = 1) = 0;
 
-            const Eigen::MatrixXd get_covariance_matrix() const { 
+            const matrixd get_covariance_matrix() const { 
                 return _pointCovariance;
             };
 

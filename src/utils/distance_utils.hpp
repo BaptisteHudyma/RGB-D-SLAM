@@ -9,7 +9,7 @@ namespace rgbd_slam {
         /**
          * \brief Compute a signed distance between two points
          */
-        Eigen::VectorXd get_signed_distance(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB);
+        vectorxd get_signed_distance(const vectorxd& pointA, const vectorxd& pointB);
 
         /**
          * \brief Compute a signed 2D distance between a world point and a screen point, by retroprojecting the world point to screen space.

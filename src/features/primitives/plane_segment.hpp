@@ -25,7 +25,7 @@ namespace rgbd_slam {
                     Plane_Segment(const uint cellWidth, const uint ptsPerCellCount);
                     Plane_Segment(const Plane_Segment& seg);
 
-                    void init_plane_segment(const Eigen::MatrixXf& depthCloudArray, const uint cellId);
+                    void init_plane_segment(const matrixf& depthCloudArray, const uint cellId);
 
 
                     /**
@@ -75,8 +75,8 @@ namespace rgbd_slam {
 
 
                 protected:
-                        bool is_cell_vertical_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const;
-                        bool is_cell_horizontal_continuous(const Eigen::MatrixXf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const;
+                        bool is_cell_vertical_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const;
+                        bool is_cell_horizontal_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const;
 
                 private:
                         const uint _ptsPerCellCount;  //max nb of points per initial cell

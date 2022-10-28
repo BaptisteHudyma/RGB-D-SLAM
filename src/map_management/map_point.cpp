@@ -52,9 +52,9 @@ namespace rgbd_slam {
             const size_t stateDimension = 3;        //x, y, z
             const size_t measurementDimension = 3;  //x, y, z
 
-            Eigen::MatrixXd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
-            Eigen::MatrixXd outputMatrix(measurementDimension, stateDimension); // Output matrix
-            Eigen::MatrixXd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+            matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+            matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+            matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
 
             // Points are not supposed to move, so no dynamics
             systemDynamics.setIdentity();

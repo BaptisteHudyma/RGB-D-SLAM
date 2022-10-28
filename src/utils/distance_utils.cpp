@@ -6,7 +6,7 @@
 namespace rgbd_slam {
     namespace utils {
 
-        Eigen::VectorXd get_signed_distance(const Eigen::VectorXd& pointA, const Eigen::VectorXd& pointB)
+        vectorxd get_signed_distance(const vectorxd& pointA, const vectorxd& pointB)
         {
             return (pointA - pointB);
         }
