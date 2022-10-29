@@ -279,8 +279,8 @@ namespace rgbd_slam {
                     {
                         //cylinder fitting
                         // It is an extrusion
-                        _cylinderSegments.push_back(std::make_unique<Cylinder_Segment>(_planeGrid, _isActivatedMap, cellActivatedCount));
-                        const Cylinder_Segment& cylinderSegment = *(_cylinderSegments.back());
+                        const Cylinder_Segment& cylinderSegment = Cylinder_Segment(_planeGrid, _isActivatedMap, cellActivatedCount);
+                        _cylinderSegments.push_back(cylinderSegment);
 
                         // Fit planes to subsegments
                         for(uint segId = 0; segId < cylinderSegment.get_segment_count(); ++segId)
@@ -469,7 +469,7 @@ namespace rgbd_slam {
                     const uint regId = cylinderToRegionMap[cylinderIndex].first;
 
                     //add new cylinder to final shapes
-                    primitiveSegments.emplace(cylinderId, std::make_unique<Cylinder>(*(_cylinderSegments[regId]), cylinderId, _mask));
+                    primitiveSegments.emplace(cylinderId, std::make_unique<Cylinder>(_cylinderSegments[regId], cylinderId, _mask));
                 }
             }
 

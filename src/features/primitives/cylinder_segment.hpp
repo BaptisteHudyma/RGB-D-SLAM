@@ -6,7 +6,6 @@
 #include "../../types.hpp"
 
 #include <vector>
-#include <memory>
 
 
 namespace rgbd_slam {

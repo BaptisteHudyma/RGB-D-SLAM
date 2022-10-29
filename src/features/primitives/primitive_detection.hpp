@@ -32,7 +32,7 @@ namespace rgbd_slam {
                     typedef std::shared_ptr<Plane_Segment> plane_segment_unique_ptr;
                     typedef std::shared_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
                     typedef std::vector<Plane_Segment> planes_container; 
-                    typedef std::vector<cylinder_segment_unique_ptr> cylinders_ptr_vector; 
+                    typedef std::vector<Cylinder_Segment> cylinders_container; 
                     typedef std::vector<uint> uint_vector;
 
                 public:
@@ -156,7 +156,7 @@ namespace rgbd_slam {
 
                     planes_container _planeGrid;
                     planes_container _planeSegments;
-                    cylinders_ptr_vector _cylinderSegments;
+                    cylinders_container _cylinderSegments;
 
                     cv::Mat_<int> _gridPlaneSegmentMap;
                     cv::Mat_<int> _gridCylinderSegMap;
