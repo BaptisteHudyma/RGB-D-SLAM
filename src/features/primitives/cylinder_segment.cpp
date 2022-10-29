@@ -38,7 +38,7 @@ namespace rgbd_slam {
                 _axis = seg._axis;
             }
 
-            Cylinder_Segment::Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount) :
+            Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount) :
                 _cellActivatedCount(cellActivatedCount),
                 _segmentCount(0)
             {
@@ -64,8 +64,8 @@ namespace rgbd_slam {
                         assert(j < _cellActivatedCount);
                         assert(j < _local2globalMap.size());
 
-                        const vector3& planeNormal = planeGrid[i]->get_normal();
-                        const vector3& planeMean = planeGrid[i]->get_mean();
+                        const vector3& planeNormal = planeGrid[i].get_normal();
+                        const vector3& planeMean = planeGrid[i].get_mean();
                         planeNormals(0, j) = planeNormal.x();
                         planeNormals(1, j) = planeNormal.y();
                         planeNormals(2, j) = planeNormal.z();
@@ -84,7 +84,7 @@ namespace rgbd_slam {
                     if (isActivatedMask[i])
                     {
                         assert(j < 2 * _cellActivatedCount);
-                        const vector3& planeNormal = planeGrid[i]->get_normal();
+                        const vector3& planeNormal = planeGrid[i].get_normal();
                         planeNormals(0, j) = -planeNormal.x();
                         planeNormals(1, j) = -planeNormal.y();
                         planeNormals(2, j) = -planeNormal.z();

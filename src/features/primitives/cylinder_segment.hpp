@@ -19,9 +19,6 @@ namespace rgbd_slam {
              * Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting
              */
             class Cylinder_Segment {
-                protected:
-                    typedef std::shared_ptr<Plane_Segment> plane_segment_unique_ptr;
-
                 public:
                     /**
                      * \brief Main constructor: fits a cylinder using the plane segments in planeGrid, using RANSAC
@@ -30,7 +27,7 @@ namespace rgbd_slam {
                      * \param[in] isActivatedMask An array of size planeCount, referencing activated plane segments 
                      * \param[in] cellActivatedCount
                      */
-                    Cylinder_Segment(const std::vector<plane_segment_unique_ptr>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount);
+                    Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount);
 
                     /**
                      * \brief Copy constructor

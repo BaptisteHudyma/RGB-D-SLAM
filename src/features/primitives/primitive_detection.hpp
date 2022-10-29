@@ -2,7 +2,6 @@
 #define RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVEDETECTION_HPP
 
 #include <algorithm>
-#include <memory>
 #include <vector>
 
 #include <opencv2/opencv.hpp>
@@ -32,7 +31,7 @@ namespace rgbd_slam {
                     typedef std::vector<std::pair<int, int>> intpair_vector;
                     typedef std::shared_ptr<Plane_Segment> plane_segment_unique_ptr;
                     typedef std::shared_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
-                    typedef std::vector<plane_segment_unique_ptr> planes_ptr_vector; 
+                    typedef std::vector<Plane_Segment> planes_container; 
                     typedef std::vector<cylinder_segment_unique_ptr> cylinders_ptr_vector; 
                     typedef std::vector<uint> uint_vector;
 
@@ -155,8 +154,8 @@ namespace rgbd_slam {
                     const uint _verticalCellsCount;
                     const uint _totalCellCount;
 
-                    std::vector<plane_segment_unique_ptr> _planeGrid;
-                    planes_ptr_vector _planeSegments;
+                    planes_container _planeGrid;
+                    planes_container _planeSegments;
                     cylinders_ptr_vector _cylinderSegments;
 
                     cv::Mat_<int> _gridPlaneSegmentMap;
