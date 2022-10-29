@@ -611,7 +611,7 @@ namespace rgbd_slam {
         void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints)
         {
             // Mark outliers as unmatched
-            for (const matches_containers::Match& match : outlierMatchedPoints)
+            for (const matches_containers::PointMatch& match : outlierMatchedPoints)
             {
                 const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
                 // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points

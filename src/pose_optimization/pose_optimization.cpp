@@ -54,7 +54,7 @@ namespace rgbd_slam {
                 matches_containers::match_point_container potentialInliersContainer;
                 matches_containers::match_point_container potentialOutliersContainer;
                 double score = 0.0;
-                for (const matches_containers::Match& match : matchedPoints)
+                for (const matches_containers::PointMatch& match : matchedPoints)
                 {
                     // Retroproject world point to screen, and compute screen distance
                     const double distance = utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, transformationMatrix);
@@ -212,7 +212,7 @@ namespace rgbd_slam {
             std::vector<vector3> cameraPoints;
             std::vector<vector3> worldPoints;
 
-            for (const matches_containers::Match& match : matchedPoints)
+            for (const matches_containers::PointMatch& match : matchedPoints)
             {
                 const vector3& cameraPoint = match._screenPoint.to_camera_coordinates().vector();
 

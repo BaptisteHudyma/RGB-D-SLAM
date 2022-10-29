@@ -11,8 +11,8 @@ namespace rgbd_slam {
         // KeyPoint matching: contains :
         //      - the coordinates of the detected point in screen space
         //      - the coordinates of the matched point in world space
-        struct Match {
-            Match(const utils::ScreenCoordinate& screenPoint, const utils::WorldCoordinate& worldPoint, const size_t mapId) :
+        struct PointMatch {
+            PointMatch(const utils::ScreenCoordinate& screenPoint, const utils::WorldCoordinate& worldPoint, const size_t mapId) :
                 _worldPoint(worldPoint),
                 _screenPoint(screenPoint),
                 _mapPointId(mapId)
@@ -22,7 +22,7 @@ namespace rgbd_slam {
             utils::ScreenCoordinate _screenPoint;   // Coordinates of the detected screen point
             size_t _mapPointId;     // Id of the world point in the local map 
         };
-        typedef std::list<Match> match_point_container;
+        typedef std::list<PointMatch> match_point_container;
 
         // MapPlane matching: contains :
         //      - the normal vector of the plane in screen space

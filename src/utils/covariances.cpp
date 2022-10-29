@@ -76,7 +76,7 @@ namespace rgbd_slam {
             size_t numberOf3Dpoints = 0; 
 
             // For each pair of points
-            for (const matches_containers::Match& match : matchedPoints)
+            for (const matches_containers::PointMatch& match : matchedPoints)
             {
                 // We only evaluate 3D points because 2D points cannot evaluate position
                 if (match._screenPoint.z() <= 0)

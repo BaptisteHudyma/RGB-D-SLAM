@@ -68,7 +68,7 @@ namespace rgbd_slam {
             const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
             size_t pointIndex = 0;  // index of the match being treated
             // Compute retroprojection distances
-            for(const matches_containers::Match& match : _points) {
+            for(const matches_containers::PointMatch& match : _points) {
                 // Compute retroprojected distance
                 const vector2& distance = utils::get_3D_to_2D_distance_2D(match._worldPoint, match._screenPoint, transformationMatrix);
 
@@ -89,7 +89,7 @@ namespace rgbd_slam {
             double meanOfDistances = 0;
 
             // Compute retroprojection distances
-            for(const matches_containers::Match& match : points) {
+            for(const matches_containers::PointMatch& match : points) {
                 // Compute retroprojected distance
                 const double distance = utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, transformationMatrix);
                 assert(distance >= 0.0);
