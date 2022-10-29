@@ -4,6 +4,7 @@
 
 #include "parameters.hpp"
 #include "outputs/logger.hpp"
+#include "primitive_detection.hpp"
 #include "utils/matches_containers.hpp"
 
 #include "pose_optimization/pose_optimization.hpp"
@@ -157,8 +158,6 @@ namespace rgbd_slam {
             cv::putText(debugImage, fps.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
         }
 
-        //_primitiveDetector->apply_masks(originalRGB, _colorCodes, _segmentationOutput, _previousFramePrimitives, _previousAssociatedIds, bandSize, debugImage);
-
         _localMap->get_debug_image(camPose, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks, debugImage);
 
         if (isTrackingLost)
@@ -182,13 +181,14 @@ namespace rgbd_slam {
 
         // Run primitive detection 
         const double primitiveDetectionStartTime = cv::getTickCount();
-        features::primitives::primitive_container detectedPrimitives;
-        _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPrimitives);
+        features::primitives::plane_container detectedPlanes;
+        features::primitives::cylinder_container detectedCylinders;
+        _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPlanes, detectedCylinders);
         _meanPrimitiveTreatmentDuration += (cv::getTickCount() - primitiveDetectionStartTime) / static_cast<double>(cv::getTickFrequency());
 
         const double findMatchesStartTime = cv::getTickCount();
         const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
-        const matches_containers::match_primitive_container& matchedPrimitives = _localMap->find_primitive_matches(refinedPose, detectedPrimitives);
+        const matches_containers::match_plane_container& matchedPlanes = _localMap->find_plane_matches(refinedPose, detectedPlanes);
         _meanFindMatchTime += (cv::getTickCount() - findMatchesStartTime) / static_cast<double>(cv::getTickFrequency());
 
         matches_containers::match_point_container outlierMatchedPoints;
@@ -229,7 +229,7 @@ namespace rgbd_slam {
         if (shouldUpdateMap)
         {
             const double updateLocalMapStartTime = cv::getTickCount();
-            _localMap->update(refinedPose, keypointObject, detectedPrimitives, outlierMatchedPoints);
+            _localMap->update(refinedPose, keypointObject, detectedPlanes, outlierMatchedPoints);
             _meanLocalMapUpdateDuration += (cv::getTickCount() - updateLocalMapStartTime) / static_cast<double>(cv::getTickFrequency());
         }
 

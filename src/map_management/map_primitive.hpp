@@ -3,6 +3,7 @@
 
 #include "../features/primitives/shape_primitives.hpp"
 #include "parameters.hpp"
+#include <memory>
 
 namespace rgbd_slam {
     namespace map_management {
@@ -42,11 +43,12 @@ namespace rgbd_slam {
             size_t _unmatchedCount; // count of unmatched iterations
         };
 
-        struct Primitive 
+        struct MapPlane 
         {
-            explicit Primitive(features::primitives::primitive_uniq_ptr primitive) : 
-                _id(_currentPrimitiveId++),
-                _primitive(std::move(primitive))
+            typedef features::primitives::Plane plane;
+            explicit MapPlane(const plane& plane) : 
+                _id(_currentPlaneId++),
+                _plane(plane)
             {
                 cv::Vec3b color;
                 color[0] = rand() % 255;
@@ -58,14 +60,14 @@ namespace rgbd_slam {
             // Unique identifier of this primitive in map
             const size_t _id;
 
-            const features::primitives::primitive_uniq_ptr _primitive;
-            MatchedPrimitive _matchedPrimitive;
+            plane _plane;
+            MatchedPrimitive _matchedPlane;
 
             cv::Scalar _color;  // display color of this primitive
 
 
             private:
-            inline static size_t _currentPrimitiveId = 1;   // 0 is invalid
+            inline static size_t _currentPlaneId = 1;   // 0 is invalid
         };
 
 

@@ -63,7 +63,7 @@ namespace rgbd_slam {
                 refineTime = 0;
             }
 
-            void Primitive_Detection::find_primitives(const matrixf& depthMatrix, primitive_container& primitiveSegments) 
+            void Primitive_Detection::find_primitives(const matrixf& depthMatrix, plane_container& planeContainer, cylinder_container& primitiveContainer) 
             {
                 //reset used data structures
                 reset_data();
@@ -94,14 +94,14 @@ namespace rgbd_slam {
 
                 t1 = cv::getTickCount();
                 //fill the final planes vector
-                add_planes_to_primitives(planeMergeLabels, primitiveSegments);
+                add_planes_to_primitives(planeMergeLabels, planeContainer);
                 td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 initTime += td;
                 refineTime += td;
 
                 t1 = cv::getTickCount();
                 //refine cylinders boundaries and fill the final cylinders vector
-                add_cylinders_to_primitives(cylinder2regionMap, primitiveSegments); 
+                add_cylinders_to_primitives(cylinder2regionMap, primitiveContainer); 
                 td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 initTime += td;
                 refineTime += td;
@@ -407,7 +407,7 @@ namespace rgbd_slam {
                 return planeMergeLabels;
             }
 
-            void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels, primitive_container& primitiveSegments) 
+            void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels, plane_container& planeContainer) 
             {
                 //refine the coarse planes boundaries to smoother versions
                 const uint planeCount = _planeSegments.size();
@@ -440,11 +440,11 @@ namespace rgbd_slam {
                     assert(planeId < CYLINDER_CODE_OFFSET);
 
                     //add new plane to final shapes
-                    primitiveSegments.emplace(planeId, std::make_unique<Plane>(_planeSegments[planeIndex], planeId, _mask));
+                    planeContainer.emplace(planeId, Plane(_planeSegments[planeIndex], planeId, _mask));
                 }
             }
 
-            void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments) 
+            void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, cylinder_container& cylinderContainer) 
             {
                 uchar cylinderIdAllocator = CYLINDER_CODE_OFFSET;
                 for(uint cylinderIndex = 0; cylinderIndex < cylinderToRegionMap.size(); ++cylinderIndex)
@@ -469,7 +469,7 @@ namespace rgbd_slam {
                     const uint regId = cylinderToRegionMap[cylinderIndex].first;
 
                     //add new cylinder to final shapes
-                    primitiveSegments.emplace(cylinderId, std::make_unique<Cylinder>(_cylinderSegments[regId], cylinderId, _mask));
+                    cylinderContainer.emplace(cylinderId, Cylinder(_cylinderSegments[regId], cylinderId, _mask));
                 }
             }
 

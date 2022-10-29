@@ -24,11 +24,11 @@ namespace rgbd_slam {
         };
         typedef std::list<Match> match_point_container;
 
-        // Primitive matching: contains :
-        //      - the normal vector of the primitive in screen space
-        //      - the normal vector of the primitive in world space
-        typedef std::pair<vector3, vector3> primitive_pair;
-        typedef std::list<primitive_pair> match_primitive_container;
+        // MapPlane matching: contains :
+        //      - the normal vector of the plane in screen space
+        //      - the normal vector of the plane in world space
+        typedef std::pair<vector3, vector3> plane_pair;
+        typedef std::list<plane_pair> match_plane_container;
     }
 }
 

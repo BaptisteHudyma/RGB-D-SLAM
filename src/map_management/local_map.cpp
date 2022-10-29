@@ -6,6 +6,9 @@
 #include "../utils/covariances.hpp"
 #include "../utils/coordinates.hpp"
 #include "../outputs/logger.hpp"
+#include "map_primitive.hpp"
+#include "primitive_detection.hpp"
+#include "shape_primitives.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -118,25 +121,25 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Local_Map::find_match(Primitive& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const worldToCameraMatrix& worldToCamera, matches_containers::match_primitive_container& matchedPrimitives)
+        bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
         {
-            // TODO: convert mapPrimitive to camera space
-            for(const auto& [primitiveId, shapePrimitive] : detectedPrimitives)
+            // TODO: convert mapPlane to camera space
+            for(const auto& [planeId, shapePlane] : detectedPlanes)
             {
-                assert(primitiveId == shapePrimitive->get_id());
-                assert(primitiveId != UNMATCHED_PRIMITIVE_ID);
+                assert(planeId == shapePlane.get_id());
+                assert(planeId != UNMATCHED_PRIMITIVE_ID);
 
-                if (not _unmatchedPrimitiveIds.contains(primitiveId))
+                if (not _unmatchedPlaneIds.contains(planeId))
                     // Does not allow multiple removal of a single match
                     // TODO: change this
                     continue;
 
-                if(mapPrimitive._primitive->is_similar(*shapePrimitive)) 
+                if(mapPlane._plane.is_similar(shapePlane)) 
                 {
-                    mapPrimitive._matchedPrimitive.mark_matched(primitiveId);
-                    matchedPrimitives.emplace(matchedPrimitives.end(), shapePrimitive->_normal, mapPrimitive._primitive->_normal);
+                    mapPlane._matchedPlane.mark_matched(planeId);
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._normal, mapPlane._plane._normal);
 
-                    _unmatchedPrimitiveIds.erase(primitiveId);
+                    _unmatchedPlaneIds.erase(planeId);
                     return true;
                 }
             }
@@ -173,18 +176,18 @@ namespace rgbd_slam {
             return matchedPoints;
         }
 
-        matches_containers::match_primitive_container Local_Map::find_primitive_matches(const utils::Pose& currentPose, const features::primitives::primitive_container& detectedPrimitives)
+        matches_containers::match_plane_container Local_Map::find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes)
         {
-            _unmatchedPrimitiveIds.clear();
+            _unmatchedPlaneIds.clear();
             // Fill in all features ids
-            for(const auto& [primitiveId, shapePrimitive] : detectedPrimitives)
+            for(const auto& [planeId, shapePlane] : detectedPlanes)
             {
-                assert(primitiveId == shapePrimitive->get_id());
-                assert(primitiveId != UNMATCHED_PRIMITIVE_ID);
-                if (not _unmatchedPrimitiveIds.insert(primitiveId).second)
+                assert(planeId == shapePlane.get_id());
+                assert(planeId != UNMATCHED_PRIMITIVE_ID);
+                if (not _unmatchedPlaneIds.insert(planeId).second)
                 {
                     // This element was already in the map
-                    outputs::log_error("A primitive index was already maintained in set");
+                    outputs::log_error("A plane index was already maintained in set");
                 }
             }
 
@@ -192,20 +195,20 @@ namespace rgbd_slam {
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
 
             // Search for matches
-            matches_containers::match_primitive_container matchedPrimitiveContainer;
-            for(auto& [primitiveId, mapPrimitive] : _localPrimitiveMap)
+            matches_containers::match_plane_container matchedPlaneContainer;
+            for(auto& [planeId, mapPlane] : _localPlaneMap)
             {
-                if (not find_match(mapPrimitive, detectedPrimitives, worldToCamera, matchedPrimitiveContainer))
+                if (not find_match(mapPlane, detectedPlanes, worldToCamera, matchedPlaneContainer))
                 {
                     // Mark as unmatched
-                    mapPrimitive._matchedPrimitive.mark_unmatched();
+                    mapPlane._matchedPlane.mark_unmatched();
                 }
             }
 
-            return matchedPrimitiveContainer;
+            return matchedPlaneContainer;
         }
 
-        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::primitive_container& detectedPrimitives, const matches_containers::match_point_container& outlierMatchedPoints)
+        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints)
         {
             // TODO find a better way to display trajectory than just a new map point
             // _mapWriter->add_point(optimizedPose.get_position());
@@ -225,52 +228,52 @@ namespace rgbd_slam {
             // Add unmatched poins to the staged map, to unsure tracking of new features
             add_umatched_keypoints_to_staged_map(poseCovariance, cameraToWorld, keypointObject);
 
-            // add primitives to local map
-            update_local_primitive_map(cameraToWorld, detectedPrimitives);
+            // add planes to local map
+            update_local_plane_map(cameraToWorld, detectedPlanes);
 
             // add local map points to global map
             update_local_to_global();
         }
 
-        void Local_Map::update_local_primitive_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives)
+        void Local_Map::update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes)
         {
-            std::set<size_t> primitivesToRemove;
+            std::set<size_t> planesToRemove;
 
-            // Update primitives
-            for (auto& [primitiveId, mapPrimitive] : _localPrimitiveMap)
+            // Update planes
+            for (auto& [planeId, mapPlane] : _localPlaneMap)
             {
-                if (mapPrimitive._matchedPrimitive.is_matched())
+                if (mapPlane._matchedPlane.is_matched())
                 {
-                    const size_t matchedPrimitiveId = mapPrimitive._matchedPrimitive._matchId;
-                    assert(matchedPrimitiveId != UNMATCHED_PRIMITIVE_ID);
-                    assert(detectedPrimitives.contains(matchedPrimitiveId));
+                    const size_t matchedPlaneId = mapPlane._matchedPlane._matchId;
+                    assert(matchedPlaneId != UNMATCHED_PRIMITIVE_ID);
+                    assert(detectedPlanes.contains(matchedPlaneId));
 
-                    // TODO update primitive 
-                    mapPrimitive._primitive->set_shape_mask(detectedPrimitives.at(matchedPrimitiveId)->get_shape_mask());
+                    // TODO update plane 
+                    mapPlane._plane.set_shape_mask(detectedPlanes.at(matchedPlaneId).get_shape_mask());
                 }
-                else if (mapPrimitive._matchedPrimitive.is_lost())
+                else if (mapPlane._matchedPlane.is_lost())
                 {
-                    // add to primitives to remove
-                    primitivesToRemove.emplace(primitiveId);
+                    // add to planes to remove
+                    planesToRemove.emplace(planeId);
                 }
             }
 
             // Remove umatched
-            for(const size_t primitiveId : primitivesToRemove)
-                _localPrimitiveMap.erase(primitiveId);
+            for(const size_t planeId : planesToRemove)
+                _localPlaneMap.erase(planeId);
 
-            // add unmatched primitives to local map
-            for(const uchar& unmatchedDetectedPrimitiveId : _unmatchedPrimitiveIds)
+            // add unmatched planes to local map
+            for(const uchar& unmatchedDetectedPlaneId : _unmatchedPlaneIds)
             {
-                assert(detectedPrimitives.contains(unmatchedDetectedPrimitiveId));
+                assert(detectedPlanes.contains(unmatchedDetectedPlaneId));
 
-                const features::primitives::primitive_uniq_ptr& detectedPrimitive = detectedPrimitives.at(unmatchedDetectedPrimitiveId);
-                Primitive newMapPrimitive(detectedPrimitive);
+                const features::primitives::Plane& detectedPlane = detectedPlanes.at(unmatchedDetectedPlaneId);
+                MapPlane newMapPlane(detectedPlane);
 
-                _localPrimitiveMap.emplace(newMapPrimitive._id, newMapPrimitive);
+                _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
             }
 
-            _unmatchedPrimitiveIds.clear();
+            _unmatchedPlaneIds.clear();
         }
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& cameraToWorld)
@@ -497,11 +500,11 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::draw_primitives_on_image(const worldToCameraMatrix& worldToCamera, cv::Mat& debugImage) const
+        void Local_Map::draw_planes_on_image(const worldToCameraMatrix& worldToCamera, cv::Mat& debugImage) const
         {
             assert(not debugImage.empty());
 
-            if (_localPrimitiveMap.size() == 0)
+            if (_localPlaneMap.size() == 0)
                 return;
             const cv::Size& debugImageSize = debugImage.size();
             const uint imageWidth = debugImageSize.width;
@@ -526,50 +529,44 @@ namespace rgbd_slam {
             uint planeCount = 0;
             std::set<size_t> alreadyDisplayedIds;
 
-            cv::Mat allPrimitiveMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
-            for(const auto& [primitiveId, mapPrimitive]: _localPrimitiveMap)
+            cv::Mat allPlaneMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
+            for(const auto& [planeId, mapPlane]: _localPlaneMap)
             {
-                if (not mapPrimitive._matchedPrimitive.is_matched())
+                if (not mapPlane._matchedPlane.is_matched())
                     continue;
 
-                const cv::Scalar& primitiveColor = mapPrimitive._color;
+                const cv::Scalar& planeColor = mapPlane._color;
 
-                cv::Mat primitiveMask;
+                cv::Mat planeMask;
                 // Resize with no interpolation
-                cv::resize(mapPrimitive._primitive->get_shape_mask() * 255, primitiveMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
-                cv::cvtColor(primitiveMask, primitiveMask, cv::COLOR_GRAY2BGR);
-                assert(primitiveMask.size == debugImage.size);
-                assert(primitiveMask.type() == debugImage.type());
+                cv::resize(mapPlane._plane.get_shape_mask() * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
+                cv::cvtColor(planeMask, planeMask, cv::COLOR_GRAY2BGR);
+                assert(planeMask.size == debugImage.size);
+                assert(planeMask.type() == debugImage.type());
 
                 // merge with debug image
-                primitiveMask.setTo(primitiveColor, primitiveMask);
-                allPrimitiveMasks += primitiveMask;
+                planeMask.setTo(planeColor, planeMask);
+                allPlaneMasks += planeMask;
 
                 // Add color codes in label bar
-                if (alreadyDisplayedIds.contains(primitiveId))
+                if (alreadyDisplayedIds.contains(planeId))
                     continue;   // already shown
 
-                alreadyDisplayedIds.insert(primitiveId);
+                alreadyDisplayedIds.insert(planeId);
 
                 double labelPosition = imageWidth;
                 uint finalPlaceInBand = placeInBand;
-                switch(mapPrimitive._primitive->get_primitive_type())
-                {
-                    case features::primitives::PrimitiveType::Plane:
-                        labelPosition *= 0.25;
-                        finalPlaceInBand *= planeCount;
-                        ++planeCount;
-                        break;
-                    case features::primitives::PrimitiveType::Cylinder:
+
+                // plane
+                labelPosition *= 0.25;
+                finalPlaceInBand *= planeCount;
+                ++planeCount;
+
+                    /*case features::primitives::PrimitiveType::Cylinder:
                         labelPosition *= 0.60;
                         finalPlaceInBand *= cylinderCount;
                         ++cylinderCount;
-                        break;
-                    default:
-                        labelPosition = -1;
-                        outputs::log_error("Invalid enum value");
-                        continue;
-                }
+                        break;*/
 
                 if (labelPosition >= 0)
                 {
@@ -578,21 +575,21 @@ namespace rgbd_slam {
                     cv::rectangle(debugImage, 
                             cv::Point(static_cast<int>(labelPosition + 80 + finalPlaceInBand), 6),
                             cv::Point(static_cast<int>(labelPosition + 80 + labelSquareSize + finalPlaceInBand), 6 + labelSquareSize), 
-                            primitiveColor,
+                            planeColor,
                             -1);
                 }
             }
 
-            cv::addWeighted(debugImage, (1 - maskAlpha), allPrimitiveMasks, maskAlpha, 0.0, debugImage);
+            cv::addWeighted(debugImage, (1 - maskAlpha), allPlaneMasks, maskAlpha, 0.0, debugImage);
         }
 
-        void Local_Map::get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, const bool shouldDisplayPrimitiveMasks, cv::Mat& debugImage)  const
+        void Local_Map::get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, const bool shouldDisplayPlaneMasks, cv::Mat& debugImage)  const
         {
             const worldToCameraMatrix& worldToCamMatrix = utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
 
-            // Display primitives
-            if (shouldDisplayPrimitiveMasks)
-                draw_primitives_on_image(worldToCamMatrix, debugImage);
+            // Display planes
+            if (shouldDisplayPlaneMasks)
+                draw_planes_on_image(worldToCamMatrix, debugImage);
 
             // Display stagged points if needed
             if (shouldDisplayStaged)

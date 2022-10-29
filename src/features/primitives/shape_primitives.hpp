@@ -14,29 +14,12 @@ namespace rgbd_slam {
         namespace primitives {
 
             /**
-             * \brief A type class for faster conversions
-             */
-            enum class PrimitiveType {
-                Invalid,
-                Plane,
-                Cylinder
-            };
-
-
-            /**
              * \brief A base class used to compute the tracking analysis.
              * It is a pure virtual class.
              */
-            class Primitive 
+            class IPrimitive 
             {
                 public:
-                    /**
-                     * \brief Get the similarity of two primitives
-                     * 
-                     * \return A double between 0 and 1, with 1 indicating identical primitives 
-                     */
-                    virtual bool is_similar(const Primitive& prim) = 0; 
-
                     /**
                      * \brief Get the distance of a point to the primitive
                      *
@@ -46,12 +29,7 @@ namespace rgbd_slam {
                      */
                     virtual double get_distance(const vector3& point) = 0;
 
-                    virtual ~Primitive() {};
-
-                    /**
-                     * \brief return the type of primitive that this object represents
-                     */
-                    PrimitiveType get_primitive_type() const { return _primitiveType; };
+                    virtual ~IPrimitive() {};
 
                     /**
                      * \brief Return this shape assigned id
@@ -62,13 +40,11 @@ namespace rgbd_slam {
                     cv::Mat get_shape_mask() const { return _shapeMask; };
                     void set_shape_mask(const cv::Mat& mask) { _shapeMask = mask.clone(); };
 
-                    vector3 _normal;
-
                 protected:
                     /**
                      * \brief Hidden constructor, to set _id and shape
                      */
-                    Primitive(const uint id, const cv::Mat& shapeMask);
+                    IPrimitive(const uint id, const cv::Mat& shapeMask);
 
                     /**
                      * \brief Compute the Inter over Union factor of two masks
@@ -77,24 +53,22 @@ namespace rgbd_slam {
                      *
                      * \return A number between 0 and 1, indicating the IoU
                      */
-                    double get_IOU(const Primitive& prim) const;
+                    double get_IOU(const IPrimitive& prim) const;
 
                     //members
                     uint _id;
                     cv::Mat _shapeMask;
-                    PrimitiveType _primitiveType;
 
                 private:
                     //remove copy functions
-                    Primitive(const Primitive&) = delete;
-                    Primitive& operator=(const Primitive&) = delete;
+                    //IPrimitive(const IPrimitive&) = delete;
+                    IPrimitive& operator=(const IPrimitive&) = delete;
             };
 
             /**
-             * \brief Specification of the Primitive class.
-             * Handles cylinder primitives.
+             * \brief Handles cylinder primitives.
              */
-            class Cylinder : public Primitive
+            class Cylinder : public IPrimitive
             {
                 public:
                     /**
@@ -109,11 +83,11 @@ namespace rgbd_slam {
                     /**
                      * \brief Get the similarity of two cylinders, based on normal direction and radius
                      * 
-                     * \param[in] prim Another primitive to compare to
+                     * \param[in] prim Another cylinder to compare to
                      * 
                      * \return A double between 0 and 1, with 1 indicating identical cylinders
                      */
-                    virtual bool is_similar(const Primitive& prim) override;
+                    virtual bool is_similar(const Cylinder& prim);
 
                     /**
                      * \brief Get the distance of a point to the surface of the cylinder
@@ -122,17 +96,14 @@ namespace rgbd_slam {
                      */
                     virtual double get_distance(const vector3& point) override;
 
-                protected:
-
-                private:
+                    vector3 _normal;
                     double _radius;
             };
 
             /**
-             * \brief Specification of the Primitive class.
-             * Handles planes.
+             * \brief Handles planes.
              */
-            class Plane : public Primitive 
+            class Plane : public IPrimitive 
             {
                 public:
 
@@ -152,20 +123,18 @@ namespace rgbd_slam {
                      * 
                      * \return A double between 0 and 1, with 1 indicating identical planes
                      */
-                    virtual bool is_similar(const Primitive& prim) override;
+                    virtual bool is_similar(const Plane& prim);
+                    virtual bool is_similar(const Cylinder& prim);
 
                     /**
                      * Return the distance of this primitive to a point
                      */
                     virtual double get_distance(const vector3& point) override;
 
+                    vector3 _normal;
                     double _d;     //fourth component of the plane parameters
-                private:
                     vector3 _mean;      //mean center point
             };
-
-
-            typedef std::shared_ptr<Primitive> primitive_uniq_ptr;
         }
     }
 }

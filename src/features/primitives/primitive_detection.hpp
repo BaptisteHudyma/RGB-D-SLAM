@@ -1,7 +1,6 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVEDETECTION_HPP 
 #define RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVEDETECTION_HPP
 
-#include <algorithm>
 #include <vector>
 
 #include <opencv2/opencv.hpp>
@@ -18,7 +17,8 @@ namespace rgbd_slam {
     namespace features {
         namespace primitives {
 
-            typedef std::map<uchar, primitive_uniq_ptr> primitive_container; 
+            typedef std::map<uchar, Cylinder> cylinder_container; 
+            typedef std::map<uchar, Plane> plane_container; 
 
             /**
              * \brief Main extraction class.
@@ -29,10 +29,8 @@ namespace rgbd_slam {
                 protected:
                     //typdefs
                     typedef std::vector<std::pair<int, int>> intpair_vector;
-                    typedef std::shared_ptr<Plane_Segment> plane_segment_unique_ptr;
-                    typedef std::shared_ptr<Cylinder_Segment> cylinder_segment_unique_ptr;
-                    typedef std::vector<Plane_Segment> planes_container; 
-                    typedef std::vector<Cylinder_Segment> cylinders_container; 
+                    typedef std::vector<Plane_Segment> plane_segments_container; 
+                    typedef std::vector<Cylinder_Segment> cylinder_segments_container; 
                     typedef std::vector<uint> uint_vector;
 
                 public:
@@ -50,9 +48,10 @@ namespace rgbd_slam {
                      * \brief Main compute function: computes the primitives in the depth imahe
                      *
                      * \param[in] depthMatrix Organized cloud of points, constructed from depth map
-                     * \param[out] primitiveSegments Container of detected segments in depth image
+                     * \param[out] planeContainer Container of detected planes in depth image
+                     * \param[out] primitiveContainer Container of detected cylinders in depth image
                      */
-                    void find_primitives(const matrixf& depthMatrix, primitive_container& primitiveSegments);
+                    void find_primitives(const matrixf& depthMatrix, plane_container& planeContainer, cylinder_container& primitiveContainer);
 
                     ~Primitive_Detection();
 
@@ -104,17 +103,17 @@ namespace rgbd_slam {
                      * \brief Add final plane to primitives, compute a mask for display 
                      *
                      * \param[in] planeMergeLabels Container associating plane ID to global plane IDs
-                     * \param[in, out] primitiveSegments Container of shapes detected in this depth image
+                     * \param[out] planeContainer Container of planes detected in this depth image
                      */
-                    void add_planes_to_primitives(const uint_vector& planeMergeLabels, primitive_container& primitiveSegments);
+                    void add_planes_to_primitives(const uint_vector& planeMergeLabels, plane_container& planeContainer);
 
                     /**
                      * \brief Add final cylinders to primitives, compute a mask for display
                      *
                      * \param[in] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
-                     * \param[in, out] primitiveSegments Container of shapes detected in this depth image
+                     * \param[out] cylinderContainer Container of cylinders detected in this depth image
                      */
-                    void add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, primitive_container& primitiveSegments); 
+                    void add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, cylinder_container& cylinderContainer); 
 
                     /**
                      * \brief Recursively Grow a plane seed and merge it with it's neighbors
@@ -154,9 +153,9 @@ namespace rgbd_slam {
                     const uint _verticalCellsCount;
                     const uint _totalCellCount;
 
-                    planes_container _planeGrid;
-                    planes_container _planeSegments;
-                    cylinders_container _cylinderSegments;
+                    plane_segments_container _planeGrid;
+                    plane_segments_container _planeSegments;
+                    cylinder_segments_container _cylinderSegments;
 
                     cv::Mat_<int> _gridPlaneSegmentMap;
                     cv::Mat_<int> _gridCylinderSegMap;
@@ -177,7 +176,6 @@ namespace rgbd_slam {
                     Primitive_Detection(const Primitive_Detection&);
                     Primitive_Detection& operator=(const Primitive_Detection&);
             };
-
         }
     }
 }

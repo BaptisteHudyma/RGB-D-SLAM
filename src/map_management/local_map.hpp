@@ -43,14 +43,14 @@ namespace rgbd_slam {
                 matches_containers::match_point_container find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject); 
 
                 /**
-                 * \brief Compute the primitive matches
+                 * \brief Compute the plane matches
                  *
                  * \param[in] currentPose The current observer pose.
-                 * \param[in] detectedPrimitives The primitives (planes, cylinders, ...) detected in the image
+                 * \param[in] detectedPlanes The planes detected in the image
                  *
-                 * \return A container associating the map primitives to detected primitives
+                 * \return A container associating the map planes to detected planes
                  */
-                matches_containers::match_primitive_container find_primitive_matches(const utils::Pose& currentPose, const features::primitives::primitive_container& detectedPrimitives);
+                matches_containers::match_plane_container find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes);
 
 
                 /**
@@ -58,10 +58,10 @@ namespace rgbd_slam {
                  *
                  * \param[in] optimizedPose The clean true pose of the observer, after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
-                 * \param[in] detectedPrimitives A container for all detected primitives in the depth image
+                 * \param[in] detectedPlanes A container for all detected planes in the depth image
                  * \param[in] outlierMatchedPoints A container for all the wrongly associated points detected in the pose optimization process. They should be marked as invalid matches
                  */
-                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::primitive_container& detectedPrimitives, const matches_containers::match_point_container& outlierMatchedPoints);
+                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints);
 
                 /**
                  * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global ids 
@@ -77,14 +77,14 @@ namespace rgbd_slam {
 
 
                 /**
-                 * \brief Compute a debug image to display the keypoints & primitives
+                 * \brief Compute a debug image to display the keypoints & planes
                  *
                  * \param[in] camPose Pose of the camera in world coordinates
                  * \param[in] shouldDisplayStaged If true, will also display the content of the staged keypoint map
-                 * \param[in] shouldDisplayPrimitiveMasks If true, will also display the primitives in local map
+                 * \param[in] shouldDisplayPlaneMasks If true, will also display the planes in local map
                  * \param[in, out] debugImage Output image
                  */
-                void get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, const bool shouldDisplayPrimitiveMasks, cv::Mat& debugImage) const;
+                void get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, const bool shouldDisplayPlaneMasks, cv::Mat& debugImage) const;
 
             protected:
 
@@ -94,8 +94,8 @@ namespace rgbd_slam {
                 typedef std::map<size_t, Map_Point> point_map_container;
                 // staged points container
                 typedef std::map<size_t, Staged_Point> staged_point_container;
-                // local shape primitive map container
-                typedef std::map<size_t, Primitive> primitive_map_container; 
+                // local shape plane map container
+                typedef std::map<size_t, MapPlane> plane_map_container; 
 
 
                 /**
@@ -112,16 +112,16 @@ namespace rgbd_slam {
                 bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const worldToCameraMatrix& worldToCamera, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer=true);
 
                 /**
-                 * \brief Compute a match for a given primitive, and update this primitive match status.
+                 * \brief Compute a match for a given plane, and update this plane match status.
                  *
-                 * \param[in, out] mapPrimitive A map primitive  that we want to match to a detected primitive
-                 * \param[in] detectedPrimitives A container that stores all the detected primitives
+                 * \param[in, out] mapPlane A map plane that we want to match to a detected plane
+                 * \param[in] detectedPlanes A container that stores all the detected planes
                  * \param[in] worldToCamera A matrix to transform a world point to a camera point
-                 * \param[in, out] matchedPrimitives A container associating the detected primitives to the map primitives
+                 * \param[in, out] matchedPlanes A container associating the detected planes to the map planes
                  *
-                 * \return A boolean indicating if this primitive was matched or not
+                 * \return A boolean indicating if this plane was matched or not
                  */
-                bool find_match(Primitive& mapPrimitive, const features::primitives::primitive_container& detectedPrimitives, const worldToCameraMatrix& worldToCamera, matches_containers::match_primitive_container& matchedPrimitives);
+                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
@@ -141,12 +141,12 @@ namespace rgbd_slam {
                 void update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
-                 * \brief Update the local primitive map features
+                 * \brief Update the local plane map features
                  *
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
-                 * \param[in] detectedPrimitives A container that stores the detected primitives in the depth image
+                 * \param[in] detectedPlanes A container that stores the detected planes in the depth image
                  */
-                void update_local_primitive_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives);
+                void update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
@@ -182,7 +182,7 @@ namespace rgbd_slam {
                  */
                 static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius = 3);
 
-                void draw_primitives_on_image(const worldToCameraMatrix& worldToCamera, cv::Mat& debugImage) const;
+                void draw_planes_on_image(const worldToCameraMatrix& worldToCamera, cv::Mat& debugImage) const;
 
 
                 /**
@@ -211,12 +211,12 @@ namespace rgbd_slam {
                 staged_point_container _stagedPoints;
                 // Hold unmatched detected point indexes, to add in the staged point container
                 std::vector<bool> _isPointMatched;
-                // Hold unmatched primitive ids
-                std::set<uchar> _unmatchedPrimitiveIds;
+                // Hold unmatched plane ids
+                std::set<uchar> _unmatchedPlaneIds;
 
-                //local primitive map
-                primitive_map_container _localPrimitiveMap;
-                std::unordered_map<int, uint> _previousPrimitiveAssociation;
+                //local plane map
+                plane_map_container _localPlaneMap;
+                std::unordered_map<int, uint> _previousPlaneAssociation;
 
                 outputs::XYZ_Map_Writer* _mapWriter; 
 
