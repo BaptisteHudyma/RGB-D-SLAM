@@ -143,11 +143,10 @@ namespace rgbd_slam {
                 /**
                  * \brief Update the local primitive map features
                  *
-                 * \param[in] previousCameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represents the last pose after optimization 
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] detectedPrimitives A container that stores the detected primitives in the depth image
                  */
-                void update_local_primitive_map(const cameraToWorldMatrix& previousCameraToWorld, const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives);
+                void update_local_primitive_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives);
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map

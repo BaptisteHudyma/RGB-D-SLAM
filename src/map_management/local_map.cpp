@@ -226,13 +226,13 @@ namespace rgbd_slam {
             add_umatched_keypoints_to_staged_map(poseCovariance, cameraToWorld, keypointObject);
 
             // add primitives to local map
-            update_local_primitive_map(cameraToWorld, cameraToWorld, detectedPrimitives);
+            update_local_primitive_map(cameraToWorld, detectedPrimitives);
 
             // add local map points to global map
             update_local_to_global();
         }
 
-        void Local_Map::update_local_primitive_map(const cameraToWorldMatrix& previousCameraToWorld, const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives)
+        void Local_Map::update_local_primitive_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::primitive_container& detectedPrimitives)
         {
             std::set<size_t> primitivesToRemove;
 
