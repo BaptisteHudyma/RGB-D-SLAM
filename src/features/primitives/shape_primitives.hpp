@@ -126,14 +126,15 @@ namespace rgbd_slam {
                     virtual bool is_similar(const Plane& prim);
                     virtual bool is_similar(const Cylinder& prim);
 
+                    vector3 get_plane_normal() const { return _parametrization.head(3); };
+
                     /**
                      * Return the distance of this primitive to a point
                      */
                     virtual double get_distance(const vector3& point) override;
 
-                    vector3 _normal;
-                    double _d;     //fourth component of the plane parameters
-                    vector3 _mean;      //mean center point
+                    vector4 _parametrization;     // infinite plane representation
+                    vector3 _mean;      // mean center point of the plane; in camera coordinates
             };
         }
     }

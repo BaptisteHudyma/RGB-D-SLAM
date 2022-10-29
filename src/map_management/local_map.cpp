@@ -137,7 +137,7 @@ namespace rgbd_slam {
                 if(mapPlane._plane.is_similar(shapePlane)) 
                 {
                     mapPlane._matchedPlane.mark_matched(planeId);
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._normal, mapPlane._plane._normal);
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._plane._parametrization);
 
                     _unmatchedPlaneIds.erase(planeId);
                     return true;

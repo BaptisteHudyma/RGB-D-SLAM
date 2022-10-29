@@ -25,9 +25,9 @@ namespace rgbd_slam {
         typedef std::list<PointMatch> match_point_container;
 
         // MapPlane matching: contains :
-        //      - the normal vector of the plane in screen space
+        //      - the normal vector of the plane in camera space
         //      - the normal vector of the plane in world space
-        typedef std::pair<vector3, vector3> plane_pair;
+        typedef std::pair<vector4, vector4> plane_pair;
         typedef std::list<plane_pair> match_plane_container;
     }
 }

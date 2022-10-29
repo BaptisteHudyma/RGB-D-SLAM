@@ -74,8 +74,12 @@ namespace rgbd_slam {
             Plane::Plane(const Plane_Segment& planeSeg, const uint id, const cv::Mat& shapeMask) :
                 IPrimitive(id, shapeMask),
 
-                _normal(planeSeg.get_normal()),
-                _d(planeSeg.get_plane_d()),
+                _parametrization(
+                    planeSeg.get_normal().x(),
+                    planeSeg.get_normal().y(),
+                    planeSeg.get_normal().z(),
+                    planeSeg.get_plane_d()
+                ),
                 _mean(planeSeg.get_mean())
             {
             }
@@ -83,8 +87,7 @@ namespace rgbd_slam {
             bool Plane::is_similar(const Plane& plane) {
                 if(get_IOU(plane) < Parameters::get_minimum_iou_for_match())
                     return false;
-
-                return (_normal.dot(plane._normal) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
+                return (get_plane_normal().dot(plane.get_plane_normal()) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
             }
 
             bool Plane::is_similar(const Cylinder& cylinder) {
@@ -96,7 +99,7 @@ namespace rgbd_slam {
             }
 
             double Plane::get_distance(const vector3& point) {
-                return _normal.dot(point - _mean); 
+                return get_plane_normal().dot(point - _mean); 
             }
 
         }
