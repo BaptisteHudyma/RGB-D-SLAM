@@ -20,15 +20,6 @@ namespace rgbd_slam {
             class IPrimitive 
             {
                 public:
-                    /**
-                     * \brief Get the distance of a point to the primitive
-                     *
-                     * \param[in] point 3D Point to compute distance to
-
-                     * \return The signed distance of the point to the shape, 0 if the point is on the shape
-                     */
-                    virtual double get_distance(const vector3& point) = 0;
-
                     virtual ~IPrimitive() {};
 
                     /**
@@ -54,6 +45,7 @@ namespace rgbd_slam {
                      * \return A number between 0 and 1, indicating the IoU
                      */
                     double get_IOU(const IPrimitive& prim) const;
+                    double get_IOU(const cv::Mat& mask) const;
 
                     //members
                     uint _id;
@@ -87,14 +79,14 @@ namespace rgbd_slam {
                      * 
                      * \return A double between 0 and 1, with 1 indicating identical cylinders
                      */
-                    virtual bool is_similar(const Cylinder& prim);
+                    virtual bool is_similar(const Cylinder& prim) const;
 
                     /**
                      * \brief Get the distance of a point to the surface of the cylinder
                      *
                      * \return The signed distance of the point to the surface, 0 if the point is on the surface, and < 0 if the point is inside the cylinder
                      */
-                    virtual double get_distance(const vector3& point) override;
+                    virtual double get_distance(const vector3& point) const;
 
                     vector3 _normal;
                     double _radius;
@@ -123,15 +115,16 @@ namespace rgbd_slam {
                      * 
                      * \return A double between 0 and 1, with 1 indicating identical planes
                      */
-                    virtual bool is_similar(const Plane& prim);
-                    virtual bool is_similar(const Cylinder& prim);
+                    bool is_similar(const Plane& prim) const;
+                    bool is_similar(const cv::Mat& mask, const vector4& planeParametrization) const;
+                    bool is_similar(const Cylinder& prim) const;
 
                     vector3 get_plane_normal() const { return _parametrization.head(3); };
 
                     /**
                      * Return the distance of this primitive to a point
                      */
-                    virtual double get_distance(const vector3& point) override;
+                    double get_distance(const vector3& point) const;
 
                     vector4 _parametrization;     // infinite plane representation
                     vector3 _mean;      // mean center point of the plane; in camera coordinates

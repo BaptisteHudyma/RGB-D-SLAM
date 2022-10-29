@@ -123,6 +123,9 @@ namespace rgbd_slam {
 
         bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
         {
+            // project plane in camera space
+            const vector4 projectedPlane = worldToCamera * mapPlane._plane._parametrization;
+            
             // TODO: convert mapPlane to camera space
             for(const auto& [planeId, shapePlane] : detectedPlanes)
             {
@@ -134,7 +137,7 @@ namespace rgbd_slam {
                     // TODO: change this
                     continue;
 
-                if(mapPlane._plane.is_similar(shapePlane)) 
+                if(shapePlane.is_similar(mapPlane._plane.get_shape_mask(), mapPlane._plane._parametrization)) 
                 {
                     mapPlane._matchedPlane.mark_matched(planeId);
                     matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._plane._parametrization);
@@ -248,8 +251,10 @@ namespace rgbd_slam {
                     assert(matchedPlaneId != UNMATCHED_PRIMITIVE_ID);
                     assert(detectedPlanes.contains(matchedPlaneId));
 
-                    // TODO update plane 
-                    mapPlane._plane.set_shape_mask(detectedPlanes.at(matchedPlaneId).get_shape_mask());
+                    const features::primitives::Plane& detectedPlane = detectedPlanes.at(matchedPlaneId);
+                    // TODO update plane
+                    mapPlane._plane._parametrization = detectedPlane._parametrization;
+                    mapPlane._plane.set_shape_mask(detectedPlane.get_shape_mask());
                 }
                 else if (mapPlane._matchedPlane.is_lost())
                 {
@@ -269,6 +274,7 @@ namespace rgbd_slam {
 
                 const features::primitives::Plane& detectedPlane = detectedPlanes.at(unmatchedDetectedPlaneId);
                 MapPlane newMapPlane(detectedPlane);
+                newMapPlane._plane._parametrization = detectedPlane._parametrization;
 
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
             }

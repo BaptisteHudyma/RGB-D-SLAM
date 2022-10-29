@@ -25,15 +25,19 @@ namespace rgbd_slam {
                 assert(not prim._shapeMask.empty());
                 assert(_shapeMask.size == prim._shapeMask.size);
 
+                return get_IOU(prim._shapeMask);
+            }
+
+            double IPrimitive::get_IOU(const cv::Mat& mask) const {
                 //get union of masks
-                const cv::Mat unionMat = (_shapeMask | prim._shapeMask);
+                const cv::Mat unionMat = (_shapeMask | mask);
                 const int IOU = cv::countNonZero(unionMat);
                 if (IOU <= 0)
                     // Union is empty, quit
                     return 0;
 
                 //get inter of masks
-                const cv::Mat interMat = (_shapeMask & prim._shapeMask);
+                const cv::Mat interMat = (_shapeMask & mask);
                 return static_cast<double>(cv::countNonZero(interMat)) / static_cast<double>(IOU);
             }
 
@@ -53,14 +57,14 @@ namespace rgbd_slam {
                 _normal = cylinderSeg.get_normal();
             }
 
-            bool Cylinder::is_similar(const Cylinder& cylinder) {
+            bool Cylinder::is_similar(const Cylinder& cylinder) const {
                 if(get_IOU(cylinder) < Parameters::get_minimum_iou_for_match())
                     return false;
 
                 return std::abs(_normal.dot(cylinder._normal)) > Parameters::get_minimum_normals_dot_difference();
             }
 
-            double Cylinder::get_distance(const vector3& point) {
+            double Cylinder::get_distance(const vector3& point) const {
                 //TODO implement
                 outputs::log_error("Error: get_point_distance is not implemented for Cylinder objects");
                 return 0;
@@ -84,13 +88,18 @@ namespace rgbd_slam {
             {
             }
 
-            bool Plane::is_similar(const Plane& plane) {
-                if(get_IOU(plane) < Parameters::get_minimum_iou_for_match())
-                    return false;
-                return (get_plane_normal().dot(plane.get_plane_normal()) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
+            bool Plane::is_similar(const Plane& plane) const {
+                return is_similar(plane._shapeMask, plane._parametrization);
             }
 
-            bool Plane::is_similar(const Cylinder& cylinder) {
+            bool Plane::is_similar(const cv::Mat& mask, const vector4& planeParametrization) const
+            {
+                if(get_IOU(mask) < Parameters::get_minimum_iou_for_match())
+                    return false;
+                return (get_plane_normal().dot(planeParametrization.head(3)) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
+            }
+
+            bool Plane::is_similar(const Cylinder& cylinder) const {
                 if(get_IOU(cylinder) < Parameters::get_minimum_iou_for_match())
                     return false;
 
@@ -98,7 +107,7 @@ namespace rgbd_slam {
                 return false;
             }
 
-            double Plane::get_distance(const vector3& point) {
+            double Plane::get_distance(const vector3& point) const {
                 return get_plane_normal().dot(point - _mean); 
             }
 
