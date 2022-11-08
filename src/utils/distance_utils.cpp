@@ -1,6 +1,7 @@
 #include "distance_utils.hpp"
 
 #include "../types.hpp"
+#include "coordinates.hpp"
 
 namespace rgbd_slam {
     namespace utils {
@@ -45,6 +46,27 @@ namespace rgbd_slam {
         double get_3D_to_3D_distance(const WorldCoordinate& worldPoint, const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld)
         {
             return get_3D_to_3D_distance_3D(worldPoint, screenPoint, cameraToWorld).lpNorm<1>();
+        }
+
+        /**
+         * \brief Transform an overconstraint plane to a minimal parametrization
+         * \param[in] plane A plane representation in Hessian form 
+         */
+        vector3 get_transformed_plane(const utils::PlaneCameraCoordinates& plane)
+        {
+            const vector3& normalizedNormal = plane.head(3);
+            return vector3(
+                atan(normalizedNormal.y() / normalizedNormal.x()),
+                asin(normalizedNormal.z()),
+                plane.w()
+            );
+        }
+
+        vector3 get_3D_to_2D_plane_distance(const PlaneWorldCoordinates& worldPlane, const PlaneCameraCoordinates& cameraPlane, const worldToCameraMatrix& worldToCamera)
+        {
+            const utils::PlaneCameraCoordinates& projectedWorldPlane = worldPlane.to_camera_coordinates(worldToCamera);
+            const vector3& planeProjectionError = get_transformed_plane(cameraPlane) - get_transformed_plane(projectedWorldPlane);
+            return planeProjectionError;
         }
 
     }   // utils
