@@ -3,6 +3,7 @@
 
 #include "../features/primitives/shape_primitives.hpp"
 #include "parameters.hpp"
+#include "types.hpp"
 #include <memory>
 
 namespace rgbd_slam {
@@ -59,13 +60,25 @@ namespace rgbd_slam {
 
             vector4 to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
             {
-                const vector4 cameraPlane = worldToCamera.inverse() * _plane._parametrization;
+                const vector4 cameraPlane = worldToCamera * _plane._parametrization;
                 const vector3 planeNormal = cameraPlane.head(3).normalized();
                 return vector4(
                     planeNormal.x(),
                     planeNormal.y(),
                     planeNormal.z(),
                     cameraPlane.w()
+                );
+            }
+
+            vector4 to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+            {
+                const vector4 worldPlane = cameraToWorld * _plane._parametrization;
+                const vector3 planeNormal = worldPlane.head(3).normalized();
+                return vector4(
+                    planeNormal.x(),
+                    planeNormal.y(),
+                    planeNormal.z(),
+                    worldPlane.w()
                 );
             }
 
