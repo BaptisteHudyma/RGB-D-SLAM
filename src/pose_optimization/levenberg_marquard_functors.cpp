@@ -90,9 +90,9 @@ namespace rgbd_slam {
                 outputScores(pointIndex++) = distance.x();
                 outputScores(pointIndex++) = distance.y();
             }
-            for(const matches_containers::plane_pair& match: _planes) {
-                const utils::PlaneCameraCoordinates& projectedWorldPlane = match.second.to_camera_coordinates(transformationMatrix);
-                const vector3& planeProjectionError = get_transformed_plane(match.first) - get_transformed_plane(projectedWorldPlane);
+            for(const matches_containers::PlaneMatch& match: _planes) {
+                const utils::PlaneCameraCoordinates& projectedWorldPlane = match._worldPlane.to_camera_coordinates(transformationMatrix);
+                const vector3& planeProjectionError = get_transformed_plane(match._cameraPlane) - get_transformed_plane(projectedWorldPlane);
                 //std::cout << planeProjectionError.transpose() << std::endl;
 
                 outputScores(pointIndex++) = 10 * planeProjectionError.x();
@@ -111,10 +111,10 @@ namespace rgbd_slam {
             const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
 
             // Compute retroprojection distances
-            for(const matches_containers::plane_pair& match : planes) {
+            for(const matches_containers::PlaneMatch& match : planes) {
                 // Compute retroprojected distance
-                const utils::PlaneCameraCoordinates& projectedWorldPlane = match.second.to_camera_coordinates(transformationMatrix);
-                const vector3& planeProjectionError = get_transformed_plane(match.first) - get_transformed_plane(projectedWorldPlane);
+                const utils::PlaneCameraCoordinates& projectedWorldPlane = match._worldPlane.to_camera_coordinates(transformationMatrix);
+                const vector3& planeProjectionError = get_transformed_plane(match._cameraPlane) - get_transformed_plane(projectedWorldPlane);
                 std::cout << planeProjectionError.transpose() << std::endl;
             }
             if (not planes.empty())

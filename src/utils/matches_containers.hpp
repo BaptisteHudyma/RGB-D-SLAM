@@ -27,8 +27,11 @@ namespace rgbd_slam {
         // MapPlane matching: contains :
         //      - the normal vector of the plane in camera space
         //      - the normal vector of the plane in world space
-        typedef std::pair<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates> plane_pair;
-        typedef std::list<plane_pair> match_plane_container;
+        struct PlaneMatch {
+            utils::PlaneWorldCoordinates _worldPlane;
+            utils::PlaneCameraCoordinates _cameraPlane;
+        };
+        typedef std::list<PlaneMatch> match_plane_container;
     }
 }
 
