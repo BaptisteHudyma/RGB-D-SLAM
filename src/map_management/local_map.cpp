@@ -7,6 +7,7 @@
 #include "../utils/coordinates.hpp"
 #include "../outputs/logger.hpp"
 #include "map_primitive.hpp"
+#include "matches_containers.hpp"
 #include "primitive_detection.hpp"
 #include "shape_primitives.hpp"
 

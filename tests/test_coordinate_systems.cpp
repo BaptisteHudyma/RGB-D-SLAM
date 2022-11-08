@@ -192,7 +192,7 @@ namespace rgbd_slam::utils {
                 {
                     for(double d = 0; d < 100; d += 5.5)
                     {
-                        const vector3 planeNormal = vector3(x, y, z).normalized();
+                        const vector3 planeNormal = vector3(x, y, z);
                         const PlaneCameraCoordinates originalCameraPlane(vector4(planeNormal.x(), planeNormal.y(), planeNormal.z(), d));
                         const PlaneWorldCoordinates worldPlane = originalCameraPlane.to_world_coordinates(cameraToWorld);
                         const PlaneCameraCoordinates newCameraCoordinates = worldPlane.to_camera_coordinates(worldToCamera);

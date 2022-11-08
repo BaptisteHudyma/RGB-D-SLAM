@@ -34,7 +34,7 @@ namespace rgbd_slam {
 
         vector3 get_transformed_plane(const utils::PlaneCameraCoordinates& plane)
         {
-            const vector3& normalizedNormal = plane.head(3).normalized();
+            const vector3& normalizedNormal = plane.head(3);
             return vector3(
                 atan(normalizedNormal.y() / normalizedNormal.x()),
                 asin(normalizedNormal.z()),
@@ -95,9 +95,9 @@ namespace rgbd_slam {
                 const vector3& planeProjectionError = get_transformed_plane(match._cameraPlane) - get_transformed_plane(projectedWorldPlane);
                 //std::cout << planeProjectionError.transpose() << std::endl;
 
-                outputScores(pointIndex++) = 10 * planeProjectionError.x();
-                outputScores(pointIndex++) = 10 * planeProjectionError.y();
-                outputScores(pointIndex++) = 0;//10 * planeProjectionError.z();
+                outputScores(pointIndex++) = 1 * planeProjectionError.x();
+                outputScores(pointIndex++) = 1 * planeProjectionError.y();
+                outputScores(pointIndex++) = 0;//1 * planeProjectionError.z();
             }
             return 0;
         }
