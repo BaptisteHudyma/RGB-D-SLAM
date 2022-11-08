@@ -23,7 +23,7 @@ namespace rgbd_slam {
                  *
                  * \return True if a valid pose was computed 
                  */
-                static bool compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints); 
+                static bool compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints); 
 
             private:
                 /**
@@ -35,7 +35,7 @@ namespace rgbd_slam {
                  *
                  * \return True if a valid pose was computed 
                  */
-                static bool compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose);
+                static bool compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose);
 
 
                 /**
@@ -48,7 +48,7 @@ namespace rgbd_slam {
                  *
                  * \return True if a valid pose and inliers were found
                  */
-                static bool compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints); 
+                static bool compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints); 
 
                 static bool compute_p3p_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose);
         };

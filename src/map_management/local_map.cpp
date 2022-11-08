@@ -124,8 +124,7 @@ namespace rgbd_slam {
         bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
         {
             // project plane in camera space
-            const vector4 projectedPlane = worldToCamera.inverse() * mapPlane._plane._parametrization;
-
+            const vector4& projectedPlane = mapPlane.to_camera_coordinates(worldToCamera);
             for(const auto& [planeId, shapePlane] : detectedPlanes)
             {
                 assert(planeId == shapePlane.get_id());

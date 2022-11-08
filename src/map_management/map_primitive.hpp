@@ -57,6 +57,18 @@ namespace rgbd_slam {
                 _color = color;
             };
 
+            vector4 to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
+            {
+                const vector4 cameraPlane = worldToCamera.inverse() * _plane._parametrization;
+                const vector3 planeNormal = cameraPlane.head(3).normalized();
+                return vector4(
+                    planeNormal.x(),
+                    planeNormal.y(),
+                    planeNormal.z(),
+                    cameraPlane.w()
+                );
+            }
+
             // Unique identifier of this primitive in map
             const size_t _id;
 

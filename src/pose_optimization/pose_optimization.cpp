@@ -17,7 +17,7 @@
 namespace rgbd_slam {
     namespace pose_optimization {
 
-        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
+        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
             const double matchedPointSize = static_cast<double>(matchedPoints.size());
             assert(matchedPointSize > 0);
@@ -43,7 +43,7 @@ namespace rgbd_slam {
                 const matches_containers::match_point_container& selectedMatches = ransac::get_random_subset(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
                 utils::Pose pose; 
-                const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, pose);
+                const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, matchedPlanes, pose);
                 //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedMatches, pose);
                 if (not isPoseValid)
                     continue;
@@ -94,10 +94,11 @@ namespace rgbd_slam {
                 return false;
             }
 
-            const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, inlierMatchedPoints, finalPose);
+            const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, inlierMatchedPoints, matchedPlanes, finalPose);
             // Compute pose variance
             if (isPoseValid)
             {
+                //get_t_score(matchedPlanes, finalPose);
                 vector3 estimatedPoseVariance;
                 if (utils::compute_pose_variance(finalPose, inlierMatchedPoints, estimatedPoseVariance))
                 {
@@ -113,10 +114,10 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints) 
+        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
             utils::Pose newPose;
-            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, newPose, outlierMatchedPoints);
+            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, matchedPlanes, newPose, outlierMatchedPoints);
 
             if (isPoseValid)
             {
@@ -130,7 +131,7 @@ namespace rgbd_slam {
         }
 
 
-        bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose) 
+        bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose) 
         {
             assert(matchedPoints.size() >= 6);
 
@@ -154,7 +155,8 @@ namespace rgbd_slam {
             Global_Pose_Functor pose_optimisation_functor(
                     Global_Pose_Estimator(
                         input.size(), 
-                        matchedPoints
+                        matchedPoints,
+                        matchedPlanes
                         )
                     );
             // Optimization algorithm

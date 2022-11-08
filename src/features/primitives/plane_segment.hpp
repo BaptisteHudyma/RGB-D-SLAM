@@ -66,8 +66,8 @@ namespace rgbd_slam {
 
                 public: //getters
                         double get_MSE() const { return _MSE; };
-                        const vector3& get_normal() const { return _normal; };
-                        const vector3& get_mean() const { return _mean; };
+                        vector3 get_normal() const { return _normal.normalized(); };
+                        vector3 get_mean() const { return _mean; };
                         double get_plane_d() const { return _d; };
                         bool is_planar() const { return _isPlanar; };
                         double get_score() const { return _score; };

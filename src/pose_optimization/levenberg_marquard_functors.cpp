@@ -2,6 +2,9 @@
 
 #include "../utils/camera_transformation.hpp"
 #include "../utils/distance_utils.hpp"
+#include <Eigen/src/Core/util/Meta.h>
+#include <cmath>
+#include <iostream>
 
 namespace rgbd_slam {
     namespace pose_optimization {
@@ -28,6 +31,16 @@ namespace rgbd_slam {
             }
         }
 
+        vector3 get_transformed_plane(const vector4& plane)
+        {
+            const vector3& normalizedNormal = plane.head(3).normalized();
+            return vector3(
+                atan(normalizedNormal.y() / normalizedNormal.x()),
+                asin(normalizedNormal.z()),
+                plane.w()
+            );
+        }
+
         /**
          * \brief Compute a quaternion from it's scaled axis representation
          */
@@ -45,9 +58,10 @@ namespace rgbd_slam {
          * GLOBAL POSE ESTIMATOR members
          */
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points) :
-            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2),
-            _points(points)
+        Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes) :
+            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2 + planes.size() * 3),
+            _points(points),
+            _planes(planes)
         {
             assert(not _points.empty());
         }
@@ -57,7 +71,7 @@ namespace rgbd_slam {
         {
             assert(not _points.empty());
             assert(optimizedParameters.size() == 6);
-            assert(static_cast<size_t>(outputScores.size()) == _points.size() * 2);
+            assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 3));
 
             // Get the new estimated pose
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
@@ -66,7 +80,7 @@ namespace rgbd_slam {
             const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
 
             const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-            size_t pointIndex = 0;  // index of the match being treated
+            Eigen::Index pointIndex = 0;  // index of the match being treated
             // Compute retroprojection distances
             for(const matches_containers::PointMatch& match : _points) {
                 // Compute retroprojected distance
@@ -75,7 +89,35 @@ namespace rgbd_slam {
                 outputScores(pointIndex++) = distance.x();
                 outputScores(pointIndex++) = distance.y();
             }
+            for(const matches_containers::plane_pair& match: _planes) {
+                const vector4 projectedWorldPlane = transformationMatrix.inverse() * match.first;
+                const vector3& planeProjectionError = get_transformed_plane(match.second) - get_transformed_plane(projectedWorldPlane);
+                //std::cout << planeProjectionError.transpose() << std::endl;
+
+                outputScores(pointIndex++) = 10 * planeProjectionError.x();
+                outputScores(pointIndex++) = 10 * planeProjectionError.y();
+                outputScores(pointIndex++) = 0;//10 * planeProjectionError.z();
+            }
             return 0;
+        }
+
+        void get_t_score(const matches_containers::match_plane_container& planes, const utils::Pose& finalPose)
+        {
+            // Get the new estimated pose
+            const quaternion& rotation = finalPose.get_orientation_quaternion();
+            const vector3& translation = finalPose.get_position();
+
+            const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+
+            // Compute retroprojection distances
+            for(const matches_containers::plane_pair& match : planes) {
+                // Compute retroprojected distance
+                const vector4 projectedWorldPlane = transformationMatrix.inverse() * match.first;
+                const vector3& planeProjectionError = get_transformed_plane(match.second) - get_transformed_plane(projectedWorldPlane);
+                std::cout << planeProjectionError.transpose() << std::endl;
+            }
+            if (not planes.empty())
+                std::cout << std::endl;
         }
 
 
