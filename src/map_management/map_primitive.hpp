@@ -2,6 +2,7 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
 #include "../features/primitives/shape_primitives.hpp"
+#include "coordinates.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
 #include <memory>
@@ -46,10 +47,7 @@ namespace rgbd_slam {
 
         struct MapPlane 
         {
-            typedef features::primitives::Plane plane;
-            explicit MapPlane(const plane& plane) : 
-                _id(_currentPlaneId++),
-                _plane(plane)
+            MapPlane() : _id(_currentPlaneId++)
             {
                 cv::Vec3b color;
                 color[0] = rand() % 255;
@@ -58,35 +56,12 @@ namespace rgbd_slam {
                 _color = color;
             };
 
-            vector4 to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
-            {
-                const vector4 cameraPlane = worldToCamera * _plane._parametrization;
-                const vector3 planeNormal = cameraPlane.head(3).normalized();
-                return vector4(
-                    planeNormal.x(),
-                    planeNormal.y(),
-                    planeNormal.z(),
-                    cameraPlane.w()
-                );
-            }
-
-            vector4 to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
-            {
-                const vector4 worldPlane = cameraToWorld * _plane._parametrization;
-                const vector3 planeNormal = worldPlane.head(3).normalized();
-                return vector4(
-                    planeNormal.x(),
-                    planeNormal.y(),
-                    planeNormal.z(),
-                    worldPlane.w()
-                );
-            }
-
             // Unique identifier of this primitive in map
             const size_t _id;
 
-            plane _plane;
+            utils::PlaneWorldCoordinates _parametrization;
             MatchedPrimitive _matchedPlane;
+            cv::Mat _shapeMask;
 
             cv::Scalar _color;  // display color of this primitive
 

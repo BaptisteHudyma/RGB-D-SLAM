@@ -166,4 +166,112 @@ namespace rgbd_slam::utils {
         test_point_set_screen_to_world_to_screen(cameraToWorld);
     }
 
+
+
+
+    void estimate_plane_error(const vector4& pointA, const vector4& pointB)
+    {
+        EXPECT_NEAR(pointA.x(), pointB.x(), 0.001);
+        EXPECT_NEAR(pointA.y(), pointB.y(), 0.001);
+        EXPECT_NEAR(pointA.z(), pointB.z(), 0.001);
+        EXPECT_NEAR(pointA.w(), pointB.w(), 0.001);
+    }
+
+    void test_plane_set_camera_to_world_to_camera(const cameraToWorldMatrix& cameraToWorld)
+    {
+        const worldToCameraMatrix worldToCamera = compute_world_to_camera_transform(cameraToWorld);
+        const double normalXIter = 0.1;
+        const double normalYIter = 0.1;
+        const double normalZIter = 0.1;
+
+        for(double x = 0; x < 1.0; x += normalXIter)
+        {
+            for(double y = 0; y < 1.0; y += normalYIter)
+            {
+                for(double z = 0; z < 1.0; z += normalZIter)
+                {
+                    for(double d = 0; d < 100; d += 5.5)
+                    {
+                        const vector3 planeNormal = vector3(x, y, z).normalized();
+                        const PlaneCameraCoordinates originalCameraPlane(vector4(planeNormal.x(), planeNormal.y(), planeNormal.z(), d));
+                        const PlaneWorldCoordinates worldPlane = originalCameraPlane.to_world_coordinates(cameraToWorld);
+                        const PlaneCameraCoordinates newCameraCoordinates = worldPlane.to_camera_coordinates(worldToCamera);
+
+                        estimate_plane_error(originalCameraPlane.vector(), newCameraCoordinates.vector());
+                    }
+                }
+            }
+        }
+    }
+
+    TEST(PlaneCoordinateSystemTests, ScreenToWorldToScreenAtOrigin)
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        const cameraToWorldMatrix& cameraToWorld = compute_camera_to_world_transform(
+            quaternion(0, 0, 0, 1),
+            vector3(0, 0, 0)
+        );
+        test_plane_set_camera_to_world_to_camera(cameraToWorld);
+    }
+
+    TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraFarFromOrigin)
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        const cameraToWorldMatrix& cameraToWorld = compute_camera_to_world_transform(
+            quaternion(0, 0, 0, 1),
+            vector3(-100, 1000, 100)
+        );
+        test_plane_set_camera_to_world_to_camera(cameraToWorld);
+    }
+
+    TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation1)
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        const cameraToWorldMatrix& cameraToWorld = compute_camera_to_world_transform(
+            quaternion(0.3, 0.2, 0.1, 0.4),
+            vector3(0, 0, 0)
+        );
+        test_plane_set_camera_to_world_to_camera(cameraToWorld);
+    }
+
+    TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation2)
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        const cameraToWorldMatrix& cameraToWorld = compute_camera_to_world_transform(
+            quaternion(0.6, 0.1, 0.2, 0.1),
+            vector3(0, 0, 0)
+        );
+        test_plane_set_camera_to_world_to_camera(cameraToWorld);
+    }
+
+    TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation3)
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        const cameraToWorldMatrix& cameraToWorld = compute_camera_to_world_transform(
+            quaternion(0.6, 0.1, 0.2, 0.1),
+            vector3(100, -100, -100)
+        );
+        test_plane_set_camera_to_world_to_camera(cameraToWorld);
+    }
+
 }

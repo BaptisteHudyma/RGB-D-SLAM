@@ -14,6 +14,9 @@ namespace utils {
 
     struct WorldCoordinate;
 
+    struct PlaneCameraCoordinates;
+    struct PlaneWorldCoordinates;
+
     /**
     * \brief Return true is a measurement is in the measurement range
     */
@@ -166,6 +169,27 @@ namespace utils {
          * \return The input vector transformed to camera space
          */
         CameraCoordinate to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const;
+    };
+
+
+    struct PlaneCameraCoordinates : vector4 {
+        PlaneCameraCoordinates() {};
+        PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
+        PlaneCameraCoordinates(const vector4& plane) : vector4(plane) {};
+
+        PlaneWorldCoordinates to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
+
+        vector4 vector() const { return vector4(x(), y(), z(), w()); };
+    };
+
+    struct PlaneWorldCoordinates : vector4 {
+        PlaneWorldCoordinates() {};
+        PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
+        PlaneWorldCoordinates(const vector4& plane) : vector4(plane) {};
+
+        PlaneCameraCoordinates to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const;
+
+        vector4 vector() const { return vector4(x(), y(), z(), w()); };
     };
 
 }

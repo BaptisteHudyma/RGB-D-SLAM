@@ -2,6 +2,7 @@
 
 #include "../utils/camera_transformation.hpp"
 #include "../utils/distance_utils.hpp"
+#include "coordinates.hpp"
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
 #include <iostream>
@@ -31,7 +32,7 @@ namespace rgbd_slam {
             }
         }
 
-        vector3 get_transformed_plane(const vector4& plane)
+        vector3 get_transformed_plane(const utils::PlaneCameraCoordinates& plane)
         {
             const vector3& normalizedNormal = plane.head(3).normalized();
             return vector3(
@@ -90,8 +91,8 @@ namespace rgbd_slam {
                 outputScores(pointIndex++) = distance.y();
             }
             for(const matches_containers::plane_pair& match: _planes) {
-                const vector4 projectedWorldPlane = transformationMatrix.inverse() * match.first;
-                const vector3& planeProjectionError = get_transformed_plane(match.second) - get_transformed_plane(projectedWorldPlane);
+                const utils::PlaneCameraCoordinates& projectedWorldPlane = match.second.to_camera_coordinates(transformationMatrix);
+                const vector3& planeProjectionError = get_transformed_plane(match.first) - get_transformed_plane(projectedWorldPlane);
                 //std::cout << planeProjectionError.transpose() << std::endl;
 
                 outputScores(pointIndex++) = 10 * planeProjectionError.x();
@@ -112,8 +113,8 @@ namespace rgbd_slam {
             // Compute retroprojection distances
             for(const matches_containers::plane_pair& match : planes) {
                 // Compute retroprojected distance
-                const vector4 projectedWorldPlane = transformationMatrix.inverse() * match.first;
-                const vector3& planeProjectionError = get_transformed_plane(match.second) - get_transformed_plane(projectedWorldPlane);
+                const utils::PlaneCameraCoordinates& projectedWorldPlane = match.second.to_camera_coordinates(transformationMatrix);
+                const vector3& planeProjectionError = get_transformed_plane(match.first) - get_transformed_plane(projectedWorldPlane);
                 std::cout << planeProjectionError.transpose() << std::endl;
             }
             if (not planes.empty())

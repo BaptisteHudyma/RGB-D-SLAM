@@ -111,5 +111,17 @@ namespace utils {
             return CameraCoordinate(cameraHomogenousCoordinates);
         }
 
+
+
+        PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+        {
+            return PlaneWorldCoordinates(cameraToWorld * vector4(x(), y(), z(), w()));
+        }
+
+        PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
+        {
+            return PlaneCameraCoordinates(worldToCamera * vector4(x(), y(), z(), w()));
+        }
+
 }
 }

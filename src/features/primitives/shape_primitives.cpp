@@ -92,7 +92,7 @@ namespace rgbd_slam {
                 return is_similar(plane._shapeMask, plane._parametrization);
             }
 
-            bool Plane::is_similar(const cv::Mat& mask, const vector4& planeParametrization) const
+            bool Plane::is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const
             {
                 if(get_IOU(mask) < Parameters::get_minimum_iou_for_match())
                     return false;
