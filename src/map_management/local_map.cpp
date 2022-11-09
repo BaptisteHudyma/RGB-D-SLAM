@@ -252,7 +252,7 @@ namespace rgbd_slam {
 
                     const features::primitives::Plane& detectedPlane = detectedPlanes.at(matchedPlaneId);
                     // TODO update plane
-                    mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(cameraToWorld);
+                    //mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(cameraToWorld);
                     mapPlane._shapeMask = detectedPlane.get_shape_mask();
                 }
                 else if (mapPlane._matchedPlane.is_lost())
@@ -264,7 +264,9 @@ namespace rgbd_slam {
 
             // Remove umatched
             for(const size_t planeId : planesToRemove)
+            {
                 _localPlaneMap.erase(planeId);
+            }
 
             // add unmatched planes to local map
             for(const uchar& unmatchedDetectedPlaneId : _unmatchedPlaneIds)

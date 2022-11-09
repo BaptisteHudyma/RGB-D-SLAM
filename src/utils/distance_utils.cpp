@@ -63,7 +63,7 @@ namespace rgbd_slam {
                 angle_distance(cameraPlane.x(), projectedWorldPlane.x()),
                 angle_distance(cameraPlane.y(), projectedWorldPlane.y()),
                 angle_distance(cameraPlane.z(), projectedWorldPlane.z()),
-                projectedWorldPlane.w() - projectedWorldPlane.w()
+                cameraPlane.w() - projectedWorldPlane.w()
             );
         }
 

@@ -28,6 +28,11 @@ namespace rgbd_slam {
         //      - the normal vector of the plane in camera space
         //      - the normal vector of the plane in world space
         struct PlaneMatch {
+            PlaneMatch(const utils::PlaneCameraCoordinates& cameraPlane, const utils::PlaneWorldCoordinates& worldPlane) :
+                _worldPlane(worldPlane),
+                _cameraPlane(cameraPlane)
+            {};
+
             utils::PlaneWorldCoordinates _worldPlane;
             utils::PlaneCameraCoordinates _cameraPlane;
         };
