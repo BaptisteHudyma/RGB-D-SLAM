@@ -50,7 +50,7 @@ namespace rgbd_slam {
          */
 
         Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes) :
-            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2 + planes.size() * 3),
+            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2 + planes.size() * 4),
             _points(points),
             _planes(planes)
         {
@@ -62,7 +62,7 @@ namespace rgbd_slam {
         {
             assert(not _points.empty());
             assert(optimizedParameters.size() == 6);
-            assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 3));
+            assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 4));
 
             // Get the new estimated pose
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
@@ -81,12 +81,13 @@ namespace rgbd_slam {
                 outputScores(pointIndex++) = distance.y();
             }
             for(const matches_containers::PlaneMatch& match: _planes) {
-                const vector3& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
+                const vector4& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
                 //std::cout << planeProjectionError.transpose() << std::endl;
 
                 outputScores(pointIndex++) = planeProjectionError.x();
                 outputScores(pointIndex++) = planeProjectionError.y();
-                outputScores(pointIndex++) = 0;//1 * planeProjectionError.z();
+                outputScores(pointIndex++) = planeProjectionError.z();
+                outputScores(pointIndex++) = planeProjectionError.w();
             }
             return 0;
         }
@@ -102,7 +103,7 @@ namespace rgbd_slam {
             // Compute retroprojection distances
             for(const matches_containers::PlaneMatch& match : planes) {
                 // Compute retroprojected distance
-                const vector3& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
+                const vector4& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
                 std::cout << planeProjectionError.transpose() << std::endl;
             }
             if (not planes.empty())

@@ -66,7 +66,7 @@ namespace utils {
 
         double z() const { return _z; };
 
-        vector3 vector() const { return vector3(x(), y(), z()); };
+        vector3 base() const { return vector3(x(), y(), z()); };
 
     private:
         double _z;
@@ -131,7 +131,7 @@ namespace utils {
 
         double z() const { return _z; };
 
-        vector3 vector() const { return vector3(x(), y(), z()); };
+        vector3 base() const { return vector3(x(), y(), z()); };
 
     private:
         double _z;
@@ -178,8 +178,6 @@ namespace utils {
         PlaneCameraCoordinates(const vector4& plane) : vector4(plane) {};
 
         PlaneWorldCoordinates to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
-
-        vector4 vector() const { return vector4(x(), y(), z(), w()); };
     };
 
     struct PlaneWorldCoordinates : vector4 {
@@ -188,8 +186,6 @@ namespace utils {
         PlaneWorldCoordinates(const vector4& plane) : vector4(plane) {};
 
         PlaneCameraCoordinates to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const;
-
-        vector4 vector() const { return vector4(x(), y(), z(), w()); };
     };
 
 }

@@ -55,7 +55,7 @@ namespace rgbd_slam {
          *
          * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
          */
-        vector3 get_3D_to_2D_plane_distance(const PlaneWorldCoordinates& worldPlane, const PlaneCameraCoordinates& cameraPlane, const worldToCameraMatrix& worldToCamera);
+        vector4 get_3D_to_2D_plane_distance(const PlaneWorldCoordinates& worldPlane, const PlaneCameraCoordinates& cameraPlane, const worldToCameraMatrix& worldToCamera);
 
     }   // utils
 }       // rgbd_slam

@@ -39,7 +39,7 @@ namespace rgbd_slam::utils {
                     ScreenCoordinate newScreenCoordinates;
                     if (cameraCoordinates.to_screen_coordinates(newScreenCoordinates))
                     {
-                        estimate_point_error(originalScreenCoordinates.vector(), newScreenCoordinates.vector());
+                        estimate_point_error(originalScreenCoordinates.base(), newScreenCoordinates.base());
                     }
                     else {
                         FAIL();
@@ -53,7 +53,7 @@ namespace rgbd_slam::utils {
                     ScreenCoordinate newScreenCoordinates;
                     if (cameraCoordinates.to_screen_coordinates(newScreenCoordinates))
                     {
-                        estimate_point_error(originalScreenCoordinates.vector(), newScreenCoordinates.vector());
+                        estimate_point_error(originalScreenCoordinates.base(), newScreenCoordinates.base());
                     }
                     else {
                         FAIL();
@@ -85,7 +85,7 @@ namespace rgbd_slam::utils {
                     ScreenCoordinate newScreenCoordinates;
                     if (worldCoordinates.to_screen_coordinates(worldToCamera, newScreenCoordinates))
                     {
-                        estimate_point_error(originalScreenCoordinates.vector(), newScreenCoordinates.vector());
+                        estimate_point_error(originalScreenCoordinates.base(), newScreenCoordinates.base());
                     }
                     else {
                         FAIL();
@@ -197,7 +197,7 @@ namespace rgbd_slam::utils {
                         const PlaneWorldCoordinates worldPlane = originalCameraPlane.to_world_coordinates(cameraToWorld);
                         const PlaneCameraCoordinates newCameraCoordinates = worldPlane.to_camera_coordinates(worldToCamera);
 
-                        estimate_plane_error(originalCameraPlane.vector(), newCameraCoordinates.vector());
+                        estimate_plane_error(originalCameraPlane.base(), newCameraCoordinates.base());
                     }
                 }
             }

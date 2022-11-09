@@ -114,7 +114,7 @@ namespace rgbd_slam {
                      *
                      * \param[in] prim Another primitive to compare to
                      * 
-                     * \return A double between 0 and 1, with 1 indicating identical planes
+                     * \return A true if those shapes are similar
                      */
                     bool is_similar(const Plane& prim) const;
                     bool is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const;

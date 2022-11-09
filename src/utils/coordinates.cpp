@@ -115,12 +115,12 @@ namespace utils {
 
         PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
-            return PlaneWorldCoordinates(cameraToWorld * this->vector());
+            return PlaneWorldCoordinates(cameraToWorld * this->base());
         }
 
         PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
         {
-            return PlaneCameraCoordinates(worldToCamera * this->vector());
+            return PlaneCameraCoordinates(worldToCamera * this->base());
         }
 
 }
