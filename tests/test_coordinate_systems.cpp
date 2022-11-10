@@ -179,7 +179,8 @@ namespace rgbd_slam::utils {
 
     void test_plane_set_camera_to_world_to_camera(const cameraToWorldMatrix& cameraToWorld)
     {
-        const worldToCameraMatrix worldToCamera = compute_world_to_camera_transform(cameraToWorld);
+        const planeCameraToWorldMatrix& planeCameraToWorld = compute_plane_camera_to_world_matrix(cameraToWorld);
+        const planeWorldToCameraMatrix& planeWorldToCamera = compute_plane_world_to_camera_matrix(compute_world_to_camera_transform(cameraToWorld));
         const double normalXIter = 0.3;
         const double normalYIter = 0.1;
         const double normalZIter = 0.1;
@@ -194,8 +195,8 @@ namespace rgbd_slam::utils {
                     {
                         const vector3 planeNormal = vector3(x, y, z);
                         const PlaneCameraCoordinates originalCameraPlane(vector4(planeNormal.x(), planeNormal.y(), planeNormal.z(), d));
-                        const PlaneWorldCoordinates worldPlane = originalCameraPlane.to_world_coordinates(cameraToWorld);
-                        const PlaneCameraCoordinates newCameraCoordinates = worldPlane.to_camera_coordinates(worldToCamera);
+                        const PlaneWorldCoordinates worldPlane = originalCameraPlane.to_world_coordinates(planeCameraToWorld);
+                        const PlaneCameraCoordinates newCameraCoordinates = worldPlane.to_camera_coordinates(planeWorldToCamera);
 
                         estimate_plane_error(originalCameraPlane.base(), newCameraCoordinates.base());
                     }

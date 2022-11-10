@@ -4,6 +4,7 @@
 #include "coordinates.hpp"
 #include <iostream>
 #include <math.h>
+#include "camera_transformation.hpp"
 
 namespace rgbd_slam {
     namespace utils {
@@ -57,7 +58,7 @@ namespace rgbd_slam {
 
         vector4 get_3D_to_2D_plane_distance(const PlaneWorldCoordinates& worldPlane, const PlaneCameraCoordinates& cameraPlane, const worldToCameraMatrix& worldToCamera)
         {
-            const utils::PlaneCameraCoordinates& projectedWorldPlane = worldPlane.to_camera_coordinates(worldToCamera);
+            const utils::PlaneCameraCoordinates& projectedWorldPlane = worldPlane.to_camera_coordinates(compute_plane_world_to_camera_matrix(worldToCamera));
 
             return vector4(
                 angle_distance(cameraPlane.x(), projectedWorldPlane.x()),

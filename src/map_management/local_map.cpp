@@ -125,7 +125,7 @@ namespace rgbd_slam {
         bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
         {
             // project plane in camera space
-            const utils::PlaneCameraCoordinates& projectedPlane = mapPlane._parametrization.to_camera_coordinates(worldToCamera);
+            const utils::PlaneCameraCoordinates& projectedPlane = mapPlane._parametrization.to_camera_coordinates(utils::compute_plane_world_to_camera_matrix(worldToCamera));
             for(const auto& [planeId, shapePlane] : detectedPlanes)
             {
                 assert(planeId == shapePlane.get_id());
@@ -276,7 +276,7 @@ namespace rgbd_slam {
                 const features::primitives::Plane& detectedPlane = detectedPlanes.at(unmatchedDetectedPlaneId);
                 
                 MapPlane newMapPlane;
-                newMapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(cameraToWorld);
+                newMapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(utils::compute_plane_camera_to_world_matrix(cameraToWorld));
                 newMapPlane._shapeMask = detectedPlane.get_shape_mask();
 
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);

@@ -1,4 +1,5 @@
 #include "camera_transformation.hpp"
+#include <iostream>
 
 namespace rgbd_slam {
     namespace utils {
@@ -26,6 +27,26 @@ namespace rgbd_slam {
         {
             cameraToWorldMatrix cameraToWorld;
             cameraToWorld << worldToCamera.inverse();
+            return cameraToWorld;
+        }
+
+        planeCameraToWorldMatrix compute_plane_camera_to_world_matrix(const cameraToWorldMatrix& cameraToWorld)
+        {
+            const matrix33& rotationMatrix = cameraToWorld.block(0,0,3,3);
+            const vector3& position = cameraToWorld.col(3).head(3);
+            
+            planeCameraToWorldMatrix planeCameraToWorld;
+            planeCameraToWorld << 
+                rotationMatrix, vector3::Zero(),
+                -position.transpose()*rotationMatrix, 1;
+            return planeCameraToWorld;
+        }
+
+        planeWorldToCameraMatrix compute_plane_world_to_camera_matrix(const worldToCameraMatrix& worldToCamera)
+        {
+            const planeCameraToWorldMatrix& planeCameraToWorldMatrix = compute_plane_camera_to_world_matrix(compute_camera_to_world_transform(worldToCamera));
+            planeWorldToCameraMatrix cameraToWorld;
+            cameraToWorld << planeCameraToWorldMatrix.inverse();
             return cameraToWorld;
         }
 

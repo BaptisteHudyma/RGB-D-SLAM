@@ -92,25 +92,6 @@ namespace rgbd_slam {
             return 0;
         }
 
-        void get_t_score(const matches_containers::match_plane_container& planes, const utils::Pose& finalPose)
-        {
-            // Get the new estimated pose
-            const quaternion& rotation = finalPose.get_orientation_quaternion();
-            const vector3& translation = finalPose.get_position();
-
-            const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-
-            // Compute retroprojection distances
-            for(const matches_containers::PlaneMatch& match : planes) {
-                // Compute retroprojected distance
-                const vector4& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
-                std::cout << planeProjectionError.transpose() << std::endl;
-            }
-            if (not planes.empty())
-                std::cout << std::endl;
-        }
-
-
         double get_transformation_score(const matches_containers::match_point_container& points, const utils::Pose& finalPose)
         {
             // Get the new estimated pose

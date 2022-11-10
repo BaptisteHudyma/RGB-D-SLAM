@@ -112,24 +112,14 @@ namespace utils {
             return CameraCoordinate(cameraHomogenousCoordinates);
         }
 
-
-        vector3 get_point_on_plane(const vector4& planeHessian)
+        PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const planeCameraToWorldMatrix& cameraToWorld) const
         {
-            return planeHessian.w() * planeHessian.head(3);
+            return PlaneWorldCoordinates(cameraToWorld.base() * this->base());
         }
 
-        PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+        PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const planeWorldToCameraMatrix& worldToCamera) const
         {
-            const CameraCoordinate pointOnPlane(get_point_on_plane(this->base()));
-            const vector4& projectedPlaneNormal = cameraToWorld * vector4(this->base().x(), this->base().y(), this->base().z(), 1);
-            return PlaneWorldCoordinates(projectedPlaneNormal.head(3), pointOnPlane.to_world_coordinates(cameraToWorld).norm());
-        }
-
-        PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
-        {
-            const WorldCoordinate pointOnPlane(get_point_on_plane(this->base()));
-            const vector4& projectedPlaneNormal = worldToCamera * vector4(this->base().x(), this->base().y(), this->base().z(), 1);
-            return PlaneCameraCoordinates(projectedPlaneNormal.head(3), pointOnPlane.to_camera_coordinates(worldToCamera).norm());
+            return PlaneCameraCoordinates(worldToCamera.base() * this->base());
         }
 
 }

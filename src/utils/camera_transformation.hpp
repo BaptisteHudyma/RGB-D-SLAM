@@ -19,6 +19,15 @@ namespace rgbd_slam {
         const cameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position);
         
         const cameraToWorldMatrix compute_camera_to_world_transform(const worldToCameraMatrix& worldToCamera);
+        
+        /**
+         * \brief Transform a cameraToWorldMatrix to a special plane cameraToWorld matrix
+         */
+        planeCameraToWorldMatrix compute_plane_camera_to_world_matrix(const cameraToWorldMatrix& cameraToWorld);
+        /**
+         * \brief Transform a worldToCameraMatrix to a special plane worldToCamera matrix
+         */
+        planeWorldToCameraMatrix compute_plane_world_to_camera_matrix(const worldToCameraMatrix& worldToCamera);
 
     }   // utils
 }       // rgbd_slam

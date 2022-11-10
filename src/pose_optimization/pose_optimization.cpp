@@ -98,7 +98,6 @@ namespace rgbd_slam {
             // Compute pose variance
             if (isPoseValid)
             {
-                //get_t_score(matchedPlanes, finalPose);
                 vector3 estimatedPoseVariance;
                 if (utils::compute_pose_variance(finalPose, inlierMatchedPoints, estimatedPoseVariance))
                 {
