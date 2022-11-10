@@ -80,9 +80,11 @@ namespace rgbd_slam {
                 outputScores(pointIndex++) = distance.x();
                 outputScores(pointIndex++) = distance.y();
             }
+
+            // add plane optimization vectors
+            const planeWorldToCameraMatrix& planeTransformationMatrix = utils::compute_plane_world_to_camera_matrix(transformationMatrix);
             for(const matches_containers::PlaneMatch& match: _planes) {
-                const vector4& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
-                //std::cout << planeProjectionError.transpose() << std::endl;
+                const vector4& planeProjectionError = 0.1 * utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, planeTransformationMatrix);
 
                 outputScores(pointIndex++) = planeProjectionError.x();
                 outputScores(pointIndex++) = planeProjectionError.y();

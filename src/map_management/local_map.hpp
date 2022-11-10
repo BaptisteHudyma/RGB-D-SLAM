@@ -116,12 +116,12 @@ namespace rgbd_slam {
                  *
                  * \param[in, out] mapPlane A map plane that we want to match to a detected plane
                  * \param[in] detectedPlanes A container that stores all the detected planes
-                 * \param[in] worldToCamera A matrix to transform a world point to a camera point
+                 * \param[in] worldToCamera A matrix to transform a world plane to a camera plane
                  * \param[in, out] matchedPlanes A container associating the detected planes to the map planes
                  *
                  * \return A boolean indicating if this plane was matched or not
                  */
-                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
+                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
