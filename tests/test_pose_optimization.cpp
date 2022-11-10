@@ -113,12 +113,11 @@ namespace rgbd_slam {
         return std::min(diff, abs(diff - 2.0 * M_PI));
     }
 
-    void run_test_optimization(const matches_containers::match_point_container& matchedPoints, const utils::Pose& trueEndPose, const utils::Pose& initialPoseGuess)
+    void run_test_optimization(const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, const utils::Pose& trueEndPose, const utils::Pose& initialPoseGuess)
     {
         // Compute end pose
         utils::Pose endPose; 
         matches_containers::match_point_container outlierMatchedPoints;
-        matches_containers::match_plane_container matchedPlanes;
         const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, matchedPlanes, endPose, outlierMatchedPoints);
 
         if (not isPoseValid)
@@ -160,7 +159,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -168,7 +167,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
 
     }
 
@@ -189,7 +188,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(END_POSITION, END_POSITION, END_POSITION);
@@ -197,7 +196,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     /*
@@ -217,7 +216,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
@@ -225,7 +224,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     /*
@@ -245,7 +244,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS);
@@ -253,7 +252,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     /*
@@ -273,7 +272,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
@@ -281,7 +280,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
 
@@ -307,7 +306,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
@@ -315,7 +314,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     /*
@@ -335,7 +334,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(END_POSITION* MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS);
@@ -343,7 +342,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     /*
@@ -363,7 +362,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
@@ -371,7 +370,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
 
@@ -396,7 +395,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -404,7 +403,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationPitchGoodGuess) 
@@ -421,7 +420,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -429,7 +428,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationRollGoodGuess) 
@@ -446,7 +445,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -454,7 +453,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationGoodGuess) 
@@ -471,7 +470,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -479,7 +478,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     /*
@@ -499,7 +498,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -507,7 +506,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationPitchMediumguess) 
@@ -524,7 +523,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -532,7 +531,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationRollMediumGuess) 
@@ -549,7 +548,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -557,7 +556,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationMediumGuess) 
@@ -574,7 +573,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -582,7 +581,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     /*
@@ -602,7 +601,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -610,7 +609,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationPitchBadGuess) 
@@ -627,7 +626,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -635,7 +634,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationRollBadGuess) 
@@ -652,7 +651,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -660,7 +659,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
     TEST(RotationOptimizationTests, rotationBadGuess) 
@@ -677,7 +676,7 @@ namespace rgbd_slam {
         const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
         const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-
+        matches_containers::match_plane_container matchedPlanes;
 
         // Estimated pose base
         const vector3 initialPositionGuess(0, 0, 0);
@@ -685,7 +684,7 @@ namespace rgbd_slam {
         const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
         const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-        run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
 
