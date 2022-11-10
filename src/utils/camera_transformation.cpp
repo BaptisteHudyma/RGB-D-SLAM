@@ -22,5 +22,12 @@ namespace rgbd_slam {
             return worldToCamera;
         }
 
+        const cameraToWorldMatrix compute_camera_to_world_transform(const worldToCameraMatrix& worldToCamera)
+        {
+            cameraToWorldMatrix cameraToWorld;
+            cameraToWorld << worldToCamera.inverse();
+            return cameraToWorld;
+        }
+
     }   // utils
 }       // rgbd_slam

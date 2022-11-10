@@ -1,6 +1,7 @@
 #include "coordinates.hpp"
 
 #include "../parameters.hpp"
+#include "camera_transformation.hpp"
 
 namespace rgbd_slam {
 namespace utils {
@@ -112,15 +113,23 @@ namespace utils {
         }
 
 
+        vector3 get_point_on_plane(const vector4& planeHessian)
+        {
+            return planeHessian.w() * planeHessian.head(3);
+        }
 
         PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
-            return PlaneWorldCoordinates(cameraToWorld * this->base());
+            const CameraCoordinate pointOnPlane(get_point_on_plane(this->base()));
+            const vector4& projectedPlaneNormal = cameraToWorld * vector4(this->base().x(), this->base().y(), this->base().z(), 1);
+            return PlaneWorldCoordinates(projectedPlaneNormal.head(3), pointOnPlane.to_world_coordinates(cameraToWorld).norm());
         }
 
         PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
         {
-            return PlaneCameraCoordinates(worldToCamera * this->base());
+            const WorldCoordinate pointOnPlane(get_point_on_plane(this->base()));
+            const vector4& projectedPlaneNormal = worldToCamera * vector4(this->base().x(), this->base().y(), this->base().z(), 1);
+            return PlaneCameraCoordinates(projectedPlaneNormal.head(3), pointOnPlane.to_camera_coordinates(worldToCamera).norm());
         }
 
 }

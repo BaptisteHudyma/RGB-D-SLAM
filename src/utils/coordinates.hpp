@@ -174,16 +174,18 @@ namespace utils {
 
     struct PlaneCameraCoordinates : vector4 {
         PlaneCameraCoordinates() {};
-        PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
         PlaneCameraCoordinates(const vector4& plane) : vector4(plane) {};
+        PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
+        PlaneCameraCoordinates(const vector3& normal, const double d) : PlaneCameraCoordinates(normal.x(), normal.y(), normal.z(), d) {};
 
         PlaneWorldCoordinates to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
     };
 
     struct PlaneWorldCoordinates : vector4 {
         PlaneWorldCoordinates() {};
-        PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
         PlaneWorldCoordinates(const vector4& plane) : vector4(plane) {};
+        PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
+        PlaneWorldCoordinates(const vector3& normal, const double d) : PlaneWorldCoordinates(normal.x(), normal.y(), normal.z(), d) {};
 
         PlaneCameraCoordinates to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const;
     };

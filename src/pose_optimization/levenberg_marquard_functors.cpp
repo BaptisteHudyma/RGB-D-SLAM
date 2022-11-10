@@ -103,8 +103,8 @@ namespace rgbd_slam {
             // Compute retroprojection distances
             for(const matches_containers::PlaneMatch& match : planes) {
                 // Compute retroprojected distance
-                //const vector4& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
-                std::cout << match._worldPlane.transpose() << " |  " << match._worldPlane.to_camera_coordinates(transformationMatrix).transpose() << std::endl;
+                const vector4& planeProjectionError = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, transformationMatrix);
+                std::cout << planeProjectionError.transpose() << std::endl;
             }
             if (not planes.empty())
                 std::cout << std::endl;

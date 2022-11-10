@@ -180,17 +180,17 @@ namespace rgbd_slam::utils {
     void test_plane_set_camera_to_world_to_camera(const cameraToWorldMatrix& cameraToWorld)
     {
         const worldToCameraMatrix worldToCamera = compute_world_to_camera_transform(cameraToWorld);
-        const double normalXIter = 0.1;
+        const double normalXIter = 0.3;
         const double normalYIter = 0.1;
         const double normalZIter = 0.1;
 
-        for(double x = 0; x < 1.0; x += normalXIter)
+        for(double x = 1; x <= 1.0; x += normalXIter)
         {
-            for(double y = 0; y < 1.0; y += normalYIter)
+            for(double y = -1; y < 1.0; y += normalYIter)
             {
-                for(double z = 0; z < 1.0; z += normalZIter)
+                for(double z = -1; z < 1.0; z += normalZIter)
                 {
-                    for(double d = 0; d < 100; d += 5.5)
+                    for(double d = 1; d < 100; d += 5.5)
                     {
                         const vector3 planeNormal = vector3(x, y, z);
                         const PlaneCameraCoordinates originalCameraPlane(vector4(planeNormal.x(), planeNormal.y(), planeNormal.z(), d));
