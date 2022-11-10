@@ -275,6 +275,11 @@ namespace rgbd_slam {
             outputs::log_error("Minimum InterOverUnion must be > 0");
             _isValid = false;
         }
+        if (_minimumNormalsDotDifference < 0 or _minimumNormalsDotDifference > 1)
+        {
+            outputs::log_error("Minimum normal difference must be between 0 and 1");
+            _isValid = false;
+        }
         if (_minimumCellActivated <= 0)
         {
             outputs::log_error("Minimum cell activated must be > 0");

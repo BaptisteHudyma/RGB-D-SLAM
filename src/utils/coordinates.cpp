@@ -1,6 +1,7 @@
 #include "coordinates.hpp"
 
 #include "../parameters.hpp"
+#include "camera_transformation.hpp"
 
 namespace rgbd_slam {
 namespace utils {
@@ -35,6 +36,7 @@ namespace utils {
         CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
         {
             assert(x() >= 0 and y() >= 0);
+            assert(z() != 0);
 
             const double x = (this->x() - Parameters::get_camera_1_center_x()) * this->z() / Parameters::get_camera_1_focal_x();
             const double y = (this->y() - Parameters::get_camera_1_center_y()) * this->z() / Parameters::get_camera_1_focal_y();
@@ -86,10 +88,6 @@ namespace utils {
             const CameraCoordinate& cameraPoint = this->to_camera_coordinates(worldToCamera);
             assert(cameraPoint.get_homogenous()[3] > 0);
 
-            if (cameraPoint.z() <= 0) {
-                return false;
-            }
-
             return cameraPoint.to_screen_coordinates(screenPoint);
         }
 
@@ -112,6 +110,16 @@ namespace utils {
 
             const vector4& cameraHomogenousCoordinates = worldToCamera * homogenousWorldCoordinates;
             return CameraCoordinate(cameraHomogenousCoordinates);
+        }
+
+        PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const planeCameraToWorldMatrix& cameraToWorld) const
+        {
+            return PlaneWorldCoordinates(cameraToWorld.base() * this->base());
+        }
+
+        PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const planeWorldToCameraMatrix& worldToCamera) const
+        {
+            return PlaneCameraCoordinates(worldToCamera.base() * this->base());
         }
 
 }

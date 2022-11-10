@@ -203,7 +203,7 @@ namespace rgbd_slam {
                 // Optimize refined pose
                 const double optimizePoseStartTime = cv::getTickCount();
                 utils::Pose optimizedPose;
-                shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, optimizedPose, outlierMatchedPoints);
+                shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
                 if (shouldUpdateMap)
                 {
                     refinedPose = optimizedPose;

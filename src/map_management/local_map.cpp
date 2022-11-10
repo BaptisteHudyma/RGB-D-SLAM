@@ -7,8 +7,10 @@
 #include "../utils/coordinates.hpp"
 #include "../outputs/logger.hpp"
 #include "map_primitive.hpp"
+#include "matches_containers.hpp"
 #include "primitive_detection.hpp"
 #include "shape_primitives.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -121,11 +123,10 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
+        bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
         {
             // project plane in camera space
-            const vector4 projectedPlane = worldToCamera.inverse() * mapPlane._plane._parametrization;
-
+            const utils::PlaneCameraCoordinates& projectedPlane = mapPlane._parametrization.to_camera_coordinates(worldToCamera);
             for(const auto& [planeId, shapePlane] : detectedPlanes)
             {
                 assert(planeId == shapePlane.get_id());
@@ -136,10 +137,10 @@ namespace rgbd_slam {
                     // TODO: change this
                     continue;
 
-                if(shapePlane.is_similar(mapPlane._plane.get_shape_mask(), projectedPlane)) 
+                if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
                 {
                     mapPlane._matchedPlane.mark_matched(planeId);
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._plane._parametrization);
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization);
 
                     _unmatchedPlaneIds.erase(planeId);
                     return true;
@@ -195,12 +196,13 @@ namespace rgbd_slam {
 
             // Compute a world to camera transformation matrix
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
+            const planeWorldToCameraMatrix& planeWorldToCamera = utils::compute_plane_world_to_camera_matrix(worldToCamera);
 
             // Search for matches
             matches_containers::match_plane_container matchedPlaneContainer;
             for(auto& [planeId, mapPlane] : _localPlaneMap)
             {
-                if (not find_match(mapPlane, detectedPlanes, worldToCamera, matchedPlaneContainer))
+                if (not find_match(mapPlane, detectedPlanes, planeWorldToCamera, matchedPlaneContainer))
                 {
                     // Mark as unmatched
                     mapPlane._matchedPlane.mark_unmatched();
@@ -240,6 +242,7 @@ namespace rgbd_slam {
         void Local_Map::update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes)
         {
             std::set<size_t> planesToRemove;
+            const planeCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
             // Update planes
             for (auto& [planeId, mapPlane] : _localPlaneMap)
@@ -252,8 +255,8 @@ namespace rgbd_slam {
 
                     const features::primitives::Plane& detectedPlane = detectedPlanes.at(matchedPlaneId);
                     // TODO update plane
-                    mapPlane._plane._parametrization = cameraToWorld * detectedPlane._parametrization;
-                    mapPlane._plane.set_shape_mask(detectedPlane.get_shape_mask());
+                    //mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
+                    mapPlane._shapeMask = detectedPlane.get_shape_mask();
                 }
                 else if (mapPlane._matchedPlane.is_lost())
                 {
@@ -264,7 +267,9 @@ namespace rgbd_slam {
 
             // Remove umatched
             for(const size_t planeId : planesToRemove)
+            {
                 _localPlaneMap.erase(planeId);
+            }
 
             // add unmatched planes to local map
             for(const uchar& unmatchedDetectedPlaneId : _unmatchedPlaneIds)
@@ -272,8 +277,10 @@ namespace rgbd_slam {
                 assert(detectedPlanes.contains(unmatchedDetectedPlaneId));
 
                 const features::primitives::Plane& detectedPlane = detectedPlanes.at(unmatchedDetectedPlaneId);
-                MapPlane newMapPlane(detectedPlane);
-                newMapPlane._plane._parametrization = cameraToWorld * detectedPlane._parametrization;
+                
+                MapPlane newMapPlane;
+                newMapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
+                newMapPlane._shapeMask = detectedPlane.get_shape_mask();
 
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
             }
@@ -544,7 +551,7 @@ namespace rgbd_slam {
 
                 cv::Mat planeMask;
                 // Resize with no interpolation
-                cv::resize(mapPlane._plane.get_shape_mask() * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
+                cv::resize(mapPlane._shapeMask * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
                 cv::cvtColor(planeMask, planeMask, cv::COLOR_GRAY2BGR);
                 assert(planeMask.size == debugImage.size);
                 assert(planeMask.type() == debugImage.type());

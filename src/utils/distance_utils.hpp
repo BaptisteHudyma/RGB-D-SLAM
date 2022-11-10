@@ -47,6 +47,16 @@ namespace rgbd_slam {
          */
         double get_3D_to_3D_distance(const WorldCoordinate& worldPoint, const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld);
 
+        /**
+         * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space
+         * \param[in] worldPlane A plane in world coordinates
+         * \param[in] cameraPlane A plane in camera coordinates
+         * \param[in] worldToCamera A transformation matrix to convert from world to camera space
+         *
+         * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
+         */
+        vector4 get_3D_to_2D_plane_distance(const PlaneWorldCoordinates& worldPlane, const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera);
+
     }   // utils
 }       // rgbd_slam
 

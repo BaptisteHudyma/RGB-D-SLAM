@@ -29,6 +29,8 @@ namespace rgbd_slam {
     //define new classes to not mix types
     struct worldToCameraMatrix : public matrix44 {};
     struct cameraToWorldMatrix : public matrix44 {};
+    struct planeWorldToCameraMatrix : public matrix44 {};
+    struct planeCameraToWorldMatrix : public matrix44 {};
 
     struct EulerAngles
     {

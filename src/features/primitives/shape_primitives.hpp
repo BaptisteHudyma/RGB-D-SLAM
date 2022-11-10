@@ -8,6 +8,7 @@
 #include "cylinder_segment.hpp"
 
 #include "../../types.hpp"
+#include "../../utils/coordinates.hpp"
 
 namespace rgbd_slam {
     namespace features {
@@ -113,10 +114,10 @@ namespace rgbd_slam {
                      *
                      * \param[in] prim Another primitive to compare to
                      * 
-                     * \return A double between 0 and 1, with 1 indicating identical planes
+                     * \return A true if those shapes are similar
                      */
                     bool is_similar(const Plane& prim) const;
-                    bool is_similar(const cv::Mat& mask, const vector4& planeParametrization) const;
+                    bool is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const;
                     bool is_similar(const Cylinder& prim) const;
 
                     vector3 get_plane_normal() const { return _parametrization.head(3); };
@@ -126,7 +127,7 @@ namespace rgbd_slam {
                      */
                     double get_distance(const vector3& point) const;
 
-                    vector4 _parametrization;     // infinite plane representation
+                    utils::PlaneCameraCoordinates _parametrization;     // infinite plane representation
                     vector3 _mean;      // mean center point of the plane; in camera coordinates
             };
         }

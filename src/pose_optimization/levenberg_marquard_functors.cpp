@@ -2,6 +2,10 @@
 
 #include "../utils/camera_transformation.hpp"
 #include "../utils/distance_utils.hpp"
+#include "coordinates.hpp"
+#include <Eigen/src/Core/util/Meta.h>
+#include <cmath>
+#include <iostream>
 
 namespace rgbd_slam {
     namespace pose_optimization {
@@ -45,9 +49,10 @@ namespace rgbd_slam {
          * GLOBAL POSE ESTIMATOR members
          */
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points) :
-            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2),
-            _points(points)
+        Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes) :
+            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2 + planes.size() * 4),
+            _points(points),
+            _planes(planes)
         {
             assert(not _points.empty());
         }
@@ -57,7 +62,7 @@ namespace rgbd_slam {
         {
             assert(not _points.empty());
             assert(optimizedParameters.size() == 6);
-            assert(static_cast<size_t>(outputScores.size()) == _points.size() * 2);
+            assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 4));
 
             // Get the new estimated pose
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
@@ -66,7 +71,7 @@ namespace rgbd_slam {
             const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
 
             const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-            size_t pointIndex = 0;  // index of the match being treated
+            Eigen::Index pointIndex = 0;  // index of the match being treated
             // Compute retroprojection distances
             for(const matches_containers::PointMatch& match : _points) {
                 // Compute retroprojected distance
@@ -75,9 +80,19 @@ namespace rgbd_slam {
                 outputScores(pointIndex++) = distance.x();
                 outputScores(pointIndex++) = distance.y();
             }
+
+            // add plane optimization vectors
+            const planeWorldToCameraMatrix& planeTransformationMatrix = utils::compute_plane_world_to_camera_matrix(transformationMatrix);
+            for(const matches_containers::PlaneMatch& match: _planes) {
+                const vector4& planeProjectionError = 0.1 * utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, planeTransformationMatrix);
+
+                outputScores(pointIndex++) = planeProjectionError.x();
+                outputScores(pointIndex++) = planeProjectionError.y();
+                outputScores(pointIndex++) = planeProjectionError.z();
+                outputScores(pointIndex++) = planeProjectionError.w();
+            }
             return 0;
         }
-
 
         double get_transformation_score(const matches_containers::match_point_container& points, const utils::Pose& finalPose)
         {

@@ -2,7 +2,9 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
 #include "../features/primitives/shape_primitives.hpp"
+#include "coordinates.hpp"
 #include "parameters.hpp"
+#include "types.hpp"
 #include <memory>
 
 namespace rgbd_slam {
@@ -45,10 +47,7 @@ namespace rgbd_slam {
 
         struct MapPlane 
         {
-            typedef features::primitives::Plane plane;
-            explicit MapPlane(const plane& plane) : 
-                _id(_currentPlaneId++),
-                _plane(plane)
+            MapPlane() : _id(_currentPlaneId++)
             {
                 cv::Vec3b color;
                 color[0] = rand() % 255;
@@ -60,8 +59,9 @@ namespace rgbd_slam {
             // Unique identifier of this primitive in map
             const size_t _id;
 
-            plane _plane;
+            utils::PlaneWorldCoordinates _parametrization;
             MatchedPrimitive _matchedPlane;
+            cv::Mat _shapeMask;
 
             cv::Scalar _color;  // display color of this primitive
 

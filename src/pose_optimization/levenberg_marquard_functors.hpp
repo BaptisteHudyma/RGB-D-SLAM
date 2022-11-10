@@ -70,7 +70,7 @@ namespace rgbd_slam {
              * \param[in] inputParametersSize Number of input parameters 
              * \param[in,out] points Matched 2D (screen) to 3D (world) points
              */
-            Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points);
+            Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes);
 
             /**
              * \brief Implementation of the objective function
@@ -82,6 +82,7 @@ namespace rgbd_slam {
 
             private:
             const matches_containers::match_point_container& _points;
+            const matches_containers::match_plane_container& _planes;
         };
 
         struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};
@@ -90,6 +91,7 @@ namespace rgbd_slam {
          * \brief Compute a mean transformation score for a pose and a set of point matches
          */
         double get_transformation_score(const matches_containers::match_point_container& points, const utils::Pose& finalPose);
+        void get_t_score(const matches_containers::match_plane_container& planes, const utils::Pose& finalPose);
 
         /**
          * \brief Use for debug.
