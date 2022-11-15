@@ -14,7 +14,7 @@ namespace rgbd_slam {
     RGBD_SLAM::RGBD_SLAM(const utils::Pose &startPose, const uint imageWidth, const uint imageHeight) :
         _width(imageWidth),
         _height(imageHeight),
-        isTrackingLost(true),
+        _isTrackingLost(true),
 
         _totalFrameTreated(0),
         _meanDepthMapTreatmentDuration(0.0),
@@ -97,7 +97,7 @@ namespace rgbd_slam {
 
     const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool shouldDetectLines) 
     {
-        isTrackingLost = true;
+        _isTrackingLost = true;
         assert(static_cast<size_t>(inputDepthImage.rows) == _height);
         assert(static_cast<size_t>(inputDepthImage.cols) == _width);
         assert(static_cast<size_t>(inputRgbImage.rows) == _height);
@@ -160,7 +160,7 @@ namespace rgbd_slam {
 
         _localMap->get_debug_image(camPose, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks, debugImage);
 
-        if (isTrackingLost)
+        if (_isTrackingLost)
         {
             const cv::Size& debugImageSize = debugImage.size();
             cv::addWeighted(debugImage, 0.8, cv::Mat(debugImageSize, CV_8UC3, cv::Scalar(0, 0, 255)), 0.2, 1, debugImage);
@@ -196,27 +196,23 @@ namespace rgbd_slam {
 
         // the map will be updated only if a valid pose is found
         bool shouldUpdateMap = true;
+        // only == 0 if this is the first call
         if (_computeKeypointCount != 0)
         {
-            if (matchedPoints.size() >= Parameters::get_minimum_point_count_for_optimization()) {
-                // Enough matches to optimize
-                // Optimize refined pose
-                const double optimizePoseStartTime = cv::getTickCount();
-                utils::Pose optimizedPose;
-                shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
-                if (shouldUpdateMap)
-                {
-                    refinedPose = optimizedPose;
-                    isTrackingLost = false;
-                }
-                // else the refined pose will follow the motion model
-                _meanPoseOptimizationFromFeatures += (cv::getTickCount() - optimizePoseStartTime) / static_cast<double>(cv::getTickFrequency());
-            }
-            else
+            // Optimize refined pose
+            const double optimizePoseStartTime = cv::getTickCount();
+            utils::Pose optimizedPose;
+            shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
+            if (shouldUpdateMap)
             {
-                // Not enough matches
-                outputs::log_warning("Not enough points match for pose estimation: " + std::to_string(matchedPoints.size()) + " matches with " + std::to_string(keypointObject.get_keypoint_count()) + " detected or tracked points");
+                refinedPose = optimizedPose;
+                _isTrackingLost = false;
             }
+            else {
+                outputs::log_error("Could not find an optimized pose");
+            }
+            // else the refined pose will follow the motion model
+            _meanPoseOptimizationFromFeatures += (cv::getTickCount() - optimizePoseStartTime) / static_cast<double>(cv::getTickFrequency());
         }
         //else: first call: no optimization
 

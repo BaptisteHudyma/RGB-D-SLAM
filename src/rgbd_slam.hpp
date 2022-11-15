@@ -95,7 +95,7 @@ namespace rgbd_slam {
             utils::Pose _currentPose;
             tracking::Motion_Model _motionModel;
 
-            bool isTrackingLost;    // True is the tracking of last frame failed
+            bool _isTrackingLost;    // True is the tracking of last frame failed
 
             // debug
             uint _totalFrameTreated;

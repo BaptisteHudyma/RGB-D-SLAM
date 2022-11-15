@@ -19,25 +19,40 @@ namespace rgbd_slam {
 
         bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
-            const double matchedPointSize = static_cast<double>(matchedPoints.size());
+            outlierMatchedPoints.clear();
 
-            if (matchedPoints.size() == 0 && matchedPlanes.size() == 0)
+            const double matchedPointSize = static_cast<double>(matchedPoints.size());
+            const double matchedPlaneSize = static_cast<double>(matchedPlanes.size());
+
+            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select
+            const uint minimumPlanesForOptimization = Parameters::get_minimum_plane_count_for_optimization();    // Number of random planes to select
+            assert(minimumPointsForOptimization > 0);
+            assert(minimumPlanesForOptimization > 0);
+
+            // individual feature score
+            const double pointFeatureScore = 1.0 / minimumPointsForOptimization;
+            const double planeFeatureScore = 0.0;//1.0 / minimumPlanesForOptimization;
+
+            // check that we have enough features for minimal pose optimization
+            const double initialFeatureScore = pointFeatureScore * matchedPointSize + planeFeatureScore * matchedPlaneSize;
+            if (initialFeatureScore < 1.0)
             {
-                outputs::log_warning("Cannot optimize a pose without any matches");
+                // if there is not enough potential inliers to optimize a pose
+                outputs::log_warning("Not enough features to optimize a pose (" + std::to_string(matchedPoints.size()) + " points, " +  std::to_string(matchedPlanes.size()) + " planes)");
                 return false;
             }
 
-            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select, minimum number of points to compute a pose
             const double maximumRetroprojectionThreshold = Parameters::get_ransac_maximum_retroprojection_error_for_inliers(); // maximum inlier threshold, in pixels 
-            const uint acceptableInliersForEarlyStop = static_cast<uint>(matchedPointSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this inlier count is reached
-
-            assert(minimumPointsForOptimization > 0);
             assert(maximumRetroprojectionThreshold > 0);
+            const uint acceptablePointInliersForEarlyStop = static_cast<uint>(matchedPointSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this inlier count is reached
+            const uint acceptablePlaneInliersForEarlyStop = static_cast<uint>(matchedPlaneSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this inlier count is reached
 
-            if (acceptableInliersForEarlyStop < minimumPointsForOptimization)
+            // check that we have enough inlier features for a pose optimization with RANSAC
+            const double initialInlierFeatureScore = pointFeatureScore * acceptablePointInliersForEarlyStop + planeFeatureScore * acceptablePlaneInliersForEarlyStop;
+            if (initialInlierFeatureScore < 1.0)
             {
                 // if there is not enough potential inliers to optimize a pose
-                outputs::log_warning("Not enough features to optimize a pose");
+                outputs::log_warning("Not enough minimum inlier features to safely optimize a pose with RANSAC (" + std::to_string(acceptablePointInliersForEarlyStop) + " points, " +  std::to_string(acceptablePlaneInliersForEarlyStop) + " planes)");
                 return false;
             }
 
@@ -53,7 +68,7 @@ namespace rgbd_slam {
             {
                 const matches_containers::match_point_container& selectedMatches = ransac::get_random_subset(matchedPoints, minimumPointsForOptimization);
                 assert(selectedMatches.size() == minimumPointsForOptimization);
-                utils::Pose pose; 
+                utils::Pose pose;
                 const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, matchedPlanes, pose);
                 //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedMatches, pose);
                 if (not isPoseValid)
@@ -90,7 +105,8 @@ namespace rgbd_slam {
                     inlierMatchedPoints.swap(potentialInliersContainer);
                     outlierMatchedPoints.swap(potentialOutliersContainer);
 
-                    if (inlierMatchedPoints.size() >= acceptableInliersForEarlyStop)
+                    const double inlierScore = inlierMatchedPoints.size() * pointFeatureScore + matchedPlaneSize * planeFeatureScore;
+                    if (inlierScore >= initialInlierFeatureScore)
                     {
                         // We can stop here, the optimization is good enough
                         break;
@@ -98,10 +114,11 @@ namespace rgbd_slam {
                 }
             }
 
-            if (inlierMatchedPoints.size() < minimumPointsForOptimization)
+            // We do not have enough inliers to consider this optimization as valid
+            const double inlierScore = inlierMatchedPoints.size() * pointFeatureScore + matchedPlaneSize * planeFeatureScore;
+            if (inlierScore < 1.0)
             {
-                outputs::log_warning("Could not find a transformation with enough inliers");
-                // error case
+                outputs::log_warning("Could not find a transformation with enough inliers using RANSAC");
                 return false;
             }
 
@@ -121,29 +138,20 @@ namespace rgbd_slam {
                 return true;
             }
 
+            outputs::log_warning("Could not compute a global pose, even though we found a valid inlier set");
             return false;
         }
 
         bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
-            utils::Pose newPose;
-            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, matchedPlanes, newPose, outlierMatchedPoints);
-
-            if (isPoseValid)
-            {
-                // compute pose covariance matrix
-                optimizedPose = newPose;
-                return true;
-            }
-
-            // error in transformation optimisation
-            return false;
+            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
+            return isPoseValid;
         }
 
 
         bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose) 
         {
-            assert(matchedPoints.size() >= 6);
+            assert(matchedPoints.size() >= 3);
 
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();

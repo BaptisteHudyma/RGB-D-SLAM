@@ -60,6 +60,7 @@ namespace rgbd_slam {
             static double get_ransac_inlier_proportion() { return _ransacInlierProportion; };
 
             static uint get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
+            static uint get_minimum_plane_count_for_optimization() { return _minimumPlanesForOptimization; };
             static uint get_maximum_point_count_per_frame() { return _maximumPointPerFrame; };
             static uint get_optimization_maximum_iterations() { return _optimizationMaximumIterations; };
             static double get_optimization_error_precision() { return _optimizationErrorPrecision; };
@@ -136,6 +137,7 @@ namespace rgbd_slam {
 
             // Position optimization
             inline static uint _minimumPointForOptimization;    // Minimum points to launch optimization
+            inline static uint _minimumPlanesForOptimization;   // Minimum planes to launch optimization
             inline static uint _maximumPointPerFrame;           // maximum points per frame, over which we do not want to detect more points (optimization)
 
             inline static double _ransacMaximumRetroprojectionErrorForInliers;  //Maximum retroprojection error in pixels to consider a point match as inlier
