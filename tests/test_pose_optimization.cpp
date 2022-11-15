@@ -69,7 +69,7 @@ namespace rgbd_slam {
         return pointContainer;
     }
 
-    const matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
+    matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
     {
         assert(error >= 0);
         const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
@@ -102,6 +102,26 @@ namespace rgbd_slam {
             outputs::log_error("The chosen transformation is not valid, as some points hand up behind the camera");
         }
         return matchedPoints;
+    }
+
+    matches_containers::match_plane_container get_matched_planes(const utils::Pose& endPose)
+    {
+        const planeWorldToCameraMatrix& worldToCamera = utils::compute_plane_world_to_camera_matrix(utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position()));
+        std::uniform_real_distribution<double> normalDistribution(-1, 1);
+
+        matches_containers::match_plane_container matchedPlanes;
+
+        for(uint i = 0; i < 4; ++i)
+        {
+            vector3 planeNormal(normalDistribution(randomEngine), normalDistribution(randomEngine), normalDistribution(randomEngine));
+            planeNormal.normalize();
+            const utils::PlaneWorldCoordinates worldPlane(planeNormal.x(), planeNormal.y(), planeNormal.z(), abs(normalDistribution(randomEngine) * 100));
+        
+            const utils::PlaneCameraCoordinates& cameraPlane =  worldPlane.to_camera_coordinates(worldToCamera);
+
+            matchedPlanes.emplace(matchedPlanes.cend(), worldPlane, cameraPlane);
+        }
+        return matchedPlanes;
     }
 
     /**
@@ -687,5 +707,35 @@ namespace rgbd_slam {
         run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
     }
 
+
+
+    /**
+     *          PLANE POSITION TESTS
+     */
+
+    TEST(PlanePositionOptimizationTests, plane3PerfectGuess) 
+    {
+        if (not Parameters::is_valid())
+        {
+            Parameters::load_defaut();
+        }
+
+        // True End pose
+        const vector3 truePosition(0, 0, 0);
+        const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+        const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+        const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+        const matches_containers::match_point_container matchedPoints;
+        const matches_containers::match_plane_container& matchedPlanes = get_matched_planes(trueEndPose);
+
+        // Estimated pose base
+        const vector3 initialPositionGuess(0, 0, 0);
+        const EulerAngles initialEulerAnglesGuess(END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+        const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+        const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+        run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    }
 
 }

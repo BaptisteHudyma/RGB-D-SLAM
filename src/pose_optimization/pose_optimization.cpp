@@ -20,7 +20,12 @@ namespace rgbd_slam {
         bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
             const double matchedPointSize = static_cast<double>(matchedPoints.size());
-            assert(matchedPointSize > 0);
+
+            if (matchedPoints.size() == 0 && matchedPlanes.size() == 0)
+            {
+                outputs::log_warning("Cannot optimize a pose without any matches");
+                return false;
+            }
 
             const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select, minimum number of points to compute a pose
             const double maximumRetroprojectionThreshold = Parameters::get_ransac_maximum_retroprojection_error_for_inliers(); // maximum inlier threshold, in pixels 
@@ -28,7 +33,13 @@ namespace rgbd_slam {
 
             assert(minimumPointsForOptimization > 0);
             assert(maximumRetroprojectionThreshold > 0);
-            assert(acceptableInliersForEarlyStop > 0);
+
+            if (acceptableInliersForEarlyStop < minimumPointsForOptimization)
+            {
+                // if there is not enough potential inliers to optimize a pose
+                outputs::log_warning("Not enough features to optimize a pose");
+                return false;
+            }
 
             // Compute maximum iteration with the original RANSAC formula
             const uint maximumIterations = static_cast<uint>(log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization)));
@@ -89,7 +100,7 @@ namespace rgbd_slam {
 
             if (inlierMatchedPoints.size() < minimumPointsForOptimization)
             {
-                outputs::log_error("Could not find a transformation with enough inliers");
+                outputs::log_warning("Could not find a transformation with enough inliers");
                 // error case
                 return false;
             }
