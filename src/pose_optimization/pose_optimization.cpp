@@ -16,6 +16,46 @@
 
 namespace rgbd_slam {
     namespace pose_optimization {
+        
+        /**
+         * \brief Compute a score for a transformation, and compute an inlier and outlier set
+         * \param[in] pointsToEvaluate The set of points to evaluate the transformation on
+         * \param[in] maximumRetroprojectionThreshold The maximum retroprojection error between two point, below which we classifying the match as inlier 
+         * \param[in] transformationPose The transformation that needs to be evaluated
+         * \param[out] inliersContainer The set inliers of inliers of this transformation
+         * \param[out] outliersContainer The set inliers of outliers of this transformation
+         * \return The transformation score (sum of retroprojection distances)
+         */
+        double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate, const double maximumRetroprojectionThreshold, const utils::Pose& transformationPose, matches_containers::match_point_container& inliersContainer, matches_containers::match_point_container& outliersContainer)
+        {
+            inliersContainer.clear();
+            outliersContainer.clear();
+
+            // get a world to camera transform to evaluate the retroprojection score
+            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(transformationPose.get_orientation_quaternion(), transformationPose.get_position());
+
+            double retroprojectionScore = 0.0;
+            for (const matches_containers::PointMatch& match : pointsToEvaluate)
+            {
+                // Retroproject world point to screen, and compute screen distance
+                const double distance = utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, worldToCamera);
+                assert(distance >= 0 and not std::isnan(distance));
+                // inlier
+                if (distance < maximumRetroprojectionThreshold)
+                {
+                    inliersContainer.insert(inliersContainer.end(), match);
+                }
+                // outlier
+                else
+                {
+                    outliersContainer.insert(outliersContainer.end(), match);
+                }
+                retroprojectionScore += std::min(maximumRetroprojectionThreshold, distance);
+            }
+            return retroprojectionScore;
+        }
+
+
 
         bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
         {
@@ -31,7 +71,7 @@ namespace rgbd_slam {
 
             // individual feature score
             const double pointFeatureScore = 1.0 / minimumPointsForOptimization;
-            const double planeFeatureScore = 0.0;//1.0 / minimumPlanesForOptimization;
+            const double planeFeatureScore = 1.0 / minimumPlanesForOptimization;
 
             // check that we have enough features for minimal pose optimization
             const double initialFeatureScore = pointFeatureScore * matchedPointSize + planeFeatureScore * matchedPlaneSize;
@@ -48,8 +88,9 @@ namespace rgbd_slam {
             const uint acceptablePlaneInliersForEarlyStop = static_cast<uint>(matchedPlaneSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this inlier count is reached
 
             // check that we have enough inlier features for a pose optimization with RANSAC
-            const double initialInlierFeatureScore = pointFeatureScore * acceptablePointInliersForEarlyStop + planeFeatureScore * acceptablePlaneInliersForEarlyStop;
-            if (initialInlierFeatureScore < 1.0)
+            // This score is to stop the RANSAC process early
+            const double enoughInliersScore = pointFeatureScore * acceptablePointInliersForEarlyStop + planeFeatureScore * acceptablePlaneInliersForEarlyStop;
+            if (enoughInliersScore < 1.0)
             {
                 // if there is not enough potential inliers to optimize a pose
                 outputs::log_warning("Not enough minimum inlier features to safely optimize a pose with RANSAC (" + std::to_string(acceptablePointInliersForEarlyStop) + " points, " +  std::to_string(acceptablePlaneInliersForEarlyStop) + " planes)");
@@ -64,49 +105,33 @@ namespace rgbd_slam {
             double minScore = matchedPointSize * maximumRetroprojectionThreshold;
             utils::Pose bestPose = currentPose;
             matches_containers::match_point_container inlierMatchedPoints;  // Contains the best pose inliers
+            matches_containers::match_plane_container inlierMatchedPlanes;  // Contains the best pose inliers
             for(uint iteration = 0; iteration < maximumIterations; ++iteration)
             {
-                const matches_containers::match_point_container& selectedMatches = ransac::get_random_subset(matchedPoints, minimumPointsForOptimization);
-                assert(selectedMatches.size() == minimumPointsForOptimization);
-                utils::Pose pose;
-                const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, matchedPlanes, pose);
-                //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedMatches, pose);
+                const matches_containers::match_point_container& selectedPointMatches = ransac::get_random_subset(matchedPoints, minimumPointsForOptimization);
+                assert(selectedPointMatches.size() == minimumPointsForOptimization);
+
+                // compute a new candidate pose to evaluate
+                utils::Pose candidatePose;
+                const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedPointMatches, matchedPlanes, candidatePose);
+                //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedPointMatches, candidatePose);
                 if (not isPoseValid)
                     continue;
 
-                const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
-
-                // Select inliers by retroprojection threshold
-                matches_containers::match_point_container potentialInliersContainer;
-                matches_containers::match_point_container potentialOutliersContainer;
-                double score = 0.0;
-                for (const matches_containers::PointMatch& match : matchedPoints)
-                {
-                    // Retroproject world point to screen, and compute screen distance
-                    const double distance = utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, transformationMatrix);
-                    assert(distance >= 0);
-                    if (distance < maximumRetroprojectionThreshold)
-                    {
-                        potentialInliersContainer.insert(potentialInliersContainer.end(), match);
-                        score += distance;
-                    }
-                    else
-                    {
-                        potentialOutliersContainer.insert(potentialOutliersContainer.end(), match);
-                        score += maximumRetroprojectionThreshold;
-                    }
-                }
+                // get inliers and outliers for this transformation
+                matches_containers::match_point_container potentialInliersContainer, potentialOutliersContainer;
+                double transformationScore = get_point_inliers_outliers(matchedPoints, maximumRetroprojectionThreshold, candidatePose, potentialInliersContainer, potentialOutliersContainer);
 
                 // We have a better score than the previous best one
-                if (score < minScore)
+                if (transformationScore < minScore)
                 {
-                    minScore = score;
-                    bestPose = pose;
+                    minScore = transformationScore;
+                    bestPose = candidatePose;
                     inlierMatchedPoints.swap(potentialInliersContainer);
                     outlierMatchedPoints.swap(potentialOutliersContainer);
 
                     const double inlierScore = inlierMatchedPoints.size() * pointFeatureScore + matchedPlaneSize * planeFeatureScore;
-                    if (inlierScore >= initialInlierFeatureScore)
+                    if (inlierScore >= enoughInliersScore)
                     {
                         // We can stop here, the optimization is good enough
                         break;
@@ -122,10 +147,11 @@ namespace rgbd_slam {
                 return false;
             }
 
+            // optimize on all inliers
             const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, inlierMatchedPoints, matchedPlanes, finalPose);
-            // Compute pose variance
             if (isPoseValid)
             {
+                // Compute pose variance
                 vector3 estimatedPoseVariance;
                 if (utils::compute_pose_variance(finalPose, inlierMatchedPoints, estimatedPoseVariance))
                 {
