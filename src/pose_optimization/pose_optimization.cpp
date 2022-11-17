@@ -14,6 +14,7 @@
 #include "../../third_party/p3p.hpp"
 
 #include <Eigen/StdVector>
+#include <cmath>
 #include <random>
 #include <string>
 
@@ -143,7 +144,7 @@ namespace rgbd_slam {
             const uint maxNumberOfPoints = std::min(minimumPointsForOptimization, (uint)matchedPoints.size());
             const uint maxNumberOfPlanes = std::min(minimumPlanesForOptimization, (uint)matchedPlanes.size());
             const uint minNumberOfPlanes = static_cast<uint>((1.0 - maxNumberOfPoints * pointFeatureScore) / planeFeatureScore);
-            //const uint minNumberOfPoints = static_cast<uint>((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore);
+            const uint minNumberOfPoints = static_cast<uint>((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore);
 
             std::random_device randomDevice;
             std::mt19937 randomEngine(randomDevice());
@@ -161,7 +162,19 @@ namespace rgbd_slam {
             for(uint iteration = 0; iteration < maximumIterations; ++iteration)
             {
                 const uint numberOfPlanesToSample = minNumberOfPlanes + (maxNumberOfPlanes - minNumberOfPlanes) * (planeInRansacDistribution(randomEngine) > 0.5);
-                const uint numberOfPointsToSample = static_cast<uint>((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore);
+                const uint numberOfPointsToSample = std::ceil((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore);
+
+                const double subsetScore = numberOfPointsToSample * pointFeatureScore + numberOfPlanesToSample * planeFeatureScore;
+                if (subsetScore < 1.0)
+                {
+                    outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and " + std::to_string(numberOfPlanesToSample) + " planes, not enough for optimization (score: " + std::to_string(subsetScore) + ")");
+                    continue;
+                }
+                if (numberOfPointsToSample < minNumberOfPoints or numberOfPointsToSample > maxNumberOfPoints or numberOfPointsToSample > matchedPoints.size())
+                {
+                    outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and but we have " + std::to_string(matchedPoints.size()) + " available");
+                    continue;
+                }
 
                 const matches_containers::match_point_container& selectedPointMatches = ransac::get_random_subset(matchedPoints, numberOfPointsToSample);
                 const matches_containers::match_plane_container& selectedPlaneMatches = ransac::get_random_subset(matchedPlanes, numberOfPlanesToSample);
