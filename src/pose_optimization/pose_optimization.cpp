@@ -16,7 +16,6 @@
 
 #include <Eigen/StdVector>
 #include <cmath>
-#include <random>
 #include <string>
 
 namespace rgbd_slam {
@@ -158,6 +157,7 @@ namespace rgbd_slam {
             matches_containers::match_plane_container inlierMatchedPlanes;  // Contains the best pose inliers
             for(uint iteration = 0; iteration < maximumIterations; ++iteration)
             {
+                // get random number of planes, between minNumberOfPlanes and maxNumberOfPlanes
                 const uint numberOfPlanesToSample = minNumberOfPlanes + (maxNumberOfPlanes - minNumberOfPlanes) * (utils::Random::get_random_double() > 0.5);
                 const uint numberOfPointsToSample = std::ceil((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore);
 

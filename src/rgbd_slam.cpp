@@ -26,7 +26,9 @@ namespace rgbd_slam {
         _meanPoseOptimizationFromFeatures(0.0),
         _meanLocalMapUpdateDuration(0.0)
         {
-            cv::theRNG().state = utils::Random::get_random_uint(10000000);
+            const uint seed = utils::Random::get_random_uint(10000000);
+            cv::theRNG().state = seed;
+            std::srand(seed);
 
             // Load parameters (once)
             if (not Parameters::is_valid())
