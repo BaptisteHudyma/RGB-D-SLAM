@@ -4,6 +4,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
+#include "../../utils/random.hpp"
 
 
 namespace rgbd_slam {
@@ -240,9 +241,9 @@ namespace rgbd_slam {
                 for(uint iteration = 0; iteration < maximumIterations; ++iteration)
                 {
                     // Random triplet
-                    const uint id1 = idsLeft[rand() % planeIdsLeft];
-                    const uint id2 = idsLeft[rand() % planeIdsLeft];
-                    const uint id3 = idsLeft[rand() % planeIdsLeft];
+                    const uint id1 = idsLeft[utils::Random::get_random_uint(planeIdsLeft)];
+                    const uint id2 = idsLeft[utils::Random::get_random_uint(planeIdsLeft)];
+                    const uint id3 = idsLeft[utils::Random::get_random_uint(planeIdsLeft)];
                     // normals of random planes
                     const vector3& normal1 = planeNormals.col(id1);
                     const vector3& normal2 = planeNormals.col(id2);

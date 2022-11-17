@@ -21,6 +21,11 @@ namespace rgbd_slam {
                 return distribution(randomEngine);
             }
 
+            static uint get_random_uint(const uint maxValue)
+            {
+                return static_cast<uint>(maxValue * get_random_double());
+            }
+
         };
 
 

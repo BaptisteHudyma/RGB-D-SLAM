@@ -4,6 +4,7 @@
 #include "../features/primitives/shape_primitives.hpp"
 #include "coordinates.hpp"
 #include "parameters.hpp"
+#include "../utils/random.hpp"
 #include "types.hpp"
 #include <memory>
 
@@ -50,9 +51,9 @@ namespace rgbd_slam {
             MapPlane() : _id(_currentPlaneId++)
             {
                 cv::Vec3b color;
-                color[0] = rand() % 255;
-                color[1] = rand() % 255;
-                color[2] = rand() % 255;
+                color[0] = utils::Random::get_random_uint(255);
+                color[1] = utils::Random::get_random_uint(255);
+                color[2] = utils::Random::get_random_uint(255);
                 _color = color;
             };
 
