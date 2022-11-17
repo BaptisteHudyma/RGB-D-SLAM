@@ -171,12 +171,13 @@ namespace rgbd_slam {
 
     const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage, const matrixf& cloudArrayOrganized) 
     {
-        //get a pose with the motion model
+        //get a pose with the decaying motion model
         utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
 
-        // Detect and match key points with local map points
-        const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency())== 0;
+        // every now and then, restart the search of points even if we have enough features
+        const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) == 0;
 
+        // Detect and match key points with local map points
         const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features();
         const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
 
@@ -195,16 +196,16 @@ namespace rgbd_slam {
 
         matches_containers::match_point_container outlierMatchedPoints;
 
-        // the map will be updated only if a valid pose is found
-        bool shouldUpdateMap = true;
-        // only == 0 if this is the first call
-        if (_computeKeypointCount != 0)
+        // only == 0 if this is the first call to this function
+        const bool isFirstCall = (_computeKeypointCount == 0);
+        if (not isFirstCall)
         {
             // Optimize refined pose
             const double optimizePoseStartTime = cv::getTickCount();
             utils::Pose optimizedPose;
-            shouldUpdateMap = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
-            if (shouldUpdateMap)
+            //if (matchedPoints.size() >= Parameters::get_minimum_point_count_for_optimization())
+            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
+            if (isPoseValid)
             {
                 refinedPose = optimizedPose;
                 _isTrackingLost = false;
@@ -217,16 +218,20 @@ namespace rgbd_slam {
         }
         //else: first call: no optimization
 
-        if (shouldRecomputeKeypoints) {
+        // if keypoints were re searched, or if tracking is lost, reset the counter
+        if (shouldRecomputeKeypoints or _isTrackingLost) {
             // reset the counter to not overflow
             _computeKeypointCount = 0; 
         }
-        _computeKeypointCount += 1;
+        // if tracking was lost, counter will be 0. Do not increment counter: it should stay at 0 to redetect new points
+        if (isFirstCall or not _isTrackingLost)
+            _computeKeypointCount += 1;
 
         const double updateLocalMapStartTime = cv::getTickCount();
-        // Update local map if a valid transformation was found
-        if (shouldUpdateMap)
+        // First call always update the map, tracking lost does not update the map
+        if (isFirstCall or not _isTrackingLost)
         {
+            // Update local map if a valid transformation was found
             _localMap->update(refinedPose, keypointObject, detectedPlanes, outlierMatchedPoints);
         }
         else

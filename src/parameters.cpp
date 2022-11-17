@@ -94,7 +94,7 @@ namespace rgbd_slam {
         _ransacProbabilityOfSuccess = 0.8;   // probability of having at least one correct transformation
         _ransacInlierProportion = 0.6;       // number of inliers in data / number of points in data 
 
-        _minimumPointForOptimization = 5;   // Should be >= 3, the minimum point count for a 3D pose estimation
+        _minimumPointForOptimization = 5;   // Should be >= 5, the minimum point count for a 3D pose estimation
         _minimumPlanesForOptimization = 3;  // Should be >= 3, the minimum infinite plane count for a 3D pose estimation
         _optimizationMaximumIterations = 64;
         _optimizationErrorPrecision = 0;
