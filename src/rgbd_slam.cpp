@@ -5,6 +5,7 @@
 #include "parameters.hpp"
 #include "outputs/logger.hpp"
 #include "primitive_detection.hpp"
+#include "utils/random.hpp"
 #include "utils/matches_containers.hpp"
 
 #include "pose_optimization/pose_optimization.hpp"
@@ -25,6 +26,8 @@ namespace rgbd_slam {
         _meanPoseOptimizationFromFeatures(0.0),
         _meanLocalMapUpdateDuration(0.0)
         {
+            cv::theRNG().state = static_cast<uint>(utils::Random::get_random_double() * 10000000);
+
             // Load parameters (once)
             if (not Parameters::is_valid())
             {

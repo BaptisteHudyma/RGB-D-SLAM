@@ -5,12 +5,14 @@
 #include "../utils/camera_transformation.hpp"
 #include "../utils/covariances.hpp"
 #include "../utils/coordinates.hpp"
+#include "../utils/random.hpp"
 #include "../outputs/logger.hpp"
 #include "map_primitive.hpp"
 #include "matches_containers.hpp"
 #include "primitive_detection.hpp"
 #include "shape_primitives.hpp"
 #include "types.hpp"
+#include <random>
 
 namespace rgbd_slam {
     namespace map_management {
@@ -29,9 +31,11 @@ namespace rgbd_slam {
          */
         void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds, const uint dropChance = 1000)
         {
+            const bool shouldNotDropPoint = static_cast<uint>(utils::Random::get_random_double() * dropChance) != 0;
+
             const utils::WorldCoordinate& coordinates = mapPoint._coordinates;
             assert(not std::isnan(coordinates.x()) and not std::isnan(coordinates.y()) and not std::isnan(coordinates.z()));
-            if (mapPoint._matchedScreenPoint.is_matched() and (rand()%dropChance) != 0)
+            if (mapPoint._matchedScreenPoint.is_matched() and shouldNotDropPoint)
             {
                 // use previously known screen coordinates
                 keypointsWithIds._keypoints.push_back(
