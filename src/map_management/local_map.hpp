@@ -60,8 +60,9 @@ namespace rgbd_slam {
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
                  * \param[in] detectedPlanes A container for all detected planes in the depth image
                  * \param[in] outlierMatchedPoints A container for all the wrongly associated points detected in the pose optimization process. They should be marked as invalid matches
+                 * \param[in] outlierMatchedPlanes A container for all the wrongly associated planes detected in the pose optimization process. They should be marked as invalid matches
                  */
-                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints);
+                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints, const matches_containers::match_plane_container& outlierMatchedPlanes);
 
                 /**
                  * \brief Update the local map when no pose could be estimated. Consider all features as unmatched
@@ -211,6 +212,7 @@ namespace rgbd_slam {
                  * \brief Mark all the outliers detected during optimization as unmatched
                  */
                 void mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints);
+                void mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes);
 
                 /**
                  * \brief Mark a point with the id pointId as unmatched. Will search the staged and local map.
@@ -238,7 +240,6 @@ namespace rgbd_slam {
 
                 //local plane map
                 plane_map_container _localPlaneMap;
-                std::unordered_map<int, uint> _previousPlaneAssociation;
 
                 outputs::XYZ_Map_Writer* _mapWriter; 
 

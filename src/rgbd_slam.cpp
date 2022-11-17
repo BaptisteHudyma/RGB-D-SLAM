@@ -195,6 +195,7 @@ namespace rgbd_slam {
         _meanFindMatchTime += (cv::getTickCount() - findMatchesStartTime) / static_cast<double>(cv::getTickFrequency());
 
         matches_containers::match_point_container outlierMatchedPoints;
+        matches_containers::match_plane_container outlierMatchedPlanes;
 
         // only == 0 if this is the first call to this function
         const bool isFirstCall = (_computeKeypointCount == 0);
@@ -204,7 +205,7 @@ namespace rgbd_slam {
             const double optimizePoseStartTime = cv::getTickCount();
             utils::Pose optimizedPose;
             //if (matchedPoints.size() >= Parameters::get_minimum_point_count_for_optimization())
-            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
+            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints, outlierMatchedPlanes);
             if (isPoseValid)
             {
                 refinedPose = optimizedPose;
@@ -232,7 +233,7 @@ namespace rgbd_slam {
         if (isFirstCall or not _isTrackingLost)
         {
             // Update local map if a valid transformation was found
-            _localMap->update(refinedPose, keypointObject, detectedPlanes, outlierMatchedPoints);
+            _localMap->update(refinedPose, keypointObject, detectedPlanes, outlierMatchedPoints, outlierMatchedPlanes);
         }
         else
         {

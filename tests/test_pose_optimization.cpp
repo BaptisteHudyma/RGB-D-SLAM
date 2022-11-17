@@ -119,7 +119,7 @@ namespace rgbd_slam {
         
             const utils::PlaneCameraCoordinates& cameraPlane =  worldPlane.to_camera_coordinates(worldToCamera);
 
-            matchedPlanes.emplace(matchedPlanes.cend(), worldPlane, cameraPlane);
+            matchedPlanes.emplace(matchedPlanes.cend(), cameraPlane, worldPlane, 0);
         }
         return matchedPlanes;
     }
@@ -138,7 +138,8 @@ namespace rgbd_slam {
         // Compute end pose
         utils::Pose endPose; 
         matches_containers::match_point_container outlierMatchedPoints;
-        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, matchedPlanes, endPose, outlierMatchedPoints);
+        matches_containers::match_plane_container outlierMatchedPlanes;
+        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, matchedPlanes, endPose, outlierMatchedPoints, outlierMatchedPlanes);
 
         if (not isPoseValid)
             FAIL();

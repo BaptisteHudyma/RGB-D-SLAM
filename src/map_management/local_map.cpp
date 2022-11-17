@@ -140,7 +140,7 @@ namespace rgbd_slam {
                 if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
                 {
                     mapPlane._matchedPlane.mark_matched(planeId);
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization);
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, mapPlane._id);
 
                     _unmatchedPlaneIds.erase(planeId);
                     return true;
@@ -212,13 +212,14 @@ namespace rgbd_slam {
             return matchedPlaneContainer;
         }
 
-        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints)
+        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints, const matches_containers::match_plane_container& outlierMatchedPlanes)
         {
             // TODO find a better way to display trajectory than just a new map point
             // _mapWriter->add_point(optimizedPose.get_position());
 
             // Unmatch detected outliers
             mark_outliers_as_unmatched(outlierMatchedPoints);
+            mark_outliers_as_unmatched(outlierMatchedPlanes);
 
             const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
             const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
@@ -720,6 +721,27 @@ namespace rgbd_slam {
                 const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
                 // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
                 assert(isOutlierRemoved == true);
+            }
+        }
+
+        void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes)
+        {
+            // Mark outliers as unmatched
+            for (const matches_containers::PlaneMatch& match : outlierMatchedPlanes)
+            {
+                // Check if id is in local map
+                const size_t planeId = match._mapPlaneId;
+                plane_map_container::iterator planeMapIterator = _localPlaneMap.find(planeId);
+                if (planeMapIterator != _localPlaneMap.end())
+                {
+                    MapPlane& mapPlane = planeMapIterator->second;
+                    assert(mapPlane._id == planeId);
+                    mapPlane._matchedPlane.mark_unmatched();
+                }
+                else
+                {
+                    outputs::log_error("Could not find the target plane with id");
+                }
             }
         }
 

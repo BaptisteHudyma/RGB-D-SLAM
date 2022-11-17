@@ -95,9 +95,10 @@ namespace rgbd_slam {
             return retroprojectionScore;
         }
 
-        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints) 
+        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_point_container& outlierMatchedPoints, matches_containers::match_plane_container& outlierMatchedPlanes) 
         {
             outlierMatchedPoints.clear();
+            outlierMatchedPlanes.clear();
 
             const double matchedPointSize = static_cast<double>(matchedPoints.size());
             const double matchedPlaneSize = static_cast<double>(matchedPlanes.size());
@@ -187,8 +188,9 @@ namespace rgbd_slam {
                     outlierMatchedPoints.swap(potentialPointOutliersContainer);
                     // save planes inliers and outliers
                     inlierMatchedPlanes.swap(potentialPlaneInliersContainer);
+                    outlierMatchedPlanes.swap(potentialPlaneOutliersContainer);
 
-                    const double inlierScore = inlierMatchedPoints.size() * pointFeatureScore + inlierMatchedPlanes.size() * planeFeatureScore;
+                    const double inlierScore = static_cast<double>(inlierMatchedPoints.size()) * pointFeatureScore + static_cast<double>(inlierMatchedPlanes.size()) * planeFeatureScore;
                     if (inlierScore >= enoughInliersScore)
                     {
                         // We can stop here, the optimization is good enough
@@ -198,7 +200,7 @@ namespace rgbd_slam {
             }
 
             // We do not have enough inliers to consider this optimization as valid
-            const double inlierScore = inlierMatchedPoints.size() * pointFeatureScore + inlierMatchedPlanes.size() * planeFeatureScore;
+            const double inlierScore = static_cast<double>(inlierMatchedPoints.size()) * pointFeatureScore + static_cast<double>(inlierMatchedPlanes.size()) * planeFeatureScore;
             if (inlierScore < 1.0)
             {
                 outputs::log_warning("Could not find a transformation with enough inliers using RANSAC");
@@ -226,9 +228,9 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints) 
+        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose, matches_containers::match_point_container& outlierMatchedPoints, matches_containers::match_plane_container& outlierMatchedPlanes) 
         {
-            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints);
+            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints, outlierMatchedPlanes);
             return isPoseValid;
         }
 
