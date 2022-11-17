@@ -89,7 +89,8 @@ namespace rgbd_slam {
         _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
-        _ransacMaximumRetroprojectionErrorForInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
+        _ransacMaximumRetroprojectionErrorForPointInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
+        _ransacMaximumRetroprojectionErrorForPlaneInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
         _ransacMinimumInliersProportionForEarlyStop = 0.90; // proportion of inliers in total set, to stop RANSAC early
         _ransacProbabilityOfSuccess = 0.8;   // probability of having at least one correct transformation
         _ransacInlierProportion = 0.6;       // number of inliers in data / number of points in data 
@@ -185,10 +186,15 @@ namespace rgbd_slam {
             outputs::log_error("keypoint mask diameters must be > 0");
             _isValid = false;
         }
-        
-        if (_ransacMaximumRetroprojectionErrorForInliers <= 0)
+
+        if (_ransacMaximumRetroprojectionErrorForPointInliers <= 0)
         {
-            outputs::log_error("The RANSAC maximum retroprojection distance must be positive");
+            outputs::log_error("The RANSAC maximum retroprojection distance for points must be positive");
+            _isValid = false;
+        }
+        if (_ransacMaximumRetroprojectionErrorForPlaneInliers <= 0)
+        {
+            outputs::log_error("The RANSAC maximum retroprojection distance for planes must be positive");
             _isValid = false;
         }
         if (_ransacMinimumInliersProportionForEarlyStop < 0 or _ransacMinimumInliersProportionForEarlyStop > 1)

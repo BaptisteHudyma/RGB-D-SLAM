@@ -268,7 +268,7 @@ namespace rgbd_slam {
 
                     const features::primitives::Plane& detectedPlane = detectedPlanes.at(matchedPlaneId);
                     // TODO update plane
-                    //mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
+                    mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
                     mapPlane._shapeMask = detectedPlane.get_shape_mask();
                 }
                 else if (mapPlane._matchedPlane.is_lost())

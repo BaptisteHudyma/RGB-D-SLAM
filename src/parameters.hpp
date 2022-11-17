@@ -54,7 +54,8 @@ namespace rgbd_slam {
             static double get_minimum_normals_dot_difference() { return _minimumNormalsDotDifference; };
 
             // Optimisation parameters
-            static double get_ransac_maximum_retroprojection_error_for_inliers() { return _ransacMaximumRetroprojectionErrorForInliers; };
+            static double get_ransac_maximum_retroprojection_error_for_point_inliers() { return _ransacMaximumRetroprojectionErrorForPointInliers; };
+            static double get_ransac_maximum_retroprojection_error_for_plane_inliers() { return _ransacMaximumRetroprojectionErrorForPlaneInliers; };
             static double get_ransac_minimum_inliers_proportion_for_early_stop() { return _ransacMinimumInliersProportionForEarlyStop; };
             static double get_ransac_probability_of_success() { return _ransacProbabilityOfSuccess; };
             static double get_ransac_inlier_proportion() { return _ransacInlierProportion; };
@@ -140,7 +141,8 @@ namespace rgbd_slam {
             inline static uint _minimumPlanesForOptimization;   // Minimum planes to launch optimization
             inline static uint _maximumPointPerFrame;           // maximum points per frame, over which we do not want to detect more points (optimization)
 
-            inline static double _ransacMaximumRetroprojectionErrorForInliers;  //Maximum retroprojection error in pixels to consider a point match as inlier
+            inline static double _ransacMaximumRetroprojectionErrorForPointInliers;  //Maximum retroprojection error in pixels to consider a point match as inlier
+            inline static double _ransacMaximumRetroprojectionErrorForPlaneInliers;  //Maximum retroprojection error in pixels to consider a plane match as inlier
             inline static double _ransacMinimumInliersProportionForEarlyStop; // Proportion of inliers to consider that a transformation is good enough to stop optimization
             inline static double _ransacProbabilityOfSuccess; // Probability that the RANSAC process finds a good transformation
             inline static double _ransacInlierProportion; // Proportion of inliers in original set
