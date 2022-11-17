@@ -524,16 +524,23 @@ namespace rgbd_slam {
             const double maskAlpha = 0.3;
             // 20 pixels
             const uint bandSize = 20;
-
             const uint placeInBand = bandSize * 0.75;
+
+            std::stringstream textPoints;
+            textPoints << "Points:" << _localPointMap.size();
+            const int plointLabelPosition = static_cast<int>(imageWidth * 0.15);
+            cv::putText(debugImage, textPoints.str(), cv::Point(plointLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+
             std::stringstream text1;
+            const double planeOffset = 0.35;
             text1 << "Planes:";
-            const int planeLabelPosition = static_cast<int>(imageWidth * 0.25);
+            const int planeLabelPosition = static_cast<int>(imageWidth * planeOffset);
             cv::putText(debugImage, text1.str(), cv::Point(planeLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
             std::stringstream text2;
+            const double cylinderOffset = 0.70;
             text2 << "Cylinders:";
-            const int cylinderLabelPosition = static_cast<int>(imageWidth * 0.60);
+            const int cylinderLabelPosition = static_cast<int>(imageWidth * 0.70);
             cv::putText(debugImage, text2.str(), cv::Point(cylinderLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
             // Tracking variables
@@ -570,12 +577,12 @@ namespace rgbd_slam {
                 uint finalPlaceInBand = placeInBand;
 
                 // plane
-                labelPosition *= 0.25;
+                labelPosition *= planeOffset;
                 finalPlaceInBand *= planeCount;
                 ++planeCount;
 
                     /*case features::primitives::PrimitiveType::Cylinder:
-                        labelPosition *= 0.60;
+                        labelPosition *= cylinderOffset;
                         finalPlaceInBand *= cylinderCount;
                         ++cylinderCount;
                         break;*/
