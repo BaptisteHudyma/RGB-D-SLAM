@@ -160,6 +160,7 @@ namespace rgbd_slam {
 
         _localMap->get_debug_image(camPose, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks, debugImage);
 
+        // display a red overlay if tracking is lost
         if (_isTrackingLost)
         {
             const cv::Size& debugImageSize = debugImage.size();
@@ -222,13 +223,18 @@ namespace rgbd_slam {
         }
         _computeKeypointCount += 1;
 
+        const double updateLocalMapStartTime = cv::getTickCount();
         // Update local map if a valid transformation was found
         if (shouldUpdateMap)
         {
-            const double updateLocalMapStartTime = cv::getTickCount();
             _localMap->update(refinedPose, keypointObject, detectedPlanes, outlierMatchedPoints);
-            _meanLocalMapUpdateDuration += (cv::getTickCount() - updateLocalMapStartTime) / static_cast<double>(cv::getTickFrequency());
         }
+        else
+        {
+            // no valid transformation
+            _localMap->update_no_pose();
+        }
+        _meanLocalMapUpdateDuration += (cv::getTickCount() - updateLocalMapStartTime) / static_cast<double>(cv::getTickFrequency());
 
         return refinedPose;
     }

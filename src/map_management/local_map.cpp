@@ -239,6 +239,18 @@ namespace rgbd_slam {
             update_local_to_global();
         }
 
+        void Local_Map::update_no_pose()
+        {
+            // add local map points
+            update_local_keypoint_map_with_tracking_lost();
+
+            // add staged points to local map
+            update_staged_keypoints_map_with_tracking_lost();
+
+            // add planes to local map
+            update_local_plane_map_with_tracking_lost();
+        }
+
         void Local_Map::update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes)
         {
             std::set<size_t> planesToRemove;
@@ -283,6 +295,28 @@ namespace rgbd_slam {
                 newMapPlane._shapeMask = detectedPlane.get_shape_mask();
 
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
+            }
+
+            _unmatchedPlaneIds.clear();
+        }
+
+        void Local_Map::update_local_plane_map_with_tracking_lost()
+        {
+            std::set<size_t> planesToRemove;
+            // Update planes
+            for (auto& [planeId, mapPlane] : _localPlaneMap)
+            {
+                if (mapPlane._matchedPlane.is_lost())
+                {
+                    // add to planes to remove
+                    planesToRemove.emplace(planeId);
+                }
+            }
+
+            // Remove umatched
+            for(const size_t planeId : planesToRemove)
+            {
+                _localPlaneMap.erase(planeId);
             }
 
             _unmatchedPlaneIds.clear();
@@ -379,6 +413,31 @@ namespace rgbd_slam {
             }
         }
 
+        void Local_Map::update_local_keypoint_map_with_tracking_lost()
+        {
+            point_map_container::iterator pointMapIterator = _localPointMap.begin();
+            while(pointMapIterator != _localPointMap.end())
+            {
+                // Update the matched/unmatched status
+                Map_Point& mapPoint = pointMapIterator->second;
+                assert(pointMapIterator->first == mapPoint._id);
+
+                mapPoint.update_unmatched();
+
+                if (mapPoint.is_lost()) {
+                    // write to file
+                    _mapWriter->add_point(mapPoint._coordinates);
+
+                    // Remove useless point
+                    pointMapIterator = _localPointMap.erase(pointMapIterator);
+                }
+                else
+                {
+                    ++pointMapIterator;
+                }
+            }
+        }
+
         void Local_Map::update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
@@ -404,6 +463,31 @@ namespace rgbd_slam {
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
                 else if (stagedPoint.should_remove_from_staged())
+                {
+                    // Remove from staged points
+                    stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
+                }
+                else
+                {
+                    // Increment
+                    ++stagedPointIterator;
+                }
+            }
+        }
+
+        void Local_Map::update_staged_keypoints_map_with_tracking_lost()
+        {
+            // Add correct staged points to local map
+            staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
+            while(stagedPointIterator != _stagedPoints.end())
+            {
+                Staged_Point& stagedPoint = stagedPointIterator->second;
+                assert(stagedPointIterator->first == stagedPoint._id);
+
+                // Update the matched/unmatched status
+                stagedPoint.update_unmatched();
+
+                if (stagedPoint.should_remove_from_staged())
                 {
                     // Remove from staged points
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
