@@ -15,8 +15,8 @@ namespace rgbd_slam {
             static double get_random_double()
             {
                 //static std::random_device randomDevice;
-                static std::mt19937 randomEngine(0);
-                static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+                thread_local std::mt19937 randomEngine(0);
+                thread_local std::uniform_real_distribution<double> distribution(0.0, 1.0);
                 
                 return distribution(randomEngine);
             }

@@ -2,6 +2,7 @@
 
 #include "../../parameters.hpp"
 #include "../../utils/angle_utils.hpp"
+#include "../../utils/random.hpp"
 
 #include <opencv2/core/eigen.hpp>
 #include <tbb/parallel_for.h>
@@ -63,8 +64,14 @@ namespace primitives {
 
             cv::Mat outputDepth = cv::Mat::zeros(_height, _width, CV_32F);
             _cloudArray.setZero();
+            //#define USE_PARALLEL_LOOP
+            #ifdef USE_PARALLEL_LOOP
             // parallel loop to speed up the process
+            // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDIND
             tbb::parallel_for(uint(0), _height, [&](uint r){
+            #else
+            for(uint r = 0; r < _height; ++r) {
+            #endif
                     float* sx = _Xt.ptr<float>(r);
                     float* sy = _Yt.ptr<float>(r);
                     float* sz = depthImage.ptr<float>(r);
@@ -85,7 +92,9 @@ namespace primitives {
                         }
                     }
                 }
+            #ifdef USE_PARALLEL_LOOP
             );
+            #endif
 
             //project cloud point by cells
             uint mxn = _width * _height;
