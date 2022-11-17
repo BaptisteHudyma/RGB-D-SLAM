@@ -140,7 +140,7 @@ namespace rgbd_slam {
                 if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
                 {
                     mapPlane._matchedPlane.mark_matched(planeId);
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization);
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, mapPlane._id);
 
                     _unmatchedPlaneIds.erase(planeId);
                     return true;
@@ -212,13 +212,14 @@ namespace rgbd_slam {
             return matchedPlaneContainer;
         }
 
-        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints)
+        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints, const matches_containers::match_plane_container& outlierMatchedPlanes)
         {
             // TODO find a better way to display trajectory than just a new map point
             // _mapWriter->add_point(optimizedPose.get_position());
 
             // Unmatch detected outliers
             mark_outliers_as_unmatched(outlierMatchedPoints);
+            mark_outliers_as_unmatched(outlierMatchedPlanes);
 
             const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
             const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
@@ -239,6 +240,18 @@ namespace rgbd_slam {
             update_local_to_global();
         }
 
+        void Local_Map::update_no_pose()
+        {
+            // add local map points
+            update_local_keypoint_map_with_tracking_lost();
+
+            // add staged points to local map
+            update_staged_keypoints_map_with_tracking_lost();
+
+            // add planes to local map
+            update_local_plane_map_with_tracking_lost();
+        }
+
         void Local_Map::update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes)
         {
             std::set<size_t> planesToRemove;
@@ -255,7 +268,7 @@ namespace rgbd_slam {
 
                     const features::primitives::Plane& detectedPlane = detectedPlanes.at(matchedPlaneId);
                     // TODO update plane
-                    //mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
+                    mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
                     mapPlane._shapeMask = detectedPlane.get_shape_mask();
                 }
                 else if (mapPlane._matchedPlane.is_lost())
@@ -283,6 +296,28 @@ namespace rgbd_slam {
                 newMapPlane._shapeMask = detectedPlane.get_shape_mask();
 
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
+            }
+
+            _unmatchedPlaneIds.clear();
+        }
+
+        void Local_Map::update_local_plane_map_with_tracking_lost()
+        {
+            std::set<size_t> planesToRemove;
+            // Update planes
+            for (auto& [planeId, mapPlane] : _localPlaneMap)
+            {
+                if (mapPlane._matchedPlane.is_lost())
+                {
+                    // add to planes to remove
+                    planesToRemove.emplace(planeId);
+                }
+            }
+
+            // Remove umatched
+            for(const size_t planeId : planesToRemove)
+            {
+                _localPlaneMap.erase(planeId);
             }
 
             _unmatchedPlaneIds.clear();
@@ -379,6 +414,31 @@ namespace rgbd_slam {
             }
         }
 
+        void Local_Map::update_local_keypoint_map_with_tracking_lost()
+        {
+            point_map_container::iterator pointMapIterator = _localPointMap.begin();
+            while(pointMapIterator != _localPointMap.end())
+            {
+                // Update the matched/unmatched status
+                Map_Point& mapPoint = pointMapIterator->second;
+                assert(pointMapIterator->first == mapPoint._id);
+
+                mapPoint.update_unmatched();
+
+                if (mapPoint.is_lost()) {
+                    // write to file
+                    _mapWriter->add_point(mapPoint._coordinates);
+
+                    // Remove useless point
+                    pointMapIterator = _localPointMap.erase(pointMapIterator);
+                }
+                else
+                {
+                    ++pointMapIterator;
+                }
+            }
+        }
+
         void Local_Map::update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
@@ -404,6 +464,31 @@ namespace rgbd_slam {
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
                 else if (stagedPoint.should_remove_from_staged())
+                {
+                    // Remove from staged points
+                    stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
+                }
+                else
+                {
+                    // Increment
+                    ++stagedPointIterator;
+                }
+            }
+        }
+
+        void Local_Map::update_staged_keypoints_map_with_tracking_lost()
+        {
+            // Add correct staged points to local map
+            staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
+            while(stagedPointIterator != _stagedPoints.end())
+            {
+                Staged_Point& stagedPoint = stagedPointIterator->second;
+                assert(stagedPointIterator->first == stagedPoint._id);
+
+                // Update the matched/unmatched status
+                stagedPoint.update_unmatched();
+
+                if (stagedPoint.should_remove_from_staged())
                 {
                     // Remove from staged points
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
@@ -516,30 +601,38 @@ namespace rgbd_slam {
         {
             assert(not debugImage.empty());
 
-            if (_localPlaneMap.size() == 0)
-                return;
             const cv::Size& debugImageSize = debugImage.size();
             const uint imageWidth = debugImageSize.width;
 
             const double maskAlpha = 0.3;
             // 20 pixels
             const uint bandSize = 20;
-
             const uint placeInBand = bandSize * 0.75;
+
+            std::stringstream textPoints;
+            textPoints << "Points:" << _localPointMap.size();
+            const int plointLabelPosition = static_cast<int>(imageWidth * 0.15);
+            cv::putText(debugImage, textPoints.str(), cv::Point(plointLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
+
             std::stringstream text1;
+            const double planeOffset = 0.35;
             text1 << "Planes:";
-            const int planeLabelPosition = static_cast<int>(imageWidth * 0.25);
+            const int planeLabelPosition = static_cast<int>(imageWidth * planeOffset);
             cv::putText(debugImage, text1.str(), cv::Point(planeLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
             std::stringstream text2;
+            const double cylinderOffset = 0.70;
             text2 << "Cylinders:";
-            const int cylinderLabelPosition = static_cast<int>(imageWidth * 0.60);
+            const int cylinderLabelPosition = static_cast<int>(imageWidth * 0.70);
             cv::putText(debugImage, text2.str(), cv::Point(cylinderLabelPosition, placeInBand), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
 
             // Tracking variables
             uint cylinderCount = 0;
             uint planeCount = 0;
             std::set<size_t> alreadyDisplayedIds;
+
+            if (_localPlaneMap.size() == 0)
+                return;
 
             cv::Mat allPlaneMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
             for(const auto& [planeId, mapPlane]: _localPlaneMap)
@@ -570,12 +663,12 @@ namespace rgbd_slam {
                 uint finalPlaceInBand = placeInBand;
 
                 // plane
-                labelPosition *= 0.25;
+                labelPosition *= planeOffset;
                 finalPlaceInBand *= planeCount;
                 ++planeCount;
 
                     /*case features::primitives::PrimitiveType::Cylinder:
-                        labelPosition *= 0.60;
+                        labelPosition *= cylinderOffset;
                         finalPlaceInBand *= cylinderCount;
                         ++cylinderCount;
                         break;*/
@@ -628,6 +721,27 @@ namespace rgbd_slam {
                 const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
                 // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
                 assert(isOutlierRemoved == true);
+            }
+        }
+
+        void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes)
+        {
+            // Mark outliers as unmatched
+            for (const matches_containers::PlaneMatch& match : outlierMatchedPlanes)
+            {
+                // Check if id is in local map
+                const size_t planeId = match._mapPlaneId;
+                plane_map_container::iterator planeMapIterator = _localPlaneMap.find(planeId);
+                if (planeMapIterator != _localPlaneMap.end())
+                {
+                    MapPlane& mapPlane = planeMapIterator->second;
+                    assert(mapPlane._id == planeId);
+                    mapPlane._matchedPlane.mark_unmatched();
+                }
+                else
+                {
+                    outputs::log_error("Could not find the target plane with id");
+                }
             }
         }
 

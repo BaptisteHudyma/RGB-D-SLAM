@@ -60,8 +60,14 @@ namespace rgbd_slam {
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
                  * \param[in] detectedPlanes A container for all detected planes in the depth image
                  * \param[in] outlierMatchedPoints A container for all the wrongly associated points detected in the pose optimization process. They should be marked as invalid matches
+                 * \param[in] outlierMatchedPlanes A container for all the wrongly associated planes detected in the pose optimization process. They should be marked as invalid matches
                  */
-                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints);
+                void update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints, const matches_containers::match_plane_container& outlierMatchedPlanes);
+
+                /**
+                 * \brief Update the local map when no pose could be estimated. Consider all features as unmatched
+                 */
+                void update_no_pose();
 
                 /**
                  * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global ids 
@@ -141,12 +147,24 @@ namespace rgbd_slam {
                 void update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
+                 * \brief Update local keypoint map features when no optimized pose 
+                 */
+                void update_local_keypoint_map_with_tracking_lost();
+
+                /**
                  * \brief Update the local plane map features
                  *
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] detectedPlanes A container that stores the detected planes in the depth image
                  */
                 void update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes);
+                
+                /**
+                 * \brief Update the local plane map features when no pose optimization have been made
+                 *
+                 * \param[in] detectedPlanes A container that stores the detected planes in the depth image
+                 */
+                void update_local_plane_map_with_tracking_lost();
 
                 /**
                  * \brief Add previously uncertain keypoint features to the local map
@@ -155,6 +173,11 @@ namespace rgbd_slam {
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
                 void update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
+
+                /**
+                 * \brief Remove unmtached staged keypoints that are too old
+                 */
+                void update_staged_keypoints_map_with_tracking_lost();
 
                 /**
                  * \brief Add unmatched detected points to the staged map
@@ -189,6 +212,7 @@ namespace rgbd_slam {
                  * \brief Mark all the outliers detected during optimization as unmatched
                  */
                 void mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints);
+                void mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes);
 
                 /**
                  * \brief Mark a point with the id pointId as unmatched. Will search the staged and local map.
@@ -216,7 +240,6 @@ namespace rgbd_slam {
 
                 //local plane map
                 plane_map_container _localPlaneMap;
-                std::unordered_map<int, uint> _previousPlaneAssociation;
 
                 outputs::XYZ_Map_Writer* _mapWriter; 
 

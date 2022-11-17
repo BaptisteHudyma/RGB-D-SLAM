@@ -54,13 +54,13 @@ namespace rgbd_slam {
             _points(points),
             _planes(planes)
         {
-            assert(not _points.empty());
+            assert(not _points.empty() or not _planes.empty());
         }
 
         // Implementation of the objective function
         int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vectorxd& outputScores) const 
         {
-            assert(not _points.empty());
+            assert(not _points.empty() or not _planes.empty());
             assert(optimizedParameters.size() == 6);
             assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 4));
 
