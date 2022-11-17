@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_UTILS_RANDOM_HPP
 #define RGBDSLAM_UTILS_RANDOM_HPP
 
+#include <ctime>
 #include <random>
 
 namespace rgbd_slam { 
@@ -14,8 +15,7 @@ namespace rgbd_slam {
          */
             static double get_random_double()
             {
-                //static std::random_device randomDevice;
-                thread_local std::mt19937 randomEngine(0);
+                thread_local std::mt19937 randomEngine(_seed);
                 thread_local std::uniform_real_distribution<double> distribution(0.0, 1.0);
                 
                 return distribution(randomEngine);
@@ -26,6 +26,7 @@ namespace rgbd_slam {
                 return static_cast<uint>(maxValue * get_random_double());
             }
 
+            inline static const uint _seed = std::time(0);
         };
 
 

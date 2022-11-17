@@ -26,9 +26,10 @@ namespace rgbd_slam {
         _meanPoseOptimizationFromFeatures(0.0),
         _meanLocalMapUpdateDuration(0.0)
         {
+            const uint seed = utils::Random::_seed;
+            outputs::log("Constructed using seed " + std::to_string(seed));
             //cv::setNumThreads(1);
             //Eigen::setNbThreads(1);
-            const uint seed = utils::Random::get_random_uint(10000000);
             std::srand(seed);
             cv::theRNG().state = seed;
 
