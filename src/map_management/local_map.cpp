@@ -600,8 +600,6 @@ namespace rgbd_slam {
         {
             assert(not debugImage.empty());
 
-            if (_localPlaneMap.size() == 0)
-                return;
             const cv::Size& debugImageSize = debugImage.size();
             const uint imageWidth = debugImageSize.width;
 
@@ -631,6 +629,9 @@ namespace rgbd_slam {
             uint cylinderCount = 0;
             uint planeCount = 0;
             std::set<size_t> alreadyDisplayedIds;
+
+            if (_localPlaneMap.size() == 0)
+                return;
 
             cv::Mat allPlaneMasks = cv::Mat::zeros(debugImageSize, debugImage.type());
             for(const auto& [planeId, mapPlane]: _localPlaneMap)

@@ -177,8 +177,6 @@ namespace rgbd_slam {
 
         bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose) 
         {
-            assert(matchedPoints.size() >= 3);
-
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();
 
