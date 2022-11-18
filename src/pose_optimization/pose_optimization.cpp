@@ -131,14 +131,8 @@ namespace rgbd_slam {
             const uint acceptablePlaneInliersForEarlyStop = static_cast<uint>(matchedPlaneSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this inlier count is reached
 
             // check that we have enough inlier features for a pose optimization with RANSAC
-            // This score is to stop the RANSAC process early
-            const double enoughInliersScore = pointFeatureScore * acceptablePointInliersForEarlyStop + planeFeatureScore * acceptablePlaneInliersForEarlyStop;
-            if (enoughInliersScore < 1.0)
-            {
-                // if there is not enough potential inliers to optimize a pose
-                outputs::log_warning("Not enough minimum inlier features to safely optimize a pose with RANSAC (" + std::to_string(acceptablePointInliersForEarlyStop) + " points, " +  std::to_string(acceptablePlaneInliersForEarlyStop) + " planes)");
-                return false;
-            }
+            // This score is to stop the RANSAC process early (limit to 1 if we are low on features)
+            const double enoughInliersScore = std::max(1.0, pointFeatureScore * acceptablePointInliersForEarlyStop + planeFeatureScore * acceptablePlaneInliersForEarlyStop);
 
             // get the min and max values of planes and points to select
             const uint maxNumberOfPoints = std::min(minimumPointsForOptimization, (uint)matchedPoints.size());
