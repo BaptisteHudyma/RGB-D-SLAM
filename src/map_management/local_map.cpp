@@ -721,7 +721,7 @@ namespace rgbd_slam {
             // Mark outliers as unmatched
             for (const matches_containers::PointMatch& match : outlierMatchedPoints)
             {
-                const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
+                const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._idInMap);
                 // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
                 assert(isOutlierRemoved == true);
             }
@@ -733,7 +733,7 @@ namespace rgbd_slam {
             for (const matches_containers::PlaneMatch& match : outlierMatchedPlanes)
             {
                 // Check if id is in local map
-                const size_t planeId = match._mapPlaneId;
+                const size_t planeId = match._idInMap;
                 plane_map_container::iterator planeMapIterator = _localPlaneMap.find(planeId);
                 if (planeMapIterator != _localPlaneMap.end())
                 {

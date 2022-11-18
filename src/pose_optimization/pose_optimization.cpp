@@ -40,7 +40,7 @@ namespace rgbd_slam {
             for (const matches_containers::PointMatch& match : pointsToEvaluate)
             {
                 // Retroproject world point to screen, and compute screen distance
-                const double distance = utils::get_3D_to_2D_distance(match._worldPoint, match._screenPoint, worldToCamera);
+                const double distance = utils::get_3D_to_2D_distance(match._worldFeature, match._screenFeature, worldToCamera);
                 assert(distance >= 0 and not std::isnan(distance));
                 // inlier
                 if (distance < pointMaxRetroprojectionError)
@@ -76,7 +76,7 @@ namespace rgbd_slam {
             for (const matches_containers::PlaneMatch& match : planesToEvaluate)
             {
                 // Retroproject world point to screen, and compute screen distance
-                const double distance = utils::get_3D_to_2D_plane_distance(match._worldPlane, match._cameraPlane, worldToCamera).norm() / 10.0;
+                const double distance = utils::get_3D_to_2D_plane_distance(match._worldFeature, match._screenFeature, worldToCamera).norm() / 10.0;
                 assert(distance >= 0 and not std::isnan(distance));
                 // inlier
                 if (distance < pointMaxRetroprojectionError)
@@ -321,10 +321,10 @@ namespace rgbd_slam {
 
             for (const matches_containers::PointMatch& match : matchedPoints)
             {
-                const vector3& cameraPoint = match._screenPoint.to_camera_coordinates().base();
+                const vector3& cameraPoint = match._screenFeature.to_camera_coordinates().base();
 
                 cameraPoints.push_back(cameraPoint.normalized());
-                worldPoints.push_back(match._worldPoint / multiplier);
+                worldPoints.push_back(match._worldFeature / multiplier);
             }
 
             const std::vector<lambdatwist::CameraPose>& finalCameraPoses = lambdatwist::p3p(cameraPoints, worldPoints);

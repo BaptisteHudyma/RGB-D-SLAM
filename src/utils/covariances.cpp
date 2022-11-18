@@ -79,14 +79,14 @@ namespace rgbd_slam {
             for (const matches_containers::PointMatch& match : matchedPoints)
             {
                 // We only evaluate 3D points because 2D points cannot evaluate position
-                if (match._screenPoint.z() <= 0)
+                if (match._screenFeature.z() <= 0)
                     continue;
 
                 // Convert to world coordinates
-                const WorldCoordinate& matchedPoint3d = (match._screenPoint).to_world_coordinates(transformationMatrix);
+                const WorldCoordinate& matchedPoint3d = (match._screenFeature).to_world_coordinates(transformationMatrix);
 
                 // absolute of (world map Point - new world point)
-                const vector3& matchError = (match._worldPoint - matchedPoint3d).cwiseAbs();
+                const vector3& matchError = (match._worldFeature - matchedPoint3d).cwiseAbs();
                 sumOfErrors += matchError;
                 sumOfSquaredErrors += matchError.cwiseAbs2();
                 ++numberOf3Dpoints;
