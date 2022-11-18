@@ -12,37 +12,6 @@ namespace rgbd_slam {
         const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
         const int UNMATCHED_POINT_INDEX = -1;      // Id of a unmatched point
 
-        struct MatchedScreenPoint
-        {
-            MatchedScreenPoint():
-                _matchIndex(UNMATCHED_POINT_INDEX)
-            {
-                _screenCoordinates.setZero();
-            };
-
-            explicit MatchedScreenPoint(const utils::ScreenCoordinate& screenPoint, const int matchIndex = UNMATCHED_POINT_INDEX):
-                _screenCoordinates(screenPoint),
-                _matchIndex(matchIndex)
-            {};
-
-            bool is_matched() const
-            { 
-                return _matchIndex != UNMATCHED_POINT_INDEX;
-            }
-
-            void mark_unmatched()
-            {
-                _matchIndex = UNMATCHED_POINT_INDEX;
-                _screenCoordinates.setZero();
-            }
-
-            // matched point coordinates in screen space
-            utils::ScreenCoordinate _screenCoordinates;
-
-            // Match index in the detected point object (can be UNMATCHED_POINT_INDEX);
-            int _matchIndex;
-        };
-
         /**
          * \brief Basic keypoint class 
          */
@@ -92,8 +61,18 @@ namespace rgbd_slam {
                 return _pointCovariance;
             };
 
-            // an object referencing the last match for this point
-            MatchedScreenPoint _matchedScreenPoint;
+            bool is_matched() const
+            { 
+                return _matchIndex != UNMATCHED_POINT_INDEX;
+            }
+
+            void mark_unmatched()
+            {
+                _matchIndex = UNMATCHED_POINT_INDEX;
+            }
+
+            // Match index in the detected point object (can be UNMATCHED_POINT_INDEX);
+            int _matchIndex;
 
             protected:
 

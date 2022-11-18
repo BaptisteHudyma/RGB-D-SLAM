@@ -191,7 +191,7 @@ namespace rgbd_slam {
         const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) == 0;
 
         // Detect and match key points with local map points
-        const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features();
+        const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features(_currentPose);
         const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
 
         // Run primitive detection 

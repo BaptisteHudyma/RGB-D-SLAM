@@ -26,20 +26,16 @@ namespace rgbd_slam {
          */
 
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor)
-            : Point(coordinates, descriptor)
+            : Point(coordinates, descriptor), _matchIndex(UNMATCHED_POINT_INDEX)
         {
-            _matchedScreenPoint.mark_unmatched();
-            
             if (IMap_Point_With_Tracking::_kalmanFilter == nullptr)
                 build_kalman_filter();
 
             _pointCovariance = covariance;
         }
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
-            : Point(coordinates, descriptor, id)
+            : Point(coordinates, descriptor, id), _matchIndex(UNMATCHED_POINT_INDEX)
         {
-            _matchedScreenPoint.mark_unmatched();
-            
             if (IMap_Point_With_Tracking::_kalmanFilter == nullptr)
                 build_kalman_filter();
             
