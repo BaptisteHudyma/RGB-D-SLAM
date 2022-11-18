@@ -137,9 +137,8 @@ namespace rgbd_slam {
     {
         // Compute end pose
         utils::Pose endPose; 
-        matches_containers::match_point_container outlierMatchedPoints;
-        matches_containers::match_plane_container outlierMatchedPlanes;
-        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, matchedPlanes, endPose, outlierMatchedPoints, outlierMatchedPlanes);
+        matches_containers::match_sets inliersOutliers;
+        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, matchedPlanes, endPose, inliersOutliers);
 
         if (not isPoseValid)
             FAIL();
