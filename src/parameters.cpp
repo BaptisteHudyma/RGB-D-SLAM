@@ -80,8 +80,8 @@ namespace rgbd_slam {
         _coreNumber = 8;
 
         // Point detection/Matching
-        _matchSearchRadius = 30;
-        _matchSearchCellSize = 50;
+        _matchSearchRadius = 30;        // max distance to a point after which we do not consider a math (pixels)
+        _matchSearchCellSize = 50;      // size of the squares dividing the image to search for point matches (pixels)
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
         _detectorMinHessian = 40;       // The higher the least detected points
         _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls

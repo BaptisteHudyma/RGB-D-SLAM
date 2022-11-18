@@ -53,9 +53,9 @@ namespace rgbd_slam {
                      * \param[in] windowSize The chosen size of the optical flow window 
                      * \param[in] errorThreshold an error Threshold for optical flow, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
+                     * \param[out] keypointStruct The keypoints tracked by optical flow
                      */
-                    static KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold);
-
+                    static void get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold, KeypointsWithIdStruct& keypointStruct);
 
                     /**
                      * \brief Compute new key point, with an optional mask to exclude detection zones

@@ -160,12 +160,11 @@ namespace rgbd_slam {
                         const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex]; 
                         for(const uint keypointIndex : keypointIndexContainer)
                         {
+                            // ignore this point if it is already matched (prevent multiple matches of one point)
                             if (not isKeyPointMatchedContainer[keypointIndex])
                             {
                                 const utils::ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex);
-                                const double squarredDistance = 
-                                    pow(keypoint.x() - pointToSearch.x(), 2.0) + 
-                                    pow(keypoint.y() - pointToSearch.y(), 2.0);
+                                const double squarredDistance = keypoint.squaredNorm();
 
                                 if (squarredDistance <= squaredSearchDiameter)
                                     keyPointMask.at<uint8_t>(0, keypointIndex) = 1;

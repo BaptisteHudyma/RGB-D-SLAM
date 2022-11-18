@@ -105,7 +105,7 @@ namespace rgbd_slam {
                 if (_lastFramePyramide.size() > 0)
                 {
                     if (lastKeypointsWithIds._keypoints.size() > 0) {
-                        newKeypointsObject = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance);
+                        get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance, newKeypointsObject);
 
                         // TODO: add descriptors to handle short term rematching of lost optical flow features
                     }
@@ -167,18 +167,16 @@ namespace rgbd_slam {
             }
 
 
-            KeypointsWithIdStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold)
+            void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold, KeypointsWithIdStruct& keypointStruct)
             {
                 assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
-
-                KeypointsWithIdStruct keypointStruct;
 
                 // START of optical flow
                 const std::vector<cv::Point2f>& lastKeypoints = lastKeypointsWithIds._keypoints;
                 if (imagePreviousPyramide.empty() or imageCurrentPyramide.empty() or errorThreshold < 0 or lastKeypoints.empty())
                 {
                     outputs::log_error("OpticalFlow: invalid parameters");
-                    return keypointStruct;
+                    return;
                 }
 
                 // Calculate optical flow
@@ -226,7 +224,7 @@ namespace rgbd_slam {
                 if (newKeypoints.empty())
                 {
                     outputs::log("No new points detected for backtracking");
-                    return keypointStruct;
+                    return;
                 }
 
                 // Contains the keypoints from this frame, without outliers
@@ -251,9 +249,10 @@ namespace rgbd_slam {
                     }
 
                     keypointStruct._keypoints.push_back(forwardPoints[keypointIndex]);
+                    // we tracked the point: keep the map id of the keypoint in the previous frame (low cost feature association)
                     keypointStruct._ids.push_back(lastKeypointsWithIds._ids[keypointIndex]);
                 }
-                return keypointStruct;
+                return;
             }
 
 
