@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
 set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal")# -Wconversion -Wsign-conversion")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
+# if this is set, the progam will be deterministic, and loose some perfs
+add_compile_definitions(MAKE_DETERMINISTIC)
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 

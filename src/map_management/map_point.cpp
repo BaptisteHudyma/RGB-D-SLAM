@@ -1,5 +1,6 @@
 #include "map_point.hpp"
 #include "../parameters.hpp"
+#include "../utils/random.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -160,9 +161,9 @@ namespace rgbd_slam {
         void Map_Point::set_random_color()
         {
             cv::Vec3b color;
-            color[0] = rand() % 255;
-            color[1] = rand() % 255;
-            color[2] = rand() % 255;
+            color[0] = utils::Random::get_random_uint(255);
+            color[1] = utils::Random::get_random_uint(255);
+            color[2] = utils::Random::get_random_uint(255);
             _color = color;
         }
 

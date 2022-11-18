@@ -10,12 +10,12 @@
 #include "../utils/distance_utils.hpp"
 #include "../utils/covariances.hpp"
 #include "../outputs/logger.hpp"
+#include "../utils/random.hpp"
 
 #include "../../third_party/p3p.hpp"
 
 #include <Eigen/StdVector>
 #include <cmath>
-#include <random>
 #include <string>
 
 namespace rgbd_slam {
@@ -146,10 +146,6 @@ namespace rgbd_slam {
             const uint minNumberOfPlanes = static_cast<uint>((1.0 - maxNumberOfPoints * pointFeatureScore) / planeFeatureScore);
             const uint minNumberOfPoints = static_cast<uint>((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore);
 
-            std::random_device randomDevice;
-            std::mt19937 randomEngine(randomDevice());
-            std::uniform_real_distribution<float> planeInRansacDistribution(0, 1.0);
-
             // Compute maximum iteration with the original RANSAC formula
             const uint maximumIterations = static_cast<uint>(log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization)));
             assert(maximumIterations > 0);
@@ -161,7 +157,8 @@ namespace rgbd_slam {
             matches_containers::match_plane_container inlierMatchedPlanes;  // Contains the best pose inliers
             for(uint iteration = 0; iteration < maximumIterations; ++iteration)
             {
-                const uint numberOfPlanesToSample = minNumberOfPlanes + (maxNumberOfPlanes - minNumberOfPlanes) * (planeInRansacDistribution(randomEngine) > 0.5);
+                // get random number of planes, between minNumberOfPlanes and maxNumberOfPlanes
+                const uint numberOfPlanesToSample = minNumberOfPlanes + (maxNumberOfPlanes - minNumberOfPlanes) * (utils::Random::get_random_double() > 0.5);
                 const uint numberOfPointsToSample = std::ceil((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore);
 
                 const double subsetScore = numberOfPointsToSample * pointFeatureScore + numberOfPlanesToSample * planeFeatureScore;
