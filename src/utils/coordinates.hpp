@@ -169,6 +169,26 @@ namespace utils {
          * \return The input vector transformed to camera space
          */
         CameraCoordinate to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const;
+
+        /**
+         * \brief Compute a signed 2D distance between this world point and a screen point, by retroprojecting the world point to screen space
+         * \param[in] screenPoint A point in screen space. Only the x and y components will be used
+         * \param[in] worldToCamera A transformation matrix to convert from world to camera space
+         * \return a 2D signed distance in camera space (pixels)
+         */
+        vector2 get_signed_distance_2D(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const;
+        /**
+         * \brief Compute a distance between this world point and a screen point, by retroprojecting the world point to screen space.
+         * \param[in] screenPoint A point in screen space. Only the x and y components will be used
+         * \param[in] worldToCamera A transformation matrix to convert from world to camera space
+         * \return an unsigned distance in camera space (pixels)
+         */
+        double get_distance(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const;
+        /**
+         * \brief Compute a signed distance with another world point
+         */
+        vector2 get_signed_distance_2D(const WorldCoordinate& worldPoint) const;
+        double get_distance(const WorldCoordinate& worldPoint) const;
     };
 
 

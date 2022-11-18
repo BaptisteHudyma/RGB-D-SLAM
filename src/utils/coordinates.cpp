@@ -15,6 +15,10 @@ namespace utils {
         }
 
 
+        /**
+         *      SCREEN COORDINATES
+         */
+
         CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
         {
             assert(x() >= 0 and y() >= 0);
@@ -46,6 +50,10 @@ namespace utils {
         }
 
 
+        /**
+         *      CAMERA COORDINATES
+         */
+
 
         bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const
         {
@@ -59,8 +67,6 @@ namespace utils {
             }
             return false;
         }
-
-
 
         WorldCoordinate CameraCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
@@ -80,6 +86,12 @@ namespace utils {
             }
             return false;
         }
+
+
+
+        /**
+         *      WORLD COORDINATES
+         */
 
         bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate& screenPoint) const
         {
@@ -102,6 +114,36 @@ namespace utils {
             return false;
         }
 
+        vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const
+        {
+            ScreenCoordinate2D projectedScreenPoint; 
+            const bool isCoordinatesValid = to_screen_coordinates(worldToCamera, projectedScreenPoint);
+            if(isCoordinatesValid)
+            {
+                vector2 distance = screenPoint - projectedScreenPoint;
+                assert (not std::isnan(distance.x()));
+                assert (not std::isnan(distance.y()));
+                return distance;
+            }
+            // high number
+            return vector2(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+        }
+        
+        double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const
+        {
+            const vector2& distance2D = get_signed_distance_2D(screenPoint, worldToCamera);
+            if (distance2D.x() >= std::numeric_limits<double>::max() or distance2D.y() >= std::numeric_limits<double>::max())
+                // high number
+                return std::numeric_limits<double>::max();
+            // compute manhattan distance (norm of power 1)
+            return distance2D.lpNorm<1>();
+        }
+
+
+        /**
+         *      CAMERA COORDINATES
+         */
+
         CameraCoordinate WorldCoordinate::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
         {
             //WorldCoordinate
@@ -111,6 +153,12 @@ namespace utils {
             const vector4& cameraHomogenousCoordinates = worldToCamera * homogenousWorldCoordinates;
             return CameraCoordinate(cameraHomogenousCoordinates);
         }
+
+
+        /**
+         *      PLANE COORDINATES
+         */
+
 
         PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const planeCameraToWorldMatrix& cameraToWorld) const
         {

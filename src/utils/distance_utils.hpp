@@ -12,24 +12,6 @@ namespace rgbd_slam {
         vectorxd get_signed_distance(const vectorxd& pointA, const vectorxd& pointB);
 
         /**
-         * \brief Compute a signed 2D distance between a world point and a screen point, by retroprojecting the world point to screen space.
-         * \param[in] worldPoint A 3D point in world space
-         * \param[in] screenPoint A point in screen space. Only the x and y components will be used
-         * \param[in] worldToCamera A transformation matrix to convert from world to camera space
-         * \return a 2D signed distance in camera space (pixels)
-         */
-        vector2 get_3D_to_2D_distance_2D(const WorldCoordinate& worldPoint, const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera);
-
-        /**
-         * \brief Compute a distance between a world point and a screen point, by retroprojecting the world point to screen space.
-         * \param[in] worldPoint A 3D point in world space
-         * \param[in] screenPoint A point in screen space. Only the x and y components will be used
-         * \param[in] worldToCamera A transformation matrix to convert from world to camera space
-         * \return an unsigned distance in camera space (pixels)
-         */
-        double get_3D_to_2D_distance(const WorldCoordinate& worldPoint, const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera);
-
-        /**
          * \brief Compute a signed distance between a world point and a 3D point in screen space, by projecting the screen point to world space
          * \param[in] worldPoint A 3D point in world space
          * \param[in] screenPoint A 3D point in screen space

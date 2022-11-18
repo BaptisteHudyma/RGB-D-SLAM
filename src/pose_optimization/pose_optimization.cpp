@@ -40,7 +40,7 @@ namespace rgbd_slam {
             for (const matches_containers::PointMatch& match : pointsToEvaluate)
             {
                 // Retroproject world point to screen, and compute screen distance
-                const double distance = utils::get_3D_to_2D_distance(match._worldFeature, match._screenFeature, worldToCamera);
+                const double distance = match._worldFeature.get_distance(match._screenFeature, worldToCamera);
                 assert(distance >= 0 and not std::isnan(distance));
                 // inlier
                 if (distance < pointMaxRetroprojectionError)

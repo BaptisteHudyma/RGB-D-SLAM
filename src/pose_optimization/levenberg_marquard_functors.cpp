@@ -75,7 +75,7 @@ namespace rgbd_slam {
             // Compute retroprojection distances
             for(const matches_containers::PointMatch& match : _points) {
                 // Compute retroprojected distance
-                const vector2& distance = utils::get_3D_to_2D_distance_2D(match._worldFeature, match._screenFeature, transformationMatrix);
+                const vector2& distance = match._worldFeature.get_signed_distance_2D(match._screenFeature, transformationMatrix);
 
                 outputScores(pointIndex++) = distance.x();
                 outputScores(pointIndex++) = distance.y();
@@ -106,7 +106,7 @@ namespace rgbd_slam {
             // Compute retroprojection distances
             for(const matches_containers::PointMatch& match : points) {
                 // Compute retroprojected distance
-                const double distance = utils::get_3D_to_2D_distance(match._worldFeature, match._screenFeature, transformationMatrix);
+                const double distance = match._worldFeature.get_distance(match._screenFeature, transformationMatrix);
                 assert(distance >= 0.0);
 
                 meanOfDistances += distance; 
