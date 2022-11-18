@@ -209,16 +209,6 @@ namespace rgbd_slam {
             const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, featureSets._pointSets._inliers, featureSets._planeSets._inliers, finalPose);
             if (isPoseValid)
             {
-                // Compute pose variance
-                vector3 estimatedPoseVariance;
-                if (not featureSets._pointSets._inliers.empty() and utils::compute_pose_variance(finalPose, featureSets._pointSets._inliers, estimatedPoseVariance))
-                {
-                    finalPose.set_position_variance( estimatedPoseVariance + currentPose.get_position_variance());
-                }
-                else
-                {
-                    outputs::log_warning("Could not compute pose variance, as we only work with 2D points");
-                }
                 return true;
             }
 
@@ -229,6 +219,21 @@ namespace rgbd_slam {
         bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose, matches_containers::match_sets& featureSets) 
         {
             const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, matchedPlanes, optimizedPose, featureSets);
+            if (isPoseValid)
+            {
+                // Compute pose variance
+                vector3 estimatedPoseVariance;
+                // TODO: compute variance with planes too
+                if (not featureSets._pointSets._inliers.empty() and utils::compute_pose_variance(optimizedPose, featureSets._pointSets._inliers, estimatedPoseVariance))
+                {
+                    optimizedPose.set_position_variance( estimatedPoseVariance + currentPose.get_position_variance());
+                }
+                else
+                {
+                    outputs::log_warning("Could not compute pose variance, as we only work with 2D points");
+                    optimizedPose.set_position_variance(currentPose.get_position_variance());
+                }
+            }
             return isPoseValid;
         }
 
