@@ -26,14 +26,12 @@ namespace rgbd_slam {
          * \param[in] pointsToEvaluate The set of points to evaluate the transformation on
          * \param[in] pointMaxRetroprojectionError The maximum retroprojection error between two point, below which we classifying the match as inlier 
          * \param[in] transformationPose The transformation that needs to be evaluated
-         * \param[out] inliersContainer The set inliers of inliers of this transformation
-         * \param[out] outliersContainer The set inliers of outliers of this transformation
+         * \param[out] pointMatcheSets The set of inliers/outliers of this transformation
          * \return The transformation score (sum of retroprojection distances)
          */
-        double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate, const double pointMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::match_point_container& inliersContainer, matches_containers::match_point_container& outliersContainer)
+        double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate, const double pointMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::point_match_sets& pointMatcheSets)
         {
-            inliersContainer.clear();
-            outliersContainer.clear();
+            pointMatcheSets.clear();
 
             // get a world to camera transform to evaluate the retroprojection score
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(transformationPose.get_orientation_quaternion(), transformationPose.get_position());
@@ -47,12 +45,12 @@ namespace rgbd_slam {
                 // inlier
                 if (distance < pointMaxRetroprojectionError)
                 {
-                    inliersContainer.insert(inliersContainer.end(), match);
+                    pointMatcheSets._inliers.insert(pointMatcheSets._inliers.end(), match);
                 }
                 // outlier
                 else
                 {
-                    outliersContainer.insert(outliersContainer.end(), match);
+                    pointMatcheSets._outliers.insert(pointMatcheSets._outliers.end(), match);
                 }
                 retroprojectionScore += std::min(pointMaxRetroprojectionError, distance);
             }
@@ -64,14 +62,12 @@ namespace rgbd_slam {
          * \param[in] pointsToEvaluate The set of planes to evaluate the transformation on
          * \param[in] pointMaxRetroprojectionError The maximum retroprojection error between two planes, below which we classifying the match as inlier 
          * \param[in] transformationPose The transformation that needs to be evaluated
-         * \param[out] inliersContainer The set inliers of inliers of this transformation
-         * \param[out] outliersContainer The set inliers of outliers of this transformation
+         * \param[out] planeMatchSets The set of inliers/outliers of this transformation
          * \return The transformation score
          */
-        double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate, const double pointMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::match_plane_container& inliersContainer, matches_containers::match_plane_container& outliersContainer)
+        double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate, const double pointMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::plane_match_sets& planeMatchSets)
         {
-            inliersContainer.clear();
-            outliersContainer.clear();
+            planeMatchSets.clear();
 
             // get a world to camera transform to evaluate the retroprojection score
             const planeWorldToCameraMatrix& worldToCamera = utils::compute_plane_world_to_camera_matrix(utils::compute_world_to_camera_transform(transformationPose.get_orientation_quaternion(), transformationPose.get_position()));
@@ -85,12 +81,12 @@ namespace rgbd_slam {
                 // inlier
                 if (distance < pointMaxRetroprojectionError)
                 {
-                    inliersContainer.insert(inliersContainer.end(), match);
+                    planeMatchSets._inliers.insert(planeMatchSets._inliers.end(), match);
                 }
                 // outlier
                 else
                 {
-                    outliersContainer.insert(outliersContainer.end(), match);
+                    planeMatchSets._outliers.insert(planeMatchSets._outliers.end(), match);
                 }
                 retroprojectionScore += std::min(pointMaxRetroprojectionError, distance);
             }
@@ -177,10 +173,10 @@ namespace rgbd_slam {
                     continue;
 
                 // get inliers and outliers for this transformation
-                matches_containers::match_point_container potentialPointInliersContainer, potentialPointOutliersContainer;
-                matches_containers::match_plane_container potentialPlaneInliersContainer, potentialPlaneOutliersContainer;
-                const double pointTransformationScore = get_point_inliers_outliers(matchedPoints, pointMaxRetroprojectionError, candidatePose, potentialPointInliersContainer, potentialPointOutliersContainer);
-                const double planeTransformationScore = get_plane_inliers_outliers(matchedPlanes, planeMaxRetroprojectionError, candidatePose, potentialPlaneInliersContainer, potentialPlaneOutliersContainer);
+                matches_containers::point_match_sets potentialPointInliersOutliers;
+                matches_containers::plane_match_sets potentialPlaneInliersOutliers;
+                const double pointTransformationScore = get_point_inliers_outliers(matchedPoints, pointMaxRetroprojectionError, candidatePose, potentialPointInliersOutliers);
+                const double planeTransformationScore = get_plane_inliers_outliers(matchedPlanes, planeMaxRetroprojectionError, candidatePose, potentialPlaneInliersOutliers);
                 const double transformationScore = pointTransformationScore + planeTransformationScore;
                 // We have a better score than the previous best one
                 if (transformationScore < minScore)
@@ -188,11 +184,9 @@ namespace rgbd_slam {
                     minScore = transformationScore;
                     bestPose = candidatePose;
                     // save points inliers and outliers
-                    featureSets._pointSets._inliers.swap(potentialPointInliersContainer);
-                    featureSets._pointSets._outliers.swap(potentialPointOutliersContainer);
+                    featureSets._pointSets.swap(potentialPointInliersOutliers);
                     // save planes inliers and outliers
-                    featureSets._planeSets._inliers.swap(potentialPlaneInliersContainer);
-                    featureSets._planeSets._outliers.swap(potentialPlaneOutliersContainer);
+                    featureSets._planeSets.swap(potentialPlaneInliersOutliers);
 
                     const double inlierScore = static_cast<double>(featureSets._pointSets._inliers.size()) * pointFeatureScore + static_cast<double>(featureSets._planeSets._inliers.size()) * planeFeatureScore;
                     if (inlierScore >= enoughInliersScore)

@@ -50,6 +50,12 @@ namespace rgbd_slam {
                 _inliers.clear();
                 _outliers.clear();
             }
+
+            void swap(point_match_sets& other)
+            {
+                _inliers.swap(other._inliers);
+                _outliers.swap(other._outliers);
+            }
         };
 
         // store a set of inliers and a set of outliers for planes
@@ -61,6 +67,12 @@ namespace rgbd_slam {
             {
                 _inliers.clear();
                 _outliers.clear();
+            }
+
+            void swap(plane_match_sets& other)
+            {
+                _inliers.swap(other._inliers);
+                _outliers.swap(other._outliers);
             }
         };
 
