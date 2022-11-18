@@ -525,8 +525,6 @@ namespace rgbd_slam {
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint);
 
                     Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
-                    // This id is to unsure the tracking of this staged point for it's first detection
-                    newStagedPoint._matchIndex = 0;
                     // add to staged map
                     _stagedPoints.emplace(
                             newStagedPoint._id,

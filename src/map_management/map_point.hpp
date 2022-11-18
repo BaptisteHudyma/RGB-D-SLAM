@@ -10,7 +10,6 @@ namespace rgbd_slam {
     namespace map_management {
 
         const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
-        const int UNMATCHED_POINT_INDEX = -1;      // Id of a unmatched point
 
         /**
          * \brief Basic keypoint class 
@@ -61,17 +60,17 @@ namespace rgbd_slam {
                 return _pointCovariance;
             };
 
-            bool is_matched() const
-            { 
-                return _matchIndex != UNMATCHED_POINT_INDEX;
-            }
+            /**
+             * \brief Return True if this point is mark as matched (_matchIndex will be valid)
+             */
+            bool is_matched() const;
 
-            void mark_unmatched()
-            {
-                _matchIndex = UNMATCHED_POINT_INDEX;
-            }
+            /**
+             * \brief mark this point as unmatched
+             */
+            void mark_unmatched();
 
-            // Match index in the detected point object (can be UNMATCHED_POINT_INDEX);
+            // Match index in the detected point object (can be UNMATCHED_POINT_MATCH_INDEX);
             int _matchIndex;
 
             protected:
