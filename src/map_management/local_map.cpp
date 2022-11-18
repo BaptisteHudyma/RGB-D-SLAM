@@ -28,22 +28,26 @@ namespace rgbd_slam {
          * \param[in, out] keypointsWithIds The association structure for keypoints and their uniq ids
          * \param[in] dropChance 1/dropChance that this point can be randomly dropped, and will not be added to the keypointsWithIds object
          */
-        void add_point_to_tracked_features(const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds, const uint dropChance = 1000)
+        void add_point_to_tracked_features(const worldToCameraMatrix& worldToCamera, const IMap_Point_With_Tracking& mapPoint, features::keypoints::KeypointsWithIdStruct& keypointsWithIds, const uint dropChance = 1000)
         {
             const bool shouldNotDropPoint = utils::Random::get_random_uint(dropChance) != 0;
 
             const utils::WorldCoordinate& coordinates = mapPoint._coordinates;
             assert(not std::isnan(coordinates.x()) and not std::isnan(coordinates.y()) and not std::isnan(coordinates.z()));
-            if (mapPoint._matchedScreenPoint.is_matched() and shouldNotDropPoint)
+            if (shouldNotDropPoint and mapPoint.is_matched())
             {
-                // use previously known screen coordinates
-                keypointsWithIds._keypoints.push_back(
-                    cv::Point2f(
-                                static_cast<float>(mapPoint._matchedScreenPoint._screenCoordinates.x()),
-                                static_cast<float>(mapPoint._matchedScreenPoint._screenCoordinates.y())
-                                )
-                        );
-                keypointsWithIds._ids.push_back(mapPoint._id);
+                utils::ScreenCoordinate2D screenCoordinates;
+                if (mapPoint._coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
+                {
+                    // use previously known screen coordinates
+                    keypointsWithIds._keypoints.push_back(
+                        cv::Point2f(
+                                    static_cast<float>(screenCoordinates.x()),
+                                    static_cast<float>(screenCoordinates.y())
+                                    )
+                            );
+                    keypointsWithIds._ids.push_back(mapPoint._id);
+                }
             }
         }
 
@@ -84,7 +88,7 @@ namespace rgbd_slam {
 
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX) {
                 //unmatched point
-                point._matchedScreenPoint.mark_unmatched();
+                point.mark_unmatched();
                 return false;
             }
 
@@ -94,32 +98,24 @@ namespace rgbd_slam {
             if (utils::is_depth_valid(matchedScreenpoint.z()) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
-
-                // update index and screen coordinates 
-                MatchedScreenPoint match;
-                match._screenCoordinates = matchedScreenpoint;
-                match._matchIndex = matchIndex;
-                point._matchedScreenPoint = match;
+                // update match index
+                point._matchIndex = matchIndex;
 
                 if(shouldAddMatchToContainer)
                 {
-                    matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
+                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, point._id);
                 }
                 return true;
             }
             else {
                 // 2D point
                 _isPointMatched[matchIndex] = true;
-
                 // update index and screen coordinates 
-                MatchedScreenPoint match;
-                match._screenCoordinates = matchedScreenpoint;
-                match._matchIndex = matchIndex;
-                point._matchedScreenPoint = match;
+                point._matchIndex = matchIndex;
 
                 if(shouldAddMatchToContainer)
                 {
-                    matchedPoints.emplace(matchedPoints.end(), match._screenCoordinates, point._coordinates, point._id);
+                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, point._id);
                 }
                 return true;
             }
@@ -328,12 +324,11 @@ namespace rgbd_slam {
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& cameraToWorld)
         {
-            if (mapPoint._matchedScreenPoint.is_matched())
+            if (mapPoint.is_matched())
             {
-                assert(mapPoint._matchedScreenPoint._matchIndex >= 0);
-
-                const size_t matchedPointIndex = mapPoint._matchedScreenPoint._matchIndex;
-                assert(matchedPointIndex < keypointObject.get_keypoint_count()); 
+                assert(mapPoint._matchIndex >= 0);
+                const size_t matchedPointIndex = mapPoint._matchIndex;
+                assert(matchedPointIndex < keypointObject.get_keypoint_count());
 
                 // get match coordinates, transform them to world coordinates
                 const utils::ScreenCoordinate& matchedPointCoordinates = keypointObject.get_keypoint(matchedPointIndex);
@@ -463,7 +458,7 @@ namespace rgbd_slam {
                             stagedPoint._id,
                             Map_Point(stagedPointCoordinates, stagedPoint.get_covariance_matrix(), stagedPoint._descriptor, stagedPoint._id)
                             );
-                    _localPointMap.at(stagedPoint._id)._matchedScreenPoint = stagedPoint._matchedScreenPoint;
+                    _localPointMap.at(stagedPoint._id)._matchIndex = stagedPoint._matchIndex;
                     stagedPointIterator = _stagedPoints.erase(stagedPointIterator);
                 }
                 else if (stagedPoint.should_remove_from_staged())
@@ -530,24 +525,21 @@ namespace rgbd_slam {
                     const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint);
 
                     Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
+                    // add to staged map
                     _stagedPoints.emplace(
                             newStagedPoint._id,
                             newStagedPoint);
-
-                    MatchedScreenPoint match;
-                    match._screenCoordinates = screenPoint;
-                    // This id is to unsure the tracking of this staged point for it's first detection
-                    match._matchIndex = 0;
-                    _stagedPoints.at(newStagedPoint._id)._matchedScreenPoint = match;
                 }
             }
 
         }
 
 
-        const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features() const
+        const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& lastPose) const
         {
             const size_t numberOfNewKeypoints = _localPointMap.size() + _stagedPoints.size();
+
+            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(lastPose.get_orientation_quaternion(), lastPose.get_position());
 
             // initialize output structure
             features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
@@ -562,13 +554,13 @@ namespace rgbd_slam {
             for (const auto& [pointId, point]  : _localPointMap)
             {
                 assert(pointId == point._id);
-                add_point_to_tracked_features(point, keypointsWithIds, refreshFrequency * 2);
+                add_point_to_tracked_features(worldToCamera, point, keypointsWithIds, refreshFrequency * 2);
             }
             // add staged points with valid retroprojected coordinates
             for (const auto& [pointId, point] : _stagedPoints)
             {
                 assert(pointId == point._id);
-                add_point_to_tracked_features(point, keypointsWithIds, refreshFrequency);
+                add_point_to_tracked_features(worldToCamera, point, keypointsWithIds, refreshFrequency);
             }
             return keypointsWithIds;
         }
@@ -587,7 +579,7 @@ namespace rgbd_slam {
 
         void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius)
         {
-            if (mapPoint._matchedScreenPoint.is_matched())
+            if (mapPoint.is_matched())
             {
                 utils::ScreenCoordinate2D screenPoint; 
                 const bool isCoordinatesValid = (mapPoint._coordinates).to_screen_coordinates(worldToCameraMatrix, screenPoint);
@@ -705,7 +697,7 @@ namespace rgbd_slam {
                 for (const auto& [pointId, stagedPoint] : _stagedPoints) {
                     assert(pointId == stagedPoint._id);
 
-                    const cv::Scalar pointColor = (stagedPoint._matchedScreenPoint.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);
+                    const cv::Scalar pointColor = (stagedPoint.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);
                     draw_point_on_image(stagedPoint, worldToCamMatrix, pointColor, debugImage, 2);
                 }
             }
@@ -721,7 +713,7 @@ namespace rgbd_slam {
             // Mark outliers as unmatched
             for (const matches_containers::PointMatch& match : outlierMatchedPoints)
             {
-                const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._mapPointId);
+                const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._idInMap);
                 // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
                 assert(isOutlierRemoved == true);
             }
@@ -733,7 +725,7 @@ namespace rgbd_slam {
             for (const matches_containers::PlaneMatch& match : outlierMatchedPlanes)
             {
                 // Check if id is in local map
-                const size_t planeId = match._mapPlaneId;
+                const size_t planeId = match._idInMap;
                 plane_map_container::iterator planeMapIterator = _localPlaneMap.find(planeId);
                 if (planeMapIterator != _localPlaneMap.end())
                 {
@@ -777,12 +769,12 @@ namespace rgbd_slam {
         void Local_Map::mark_point_with_id_as_unmatched(const size_t pointId, IMap_Point_With_Tracking& point)
         {
             assert(pointId == point._id);
-            const int matchIndex = point._matchedScreenPoint._matchIndex;
+            const int matchIndex = point._matchIndex;
             assert(matchIndex >= 0 and matchIndex < static_cast<int>(_isPointMatched.size()));
 
             // Mark point as unmatched
             _isPointMatched[matchIndex] = false;
-            point._matchedScreenPoint.mark_unmatched();
+            point.mark_unmatched();
         }
 
     }   /* map_management */

@@ -134,7 +134,6 @@ add_library(outputs SHARED
 
 add_library(utils SHARED
     ${UTILS}/angle_utils.cpp
-    ${UTILS}/distance_utils.cpp
     ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
     ${UTILS}/pose.cpp

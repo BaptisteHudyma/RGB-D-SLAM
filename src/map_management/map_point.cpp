@@ -24,22 +24,19 @@ namespace rgbd_slam {
         /**
          *     Tracked point
          */
-
+        const int UNMATCHED_POINT_MATCH_INDEX = -1;       // Id of a unmatched point
+        const int FIRST_DETECTION_POINT_MATCH_INDEX = -2; // Id of a point that is detected for the first time
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor)
-            : Point(coordinates, descriptor)
+            : Point(coordinates, descriptor), _matchIndex(FIRST_DETECTION_POINT_MATCH_INDEX)
         {
-            _matchedScreenPoint.mark_unmatched();
-            
             if (IMap_Point_With_Tracking::_kalmanFilter == nullptr)
                 build_kalman_filter();
 
             _pointCovariance = covariance;
         }
         IMap_Point_With_Tracking::IMap_Point_With_Tracking(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id)
-            : Point(coordinates, descriptor, id)
+            : Point(coordinates, descriptor, id), _matchIndex(FIRST_DETECTION_POINT_MATCH_INDEX)
         {
-            _matchedScreenPoint.mark_unmatched();
-            
             if (IMap_Point_With_Tracking::_kalmanFilter == nullptr)
                 build_kalman_filter();
             
@@ -65,6 +62,16 @@ namespace rgbd_slam {
             processNoiseCovariance *= pointProcessNoise;
 
             IMap_Point_With_Tracking::_kalmanFilter = new tracking::SharedKalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
+        }
+
+        bool IMap_Point_With_Tracking::is_matched() const
+        {
+            return _matchIndex != UNMATCHED_POINT_MATCH_INDEX;
+        }
+
+        void IMap_Point_With_Tracking::mark_unmatched()
+        {
+            _matchIndex = UNMATCHED_POINT_MATCH_INDEX;
         }
 
         double IMap_Point_With_Tracking::track_point(const utils::WorldCoordinate& newPointCoordinates, const matrix33& newPointCovariance)

@@ -1,7 +1,10 @@
 #include "coordinates.hpp"
 
 #include "../parameters.hpp"
+#include "../utils/distance_utils.hpp"
 #include "camera_transformation.hpp"
+#include <cmath>
+#include <math.h>
 
 namespace rgbd_slam {
 namespace utils {
@@ -14,6 +17,10 @@ namespace utils {
             return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
         }
 
+
+        /**
+         *      SCREEN COORDINATES
+         */
 
         CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
         {
@@ -46,6 +53,10 @@ namespace utils {
         }
 
 
+        /**
+         *      CAMERA COORDINATES
+         */
+
 
         bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const
         {
@@ -59,8 +70,6 @@ namespace utils {
             }
             return false;
         }
-
-
 
         WorldCoordinate CameraCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
         {
@@ -80,6 +89,12 @@ namespace utils {
             }
             return false;
         }
+
+
+
+        /**
+         *      WORLD COORDINATES
+         */
 
         bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate& screenPoint) const
         {
@@ -102,6 +117,47 @@ namespace utils {
             return false;
         }
 
+        vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const
+        {
+            ScreenCoordinate2D projectedScreenPoint; 
+            const bool isCoordinatesValid = to_screen_coordinates(worldToCamera, projectedScreenPoint);
+            if(isCoordinatesValid)
+            {
+                vector2 distance = screenPoint - projectedScreenPoint;
+                assert (not std::isnan(distance.x()));
+                assert (not std::isnan(distance.y()));
+                return distance;
+            }
+            // high number
+            return vector2(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+        }
+        
+        double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const
+        {
+            const vector2& distance2D = get_signed_distance_2D(screenPoint, worldToCamera);
+            if (distance2D.x() >= std::numeric_limits<double>::max() or distance2D.y() >= std::numeric_limits<double>::max())
+                // high number
+                return std::numeric_limits<double>::max();
+            // compute manhattan distance (norm of power 1)
+            return distance2D.lpNorm<1>();
+        }
+
+        vector3 WorldCoordinate::get_signed_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const
+        {
+            const WorldCoordinate& projectedScreenPoint = screenPoint.to_world_coordinates(cameraToWorld);
+            return this->base() - projectedScreenPoint;
+        }
+
+        double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const
+        {
+            return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
+        }
+
+
+        /**
+         *      CAMERA COORDINATES
+         */
+
         CameraCoordinate WorldCoordinate::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
         {
             //WorldCoordinate
@@ -112,6 +168,12 @@ namespace utils {
             return CameraCoordinate(cameraHomogenousCoordinates);
         }
 
+
+        /**
+         *      PLANE COORDINATES
+         */
+
+
         PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const planeCameraToWorldMatrix& cameraToWorld) const
         {
             return PlaneWorldCoordinates(cameraToWorld.base() * this->base());
@@ -121,6 +183,45 @@ namespace utils {
         {
             return PlaneCameraCoordinates(worldToCamera.base() * this->base());
         }
+
+        vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera) const
+        {
+            const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
+
+            return vector4(
+                angle_distance(cameraPlane.x(), projectedWorldPlane.x()),
+                angle_distance(cameraPlane.y(), projectedWorldPlane.y()),
+                angle_distance(cameraPlane.z(), projectedWorldPlane.z()),
+                cameraPlane.w() - projectedWorldPlane.w()
+            );
+        }
+
+        /**
+         * \brief Compute a reduced plane form, allowing for better optimization
+         */
+        vector3 get_plane_transformation(const vector4& plane)
+        {
+            return vector3(
+                atan(plane.y() / plane.x()),
+                asin(plane.z()),
+                plane.w()
+            );
+        }
+
+        vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera) const
+        {
+            const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
+
+            const vector3& cameraPlaneSimplified = get_plane_transformation(cameraPlane);
+            const vector3& worldPlaneSimplified = get_plane_transformation(projectedWorldPlane);
+
+            return vector3(
+                angle_distance(cameraPlaneSimplified.x(), worldPlaneSimplified.x()),
+                angle_distance(cameraPlaneSimplified.y(), worldPlaneSimplified.y()),
+                cameraPlaneSimplified.z() - worldPlaneSimplified.z()
+            );
+        }
+
 
 }
 }

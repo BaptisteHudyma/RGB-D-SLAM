@@ -191,7 +191,7 @@ namespace rgbd_slam {
         const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) == 0;
 
         // Detect and match key points with local map points
-        const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features();
+        const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features(_currentPose);
         const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
 
         // Run primitive detection 
@@ -207,9 +207,7 @@ namespace rgbd_slam {
         const matches_containers::match_plane_container& matchedPlanes = _localMap->find_plane_matches(refinedPose, detectedPlanes);
         _meanFindMatchTime += (cv::getTickCount() - findMatchesStartTime) / static_cast<double>(cv::getTickFrequency());
 
-        matches_containers::match_point_container outlierMatchedPoints;
-        matches_containers::match_plane_container outlierMatchedPlanes;
-
+        matches_containers::match_sets matchSets;
         // only == 0 if this is the first call to this function
         const bool isFirstCall = (_computeKeypointCount == 0);
         if (not isFirstCall)
@@ -218,7 +216,7 @@ namespace rgbd_slam {
             const double optimizePoseStartTime = cv::getTickCount();
             utils::Pose optimizedPose;
             //if (matchedPoints.size() >= Parameters::get_minimum_point_count_for_optimization())
-            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, outlierMatchedPoints, outlierMatchedPlanes);
+            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, matchSets);
             if (isPoseValid)
             {
                 refinedPose = optimizedPose;
@@ -246,7 +244,7 @@ namespace rgbd_slam {
         if (isFirstCall or not _isTrackingLost)
         {
             // Update local map if a valid transformation was found
-            _localMap->update(refinedPose, keypointObject, detectedPlanes, outlierMatchedPoints, outlierMatchedPlanes);
+            _localMap->update(refinedPose, keypointObject, detectedPlanes, matchSets._pointSets._outliers, matchSets._planeSets._outliers);
         }
         else
         {
