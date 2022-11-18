@@ -3,6 +3,8 @@
 #include "../parameters.hpp"
 #include "../utils/distance_utils.hpp"
 #include "camera_transformation.hpp"
+#include <cmath>
+#include <math.h>
 
 namespace rgbd_slam {
 namespace utils {
@@ -191,6 +193,32 @@ namespace utils {
                 angle_distance(cameraPlane.y(), projectedWorldPlane.y()),
                 angle_distance(cameraPlane.z(), projectedWorldPlane.z()),
                 cameraPlane.w() - projectedWorldPlane.w()
+            );
+        }
+
+        /**
+         * \brief Compute a reduced plane form, allowing for better optimization
+         */
+        vector3 get_plane_transformation(const vector4& plane)
+        {
+            return vector3(
+                atan(plane.y() / plane.x()),
+                asin(plane.z()),
+                plane.w()
+            );
+        }
+
+        vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera) const
+        {
+            const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
+
+            const vector3& cameraPlaneSimplified = get_plane_transformation(cameraPlane);
+            const vector3& worldPlaneSimplified = get_plane_transformation(projectedWorldPlane);
+
+            return vector3(
+                angle_distance(cameraPlaneSimplified.x(), worldPlaneSimplified.x()),
+                angle_distance(cameraPlaneSimplified.y(), worldPlaneSimplified.y()),
+                cameraPlaneSimplified.z() - worldPlaneSimplified.z()
             );
         }
 

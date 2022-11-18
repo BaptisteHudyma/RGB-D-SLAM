@@ -49,7 +49,7 @@ namespace rgbd_slam {
          */
 
         Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes) :
-            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2 + planes.size() * 4),
+            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2 + planes.size() * 3),
             _points(points),
             _planes(planes)
         {
@@ -61,7 +61,7 @@ namespace rgbd_slam {
         {
             assert(not _points.empty() or not _planes.empty());
             assert(optimizedParameters.size() == 6);
-            assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 4));
+            assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 3));
 
             // Get the new estimated pose
             const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
@@ -83,12 +83,11 @@ namespace rgbd_slam {
             // add plane optimization vectors
             const planeWorldToCameraMatrix& planeTransformationMatrix = utils::compute_plane_world_to_camera_matrix(transformationMatrix);
             for(const matches_containers::PlaneMatch& match: _planes) {
-                const vector4& planeProjectionError = 0.1 * match._worldFeature.get_signed_distance(match._screenFeature, planeTransformationMatrix);
+                const vector3& planeProjectionError = 0.1 * match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
 
                 outputScores(pointIndex++) = planeProjectionError.x();
                 outputScores(pointIndex++) = planeProjectionError.y();
                 outputScores(pointIndex++) = planeProjectionError.z();
-                outputScores(pointIndex++) = planeProjectionError.w();
             }
             return 0;
         }

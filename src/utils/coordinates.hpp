@@ -230,6 +230,14 @@ namespace utils {
          * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
          */
         vector4 get_signed_distance(const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera) const;
+        /**
+         * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space. Result is reduced to two angles and a distance
+         * \param[in] cameraPlane A plane in camera coordinates
+         * \param[in] worldToCamera A transformation matrix to convert from world to camera space
+         *
+         * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
+         */
+        vector3 get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera) const;
     };
 
 }
