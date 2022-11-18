@@ -26,13 +26,12 @@ namespace rgbd_slam {
         _meanPoseOptimizationFromFeatures(0.0),
         _meanLocalMapUpdateDuration(0.0)
         {
+            // set random seed
             const uint seed = utils::Random::_seed;
             outputs::log("Constructed using seed " + std::to_string(seed));
-            //cv::setNumThreads(1);
-            //Eigen::setNbThreads(1);
             std::srand(seed);
             cv::theRNG().state = seed;
-
+            
             // Load parameters (once)
             if (not Parameters::is_valid())
             {
@@ -44,6 +43,12 @@ namespace rgbd_slam {
                 }
                 outputs::log("Invalid parameters. Switching to default parameters");
             }
+
+            // set threads
+            const uint availableCores = Parameters::get_available_core_number();
+            cv::setNumThreads(availableCores);
+            Eigen::setNbThreads(availableCores);
+
             // primitive connected graph creator
             _depthOps = new features::primitives::Depth_Map_Transformation(
                     _width, 

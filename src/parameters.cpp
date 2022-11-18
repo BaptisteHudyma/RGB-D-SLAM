@@ -76,6 +76,9 @@ namespace rgbd_slam {
 
     void Parameters::set_parameters()
     {
+        // available core on this computer, 1 disables threads
+        _coreNumber = 8;
+
         // Point detection/Matching
         _matchSearchRadius = 30;
         _matchSearchCellSize = 50;
@@ -332,6 +335,12 @@ namespace rgbd_slam {
         if (_cylinderRansacProbabilityOfSuccess <= 0 or _cylinderRansacProbabilityOfSuccess >= 1)
         {
             outputs::log_error("Cylinder RANSAC probability of success must be in ]0, 1[");
+            _isValid = false;
+        }
+
+        if (_coreNumber < 1)
+        {
+            outputs::log_error("Number of available computer cores should be >= 1");
             _isValid = false;
         }
 

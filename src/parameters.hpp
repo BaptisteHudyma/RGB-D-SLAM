@@ -30,6 +30,8 @@ namespace rgbd_slam {
 
             static bool is_valid() { return _isValid; };
 
+            static uint get_available_core_number() { return _coreNumber; };
+
             // Camera 1 is the left camera in stereo, and the color camera in RGBD
             static double get_camera_1_center_x() { return _camera1CenterX; };
             static double get_camera_1_center_y() { return _camera1CenterY; };
@@ -111,6 +113,8 @@ namespace rgbd_slam {
         private:
             // Is this set of parameters valid
             inline static bool _isValid = false; 
+
+            inline static uint _coreNumber;     // number of available cores on the computer (1 for no threads)
 
             // Cameras intrinsics parameters
             inline static double _camera1CenterX;
