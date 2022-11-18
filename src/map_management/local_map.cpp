@@ -95,6 +95,12 @@ namespace rgbd_slam {
             assert(matchIndex >= 0);
 
             const utils::ScreenCoordinate& matchedScreenpoint = detectedKeypointsObject.get_keypoint(matchIndex);
+            if (_isPointMatched[matchIndex])
+            {
+                //point was already matched
+                outputs::log_error("The requested point unique index is already matched");
+            }
+
             if (utils::is_depth_valid(matchedScreenpoint.z()) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;

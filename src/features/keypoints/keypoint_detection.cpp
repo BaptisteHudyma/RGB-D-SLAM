@@ -29,8 +29,9 @@ namespace rgbd_slam {
 
             const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const
             {
-                std::vector<cv::Point2f> framePoints;
+                // search keypoints, using an advanced detector if not enough features are found
                 std::vector<cv::KeyPoint> frameKeypoints;
+                assert(grayImage.size() == mask.size());
                 _featureDetector->detect(grayImage, frameKeypoints, mask); 
 
                 if (frameKeypoints.size() <=  minimumPointsForValidity)
@@ -40,6 +41,8 @@ namespace rgbd_slam {
                     _advancedFeatureDetector->detect(grayImage, frameKeypoints, mask); 
                 }
 
+                // compute a subcorner accuracy estimation for all waypoints 
+                std::vector<cv::Point2f> framePoints;
                 if (frameKeypoints.size() >  minimumPointsForValidity)
                 {
                     // Refine keypoints positions
@@ -56,8 +59,8 @@ namespace rgbd_slam {
 
             const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const
             {
-                const uint radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_diameter();  // in pixels
-                const cv::Scalar fillColor(0, 0, 0);
+                const uint radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_radius();  // in pixels
+                const cv::Scalar fillColor(0);
                 cv::Mat mask = cv::Mat::ones(imageSize, CV_8UC1);
                 for (const cv::Point2f& point : keypointContainer)
                 {

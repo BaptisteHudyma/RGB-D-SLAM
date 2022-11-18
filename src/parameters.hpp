@@ -82,7 +82,7 @@ namespace rgbd_slam {
             static uint get_optical_flow_pyramid_windown_size() { return _opticalFlowPyramidWindowSize; };
             static uint get_optical_flow_max_error() { return _opticalFlowMaxError; };
             static uint get_optical_flow_max_distance() { return _opticalFlowMaxDistance; };
-            static uint get_keypoint_mask_diameter() { return _keypointMaskDiameter; };
+            static uint get_keypoint_mask_radius() { return _keypointMaskRadius; };
 
             static float get_maximum_plane_match_angle() { return _primitiveMaximumCosAngle; };
             static float get_maximum_merge_distance() { return _primitiveMaximumMergeDistance; };
@@ -171,7 +171,7 @@ namespace rgbd_slam {
             inline static uint _opticalFlowPyramidWindowSize;
             inline static uint _opticalFlowMaxError;
             inline static uint _opticalFlowMaxDistance;
-            inline static uint _keypointMaskDiameter;
+            inline static uint _keypointMaskRadius;
 
             // Primitive extraction parameters
             inline static float _primitiveMaximumCosAngle;         // Maximum angle between two planes to consider merging
