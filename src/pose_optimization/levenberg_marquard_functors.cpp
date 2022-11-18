@@ -1,7 +1,6 @@
 #include "levenberg_marquard_functors.hpp"
 
 #include "../utils/camera_transformation.hpp"
-#include "../utils/distance_utils.hpp"
 #include "coordinates.hpp"
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
@@ -84,7 +83,7 @@ namespace rgbd_slam {
             // add plane optimization vectors
             const planeWorldToCameraMatrix& planeTransformationMatrix = utils::compute_plane_world_to_camera_matrix(transformationMatrix);
             for(const matches_containers::PlaneMatch& match: _planes) {
-                const vector4& planeProjectionError = 0.1 * utils::get_3D_to_2D_plane_distance(match._worldFeature, match._screenFeature, planeTransformationMatrix);
+                const vector4& planeProjectionError = 0.1 * match._worldFeature.get_signed_distance(match._screenFeature, planeTransformationMatrix);
 
                 outputScores(pointIndex++) = planeProjectionError.x();
                 outputScores(pointIndex++) = planeProjectionError.y();

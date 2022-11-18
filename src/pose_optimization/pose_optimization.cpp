@@ -7,7 +7,6 @@
 #include "../parameters.hpp"
 
 #include "../utils/camera_transformation.hpp"
-#include "../utils/distance_utils.hpp"
 #include "../utils/covariances.hpp"
 #include "../outputs/logger.hpp"
 #include "../utils/random.hpp"
@@ -76,7 +75,7 @@ namespace rgbd_slam {
             for (const matches_containers::PlaneMatch& match : planesToEvaluate)
             {
                 // Retroproject world point to screen, and compute screen distance
-                const double distance = utils::get_3D_to_2D_plane_distance(match._worldFeature, match._screenFeature, worldToCamera).norm() / 10.0;
+                const double distance = match._worldFeature.get_signed_distance(match._screenFeature, worldToCamera).norm() / 10.0;
                 assert(distance >= 0 and not std::isnan(distance));
                 // inlier
                 if (distance < pointMaxRetroprojectionError)

@@ -185,10 +185,24 @@ namespace utils {
          */
         double get_distance(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const;
         /**
+         * \brief Compute a signed distance between a world point and a 3D point in screen space, by projecting the screen point to world space
+         * \param[in] screenPoint A 3D point in screen space
+         * \param[in] cameraToWorld A matrix to convert from camera to world space
+         * \return The 3D signed distance in world space
+         */
+        vector3 get_signed_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const;
+        /**
+         * \brief Compute a distance between a world point and a 3D point in screen space, by projecting the screen point to world space
+         * \param[in] screenPoint A 3D point in screen space
+         * \param[in] cameraToWorld A matrix to convert from camera to world space
+         * \return The unsigned distance in world space
+         */
+        double get_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const;
+        /**
          * \brief Compute a signed distance with another world point
          */
-        vector2 get_signed_distance_2D(const WorldCoordinate& worldPoint) const;
-        double get_distance(const WorldCoordinate& worldPoint) const;
+        vector3 get_signed_distance(const WorldCoordinate& worldPoint) const { return  this->base() - worldPoint; };
+        double get_distance(const WorldCoordinate& worldPoint) const { return get_signed_distance(worldPoint).lpNorm<1>(); };
     };
 
 
@@ -206,6 +220,16 @@ namespace utils {
         PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
         PlaneCameraCoordinates to_camera_coordinates(const planeWorldToCameraMatrix& worldToCamera) const;
+        
+        
+        /**
+         * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space
+         * \param[in] cameraPlane A plane in camera coordinates
+         * \param[in] worldToCamera A transformation matrix to convert from world to camera space
+         *
+         * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
+         */
+        vector4 get_signed_distance(const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera) const;
     };
 
 }

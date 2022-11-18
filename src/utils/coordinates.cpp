@@ -1,6 +1,7 @@
 #include "coordinates.hpp"
 
 #include "../parameters.hpp"
+#include "../utils/distance_utils.hpp"
 #include "camera_transformation.hpp"
 
 namespace rgbd_slam {
@@ -139,6 +140,17 @@ namespace utils {
             return distance2D.lpNorm<1>();
         }
 
+        vector3 WorldCoordinate::get_signed_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const
+        {
+            const WorldCoordinate& projectedScreenPoint = screenPoint.to_world_coordinates(cameraToWorld);
+            return this->base() - projectedScreenPoint;
+        }
+
+        double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const
+        {
+            return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
+        }
+
 
         /**
          *      CAMERA COORDINATES
@@ -169,6 +181,19 @@ namespace utils {
         {
             return PlaneCameraCoordinates(worldToCamera.base() * this->base());
         }
+
+        vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane, const planeWorldToCameraMatrix& worldToCamera) const
+        {
+            const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
+
+            return vector4(
+                angle_distance(cameraPlane.x(), projectedWorldPlane.x()),
+                angle_distance(cameraPlane.y(), projectedWorldPlane.y()),
+                angle_distance(cameraPlane.z(), projectedWorldPlane.z()),
+                cameraPlane.w() - projectedWorldPlane.w()
+            );
+        }
+
 
 }
 }
