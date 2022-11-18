@@ -143,11 +143,11 @@ namespace rgbd_slam {
             // get the min and max values of planes and points to select
             const uint maxNumberOfPoints = std::min(minimumPointsForOptimization, (uint)matchedPoints.size());
             const uint maxNumberOfPlanes = std::min(minimumPlanesForOptimization, (uint)matchedPlanes.size());
-            const uint minNumberOfPlanes = static_cast<uint>((1.0 - maxNumberOfPoints * pointFeatureScore) / planeFeatureScore);
-            const uint minNumberOfPoints = static_cast<uint>((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore);
+            const uint minNumberOfPlanes = std::ceil((1.0 - maxNumberOfPoints * pointFeatureScore) / planeFeatureScore);
+            const uint minNumberOfPoints = std::ceil((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore);
 
             // Compute maximum iteration with the original RANSAC formula
-            const uint maximumIterations = static_cast<uint>(log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization)));
+            const uint maximumIterations = std::ceil(log(1.0 - Parameters::get_ransac_probability_of_success()) / log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization)));
             assert(maximumIterations > 0);
 
             // set the start score to the maximum score

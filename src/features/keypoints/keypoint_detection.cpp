@@ -109,10 +109,7 @@ namespace rgbd_slam {
 
                         // TODO: add descriptors to handle short term rematching of lost optical flow features
                     }
-                    else
-                    {
-                        outputs::log_error("No keypoints available to use optical flow algorithm");
-                    }
+                    //else: no optical flow
                 }
                 //else: No optical flow for the first frame
                 _lastFramePyramide = newImagePyramide;
