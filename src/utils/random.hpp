@@ -25,8 +25,13 @@ namespace rgbd_slam {
             {
                 return static_cast<uint>(maxValue * get_random_double());
             }
-
+            
+            #ifndef MAKE_DETERMINISTIC
             inline static const uint _seed = std::time(0);
+            #else
+            // whatever seed
+            inline static const uint _seed = 0;
+            #endif
         };
 
 

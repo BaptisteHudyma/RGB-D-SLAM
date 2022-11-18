@@ -64,8 +64,7 @@ namespace primitives {
 
             cv::Mat outputDepth = cv::Mat::zeros(_height, _width, CV_32F);
             _cloudArray.setZero();
-            //#define USE_PARALLEL_LOOP
-            #ifdef USE_PARALLEL_LOOP
+            #ifndef MAKE_DETERMINISTIC
             // parallel loop to speed up the process
             // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDIND
             tbb::parallel_for(uint(0), _height, [&](uint r){
@@ -92,7 +91,7 @@ namespace primitives {
                         }
                     }
                 }
-            #ifdef USE_PARALLEL_LOOP
+            #ifndef MAKE_DETERMINISTIC
             );
             #endif
 
