@@ -83,7 +83,7 @@ namespace rgbd_slam {
         _matchSearchRadius = 30;        // max distance to a point after which we do not consider a math (pixels)
         _matchSearchCellSize = 50;      // size of the squares dividing the image to search for point matches (pixels)
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
-        _detectorMinHessian = 40;       // The higher the least detected points
+        _detectorMinHessian = 200;       // The higher the least detected points
         _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
         _opticalFlowPyramidWindowSize = 25;

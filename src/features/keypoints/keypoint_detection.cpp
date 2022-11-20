@@ -4,6 +4,7 @@
 #include "../../outputs/logger.hpp"
 
 // circle
+#include <opencv2/features2d.hpp>
 #include <opencv2/opencv.hpp>
 
 
@@ -17,14 +18,12 @@ namespace rgbd_slam {
 
             Key_Point_Extraction::Key_Point_Extraction(const uint minHessian) :
                 // Create feature extractor and matcher
-                _featureDetector(cv::FastFeatureDetector::create(minHessian)),
-                _advancedFeatureDetector(cv::FastFeatureDetector::create(minHessian * 0.5)),
-                _descriptorExtractor(cv::xfeatures2d::BriefDescriptorExtractor::create()),
+                _featureDetector(cv::ORB::create(minHessian)),
+                _advancedFeatureDetector(cv::ORB::create(minHessian)),
                 _meanPointExtractionDuration(0.0)
             {
-                assert(not _featureDetector.empty() );
-                assert(not _advancedFeatureDetector.empty() );
-                assert(not _descriptorExtractor.empty() );
+                assert(not _featureDetector.empty());
+                assert(not _advancedFeatureDetector.empty());
             }
 
             const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const
@@ -150,7 +149,7 @@ namespace rgbd_slam {
                         // Caution: the frameKeypoints list is mutable by this function
                         //          The bad points will be removed by the compute descriptor function
                         cv::Mat detectedKeypointDescriptors;
-                        _descriptorExtractor->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
+                        _featureDetector->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
 
                         // convert back to keypoint list
                         detectedKeypoints.clear();

@@ -73,7 +73,6 @@ namespace rgbd_slam {
                 private:
                     cv::Ptr<cv::FeatureDetector> _featureDetector;
                     cv::Ptr<cv::FeatureDetector> _advancedFeatureDetector;
-                    cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
 
                     std::vector<cv::Mat> _lastFramePyramide;
 

@@ -397,6 +397,7 @@ namespace rgbd_slam {
 
         void Local_Map::update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject)
         {
+            // use this precprocessor directiv if you observe a lot of duplicated points in the local map
             #ifdef REMOVE_DUPLICATE_STAGED_POINTS
             const double maximumMatchDistance = Parameters::get_maximum_match_distance();
             const float searchDiameter = Parameters::get_search_matches_distance();
@@ -625,7 +626,7 @@ namespace rgbd_slam {
 
         void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius)
         {
-            if (mapPoint.is_matched())
+            if (true)//mapPoint.is_matched())
             {
                 utils::ScreenCoordinate2D screenPoint; 
                 const bool isCoordinatesValid = (mapPoint._coordinates).to_screen_coordinates(worldToCameraMatrix, screenPoint);
