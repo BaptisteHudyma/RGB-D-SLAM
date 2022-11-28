@@ -19,12 +19,12 @@ namespace rgbd_slam {
         const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate);
 
         /**
-         * \brief Compute a screen point covariance from a given camera point
+         * \brief Compute a screen point covariance from a given point
          *
-         * \param[in] cameraPoint The coordinates of this 3D point, in camera space
-         * \param[in] worldPointCovariance The covariance associated with this world point 
+         * \param[in] point The coordinates of this 3D point (world or camera space)
+         * \param[in] pointCovariance The covariance associated with this point (world or camera space)
          */
-        const screenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& cameraPoint, const matrix33& worldPointCovariance);
+        const screenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance);
 
         /**
          * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This function will internaly compute the covariance of the screen point.
