@@ -5,6 +5,7 @@
 #include "pose_optimization/pose_optimization.hpp"
 #include "outputs/logger.hpp"
 
+#include "types.hpp"
 #include "utils/coordinates.hpp"
 #include "utils/pose.hpp"
 #include "utils/camera_transformation.hpp"
@@ -89,6 +90,7 @@ namespace rgbd_slam {
                 matchedPoints.emplace(matchedPoints.end(), 
                     transformedPoint,   // screenPoint
                     worldPointStart,    // worldPoint
+                    vector2::Ones(),
                     0                   // uniq map id
                 );
             }
@@ -119,7 +121,7 @@ namespace rgbd_slam {
         
             const utils::PlaneCameraCoordinates& cameraPlane =  worldPlane.to_camera_coordinates(worldToCamera);
 
-            matchedPlanes.emplace(matchedPlanes.cend(), cameraPlane, worldPlane, 0);
+            matchedPlanes.emplace(matchedPlanes.cend(), cameraPlane, worldPlane, nullptr, 0);
         }
         return matchedPlanes;
     }

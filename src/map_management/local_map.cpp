@@ -110,7 +110,10 @@ namespace rgbd_slam {
 
                 if(shouldAddMatchToContainer)
                 {
-                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, point._id);
+                    const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(point._coordinates, point.get_covariance_matrix());
+                    //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
+                    const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
+                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, screenPointCovariance, point._id);
                 }
                 return true;
             }
@@ -122,7 +125,10 @@ namespace rgbd_slam {
 
                 if(shouldAddMatchToContainer)
                 {
-                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, point._id);
+                    const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(point._coordinates, point.get_covariance_matrix());
+                    //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
+                    const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
+                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, screenPointCovariance, point._id);
                 }
                 return true;
             }
@@ -146,7 +152,8 @@ namespace rgbd_slam {
                 if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
                 {
                     mapPlane._matchedPlane.mark_matched(planeId);
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, mapPlane._id);
+                    // TODO: replace nullptr by the plane covariance in camera space
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, nullptr, mapPlane._id);
 
                     _unmatchedPlaneIds.erase(planeId);
                     return true;
@@ -628,7 +635,7 @@ namespace rgbd_slam {
         {
             if (mapPoint.is_matched())
             {
-                utils::ScreenCoordinate2D screenPoint; 
+                utils::ScreenCoordinate2D screenPoint;
                 const bool isCoordinatesValid = (mapPoint._coordinates).to_screen_coordinates(worldToCameraMatrix, screenPoint);
 
                 //Map Point are green 
