@@ -2,11 +2,12 @@
 
 #include "camera_transformation.hpp"
 #include "../parameters.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
     namespace utils {
 
-        const matrix33 get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate) 
+        const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate) 
         {
             // Quadratic error model (uses depth as meters)
             const double depthMeters = ScreenCoordinate.z() / 1000.0;
@@ -17,15 +18,16 @@ namespace rgbd_slam {
             // TODO xy variance should also depend on the placement of the pixel in x and y
             const double xyVariance = pow(0.1, 2.0);
 
-            matrix33 screenPointCovariance {
+            screenCoordinateCovariance screenPointCovariance;
+            screenPointCovariance.base() = matrix33({
                 {xyVariance, 0.0,        0.0},
                 {0.0,        xyVariance, 0.0},
-                {0.0,        0.0,        pow(depthVariance, 2.0)},
-            };
+                {0.0,        0.0,        pow(depthVariance, 2.0)}
+            });
             return screenPointCovariance;
         }
 
-        const matrix33 get_screen_point_covariance(const CameraCoordinate& cameraPoint, const matrix33& worldPointCovariance)
+        const screenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& cameraPoint, const matrix33& worldPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
@@ -36,32 +38,34 @@ namespace rgbd_slam {
                 {0.0,                      cameraFY/cameraPoint.z(), -cameraFY * cameraPoint.y() / pow(cameraPoint.z(), 2.0)},
                 {0.0,                      0.0,                      1.0}
             };
-            matrix33 screenPointCovariance = jacobian * worldPointCovariance * jacobian.transpose();
+            screenCoordinateCovariance screenPointCovariance;
+            screenPointCovariance.base() = (jacobian * worldPointCovariance * jacobian.transpose());
             return screenPointCovariance;
         }
 
 
-        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint)
+        const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint)
         {
-            return get_world_point_covariance(screenPoint, get_screen_point_covariance(screenPoint));
+            return get_camera_point_covariance(screenPoint, get_screen_point_covariance(screenPoint));
         }
 
-        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint, const matrix33& screenPointCovariance)
+        const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint, const screenCoordinateCovariance& screenPointCovariance)
         {
             const double cameraFX = Parameters::get_camera_1_focal_x();
             const double cameraFY = Parameters::get_camera_1_focal_y();
             const double cameraCX = Parameters::get_camera_1_center_x();
             const double cameraCY = Parameters::get_camera_1_center_y();
 
-            // Jacobian of the screen to world function. Use absolutes to prevent negative variances
+            // Jacobian of the screen to camera function. Use absolutes to prevent negative variances
             const matrix33 jacobian {
                 {screenPoint.z() / cameraFX, 0.0,                        abs(screenPoint.x() - cameraCX) / cameraFX },
                 {0.0,                        screenPoint.z() / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
                 {0.0,                        0.0,                        1.0}
             };
             
-            matrix33 worldPointCovariance = jacobian * screenPointCovariance * jacobian.transpose();
-            return worldPointCovariance;
+            cameraCoordinateCovariance cameraPointCovariance;
+            cameraPointCovariance.base() = jacobian * screenPointCovariance * jacobian.transpose();
+            return cameraPointCovariance;
         }
 
 

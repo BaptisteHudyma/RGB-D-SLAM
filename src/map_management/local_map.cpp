@@ -338,10 +338,10 @@ namespace rgbd_slam {
                     // transform screen point to world point
                     const utils::WorldCoordinate& worldPointCoordinates = matchedPointCoordinates.to_world_coordinates(cameraToWorld);
                     // get a measure of the estimated variance of the new world point
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates);
+                    const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(matchedPointCoordinates);
 
                     // update this map point errors & position
-                    mapPoint.update_matched(worldPointCoordinates, worldPointCovariance);
+                    mapPoint.update_matched(worldPointCoordinates, cameraPointCovariance.base());
 
                     // If a new descriptor is available, update it
                     if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -366,11 +366,11 @@ namespace rgbd_slam {
                         {
                             //std::cout << "udpate with triangulation " << triangulatedPoint.transpose() << " " << mapPoint._coordinates.transpose() << std::endl;
                             // get a measure of the estimated variance of the new world point
-                            //const matrix33& worldPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
-                            const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
+                            //const matrix33& cameraPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
+                            const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
 
                             // update this map point errors & position
-                            mapPoint.update_matched(triangulatedPoint, worldPointCovariance);
+                            mapPoint.update_matched(triangulatedPoint, cameraPointCovariance);
 
                             // If a new descriptor is available, update it
                             if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -522,9 +522,9 @@ namespace rgbd_slam {
                     const utils::WorldCoordinate& worldPoint = screenPoint.to_world_coordinates(cameraToWorld);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint);
+                    const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(screenPoint);
 
-                    Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
+                    Staged_Point newStagedPoint(worldPoint, cameraPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
                     // add to staged map
                     _stagedPoints.emplace(
                             newStagedPoint._id,
