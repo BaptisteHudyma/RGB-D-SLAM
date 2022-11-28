@@ -80,16 +80,16 @@ namespace rgbd_slam {
         _coreNumber = 8;
 
         // Point detection/Matching
-        _matchSearchRadius = 30;
-        _matchSearchCellSize = 50;
+        _matchSearchRadius = 30;        // max distance to a point after which we do not consider a math (pixels)
+        _matchSearchCellSize = 50;      // size of the squares dividing the image to search for point matches (pixels)
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
-        _detectorMinHessian = 40;       // The higher the least detected points
+        _maxNumberOfPointsToDetect = 200;   // Maximum number of point features to detect
         _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
         _opticalFlowPyramidWindowSize = 25;
         _opticalFlowMaxError = 35;      // error in pixel after which a point is rejected
         _opticalFlowMaxDistance = 100;  // distance in pixel after which a point is rejected
-        _keypointMaskDiameter = 10;     // do not detect points inside an area of this size (pixels) around existing keypoints
+        _keypointMaskRadius = 10;       // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
         _ransacMaximumRetroprojectionErrorForPointInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
@@ -154,7 +154,7 @@ namespace rgbd_slam {
             outputs::log_error("Minimum match distance must be > 0");
             _isValid = false;
         }
-        if (_detectorMinHessian <= 0)
+        if (_maxNumberOfPointsToDetect <= 0)
         {
             outputs::log_error("Keypoint detector hessian must be > 0");
             _isValid = false;
@@ -184,7 +184,7 @@ namespace rgbd_slam {
             outputs::log_error("Optical flow maximum distance  must be > 0");
             _isValid = false;
         }
-        if (_keypointMaskDiameter <= 0)
+        if (_keypointMaskRadius <= 0)
         {
             outputs::log_error("keypoint mask diameters must be > 0");
             _isValid = false;

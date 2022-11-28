@@ -4,6 +4,7 @@
 #include "../../outputs/logger.hpp"
 
 // circle
+#include <opencv2/features2d.hpp>
 #include <opencv2/opencv.hpp>
 
 
@@ -15,22 +16,21 @@ namespace rgbd_slam {
              * Keypoint extraction
              */
 
-            Key_Point_Extraction::Key_Point_Extraction(const uint minHessian) :
+            Key_Point_Extraction::Key_Point_Extraction(const uint maxFeaturesToDetect) :
                 // Create feature extractor and matcher
-                _featureDetector(cv::FastFeatureDetector::create(minHessian)),
-                _advancedFeatureDetector(cv::FastFeatureDetector::create(minHessian * 0.5)),
-                _descriptorExtractor(cv::xfeatures2d::BriefDescriptorExtractor::create()),
+                _featureDetector(cv::ORB::create(maxFeaturesToDetect)),
+                _advancedFeatureDetector(cv::ORB::create(maxFeaturesToDetect)),
                 _meanPointExtractionDuration(0.0)
             {
-                assert(not _featureDetector.empty() );
-                assert(not _advancedFeatureDetector.empty() );
-                assert(not _descriptorExtractor.empty() );
+                assert(not _featureDetector.empty());
+                assert(not _advancedFeatureDetector.empty());
             }
 
             const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const
             {
-                std::vector<cv::Point2f> framePoints;
+                // search keypoints, using an advanced detector if not enough features are found
                 std::vector<cv::KeyPoint> frameKeypoints;
+                assert(grayImage.size() == mask.size());
                 _featureDetector->detect(grayImage, frameKeypoints, mask); 
 
                 if (frameKeypoints.size() <=  minimumPointsForValidity)
@@ -40,6 +40,8 @@ namespace rgbd_slam {
                     _advancedFeatureDetector->detect(grayImage, frameKeypoints, mask); 
                 }
 
+                // compute a subcorner accuracy estimation for all waypoints 
+                std::vector<cv::Point2f> framePoints;
                 if (frameKeypoints.size() >  minimumPointsForValidity)
                 {
                     // Refine keypoints positions
@@ -56,8 +58,8 @@ namespace rgbd_slam {
 
             const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const
             {
-                const uint radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_diameter();  // in pixels
-                const cv::Scalar fillColor(0, 0, 0);
+                const uint radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_radius();  // in pixels
+                const cv::Scalar fillColor(0);
                 cv::Mat mask = cv::Mat::ones(imageSize, CV_8UC1);
                 for (const cv::Point2f& point : keypointContainer)
                 {
@@ -105,7 +107,7 @@ namespace rgbd_slam {
                 if (_lastFramePyramide.size() > 0)
                 {
                     if (lastKeypointsWithIds._keypoints.size() > 0) {
-                        newKeypointsObject = get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance);
+                        get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance, newKeypointsObject);
 
                         // TODO: add descriptors to handle short term rematching of lost optical flow features
                     }
@@ -147,7 +149,7 @@ namespace rgbd_slam {
                         // Caution: the frameKeypoints list is mutable by this function
                         //          The bad points will be removed by the compute descriptor function
                         cv::Mat detectedKeypointDescriptors;
-                        _descriptorExtractor->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
+                        _featureDetector->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
 
                         // convert back to keypoint list
                         detectedKeypoints.clear();
@@ -167,18 +169,16 @@ namespace rgbd_slam {
             }
 
 
-            KeypointsWithIdStruct Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold)
+            void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold, KeypointsWithIdStruct& keypointStruct)
             {
                 assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
-
-                KeypointsWithIdStruct keypointStruct;
 
                 // START of optical flow
                 const std::vector<cv::Point2f>& lastKeypoints = lastKeypointsWithIds._keypoints;
                 if (imagePreviousPyramide.empty() or imageCurrentPyramide.empty() or errorThreshold < 0 or lastKeypoints.empty())
                 {
                     outputs::log_error("OpticalFlow: invalid parameters");
-                    return keypointStruct;
+                    return;
                 }
 
                 // Calculate optical flow
@@ -226,7 +226,7 @@ namespace rgbd_slam {
                 if (newKeypoints.empty())
                 {
                     outputs::log("No new points detected for backtracking");
-                    return keypointStruct;
+                    return;
                 }
 
                 // Contains the keypoints from this frame, without outliers
@@ -251,9 +251,10 @@ namespace rgbd_slam {
                     }
 
                     keypointStruct._keypoints.push_back(forwardPoints[keypointIndex]);
+                    // we tracked the point: keep the map id of the keypoint in the previous frame (low cost feature association)
                     keypointStruct._ids.push_back(lastKeypointsWithIds._ids[keypointIndex]);
                 }
-                return keypointStruct;
+                return;
             }
 
 

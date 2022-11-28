@@ -139,7 +139,7 @@ namespace rgbd_slam {
             const cv::Mat Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
             {
                 const uint_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
-
+                // compute a search zone for the potential matches of this point
                 const uint startY = std::max(0U, searchSpaceCoordinates.first - _searchSpaceCellRadius);
                 const uint startX = std::max(0U, searchSpaceCoordinates.second - _searchSpaceCellRadius);
 
@@ -149,6 +149,7 @@ namespace rgbd_slam {
                 // Squared search diameter, to compare distance without sqrt
                 const float squaredSearchDiameter = static_cast<float>(pow(Parameters::get_search_matches_distance(), 2.0));
 
+                // set a mask of the size of the keypoints, with everything at zero (nothing can be matched)
                 cv::Mat keyPointMask(cv::Mat::zeros(1, _descriptors.rows, CV_8UC1));
                 for (uint i = startY; i < endY; ++i)
                 {
@@ -157,16 +158,17 @@ namespace rgbd_slam {
                         const size_t searchSpaceIndex = get_search_space_index(j, i);
                         assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
 
+                        // get all keypoints in this area
                         const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex]; 
                         for(const uint keypointIndex : keypointIndexContainer)
                         {
+                            // ignore this point if it is already matched (prevent multiple matches of one point)
                             if (not isKeyPointMatchedContainer[keypointIndex])
                             {
                                 const utils::ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex);
-                                const double squarredDistance = 
-                                    pow(keypoint.x() - pointToSearch.x(), 2.0) + 
-                                    pow(keypoint.y() - pointToSearch.y(), 2.0);
+                                const double squarredDistance = (keypoint - pointToSearch).squaredNorm();
 
+                                // keypoint is in a circle around the target keypoints, allow a potential match
                                 if (squarredDistance <= squaredSearchDiameter)
                                     keyPointMask.at<uint8_t>(0, keypointIndex) = 1;
                             }
