@@ -16,9 +16,9 @@ namespace rgbd_slam {
                 public:
 
                     /**
-                     * \param[in] minHessian The "precision" of the keypoint descriptor
+                     * \param[in] maxFeaturesToDetect The maximum number of features to retain
                      */
-                    Key_Point_Extraction(const uint minHessian = 25);
+                    Key_Point_Extraction(const uint maxFeaturesToDetect = 200);
 
                     /**
                      * \brief compute the keypoints in the gray image, using optical flow and/or generic feature detectors 

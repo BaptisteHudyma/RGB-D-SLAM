@@ -16,10 +16,10 @@ namespace rgbd_slam {
              * Keypoint extraction
              */
 
-            Key_Point_Extraction::Key_Point_Extraction(const uint minHessian) :
+            Key_Point_Extraction::Key_Point_Extraction(const uint maxFeaturesToDetect) :
                 // Create feature extractor and matcher
-                _featureDetector(cv::ORB::create(minHessian)),
-                _advancedFeatureDetector(cv::ORB::create(minHessian)),
+                _featureDetector(cv::ORB::create(maxFeaturesToDetect)),
+                _advancedFeatureDetector(cv::ORB::create(maxFeaturesToDetect)),
                 _meanPointExtractionDuration(0.0)
             {
                 assert(not _featureDetector.empty());

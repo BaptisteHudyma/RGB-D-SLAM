@@ -626,7 +626,7 @@ namespace rgbd_slam {
 
         void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius)
         {
-            if (true)//mapPoint.is_matched())
+            if (mapPoint.is_matched())
             {
                 utils::ScreenCoordinate2D screenPoint; 
                 const bool isCoordinatesValid = (mapPoint._coordinates).to_screen_coordinates(worldToCameraMatrix, screenPoint);

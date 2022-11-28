@@ -76,7 +76,7 @@ namespace rgbd_slam {
             static double get_search_matches_distance() { return _matchSearchRadius; };
             static double get_search_matches_cell_size() { return _matchSearchCellSize; };
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
-            static uint get_minimum_hessian() { return _detectorMinHessian; };
+            static uint get_maximum_number_of_detectable_features() { return _maxNumberOfPointsToDetect; };
             static uint get_keypoint_refresh_frequency() { return _keypointRefreshFrequency; };
             static uint get_optical_flow_pyramid_depth() { return _opticalFlowPyramidDepth; };
             static uint get_optical_flow_pyramid_windown_size() { return _opticalFlowPyramidWindowSize; };
@@ -165,7 +165,7 @@ namespace rgbd_slam {
             inline static double _matchSearchRadius;    // Radius of the space around a point to search match points ins
             inline static int _matchSearchCellSize;     // Size of a search space divider 
             inline static double _maximumMatchDistance; // Maximum distance between a point and his mach before refusing the match
-            inline static uint _detectorMinHessian;
+            inline static uint _maxNumberOfPointsToDetect;
             inline static uint _keypointRefreshFrequency;
             inline static uint _opticalFlowPyramidDepth;
             inline static uint _opticalFlowPyramidWindowSize;
