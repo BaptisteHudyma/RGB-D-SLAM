@@ -16,9 +16,9 @@ namespace rgbd_slam {
                 public:
 
                     /**
-                     * \param[in] minHessian The "precision" of the keypoint descriptor
+                     * \param[in] maxFeaturesToDetect The maximum number of features to retain
                      */
-                    Key_Point_Extraction(const uint minHessian = 25);
+                    Key_Point_Extraction(const uint maxFeaturesToDetect = 200);
 
                     /**
                      * \brief compute the keypoints in the gray image, using optical flow and/or generic feature detectors 
@@ -53,9 +53,9 @@ namespace rgbd_slam {
                      * \param[in] windowSize The chosen size of the optical flow window 
                      * \param[in] errorThreshold an error Threshold for optical flow, in pixels
                      * \param[in] maxDistanceThreshold a distance threshold, in pixels
+                     * \param[out] keypointStruct The keypoints tracked by optical flow
                      */
-                    static KeypointsWithIdStruct get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold);
-
+                    static void get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold, KeypointsWithIdStruct& keypointStruct);
 
                     /**
                      * \brief Compute new key point, with an optional mask to exclude detection zones
@@ -73,7 +73,6 @@ namespace rgbd_slam {
                 private:
                     cv::Ptr<cv::FeatureDetector> _featureDetector;
                     cv::Ptr<cv::FeatureDetector> _advancedFeatureDetector;
-                    cv::Ptr<cv::DescriptorExtractor> _descriptorExtractor;
 
                     std::vector<cv::Mat> _lastFramePyramide;
 

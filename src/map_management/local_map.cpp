@@ -7,6 +7,7 @@
 #include "../utils/coordinates.hpp"
 #include "../utils/random.hpp"
 #include "../outputs/logger.hpp"
+#include "map_point.hpp"
 #include "map_primitive.hpp"
 #include "matches_containers.hpp"
 #include "primitive_detection.hpp"
@@ -95,6 +96,12 @@ namespace rgbd_slam {
             assert(matchIndex >= 0);
 
             const utils::ScreenCoordinate& matchedScreenpoint = detectedKeypointsObject.get_keypoint(matchIndex);
+            if (_isPointMatched[matchIndex])
+            {
+                //point was already matched
+                outputs::log_error("The requested point unique index is already matched");
+            }
+
             if (utils::is_depth_valid(matchedScreenpoint.z()) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
@@ -165,6 +172,7 @@ namespace rgbd_slam {
             }
 
             // if we have enough points from local map to run the optimization, no need to add the staged points
+            // Still, we need to try and match them to insure tracking and new map points
             const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
             const bool shouldUseStagedPoints = matchedPoints.size() < minimumPointsForOptimization;
 
@@ -389,6 +397,24 @@ namespace rgbd_slam {
 
         void Local_Map::update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject)
         {
+            // use this precprocessor directiv if you observe a lot of duplicated points in the local map
+            #ifdef REMOVE_DUPLICATE_STAGED_POINTS
+            const double maximumMatchDistance = Parameters::get_maximum_match_distance();
+            const float searchDiameter = Parameters::get_search_matches_distance();
+            cv::Mat stagedPointDescriptors;
+            std::map<size_t, size_t> indexToId;
+            size_t index = 0;
+            for(const auto& [pointId, mapPoint] : _stagedPoints)
+            {
+                indexToId[index++] = pointId;
+                if (stagedPointDescriptors.rows == 0)
+                    stagedPointDescriptors = mapPoint._descriptor;
+                else
+                    cv::vconcat(mapPoint._descriptor, stagedPointDescriptors, stagedPointDescriptors);
+            }
+            cv::Ptr<cv::DescriptorMatcher> featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher());
+            #endif
+
             point_map_container::iterator pointMapIterator = _localPointMap.begin();
             while(pointMapIterator != _localPointMap.end())
             {
@@ -396,6 +422,7 @@ namespace rgbd_slam {
                 Map_Point& mapPoint = pointMapIterator->second;
                 assert(pointMapIterator->first == mapPoint._id);
 
+                // update the point match status (matched/unmatched)
                 update_point_match_status(mapPoint, keypointObject, cameraToWorld);
 
                 if (mapPoint.is_lost()) {
@@ -407,6 +434,26 @@ namespace rgbd_slam {
                 }
                 else
                 {
+                    #ifdef REMOVE_DUPLICATE_STAGED_POINTS
+                    // try to find a point in the staged map, that is a duplicate of the this map point
+                    std::vector<std::vector<cv::DMatch>> knnMatches;
+                    featuresMatcher->knnMatch(mapPoint._descriptor, stagedPointDescriptors, knnMatches, 2);
+
+                    const std::vector<cv::DMatch>& match = knnMatches[0];
+                    if (match.size() >= 1) {
+                        if (match.size() == 1 or match[0].distance < maximumMatchDistance * match[1].distance)
+                        {
+                            const size_t stagedId = indexToId[match[0].trainIdx];
+                            Staged_Point& matchedStagedPoint = _stagedPoints.find(stagedId)->second;
+                            if (matchedStagedPoint._coordinates.get_distance(mapPoint._coordinates) < searchDiameter)
+                            {
+                                //if (not mapPoint.is_matched()) mapPoint._matchIndex = matchedStagedPoint._matchIndex;
+                                //else mapPoint.update_matched(matchedStagedPoint._coordinates, matchedStagedPoint.get_covariance_matrix());
+                                matchedStagedPoint.mark_unmatched();
+                            }
+                        }
+                    }
+                    #endif
                     ++pointMapIterator;
                 }
             }
