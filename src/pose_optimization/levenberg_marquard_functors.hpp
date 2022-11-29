@@ -83,6 +83,7 @@ namespace rgbd_slam {
             private:
             const matches_containers::match_point_container& _points;
             const matches_containers::match_plane_container& _planes;
+            std::vector<double> _dividers; //contains the divider of every output coefficients
         };
 
         struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator> {};
