@@ -76,8 +76,8 @@ namespace rgbd_slam {
                 // Compute retroprojected distance
                 const vector2& distance = match._worldFeature.get_signed_distance_2D(match._screenFeature, transformationMatrix);
 
-                outputScores(pointIndex++) = distance.x();
-                outputScores(pointIndex++) = distance.y();
+                outputScores(pointIndex++) = distance.x() / sqrt(match._worldFeatureCovariance.x());
+                outputScores(pointIndex++) = distance.y() / sqrt(match._worldFeatureCovariance.y());
             }
 
             // add plane optimization vectors

@@ -43,6 +43,7 @@ namespace rgbd_slam {
             _pointCovariance = covariance;
         }
 
+        // gain 10mm of uncertainty at each iteration
         const double pointProcessNoise = 10;   // TODO set in parameters
         void IMap_Point_With_Tracking::build_kalman_filter()
         {

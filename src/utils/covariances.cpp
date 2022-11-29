@@ -9,12 +9,13 @@ namespace rgbd_slam {
 
         const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate) 
         {
-            // Quadratic error model (uses depth as meters)
+            // quantization of depth measurments, depending on distance (uses depth as meters)
             const double depthMeters = ScreenCoordinate.z() / 1000.0;
             // If depth is less than the min distance, covariance is set to a high value
-            const double depthVariance = std::max(1.0, utils::is_depth_valid(ScreenCoordinate.z()) ? (0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
+            // Source: 2013: "3D with kinect"
+            const double depthQuantization = std::max(0.53, utils::is_depth_valid(ScreenCoordinate.z()) ? (-0.53 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
             // a zero variance will break the kalman gain
-            assert(depthVariance > 0);
+            assert(depthQuantization > 0);
             // TODO xy variance should also depend on the placement of the pixel in x and y
             const double xyVariance = pow(0.1, 2.0);
 
@@ -22,7 +23,7 @@ namespace rgbd_slam {
             screenPointCovariance.base() = matrix33({
                 {xyVariance, 0.0,        0.0},
                 {0.0,        xyVariance, 0.0},
-                {0.0,        0.0,        pow(depthVariance, 2.0)}
+                {0.0,        0.0,        pow(depthQuantization, 2.0)}
             });
             return screenPointCovariance;
         }
