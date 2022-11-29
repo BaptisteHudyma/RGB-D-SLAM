@@ -26,8 +26,13 @@ namespace utils {
         {
             assert(x() >= 0 and y() >= 0);
 
-            const double x = (this->x() - Parameters::get_camera_1_center_x()) / Parameters::get_camera_1_focal_x();
-            const double y = (this->y() - Parameters::get_camera_1_center_y()) / Parameters::get_camera_1_focal_y();
+            const static double cameraFX = Parameters::get_camera_1_focal_x();
+            const static double cameraFY = Parameters::get_camera_1_focal_y();
+            const static double cameraCX = Parameters::get_camera_1_center_x();
+            const static double cameraCY = Parameters::get_camera_1_center_y();
+
+            const double x = (this->x() - cameraCX) / cameraFX;
+            const double y = (this->y() - cameraCY) / cameraFY;
 
             CameraCoordinate2D cameraPoint(x, y);
             return cameraPoint;
@@ -45,8 +50,13 @@ namespace utils {
             assert(x() >= 0 and y() >= 0);
             assert(z() != 0);
 
-            const double x = (this->x() - Parameters::get_camera_1_center_x()) * this->z() / Parameters::get_camera_1_focal_x();
-            const double y = (this->y() - Parameters::get_camera_1_center_y()) * this->z() / Parameters::get_camera_1_focal_y();
+            const static double cameraFX = Parameters::get_camera_1_focal_x();
+            const static double cameraFY = Parameters::get_camera_1_focal_y();
+            const static double cameraCX = Parameters::get_camera_1_center_x();
+            const static double cameraCY = Parameters::get_camera_1_center_y();
+
+            const double x = (this->x() - cameraCX) * this->z() / cameraFX;
+            const double y = (this->y() - cameraCY) * this->z() / cameraFY;
 
             CameraCoordinate cameraPoint(x, y, z());
             return cameraPoint;
@@ -60,8 +70,13 @@ namespace utils {
 
         bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const
         {
-            const double screenX = Parameters::get_camera_1_focal_x() * x() + Parameters::get_camera_1_center_x();
-            const double screenY = Parameters::get_camera_1_focal_y() * y() + Parameters::get_camera_1_center_y();
+            const static double cameraFX = Parameters::get_camera_1_focal_x();
+            const static double cameraFY = Parameters::get_camera_1_focal_y();
+            const static double cameraCX = Parameters::get_camera_1_center_x();
+            const static double cameraCY = Parameters::get_camera_1_center_y();
+
+            const double screenX = cameraFX * x() + cameraCX;
+            const double screenY = cameraFY * y() + cameraCY;
 
             if (not std::isnan(screenX) and not std::isnan(screenY))
             {
@@ -79,8 +94,13 @@ namespace utils {
 
         bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const
         {
-            const double screenX = Parameters::get_camera_1_focal_x() * x() / z() + Parameters::get_camera_1_center_x();
-            const double screenY = Parameters::get_camera_1_focal_y() * y() / z() + Parameters::get_camera_1_center_y();
+            const static double cameraFX = Parameters::get_camera_1_focal_x();
+            const static double cameraFY = Parameters::get_camera_1_focal_y();
+            const static double cameraCX = Parameters::get_camera_1_center_x();
+            const static double cameraCY = Parameters::get_camera_1_center_y();
+
+            const double screenX = cameraFX * x() / z() + cameraCX;
+            const double screenY = cameraFY * y() / z() + cameraCY;
 
             if (not std::isnan(screenX) and not std::isnan(screenY))
             {

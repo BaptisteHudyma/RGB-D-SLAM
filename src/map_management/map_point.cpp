@@ -110,13 +110,15 @@ namespace rgbd_slam {
 
         double Staged_Point::get_confidence() const 
         {
-            const double confidence = static_cast<double>(_matchesCount) / static_cast<double>(Parameters::get_point_staged_age_confidence());
+            const static double stagedPointconfidence = static_cast<double>(Parameters::get_point_staged_age_confidence());
+            const double confidence = static_cast<double>(_matchesCount) / stagedPointconfidence;
             return std::clamp(confidence, -1.0, 1.0);
         }
 
         bool Staged_Point::should_add_to_local_map() const
         {
-            return (get_confidence() > Parameters::get_minimum_confidence_for_local_map());
+            const static double minimumConfidenceForLocalMap = Parameters::get_minimum_confidence_for_local_map();
+            return (get_confidence() > minimumConfidenceForLocalMap);
         }
 
 
@@ -179,7 +181,8 @@ namespace rgbd_slam {
          * \brief True is this point is lost : should be removed from local map. Should be used only for map points
          */
         bool Map_Point::is_lost() const {
-            return (_failTrackingCount > Parameters::get_maximum_unmatched_before_removal());
+            const static double maximumUnmatchBeforeRemoval = Parameters::get_maximum_unmatched_before_removal();
+            return (_failTrackingCount > maximumUnmatchBeforeRemoval);
         }
 
         /**

@@ -132,8 +132,8 @@ namespace rgbd_slam {
 
                 // Check for discontinuities using cross search
                 //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
-                const double depthAlphaValue = Parameters::get_depth_alpha();
-                const uint depthDiscontinuityLimit = Parameters::get_depth_discontinuity_limit(); 
+                const static double depthAlphaValue = Parameters::get_depth_alpha();
+                const static uint depthDiscontinuityLimit = Parameters::get_depth_discontinuity_limit(); 
 
                 if (not is_cell_horizontal_continuous(depthMatrix, depthAlphaValue, depthDiscontinuityLimit) or 
                         not is_cell_vertical_continuous(depthMatrix, depthAlphaValue, depthDiscontinuityLimit))
@@ -157,7 +157,9 @@ namespace rgbd_slam {
                 //fit a plane to those points 
                 fit_plane();
                 //MSE > T_MSE
-                if(_MSE > pow(Parameters::get_depth_sigma_error() * pow(_mean.z(), 2) + Parameters::get_depth_sigma_margin(), 2))
+                const static double depthSigmaError = Parameters::get_depth_sigma_error();
+                const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
+                if(_MSE > pow(depthSigmaError * pow(_mean.z(), 2) + depthSigmaMargin, 2))
                     _isPlanar = false;
 
             }
@@ -169,7 +171,8 @@ namespace rgbd_slam {
             }
             bool Plane_Segment::is_depth_discontinuous(const vector3& planeMean) const
             {
-                return abs(_mean.z() - planeMean.z()) < 2.0 * Parameters::get_depth_alpha() * (abs(_mean.z()) + 0.5);
+                const static double depthAlpha = Parameters::get_depth_alpha();
+                return abs(_mean.z() - planeMean.z()) < 2.0 * depthAlpha * (abs(_mean.z()) + 0.5);
             }
 
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {

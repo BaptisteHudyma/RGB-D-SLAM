@@ -180,7 +180,7 @@ namespace rgbd_slam {
 
             // if we have enough points from local map to run the optimization, no need to add the staged points
             // Still, we need to try and match them to insure tracking and new map points
-            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
+            const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
             const bool shouldUseStagedPoints = matchedPoints.size() < minimumPointsForOptimization;
 
             // Try to find matches in staged points
@@ -406,8 +406,8 @@ namespace rgbd_slam {
         {
             // use this precprocessor directiv if you observe a lot of duplicated points in the local map
             #ifdef REMOVE_DUPLICATE_STAGED_POINTS
-            const double maximumMatchDistance = Parameters::get_maximum_match_distance();
-            const float searchDiameter = Parameters::get_search_matches_distance();
+            const static double maximumMatchDistance = Parameters::get_maximum_match_distance();
+            const static float searchDiameter = Parameters::get_search_matches_distance();
             cv::Mat stagedPointDescriptors;
             std::map<size_t, size_t> indexToId;
             size_t index = 0;
@@ -602,7 +602,7 @@ namespace rgbd_slam {
             keypointsWithIds._ids.reserve(numberOfNewKeypoints);
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
 
-            const uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
+            const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
 
             // add map points with valid retroprojected coordinates
             for (const auto& [pointId, point]  : _localPointMap)

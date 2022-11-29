@@ -47,9 +47,9 @@ namespace rgbd_slam {
                     // Refine keypoints positions
                     cv::KeyPoint::convert(frameKeypoints, framePoints);
 
-                    const cv::Size winSize  = cv::Size(3, 3);
-                    const cv::Size zeroZone = cv::Size(-1, -1);
-                    const cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
+                    const static cv::Size winSize  = cv::Size(3, 3);
+                    const static cv::Size zeroZone = cv::Size(-1, -1);
+                    const static cv::TermCriteria termCriteria = cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 30, 0.01);
                     cv::cornerSubPix(grayImage, framePoints, winSize, zeroZone, termCriteria);
                 }
 
@@ -58,8 +58,8 @@ namespace rgbd_slam {
 
             const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const
             {
-                const uint radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_radius();  // in pixels
-                const cv::Scalar fillColor(0);
+                const static uint radiusOfAreaAroundPoint = Parameters::get_keypoint_mask_radius();  // in pixels
+                const static cv::Scalar fillColor(0);
                 cv::Mat mask = cv::Mat::ones(imageSize, CV_8UC1);
                 for (const cv::Point2f& point : keypointContainer)
                 {
@@ -90,15 +90,15 @@ namespace rgbd_slam {
                  */
 
                 // load parameters
-                const uint pyramidWindowSize = Parameters::get_optical_flow_pyramid_windown_size();
-                const uint pyramidDepth = Parameters::get_optical_flow_pyramid_depth();
-                const uint maxError = Parameters::get_optical_flow_max_error();
-                const uint maxDistance = Parameters::get_optical_flow_max_distance();
-                const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
-                const uint maximumPointsForLocalMap = Parameters::get_maximum_point_count_per_frame();
-                const double maximumMatchDistance = Parameters::get_maximum_match_distance();
+                const static uint pyramidWindowSize = Parameters::get_optical_flow_pyramid_windown_size();
+                const static uint pyramidDepth = Parameters::get_optical_flow_pyramid_depth();
+                const static uint maxError = Parameters::get_optical_flow_max_error();
+                const static uint maxDistance = Parameters::get_optical_flow_max_distance();
+                const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
+                const static uint maximumPointsForLocalMap = Parameters::get_maximum_point_count_per_frame();
+                const static double maximumMatchDistance = Parameters::get_maximum_match_distance();
 
-                const cv::Size pyramidSize = cv::Size(pyramidWindowSize, pyramidWindowSize);   // must be >= than the size used in calcOpticalFlow
+                const static cv::Size pyramidSize(pyramidWindowSize, pyramidWindowSize);   // must be >= than the size used in calcOpticalFlow
 
                 // build pyramid
                 std::vector<cv::Mat> newImagePyramide;
@@ -188,7 +188,7 @@ namespace rgbd_slam {
 
                 const size_t previousKeyPointCount = lastKeypoints.size();
                 const cv::Size windowSizeObject = cv::Size(windowSize, windowSize);
-                const cv::TermCriteria criteria = cv::TermCriteria((cv::TermCriteria::COUNT) + (cv::TermCriteria::EPS), 10, 0.03);
+                const static cv::TermCriteria criteria = cv::TermCriteria((cv::TermCriteria::COUNT) + (cv::TermCriteria::EPS), 10, 0.03);
 
                 // Get forward points: optical flow from previous to current image to extract new keypoints
                 cv::calcOpticalFlowPyrLK(imagePreviousPyramide, imageCurrentPyramide, lastKeypoints, forwardPoints, statusContainer, errorContainer, windowSizeObject, pyramidDepth, criteria);

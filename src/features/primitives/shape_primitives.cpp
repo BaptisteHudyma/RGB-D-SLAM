@@ -58,10 +58,12 @@ namespace rgbd_slam {
             }
 
             bool Cylinder::is_similar(const Cylinder& cylinder) const {
-                if(get_IOU(cylinder) < Parameters::get_minimum_iou_for_match())
+                const double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
+                const double minimumNormalDotDiff = Parameters::get_minimum_normals_dot_difference();
+                if(get_IOU(cylinder) < minimumIOUForMatch)
                     return false;
 
-                return std::abs(_normal.dot(cylinder._normal)) > Parameters::get_minimum_normals_dot_difference();
+                return std::abs(_normal.dot(cylinder._normal)) > minimumNormalDotDiff;
             }
 
             double Cylinder::get_distance(const vector3& point) const {
@@ -94,14 +96,17 @@ namespace rgbd_slam {
 
             bool Plane::is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const
             {
-                if(get_IOU(mask) < Parameters::get_minimum_iou_for_match())
+                const double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
+                const double minimumNormalDotDiff = Parameters::get_minimum_normals_dot_difference();
+                if(get_IOU(mask) < minimumIOUForMatch)
                     return false;
                 // transform from [-1; 1] to [0; 1]
-                return (get_plane_normal().dot(planeParametrization.head(3)) + 1.0) / 2.0 > Parameters::get_minimum_normals_dot_difference();
+                return (get_plane_normal().dot(planeParametrization.head(3)) + 1.0) / 2.0 > minimumNormalDotDiff;
             }
 
             bool Plane::is_similar(const Cylinder& cylinder) const {
-                if(get_IOU(cylinder) < Parameters::get_minimum_iou_for_match())
+                const double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
+                if(get_IOU(cylinder) < minimumIOUForMatch)
                     return false;
 
                 // TODO: not implemented

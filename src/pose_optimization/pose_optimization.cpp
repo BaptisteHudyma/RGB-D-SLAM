@@ -99,14 +99,14 @@ namespace rgbd_slam {
             const double matchedPointSize = static_cast<double>(matchedPoints.size());
             const double matchedPlaneSize = static_cast<double>(matchedPlanes.size());
 
-            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select
-            const uint minimumPlanesForOptimization = Parameters::get_minimum_plane_count_for_optimization();    // Number of random planes to select
+            const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select
+            const static uint minimumPlanesForOptimization = Parameters::get_minimum_plane_count_for_optimization();    // Number of random planes to select
             assert(minimumPointsForOptimization > 0);
             assert(minimumPlanesForOptimization > 0);
 
             // individual feature score
-            const double pointFeatureScore = 1.0 / minimumPointsForOptimization;
-            const double planeFeatureScore = 1.0 / minimumPlanesForOptimization;
+            const static double pointFeatureScore = 1.0 / minimumPointsForOptimization;
+            const static double planeFeatureScore = 1.0 / minimumPlanesForOptimization;
 
             // check that we have enough features for minimal pose optimization
             const double initialFeatureScore = pointFeatureScore * matchedPointSize + planeFeatureScore * matchedPlaneSize;
@@ -117,8 +117,8 @@ namespace rgbd_slam {
                 return false;
             }
 
-            const double pointMaxRetroprojectionError = Parameters::get_ransac_maximum_retroprojection_error_for_point_inliers(); // maximum inlier threshold, in pixels 
-            const double planeMaxRetroprojectionError = Parameters::get_ransac_maximum_retroprojection_error_for_plane_inliers();
+            const static double pointMaxRetroprojectionError = Parameters::get_ransac_maximum_retroprojection_error_for_point_inliers(); // maximum inlier threshold, in pixels 
+            const static double planeMaxRetroprojectionError = Parameters::get_ransac_maximum_retroprojection_error_for_plane_inliers();
             assert(pointMaxRetroprojectionError > 0);
             assert(planeMaxRetroprojectionError > 0);
             const uint acceptablePointInliersForEarlyStop = static_cast<uint>(matchedPointSize * Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this inlier count is reached

@@ -30,8 +30,8 @@ namespace rgbd_slam {
 
         const screenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance)
         {
-            const double cameraFX = Parameters::get_camera_1_focal_x();
-            const double cameraFY = Parameters::get_camera_1_focal_y();
+            const static double cameraFX = Parameters::get_camera_1_focal_x();
+            const static double cameraFY = Parameters::get_camera_1_focal_y();
 
             // Jacobian of the world to screen function. Use absolutes to prevent negative variances
             const matrix33 jacobian {
@@ -51,10 +51,10 @@ namespace rgbd_slam {
 
         const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint, const screenCoordinateCovariance& screenPointCovariance)
         {
-            const double cameraFX = Parameters::get_camera_1_focal_x();
-            const double cameraFY = Parameters::get_camera_1_focal_y();
-            const double cameraCX = Parameters::get_camera_1_center_x();
-            const double cameraCY = Parameters::get_camera_1_center_y();
+            const static double cameraFX = Parameters::get_camera_1_focal_x();
+            const static double cameraFY = Parameters::get_camera_1_focal_y();
+            const static double cameraCX = Parameters::get_camera_1_center_x();
+            const static double cameraCY = Parameters::get_camera_1_center_y();
 
             // Jacobian of the screen to camera function. Use absolutes to prevent negative variances
             const matrix33 jacobian {

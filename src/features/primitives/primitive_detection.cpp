@@ -185,7 +185,8 @@ namespace rgbd_slam {
                 {
                     //get seed candidates
                     const std::vector<uint>& seedCandidates = _histogram.get_points_from_most_frequent_bin();
-                    if (seedCandidates.size() < Parameters::get_minimum_plane_seed_count())
+                    const uint planeSeedCount = Parameters::get_minimum_plane_seed_count();
+                    if (seedCandidates.size() < planeSeedCount)
                         break;
 
                     //select seed cell with min MSE
@@ -248,7 +249,8 @@ namespace rgbd_slam {
                         }
                     }
 
-                    if(not isPlaneFitable or cellActivatedCount < Parameters::get_minimum_cell_activated()) 
+                    const uint minimumCellActivated = Parameters::get_minimum_cell_activated();
+                    if(not isPlaneFitable or cellActivatedCount < minimumCellActivated) 
                     {
                         _histogram.remove_point(seedId);
                         continue;
