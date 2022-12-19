@@ -16,34 +16,34 @@ namespace rgbd_slam {
          *
          * \return A 3x3 covariance matrix. It should be diagonal
          */
-        const matrix33 get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate);
+        const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate);
 
         /**
-         * \brief Compute a screen point covariance from a given camera point
+         * \brief Compute a screen point covariance from a given point
          *
-         * \param[in] cameraPoint The coordinates of this 3D point, in camera space
-         * \param[in] worldPointCovariance The covariance associated with this world point 
+         * \param[in] point The coordinates of this 3D point (world or camera space)
+         * \param[in] pointCovariance The covariance associated with this point (world or camera space)
          */
-        const matrix33 get_screen_point_covariance(const CameraCoordinate& cameraPoint, const matrix33& worldPointCovariance);
+        const screenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance);
 
         /**
-         * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point.
+         * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This function will internaly compute the covariance of the screen point.
          *
          * \param[in] screenPoint The 2D point in screen coordinates
          *
-         * \return the covariance of the 3D world point
+         * \return the covariance of the 3D camera point
          */
-        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint);
+        const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint);
 
         /**
-         * \brief Compute the associated Gaussian error of a screen point when it will be transformed to world point
+         * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point
          *
          * \param[in] screenPoint The 2D point in screen coordinates
          * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
          *
-         * \return the covariance of the 3D world point
+         * \return the covariance of the 3D camera point
          */
-        const matrix33 get_world_point_covariance(const ScreenCoordinate& screenPoint, const matrix33& screenPointCovariance);
+        const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint, const screenCoordinateCovariance& screenPointCovariance);
 
         /**
          * \brief Compute the variance of the final pose in X Y Z

@@ -110,7 +110,10 @@ namespace rgbd_slam {
 
                 if(shouldAddMatchToContainer)
                 {
-                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, point._id);
+                    const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(point._coordinates, point.get_covariance_matrix());
+                    //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
+                    const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
+                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, screenPointCovariance, point._id);
                 }
                 return true;
             }
@@ -122,7 +125,10 @@ namespace rgbd_slam {
 
                 if(shouldAddMatchToContainer)
                 {
-                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, point._id);
+                    const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(point._coordinates, point.get_covariance_matrix());
+                    //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
+                    const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
+                    matchedPoints.emplace(matchedPoints.end(), matchedScreenpoint, point._coordinates, screenPointCovariance, point._id);
                 }
                 return true;
             }
@@ -146,7 +152,8 @@ namespace rgbd_slam {
                 if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
                 {
                     mapPlane._matchedPlane.mark_matched(planeId);
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, mapPlane._id);
+                    // TODO: replace nullptr by the plane covariance in camera space
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, nullptr, mapPlane._id);
 
                     _unmatchedPlaneIds.erase(planeId);
                     return true;
@@ -173,7 +180,7 @@ namespace rgbd_slam {
 
             // if we have enough points from local map to run the optimization, no need to add the staged points
             // Still, we need to try and match them to insure tracking and new map points
-            const uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
+            const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
             const bool shouldUseStagedPoints = matchedPoints.size() < minimumPointsForOptimization;
 
             // Try to find matches in staged points
@@ -346,10 +353,10 @@ namespace rgbd_slam {
                     // transform screen point to world point
                     const utils::WorldCoordinate& worldPointCoordinates = matchedPointCoordinates.to_world_coordinates(cameraToWorld);
                     // get a measure of the estimated variance of the new world point
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(matchedPointCoordinates);
+                    const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(matchedPointCoordinates);
 
                     // update this map point errors & position
-                    mapPoint.update_matched(worldPointCoordinates, worldPointCovariance);
+                    mapPoint.update_matched(worldPointCoordinates, cameraPointCovariance.base());
 
                     // If a new descriptor is available, update it
                     if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -374,11 +381,11 @@ namespace rgbd_slam {
                         {
                             //std::cout << "udpate with triangulation " << triangulatedPoint.transpose() << " " << mapPoint._coordinates.transpose() << std::endl;
                             // get a measure of the estimated variance of the new world point
-                            //const matrix33& worldPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
-                            const matrix33& worldPointCovariance = utils::get_world_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
+                            //const matrix33& cameraPointCovariance = utils::get_triangulated_point_covariance(triangulatedPoint, get_screen_point_covariance(triangulatedPoint.z())));
+                            const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(vector2(triangulatedPoint.x(), triangulatedPoint.y()), triangulatedPoint.z(), get_screen_point_covariance(triangulatedPoint.z()));
 
                             // update this map point errors & position
-                            mapPoint.update_matched(triangulatedPoint, worldPointCovariance);
+                            mapPoint.update_matched(triangulatedPoint, cameraPointCovariance);
 
                             // If a new descriptor is available, update it
                             if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -399,8 +406,8 @@ namespace rgbd_slam {
         {
             // use this precprocessor directiv if you observe a lot of duplicated points in the local map
             #ifdef REMOVE_DUPLICATE_STAGED_POINTS
-            const double maximumMatchDistance = Parameters::get_maximum_match_distance();
-            const float searchDiameter = Parameters::get_search_matches_distance();
+            const static double maximumMatchDistance = Parameters::get_maximum_match_distance();
+            const static float searchDiameter = Parameters::get_search_matches_distance();
             cv::Mat stagedPointDescriptors;
             std::map<size_t, size_t> indexToId;
             size_t index = 0;
@@ -569,9 +576,9 @@ namespace rgbd_slam {
                     const utils::WorldCoordinate& worldPoint = screenPoint.to_world_coordinates(cameraToWorld);
                     assert(not std::isnan(worldPoint.x()) and not std::isnan(worldPoint.y()) and not std::isnan(worldPoint.z()));
 
-                    const matrix33& worldPointCovariance = utils::get_world_point_covariance(screenPoint);
+                    const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(screenPoint);
 
-                    Staged_Point newStagedPoint(worldPoint, worldPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
+                    Staged_Point newStagedPoint(worldPoint, cameraPointCovariance + poseCovariance, keypointObject.get_descriptor(i));
                     // add to staged map
                     _stagedPoints.emplace(
                             newStagedPoint._id,
@@ -595,7 +602,7 @@ namespace rgbd_slam {
             keypointsWithIds._ids.reserve(numberOfNewKeypoints);
             keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
 
-            const uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
+            const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
 
             // add map points with valid retroprojected coordinates
             for (const auto& [pointId, point]  : _localPointMap)
@@ -628,7 +635,7 @@ namespace rgbd_slam {
         {
             if (mapPoint.is_matched())
             {
-                utils::ScreenCoordinate2D screenPoint; 
+                utils::ScreenCoordinate2D screenPoint;
                 const bool isCoordinatesValid = (mapPoint._coordinates).to_screen_coordinates(worldToCameraMatrix, screenPoint);
 
                 //Map Point are green 

@@ -28,7 +28,7 @@ namespace rgbd_slam {
 
         bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera, const worldToCameraMatrix& newWorldToCamera, const utils::ScreenCoordinate2D& point2Da, const utils::ScreenCoordinate2D& point2Db, utils::WorldCoordinate& triangulatedPoint) 
         {
-            const double maximumRetroprojectionError = Parameters::get_maximum_retroprojection_error();
+            const static double maximumRetroprojectionError = Parameters::get_maximum_retroprojection_error();
 
             // project x and y coordinates
             const utils::CameraCoordinate2D& pointA = point2Da.to_camera_coordinates();

@@ -52,7 +52,7 @@ namespace rgbd_slam {
 
                 _descriptors = inDescriptors;
 
-                const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+                const static double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 assert(cellSize > 0);
                 _searchSpaceCellRadius = static_cast<uint>(std::ceil(Parameters::get_search_matches_distance() / cellSize));
                 assert(_searchSpaceCellRadius > 0);
@@ -128,7 +128,7 @@ namespace rgbd_slam {
 
             const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const
             {
-                const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+                const static double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 const uint_pair cellCoordinates(
                         std::clamp(floor(pointToPlace.y() / cellSize), 0.0, _cellCountY - 1.0),
                         std::clamp(floor(pointToPlace.x() / cellSize), 0.0, _cellCountX - 1.0)
@@ -147,7 +147,7 @@ namespace rgbd_slam {
                 const uint endX = std::min(_cellCountX, searchSpaceCoordinates.second + _searchSpaceCellRadius + 1);
 
                 // Squared search diameter, to compare distance without sqrt
-                const float squaredSearchDiameter = static_cast<float>(pow(Parameters::get_search_matches_distance(), 2.0));
+                const static float squaredSearchDiameter = static_cast<float>(pow(Parameters::get_search_matches_distance(), 2.0));
 
                 // set a mask of the size of the keypoints, with everything at zero (nothing can be matched)
                 cv::Mat keyPointMask(cv::Mat::zeros(1, _descriptors.rows, CV_8UC1));
