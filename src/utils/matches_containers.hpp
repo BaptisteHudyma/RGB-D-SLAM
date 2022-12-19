@@ -46,6 +46,12 @@ namespace rgbd_slam {
                 _points.clear();
                 _planes.clear();
             }
+
+            void swap(matchContainer& other)
+            {
+                _points.swap(other._points);
+                _planes.swap(other._planes);
+            }
         };
 
 

@@ -105,6 +105,8 @@ namespace rgbd_slam {
         matches_containers::match_sets get_random_subset(const uint numberOfPointsToSample, const uint numberOfPlanesToSample, const matches_containers::matchContainer& matchedFeatures)
         {
             matches_containers::match_sets matchSubset;
+            // we can have a lot of points, so use a more efficient but with potential duplicates subset
+            //matchSubset._pointSets._inliers = ransac::get_random_subset_with_duplicates(matchedFeatures._points, numberOfPointsToSample);
             matchSubset._pointSets._inliers = ransac::get_random_subset(matchedFeatures._points, numberOfPointsToSample);
             matchSubset._planeSets._inliers = ransac::get_random_subset(matchedFeatures._planes, numberOfPlanesToSample);
             assert(matchSubset._pointSets._inliers.size() == numberOfPointsToSample);
@@ -224,13 +226,13 @@ namespace rgbd_slam {
                 return false;
             }
 
-            // optimize on all inliers
+            // optimize on all inliers, starting pose is the best pose we found with RANSAC
             const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, featureSets, finalPose);
             if (isPoseValid)
             {
                 return true;
             }
-
+            // should never happen
             outputs::log_warning("Could not compute a global pose, even though we found a valid inlier set");
             return false;
         }
