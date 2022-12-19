@@ -203,8 +203,7 @@ namespace rgbd_slam {
         _meanPrimitiveTreatmentDuration += (cv::getTickCount() - primitiveDetectionStartTime) / static_cast<double>(cv::getTickFrequency());
 
         const double findMatchesStartTime = cv::getTickCount();
-        const matches_containers::match_point_container& matchedPoints = _localMap->find_keypoint_matches(refinedPose, keypointObject);
-        const matches_containers::match_plane_container& matchedPlanes = _localMap->find_plane_matches(refinedPose, detectedPlanes);
+        const matches_containers::matchContainer& matchedFeatures = _localMap->find_feature_matches(refinedPose, keypointObject, detectedPlanes);
         _meanFindMatchTime += (cv::getTickCount() - findMatchesStartTime) / static_cast<double>(cv::getTickFrequency());
 
         matches_containers::match_sets matchSets;
@@ -216,7 +215,7 @@ namespace rgbd_slam {
             const double optimizePoseStartTime = cv::getTickCount();
             utils::Pose optimizedPose;
             //if (matchedPoints.size() >= Parameters::get_minimum_point_count_for_optimization())
-            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedPoints, matchedPlanes, optimizedPose, matchSets);
+            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedFeatures, optimizedPose, matchSets);
             if (isPoseValid)
             {
                 refinedPose = optimizedPose;

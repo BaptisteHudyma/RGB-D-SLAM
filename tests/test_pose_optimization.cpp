@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <random>
 
+#include "matches_containers.hpp"
 #include "parameters.hpp"
 #include "pose_optimization/pose_optimization.hpp"
 #include "outputs/logger.hpp"
@@ -139,8 +140,12 @@ namespace rgbd_slam {
     {
         // Compute end pose
         utils::Pose endPose; 
+        matches_containers::matchContainer matches;
+        matches._planes = matchedPlanes;
+        matches._points = matchedPoints;
+
         matches_containers::match_sets inliersOutliers;
-        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matchedPoints, matchedPlanes, endPose, inliersOutliers);
+        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(initialPoseGuess, matches, endPose, inliersOutliers);
 
         if (not isPoseValid)
             FAIL();

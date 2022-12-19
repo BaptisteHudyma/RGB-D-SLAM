@@ -32,6 +32,8 @@ namespace rgbd_slam {
                 Local_Map();
                 ~Local_Map();
 
+                matches_containers::matchContainer find_feature_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const features::primitives::plane_container& detectedPlanes);
+
                 /**
                  * \brief Compute the point feature matches between the local map and a given set of points. Update the staged point list matched points
                  *

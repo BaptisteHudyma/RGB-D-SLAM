@@ -92,12 +92,27 @@ namespace rgbd_slam {
             return retroprojectionScore;
         }
 
-        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& finalPose, matches_containers::match_sets& featureSets) 
+        /**
+         * \brief Return a subset of a given inlier set
+         */
+        matches_containers::match_sets get_random_subset(const uint numberOfPointsToSample, const uint numberOfPlanesToSample, const matches_containers::matchContainer& matchedFeatures)
+        {
+            matches_containers::match_sets matchSubset;
+            matchSubset._pointSets._inliers = ransac::get_random_subset(matchedFeatures._points, numberOfPointsToSample);
+            matchSubset._planeSets._inliers = ransac::get_random_subset(matchedFeatures._planes, numberOfPlanesToSample);
+            assert(matchSubset._pointSets._inliers.size() == numberOfPointsToSample);
+            assert(matchSubset._planeSets._inliers.size() == numberOfPlanesToSample);
+
+            return matchSubset;
+        }
+
+
+        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::Pose& finalPose, matches_containers::match_sets& featureSets) 
         {
             featureSets.clear();
 
-            const double matchedPointSize = static_cast<double>(matchedPoints.size());
-            const double matchedPlaneSize = static_cast<double>(matchedPlanes.size());
+            const double matchedPointSize = static_cast<double>(matchedFeatures._points.size());
+            const double matchedPlaneSize = static_cast<double>(matchedFeatures._planes.size());
 
             const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();    // Number of random points to select
             const static uint minimumPlanesForOptimization = Parameters::get_minimum_plane_count_for_optimization();    // Number of random planes to select
@@ -113,7 +128,7 @@ namespace rgbd_slam {
             if (initialFeatureScore < 1.0)
             {
                 // if there is not enough potential inliers to optimize a pose
-                outputs::log_warning("Not enough features to optimize a pose (" + std::to_string(matchedPoints.size()) + " points, " +  std::to_string(matchedPlanes.size()) + " planes)");
+                outputs::log_warning("Not enough features to optimize a pose (" + std::to_string(matchedPointSize) + " points, " +  std::to_string(matchedPlaneSize) + " planes)");
                 return false;
             }
 
@@ -129,8 +144,8 @@ namespace rgbd_slam {
             const double enoughInliersScore = std::max(1.0, pointFeatureScore * acceptablePointInliersForEarlyStop + planeFeatureScore * acceptablePlaneInliersForEarlyStop);
 
             // get the min and max values of planes and points to select
-            const uint maxNumberOfPoints = std::min(minimumPointsForOptimization, (uint)matchedPoints.size());
-            const uint maxNumberOfPlanes = std::min(minimumPlanesForOptimization, (uint)matchedPlanes.size());
+            const uint maxNumberOfPoints = std::min(minimumPointsForOptimization, (uint)matchedPointSize);
+            const uint maxNumberOfPlanes = std::min(minimumPlanesForOptimization, (uint)matchedPlaneSize);
             const uint minNumberOfPlanes = std::ceil((1.0 - maxNumberOfPoints * pointFeatureScore) / planeFeatureScore);
             const uint minNumberOfPoints = std::ceil((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore);
 
@@ -153,20 +168,17 @@ namespace rgbd_slam {
                     outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and " + std::to_string(numberOfPlanesToSample) + " planes, not enough for optimization (score: " + std::to_string(subsetScore) + ")");
                     continue;
                 }
-                if (numberOfPointsToSample < minNumberOfPoints or numberOfPointsToSample > maxNumberOfPoints or numberOfPointsToSample > matchedPoints.size())
+                if (numberOfPointsToSample < minNumberOfPoints or numberOfPointsToSample > maxNumberOfPoints or numberOfPointsToSample > matchedPointSize)
                 {
-                    outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and but we have " + std::to_string(matchedPoints.size()) + " available");
+                    outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and but we have " + std::to_string(numberOfPointsToSample) + " available");
                     continue;
                 }
 
-                const matches_containers::match_point_container& selectedPointMatches = ransac::get_random_subset(matchedPoints, numberOfPointsToSample);
-                const matches_containers::match_plane_container& selectedPlaneMatches = ransac::get_random_subset(matchedPlanes, numberOfPlanesToSample);
-                assert(selectedPointMatches.size() == numberOfPointsToSample);
-                assert(selectedPlaneMatches.size() == numberOfPlanesToSample);
+                const matches_containers::match_sets& selectedMatches = get_random_subset(numberOfPointsToSample, numberOfPlanesToSample, matchedFeatures);
 
                 // compute a new candidate pose to evaluate
                 utils::Pose candidatePose;
-                const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedPointMatches, selectedPlaneMatches, candidatePose);
+                const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, candidatePose);
                 //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedPointMatches, candidatePose);
                 if (not isPoseValid)
                     continue;
@@ -174,8 +186,8 @@ namespace rgbd_slam {
                 // get inliers and outliers for this transformation
                 matches_containers::point_match_sets potentialPointInliersOutliers;
                 matches_containers::plane_match_sets potentialPlaneInliersOutliers;
-                const double pointTransformationScore = get_point_inliers_outliers(matchedPoints, pointMaxRetroprojectionError, candidatePose, potentialPointInliersOutliers);
-                const double planeTransformationScore = get_plane_inliers_outliers(matchedPlanes, planeMaxRetroprojectionError, candidatePose, potentialPlaneInliersOutliers);
+                const double pointTransformationScore = get_point_inliers_outliers(matchedFeatures._points, pointMaxRetroprojectionError, candidatePose, potentialPointInliersOutliers);
+                const double planeTransformationScore = get_plane_inliers_outliers(matchedFeatures._planes, planeMaxRetroprojectionError, candidatePose, potentialPlaneInliersOutliers);
                 const double transformationScore = pointTransformationScore + planeTransformationScore;
                 // We have a better score than the previous best one
                 if (transformationScore < minScore)
@@ -205,7 +217,7 @@ namespace rgbd_slam {
             }
 
             // optimize on all inliers
-            const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, featureSets._pointSets._inliers, featureSets._planeSets._inliers, finalPose);
+            const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, featureSets, finalPose);
             if (isPoseValid)
             {
                 return true;
@@ -215,9 +227,9 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose, matches_containers::match_sets& featureSets) 
+        bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::Pose& optimizedPose, matches_containers::match_sets& featureSets) 
         {
-            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedPoints, matchedPlanes, optimizedPose, featureSets);
+            const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets);
             if (isPoseValid)
             {
                 // Compute pose variance
@@ -237,7 +249,7 @@ namespace rgbd_slam {
         }
 
 
-        bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, const matches_containers::match_plane_container& matchedPlanes, utils::Pose& optimizedPose) 
+        bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_sets& matchedFeatures, utils::Pose& optimizedPose) 
         {
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();
@@ -259,8 +271,8 @@ namespace rgbd_slam {
             Global_Pose_Functor pose_optimisation_functor(
                     Global_Pose_Estimator(
                         input.size(), 
-                        matchedPoints,
-                        matchedPlanes
+                        matchedFeatures._pointSets._inliers,
+                        matchedFeatures._planeSets._inliers
                         )
                     );
             // Optimization algorithm
@@ -300,7 +312,7 @@ namespace rgbd_slam {
             {
                 // Error while optimizing 
                 const std::string message = get_human_readable_end_message(endStatus);
-                outputs::log("Failed to converge with " + std::to_string(matchedPoints.size()) + " points | Status " + message);
+                outputs::log("Failed to converge with " + std::to_string(matchedFeatures._pointSets._inliers.size()) + " points | Status " + message);
                 return false;
             }
 

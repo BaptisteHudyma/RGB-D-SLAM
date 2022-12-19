@@ -74,6 +74,18 @@ namespace rgbd_slam {
             delete _mapWriter;
         }
 
+
+        matches_containers::matchContainer Local_Map::find_feature_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const features::primitives::plane_container& detectedPlanes)
+        {
+            matches_containers::matchContainer matchSets;
+
+            matchSets._points = find_keypoint_matches(currentPose, detectedKeypointsObject);
+            matchSets._planes = find_plane_matches(currentPose, detectedPlanes);
+
+            return matchSets;
+        }
+
+
         bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const worldToCameraMatrix& worldToCamera, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer)
         {
             // try to find a match with opticalflow
