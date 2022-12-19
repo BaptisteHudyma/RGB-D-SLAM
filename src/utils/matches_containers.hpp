@@ -85,6 +85,12 @@ namespace rgbd_slam {
                 _pointSets.clear();
                 _planeSets.clear();
             }
+
+            void swap(match_sets& other)
+            {
+                _pointSets.swap(other._pointSets);
+                _planeSets.swap(other._planeSets);
+            }
         };
     }
 }

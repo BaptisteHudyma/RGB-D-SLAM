@@ -58,13 +58,13 @@ namespace rgbd_slam {
 
         /**
          * \brief Compute a score for a transformation, and compute an inlier and outlier set
-         * \param[in] pointsToEvaluate The set of planes to evaluate the transformation on
-         * \param[in] pointMaxRetroprojectionError The maximum retroprojection error between two planes, below which we classifying the match as inlier 
+         * \param[in] planesToEvaluate The set of planes to evaluate the transformation on
+         * \param[in] planeMaxRetroprojectionError The maximum retroprojection error between two planes, below which we classifying the match as inlier 
          * \param[in] transformationPose The transformation that needs to be evaluated
          * \param[out] planeMatchSets The set of inliers/outliers of this transformation
          * \return The transformation score
          */
-        double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate, const double pointMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::plane_match_sets& planeMatchSets)
+        double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate, const double planeMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::plane_match_sets& planeMatchSets)
         {
             planeMatchSets.clear();
 
@@ -78,7 +78,7 @@ namespace rgbd_slam {
                 const double distance = match._worldFeature.get_reduced_signed_distance(match._screenFeature, worldToCamera).norm() / 10.0;
                 assert(distance >= 0 and not std::isnan(distance));
                 // inlier
-                if (distance < pointMaxRetroprojectionError)
+                if (distance < planeMaxRetroprojectionError)
                 {
                     planeMatchSets._inliers.insert(planeMatchSets._inliers.end(), match);
                 }
@@ -87,9 +87,16 @@ namespace rgbd_slam {
                 {
                     planeMatchSets._outliers.insert(planeMatchSets._outliers.end(), match);
                 }
-                retroprojectionScore += std::min(pointMaxRetroprojectionError, distance);
+                retroprojectionScore += std::min(planeMaxRetroprojectionError, distance);
             }
             return retroprojectionScore;
+        }
+
+        double get_features_inliers_outliers(const matches_containers::matchContainer& featuresToEvaluate, const double pointMaxRetroprojectionError, const double planeMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::match_sets& featureSet)
+        {
+            return 
+                get_point_inliers_outliers(featuresToEvaluate._points, pointMaxRetroprojectionError, transformationPose, featureSet._pointSets) +
+                get_plane_inliers_outliers(featuresToEvaluate._planes, planeMaxRetroprojectionError, transformationPose, featureSet._planeSets);
         }
 
         /**
@@ -160,6 +167,7 @@ namespace rgbd_slam {
             {
                 // get random number of planes, between minNumberOfPlanes and maxNumberOfPlanes
                 const uint numberOfPlanesToSample = minNumberOfPlanes + (maxNumberOfPlanes - minNumberOfPlanes) * (utils::Random::get_random_double() > 0.5);
+                // depending on this number of planes, get a number of points to sample for this RANSAC iteration
                 const uint numberOfPointsToSample = std::ceil((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore);
 
                 const double subsetScore = numberOfPointsToSample * pointFeatureScore + numberOfPlanesToSample * planeFeatureScore;
@@ -168,9 +176,14 @@ namespace rgbd_slam {
                     outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and " + std::to_string(numberOfPlanesToSample) + " planes, not enough for optimization (score: " + std::to_string(subsetScore) + ")");
                     continue;
                 }
+                if (numberOfPlanesToSample < minNumberOfPlanes or numberOfPlanesToSample > maxNumberOfPlanes or numberOfPlanesToSample > matchedPlaneSize)
+                {
+                    outputs::log_warning("Selected " + std::to_string(numberOfPlanesToSample) + " planes but we have " + std::to_string(matchedPointSize) + " available");
+                    continue;
+                }
                 if (numberOfPointsToSample < minNumberOfPoints or numberOfPointsToSample > maxNumberOfPoints or numberOfPointsToSample > matchedPointSize)
                 {
-                    outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and but we have " + std::to_string(numberOfPointsToSample) + " available");
+                    outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points but we have " + std::to_string(matchedPlaneSize) + " available");
                     continue;
                 }
 
@@ -184,20 +197,15 @@ namespace rgbd_slam {
                     continue;
 
                 // get inliers and outliers for this transformation
-                matches_containers::point_match_sets potentialPointInliersOutliers;
-                matches_containers::plane_match_sets potentialPlaneInliersOutliers;
-                const double pointTransformationScore = get_point_inliers_outliers(matchedFeatures._points, pointMaxRetroprojectionError, candidatePose, potentialPointInliersOutliers);
-                const double planeTransformationScore = get_plane_inliers_outliers(matchedFeatures._planes, planeMaxRetroprojectionError, candidatePose, potentialPlaneInliersOutliers);
-                const double transformationScore = pointTransformationScore + planeTransformationScore;
+                matches_containers::match_sets potentialInliersOutliers;
+                const double transformationScore = get_features_inliers_outliers(matchedFeatures, pointMaxRetroprojectionError, planeMaxRetroprojectionError, candidatePose, potentialInliersOutliers);
                 // We have a better score than the previous best one
                 if (transformationScore < minScore)
                 {
                     minScore = transformationScore;
                     bestPose = candidatePose;
-                    // save points inliers and outliers
-                    featureSets._pointSets.swap(potentialPointInliersOutliers);
-                    // save planes inliers and outliers
-                    featureSets._planeSets.swap(potentialPlaneInliersOutliers);
+                    // save features inliers and outliers
+                    featureSets.swap(potentialInliersOutliers);
 
                     const double inlierScore = static_cast<double>(featureSets._pointSets._inliers.size()) * pointFeatureScore + static_cast<double>(featureSets._planeSets._inliers.size()) * planeFeatureScore;
                     if (inlierScore >= enoughInliersScore)
