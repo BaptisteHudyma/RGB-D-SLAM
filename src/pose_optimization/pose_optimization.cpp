@@ -28,7 +28,7 @@ namespace rgbd_slam {
          * \param[out] pointMatcheSets The set of inliers/outliers of this transformation
          * \return The transformation score (sum of retroprojection distances)
          */
-        double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate, const double pointMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::point_match_sets& pointMatcheSets)
+        double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate, const double pointMaxRetroprojectionError, const utils::PoseBase& transformationPose, matches_containers::point_match_sets& pointMatcheSets)
         {
             pointMatcheSets.clear();
 
@@ -64,7 +64,7 @@ namespace rgbd_slam {
          * \param[out] planeMatchSets The set of inliers/outliers of this transformation
          * \return The transformation score
          */
-        double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate, const double planeMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::plane_match_sets& planeMatchSets)
+        double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate, const double planeMaxRetroprojectionError, const utils::PoseBase& transformationPose, matches_containers::plane_match_sets& planeMatchSets)
         {
             planeMatchSets.clear();
 
@@ -92,7 +92,7 @@ namespace rgbd_slam {
             return retroprojectionScore;
         }
 
-        double get_features_inliers_outliers(const matches_containers::matchContainer& featuresToEvaluate, const double pointMaxRetroprojectionError, const double planeMaxRetroprojectionError, const utils::Pose& transformationPose, matches_containers::match_sets& featureSet)
+        double get_features_inliers_outliers(const matches_containers::matchContainer& featuresToEvaluate, const double pointMaxRetroprojectionError, const double planeMaxRetroprojectionError, const utils::PoseBase& transformationPose, matches_containers::match_sets& featureSet)
         {
             return 
                 get_point_inliers_outliers(featuresToEvaluate._points, pointMaxRetroprojectionError, transformationPose, featureSet._pointSets) +
@@ -114,7 +114,7 @@ namespace rgbd_slam {
         }
 
 
-        bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::Pose& finalPose, matches_containers::match_sets& featureSets) 
+        bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::PoseBase& finalPose, matches_containers::match_sets& featureSets) 
         {
             featureSets.clear();
 
@@ -162,7 +162,7 @@ namespace rgbd_slam {
 
             // set the start score to the maximum score
             double minScore = matchedPointSize * pointMaxRetroprojectionError + matchedPlaneSize * planeMaxRetroprojectionError;
-            utils::Pose bestPose = currentPose;
+            utils::PoseBase bestPose = currentPose;
             for(uint iteration = 0; iteration < maximumIterations; ++iteration)
             {
                 // get random number of planes, between minNumberOfPlanes and maxNumberOfPlanes
@@ -190,7 +190,7 @@ namespace rgbd_slam {
                 const matches_containers::match_sets& selectedMatches = get_random_subset(numberOfPointsToSample, numberOfPlanesToSample, matchedFeatures);
 
                 // compute a new candidate pose to evaluate
-                utils::Pose candidatePose;
+                utils::PoseBase candidatePose;
                 const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, candidatePose);
                 //const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedPointMatches, candidatePose);
                 if (not isPoseValid)
@@ -257,7 +257,7 @@ namespace rgbd_slam {
         }
 
 
-        bool Pose_Optimization::compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_sets& matchedFeatures, utils::Pose& optimizedPose) 
+        bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& currentPose, const matches_containers::match_sets& matchedFeatures, utils::PoseBase& optimizedPose) 
         {
             const vector3& position = currentPose.get_position();    // Work in millimeters
             const quaternion& rotation = currentPose.get_orientation_quaternion();
@@ -329,7 +329,7 @@ namespace rgbd_slam {
             return true;
         }
 
-        bool Pose_Optimization::compute_p3p_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose)
+        bool Pose_Optimization::compute_p3p_pose(const utils::PoseBase& currentPose, const matches_containers::match_point_container& matchedPoints, utils::PoseBase& optimizedPose)
         {
             assert(matchedPoints.size() == 3);
             // Do all operations on meters, while this SLAM uses millimeters

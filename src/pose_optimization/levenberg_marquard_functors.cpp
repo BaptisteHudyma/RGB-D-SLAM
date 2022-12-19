@@ -4,7 +4,6 @@
 #include "coordinates.hpp"
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
-#include <iostream>
 
 namespace rgbd_slam {
     namespace pose_optimization {
@@ -106,7 +105,7 @@ namespace rgbd_slam {
             return 0;
         }
 
-        double get_transformation_score(const matches_containers::match_point_container& points, const utils::Pose& finalPose)
+        double get_transformation_score(const matches_containers::match_point_container& points, const utils::PoseBase& finalPose)
         {
             // Get the new estimated pose
             const quaternion& rotation = finalPose.get_orientation_quaternion();

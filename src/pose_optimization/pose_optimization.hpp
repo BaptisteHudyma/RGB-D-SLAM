@@ -35,7 +35,7 @@ namespace rgbd_slam {
                  *
                  * \return True if a valid pose was computed 
                  */
-                static bool compute_optimized_global_pose(const utils::Pose& currentPose, const matches_containers::match_sets& matchedFeatures, utils::Pose& optimizedPose);
+                static bool compute_optimized_global_pose(const utils::PoseBase& currentPose, const matches_containers::match_sets& matchedFeatures, utils::PoseBase& optimizedPose);
 
 
                 /**
@@ -48,9 +48,9 @@ namespace rgbd_slam {
                  *
                  * \return True if a valid pose and inliers were found
                  */
-                static bool compute_pose_with_ransac(const utils::Pose& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::Pose& finalPose, matches_containers::match_sets& featureSets); 
+                static bool compute_pose_with_ransac(const utils::PoseBase& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::PoseBase& finalPose, matches_containers::match_sets& featureSets); 
 
-                static bool compute_p3p_pose(const utils::Pose& currentPose, const matches_containers::match_point_container& matchedPoints, utils::Pose& optimizedPose);
+                static bool compute_p3p_pose(const utils::PoseBase& currentPose, const matches_containers::match_point_container& matchedPoints, utils::PoseBase& optimizedPose);
         };
 
     }   /* pose_optimization */
