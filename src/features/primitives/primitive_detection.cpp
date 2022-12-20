@@ -413,7 +413,7 @@ namespace rgbd_slam {
             {
                 //refine the coarse planes boundaries to smoother versions
                 const uint planeCount = _planeSegments.size();
-                uchar planeIdAllocator = 0;
+                planeId planeIdAllocator = 0;
                 for(uint planeIndex = 0; planeIndex < planeCount; ++planeIndex) 
                 {
                     if (planeIndex != planeMergeLabels[planeIndex])
@@ -438,7 +438,7 @@ namespace rgbd_slam {
                         continue;
 
                     // new plane ID
-                    const uchar planeId = ++planeIdAllocator;
+                    const planeId planeId = ++planeIdAllocator;
                     assert(planeId < CYLINDER_CODE_OFFSET);
 
                     //add new plane to final shapes
@@ -448,7 +448,7 @@ namespace rgbd_slam {
 
             void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, cylinder_container& cylinderContainer) 
             {
-                uchar cylinderIdAllocator = CYLINDER_CODE_OFFSET;
+                cylinderId cylinderIdAllocator = CYLINDER_CODE_OFFSET;
                 for(uint cylinderIndex = 0; cylinderIndex < cylinderToRegionMap.size(); ++cylinderIndex)
                 {
                     // Build mask
@@ -466,7 +466,7 @@ namespace rgbd_slam {
                         continue;
 
                     // Affect a new cylinder id
-                    const uchar cylinderId = ++cylinderIdAllocator;
+                    const cylinderId cylinderId = ++cylinderIdAllocator;
 
                     const uint regId = cylinderToRegionMap[cylinderIndex].first;
 

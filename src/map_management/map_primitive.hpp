@@ -1,17 +1,18 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
+#include <opencv2/opencv.hpp>
+
+#include "../parameters.hpp"
 #include "../features/primitives/shape_primitives.hpp"
-#include "coordinates.hpp"
-#include "parameters.hpp"
+
 #include "../utils/random.hpp"
-#include "types.hpp"
-#include <memory>
+#include "../utils/coordinates.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
 
-        const uchar UNMATCHED_PRIMITIVE_ID = 0;
+        const features::primitives::planeId UNMATCHED_PRIMITIVE_ID = 0;
 
         struct MatchedPrimitive 
         {
@@ -25,7 +26,7 @@ namespace rgbd_slam {
                 return _matchId != UNMATCHED_PRIMITIVE_ID;
             }
 
-            void mark_matched(size_t matchId)
+            void mark_matched(const features::primitives::planeId matchId)
             {
                 _matchId = matchId;
                 _unmatchedCount = 0;
@@ -42,7 +43,7 @@ namespace rgbd_slam {
                 return _unmatchedCount >= Parameters::get_maximum_unmatched_before_removal();
             }
 
-            size_t _matchId; // Id of the last match
+            features::primitives::planeId _matchId; // Id of the last match
             size_t _unmatchedCount; // count of unmatched iterations
         };
 

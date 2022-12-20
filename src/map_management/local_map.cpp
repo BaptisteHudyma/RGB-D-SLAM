@@ -10,10 +10,7 @@
 #include "map_point.hpp"
 #include "map_primitive.hpp"
 #include "matches_containers.hpp"
-#include "primitive_detection.hpp"
-#include "shape_primitives.hpp"
 #include "types.hpp"
-#include <string>
 
 namespace rgbd_slam {
     namespace map_management {
@@ -295,7 +292,7 @@ namespace rgbd_slam {
             }
 
             // add unmatched planes to local map
-            for(const uchar& unmatchedDetectedPlaneId : _unmatchedPlaneIds)
+            for(const features::primitives::planeId& unmatchedDetectedPlaneId : _unmatchedPlaneIds)
             {
                 assert(detectedPlanes.contains(unmatchedDetectedPlaneId));
 

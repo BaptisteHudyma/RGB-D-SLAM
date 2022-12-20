@@ -1,7 +1,6 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
 #define RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
 
-#include <list>
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include <opencv2/xfeatures2d.hpp>
@@ -15,7 +14,7 @@
 #include "../utils/matches_containers.hpp"
 
 #include "../features/keypoints/keypoint_handler.hpp"
-#include "../features/primitives/primitive_detection.hpp"
+#include "../features/primitives/shape_primitives.hpp"
 
 
 
@@ -249,7 +248,7 @@ namespace rgbd_slam {
                 // Hold unmatched detected point indexes, to add in the staged point container
                 std::vector<bool> _isPointMatched;
                 // Hold unmatched plane ids, to add to the local map
-                std::set<uchar> _unmatchedPlaneIds;
+                std::set<features::primitives::planeId> _unmatchedPlaneIds;
 
                 //local plane map
                 plane_map_container _localPlaneMap;

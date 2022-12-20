@@ -13,7 +13,7 @@
 namespace rgbd_slam {
     namespace features {
         namespace primitives {
-
+            
             /**
              * \brief A base class used to compute the tracking analysis.
              * It is a pure virtual class.
@@ -130,6 +130,15 @@ namespace rgbd_slam {
                     utils::PlaneCameraCoordinates _parametrization;     // infinite plane representation
                     vector3 _mean;      // mean center point of the plane; in camera coordinates
             };
+
+
+            // types for detected primitives
+            typedef uchar cylinderId;
+            typedef std::map<cylinderId, Cylinder> cylinder_container; 
+
+            typedef uchar planeId;
+            typedef std::map<planeId, Plane> plane_container; 
+
         }
     }
 }

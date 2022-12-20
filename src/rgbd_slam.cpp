@@ -4,7 +4,6 @@
 
 #include "parameters.hpp"
 #include "outputs/logger.hpp"
-#include "primitive_detection.hpp"
 #include "utils/random.hpp"
 #include "utils/matches_containers.hpp"
 
