@@ -3,7 +3,6 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
-#include <iostream>
 
 namespace rgbd_slam {
     namespace features {
@@ -34,7 +33,7 @@ namespace rgbd_slam {
                 _MSE(seg._MSE),
                 _isPlanar(seg._isPlanar),
                 _mean(seg._mean),
-                _normal(seg._normal),
+                _normal(seg._normal.normalized()),
                 _d(seg._d),
                 _Sx(seg._Sx),
                 _Sy(seg._Sy),
@@ -113,7 +112,6 @@ namespace rgbd_slam {
             void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uint cellId) 
             {
                 clear_plane_parameters();
-                _isPlanar = true;
 
                 const uint offset = cellId * _ptsPerCellCount;
 
@@ -160,7 +158,7 @@ namespace rgbd_slam {
                 //MSE > T_MSE
                 const static double depthSigmaError = Parameters::get_depth_sigma_error();
                 const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
-                if(_MSE > pow(depthSigmaError * pow(_mean.z(), 2) + depthSigmaMargin, 2))
+                if(_isPlanar and _MSE > pow(depthSigmaError * pow(_mean.z(), 2) + depthSigmaMargin, 2))
                     _isPlanar = false;
 
             }
@@ -231,7 +229,9 @@ namespace rgbd_slam {
                 //_score = sv[0] / (sv[0] + sv[1] + sv[2]);
                 _MSE = sv.x() * oneOverCount;
                 _score = sv.y() / sv.x();
-                _isPlanar = true;
+                // TODO: maybe their is a better way
+                // if the z normal is JUST in front of the camera, reject it (numerically unstalble)
+                _isPlanar = _normal.z() < 1 and _normal.z() > -1;
             }
 
             /*
@@ -243,8 +243,8 @@ namespace rgbd_slam {
                 _MSE = 0;
                 _isPlanar = false; 
 
-                _mean = vector3::Zero();
-                _normal = vector3::Zero();
+                _mean.setZero();
+                _normal.setZero();
                 _d = 0;
 
                 //Clear saved plane parameters
