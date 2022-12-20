@@ -17,9 +17,6 @@ namespace rgbd_slam {
     namespace features {
         namespace primitives {
 
-            typedef std::map<uchar, Cylinder> cylinder_container; 
-            typedef std::map<uchar, Plane> plane_container; 
-
             /**
              * \brief Main extraction class.
              * Extracts shape primitives from an organized cloud of points

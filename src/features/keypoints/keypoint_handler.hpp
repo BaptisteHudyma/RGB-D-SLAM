@@ -2,6 +2,8 @@
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_HANDLER_HPP
 
 #include <list>
+#include <opencv2/core/types.hpp>
+#include <utility>
 #include <vector>
 #include <opencv2/xfeatures2d.hpp>
 
@@ -29,6 +31,66 @@ namespace rgbd_slam {
              * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map
              */
             struct KeypointsWithIdStruct {
+                struct keypointWithId {
+                    size_t _id;
+                    cv::Point2f _point;
+
+                    keypointWithId(const size_t id, const cv::Point2f& point):
+                    _id(id), _point(point)
+                    {};
+                };
+
+                void clear()
+                {
+                    _keypoints.clear();
+                    _ids.clear();
+                }
+
+                void reserve(const size_t numberOfNewKeypoints)
+                {
+                    _keypoints.reserve(numberOfNewKeypoints);
+                    _ids.reserve(numberOfNewKeypoints);
+                }
+
+                size_t size() const
+                {
+                    assert(_keypoints.size() == _ids.size());
+                    return _keypoints.size();
+                }
+
+                bool empty() const
+                {
+                    return size() == 0;
+                }
+
+                const keypointWithId get(const size_t index) const
+                {
+                    assert(index < size());
+                    return keypointWithId(_ids[index], _keypoints[index]);
+                }
+
+                void add(const size_t id, const double pointX, const double pointY)
+                {
+                    add(id, 
+                        cv::Point2f(static_cast<float>(pointX), static_cast<float>(pointY))
+                    );
+                }
+                void add(const size_t id, const cv::Point2f point)
+                {
+                    _keypoints.emplace_back(point);
+                    _ids.emplace_back(id);
+                }
+
+                const std::vector<cv::Point2f>& get_keypoints() const
+                {
+                    return _keypoints;
+                }
+                const std::vector<size_t>& get_ids() const
+                {
+                    return _ids;
+                }
+
+                private:
                 std::vector<cv::Point2f> _keypoints;
                 std::vector<size_t> _ids;
             };
@@ -40,13 +102,18 @@ namespace rgbd_slam {
             {
                 public:
                     /**
+                     * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
+                     */
+                    Keypoint_Handler(const uint depthImageCols, const uint depthImageRows, const double maxMatchDistance = 0.7);
+
+                    /**
+                     * \brief Set the container properties
                      * \param[in] inKeypoints New keypoints detected, no tracking informations
                      * \param[in] inDescriptors Descriptors of the new keypoints
                      * \param[in] lastKeypointsWithIds Keypoints tracked with optical flow, and their matching ids
                      * \param[in] depthImage The depth image in which those keypoints were detected
-                     * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
                      */
-                    Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance = 0.7);
+                    void set(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage);
 
                     /**
                      * \brief Get a tracking index if it exist, or -1.
@@ -122,6 +189,8 @@ namespace rgbd_slam {
                     uint get_search_space_index(const uint_pair& searchSpaceIndex) const;
                     uint get_search_space_index(const uint x, const uint y) const;
 
+                    void clear();
+
 
                 private:
                     cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
@@ -140,10 +209,8 @@ namespace rgbd_slam {
                     uint _searchSpaceCellRadius; 
 
                     // Corresponds to a 2D box containing index of key points in those boxes
-                    typedef std::list<uint> index_container;
+                    typedef std::vector<uint> index_container;
                     std::vector<index_container> _searchSpaceIndexContainer;
-
-
             };
 
         }

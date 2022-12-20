@@ -9,12 +9,6 @@
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
 
-//index offset of a cylinder to a plane: used for masks display purposes
-const uint CYLINDER_CODE_OFFSET = 50;
-
-
-//lib simplification
-
 namespace rgbd_slam {
     namespace features {
         namespace primitives {
@@ -411,9 +405,11 @@ namespace rgbd_slam {
 
             void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels, plane_container& planeContainer) 
             {
-                //refine the coarse planes boundaries to smoother versions
                 const uint planeCount = _planeSegments.size();
-                uchar planeIdAllocator = 0;
+                planeContainer.clear();
+                planeContainer.reserve(planeCount);
+
+                //refine the coarse planes boundaries to smoother versions
                 for(uint planeIndex = 0; planeIndex < planeCount; ++planeIndex) 
                 {
                     if (planeIndex != planeMergeLabels[planeIndex])
@@ -437,19 +433,18 @@ namespace rgbd_slam {
                     if(max <= 0 or min >= max)    //completely eroded: irrelevant plane
                         continue;
 
-                    // new plane ID
-                    const uchar planeId = ++planeIdAllocator;
-                    assert(planeId < CYLINDER_CODE_OFFSET);
-
                     //add new plane to final shapes
-                    planeContainer.emplace(planeId, Plane(_planeSegments[planeIndex], planeId, _mask));
+                    planeContainer.emplace_back(Plane(_planeSegments[planeIndex], _mask));
                 }
             }
 
             void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, cylinder_container& cylinderContainer) 
             {
-                uchar cylinderIdAllocator = CYLINDER_CODE_OFFSET;
-                for(uint cylinderIndex = 0; cylinderIndex < cylinderToRegionMap.size(); ++cylinderIndex)
+                const size_t numberOfCylinder = cylinderToRegionMap.size();
+                cylinderContainer.clear();
+                cylinderContainer.reserve(numberOfCylinder);
+
+                for(uint cylinderIndex = 0; cylinderIndex < numberOfCylinder; ++cylinderIndex)
                 {
                     // Build mask
                     _mask = cv::Scalar(0);
@@ -465,13 +460,10 @@ namespace rgbd_slam {
                     if(max <= 0 or min >= max)    //completely eroded: irrelevant cylinder 
                         continue;
 
-                    // Affect a new cylinder id
-                    const uchar cylinderId = ++cylinderIdAllocator;
-
                     const uint regId = cylinderToRegionMap[cylinderIndex].first;
 
                     //add new cylinder to final shapes
-                    cylinderContainer.emplace(cylinderId, Cylinder(_cylinderSegments[regId], cylinderId, _mask));
+                    cylinderContainer.emplace_back(Cylinder(_cylinderSegments[regId], _mask));
                 }
             }
 

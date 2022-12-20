@@ -40,8 +40,9 @@ namespace rgbd_slam {
             }
 
 
-            Keypoint_Handler::Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance) :
-                _maxMatchDistance(maxMatchDistance)
+
+            Keypoint_Handler::Keypoint_Handler(const uint depthImageCols, const uint depthImageRows, const double maxMatchDistance) :
+            _maxMatchDistance(maxMatchDistance)
             {
                 if (_maxMatchDistance <= 0) {
                     outputs::log_error("Maximum matching distance must be > 0");
@@ -50,21 +51,44 @@ namespace rgbd_slam {
                 // knn matcher
                 _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
 
-                _descriptors = inDescriptors;
-
                 const static double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 assert(cellSize > 0);
                 _searchSpaceCellRadius = static_cast<uint>(std::ceil(Parameters::get_search_matches_distance() / cellSize));
                 assert(_searchSpaceCellRadius > 0);
 
-                _cellCountX = static_cast<uint>(std::ceil(depthImage.cols / cellSize));
-                _cellCountY = static_cast<uint>(std::ceil(depthImage.rows / cellSize));
+                _cellCountX = static_cast<uint>(std::ceil(depthImageCols / cellSize));
+                _cellCountY = static_cast<uint>(std::ceil(depthImageRows / cellSize));
                 assert(_cellCountX > 0 and _cellCountY > 0);
-
+                
                 _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
+                for(index_container& indexContainer :  _searchSpaceIndexContainer)
+                {
+                    indexContainer.reserve(5);
+                }
+            }
+
+            void Keypoint_Handler::clear()
+            {
+                _keypoints.clear();
+                _uniqueIdsToKeypointIndex.clear();
+
+                for(index_container& indexContainer :  _searchSpaceIndexContainer)
+                {
+                    indexContainer.clear();
+                }
+
+                //_descriptors.release();
+            }
+
+            void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage)
+            {
+                // clear last state
+                clear();
+
+                _descriptors = inDescriptors;
 
                 // Fill depth values, add points to image boxes
-                const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
+                const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds.size();
                 _keypoints = std::vector<utils::ScreenCoordinate>(allKeypointSize);
 
                 // Add detected keypoints first
@@ -85,12 +109,15 @@ namespace rgbd_slam {
 
 
                 // Add optical flow keypoints then 
-                const size_t opticalPointSize = lastKeypointsWithIds._keypoints.size();
+                const size_t opticalPointSize = lastKeypointsWithIds.size();
                 for(size_t pointIndex = 0; pointIndex < opticalPointSize; ++pointIndex) {
                     const size_t newKeypointIndex = pointIndex + keypointIndexOffset;
 
                     // fill in unique point index
-                    const size_t uniqueIndex = lastKeypointsWithIds._ids[pointIndex];
+                    const KeypointsWithIdStruct::keypointWithId& kp = lastKeypointsWithIds.get(pointIndex);
+                    const size_t uniqueIndex = kp._id;
+                    const cv::Point2f& pt = kp._point;
+
                     if (uniqueIndex > 0) {
                         _uniqueIdsToKeypointIndex[uniqueIndex] = newKeypointIndex;
                     }
@@ -98,7 +125,6 @@ namespace rgbd_slam {
                         outputs::log_error("A keypoint detected by optical flow does nothave a valid keypoint id");
                     }
 
-                    const cv::Point2f& pt = lastKeypointsWithIds._keypoints[pointIndex];
                     // Depths are in millimeters, will be 0 if coordinates are invalid
                     const double depthApproximation = get_depth_approximation(depthImage, pt);
                     const utils::ScreenCoordinate vectorKeypoint(pt.x, pt.y, depthApproximation); 
@@ -170,7 +196,7 @@ namespace rgbd_slam {
 
                                 // keypoint is in a circle around the target keypoints, allow a potential match
                                 if (squarredDistance <= squaredSearchDiameter)
-                                    keyPointMask.at<uint8_t>(0, keypointIndex) = 1;
+                                    keyPointMask.at<uint8_t>(0, static_cast<int>(keypointIndex)) = 1;
                             }
                         }
                     }

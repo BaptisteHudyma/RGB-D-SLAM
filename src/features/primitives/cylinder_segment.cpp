@@ -314,7 +314,8 @@ namespace rgbd_slam {
             double Cylinder_Segment::get_distance(const vector3& point) const 
             {
                 double minDist = this->get_distance(point, 0);
-                for(vector3_vector::size_type i = 1; i < _pointsAxis1.size(); i++) 
+                const size_t pointAxisSize = _pointsAxis1.size();
+                for(vector3_vector::size_type i = 1; i < pointAxisSize; ++i) 
                 {
                     const double nd = this->get_distance(point, i);
                     if (minDist > nd)

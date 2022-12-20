@@ -37,6 +37,23 @@ namespace rgbd_slam {
         typedef MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, void*> PlaneMatch;
         typedef std::list<PlaneMatch> match_plane_container;
 
+        struct matchContainer {
+            match_point_container _points;
+            match_plane_container _planes;
+
+            void clear()
+            {
+                _points.clear();
+                _planes.clear();
+            }
+
+            void swap(matchContainer& other)
+            {
+                _points.swap(other._points);
+                _planes.swap(other._planes);
+            }
+        };
+
 
         /**
          * \brief Store a set of inlier and a set of outliers
@@ -73,6 +90,12 @@ namespace rgbd_slam {
             {
                 _pointSets.clear();
                 _planeSets.clear();
+            }
+
+            void swap(match_sets& other)
+            {
+                _pointSets.swap(other._pointSets);
+                _planeSets.swap(other._planeSets);
             }
         };
     }

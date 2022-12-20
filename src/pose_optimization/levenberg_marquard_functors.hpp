@@ -91,8 +91,7 @@ namespace rgbd_slam {
         /**
          * \brief Compute a mean transformation score for a pose and a set of point matches
          */
-        double get_transformation_score(const matches_containers::match_point_container& points, const utils::Pose& finalPose);
-        void get_t_score(const matches_containers::match_plane_container& planes, const utils::Pose& finalPose);
+        double get_transformation_score(const matches_containers::match_point_container& points, const utils::PoseBase& finalPose);
 
         /**
          * \brief Use for debug.
