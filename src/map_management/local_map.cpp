@@ -40,13 +40,11 @@ namespace rgbd_slam {
                 if (mapPoint._coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
                 {
                     // use previously known screen coordinates
-                    keypointsWithIds._keypoints.push_back(
-                        cv::Point2f(
-                                    static_cast<float>(screenCoordinates.x()),
-                                    static_cast<float>(screenCoordinates.y())
-                                    )
-                            );
-                    keypointsWithIds._ids.push_back(mapPoint._id);
+                    keypointsWithIds.add(
+                        mapPoint._id,
+                        screenCoordinates.x(),
+                        screenCoordinates.y()
+                    );
                 }
             }
         }

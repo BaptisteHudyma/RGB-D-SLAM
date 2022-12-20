@@ -88,7 +88,7 @@ namespace rgbd_slam {
                 _descriptors = inDescriptors;
 
                 // Fill depth values, add points to image boxes
-                const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
+                const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds.size();
                 _keypoints = std::vector<utils::ScreenCoordinate>(allKeypointSize);
 
                 // Add detected keypoints first
@@ -109,12 +109,15 @@ namespace rgbd_slam {
 
 
                 // Add optical flow keypoints then 
-                const size_t opticalPointSize = lastKeypointsWithIds._keypoints.size();
+                const size_t opticalPointSize = lastKeypointsWithIds.size();
                 for(size_t pointIndex = 0; pointIndex < opticalPointSize; ++pointIndex) {
                     const size_t newKeypointIndex = pointIndex + keypointIndexOffset;
 
                     // fill in unique point index
-                    const size_t uniqueIndex = lastKeypointsWithIds._ids[pointIndex];
+                    const KeypointsWithIdStruct::keypointWithId& kp = lastKeypointsWithIds.get(pointIndex);
+                    const size_t uniqueIndex = kp._id;
+                    const cv::Point2f& pt = kp._point;
+
                     if (uniqueIndex > 0) {
                         _uniqueIdsToKeypointIndex[uniqueIndex] = newKeypointIndex;
                     }
@@ -122,7 +125,6 @@ namespace rgbd_slam {
                         outputs::log_error("A keypoint detected by optical flow does nothave a valid keypoint id");
                     }
 
-                    const cv::Point2f& pt = lastKeypointsWithIds._keypoints[pointIndex];
                     // Depths are in millimeters, will be 0 if coordinates are invalid
                     const double depthApproximation = get_depth_approximation(depthImage, pt);
                     const utils::ScreenCoordinate vectorKeypoint(pt.x, pt.y, depthApproximation); 

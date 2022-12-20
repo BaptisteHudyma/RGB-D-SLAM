@@ -2,6 +2,8 @@
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_HANDLER_HPP
 
 #include <list>
+#include <opencv2/core/types.hpp>
+#include <utility>
 #include <vector>
 #include <opencv2/xfeatures2d.hpp>
 
@@ -29,8 +31,14 @@ namespace rgbd_slam {
              * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map
              */
             struct KeypointsWithIdStruct {
-                std::vector<cv::Point2f> _keypoints;
-                std::vector<size_t> _ids;
+                struct keypointWithId {
+                    size_t _id;
+                    cv::Point2f _point;
+
+                    keypointWithId(const size_t id, const cv::Point2f& point):
+                    _id(id), _point(point)
+                    {};
+                };
 
                 void clear()
                 {
@@ -49,6 +57,42 @@ namespace rgbd_slam {
                     assert(_keypoints.size() == _ids.size());
                     return _keypoints.size();
                 }
+
+                bool empty() const
+                {
+                    return size() == 0;
+                }
+
+                const keypointWithId get(const size_t index) const
+                {
+                    assert(index < size());
+                    return keypointWithId(_ids[index], _keypoints[index]);
+                }
+
+                void add(const size_t id, const double pointX, const double pointY)
+                {
+                    add(id, 
+                        cv::Point2f(static_cast<float>(pointX), static_cast<float>(pointY))
+                    );
+                }
+                void add(const size_t id, const cv::Point2f point)
+                {
+                    _keypoints.emplace_back(point);
+                    _ids.emplace_back(id);
+                }
+
+                const std::vector<cv::Point2f>& get_keypoints() const
+                {
+                    return _keypoints;
+                }
+                const std::vector<size_t>& get_ids() const
+                {
+                    return _ids;
+                }
+
+                private:
+                std::vector<cv::Point2f> _keypoints;
+                std::vector<size_t> _ids;
             };
 
             /**
