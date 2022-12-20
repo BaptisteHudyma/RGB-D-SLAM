@@ -31,6 +31,24 @@ namespace rgbd_slam {
             struct KeypointsWithIdStruct {
                 std::vector<cv::Point2f> _keypoints;
                 std::vector<size_t> _ids;
+
+                void clear()
+                {
+                    _keypoints.clear();
+                    _ids.clear();
+                }
+
+                void reserve(const size_t numberOfNewKeypoints)
+                {
+                    _keypoints.reserve(numberOfNewKeypoints);
+                    _ids.reserve(numberOfNewKeypoints);
+                }
+
+                size_t size() const
+                {
+                    assert(_keypoints.size() == _ids.size());
+                    return _keypoints.size();
+                }
             };
 
             /**
@@ -40,13 +58,18 @@ namespace rgbd_slam {
             {
                 public:
                     /**
+                     * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
+                     */
+                    Keypoint_Handler(const uint depthImageCols, const uint depthImageRows, const double maxMatchDistance = 0.7);
+
+                    /**
+                     * \brief Set the container properties
                      * \param[in] inKeypoints New keypoints detected, no tracking informations
                      * \param[in] inDescriptors Descriptors of the new keypoints
                      * \param[in] lastKeypointsWithIds Keypoints tracked with optical flow, and their matching ids
                      * \param[in] depthImage The depth image in which those keypoints were detected
-                     * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
                      */
-                    Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance = 0.7);
+                    void set(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage);
 
                     /**
                      * \brief Get a tracking index if it exist, or -1.
@@ -122,6 +145,8 @@ namespace rgbd_slam {
                     uint get_search_space_index(const uint_pair& searchSpaceIndex) const;
                     uint get_search_space_index(const uint x, const uint y) const;
 
+                    void clear();
+
 
                 private:
                     cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
@@ -140,10 +165,8 @@ namespace rgbd_slam {
                     uint _searchSpaceCellRadius; 
 
                     // Corresponds to a 2D box containing index of key points in those boxes
-                    typedef std::list<uint> index_container;
+                    typedef std::vector<uint> index_container;
                     std::vector<index_container> _searchSpaceIndexContainer;
-
-
             };
 
         }

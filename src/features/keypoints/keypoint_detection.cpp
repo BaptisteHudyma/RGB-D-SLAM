@@ -78,8 +78,6 @@ namespace rgbd_slam {
 
             const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage, const cv::Mat& depthImage, const KeypointsWithIdStruct& lastKeypointsWithIds, const bool forceKeypointDetection) 
             {
-                assert(lastKeypointsWithIds._keypoints.size() == lastKeypointsWithIds._ids.size());
-
                 KeypointsWithIdStruct newKeypointsObject;
 
                 //detect keypoints
@@ -116,8 +114,7 @@ namespace rgbd_slam {
                 //else: No optical flow for the first frame
                 _lastFramePyramide = newImagePyramide;
 
-                const size_t opticalFlowTrackedPointCount = newKeypointsObject._keypoints.size();
-                assert(opticalFlowTrackedPointCount == newKeypointsObject._ids.size());
+                const size_t opticalFlowTrackedPointCount = newKeypointsObject.size();
 
                 /*
                  * KEY POINT DETECTION
@@ -162,8 +159,11 @@ namespace rgbd_slam {
                     }
                 }
 
+                // declare static
+                static Keypoint_Handler keypointHandler(depthImage.cols, depthImage.rows, maximumMatchDistance);
+
                 // Update last keypoint struct
-                Keypoint_Handler keypointHandler(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage, maximumMatchDistance);
+                keypointHandler.set(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage);
                 _meanPointExtractionDuration += (cv::getTickCount() - keypointDetectionStartTime) / static_cast<double>(cv::getTickFrequency());
                 return keypointHandler;
             }
@@ -237,8 +237,7 @@ namespace rgbd_slam {
 
                 // mark outliers as false and visualize
                 const size_t keypointSize = backwardKeypoints.size();
-                keypointStruct._ids.reserve(keypointSize);
-                keypointStruct._keypoints.reserve(keypointSize);
+                keypointStruct.reserve(keypointSize);
                 for(size_t i = 0; i < keypointSize; ++i)
                 {
                     const size_t keypointIndex = keypointIndexContainer[i];

@@ -83,8 +83,7 @@ namespace rgbd_slam {
             features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
 
             // TODO: check the efficiency gain of those reserve calls
-            keypointsWithIds._ids.reserve(numberOfNewKeypoints);
-            keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
+            keypointsWithIds.reserve(numberOfNewKeypoints);
 
             const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
 

@@ -40,8 +40,9 @@ namespace rgbd_slam {
             }
 
 
-            Keypoint_Handler::Keypoint_Handler(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage, const double maxMatchDistance) :
-                _maxMatchDistance(maxMatchDistance)
+
+            Keypoint_Handler::Keypoint_Handler(const uint depthImageCols, const uint depthImageRows, const double maxMatchDistance) :
+            _maxMatchDistance(maxMatchDistance)
             {
                 if (_maxMatchDistance <= 0) {
                     outputs::log_error("Maximum matching distance must be > 0");
@@ -50,18 +51,41 @@ namespace rgbd_slam {
                 // knn matcher
                 _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
 
-                _descriptors = inDescriptors;
-
                 const static double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 assert(cellSize > 0);
                 _searchSpaceCellRadius = static_cast<uint>(std::ceil(Parameters::get_search_matches_distance() / cellSize));
                 assert(_searchSpaceCellRadius > 0);
 
-                _cellCountX = static_cast<uint>(std::ceil(depthImage.cols / cellSize));
-                _cellCountY = static_cast<uint>(std::ceil(depthImage.rows / cellSize));
+                _cellCountX = static_cast<uint>(std::ceil(depthImageCols / cellSize));
+                _cellCountY = static_cast<uint>(std::ceil(depthImageRows / cellSize));
                 assert(_cellCountX > 0 and _cellCountY > 0);
-
+                
                 _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
+                for(index_container& indexContainer :  _searchSpaceIndexContainer)
+                {
+                    indexContainer.reserve(5);
+                }
+            }
+
+            void Keypoint_Handler::clear()
+            {
+                _keypoints.clear();
+                _uniqueIdsToKeypointIndex.clear();
+
+                for(index_container& indexContainer :  _searchSpaceIndexContainer)
+                {
+                    indexContainer.clear();
+                }
+
+                //_descriptors.release();
+            }
+
+            void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints, cv::Mat& inDescriptors, const KeypointsWithIdStruct& lastKeypointsWithIds, const cv::Mat& depthImage)
+            {
+                // clear last state
+                clear();
+
+                _descriptors = inDescriptors;
 
                 // Fill depth values, add points to image boxes
                 const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds._keypoints.size();
@@ -170,7 +194,7 @@ namespace rgbd_slam {
 
                                 // keypoint is in a circle around the target keypoints, allow a potential match
                                 if (squarredDistance <= squaredSearchDiameter)
-                                    keyPointMask.at<uint8_t>(0, keypointIndex) = 1;
+                                    keyPointMask.at<uint8_t>(0, static_cast<int>(keypointIndex)) = 1;
                             }
                         }
                     }
