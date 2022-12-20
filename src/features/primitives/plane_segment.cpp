@@ -226,7 +226,7 @@ namespace rgbd_slam {
                     _d = -_d;
                 } 
                 // some values have floatting points errors, renormalize
-                _normal.normalize();
+                _normal.transpose();
 
                 //_score = sv[0] / (sv[0] + sv[1] + sv[2]);
                 _MSE = sv.x() * oneOverCount;

@@ -111,6 +111,17 @@ namespace primitives {
 
         bool Depth_Map_Transformation::load_parameters() {
             // TODO check parameters 
+            /*_fxIr = 1;
+            _fyIr = 1;
+            _cxIr = 0;
+            _cyIr = 0;
+
+            _fxRgb = 1;
+            _fyRgb = 1;
+            _cxRgb = 0;
+            _cyRgb = 0;*/
+
+            
             _fxIr = Parameters::get_camera_2_focal_x();
             _fyIr = Parameters::get_camera_2_focal_y();
             _cxIr = Parameters::get_camera_2_center_x();
