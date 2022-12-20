@@ -23,20 +23,14 @@ namespace rgbd_slam {
                 public:
                     virtual ~IPrimitive() {};
 
-                    /**
-                     * \brief Return this shape assigned id
-                     */
-                    uint get_id() const { return _id; };
-                    void set_id(const uint id) { _id = id; };
-
                     cv::Mat get_shape_mask() const { return _shapeMask; };
                     void set_shape_mask(const cv::Mat& mask) { _shapeMask = mask.clone(); };
 
                 protected:
                     /**
-                     * \brief Hidden constructor, to set _id and shape
+                     * \brief Hidden constructor, to set shape
                      */
-                    IPrimitive(const uint id, const cv::Mat& shapeMask);
+                    IPrimitive(const cv::Mat& shapeMask);
 
                     /**
                      * \brief Compute the Inter over Union factor of two masks
@@ -49,7 +43,6 @@ namespace rgbd_slam {
                     double get_IOU(const cv::Mat& mask) const;
 
                     //members
-                    uint _id;
                     cv::Mat _shapeMask;
 
                 private:
@@ -68,10 +61,9 @@ namespace rgbd_slam {
                      * \brief Construct a cylinder object
                      *
                      * \param[in] cylinderSeg Cylinder segment to copy
-                     * \param[in] id ID assigned to this shape (for tracking and debug)
                      * \param[in] shapeMask Mask of the shape in the reference image
                      */
-                    Cylinder(const Cylinder_Segment& cylinderSeg, uint id, const cv::Mat& shapeMask);
+                    Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask);
 
                     /**
                      * \brief Get the similarity of two cylinders, based on normal direction and radius
@@ -104,10 +96,9 @@ namespace rgbd_slam {
                      * \brief Construct a plane object
                      *
                      * \param[in] planeSeg Plane to copy
-                     * \param[in] id ID assigned to this shape (for tracking and debug)
                      * \param[in] shapeMask Mask of the shape in the reference image
                      */
-                    Plane(const Plane_Segment& planeSeg, uint id, const cv::Mat& shapeMask);
+                    Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask);
 
                     /**
                      * \brief Get the similarity of two planes, based on normal direction
@@ -133,12 +124,8 @@ namespace rgbd_slam {
 
 
             // types for detected primitives
-            typedef uchar cylinderId;
-            typedef std::map<cylinderId, Cylinder> cylinder_container; 
-
-            typedef uchar planeId;
-            typedef std::map<planeId, Plane> plane_container; 
-
+            typedef std::vector<Cylinder> cylinder_container; 
+            typedef std::vector<Plane> plane_container;
         }
     }
 }

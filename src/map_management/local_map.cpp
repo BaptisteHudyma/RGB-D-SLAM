@@ -10,6 +10,7 @@
 #include "map_point.hpp"
 #include "map_primitive.hpp"
 #include "matches_containers.hpp"
+#include "shape_primitives.hpp"
 #include "types.hpp"
 
 namespace rgbd_slam {
@@ -188,16 +189,15 @@ namespace rgbd_slam {
                 point.mark_unmatched();
                 return false;
             }
-
             assert(matchIndex >= 0);
-
-            const utils::ScreenCoordinate& matchedScreenpoint = detectedKeypointsObject.get_keypoint(matchIndex);
+            assert(static_cast<size_t>(matchIndex) < _isPointMatched.size());
             if (_isPointMatched[matchIndex])
             {
                 //point was already matched
                 outputs::log_error("The requested point unique index is already matched");
             }
 
+            const utils::ScreenCoordinate& matchedScreenpoint = detectedKeypointsObject.get_keypoint(matchIndex);
             if (utils::is_depth_valid(matchedScreenpoint.z()) ) {
                 // points with depth measurement
                 _isPointMatched[matchIndex] = true;
@@ -235,23 +235,22 @@ namespace rgbd_slam {
         {
             // project plane in camera space
             const utils::PlaneCameraCoordinates& projectedPlane = mapPlane._parametrization.to_camera_coordinates(worldToCamera);
-            for(const auto& [planeId, shapePlane] : detectedPlanes)
+            const size_t detectedPlaneSize = detectedPlanes.size();
+            for(size_t planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
             {
-                assert(planeId == shapePlane.get_id());
-                assert(planeId != UNMATCHED_PRIMITIVE_ID);
-
-                if (not _unmatchedPlaneIds.contains(planeId))
+                const features::primitives::Plane& shapePlane = detectedPlanes[planeIndex];
+                if (_isPlaneMatched[planeIndex])
                     // Does not allow multiple removal of a single match
                     // TODO: change this
                     continue;
 
                 if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
                 {
-                    mapPlane._matchedPlane.mark_matched(planeId);
+                    mapPlane._matchedPlane.mark_matched(planeIndex);
                     // TODO: replace nullptr by the plane covariance in camera space
                     matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, nullptr, mapPlane._id);
 
-                    _unmatchedPlaneIds.erase(planeId);
+                    _isPlaneMatched[planeIndex] = true;
                     return true;
                 }
             }
@@ -269,11 +268,12 @@ namespace rgbd_slam {
             {
                 if (mapPlane._matchedPlane.is_matched())
                 {
-                    const size_t matchedPlaneId = mapPlane._matchedPlane._matchId;
-                    assert(matchedPlaneId != UNMATCHED_PRIMITIVE_ID);
-                    assert(detectedPlanes.contains(matchedPlaneId));
+                    const int matchedPlaneIndex = mapPlane._matchedPlane._matchIndex;
+                    assert(matchedPlaneIndex != UNMATCHED_PRIMITIVE_ID);
+                    assert(matchedPlaneIndex >= 0);
+                    assert(static_cast<size_t>(matchedPlaneIndex) < detectedPlanes.size());
 
-                    const features::primitives::Plane& detectedPlane = detectedPlanes.at(matchedPlaneId);
+                    const features::primitives::Plane& detectedPlane = detectedPlanes[matchedPlaneIndex];
                     // TODO update plane
                     mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
                     mapPlane._shapeMask = detectedPlane.get_shape_mask();
@@ -292,12 +292,15 @@ namespace rgbd_slam {
             }
 
             // add unmatched planes to local map
-            for(const features::primitives::planeId& unmatchedDetectedPlaneId : _unmatchedPlaneIds)
+            const size_t detectedplaneCount = _isPlaneMatched.size();
+            assert(detectedplaneCount == detectedPlanes.size());
+            for(size_t planeIndex = 0; planeIndex < detectedplaneCount; ++planeIndex)
             {
-                assert(detectedPlanes.contains(unmatchedDetectedPlaneId));
+                if (_isPlaneMatched[planeIndex])
+                    continue;
 
-                const features::primitives::Plane& detectedPlane = detectedPlanes.at(unmatchedDetectedPlaneId);
-                
+                const features::primitives::Plane& detectedPlane = detectedPlanes[planeIndex];
+
                 MapPlane newMapPlane;
                 newMapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
                 newMapPlane._shapeMask = detectedPlane.get_shape_mask();
@@ -305,7 +308,7 @@ namespace rgbd_slam {
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
             }
 
-            _unmatchedPlaneIds.clear();
+            _isPlaneMatched.clear();
         }
 
         void Local_Map::update_local_plane_map_with_tracking_lost()
@@ -327,7 +330,7 @@ namespace rgbd_slam {
                 _localPlaneMap.erase(planeId);
             }
 
-            _unmatchedPlaneIds.clear();
+            _isPlaneMatched.clear();
         }
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& cameraToWorld)
@@ -715,6 +718,7 @@ namespace rgbd_slam {
         matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject)
         {
             // will be used to detect new keypoints for the stagged map
+            _isPointMatched.clear();
             _isPointMatched.assign(detectedKeypointsObject.get_keypoint_count(), false);
             matches_containers::match_point_container matchedPoints; 
 
@@ -744,18 +748,8 @@ namespace rgbd_slam {
 
         matches_containers::match_plane_container Local_Map::find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes)
         {
-            _unmatchedPlaneIds.clear();
-            // Fill in all features ids
-            for(const auto& [planeId, shapePlane] : detectedPlanes)
-            {
-                assert(planeId == shapePlane.get_id());
-                assert(planeId != UNMATCHED_PRIMITIVE_ID);
-                if (not _unmatchedPlaneIds.insert(planeId).second)
-                {
-                    // This element was already in the map
-                    outputs::log_error("A plane index was already maintained in set");
-                }
-            }
+            _isPlaneMatched.clear();
+            _isPlaneMatched.assign(detectedPlanes.size(), false);
 
             // Compute a world to camera transformation matrix
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
@@ -803,7 +797,7 @@ namespace rgbd_slam {
                     MapPlane& mapPlane = planeMapIterator->second;
                     assert(mapPlane._id == planeId);
                     // add detected plane id to unmatched set
-                    _unmatchedPlaneIds.insert(mapPlane._matchedPlane._matchId);
+                    _isPlaneMatched[mapPlane._matchedPlane._matchIndex] = false;
                     // unmatch
                     mapPlane._matchedPlane.mark_unmatched();
                 }

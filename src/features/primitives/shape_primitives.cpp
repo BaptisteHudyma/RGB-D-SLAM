@@ -13,8 +13,7 @@ namespace rgbd_slam {
              *      PRIMITIVE
              *
              */
-            IPrimitive::IPrimitive(const uint id, const cv::Mat& shapeMask) :
-                _id(id),
+            IPrimitive::IPrimitive(const cv::Mat& shapeMask) :
                 _shapeMask(shapeMask.clone())
             {
                 assert(not shapeMask.empty());
@@ -46,8 +45,8 @@ namespace rgbd_slam {
              *      CYLINDER
              *
              */
-            Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const uint id, const cv::Mat& shapeMask) :
-                IPrimitive(id, shapeMask)
+            Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask) :
+                IPrimitive(shapeMask)
             {
                 _radius = 0;
                 for(uint i = 0; i < cylinderSeg.get_segment_count(); ++i) {
@@ -77,8 +76,8 @@ namespace rgbd_slam {
              *        PLANE
              *
              */
-            Plane::Plane(const Plane_Segment& planeSeg, const uint id, const cv::Mat& shapeMask) :
-                IPrimitive(id, shapeMask),
+            Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
+                IPrimitive(shapeMask),
 
                 _parametrization(
                     planeSeg.get_normal().x(),

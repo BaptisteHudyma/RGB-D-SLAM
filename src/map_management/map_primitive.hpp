@@ -12,29 +12,29 @@
 namespace rgbd_slam {
     namespace map_management {
 
-        const features::primitives::planeId UNMATCHED_PRIMITIVE_ID = 0;
+        const int UNMATCHED_PRIMITIVE_ID = -1;
 
         struct MatchedPrimitive 
         {
             MatchedPrimitive():
-                _matchId(UNMATCHED_PRIMITIVE_ID),
+                _matchIndex(UNMATCHED_PRIMITIVE_ID),
                 _unmatchedCount(0)
             {};
 
             bool is_matched() const
             {
-                return _matchId != UNMATCHED_PRIMITIVE_ID;
+                return _matchIndex != UNMATCHED_PRIMITIVE_ID;
             }
 
-            void mark_matched(const features::primitives::planeId matchId)
+            void mark_matched(const uint matchIndex)
             {
-                _matchId = matchId;
+                _matchIndex = static_cast<int>(matchIndex);
                 _unmatchedCount = 0;
             }
 
             void mark_unmatched()
             {
-                _matchId = UNMATCHED_PRIMITIVE_ID;
+                _matchIndex = UNMATCHED_PRIMITIVE_ID;
                 ++_unmatchedCount;
             }
 
@@ -43,7 +43,7 @@ namespace rgbd_slam {
                 return _unmatchedCount >= Parameters::get_maximum_unmatched_before_removal();
             }
 
-            features::primitives::planeId _matchId; // Id of the last match
+            int _matchIndex; // Id of the last match
             size_t _unmatchedCount; // count of unmatched iterations
         };
 

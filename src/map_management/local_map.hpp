@@ -251,7 +251,7 @@ namespace rgbd_slam {
                 //local plane map
                 plane_map_container _localPlaneMap;
                 // Hold unmatched plane ids, to add to the local map
-                std::set<features::primitives::planeId> _unmatchedPlaneIds;
+                std::vector<bool> _isPlaneMatched;
 
                 outputs::XYZ_Map_Writer* _mapWriter; 
 
