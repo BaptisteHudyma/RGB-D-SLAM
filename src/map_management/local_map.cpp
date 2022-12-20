@@ -13,6 +13,7 @@
 #include "primitive_detection.hpp"
 #include "shape_primitives.hpp"
 #include "types.hpp"
+#include <string>
 
 namespace rgbd_slam {
     namespace map_management {
@@ -53,7 +54,7 @@ namespace rgbd_slam {
         }
 
         /**
-         * LOCAL MAP MEMBERS
+         * PUBLIC
          */
 
         Local_Map::Local_Map()
@@ -74,6 +75,35 @@ namespace rgbd_slam {
             delete _mapWriter;
         }
 
+        const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& lastPose) const
+        {
+            const size_t numberOfNewKeypoints = _localPointMap.size() + _stagedPoints.size();
+
+            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(lastPose.get_orientation_quaternion(), lastPose.get_position());
+
+            // initialize output structure
+            features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
+
+            // TODO: check the efficiency gain of those reserve calls
+            keypointsWithIds._ids.reserve(numberOfNewKeypoints);
+            keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
+
+            const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
+
+            // add map points with valid retroprojected coordinates
+            for (const auto& [pointId, point]  : _localPointMap)
+            {
+                assert(pointId == point._id);
+                add_point_to_tracked_features(worldToCamera, point, keypointsWithIds, refreshFrequency * 2);
+            }
+            // add staged points with valid retroprojected coordinates
+            for (const auto& [pointId, point] : _stagedPoints)
+            {
+                assert(pointId == point._id);
+                add_point_to_tracked_features(worldToCamera, point, keypointsWithIds, refreshFrequency);
+            }
+            return keypointsWithIds;
+        }
 
         matches_containers::matchContainer Local_Map::find_feature_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const features::primitives::plane_container& detectedPlanes)
         {
@@ -85,6 +115,63 @@ namespace rgbd_slam {
             return matchSets;
         }
 
+        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints, const matches_containers::match_plane_container& outlierMatchedPlanes)
+        {
+            // TODO find a better way to display trajectory than just a new map point
+            // _mapWriter->add_point(optimizedPose.get_position());
+
+            // Unmatch detected outliers
+            mark_outliers_as_unmatched(outlierMatchedPoints);
+            mark_outliers_as_unmatched(outlierMatchedPlanes);
+
+            const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
+            const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+
+            // add local map points
+            update_local_keypoint_map(cameraToWorld, keypointObject);
+
+            // add staged points to local map
+            update_staged_keypoints_map(cameraToWorld, keypointObject);
+
+            // Add unmatched poins to the staged map, to unsure tracking of new features
+            add_umatched_keypoints_to_staged_map(poseCovariance, cameraToWorld, keypointObject);
+
+            // add planes to local map
+            update_local_plane_map(cameraToWorld, detectedPlanes);
+
+            // add local map points to global map
+            update_local_to_global();
+        }
+
+        void Local_Map::update_local_to_global() 
+        {
+            // TODO when we have a global map
+
+        }
+
+        void Local_Map::update_no_pose()
+        {
+            // add local map points
+            update_local_keypoint_map_with_tracking_lost();
+
+            // add staged points to local map
+            update_staged_keypoints_map_with_tracking_lost();
+
+            // add planes to local map
+            update_local_plane_map_with_tracking_lost();
+        }
+
+        void Local_Map::reset()
+        {
+            _localPointMap.clear();
+            _stagedPoints.clear();
+        }
+
+
+
+        /**
+         * PROTECTED
+         */
 
         bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const worldToCameraMatrix& worldToCamera, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer)
         {
@@ -173,109 +260,6 @@ namespace rgbd_slam {
             }
 
             return false;
-        }
-
-        matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject)
-        {
-            // will be used to detect new keypoints for the stagged map
-            _isPointMatched.assign(detectedKeypointsObject.get_keypoint_count(), false);
-            matches_containers::match_point_container matchedPoints; 
-
-            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
-
-            // Try to find matches in local map
-            for (auto& [pointId, mapPoint] : _localPointMap) 
-            {
-                assert(pointId == mapPoint._id);
-                find_match(mapPoint, detectedKeypointsObject, worldToCamera, matchedPoints);
-            }
-
-            // if we have enough points from local map to run the optimization, no need to add the staged points
-            // Still, we need to try and match them to insure tracking and new map points
-            const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
-            const bool shouldUseStagedPoints = matchedPoints.size() < minimumPointsForOptimization;
-
-            // Try to find matches in staged points
-            for(auto& [pointId, stagedPoint] : _stagedPoints)
-            {
-                assert(pointId == stagedPoint._id);
-                find_match(stagedPoint, detectedKeypointsObject, worldToCamera, matchedPoints, shouldUseStagedPoints);
-            }
-
-            return matchedPoints;
-        }
-
-        matches_containers::match_plane_container Local_Map::find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes)
-        {
-            _unmatchedPlaneIds.clear();
-            // Fill in all features ids
-            for(const auto& [planeId, shapePlane] : detectedPlanes)
-            {
-                assert(planeId == shapePlane.get_id());
-                assert(planeId != UNMATCHED_PRIMITIVE_ID);
-                if (not _unmatchedPlaneIds.insert(planeId).second)
-                {
-                    // This element was already in the map
-                    outputs::log_error("A plane index was already maintained in set");
-                }
-            }
-
-            // Compute a world to camera transformation matrix
-            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
-            const planeWorldToCameraMatrix& planeWorldToCamera = utils::compute_plane_world_to_camera_matrix(worldToCamera);
-
-            // Search for matches
-            matches_containers::match_plane_container matchedPlaneContainer;
-            for(auto& [planeId, mapPlane] : _localPlaneMap)
-            {
-                if (not find_match(mapPlane, detectedPlanes, planeWorldToCamera, matchedPlaneContainer))
-                {
-                    // Mark as unmatched
-                    mapPlane._matchedPlane.mark_unmatched();
-                }
-            }
-
-            return matchedPlaneContainer;
-        }
-
-        void Local_Map::update(const utils::Pose& optimizedPose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const matches_containers::match_point_container& outlierMatchedPoints, const matches_containers::match_plane_container& outlierMatchedPlanes)
-        {
-            // TODO find a better way to display trajectory than just a new map point
-            // _mapWriter->add_point(optimizedPose.get_position());
-
-            // Unmatch detected outliers
-            mark_outliers_as_unmatched(outlierMatchedPoints);
-            mark_outliers_as_unmatched(outlierMatchedPlanes);
-
-            const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
-            const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
-
-            // add local map points
-            update_local_keypoint_map(cameraToWorld, keypointObject);
-
-            // add staged points to local map
-            update_staged_keypoints_map(cameraToWorld, keypointObject);
-
-            // Add unmatched poins to the staged map, to unsure tracking of new features
-            add_umatched_keypoints_to_staged_map(poseCovariance, cameraToWorld, keypointObject);
-
-            // add planes to local map
-            update_local_plane_map(cameraToWorld, detectedPlanes);
-
-            // add local map points to global map
-            update_local_to_global();
-        }
-
-        void Local_Map::update_no_pose()
-        {
-            // add local map points
-            update_local_keypoint_map_with_tracking_lost();
-
-            // add staged points to local map
-            update_staged_keypoints_map_with_tracking_lost();
-
-            // add planes to local map
-            update_local_plane_map_with_tracking_lost();
         }
 
         void Local_Map::update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes)
@@ -600,49 +584,6 @@ namespace rgbd_slam {
 
         }
 
-
-        const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& lastPose) const
-        {
-            const size_t numberOfNewKeypoints = _localPointMap.size() + _stagedPoints.size();
-
-            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(lastPose.get_orientation_quaternion(), lastPose.get_position());
-
-            // initialize output structure
-            features::keypoints::KeypointsWithIdStruct keypointsWithIds; 
-
-            // TODO: check the efficiency gain of those reserve calls
-            keypointsWithIds._ids.reserve(numberOfNewKeypoints);
-            keypointsWithIds._keypoints.reserve(numberOfNewKeypoints);
-
-            const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
-
-            // add map points with valid retroprojected coordinates
-            for (const auto& [pointId, point]  : _localPointMap)
-            {
-                assert(pointId == point._id);
-                add_point_to_tracked_features(worldToCamera, point, keypointsWithIds, refreshFrequency * 2);
-            }
-            // add staged points with valid retroprojected coordinates
-            for (const auto& [pointId, point] : _stagedPoints)
-            {
-                assert(pointId == point._id);
-                add_point_to_tracked_features(worldToCamera, point, keypointsWithIds, refreshFrequency);
-            }
-            return keypointsWithIds;
-        }
-
-        void Local_Map::update_local_to_global() 
-        {
-            // TODO when we have a global map
-
-        }
-
-        void Local_Map::reset()
-        {
-            _localPointMap.clear();
-            _stagedPoints.clear();
-        }
-
         void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius)
         {
             if (mapPoint.is_matched())
@@ -774,6 +715,70 @@ namespace rgbd_slam {
             }
         }
 
+        matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject)
+        {
+            // will be used to detect new keypoints for the stagged map
+            _isPointMatched.assign(detectedKeypointsObject.get_keypoint_count(), false);
+            matches_containers::match_point_container matchedPoints; 
+
+            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
+
+            // Try to find matches in local map
+            for (auto& [pointId, mapPoint] : _localPointMap) 
+            {
+                assert(pointId == mapPoint._id);
+                find_match(mapPoint, detectedKeypointsObject, worldToCamera, matchedPoints);
+            }
+
+            // if we have enough points from local map to run the optimization, no need to add the staged points
+            // Still, we need to try and match them to insure tracking and new map points
+            const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization() * 3;   // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process... 
+            const bool shouldUseStagedPoints = matchedPoints.size() < minimumPointsForOptimization;
+
+            // Try to find matches in staged points
+            for(auto& [pointId, stagedPoint] : _stagedPoints)
+            {
+                assert(pointId == stagedPoint._id);
+                find_match(stagedPoint, detectedKeypointsObject, worldToCamera, matchedPoints, shouldUseStagedPoints);
+            }
+
+            return matchedPoints;
+        }
+
+        matches_containers::match_plane_container Local_Map::find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes)
+        {
+            _unmatchedPlaneIds.clear();
+            // Fill in all features ids
+            for(const auto& [planeId, shapePlane] : detectedPlanes)
+            {
+                assert(planeId == shapePlane.get_id());
+                assert(planeId != UNMATCHED_PRIMITIVE_ID);
+                if (not _unmatchedPlaneIds.insert(planeId).second)
+                {
+                    // This element was already in the map
+                    outputs::log_error("A plane index was already maintained in set");
+                }
+            }
+
+            // Compute a world to camera transformation matrix
+            const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
+            const planeWorldToCameraMatrix& planeWorldToCamera = utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+            // Search for matches
+            matches_containers::match_plane_container matchedPlaneContainer;
+            for(auto& [planeId, mapPlane] : _localPlaneMap)
+            {
+                if (not find_match(mapPlane, detectedPlanes, planeWorldToCamera, matchedPlaneContainer))
+                {
+                    // Mark as unmatched
+                    mapPlane._matchedPlane.mark_unmatched();
+                }
+            }
+
+            return matchedPlaneContainer;
+        }
+
+
         void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints)
         {
             // Mark outliers as unmatched
@@ -781,7 +786,10 @@ namespace rgbd_slam {
             {
                 const bool isOutlierRemoved = mark_point_with_id_as_unmatched(match._idInMap);
                 // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
-                assert(isOutlierRemoved == true);
+                if(not isOutlierRemoved)
+                {
+                    outputs::log_error("Could not find the target point with id " + std::to_string(match._idInMap));
+                }
             }
         }
 
@@ -797,11 +805,14 @@ namespace rgbd_slam {
                 {
                     MapPlane& mapPlane = planeMapIterator->second;
                     assert(mapPlane._id == planeId);
+                    // add detected plane id to unmatched set
+                    _unmatchedPlaneIds.insert(mapPlane._matchedPlane._matchId);
+                    // unmatch
                     mapPlane._matchedPlane.mark_unmatched();
                 }
                 else
                 {
-                    outputs::log_error("Could not find the target plane with id");
+                    outputs::log_error("Could not find the target plane with id " + std::to_string(planeId));
                 }
             }
         }
@@ -814,7 +825,7 @@ namespace rgbd_slam {
             {
                 Map_Point& mapPoint = pointMapIterator->second;
                 assert(mapPoint._id == pointId);
-                mark_point_with_id_as_unmatched(pointId, mapPoint);
+                mark_point_with_id_as_unmatched(mapPoint);
                 return true;
             }
 
@@ -824,7 +835,7 @@ namespace rgbd_slam {
             {
                 Staged_Point& stagedPoint = stagedPointIterator->second;
                 assert(stagedPoint._id == pointId);
-                mark_point_with_id_as_unmatched(pointId, stagedPoint);
+                mark_point_with_id_as_unmatched(stagedPoint);
                 return true;
             }
 
@@ -832,9 +843,8 @@ namespace rgbd_slam {
             return false;
         }
 
-        void Local_Map::mark_point_with_id_as_unmatched(const size_t pointId, IMap_Point_With_Tracking& point)
+        void Local_Map::mark_point_with_id_as_unmatched(IMap_Point_With_Tracking& point)
         {
-            assert(pointId == point._id);
             const int matchIndex = point._matchIndex;
             assert(matchIndex >= 0 and matchIndex < static_cast<int>(_isPointMatched.size()));
 
