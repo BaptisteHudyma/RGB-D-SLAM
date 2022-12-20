@@ -3,6 +3,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
+#include <iostream>
 
 namespace rgbd_slam {
     namespace features {
@@ -224,6 +225,8 @@ namespace rgbd_slam {
                     _normal = -v;
                     _d = -_d;
                 } 
+                // some values have floatting points errors, renormalize
+                _normal.normalize();
 
                 //_score = sv[0] / (sv[0] + sv[1] + sv[2]);
                 _MSE = sv.x() * oneOverCount;

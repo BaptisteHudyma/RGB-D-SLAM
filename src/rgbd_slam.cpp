@@ -146,7 +146,7 @@ namespace rgbd_slam {
         _meanPoseOptimizationDuration += (cv::getTickCount() - computePoseStartTime) / (double)cv::getTickFrequency();
 
         //update motion model with refined pose
-        _motionModel.update_model(refinedPose); 
+        _motionModel.update_model(refinedPose);
 
         // Update current pose
         _currentPose = refinedPose;

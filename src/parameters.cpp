@@ -355,14 +355,14 @@ namespace rgbd_slam {
             outputs::log_error("Camera 1 focal Y distance must be > 0");
             _isValid = false;
         }
-        if (_camera1CenterX <= 0)
+        if (_camera1CenterX < 0)
         {
-            outputs::log_error("Camera 1 center X distance must be > 0");
+            outputs::log_error("Camera 1 center X distance must be >= 0");
             _isValid = false;
         }
-        if (_camera1CenterY <= 0)
+        if (_camera1CenterY < 0)
         {
-            outputs::log_error("Camera 1 center Y distance must be > 0");
+            outputs::log_error("Camera 1 center Y distance must be >= 0");
             _isValid = false;
         }
 
@@ -377,14 +377,14 @@ namespace rgbd_slam {
             outputs::log_error("Camera 2 focal Y distance must be > 0");
             _isValid = false;
         }
-        if (_camera2CenterX <= 0)
+        if (_camera2CenterX < 0)
         {
-            outputs::log_error("Camera 2 center X distance must be > 0");
+            outputs::log_error("Camera 2 center X distance must be >= 0");
             _isValid = false;
         }
-        if (_camera2CenterY <= 0)
+        if (_camera2CenterY < 0)
         {
-            outputs::log_error("Camera 2 center Y distance must be > 0");
+            outputs::log_error("Camera 2 center Y distance must be >= 0");
             _isValid = false;
         }
 

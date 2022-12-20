@@ -115,11 +115,12 @@ namespace primitives {
             _fyIr = Parameters::get_camera_2_focal_y();
             _cxIr = Parameters::get_camera_2_center_x();
             _cyIr = Parameters::get_camera_2_center_y();
-
+            
             _fxRgb = Parameters::get_camera_1_focal_x();
             _fyRgb = Parameters::get_camera_1_focal_y();
             _cxRgb = Parameters::get_camera_1_center_x();
             _cyRgb = Parameters::get_camera_1_center_y();
+            
 
             _Tstereo = cv::Mat(3, 1, CV_64F);
             _Tstereo.at<double>(0) = Parameters::get_camera_2_translation_x();

@@ -156,12 +156,16 @@ namespace rgbd_slam {
                         const vector3& planeNormal = _planeGrid[cellId].get_normal();
                         const double nx = planeNormal.x();
                         const double ny = planeNormal.y();
-
                         const double projNormal = 1.0 / sqrt(nx * nx + ny * ny);
-                        histBins(cellId, 0) = acos( -planeNormal.z());
+                        histBins(cellId, 0) = acos(-planeNormal.z());
+                        //TODO: is it usefull to get the projNormal and multiply it ? try to remove
                         histBins(cellId, 1) = atan2(nx * projNormal, ny * projNormal);
+
+                        assert(not std::isnan(histBins(cellId, 0)));
+                        assert(not std::isnan(histBins(cellId, 1)));
+
                         ++remainingPlanarCells;
-                        _isUnassignedMask[cellId] = true; 
+                        _isUnassignedMask[cellId] = true;
                     }
                 }
                 _histogram.init_histogram(histBins, _isUnassignedMask);
