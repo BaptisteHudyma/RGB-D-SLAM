@@ -402,7 +402,7 @@ namespace rgbd_slam {
             const static double maximumMatchDistance = Parameters::get_maximum_match_distance();
             const static float searchDiameter = Parameters::get_search_matches_distance();
             cv::Mat stagedPointDescriptors;
-            std::map<size_t, size_t> indexToId;
+            std::unordered_map<size_t, size_t> indexToId;
             size_t index = 0;
             for(const auto& [pointId, mapPoint] : _stagedPoints)
             {

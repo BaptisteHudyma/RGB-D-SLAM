@@ -235,11 +235,11 @@ namespace rgbd_slam {
                 // Define types
 
                 // local map point container
-                typedef std::map<size_t, Map_Point> point_map_container;
+                typedef std::unordered_map<size_t, Map_Point> point_map_container;
                 // staged points container
-                typedef std::map<size_t, Staged_Point> staged_point_container;
+                typedef std::unordered_map<size_t, Staged_Point> staged_point_container;
                 // local shape plane map container
-                typedef std::map<size_t, MapPlane> plane_map_container; 
+                typedef std::unordered_map<size_t, MapPlane> plane_map_container; 
 
                 // Local map contains world points with a good confidence
                 point_map_container _localPointMap;
@@ -247,11 +247,11 @@ namespace rgbd_slam {
                 staged_point_container _stagedPoints;
                 // Hold unmatched detected point indexes, to add in the staged point container
                 std::vector<bool> _isPointMatched;
-                // Hold unmatched plane ids, to add to the local map
-                std::set<features::primitives::planeId> _unmatchedPlaneIds;
 
                 //local plane map
                 plane_map_container _localPlaneMap;
+                // Hold unmatched plane ids, to add to the local map
+                std::set<features::primitives::planeId> _unmatchedPlaneIds;
 
                 outputs::XYZ_Map_Writer* _mapWriter; 
 
