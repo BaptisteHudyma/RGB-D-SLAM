@@ -15,9 +15,7 @@ namespace primitives {
             : 
                 _width(width), _height(height), _cellSize(cellSize),
                 _cloudArray(width * height, 3),
-                _X(height, width), _Y(height, width), _Xt(height, width), _Yt(height, width),
-                _Xpre(height, width), _Ypre(height, width), 
-                _U(height, width), _V(height, width), 
+                _Xpre(height, width), _Ypre(height, width),
                 _cellMap(height, width)
         {
             _isOk = false;
@@ -31,34 +29,35 @@ namespace primitives {
                 return;
 
             // Backproject to point cloud
-            _X = _Xpre.mul(depthImage); 
-            _Y = _Ypre.mul(depthImage);
+            cv::Mat_<float> X = _Xpre.mul(depthImage); 
+            cv::Mat_<float> Y = _Ypre.mul(depthImage);
 
             // The following transformation+projection is only necessary to visualize RGB with overlapped segments
             // Transform point cloud to color reference frame
-            _Xt = 
-                static_cast<float>(_Rstereo.at<double>(0,0)) * _X + 
-                static_cast<float>(_Rstereo.at<double>(0,1)) * _Y +
+            cv::Mat_<float> Xt = 
+                static_cast<float>(_Rstereo.at<double>(0,0)) * X + 
+                static_cast<float>(_Rstereo.at<double>(0,1)) * Y +
                 static_cast<float>(_Rstereo.at<double>(0,2)) * depthImage + 
                 static_cast<float>(_Tstereo.at<double>(0));
-            _Yt = 
-                static_cast<float>(_Rstereo.at<double>(1,0)) * _X +
-                static_cast<float>(_Rstereo.at<double>(1,1)) * _Y +
+            cv::Mat_<float> Yt = 
+                static_cast<float>(_Rstereo.at<double>(1,0)) * X +
+                static_cast<float>(_Rstereo.at<double>(1,1)) * Y +
                 static_cast<float>(_Rstereo.at<double>(1,2)) * depthImage +
                 static_cast<float>(_Tstereo.at<double>(1));
             depthImage = 
-                static_cast<float>(_Rstereo.at<double>(2,0)) * _X +
-                static_cast<float>(_Rstereo.at<double>(2,1)) * _Y + 
+                static_cast<float>(_Rstereo.at<double>(2,0)) * X +
+                static_cast<float>(_Rstereo.at<double>(2,1)) * Y + 
                 static_cast<float>(_Rstereo.at<double>(2,2)) * depthImage + 
                 static_cast<float>(_Tstereo.at<double>(2));
 
             double zMin = _Tstereo.at<double>(2);
 
             // Project to image coordinates
-            cv::divide(_Xt, depthImage, _U, 1);
-            cv::divide(_Yt, depthImage, _V, 1);
-            _U = _U * _fxRgb + _cxRgb;
-            _V = _V * _fyRgb + _cyRgb;
+            cv::Mat_<float> U, V;
+            cv::divide(Xt, depthImage, U, 1);
+            cv::divide(Yt, depthImage, V, 1);
+            U = U * _fxRgb + _cxRgb;
+            V = V * _fyRgb + _cyRgb;
             // Reusing U as cloud index
             //U = V*width + U + 0.5;
 
@@ -71,11 +70,11 @@ namespace primitives {
             #else
             for(uint r = 0; r < _height; ++r) {
             #endif
-                    float* sx = _Xt.ptr<float>(r);
-                    float* sy = _Yt.ptr<float>(r);
+                    float* sx = Xt.ptr<float>(r);
+                    float* sy = Yt.ptr<float>(r);
                     float* sz = depthImage.ptr<float>(r);
-                    float* u_ptr = _U.ptr<float>(r);
-                    float* v_ptr = _V.ptr<float>(r);
+                    float* u_ptr = U.ptr<float>(r);
+                    float* v_ptr = V.ptr<float>(r);
 
                     for(uint c = 0; c < _width; c++){
                         float z = sz[c];
@@ -147,7 +146,7 @@ namespace primitives {
             for (uint r = 0; r < _height; r++){
                 for (uint c = 0; c < _width; c++){
                     // Not efficient but at this stage doesn t matter
-                    _Xpre.at<float>(r, c) = static_cast<float>((c - _cxIr) / _fxIr); 
+                    _Xpre.at<float>(r, c) = static_cast<float>((c - _cxIr) / _fxIr);
                     _Ypre.at<float>(r, c) = static_cast<float>((r - _cyIr) / _fyIr);
                 }
             }

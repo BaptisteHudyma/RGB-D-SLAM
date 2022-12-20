@@ -80,14 +80,8 @@ namespace primitives {
             cv::Mat _Tstereo;
 
             //pre computation matrix
-            cv::Mat_<float> _X;
-            cv::Mat_<float> _Y;
-            cv::Mat_<float> _Xt;
-            cv::Mat_<float> _Yt;
             cv::Mat_<float> _Xpre;
             cv::Mat_<float> _Ypre;
-            cv::Mat_<float> _U;   
-            cv::Mat_<float> _V;
             cv::Mat_<int> _cellMap;
     };
 }
