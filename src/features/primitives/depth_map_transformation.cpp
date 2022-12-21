@@ -28,57 +28,58 @@ namespace primitives {
             if(not this->is_ok())
                 return;
 
-            // Backproject to point cloud (undistord depth image)
-            cv::Mat_<float> X = _Xpre.mul(depthImage); 
-            cv::Mat_<float> Y = _Ypre.mul(depthImage);
+            const static float x0RStereo = _Rstereo.at<double>(0,0);
+            const static float x1RStereo = _Rstereo.at<double>(1,0);
+            const static float x2RStereo = _Rstereo.at<double>(2,0);
+ 
+            const static float y0RStereo = _Rstereo.at<double>(0,1);
+            const static float y1RStereo = _Rstereo.at<double>(1,1);
+            const static float y2RStereo = _Rstereo.at<double>(2,1);
 
-            // Transform depth image to rgb image space
-            cv::Mat_<float> Xt = 
-                static_cast<float>(_Rstereo.at<double>(0,0)) * X + 
-                static_cast<float>(_Rstereo.at<double>(0,1)) * Y +
-                static_cast<float>(_Rstereo.at<double>(0,2)) * depthImage + 
-                static_cast<float>(_Tstereo.at<double>(0));
-            cv::Mat_<float> Yt = 
-                static_cast<float>(_Rstereo.at<double>(1,0)) * X +
-                static_cast<float>(_Rstereo.at<double>(1,1)) * Y +
-                static_cast<float>(_Rstereo.at<double>(1,2)) * depthImage +
-                static_cast<float>(_Tstereo.at<double>(1));
-            cv::Mat_<float> Zt = 
-                static_cast<float>(_Rstereo.at<double>(2,0)) * X +
-                static_cast<float>(_Rstereo.at<double>(2,1)) * Y + 
-                static_cast<float>(_Rstereo.at<double>(2,2)) * depthImage + 
-                static_cast<float>(_Tstereo.at<double>(2));
-
-            double zMin = _Tstereo.at<double>(2);
+            const static float z0RStereo = _Rstereo.at<double>(0,2);
+            const static float z1RStereo = _Rstereo.at<double>(1,2);
+            const static float z2RStereo = _Rstereo.at<double>(2,2);
+ 
+            const static float xTStereo = _Tstereo.at<double>(0);
+            const static float yTStereo = _Tstereo.at<double>(1);
+            const static float zTStereo = _Tstereo.at<double>(2);
 
             // will contain the projected depth image to rgb space
-            depthImage = cv::Mat::zeros(_height, _width, CV_32F);
-            
+            organizedCloudArray = matrixf::Zero(_width * _height, 3);
+            cv::Mat newDepth = cv::Mat::zeros(_height, _width, CV_32F);
+
             #ifndef MAKE_DETERMINISTIC
             // parallel loop to speed up the process
             // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
-            tbb::parallel_for(uint(0), _height, [&](uint r){
+            tbb::parallel_for(uint(0), _height, [&](uint row){
             #else
             for(uint row = 0; row < _height; ++row) {
             #endif
-                    // get depth map in camera space
-                    const float* sx = Xt.ptr<float>(row);
-                    const float* sy = Yt.ptr<float>(row);
-                    const float* sz = Zt.ptr<float>(row);
+                    const float* depthRow = depthImage.ptr<float>(row);
+                    const float* preXRow = _Xpre.ptr<float>(row);
+                    const float* preYRow = _Ypre.ptr<float>(row);
 
                     for(uint column = 0; column < _width; column++){
-                        const float z = sz[column];
-                        if(z > zMin)
+                        const float originalZ = depthRow[column];
+                        if(originalZ > 0)
                         {
-                            const float x = sx[column];
-                            const float y = sy[column];
-                            
+                            // undistord the depth image
+                            const float originalX = preXRow[column] * originalZ;
+                            const float originalY = preYRow[column] * originalZ;
+
+                            // project to rgb space
+                            const float x = originalX * x0RStereo + originalY * y0RStereo + originalZ * z0RStereo + xTStereo;
+                            const float y = originalX * x1RStereo + originalY * y1RStereo + originalZ * z1RStereo + yTStereo;
+                            const float z = originalX * x2RStereo + originalY * y2RStereo + originalZ * z2RStereo + zTStereo;
+
+                            // distord to align with rgb image
                             const uint projCoordColumn = floor( (x/z) * _fxRgb + _cxRgb );
                             const uint projCoordRow = floor( (y/z) * _fyRgb + _cyRgb );
+
                             // keep projected coordinates that are in rgb image boundaries
                             if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and projCoordRow < _height){
                                 //set transformed depth image
-                                depthImage.at<float>(projCoordRow, projCoordColumn) = z;
+                                newDepth.at<float>(projCoordRow, projCoordColumn) = z;
 
                                 // set convertion matrix
                                 const int id = _cellMap.at<int>(projCoordRow, projCoordColumn);
@@ -92,6 +93,8 @@ namespace primitives {
             #ifndef MAKE_DETERMINISTIC
             );
             #endif
+
+            depthImage = newDepth;
         }
 
         bool Depth_Map_Transformation::load_parameters() {

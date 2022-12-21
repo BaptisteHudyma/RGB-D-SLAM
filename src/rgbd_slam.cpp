@@ -121,10 +121,10 @@ namespace rgbd_slam {
         //project depth image in an organized cloud
         const double depthImageTreatmentStartTime = cv::getTickCount();
         // organized 3D depth image
-        matrixf cloudArrayOrganized = matrixf::Zero(_width * _height, 3);
+        matrixf cloudArrayOrganized;
         _depthOps->get_organized_cloud_array(depthImage, cloudArrayOrganized);
         _meanDepthMapTreatmentDuration += (cv::getTickCount() - depthImageTreatmentStartTime) / static_cast<double>(cv::getTickFrequency());
-        
+
         // Compute a gray image for feature extractions
         cv::Mat grayImage;
         cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
