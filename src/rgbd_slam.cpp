@@ -4,6 +4,7 @@
 
 #include "parameters.hpp"
 #include "outputs/logger.hpp"
+#include "types.hpp"
 #include "utils/random.hpp"
 #include "utils/matches_containers.hpp"
 
@@ -120,7 +121,7 @@ namespace rgbd_slam {
         //project depth image in an organized cloud
         const double depthImageTreatmentStartTime = cv::getTickCount();
         // organized 3D depth image
-        matrixf cloudArrayOrganized(_width * _height, 3);
+        matrixf cloudArrayOrganized = matrixf::Zero(_width * _height, 3);
         _depthOps->get_organized_cloud_array(depthImage, cloudArrayOrganized);
         _meanDepthMapTreatmentDuration += (cv::getTickCount() - depthImageTreatmentStartTime) / static_cast<double>(cv::getTickFrequency());
         

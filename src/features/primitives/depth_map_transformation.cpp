@@ -3,6 +3,7 @@
 #include "../../parameters.hpp"
 #include "../../utils/angle_utils.hpp"
 #include "../../utils/random.hpp"
+#include "types.hpp"
 
 #include <opencv2/core/eigen.hpp>
 #include <tbb/parallel_for.h>
@@ -14,7 +15,6 @@ namespace primitives {
         Depth_Map_Transformation::Depth_Map_Transformation(const uint width, const uint height, const uint cellSize) 
             : 
                 _width(width), _height(height), _cellSize(cellSize),
-                _cloudArray(width * height, 3),
                 _Xpre(height, width), _Ypre(height, width),
                 _cellMap(height, width)
         {
@@ -28,12 +28,11 @@ namespace primitives {
             if(not this->is_ok())
                 return;
 
-            // Backproject to point cloud
+            // Backproject to point cloud (undistord depth image)
             cv::Mat_<float> X = _Xpre.mul(depthImage); 
             cv::Mat_<float> Y = _Ypre.mul(depthImage);
 
-            // The following transformation+projection is only necessary to visualize RGB with overlapped segments
-            // Transform point cloud to color reference frame
+            // Transform depth image to rgb image space
             cv::Mat_<float> Xt = 
                 static_cast<float>(_Rstereo.at<double>(0,0)) * X + 
                 static_cast<float>(_Rstereo.at<double>(0,1)) * Y +
@@ -44,7 +43,7 @@ namespace primitives {
                 static_cast<float>(_Rstereo.at<double>(1,1)) * Y +
                 static_cast<float>(_Rstereo.at<double>(1,2)) * depthImage +
                 static_cast<float>(_Tstereo.at<double>(1));
-            depthImage = 
+            cv::Mat_<float> Zt = 
                 static_cast<float>(_Rstereo.at<double>(2,0)) * X +
                 static_cast<float>(_Rstereo.at<double>(2,1)) * Y + 
                 static_cast<float>(_Rstereo.at<double>(2,2)) * depthImage + 
@@ -52,61 +51,47 @@ namespace primitives {
 
             double zMin = _Tstereo.at<double>(2);
 
-            // Project to image coordinates
-            cv::Mat_<float> U, V;
-            cv::divide(Xt, depthImage, U, 1);
-            cv::divide(Yt, depthImage, V, 1);
-            U = U * _fxRgb + _cxRgb;
-            V = V * _fyRgb + _cyRgb;
-            // Reusing U as cloud index
-            //U = V*width + U + 0.5;
-
-            cv::Mat outputDepth = cv::Mat::zeros(_height, _width, CV_32F);
-            _cloudArray.setZero();
+            // will contain the projected depth image to rgb space
+            depthImage = cv::Mat::zeros(_height, _width, CV_32F);
+            
             #ifndef MAKE_DETERMINISTIC
             // parallel loop to speed up the process
-            // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDIND
+            // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
             tbb::parallel_for(uint(0), _height, [&](uint r){
             #else
-            for(uint r = 0; r < _height; ++r) {
+            for(uint row = 0; row < _height; ++row) {
             #endif
-                    float* sx = Xt.ptr<float>(r);
-                    float* sy = Yt.ptr<float>(r);
-                    float* sz = depthImage.ptr<float>(r);
-                    float* u_ptr = U.ptr<float>(r);
-                    float* v_ptr = V.ptr<float>(r);
+                    // get depth map in camera space
+                    const float* sx = Xt.ptr<float>(row);
+                    const float* sy = Yt.ptr<float>(row);
+                    const float* sz = Zt.ptr<float>(row);
 
-                    for(uint c = 0; c < _width; c++){
-                        float z = sz[c];
-                        float u = u_ptr[c];
-                        float v = v_ptr[c];
-                        if(z > zMin and u > 0 and v > 0 and u < _width and v < _height){
-                            //set transformed depth image
-                            outputDepth.at<float>(v, u) = z; 
-                            int id = floor(v) * _width + u;
-                            _cloudArray(id, 0) = sx[c];
-                            _cloudArray(id, 1) = sy[c];
-                            _cloudArray(id, 2) = z;
+                    for(uint column = 0; column < _width; column++){
+                        const float z = sz[column];
+                        if(z > zMin)
+                        {
+                            const float x = sx[column];
+                            const float y = sy[column];
+                            
+                            const uint projCoordColumn = floor( (x/z) * _fxRgb + _cxRgb );
+                            const uint projCoordRow = floor( (y/z) * _fyRgb + _cyRgb );
+                            // keep projected coordinates that are in rgb image boundaries
+                            if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and projCoordRow < _height){
+                                //set transformed depth image
+                                depthImage.at<float>(projCoordRow, projCoordColumn) = z;
+
+                                // set convertion matrix
+                                const int id = _cellMap.at<int>(projCoordRow, projCoordColumn);
+                                organizedCloudArray(id, 0) = x;
+                                organizedCloudArray(id, 1) = y;
+                                organizedCloudArray(id, 2) = z;
+                            }
                         }
                     }
                 }
             #ifndef MAKE_DETERMINISTIC
             );
             #endif
-
-            //project cloud point by cells
-            uint mxn = _width * _height;
-            uint mxn2 = 2 * mxn;
-            for(uint r = 0, it = 0; r < _height; r++){
-                int* cellMapPtr = _cellMap.ptr<int>(r);
-                for(uint c = 0; c < _width; c++, it++){
-                    int id = cellMapPtr[c];
-                    organizedCloudArray(id) = _cloudArray(it);
-                    organizedCloudArray(mxn + id) = _cloudArray(mxn + it);
-                    organizedCloudArray(mxn2 + id) = _cloudArray(mxn2 + it);
-                }
-            }
-            depthImage = outputDepth;
         }
 
         bool Depth_Map_Transformation::load_parameters() {
@@ -140,26 +125,22 @@ namespace primitives {
          *  Called after loading parameters to init matrices
          */
         void Depth_Map_Transformation::init_matrices() {
-            uint horizontalCellsCount = static_cast<uint>(_width / _cellSize);
+            const uint horizontalCellsCount = static_cast<uint>(_width / _cellSize);
 
             // Pre-computations for backprojection
-            for (uint r = 0; r < _height; r++){
-                for (uint c = 0; c < _width; c++){
+            for (uint row = 0; row < _height; ++row){
+                const uint cellR = floor(row / _cellSize);
+                const uint localR = floor(row % _cellSize);
+
+                for (uint colum = 0; colum < _width; ++colum){
                     // Not efficient but at this stage doesn t matter
-                    _Xpre.at<float>(r, c) = static_cast<float>((c - _cxIr) / _fxIr);
-                    _Ypre.at<float>(r, c) = static_cast<float>((r - _cyIr) / _fyIr);
-                }
-            }
+                    _Xpre.at<float>(row, colum) = static_cast<float>((colum - _cxIr) / _fxIr);
+                    _Ypre.at<float>(row, colum) = static_cast<float>((row - _cyIr) / _fyIr);
 
-            // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point clouds are contiguous
-            for (uint r = 0; r < _height; r++){
-                uint cellR = static_cast<uint>(r / _cellSize);
-                uint localR = static_cast<uint>(r % _cellSize);
-
-                for (uint c = 0; c < _width; c++){
-                    uint cellC =  static_cast<uint>(c / _cellSize);
-                    uint localC = static_cast<uint>(c % _cellSize);
-                    _cellMap.at<int>(r, c) = (cellR * horizontalCellsCount + cellC) * _cellSize * _cellSize + localR * _cellSize + localC;
+                    // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point clouds are contiguous
+                    const uint cellC =  floor(colum / _cellSize);
+                    const uint localC = floor(colum % _cellSize);
+                    _cellMap.at<int>(row, colum) = (cellR * horizontalCellsCount + cellC) * pow(_cellSize, 2) + localR * _cellSize + localC;
                 }
             }
         }

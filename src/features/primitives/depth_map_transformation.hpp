@@ -62,8 +62,6 @@ namespace primitives {
             uint _cellSize;
             bool _isOk;
 
-            matrixf _cloudArray;
-
             //cam parameters
             float _fxIr;
             float _fyIr;
