@@ -187,7 +187,7 @@ namespace rgbd_slam {
                 return false;
             }
             assert(matchIndex >= 0);
-            assert(static_cast<size_t>(matchIndex) < _isPointMatched.size());
+            assert(static_cast<Eigen::Index>(matchIndex) < _isPointMatched.size());
             if (_isPointMatched[matchIndex])
             {
                 //point was already matched
@@ -304,8 +304,6 @@ namespace rgbd_slam {
 
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
             }
-
-            _isPlaneMatched.clear();
         }
 
         void Local_Map::update_local_plane_map_with_tracking_lost()
@@ -326,8 +324,6 @@ namespace rgbd_slam {
             {
                 _localPlaneMap.erase(planeId);
             }
-
-            _isPlaneMatched.clear();
         }
 
         void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& cameraToWorld)
@@ -715,8 +711,7 @@ namespace rgbd_slam {
         matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject)
         {
             // will be used to detect new keypoints for the stagged map
-            _isPointMatched.clear();
-            _isPointMatched.assign(detectedKeypointsObject.get_keypoint_count(), false);
+            _isPointMatched = vectorb::Zero(detectedKeypointsObject.get_keypoint_count());
             matches_containers::match_point_container matchedPoints; 
 
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
@@ -745,8 +740,7 @@ namespace rgbd_slam {
 
         matches_containers::match_plane_container Local_Map::find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes)
         {
-            _isPlaneMatched.clear();
-            _isPlaneMatched.assign(detectedPlanes.size(), false);
+            _isPlaneMatched = vectorb::Zero(detectedPlanes.size());
 
             // Compute a world to camera transformation matrix
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());

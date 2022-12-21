@@ -26,7 +26,7 @@ namespace rgbd_slam {
                      * \param[in] isActivatedMask An array of size planeCount, referencing activated plane segments 
                      * \param[in] cellActivatedCount
                      */
-                    Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount);
+                    Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const vectorb& isActivatedMask, const uint cellActivatedCount);
 
                     /**
                      * \brief Copy constructor

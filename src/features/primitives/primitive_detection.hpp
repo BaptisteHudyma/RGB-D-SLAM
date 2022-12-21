@@ -103,7 +103,7 @@ namespace rgbd_slam {
                      * \param[in] isActivatedMap A vector associating for each planar patch a flag indicating if it was merged this iteration
                      * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs that composes it
                      */
-                    void cylinder_fitting(const uint cellActivatedCount, const std::vector<bool>& isActivatedMap, intpair_vector& cylinder2regionMap);
+                    void cylinder_fitting(const uint cellActivatedCount, const vectorb& isActivatedMap, intpair_vector& cylinder2regionMap);
 
                     /**
                      * \brief Merge close planes by comparing normals and MSE
@@ -136,7 +136,7 @@ namespace rgbd_slam {
                      * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
                      * \param[in] seedPlaneD D component of the plane to grow from
                      */
-                    void region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, std::vector<bool>& isActivatedMap);
+                    void region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, vectorb& isActivatedMap);
 
                     /**
                      * \brief Fill an association matrix that links connected plane components
@@ -178,7 +178,7 @@ namespace rgbd_slam {
                     cv::Mat_<int> _gridCylinderSegMap;
 
                     //arrays
-                    std::vector<bool> _isUnassignedMask;
+                    vectorb _isUnassignedMask;
                     std::vector<float> _cellDistanceTols;
 
                     // primitive cell mask

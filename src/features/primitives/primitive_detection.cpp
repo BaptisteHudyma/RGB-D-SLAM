@@ -8,6 +8,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
     namespace features {
@@ -24,7 +25,7 @@ namespace rgbd_slam {
                     _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
             {
                 //Init variables
-                _isUnassignedMask.assign(_totalCellCount, false);
+                _isUnassignedMask = vectorb::Zero(_totalCellCount);
                 _cellDistanceTols.assign(_totalCellCount, 0.0f);
 
                 _gridPlaneSegmentMap = cv::Mat_<int>(_verticalCellsCount, _horizontalCellsCount, 0);
@@ -226,7 +227,7 @@ namespace rgbd_slam {
                 const uint x = static_cast<uint>(seedId % _horizontalCellsCount);
 
                 //activationMap set to false (will have bits at true when a plane segment will be merged to this one)
-                std::vector<bool> isActivatedMap(_totalCellCount, false);
+                vectorb isActivatedMap = vectorb::Zero(_totalCellCount);
                 const size_t activationMapSize = isActivatedMap.size();
                 //grow plane region, fill isActivatedMap
                 region_growing(x, y, newPlaneSegment.get_normal(), newPlaneSegment.get_plane_d(), isActivatedMap);
@@ -292,7 +293,7 @@ namespace rgbd_slam {
                 }
             }
 
-            void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount, const std::vector<bool>& isActivatedMap, intpair_vector& cylinder2regionMap)
+            void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount, const vectorb& isActivatedMap, intpair_vector& cylinder2regionMap)
             {
                 //try cylinder fitting on the activated planes
                 const Cylinder_Segment& cylinderSegment = Cylinder_Segment(_planeGrid, isActivatedMap, cellActivatedCount);
@@ -526,7 +527,7 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, std::vector<bool>& isActivatedMap) 
+            void Primitive_Detection::region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, vectorb& isActivatedMap) 
             {
                 assert(isActivatedMap.size() == _isUnassignedMask.size());
                 assert(_horizontalCellsCount > 0);

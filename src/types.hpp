@@ -3,6 +3,7 @@
 
 
 #include <Eigen/Dense>
+#include <Eigen/src/Core/Matrix.h>
 #include <vector>
 
 namespace rgbd_slam {
@@ -17,6 +18,7 @@ namespace rgbd_slam {
     typedef Eigen::MatrixXd matrixd;
     typedef Eigen::Vector2d vector2;
     typedef Eigen::VectorXd vectorxd;
+    typedef Eigen::Vector<bool, Eigen::Dynamic> vectorb;
     typedef Eigen::Matrix<double, 3, 1> vector3;
     typedef Eigen::Vector4d vector4;
     typedef Eigen::Matrix3d matrix33;

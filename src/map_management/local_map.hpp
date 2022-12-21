@@ -246,12 +246,12 @@ namespace rgbd_slam {
                 // Staged points are potential new map points, waiting to confirm confidence
                 staged_point_container _stagedPoints;
                 // Hold unmatched detected point indexes, to add in the staged point container
-                std::vector<bool> _isPointMatched;
+                vectorb _isPointMatched;
 
                 //local plane map
                 plane_map_container _localPlaneMap;
                 // Hold unmatched plane ids, to add to the local map
-                std::vector<bool> _isPlaneMatched;
+                vectorb _isPlaneMatched;
 
                 outputs::XYZ_Map_Writer* _mapWriter; 
 

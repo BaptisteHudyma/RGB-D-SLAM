@@ -39,7 +39,7 @@ namespace rgbd_slam {
                 _axis = seg._axis;
             }
 
-            Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount) :
+            Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const vectorb& isActivatedMask, const uint cellActivatedCount) :
                 _cellActivatedCount(cellActivatedCount),
                 _segmentCount(0)
             {
