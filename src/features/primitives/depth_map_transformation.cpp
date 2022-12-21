@@ -5,7 +5,9 @@
 #include "../../utils/random.hpp"
 #include "types.hpp"
 
+#include <iostream>
 #include <opencv2/core/eigen.hpp>
+#include <opencv2/highgui.hpp>
 #include <tbb/parallel_for.h>
 
 namespace rgbd_slam {
@@ -24,9 +26,10 @@ namespace primitives {
                 init_matrices();
         }
 
-        void Depth_Map_Transformation::get_organized_cloud_array(cv::Mat& depthImage, matrixf& organizedCloudArray) {
+        bool Depth_Map_Transformation::rectify_depth(const cv::Mat& depthImage, cv::Mat& rectifiedDepth)
+        {
             if(not this->is_ok())
-                return;
+                return false;
 
             const static float x0RStereo = _Rstereo.at<double>(0,0);
             const static float x1RStereo = _Rstereo.at<double>(1,0);
@@ -45,8 +48,7 @@ namespace primitives {
             const static float zTStereo = _Tstereo.at<double>(2);
 
             // will contain the projected depth image to rgb space
-            organizedCloudArray = matrixf::Zero(_width * _height, 3);
-            cv::Mat newDepth = cv::Mat::zeros(_height, _width, CV_32F);
+            rectifiedDepth = cv::Mat::zeros(_height, _width, CV_32F);
 
             #ifndef MAKE_DETERMINISTIC
             // parallel loop to speed up the process
@@ -59,7 +61,7 @@ namespace primitives {
                     const float* preXRow = _Xpre.ptr<float>(row);
                     const float* preYRow = _Ypre.ptr<float>(row);
 
-                    for(uint column = 0; column < _width; column++){
+                    for(uint column = 0; column < _width; ++column){
                         const float originalZ = depthRow[column];
                         if(originalZ > 0)
                         {
@@ -73,19 +75,13 @@ namespace primitives {
                             const float z = originalX * x2RStereo + originalY * y2RStereo + originalZ * z2RStereo + zTStereo;
 
                             // distord to align with rgb image
-                            const uint projCoordColumn = floor( (x/z) * _fxRgb + _cxRgb );
-                            const uint projCoordRow = floor( (y/z) * _fyRgb + _cyRgb );
+                            const uint projCoordColumn = floor(x * _fxRgb/z + _cxRgb );
+                            const uint projCoordRow = floor(y * _fyRgb/z + _cyRgb );
 
                             // keep projected coordinates that are in rgb image boundaries
                             if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and projCoordRow < _height){
                                 //set transformed depth image
-                                newDepth.at<float>(projCoordRow, projCoordColumn) = z;
-
-                                // set convertion matrix
-                                const int id = _cellMap.at<int>(projCoordRow, projCoordColumn);
-                                organizedCloudArray(id, 0) = x;
-                                organizedCloudArray(id, 1) = y;
-                                organizedCloudArray(id, 2) = z;
+                                rectifiedDepth.at<float>(projCoordRow, projCoordColumn) = z;
                             }
                         }
                     }
@@ -94,7 +90,41 @@ namespace primitives {
             );
             #endif
 
-            depthImage = newDepth;
+            return true;
+        }
+
+        void Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat& depthImage, matrixf& organizedCloudArray) {
+            if(not this->is_ok())
+                return;
+
+            // will contain the projected depth image to rgb space
+            organizedCloudArray = matrixf::Zero(_width * _height, 3);
+
+            #ifndef MAKE_DETERMINISTIC
+            // parallel loop to speed up the process
+            // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
+            tbb::parallel_for(uint(0), _height, [&](uint row){
+            #else
+            for(uint row = 0; row < _height; ++row) {
+            #endif
+                    const float* depthRow = depthImage.ptr<float>(row);
+
+                    for(uint column = 0; column < _width; ++column){
+                        const float z = depthRow[column];
+                        if(z > 0)
+                        {
+                            // set convertion matrix
+                            const int id = _cellMap.at<int>(row, column);
+                            // undistord depth
+                            organizedCloudArray(id, 0) = (column - _cxRgb) * z/_fxRgb;
+                            organizedCloudArray(id, 1) = (row - _cyRgb) * z/_fyRgb;
+                            organizedCloudArray(id, 2) = z;
+                        }
+                    }
+                }
+            #ifndef MAKE_DETERMINISTIC
+            );
+            #endif
         }
 
         bool Depth_Map_Transformation::load_parameters() {
