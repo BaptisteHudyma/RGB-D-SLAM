@@ -3,6 +3,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
+#include <iostream>
 
 namespace rgbd_slam {
     namespace features {
@@ -224,14 +225,14 @@ namespace rgbd_slam {
                     _d = -_d;
                 } 
                 // some values have floatting points errors, renormalize
-                _normal.transpose();
+                _normal.normalize();
 
                 //_score = sv[0] / (sv[0] + sv[1] + sv[2]);
                 _MSE = sv.x() * oneOverCount;
                 _score = sv.y() / sv.x();
-                // TODO: maybe their is a better way
-                // if the z normal is JUST in front of the camera, reject it (numerically unstalble)
-                _isPlanar = _normal.z() < 1 and _normal.z() > -1;
+
+                // set segment as planar
+                _isPlanar = true;
             }
 
             /*

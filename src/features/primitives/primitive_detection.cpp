@@ -24,7 +24,6 @@ namespace rgbd_slam {
                     _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
             {
                 //Init variables
-                _isActivatedMap.assign(_totalCellCount, false);
                 _isUnassignedMask.assign(_totalCellCount, false);
                 _cellDistanceTols.assign(_totalCellCount, 0.0f);
 
@@ -174,10 +173,9 @@ namespace rgbd_slam {
             {
                 intpair_vector cylinder2regionMap;
 
-                uint cylinderCount = 0;
-                uint unaffectedPlanarCells = remainingPlanarCells;
+                uint untriedPlanarCellsCount = remainingPlanarCells;
                 //find seed planes and make them grow
-                while(unaffectedPlanarCells > 0) 
+                while(untriedPlanarCellsCount > 0) 
                 {
                     //get seed candidates
                     const std::vector<uint>& seedCandidates = _histogram.get_points_from_most_frequent_bin();
@@ -203,144 +201,162 @@ namespace rgbd_slam {
                         outputs::log_error("Could not find a single plane segment");
                         break;
                     }
+                    
+                    // try to grow the selected plane at seedId
+                    grow_plane_segment_at_seed(seedId, untriedPlanarCellsCount, cylinder2regionMap);
+                }
+                return cylinder2regionMap;
+            }
 
 
-                    //copy plane segment in new object
-                    Plane_Segment newPlaneSegment(_planeGrid[seedId]);
-                    if (not newPlaneSegment.is_planar())
-                        continue;
+            void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId, uint& untriedPlanarCellsCount, intpair_vector& cylinder2regionMap)
+            {
+                const Plane_Segment& planeToGrow = _planeGrid[seedId];
+                if (not planeToGrow.is_planar())
+                {
+                    // cannot grow a non planar patch
+                    return;
+                }
 
-                    //Seed cell growing
-                    const uint y = static_cast<uint>(seedId / _horizontalCellsCount);
-                    const uint x = static_cast<uint>(seedId % _horizontalCellsCount);
+                //copy plane segment in new object, to try to grow it in a non destructive way
+                Plane_Segment newPlaneSegment(planeToGrow);
 
-                    //activationMap set to false
-                    const size_t activationMapSize = _isActivatedMap.size();
-                    std::fill_n(_isActivatedMap.begin(), activationMapSize, false);
-                    //grow plane region, fill _isActivatedMap
-                    region_growing(x, y, newPlaneSegment.get_normal(), newPlaneSegment.get_plane_d());
+                //Seed cell growing
+                const uint y = static_cast<uint>(seedId / _horizontalCellsCount);
+                const uint x = static_cast<uint>(seedId % _horizontalCellsCount);
 
-                    assert(activationMapSize == _isUnassignedMask.size());
-                    assert(activationMapSize == _planeGrid.size());
+                //activationMap set to false (will have bits at true when a plane segment will be merged to this one)
+                std::vector<bool> isActivatedMap(_totalCellCount, false);
+                const size_t activationMapSize = isActivatedMap.size();
+                //grow plane region, fill isActivatedMap
+                region_growing(x, y, newPlaneSegment.get_normal(), newPlaneSegment.get_plane_d(), isActivatedMap);
 
-                    //merge activated cells & remove them from histogram
-                    uint cellActivatedCount = 0;
-                    bool isPlaneFitable = false;
-                    for(uint planeSegmentIndex = 0; planeSegmentIndex < activationMapSize; ++planeSegmentIndex) 
+                assert(activationMapSize == _isUnassignedMask.size());
+                assert(activationMapSize == _planeGrid.size());
+
+                //merge activated cells & remove them from histogram
+                uint cellActivatedCount = 0;
+                bool isPlaneFitable = false;
+                for(uint planeSegmentIndex = 0; planeSegmentIndex < activationMapSize; ++planeSegmentIndex) 
+                {
+                    if(isActivatedMap[planeSegmentIndex]) 
                     {
-                        if(_isActivatedMap[planeSegmentIndex]) 
+                        const Plane_Segment& planeSegment = _planeGrid[planeSegmentIndex];
+                        if (planeSegment.is_planar())
                         {
-                            const Plane_Segment& planeSegment = _planeGrid[planeSegmentIndex];
+                            newPlaneSegment.expand_segment(planeSegment);
+                            ++cellActivatedCount;
+                            _histogram.remove_point(planeSegmentIndex);
+                            _isUnassignedMask[planeSegmentIndex] = false;
+
+                            assert(untriedPlanarCellsCount > 0);
+                            --untriedPlanarCellsCount;
+                            isPlaneFitable = true;
+                        }
+                    }
+                }
+
+                const static uint minimumCellActivated = Parameters::get_minimum_cell_activated();
+                if(not isPlaneFitable or cellActivatedCount < minimumCellActivated) 
+                {
+                    _histogram.remove_point(seedId);
+                    return;
+                }
+
+                //fit plane to merged data
+                newPlaneSegment.fit_plane();
+
+                // TODO: why 100 ? seems random
+                if(newPlaneSegment.get_score() > 100) 
+                {
+                    //its certainly a plane or we ignore cylinder detection
+                    _planeSegments.push_back(newPlaneSegment);
+                    const size_t currentPlaneCount = _planeSegments.size();
+                    //mark cells that belong to this plane with a new id
+                    for(uint row = 0, activationIndex = 0; row < _verticalCellsCount; ++row) 
+                    {
+                        int* rowPtr = _gridPlaneSegmentMap.ptr<int>(row);
+                        for(uint col = 0; col < _horizontalCellsCount; ++col, ++activationIndex)
+                        {
+                            assert(activationIndex < activationMapSize);
+
+                            if(isActivatedMap[activationIndex])
+                                rowPtr[col] = currentPlaneCount;
+                        }
+                    }
+                }
+                // TODO: why 5 ? seems random
+                else if(cellActivatedCount > 5) 
+                {
+                    cylinder_fitting(cellActivatedCount, isActivatedMap, cylinder2regionMap);
+                }
+            }
+
+            void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount, const std::vector<bool>& isActivatedMap, intpair_vector& cylinder2regionMap)
+            {
+                //try cylinder fitting on the activated planes
+                const Cylinder_Segment& cylinderSegment = Cylinder_Segment(_planeGrid, isActivatedMap, cellActivatedCount);
+                _cylinderSegments.push_back(cylinderSegment);
+
+
+                // Fit planes to subsegments
+                for(uint segId = 0; segId < cylinderSegment.get_segment_count(); ++segId)
+                {
+                    bool isPlaneSegmentFitable = false;
+                    Plane_Segment newMergedPlane(_cellWidth, _pointsPerCellCount);
+                    for(uint col = 0; col < cellActivatedCount; ++col)
+                    {
+                        if (cylinderSegment.is_inlier_at(segId, col))
+                        {
+                            const uint localMapIndex = cylinderSegment.get_local_to_global_mapping(col);
+                            assert(localMapIndex < _planeGrid.size());
+
+                            const Plane_Segment& planeSegment = _planeGrid[localMapIndex];
                             if (planeSegment.is_planar())
                             {
-                                newPlaneSegment.expand_segment(planeSegment);
-                                ++cellActivatedCount;
-                                _histogram.remove_point(planeSegmentIndex);
-                                _isUnassignedMask[planeSegmentIndex] = false;
-
-                                assert(unaffectedPlanarCells > 0);
-                                --unaffectedPlanarCells;
-                                isPlaneFitable = true;
+                                newMergedPlane.expand_segment(planeSegment);
+                                isPlaneSegmentFitable = true;
                             }
                         }
                     }
 
-                    const uint minimumCellActivated = Parameters::get_minimum_cell_activated();
-                    if(not isPlaneFitable or cellActivatedCount < minimumCellActivated) 
-                    {
-                        _histogram.remove_point(seedId);
+                    // No continuous planes, pass
+                    if (not isPlaneSegmentFitable)
                         continue;
-                    }
 
-                    //fit plane to merged data
-                    newPlaneSegment.fit_plane();
-
-                    if(newPlaneSegment.get_score() > 100) 
+                    newMergedPlane.fit_plane();
+                    // Model selection based on MSE
+                    if(newMergedPlane.get_MSE() < cylinderSegment.get_MSE_at(segId))
                     {
-                        //its certainly a plane or we ignore cylinder detection
-                        _planeSegments.push_back(newPlaneSegment);
-                        const size_t currentPlaneCount = _planeSegments.size();
-                        //mark cells
-                        for(uint row = 0, activationIndex = 0; row < _verticalCellsCount; ++row) 
+                        //MSE of the plane is less than MSE of the cylinder + this plane, so keep this one as a plane
+                        _planeSegments.push_back(newMergedPlane);
+                        const uint currentPlaneCount = _planeSegments.size();
+                        for(uint col = 0; col < cellActivatedCount; ++col)
                         {
-                            int* rowPtr = _gridPlaneSegmentMap.ptr<int>(row);
-                            for(uint col = 0; col < _horizontalCellsCount; ++col, ++activationIndex)
+                            if (cylinderSegment.is_inlier_at(segId, col))
                             {
-                                assert(activationIndex < activationMapSize);
-
-                                if(_isActivatedMap[activationIndex])
-                                    rowPtr[col] = currentPlaneCount;
+                                const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
+                                _gridPlaneSegmentMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = currentPlaneCount;
                             }
                         }
                     }
-                    else if(cellActivatedCount > 5) 
+                    else 
                     {
-                        //cylinder fitting
-                        // It is an extrusion
-                        const Cylinder_Segment& cylinderSegment = Cylinder_Segment(_planeGrid, _isActivatedMap, cellActivatedCount);
-                        _cylinderSegments.push_back(cylinderSegment);
+                        // Set a new cylinder
+                        assert(_cylinderSegments.size() > 0);
+                        cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
+                        const size_t cylinderCount = cylinder2regionMap.size();
 
-                        // Fit planes to subsegments
-                        for(uint segId = 0; segId < cylinderSegment.get_segment_count(); ++segId)
+                        for(uint col = 0; col < cellActivatedCount; ++col)
                         {
-                            bool isPlaneSegmentFitable = false;
-                            Plane_Segment newMergedPlane(_cellWidth, _pointsPerCellCount);
-                            for(uint col = 0; col < cellActivatedCount; ++col)
+                            if (cylinderSegment.is_inlier_at(segId, col))
                             {
-                                if (cylinderSegment.is_inlier_at(segId, col))
-                                {
-                                    const uint localMapIndex = cylinderSegment.get_local_to_global_mapping(col);
-                                    assert(localMapIndex < _planeGrid.size());
-
-                                    const Plane_Segment& planeSegment = _planeGrid[localMapIndex];
-                                    if (planeSegment.is_planar())
-                                    {
-                                        newMergedPlane.expand_segment(planeSegment);
-                                        isPlaneSegmentFitable = true;
-                                    }
-                                }
-                            }
-
-                            // No continuous planes, pass
-                            if (not isPlaneSegmentFitable)
-                                continue;
-
-                            newMergedPlane.fit_plane();
-                            // Model selection based on MSE
-                            if(newMergedPlane.get_MSE() < cylinderSegment.get_MSE_at(segId))
-                            {
-                                //MSE of the plane is less than MSE of the cylinder + this plane 
-                                _planeSegments.push_back(newMergedPlane);
-                                const uint currentPlaneCount = _planeSegments.size();
-                                for(uint col = 0; col < cellActivatedCount; ++col)
-                                {
-                                    if (cylinderSegment.is_inlier_at(segId, col))
-                                    {
-                                        const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
-                                        _gridPlaneSegmentMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = currentPlaneCount;
-                                    }
-                                }
-                            }
-                            else 
-                            {
-                                assert(_cylinderSegments.size() > 0);
-
-                                ++cylinderCount;
-                                cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
-                                for(uint col = 0; col < cellActivatedCount; ++col)
-                                {
-                                    if (cylinderSegment.is_inlier_at(segId, col))
-                                    {
-                                        const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
-                                        _gridCylinderSegMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = cylinderCount;
-                                    }
-                                }
+                                const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
+                                _gridCylinderSegMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = cylinderCount;
                             }
                         }
                     }
-                }//\while
-
-                return cylinder2regionMap;
+                }
             }
 
             Primitive_Detection::uint_vector Primitive_Detection::merge_planes() 
@@ -480,25 +496,27 @@ namespace rgbd_slam {
 
                 const uint rows2scanCount = segmentMap.rows - 1;
                 const uint cols2scanCount = segmentMap.cols - 1;
-
                 for(uint row = 0; row < rows2scanCount; ++row) 
                 {
-                    const int *rowPtr = segmentMap.ptr<int>(row);
-                    const int *rowBelowPtr = segmentMap.ptr<int>(row + 1);
+                    const int* rowPtr = segmentMap.ptr<int>(row);
+                    const int* rowBelowPtr = segmentMap.ptr<int>(row + 1);
                     for(uint col = 0; col < cols2scanCount; ++col) 
                     {
-                        const int pixelValue = rowPtr[col];
-                        if(pixelValue > 0) 
+                        //value of the pixel at this coordinates. Represents a plane segment
+                        const int planeId = rowPtr[col];
+                        if(planeId > 0) 
                         {
-                            if(rowPtr[col + 1] > 0 and pixelValue != rowPtr[col + 1]) 
+                            const int nextPlaneId = rowPtr[col + 1];
+                            const int belowPlaneId = rowBelowPtr[col];
+                            if(nextPlaneId > 0 and planeId != nextPlaneId) 
                             {
-                                isPlanesConnectedMatrix(pixelValue - 1, rowPtr[col + 1] - 1) = true;
-                                isPlanesConnectedMatrix(rowPtr[col + 1] - 1, pixelValue - 1) = true;
+                                isPlanesConnectedMatrix(planeId - 1, nextPlaneId - 1) = true;
+                                isPlanesConnectedMatrix(nextPlaneId - 1, planeId - 1) = true;
                             }
-                            if(rowBelowPtr[col] > 0 and pixelValue != rowBelowPtr[col]) 
+                            if(belowPlaneId > 0 and planeId != belowPlaneId) 
                             {
-                                isPlanesConnectedMatrix(pixelValue - 1, rowBelowPtr[col] - 1) = true;
-                                isPlanesConnectedMatrix(rowBelowPtr[col] - 1, pixelValue - 1) = true;
+                                isPlanesConnectedMatrix(planeId - 1, belowPlaneId - 1) = true;
+                                isPlanesConnectedMatrix(belowPlaneId - 1, planeId - 1) = true;
                             }
                         }
                     }
@@ -508,9 +526,9 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD) 
+            void Primitive_Detection::region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, std::vector<bool>& isActivatedMap) 
             {
-                assert(_isActivatedMap.size() == _isUnassignedMask.size());
+                assert(isActivatedMap.size() == _isUnassignedMask.size());
                 assert(_horizontalCellsCount > 0);
                 assert(seedPlaneD >= 0);
 
@@ -518,9 +536,9 @@ namespace rgbd_slam {
                 if (index >= _totalCellCount)
                     return;
 
-                assert(index < _isActivatedMap.size());
+                assert(index < isActivatedMap.size());
                 assert(index < _isUnassignedMask.size());
-                if ((not _isUnassignedMask[index]) or _isActivatedMap[index]) 
+                if ((not _isUnassignedMask[index]) or isActivatedMap[index]) 
                     //pixel is not part of a component or already labelled
                     return;
 
@@ -537,17 +555,17 @@ namespace rgbd_slam {
                    )//angle between planes < threshold or dist between planes > threshold
                     return;
 
-                _isActivatedMap[index] = true;
+                isActivatedMap[index] = true;
 
                 // Now label the 4 neighbours:
                 if (x > 0)
-                    region_growing(x - 1, y, secPlaneNormal, secPlaneD);   // left  pixel
+                    region_growing(x - 1, y, secPlaneNormal, secPlaneD, isActivatedMap);   // left  pixel
                 if (x < _width - 1)  
-                    region_growing(x + 1, y, secPlaneNormal, secPlaneD);  // right pixel
+                    region_growing(x + 1, y, secPlaneNormal, secPlaneD, isActivatedMap);  // right pixel
                 if (y > 0)        
-                    region_growing(x, y - 1, secPlaneNormal, secPlaneD);   // upper pixel 
+                    region_growing(x, y - 1, secPlaneNormal, secPlaneD, isActivatedMap);   // upper pixel 
                 if (y < _height - 1) 
-                    region_growing(x, y + 1, secPlaneNormal, secPlaneD);   // lower pixel
+                    region_growing(x, y + 1, secPlaneNormal, secPlaneD, isActivatedMap);   // lower pixel
             }
 
 

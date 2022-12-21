@@ -90,6 +90,22 @@ namespace rgbd_slam {
                     intpair_vector grow_planes_and_cylinders(const uint remainingPlanarCells);
 
                     /**
+                     * \brief When given a plan seed, try to make it grow with it's neighboring cells. Try to fit a cylinder to those merged planes
+                     * \param[in] seedId The id of the plane to try to grow
+                     * \param[in, out] untriedPlanarCellsCount Count of planar cells that have not been tested for merge yet
+                     * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs that composes it
+                     */
+                    void grow_plane_segment_at_seed(const uint seedId, uint& untriedPlanarCellsCount, intpair_vector& cylinder2regionMap);
+
+                    /**
+                     *
+                     * \param[in] cellActivatedCount Number of activated planar cells
+                     * \param[in] isActivatedMap A vector associating for each planar patch a flag indicating if it was merged this iteration
+                     * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs that composes it
+                     */
+                    void cylinder_fitting(const uint cellActivatedCount, const std::vector<bool>& isActivatedMap, intpair_vector& cylinder2regionMap);
+
+                    /**
                      * \brief Merge close planes by comparing normals and MSE
                      *
                      * \return Container of merged indexes: associates plane index to other plane index
@@ -120,7 +136,7 @@ namespace rgbd_slam {
                      * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
                      * \param[in] seedPlaneD D component of the plane to grow from
                      */
-                    void region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD);
+                    void region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, std::vector<bool>& isActivatedMap);
 
                     /**
                      * \brief Fill an association matrix that links connected plane components
@@ -154,11 +170,14 @@ namespace rgbd_slam {
                     plane_segments_container _planeSegments;
                     cylinder_segments_container _cylinderSegments;
 
+                    // a grid representing a scaled down depth image, where each pixel represents a potential planar region.
+                    // Each pixel as the value of the plane it belongs to, this value is the index of the plane (> 0).
+                    // A value of 0 means no plane in this cell
                     cv::Mat_<int> _gridPlaneSegmentMap;
+                    // Same, for the cylinders
                     cv::Mat_<int> _gridCylinderSegMap;
 
                     //arrays
-                    std::vector<bool> _isActivatedMap;
                     std::vector<bool> _isUnassignedMask;
                     std::vector<float> _cellDistanceTols;
 
