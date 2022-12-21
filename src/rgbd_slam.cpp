@@ -112,6 +112,7 @@ namespace rgbd_slam {
         cv::Mat rectifiedDepth;
         if (_depthOps->rectify_depth(depthImage, rectifiedDepth))
         {
+            assert(depthImage.size == rectifiedDepth.size);
             depthImage = rectifiedDepth;
         }
         else {

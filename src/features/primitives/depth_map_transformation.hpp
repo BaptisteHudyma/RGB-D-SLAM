@@ -36,8 +36,9 @@ namespace primitives {
              *
              * \param[in] depthImage Input depth image representation, transformed to align to rgb image at output
              * \param[out] organizedCloudArray A cloud point divided in blocs of cellSize * cellSize
+             * \return True if the process succeeded
              */
-            void get_organized_cloud_array(const cv::Mat& depthImage, matrixf& organizedCloudArray);
+            bool get_organized_cloud_array(const cv::Mat& depthImage, matrixf& organizedCloudArray);
 
             /**
              * \brief Controls the state of this class.

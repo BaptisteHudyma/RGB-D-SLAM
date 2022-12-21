@@ -50,81 +50,86 @@ namespace primitives {
             // will contain the projected depth image to rgb space
             rectifiedDepth = cv::Mat::zeros(_height, _width, CV_32F);
 
-            #ifndef MAKE_DETERMINISTIC
+#ifndef MAKE_DETERMINISTIC
             // parallel loop to speed up the process
             // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
             tbb::parallel_for(uint(0), _height, [&](uint row){
-            #else
+#else
             for(uint row = 0; row < _height; ++row) {
-            #endif
-                    const float* depthRow = depthImage.ptr<float>(row);
-                    const float* preXRow = _Xpre.ptr<float>(row);
-                    const float* preYRow = _Ypre.ptr<float>(row);
+#endif
+                const float* depthRow = depthImage.ptr<float>(row);
+                const float* preXRow = _Xpre.ptr<float>(row);
+                const float* preYRow = _Ypre.ptr<float>(row);
 
-                    for(uint column = 0; column < _width; ++column){
-                        const float originalZ = depthRow[column];
-                        if(originalZ > 0)
-                        {
-                            // undistord the depth image
-                            const float originalX = preXRow[column] * originalZ;
-                            const float originalY = preYRow[column] * originalZ;
+                for(uint column = 0; column < _width; ++column){
+                    const float originalZ = depthRow[column];
+                    if(originalZ > 0)
+                    {
+                        // undistord the depth image
+                        const float originalX = preXRow[column] * originalZ;
+                        const float originalY = preYRow[column] * originalZ;
 
-                            // project to rgb space
-                            const float x = originalX * x0RStereo + originalY * y0RStereo + originalZ * z0RStereo + xTStereo;
-                            const float y = originalX * x1RStereo + originalY * y1RStereo + originalZ * z1RStereo + yTStereo;
-                            const float z = originalX * x2RStereo + originalY * y2RStereo + originalZ * z2RStereo + zTStereo;
+                        // project to rgb space
+                        const float x = originalX * x0RStereo + originalY * y0RStereo + originalZ * z0RStereo + xTStereo;
+                        const float y = originalX * x1RStereo + originalY * y1RStereo + originalZ * z1RStereo + yTStereo;
+                        const float z = originalX * x2RStereo + originalY * y2RStereo + originalZ * z2RStereo + zTStereo;
 
-                            // distord to align with rgb image
-                            const uint projCoordColumn = floor(x * _fxRgb/z + _cxRgb );
-                            const uint projCoordRow = floor(y * _fyRgb/z + _cyRgb );
+                        // distord to align with rgb image
+                        const uint projCoordColumn = floor(x * _fxRgb/z + _cxRgb );
+                        const uint projCoordRow = floor(y * _fyRgb/z + _cyRgb );
 
-                            // keep projected coordinates that are in rgb image boundaries
-                            if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and projCoordRow < _height){
-                                //set transformed depth image
-                                rectifiedDepth.at<float>(projCoordRow, projCoordColumn) = z;
-                            }
+                        // keep projected coordinates that are in rgb image boundaries
+                        if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and projCoordRow < _height){
+                            //set transformed depth image
+                            rectifiedDepth.at<float>(projCoordRow, projCoordColumn) = z;
                         }
                     }
                 }
-            #ifndef MAKE_DETERMINISTIC
+            }
+#ifndef MAKE_DETERMINISTIC
             );
-            #endif
+#endif
 
             return true;
         }
 
-        void Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat& depthImage, matrixf& organizedCloudArray) {
+        bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat& depthImage, matrixf& organizedCloudArray) {
             if(not this->is_ok())
-                return;
+                return false;
+
+            assert(depthImage.rows == static_cast<int>(_height));
+            assert(depthImage.cols == static_cast<int>(_width));
 
             // will contain the projected depth image to rgb space
             organizedCloudArray = matrixf::Zero(_width * _height, 3);
 
-            #ifndef MAKE_DETERMINISTIC
+#ifndef MAKE_DETERMINISTIC
             // parallel loop to speed up the process
             // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
             tbb::parallel_for(uint(0), _height, [&](uint row){
-            #else
+#else
             for(uint row = 0; row < _height; ++row) {
-            #endif
-                    const float* depthRow = depthImage.ptr<float>(row);
-
-                    for(uint column = 0; column < _width; ++column){
-                        const float z = depthRow[column];
-                        if(z > 0)
-                        {
-                            // set convertion matrix
-                            const int id = _cellMap.at<int>(row, column);
-                            // undistord depth
-                            organizedCloudArray(id, 0) = (column - _cxRgb) * z/_fxRgb;
-                            organizedCloudArray(id, 1) = (row - _cyRgb) * z/_fyRgb;
-                            organizedCloudArray(id, 2) = z;
-                        }
+#endif
+                const float* depthRow = depthImage.ptr<float>(row);
+                for(uint column = 0; column < _width; ++column)
+                {
+                    const float z = depthRow[column];
+                    if(z > 0)
+                    {
+                        // set convertion matrix
+                        const int id = _cellMap.at<int>(row, column);
+                        // undistord depth
+                        organizedCloudArray(id, 0) = (column - _cxRgb) * z/_fxRgb;
+                        organizedCloudArray(id, 1) = (row - _cyRgb) * z/_fyRgb;
+                        organizedCloudArray(id, 2) = z;
                     }
                 }
-            #ifndef MAKE_DETERMINISTIC
+            }
+#ifndef MAKE_DETERMINISTIC
             );
-            #endif
+#endif
+
+            return true;
         }
 
         bool Depth_Map_Transformation::load_parameters() {
