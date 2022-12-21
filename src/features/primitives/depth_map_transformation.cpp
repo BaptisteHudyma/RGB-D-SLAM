@@ -3,11 +3,8 @@
 #include "../../parameters.hpp"
 #include "../../utils/angle_utils.hpp"
 #include "../../utils/random.hpp"
-#include "types.hpp"
 
-#include <iostream>
 #include <opencv2/core/eigen.hpp>
-#include <opencv2/highgui.hpp>
 #include <tbb/parallel_for.h>
 
 namespace rgbd_slam {
