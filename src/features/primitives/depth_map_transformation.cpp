@@ -82,7 +82,7 @@ namespace primitives {
                         float v = v_ptr[c];
                         if(z > zMin and u > 0 and v > 0 and u < _width and v < _height){
                             //set transformed depth image
-                            outputDepth.at<float>(v, c) = z; 
+                            outputDepth.at<float>(v, u) = z; 
                             int id = floor(v) * _width + u;
                             _cloudArray(id, 0) = sx[c];
                             _cloudArray(id, 1) = sy[c];
@@ -111,27 +111,15 @@ namespace primitives {
 
         bool Depth_Map_Transformation::load_parameters() {
             // TODO check parameters 
-            /*_fxIr = 1;
-            _fyIr = 1;
-            _cxIr = 0;
-            _cyIr = 0;
-
-            _fxRgb = 1;
-            _fyRgb = 1;
-            _cxRgb = 0;
-            _cyRgb = 0;*/
-
-            
             _fxIr = Parameters::get_camera_2_focal_x();
             _fyIr = Parameters::get_camera_2_focal_y();
             _cxIr = Parameters::get_camera_2_center_x();
             _cyIr = Parameters::get_camera_2_center_y();
-            
+
             _fxRgb = Parameters::get_camera_1_focal_x();
             _fyRgb = Parameters::get_camera_1_focal_y();
             _cxRgb = Parameters::get_camera_1_center_x();
             _cyRgb = Parameters::get_camera_1_center_y();
-            
 
             _Tstereo = cv::Mat(3, 1, CV_64F);
             _Tstereo.at<double>(0) = Parameters::get_camera_2_translation_x();
