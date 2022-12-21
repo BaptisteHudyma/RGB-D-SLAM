@@ -38,7 +38,10 @@ namespace primitives {
                     yQ = (_binPerCoordCount - 1) * (points(i, 1) - _minY) / _maxYminY;
 
                 const uint bin = yQ * _binPerCoordCount + xQ;
+                assert(i < _B.size());
                 _B[i] = bin;
+
+                assert(bin < _H.size());
                 _H[bin] += 1;
             }
         }
@@ -47,7 +50,7 @@ namespace primitives {
     std::vector<uint> Histogram::get_points_from_most_frequent_bin() const {
         int mostFrequentBin = -1;
         uint maxOccurencesCount = 0;
-        
+
         const size_t binSize = _H.size();
         for(uint i = 0; i < binSize; ++i) {
             //get most frequent bin index

@@ -173,6 +173,9 @@ int main(int argc, char* argv[]) {
         if(not load_images(dataPath, frameIndex, rgbImage, depthImage))
             break;
 
+        // rectify the depth image before next step
+        RGBD_Slam.rectify_depth(depthImage);
+
         // get optimized pose
         const double trackingStartTime = cv::getTickCount();
         pose = RGBD_Slam.track(rgbImage, depthImage, shouldUseLineDetection);

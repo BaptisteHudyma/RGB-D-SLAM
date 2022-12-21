@@ -14,10 +14,7 @@ namespace primitives {
         Depth_Map_Transformation::Depth_Map_Transformation(const uint width, const uint height, const uint cellSize) 
             : 
                 _width(width), _height(height), _cellSize(cellSize),
-                _cloudArray(width * height, 3),
-                _X(height, width), _Y(height, width), _Xt(height, width), _Yt(height, width),
-                _Xpre(height, width), _Ypre(height, width), 
-                _U(height, width), _V(height, width), 
+                _Xpre(height, width), _Ypre(height, width),
                 _cellMap(height, width)
         {
             _isOk = false;
@@ -26,88 +23,110 @@ namespace primitives {
                 init_matrices();
         }
 
-        void Depth_Map_Transformation::get_organized_cloud_array(cv::Mat& depthImage, matrixf& organizedCloudArray) {
+        bool Depth_Map_Transformation::rectify_depth(const cv::Mat& depthImage, cv::Mat& rectifiedDepth)
+        {
             if(not this->is_ok())
-                return;
+                return false;
 
-            // Backproject to point cloud
-            _X = _Xpre.mul(depthImage); 
-            _Y = _Ypre.mul(depthImage);
+            const static float x0RStereo = _Rstereo.at<double>(0,0);
+            const static float x1RStereo = _Rstereo.at<double>(1,0);
+            const static float x2RStereo = _Rstereo.at<double>(2,0);
+ 
+            const static float y0RStereo = _Rstereo.at<double>(0,1);
+            const static float y1RStereo = _Rstereo.at<double>(1,1);
+            const static float y2RStereo = _Rstereo.at<double>(2,1);
 
-            // The following transformation+projection is only necessary to visualize RGB with overlapped segments
-            // Transform point cloud to color reference frame
-            _Xt = 
-                static_cast<float>(_Rstereo.at<double>(0,0)) * _X + 
-                static_cast<float>(_Rstereo.at<double>(0,1)) * _Y +
-                static_cast<float>(_Rstereo.at<double>(0,2)) * depthImage + 
-                static_cast<float>(_Tstereo.at<double>(0));
-            _Yt = 
-                static_cast<float>(_Rstereo.at<double>(1,0)) * _X +
-                static_cast<float>(_Rstereo.at<double>(1,1)) * _Y +
-                static_cast<float>(_Rstereo.at<double>(1,2)) * depthImage +
-                static_cast<float>(_Tstereo.at<double>(1));
-            depthImage = 
-                static_cast<float>(_Rstereo.at<double>(2,0)) * _X +
-                static_cast<float>(_Rstereo.at<double>(2,1)) * _Y + 
-                static_cast<float>(_Rstereo.at<double>(2,2)) * depthImage + 
-                static_cast<float>(_Tstereo.at<double>(2));
+            const static float z0RStereo = _Rstereo.at<double>(0,2);
+            const static float z1RStereo = _Rstereo.at<double>(1,2);
+            const static float z2RStereo = _Rstereo.at<double>(2,2);
+ 
+            const static float xTStereo = _Tstereo.at<double>(0);
+            const static float yTStereo = _Tstereo.at<double>(1);
+            const static float zTStereo = _Tstereo.at<double>(2);
 
-            double zMin = _Tstereo.at<double>(2);
+            // will contain the projected depth image to rgb space
+            rectifiedDepth = cv::Mat::zeros(_height, _width, CV_32F);
 
-            // Project to image coordinates
-            cv::divide(_Xt, depthImage, _U, 1);
-            cv::divide(_Yt, depthImage, _V, 1);
-            _U = _U * _fxRgb + _cxRgb;
-            _V = _V * _fyRgb + _cyRgb;
-            // Reusing U as cloud index
-            //U = V*width + U + 0.5;
-
-            cv::Mat outputDepth = cv::Mat::zeros(_height, _width, CV_32F);
-            _cloudArray.setZero();
-            #ifndef MAKE_DETERMINISTIC
+#ifndef MAKE_DETERMINISTIC
             // parallel loop to speed up the process
-            // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDIND
-            tbb::parallel_for(uint(0), _height, [&](uint r){
-            #else
-            for(uint r = 0; r < _height; ++r) {
-            #endif
-                    float* sx = _Xt.ptr<float>(r);
-                    float* sy = _Yt.ptr<float>(r);
-                    float* sz = depthImage.ptr<float>(r);
-                    float* u_ptr = _U.ptr<float>(r);
-                    float* v_ptr = _V.ptr<float>(r);
+            // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
+            tbb::parallel_for(uint(0), _height, [&](uint row){
+#else
+            for(uint row = 0; row < _height; ++row) {
+#endif
+                const float* depthRow = depthImage.ptr<float>(row);
+                const float* preXRow = _Xpre.ptr<float>(row);
+                const float* preYRow = _Ypre.ptr<float>(row);
 
-                    for(uint c = 0; c < _width; c++){
-                        float z = sz[c];
-                        float u = u_ptr[c];
-                        float v = v_ptr[c];
-                        if(z > zMin and u > 0 and v > 0 and u < _width and v < _height){
+                for(uint column = 0; column < _width; ++column){
+                    const float originalZ = depthRow[column];
+                    if(originalZ > 0)
+                    {
+                        // undistord the depth image
+                        const float originalX = preXRow[column] * originalZ;
+                        const float originalY = preYRow[column] * originalZ;
+
+                        // project to rgb space
+                        const float x = originalX * x0RStereo + originalY * y0RStereo + originalZ * z0RStereo + xTStereo;
+                        const float y = originalX * x1RStereo + originalY * y1RStereo + originalZ * z1RStereo + yTStereo;
+                        const float z = originalX * x2RStereo + originalY * y2RStereo + originalZ * z2RStereo + zTStereo;
+
+                        // distord to align with rgb image
+                        const uint projCoordColumn = floor(x * _fxRgb/z + _cxRgb );
+                        const uint projCoordRow = floor(y * _fyRgb/z + _cyRgb );
+
+                        // keep projected coordinates that are in rgb image boundaries
+                        if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and projCoordRow < _height){
                             //set transformed depth image
-                            outputDepth.at<float>(v, c) = z; 
-                            int id = floor(v) * _width + u;
-                            _cloudArray(id, 0) = sx[c];
-                            _cloudArray(id, 1) = sy[c];
-                            _cloudArray(id, 2) = z;
+                            rectifiedDepth.at<float>(projCoordRow, projCoordColumn) = z;
                         }
                     }
                 }
-            #ifndef MAKE_DETERMINISTIC
+            }
+#ifndef MAKE_DETERMINISTIC
             );
-            #endif
+#endif
 
-            //project cloud point by cells
-            uint mxn = _width * _height;
-            uint mxn2 = 2 * mxn;
-            for(uint r = 0, it = 0; r < _height; r++){
-                int* cellMapPtr = _cellMap.ptr<int>(r);
-                for(uint c = 0; c < _width; c++, it++){
-                    int id = cellMapPtr[c];
-                    organizedCloudArray(id) = _cloudArray(it);
-                    organizedCloudArray(mxn + id) = _cloudArray(mxn + it);
-                    organizedCloudArray(mxn2 + id) = _cloudArray(mxn2 + it);
+            return true;
+        }
+
+        bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat& depthImage, matrixf& organizedCloudArray) {
+            if(not this->is_ok())
+                return false;
+
+            assert(depthImage.rows == static_cast<int>(_height));
+            assert(depthImage.cols == static_cast<int>(_width));
+
+            // will contain the projected depth image to rgb space
+            organizedCloudArray = matrixf::Zero(_width * _height, 3);
+
+#ifndef MAKE_DETERMINISTIC
+            // parallel loop to speed up the process
+            // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
+            tbb::parallel_for(uint(0), _height, [&](uint row){
+#else
+            for(uint row = 0; row < _height; ++row) {
+#endif
+                const float* depthRow = depthImage.ptr<float>(row);
+                for(uint column = 0; column < _width; ++column)
+                {
+                    const float z = depthRow[column];
+                    if(z > 0)
+                    {
+                        // set convertion matrix
+                        const int id = _cellMap.at<int>(row, column);
+                        // undistord depth
+                        organizedCloudArray(id, 0) = (column - _cxRgb) * z/_fxRgb;
+                        organizedCloudArray(id, 1) = (row - _cyRgb) * z/_fyRgb;
+                        organizedCloudArray(id, 2) = z;
+                    }
                 }
             }
-            depthImage = outputDepth;
+#ifndef MAKE_DETERMINISTIC
+            );
+#endif
+
+            return true;
         }
 
         bool Depth_Map_Transformation::load_parameters() {
@@ -141,26 +160,22 @@ namespace primitives {
          *  Called after loading parameters to init matrices
          */
         void Depth_Map_Transformation::init_matrices() {
-            uint horizontalCellsCount = static_cast<uint>(_width / _cellSize);
+            const uint horizontalCellsCount = static_cast<uint>(_width / _cellSize);
 
             // Pre-computations for backprojection
-            for (uint r = 0; r < _height; r++){
-                for (uint c = 0; c < _width; c++){
+            for (uint row = 0; row < _height; ++row){
+                const uint cellR = floor(row / _cellSize);
+                const uint localR = floor(row % _cellSize);
+
+                for (uint colum = 0; colum < _width; ++colum){
                     // Not efficient but at this stage doesn t matter
-                    _Xpre.at<float>(r, c) = static_cast<float>((c - _cxIr) / _fxIr); 
-                    _Ypre.at<float>(r, c) = static_cast<float>((r - _cyIr) / _fyIr);
-                }
-            }
+                    _Xpre.at<float>(row, colum) = static_cast<float>((colum - _cxIr) / _fxIr);
+                    _Ypre.at<float>(row, colum) = static_cast<float>((row - _cyIr) / _fyIr);
 
-            // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point clouds are contiguous
-            for (uint r = 0; r < _height; r++){
-                uint cellR = static_cast<uint>(r / _cellSize);
-                uint localR = static_cast<uint>(r % _cellSize);
-
-                for (uint c = 0; c < _width; c++){
-                    uint cellC =  static_cast<uint>(c / _cellSize);
-                    uint localC = static_cast<uint>(c % _cellSize);
-                    _cellMap.at<int>(r, c) = (cellR * horizontalCellsCount + cellC) * _cellSize * _cellSize + localR * _cellSize + localC;
+                    // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point clouds are contiguous
+                    const uint cellC =  floor(colum / _cellSize);
+                    const uint localC = floor(colum % _cellSize);
+                    _cellMap.at<int>(row, colum) = (cellR * horizontalCellsCount + cellC) * pow(_cellSize, 2) + localR * _cellSize + localC;
                 }
             }
         }

@@ -33,6 +33,12 @@ namespace rgbd_slam {
             ~RGBD_SLAM();
 
             /**
+             * \brief Convert the given depth image to the rectified version. IE: align it with the RGB image
+             * \param[in, out] depthImage the distorded depth image
+             */
+            void rectify_depth(cv::Mat& depthImage);
+
+            /**
              * \brief Estimates a new pose from the given images
              *
              * \param[in] inputRgbImage Raw RGB image

@@ -106,6 +106,18 @@ namespace rgbd_slam {
         delete _depthOps;
     }
 
+    void RGBD_SLAM::rectify_depth(cv::Mat& depthImage)
+    {
+        cv::Mat rectifiedDepth;
+        if (_depthOps->rectify_depth(depthImage, rectifiedDepth))
+        {
+            assert(depthImage.size == rectifiedDepth.size);
+            depthImage = rectifiedDepth;
+        }
+        else {
+            outputs::log_error("Could not rectify the depth image to rgb space");
+        }
+    }
 
     const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool shouldDetectLines) 
     {
@@ -115,15 +127,13 @@ namespace rgbd_slam {
         assert(static_cast<size_t>(inputRgbImage.rows) == _height);
         assert(static_cast<size_t>(inputRgbImage.cols) == _width);
 
-        cv::Mat depthImage = inputDepthImage.clone();
-
         //project depth image in an organized cloud
         const double depthImageTreatmentStartTime = cv::getTickCount();
         // organized 3D depth image
-        matrixf cloudArrayOrganized(_width * _height, 3);
-        _depthOps->get_organized_cloud_array(depthImage, cloudArrayOrganized);
+        matrixf cloudArrayOrganized;
+        _depthOps->get_organized_cloud_array(inputDepthImage, cloudArrayOrganized);
         _meanDepthMapTreatmentDuration += (cv::getTickCount() - depthImageTreatmentStartTime) / static_cast<double>(cv::getTickFrequency());
-        
+
         // Compute a gray image for feature extractions
         cv::Mat grayImage;
         cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
@@ -131,22 +141,22 @@ namespace rgbd_slam {
         if(shouldDetectLines) { //detect lines in image
 
             const double lineDetectionStartTime = cv::getTickCount();
-            const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, depthImage);
+            const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, inputDepthImage);
             _meanLineTreatmentDuration += (cv::getTickCount() - lineDetectionStartTime) / (double)cv::getTickFrequency();
             
             cv::Mat outImage = inputRgbImage.clone();
-            _lineDetector->get_image_with_lines(detectedLines, depthImage, outImage); 
+            _lineDetector->get_image_with_lines(detectedLines, inputDepthImage, outImage); 
 
             cv::imshow("line", outImage);
         }
 
         // this frame points and  assoc
         const double computePoseStartTime = cv::getTickCount();
-        const utils::Pose& refinedPose = this->compute_new_pose(grayImage, depthImage, cloudArrayOrganized);
+        const utils::Pose& refinedPose = this->compute_new_pose(grayImage, inputDepthImage, cloudArrayOrganized);
         _meanPoseOptimizationDuration += (cv::getTickCount() - computePoseStartTime) / (double)cv::getTickFrequency();
 
         //update motion model with refined pose
-        _motionModel.update_model(refinedPose); 
+        _motionModel.update_model(refinedPose);
 
         // Update current pose
         _currentPose = refinedPose;

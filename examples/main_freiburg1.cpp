@@ -230,6 +230,9 @@ int main(int argc, char* argv[])
         cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
 #endif
 
+        // rectify the depth image before next step (already rectified in freiburg dataset)
+        //RGBD_Slam.rectify_depth(depthImage);
+
         // get optimized pose
         const double trackingStartTime = cv::getTickCount();
         pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
