@@ -3,7 +3,6 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
-#include <iostream>
 
 namespace rgbd_slam {
     namespace features {

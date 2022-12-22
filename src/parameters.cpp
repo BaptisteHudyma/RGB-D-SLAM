@@ -118,8 +118,8 @@ namespace rgbd_slam {
         // Primitive extraction
         _minimumIOUToConsiderMatch = 0.3;
         _minimumNormalsDotDifference = 0.6;
-        _primitiveMaximumCosAngle = cos(M_PI/10.0);
-        _primitiveMaximumMergeDistance = 100;
+        _primitiveMaximumCosAngle = cos(M_PI/10.0); // cos(18°)
+        _primitiveMaximumMergeDistance = 50;    //50 mm
         _depthMapPatchSize = 20;
 
         _minimumPlaneSeedCount = 6;

@@ -174,11 +174,11 @@ namespace rgbd_slam {
             inline static uint _keypointMaskRadius;
 
             // Primitive extraction parameters
-            inline static float _primitiveMaximumCosAngle;         // Maximum angle between two planes to consider merging
-            inline static float _primitiveMaximumMergeDistance;    // Maximum plane patch merge distance
+            inline static float _primitiveMaximumCosAngle;         // Maximum cosinus of the angle between two planes to consider merging
+            inline static float _primitiveMaximumMergeDistance;    // Maximum plane patch merge distance, in millimeters
             inline static uint _depthMapPatchSize;         // Size of the minimum search area
 
-            inline static uint _minimumPlaneSeedCount;     // Minimum plane patches in a set to consider merging 
+            inline static uint _minimumPlaneSeedCount;     // Minimum plane patches in a set to consider merging
             inline static uint _minimumCellActivated;
             inline static double _depthSigmaError;
             inline static double _depthSigmaMargin;        // [3, 8]

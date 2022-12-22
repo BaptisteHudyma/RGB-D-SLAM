@@ -78,6 +78,7 @@ namespace rgbd_slam {
                         bool is_cell_horizontal_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const;
 
                 private:
+                        // TODO: those const members could be static  
                         const uint _ptsPerCellCount;  //max nb of points per initial cell
                         const uint _minZeroPointCount;  //min acceptable zero points in a node
                         const uint _cellWidth;

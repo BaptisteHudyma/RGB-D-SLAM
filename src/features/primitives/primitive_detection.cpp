@@ -114,7 +114,7 @@ namespace rgbd_slam {
 
                 //reset stacked distances
                 //activation map do not need to be cleared
-                std::fill_n(_isUnassignedMask.begin(), _isUnassignedMask.size(), false);
+                _isUnassignedMask = vectorb::Zero(_isUnassignedMask.size());
                 std::fill_n(_cellDistanceTols.begin(), _cellDistanceTols.size(), 0.0f);
 
                 //mat masks do not need to be cleared
@@ -128,15 +128,19 @@ namespace rgbd_slam {
                 //for each planeGrid cell
                 const size_t planeGridSize = _planeGrid.size();
                 for(size_t stackedCellId = 0; stackedCellId < planeGridSize; ++stackedCellId) {
-                    //init the plane grid cell
-                    _planeGrid[stackedCellId].init_plane_segment(depthCloudArray, stackedCellId);
-
-                    if (_planeGrid[stackedCellId].is_planar()) {
-                        const uint cellDiameter = static_cast<uint>((
-                                    depthCloudArray.block(stackedCellId * _pointsPerCellCount + _pointsPerCellCount - 1, 0, 1, 3) - 
-                                    depthCloudArray.block(stackedCellId * _pointsPerCellCount, 0, 1, 3)
-                                    ).norm());
-
+                    //init the plane patch
+                    Plane_Segment& planeSegment = _planeGrid[stackedCellId];
+                    planeSegment.init_plane_segment(depthCloudArray, stackedCellId);
+                    // if this plane patch is planar, compute the diagonal distance
+                    if (planeSegment.is_planar()) {
+                        const uint offset = stackedCellId * _pointsPerCellCount;
+                        // cell diameter, in millimeters
+                        const float cellDiameter = (
+                                    // right down corner (x, y, z)
+                                    depthCloudArray.block(offset + _pointsPerCellCount - 1, 0, 1, 3) - 
+                                    // left up corner (x, y, z)
+                                    depthCloudArray.block(offset, 0, 1, 3)
+                                    ).norm();
                         //array of depth metrics: neighbors merging threshold
                         _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist), 2.0f);
                     }
@@ -151,9 +155,10 @@ namespace rgbd_slam {
                 const size_t planeGridSize = _planeGrid.size();
                 for(uint cellId = 0; cellId < planeGridSize; ++cellId) 
                 { 
-                    if(_planeGrid[cellId].is_planar())
+                    const Plane_Segment& planePatch = _planeGrid[cellId];
+                    if(planePatch.is_planar())
                     {
-                        const vector3& planeNormal = _planeGrid[cellId].get_normal();
+                        const vector3& planeNormal = planePatch.get_normal();
                         const double nx = planeNormal.x();
                         const double ny = planeNormal.y();
                         histBins(cellId, 0) = acos(-planeNormal.z());
@@ -180,7 +185,7 @@ namespace rgbd_slam {
                 {
                     //get seed candidates
                     const std::vector<uint>& seedCandidates = _histogram.get_points_from_most_frequent_bin();
-                    const uint planeSeedCount = Parameters::get_minimum_plane_seed_count();
+                    const static uint planeSeedCount = Parameters::get_minimum_plane_seed_count();
                     if (seedCandidates.size() < planeSeedCount)
                         break;
 
@@ -189,20 +194,22 @@ namespace rgbd_slam {
                     double minMSE = std::numeric_limits<double>::max();
                     for(const uint seedCandidate : seedCandidates)
                     {
-                        if(_planeGrid[seedCandidate].get_MSE() < minMSE) 
+                        const double candidateMSE = _planeGrid[seedCandidate].get_MSE();
+                        if(candidateMSE < minMSE) 
                         {
                             seedId = seedCandidate;
-                            minMSE = _planeGrid[seedCandidate].get_MSE();
+                            minMSE = candidateMSE;
                             if(minMSE <= 0)
                                 break;
                         }
                     }
                     if (minMSE >= std::numeric_limits<double>::max())
                     {
+                        // seedId is invalid
                         outputs::log_error("Could not find a single plane segment");
                         break;
                     }
-                    
+
                     // try to grow the selected plane at seedId
                     grow_plane_segment_at_seed(seedId, untriedPlanarCellsCount, cylinder2regionMap);
                 }
@@ -212,6 +219,7 @@ namespace rgbd_slam {
 
             void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId, uint& untriedPlanarCellsCount, intpair_vector& cylinder2regionMap)
             {
+                assert(seedId < _planeGrid.size());
                 const Plane_Segment& planeToGrow = _planeGrid[seedId];
                 if (not planeToGrow.is_planar())
                 {
@@ -232,7 +240,7 @@ namespace rgbd_slam {
                 //grow plane region, fill isActivatedMap
                 region_growing(x, y, newPlaneSegment.get_normal(), newPlaneSegment.get_plane_d(), isActivatedMap);
 
-                assert(activationMapSize == _isUnassignedMask.size());
+                assert(activationMapSize == static_cast<size_t>(_isUnassignedMask.size()));
                 assert(activationMapSize == _planeGrid.size());
 
                 //merge activated cells & remove them from histogram
@@ -537,20 +545,20 @@ namespace rgbd_slam {
                 if (index >= _totalCellCount)
                     return;
 
-                assert(index < isActivatedMap.size());
-                assert(index < _isUnassignedMask.size());
+                assert(index < static_cast<size_t>(isActivatedMap.size()));
+                assert(index < static_cast<size_t>(_isUnassignedMask.size()));
                 if ((not _isUnassignedMask[index]) or isActivatedMap[index]) 
                     //pixel is not part of a component or already labelled
                     return;
 
-                assert(index < _planeGrid.size()); 
-
-                const vector3& secPlaneNormal = _planeGrid[index].get_normal();
-                const vector3& secPlaneMean = _planeGrid[index].get_mean();
-                const double secPlaneD = _planeGrid[index].get_plane_d();
+                assert(index < _planeGrid.size());
+                const Plane_Segment& planePatch = _planeGrid[index];
+                const vector3& secPlaneNormal = planePatch.get_normal();
+                const vector3& secPlaneMean = planePatch.get_mean();
+                const double secPlaneD = planePatch.get_plane_d();
 
                 if (
-                        //_planeGrid[index].is_depth_discontinuous(secPlaneMean) or 
+                        //planePatch.is_depth_discontinuous(secPlaneMean) or 
                         seedPlaneNormal.dot(secPlaneNormal) < _minCosAngleForMerge or
                         pow(seedPlaneNormal.dot(secPlaneMean) + seedPlaneD, 2.0) > _cellDistanceTols[index]
                    )//angle between planes < threshold or dist between planes > threshold
