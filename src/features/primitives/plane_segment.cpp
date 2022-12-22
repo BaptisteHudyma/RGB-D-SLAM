@@ -12,7 +12,7 @@ namespace rgbd_slam {
 
             Plane_Segment::Plane_Segment(const uint cellWidth, const uint ptsPerCellCount) : 
                 _ptsPerCellCount(ptsPerCellCount), 
-                _minZeroPointCount( static_cast<uint>(_ptsPerCellCount / 2.0)), 
+                _minZeroPointCount( static_cast<uint>(_ptsPerCellCount * Parameters::get_minimum_zero_depth_proportion())), 
                 _cellWidth(cellWidth), 
                 _cellHeight(_ptsPerCellCount / _cellWidth)
             {
@@ -53,56 +53,64 @@ namespace rgbd_slam {
              * \param[in] depthAlphaValue
              * \param[in] depthDiscontinuityLimit Limit of maximum depth discontinuities
              * \param[in] z The depth value to check
-             * \param[in,out] discontinuityCounter The count of discontinuities
              * \param[in,out] zLast Last depht value to pass the continuity test
              *
              * \return False if too much continuities are detected
              */
-            bool check_discontinuities(const double depthAlphaValue, const uint depthDiscontinuityLimit, const float z, uint& discontinuityCounter, float& zLast)
+            bool is_continuous(const float z, float& zLast)
             {
-                if(z > 0 and abs(z - zLast) < depthAlphaValue * (abs(z) + 0.5)) 
+                const static double depthAlphaValue = Parameters::get_depth_alpha();
+                const static double depthAlphaMultiplier = pow(depthAlphaValue, -9);
+                // ignore empty depth values
+                if (z > 0)
                 {
-                    zLast = z;
-                }
-                else if(++discontinuityCounter > depthDiscontinuityLimit)
-                {
-                    return false;
+                    // check for suddent jumps in the depth values (from "plane extraction in organized point clouds using agglomerative hierarchical clustering")
+                    // distance between 2 depth values < minimum depth disparity for this distance
+                    // minimum depth diparity at z = alpha^(-9) * z^2 + alpha
+                    if(abs(z - zLast) <= depthAlphaMultiplier * pow(z, 2.0) + depthAlphaValue)
+                    {
+                        // no suddent jump
+                        zLast = z;
+                    }
+                    // else: increment discontinuity counter, check if it is above the limit
+                    else
+                    {
+                        return false;
+                    }
                 }
                 return true;
             }
 
-            bool Plane_Segment::is_cell_vertical_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
+            bool Plane_Segment::is_cell_vertical_continuous(const matrixf& depthMatrix) const
             {
                 const uint startValue = _cellWidth / 2;
                 const uint endValue = _ptsPerCellCount - startValue;
 
-                uint discontinuityCounter = 0;
                 float zLast = std::max(depthMatrix(startValue), depthMatrix(startValue + _cellWidth));  /* handles missing pixels on the borders*/
 
                 // Scan vertically through the middle
                 for(uint i = startValue + _cellWidth; i < endValue; i += _cellWidth)
                 {
                     const float z = depthMatrix(i);
-                    if (not check_discontinuities(depthAlphaValue, depthDiscontinuityLimit, z, discontinuityCounter, zLast))
+                    if (not is_continuous(z, zLast))
                         return false;
                 }
                 // continuous
                 return true;
             }
 
-            bool Plane_Segment::is_cell_horizontal_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const
+            bool Plane_Segment::is_cell_horizontal_continuous(const matrixf& depthMatrix) const
             {
                 const uint startValue = static_cast<uint>(_cellWidth * (_cellHeight / 2.0));
                 const uint endValue = startValue + _cellWidth;
 
-                uint discontinuityCounter = 0;
                 float zLast = std::max(depthMatrix(startValue), depthMatrix(startValue + 1)); /* handles missing pixels on the borders*/
 
                 // Scan horizontally through the middle
                 for(uint i = startValue + 1; i < endValue; ++i) 
                 {
                     const float z = depthMatrix(i);
-                    if (not check_discontinuities(depthAlphaValue, depthDiscontinuityLimit, z, discontinuityCounter, zLast))
+                    if (not is_continuous(z, zLast))
                         return false;
                 }
                 // continuous
@@ -130,11 +138,10 @@ namespace rgbd_slam {
 
                 // Check for discontinuities using cross search
                 //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
-                const static double depthAlphaValue = Parameters::get_depth_alpha();
-                const static uint depthDiscontinuityLimit = Parameters::get_depth_discontinuity_limit(); 
-
-                if (not is_cell_horizontal_continuous(depthMatrix, depthAlphaValue, depthDiscontinuityLimit) or 
-                    not is_cell_vertical_continuous(depthMatrix, depthAlphaValue, depthDiscontinuityLimit))
+                const bool isContinuous =
+                    is_cell_horizontal_continuous(depthMatrix) and 
+                    is_cell_vertical_continuous(depthMatrix);
+                if (not isContinuous)
                 {
                     // this segment is not continuous...
                     return;
@@ -157,17 +164,6 @@ namespace rgbd_slam {
                 const static double depthSigmaError = Parameters::get_depth_sigma_error();
                 const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
                 _isPlanar = _MSE <= pow(depthSigmaError * pow(_mean.z(), 2) + depthSigmaMargin, 2);
-            }
-
-
-            bool Plane_Segment::is_depth_discontinuous(const Plane_Segment& planeSegment) const
-            {
-                return is_depth_discontinuous(planeSegment._mean);
-            }
-            bool Plane_Segment::is_depth_discontinuous(const vector3& planeMean) const
-            {
-                const static double depthAlpha = Parameters::get_depth_alpha();
-                return abs(_mean.z() - planeMean.z()) < 2.0 * depthAlpha * (abs(_mean.z()) + 0.5);
             }
 
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {
@@ -239,7 +235,6 @@ namespace rgbd_slam {
                 _pointCount = 0;
                 _score = 0;
                 _MSE = 0;
-                _isPlanar = false; 
 
                 _mean.setZero();
                 _normal.setZero();

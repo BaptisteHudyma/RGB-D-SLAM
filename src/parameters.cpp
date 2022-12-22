@@ -124,10 +124,10 @@ namespace rgbd_slam {
 
         _minimumPlaneSeedCount = 6;
         _minimumCellActivated = 5;
+        _minimumZeroDepthProportion = 0.7;  // if this proportion of the points have invalid depth in a planar patch, reject it
         _depthSigmaError = 1.425e-6;
         _depthSigmaMargin = 12;
-        _depthDiscontinuityLimit = 10;
-        _depthAlpha = 0.06;
+        _depthAlpha = 2.8;                // It is the alpha of equation z_diff = alpha^(-9)  * z^2, + alpha that represent the minimum depth change for a given depth (quantization)
 
         // Cylinder ransac fitting
         _cylinderRansacSqrtMaxDistance = 0.04;
@@ -295,6 +295,11 @@ namespace rgbd_slam {
             outputs::log_error("Minimum cell activated must be > 0");
             _isValid = false;
         }
+        if (_minimumZeroDepthProportion < 0 or _minimumZeroDepthProportion > 1)
+        {
+            outputs::log_error("Minimum Zero depth proportion must be in [0, 1]");
+            _isValid = false;
+        }
         if (_depthSigmaError <= 0)
         {
             outputs::log_error("Depth sigma error must be > 0");
@@ -303,11 +308,6 @@ namespace rgbd_slam {
         if (_depthSigmaMargin <= 0)
         {
             outputs::log_error("Depth sigma margin must be > 0");
-            _isValid = false;
-        }
-        if (_depthDiscontinuityLimit <= 0)
-        {
-            outputs::log_error("Depth discontinuous limit must be > 0");
             _isValid = false;
         }
         if (_depthAlpha <= 0)

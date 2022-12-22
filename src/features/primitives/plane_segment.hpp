@@ -26,13 +26,6 @@ namespace rgbd_slam {
 
                     void init_plane_segment(const matrixf& depthCloudArray, const uint cellId);
 
-
-                    /**
-                     * \return True if this plane segment presents a depth discontinuity with another one.
-                     */
-                    bool is_depth_discontinuous(const Plane_Segment& planeSegment) const;
-                    bool is_depth_discontinuous(const vector3& planeMean) const;
-
                     /**
                      * \brief Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations
                      *
@@ -74,8 +67,8 @@ namespace rgbd_slam {
 
 
                 protected:
-                        bool is_cell_vertical_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const;
-                        bool is_cell_horizontal_continuous(const matrixf& depthMatrix, const double depthAlphaValue, const uint depthDiscontinuityLimit) const;
+                        bool is_cell_vertical_continuous(const matrixf& depthMatrix) const;
+                        bool is_cell_horizontal_continuous(const matrixf& depthMatrix) const;
 
                 private:
                         // TODO: those const members could be static  

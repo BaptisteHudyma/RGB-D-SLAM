@@ -1,6 +1,7 @@
 #include "primitive_detection.hpp"
 
 #include <limits>
+#include <opencv2/highgui.hpp>
 
 #include "cylinder_segment.hpp"
 #include "plane_segment.hpp"
@@ -145,6 +146,19 @@ namespace rgbd_slam {
                         _cellDistanceTols[stackedCellId] = abs(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist));
                     }
                 }
+#if 0
+// use this to debug the initial is_planar function
+                // Resize with no interpolation
+                _mask = cv::Scalar(0);
+                for(uint row = 0, activationIndex = 0; row < _verticalCellsCount; ++row) 
+                {
+                    for(uint col = 0; col < _horizontalCellsCount; ++col, ++activationIndex)
+                        _mask.at<uchar>(row, col) = _planeGrid[activationIndex].is_planar();
+                }
+                cv::Mat planeMask;
+                cv::resize(_mask * 255, planeMask, cv::Size(640, 480), 0, 0, cv::INTER_NEAREST);
+                cv::imshow("t", planeMask);
+#endif
             }
 
             uint Primitive_Detection::init_histogram() 

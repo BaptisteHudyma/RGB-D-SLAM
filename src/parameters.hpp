@@ -90,9 +90,9 @@ namespace rgbd_slam {
 
             static uint get_minimum_plane_seed_count() { return _minimumPlaneSeedCount; };
             static uint get_minimum_cell_activated() { return _minimumCellActivated; };
+            static float get_minimum_zero_depth_proportion() { return _minimumZeroDepthProportion; };
             static double get_depth_sigma_error() { return _depthSigmaError; };
             static double get_depth_sigma_margin() { return _depthSigmaMargin; };
-            static uint get_depth_discontinuity_limit() { return _depthDiscontinuityLimit; };
             static double get_depth_alpha() { return _depthAlpha; };
 
             static float get_cylinder_ransac_max_distance() { return _cylinderRansacSqrtMaxDistance; };
@@ -180,10 +180,10 @@ namespace rgbd_slam {
 
             inline static uint _minimumPlaneSeedCount;     // Minimum plane patches in a set to consider merging
             inline static uint _minimumCellActivated;
+            inline static float _minimumZeroDepthProportion;    // proportion of invalid depth pixels in a planar patch to reject it
             inline static double _depthSigmaError;
             inline static double _depthSigmaMargin;        // [3, 8]
-            inline static uint _depthDiscontinuityLimit; // Max number of discontinuities in a cell to reject it
-            inline static double _depthAlpha;              // [0.02, 0.04]
+            inline static double _depthAlpha;              // [1, 3] for kinect. Used to detect discontinuities between depth values
 
             inline static float _cylinderRansacSqrtMaxDistance;
             inline static float _cylinderRansacMinimumScore;
