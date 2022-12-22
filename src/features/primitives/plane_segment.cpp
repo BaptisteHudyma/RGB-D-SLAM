@@ -121,7 +121,6 @@ namespace rgbd_slam {
                 // Check number of missing depth points
                 _pointCount =  (depthMatrix.array() > 0).count();
                 if (_pointCount < _minZeroPointCount){
-                    _isPlanar = false;
                     return;
                 }
 
@@ -135,10 +134,9 @@ namespace rgbd_slam {
                 const static uint depthDiscontinuityLimit = Parameters::get_depth_discontinuity_limit(); 
 
                 if (not is_cell_horizontal_continuous(depthMatrix, depthAlphaValue, depthDiscontinuityLimit) or 
-                        not is_cell_vertical_continuous(depthMatrix, depthAlphaValue, depthDiscontinuityLimit))
+                    not is_cell_vertical_continuous(depthMatrix, depthAlphaValue, depthDiscontinuityLimit))
                 {
                     // this segment is not continuous...
-                    _isPlanar = false;
                     return;
                 }
 
@@ -158,9 +156,7 @@ namespace rgbd_slam {
                 //MSE > T_MSE
                 const static double depthSigmaError = Parameters::get_depth_sigma_error();
                 const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
-                if(_isPlanar and _MSE > pow(depthSigmaError * pow(_mean.z(), 2) + depthSigmaMargin, 2))
-                    _isPlanar = false;
-
+                _isPlanar = _MSE <= pow(depthSigmaError * pow(_mean.z(), 2) + depthSigmaMargin, 2);
             }
 
 
@@ -238,6 +234,8 @@ namespace rgbd_slam {
              * Sets all the plane parameters to zero 
              */
             void Plane_Segment::clear_plane_parameters() {
+                _isPlanar = false;
+
                 _pointCount = 0;
                 _score = 0;
                 _MSE = 0;

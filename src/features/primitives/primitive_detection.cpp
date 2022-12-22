@@ -141,8 +141,8 @@ namespace rgbd_slam {
                                     // left up corner (x, y, z)
                                     depthCloudArray.block(offset, 0, 1, 3)
                                     ).norm();
-                        //array of depth metrics: neighbors merging threshold
-                        _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist), 2.0f);
+                        //array of sqrt(depth) metrics: neighbors merging threshold
+                        _cellDistanceTols[stackedCellId] = abs(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist));
                     }
                 }
             }
@@ -548,7 +548,7 @@ namespace rgbd_slam {
                 assert(index < static_cast<size_t>(isActivatedMap.size()));
                 assert(index < static_cast<size_t>(_isUnassignedMask.size()));
                 if ((not _isUnassignedMask[index]) or isActivatedMap[index]) 
-                    //pixel is not part of a component or already labelled
+                    //pixel is not part of a component or already labelled, or not a plane (_isUnassignedMask is always false for non planar patches)
                     return;
 
                 assert(index < _planeGrid.size());
@@ -558,10 +558,9 @@ namespace rgbd_slam {
                 const double secPlaneD = planePatch.get_plane_d();
 
                 if (
-                        //planePatch.is_depth_discontinuous(secPlaneMean) or 
-                        seedPlaneNormal.dot(secPlaneNormal) < _minCosAngleForMerge or
-                        pow(seedPlaneNormal.dot(secPlaneMean) + seedPlaneD, 2.0) > _cellDistanceTols[index]
-                   )//angle between planes < threshold or dist between planes > threshold
+                        seedPlaneNormal.dot(secPlaneNormal) < _minCosAngleForMerge or   // distance between normals
+                        abs(seedPlaneNormal.dot(secPlaneMean) + seedPlaneD) > _cellDistanceTols[index] // sqrt(distance) between plane centers
+                   )
                     return;
 
                 isActivatedMap[index] = true;
