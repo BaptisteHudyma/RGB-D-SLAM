@@ -129,8 +129,7 @@ namespace rgbd_slam {
 
             void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) 
             {
-                const static float maximumCosAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
-                const static float sinCosAngleForMerge = sqrtf(1.0f - powf(maximumCosAngle, 2.0f));
+                const static float sinAngleForMerge = sinf(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
 
                 //for each planeGrid cell
                 const size_t planeGridSize = _planeGrid.size();
@@ -148,9 +147,9 @@ namespace rgbd_slam {
                                     // left up corner (x, y, z)
                                     depthCloudArray.block(offset, 0, 1, 3)
                                     ).norm();
-                        //array of sqrt(depth) metrics: neighbors merging threshold
-                        const static float maxMergeDistance = Parameters::get_maximum_merge_distance();
-                        _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, maxMergeDistance), 2.0f);
+                        // merge distance threshold (from "2021 - Real Time Plane Detection with Consistency from Point Cloud Sequences")
+                        // use the plane diameter as a merge threshold, with a small error (1.5)
+                        _cellDistanceTols[stackedCellId] = 1.5f * cellDiameter * sinAngleForMerge * sqrtf(planeSegment.get_point_count());
                     }
                 }
 #if 0
@@ -421,15 +420,14 @@ namespace rgbd_slam {
                                 continue;
 
                             // normals are close enough, distance is small enough
-                            const static float maxMergeDistance = Parameters::get_maximum_merge_distance();
-                            if(planeToExpand.can_be_merged(mergePlane, maxMergeDistance))
+                            if(planeToExpand.can_be_merged(mergePlane, _cellDistanceTols[col]))
                             {
                                 //merge plane segments
                                 planeToExpand.expand_segment(mergePlane);
                                 planeMergeLabels[col] = planeId;
                                 wasPlaneExpanded = true;
                             }
-                            else 
+                            else
                             {
                                 isPlanesConnectedMatrix(row, col) = false;
                                 isPlanesConnectedMatrix(col, row) = false;

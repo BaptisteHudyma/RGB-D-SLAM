@@ -81,6 +81,7 @@ namespace rgbd_slam {
                         double get_plane_d() const { return _d; };
                         bool is_planar() const { return _isPlanar; };
                         double get_score() const { return _score; };
+                        uint get_point_count() const { return _pointCount; };
 
 
                 protected:

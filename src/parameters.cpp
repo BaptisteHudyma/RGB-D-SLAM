@@ -119,7 +119,6 @@ namespace rgbd_slam {
         _minimumIOUToConsiderMatch = 0.7;   // Inter Over Union of planes
         _maximumAngleForPlaneMatch = 60.0;  // Plane segments could be merged below this angle
         _maximumPlaneAngleForMerge = 18.0;  // plane segments can be merged if their normals angle is below this angle
-        _primitiveMaximumMergeDistance = 50;// Plane segments can be merged if their centroid distance is below this distance
         _depthMapPatchSize = 20;            // Divide the depth image in patches of this size (pixels) to detect primitives
 
         _minimumPlaneSeedProportion = 0.8 / 100.0;      // grow planes only if we have more than this proportion of planes patch in this seed

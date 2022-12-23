@@ -85,7 +85,6 @@ namespace rgbd_slam {
             static uint get_keypoint_mask_radius() { return _keypointMaskRadius; };
 
             static float get_maximum_plane_merge_angle() { return _maximumPlaneAngleForMerge; };
-            static float get_maximum_merge_distance() { return _primitiveMaximumMergeDistance; };
             static uint get_depth_map_patch_size() { return _depthMapPatchSize; };
 
             static double get_minimum_plane_seed_proportion() { return _minimumPlaneSeedProportion; };
@@ -175,7 +174,6 @@ namespace rgbd_slam {
 
             // Primitive extraction parameters
             inline static float _maximumPlaneAngleForMerge;         // Maximum angle between two planes patches to consider merging
-            inline static float _primitiveMaximumMergeDistance;     // Maximum plane patch merge distance, in millimeters
             inline static uint _depthMapPatchSize;         // Size of the minimum search area
 
             inline static double _minimumPlaneSeedProportion;       // Minimum plane patches proportion (of th total of planar patches) in a set to consider merging
