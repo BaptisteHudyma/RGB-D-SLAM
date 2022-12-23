@@ -143,7 +143,7 @@ namespace rgbd_slam {
                                     depthCloudArray.block(offset, 0, 1, 3)
                                     ).norm();
                         //array of sqrt(depth) metrics: neighbors merging threshold
-                        _cellDistanceTols[stackedCellId] = abs(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist));
+                        _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist), 2.0f);
                     }
                 }
 #if 0
@@ -252,7 +252,7 @@ namespace rgbd_slam {
                 vectorb isActivatedMap = vectorb::Zero(_totalCellCount);
                 const size_t activationMapSize = isActivatedMap.size();
                 //grow plane region, fill isActivatedMap
-                region_growing(x, y, newPlaneSegment.get_normal(), newPlaneSegment.get_plane_d(), isActivatedMap);
+                region_growing(x, y, newPlaneSegment, isActivatedMap);
 
                 assert(activationMapSize == static_cast<size_t>(_isUnassignedMask.size()));
                 assert(activationMapSize == _planeGrid.size());
@@ -401,11 +401,9 @@ namespace rgbd_slam {
                 {
                     bool wasPlaneExpanded = false;
                     const uint planeId = planeMergeLabels[row];
-                    const Plane_Segment& testPlane = _planeSegments[planeId];
-                    if (not testPlane.is_planar())
+                    Plane_Segment& planeToExpand = _planeSegments[planeId];
+                    if (not planeToExpand.is_planar())
                         continue;
-
-                    const vector3& testPlaneNormal = testPlane.get_normal();
 
                     for(uint col = row + 1; col < isPlanesConnectedMatrixCols; ++col) 
                     {
@@ -415,18 +413,11 @@ namespace rgbd_slam {
                             if (not mergePlane.is_planar())
                                 continue;
 
-                            const vector3& mergePlaneNormal = mergePlane.get_normal();
-                            const double cosAngle = testPlaneNormal.dot(mergePlaneNormal);
-
-                            const vector3& mergePlaneMean = mergePlane.get_mean();
-                            const double distance = pow(
-                                    testPlaneNormal.dot(mergePlaneMean) + testPlane.get_plane_d(),
-                                    2);
-
-                            if(cosAngle > _minCosAngleForMerge and distance < _maxMergeDist) 
+                            // normals are close enough, distance is small enough
+                            if(planeToExpand.can_be_merged(mergePlane, _maxMergeDist))
                             {
                                 //merge plane segments
-                                _planeSegments[planeId].expand_segment(mergePlane);
+                                planeToExpand.expand_segment(mergePlane);
                                 planeMergeLabels[col] = planeId;
                                 wasPlaneExpanded = true;
                             }
@@ -438,7 +429,7 @@ namespace rgbd_slam {
                         }
                     }
                     if(wasPlaneExpanded)    //plane was merged with other planes
-                        _planeSegments[planeId].fit_plane();
+                        planeToExpand.fit_plane();
                 }
 
                 return planeMergeLabels;
@@ -549,11 +540,10 @@ namespace rgbd_slam {
             }
 
 
-            void Primitive_Detection::region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, vectorb& isActivatedMap) 
+            void Primitive_Detection::region_growing(const uint x, const uint y, const Plane_Segment& planeToExpand, vectorb& isActivatedMap) 
             {
                 assert(isActivatedMap.size() == _isUnassignedMask.size());
                 assert(_horizontalCellsCount > 0);
-                assert(seedPlaneD >= 0);
 
                 const size_t index = x + _horizontalCellsCount * y;
                 if (index >= _totalCellCount)
@@ -567,27 +557,22 @@ namespace rgbd_slam {
 
                 assert(index < _planeGrid.size());
                 const Plane_Segment& planePatch = _planeGrid[index];
-                const vector3& secPlaneNormal = planePatch.get_normal();
-                const vector3& secPlaneMean = planePatch.get_mean();
-                const double secPlaneD = planePatch.get_plane_d();
+                if (planeToExpand.can_be_merged(planePatch, _cellDistanceTols[index]))
+                {
+                    // mark this plane as merged
+                    isActivatedMap[index] = true;
 
-                if (
-                        seedPlaneNormal.dot(secPlaneNormal) < _minCosAngleForMerge or   // distance between normals
-                        abs(seedPlaneNormal.dot(secPlaneMean) + seedPlaneD) > _cellDistanceTols[index] // sqrt(distance) between plane centers
-                   )
-                    return;
-
-                isActivatedMap[index] = true;
-
-                // Now label the 4 neighbours:
-                if (x > 0)
-                    region_growing(x - 1, y, secPlaneNormal, secPlaneD, isActivatedMap);   // left  pixel
-                if (x < _width - 1)  
-                    region_growing(x + 1, y, secPlaneNormal, secPlaneD, isActivatedMap);  // right pixel
-                if (y > 0)        
-                    region_growing(x, y - 1, secPlaneNormal, secPlaneD, isActivatedMap);   // upper pixel 
-                if (y < _height - 1) 
-                    region_growing(x, y + 1, secPlaneNormal, secPlaneD, isActivatedMap);   // lower pixel
+                    // Now label the 4 neighbours:
+                    if (x > 0)
+                        region_growing(x - 1, y, planePatch, isActivatedMap);   // left  pixel
+                    if (x < _width - 1)  
+                        region_growing(x + 1, y, planePatch, isActivatedMap);  // right pixel
+                    if (y > 0)        
+                        region_growing(x, y - 1, planePatch, isActivatedMap);   // upper pixel 
+                    if (y < _height - 1) 
+                        region_growing(x, y + 1, planePatch, isActivatedMap);   // lower pixel
+                }
+                //else: do not merge this plane segment
             }
 
 

@@ -133,10 +133,10 @@ namespace rgbd_slam {
                      *
                      * \param[in] x Start X coordinates
                      * \param[in] y Start Y coordinates
-                     * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
-                     * \param[in] seedPlaneD D component of the plane to grow from
+                     * \param[in] planeToExpand The plane to grow
+                     * \param[in, out] isActivatedMap map of flags, indicating which plane segment were merged
                      */
-                    void region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD, vectorb& isActivatedMap);
+                    void region_growing(const uint x, const uint y, const Plane_Segment& planeToExpand, vectorb& isActivatedMap);
 
                     /**
                      * \brief Fill an association matrix that links connected plane components

@@ -244,14 +244,17 @@ namespace rgbd_slam {
             }
 
 
-            double Plane_Segment::get_normal_similarity(const Plane_Segment& p) const {
+            double Plane_Segment::get_cos_angle(const Plane_Segment& p) const {
                 assert(_isPlanar);
                 return (_normal.dot(p._normal));
             }
-
-            double Plane_Segment::get_signed_distance(const vector3& point) const {
-                assert(_isPlanar);
-                return _normal.dot(point - _mean);
+            double Plane_Segment::get_point_distance(const vector3& point) const {
+                return pow(_normal.dot(point) + _d, 2.0);
+            }
+            bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
+            {
+                const static float maximumCosAngle = Parameters::get_maximum_plane_match_angle();
+                return get_cos_angle(p) > maximumCosAngle and get_point_distance(p.get_mean()) < maxMatchDistance;
             }
 
 

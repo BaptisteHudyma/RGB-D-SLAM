@@ -34,16 +34,22 @@ namespace rgbd_slam {
                     void expand_segment(const Plane_Segment& planeSegment);
 
                     /**
-                     * \brief Compute the dot product of two plane normals
-                     *
+                     * \brief Compute the dot product of two plane normals, It is thecos of the angle between those normals
+                     * \param[in] p The other plane segment to check the angle to
                      * \return A number between -1 and 1
                      */
-                    double get_normal_similarity(const Plane_Segment& p) const;
+                    double get_cos_angle(const Plane_Segment& p) const;
 
                     /**
-                     * \brief Compute the signed distance from a plane to a point
+                     * \brief Return the distance from a plane to the given point
                      */
-                    double get_signed_distance(const vector3& point) const;
+                    double get_point_distance(const vector3& point) const;
+
+                    /**
+                     * \param[in] maxMatchDistance Maximum distance after which two planes wont be merged
+                     * \return True if the planes could be merged. It is based on the normal angles and center distances
+                     */
+                    bool can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const;
 
                     /**
                      * \brief Fit a plane to the contained points using PCA
