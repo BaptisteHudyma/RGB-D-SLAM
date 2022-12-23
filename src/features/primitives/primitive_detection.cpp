@@ -157,7 +157,7 @@ namespace rgbd_slam {
                 }
                 cv::Mat planeMask;
                 cv::resize(_mask * 255, planeMask, cv::Size(640, 480), 0, 0, cv::INTER_NEAREST);
-                cv::imshow("t", planeMask);
+                cv::imshow("is_depth_continuous", planeMask);
 #endif
             }
 

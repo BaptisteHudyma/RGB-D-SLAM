@@ -7,13 +7,21 @@
 namespace rgbd_slam {
     namespace utils {
 
-        const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate) 
+        double get_depth_quantization(const double depth)
         {
-            // quantization of depth measurments, depending on distance (uses depth as meters)
-            const double depthMeters = ScreenCoordinate.z() / 1000.0;
-            // If depth is less than the min distance, covariance is set to a high value
-            // Source: 2013: "3D with kinect"
-            const double depthQuantization = std::max(0.53, utils::is_depth_valid(ScreenCoordinate.z()) ? (-0.53 + 0.74 * depthMeters + 2.73 * pow(depthMeters, 2.0)) : 1000.0);
+            // distance between 2 depth values < minimum depth disparity for this distance
+            // from "plane extraction in organized point clouds using agglomerative hierarchical clustering"
+            // minimum depth diparity at z = sigmaE * z^2 + sigmaM
+            const static double depthSigmaError = Parameters::get_depth_sigma_error();
+            const static double depthSigmaMultiplier = Parameters::get_depth_sigma_multiplier();
+            const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
+            return depthSigmaMargin + std::max(0.0, + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0));
+        }
+
+        const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& screenCoordinate) 
+        {
+            // TODO: remove this /1000 that does not make sense for the covariance I think
+            const double depthQuantization = utils::is_depth_valid(screenCoordinate.z()) ? get_depth_quantization(screenCoordinate.z()/1000.0) : 1000.0;
             // a zero variance will break the kalman gain
             assert(depthQuantization > 0);
             // TODO xy variance should also depend on the placement of the pixel in x and y

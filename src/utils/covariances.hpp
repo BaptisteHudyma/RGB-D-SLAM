@@ -10,6 +10,13 @@ namespace rgbd_slam {
     namespace utils {
 
         /**
+         * \brief Return the expected depth quantization at this depth value.
+         * \param[in] depht The measured depth value, in millimeters
+         * \return The smallest possible measure in millimeters
+         */
+        double get_depth_quantization(const double depht);
+
+        /**
          * \brief compute a covariance matrix for a screen point associated with a depth measurement
          *
          * \param[in] ScreenCoordinate The coordinates of this point, in screen space

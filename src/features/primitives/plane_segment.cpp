@@ -1,4 +1,5 @@
 #include "plane_segment.hpp"
+#include "covariances.hpp"
 #include "eig33sym.hpp"
 
 #include "../../parameters.hpp"
@@ -49,25 +50,17 @@ namespace rgbd_slam {
 
             /**
              * \brief Runs a check on a depth value, and increment a discontinuity counter if needed
-             *
-             * \param[in] depthAlphaValue
-             * \param[in] depthDiscontinuityLimit Limit of maximum depth discontinuities
              * \param[in] z The depth value to check
              * \param[in,out] zLast Last depht value to pass the continuity test
-             *
-             * \return False if too much continuities are detected
+             * \return False if a continuities is detected
              */
             bool is_continuous(const float z, float& zLast)
             {
-                const static double depthAlphaValue = Parameters::get_depth_alpha();
-                const static double depthAlphaMultiplier = pow(depthAlphaValue, -9);
                 // ignore empty depth values
                 if (z > 0)
                 {
-                    // check for suddent jumps in the depth values (from "plane extraction in organized point clouds using agglomerative hierarchical clustering")
-                    // distance between 2 depth values < minimum depth disparity for this distance
-                    // minimum depth diparity at z = alpha^(-9) * z^2 + alpha
-                    if(abs(z - zLast) <= depthAlphaMultiplier * pow(z, 2.0) + depthAlphaValue)
+                    // check for suddent jumps in the depth values, that are superior to the expected quantization for this depth
+                    if(abs(z - zLast) <= 10*utils::get_depth_quantization(z))
                     {
                         // no suddent jump
                         zLast = z;
@@ -161,9 +154,7 @@ namespace rgbd_slam {
                 //fit a plane to those points 
                 fit_plane();
                 //MSE > T_MSE
-                const static double depthSigmaError = Parameters::get_depth_sigma_error();
-                const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
-                _isPlanar = _MSE <= pow(depthSigmaError * pow(_mean.z(), 2) + depthSigmaMargin, 2);
+                _isPlanar = _MSE <= pow(utils::get_depth_quantization(_mean.z()), 2);
             }
 
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {
