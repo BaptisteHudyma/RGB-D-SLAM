@@ -96,7 +96,7 @@ namespace rgbd_slam {
             static double get_depth_sigma_margin() { return _depthSigmaMargin; };
 
             static float get_cylinder_ransac_max_distance() { return _cylinderRansacSqrtMaxDistance; };
-            static float get_cylinder_ransac_minimm_score() { return _cylinderRansacMinimumScore; };
+            static float get_cylinder_ransac_minimum_score() { return _cylinderRansacMinimumScore; };
             static float get_cylinder_ransac_inlier_proportion () { return _cylinderRansacInlierProportions; };
             static float get_cylinder_ransac_probability_of_success () { return _cylinderRansacProbabilityOfSuccess; };
 

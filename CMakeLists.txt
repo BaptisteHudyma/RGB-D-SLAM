@@ -112,7 +112,6 @@ add_library(mapManagement SHARED
 add_library(thirdParty SHARED
     ${THIRD_PARTY}/line_segment_detector.cpp
     ${THIRD_PARTY}/geodesic_operations.cpp
-    ${THIRD_PARTY}/dsyevh3.cpp
     ${THIRD_PARTY}/p3p.cpp
     )
 

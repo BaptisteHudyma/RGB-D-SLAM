@@ -1,6 +1,6 @@
 #include "plane_segment.hpp"
 #include "covariances.hpp"
-#include "eig33sym.hpp"
+#include "Eigen/Eigenvalues"
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
@@ -173,37 +173,36 @@ namespace rgbd_slam {
                 _mean = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
                 // Expressing covariance as E[PP^t] + E[P]*E[P^T]
-                double cov[3][3] = {
-                    {_Sxs - _Sx * _Sx * oneOverCount, _Sxy - _Sx * _Sy * oneOverCount,  _Szx - _Sx * _Sz * oneOverCount},
-                    {0                              , _Sys - _Sy * _Sy * oneOverCount,  _Syz - _Sy * _Sz * oneOverCount},
-                    {0                              , 0,                                _Szs - _Sz * _Sz * oneOverCount }
-                };
-                cov[1][0] = cov[0][1]; 
-                cov[2][0] = cov[0][2];
-                cov[2][1] = cov[1][2];
+                const double xy = _Sxy - _Sx * _Sy * oneOverCount;
+                const double xz = _Szx - _Sx * _Sz * oneOverCount;
+                const double yz = _Syz - _Sy * _Sz * oneOverCount;
+                const matrix33 cov({
+                    {_Sxs - _Sx * _Sx * oneOverCount, xy,  xz},
+                    {xy, _Sys - _Sy * _Sy * oneOverCount,  yz},
+                    {xz, yz,  _Szs - _Sz * _Sz * oneOverCount}
+                });
 
-                // This uses QR decomposition for symmetric matrices
-                vector3 sv = vector3::Zero();
-                vector3 v = vector3::Zero();
-                // Pass those vectors as C style arrays of 3 elements
-                if(not LA::eig33sym(cov, &sv(0), &v(0)))
-                    outputs::log("Too much error");
+                Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(cov);
+                const vector3& eigenValues = eigenSolver.eigenvalues();
+                const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
 
-                _d = -v.dot(_mean);
+                _d = -eigenVector.dot(_mean);
 
                 // Enforce normal orientation
                 if(_d > 0) {   //point normal toward the camera
-                    _normal = v; 
+                    _normal = eigenVector; 
                 } else {
-                    _normal = -v;
+                    _normal = -eigenVector;
                     _d = -_d;
                 } 
                 // some values have floatting points errors, renormalize
                 _normal.normalize();
 
                 //_score = sv[0] / (sv[0] + sv[1] + sv[2]);
-                _MSE = sv.x() * oneOverCount;
-                _score = sv.y() / sv.x();
+                // smallest eigen value divided by number of points
+                _MSE = eigenValues(0) * oneOverCount;
+                // biggest eigen value divided by smallest
+                _score = eigenValues(1) / eigenValues(0);
 
                 // set segment as planar
                 _isPlanar = true;

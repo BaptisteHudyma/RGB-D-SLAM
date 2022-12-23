@@ -47,9 +47,6 @@ namespace rgbd_slam {
                 assert(samplesCount == planeGrid.size());
                 assert(_cellActivatedCount <= isActivatedMask.size());
 
-                const static float minimumCyinderScore = Parameters::get_cylinder_ransac_minimm_score();
-                const static float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
-
                 _local2globalMap.assign(_cellActivatedCount, 0);
 
                 matrixd planeNormals(3, 2 * _cellActivatedCount);
@@ -99,9 +96,11 @@ namespace rgbd_slam {
                 // PCA using QR decomposition for symmetric matrices
                 Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(cov);
                 const vector3& eigenValues = eigenSolver.eigenvalues();
+                // biggest over smallest eigen value
                 const double score = eigenValues(2) / eigenValues(0);
 
                 // Checkpoint 1
+                const static float minimumCyinderScore = Parameters::get_cylinder_ransac_minimum_score();
                 if(score < minimumCyinderScore)
                     return;
 
@@ -146,11 +145,9 @@ namespace rgbd_slam {
                 const static size_t minimumCellActivated = static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * samplesCount);
                 while(planeSegmentsLeft > minimumCellActivated and planeSegmentsLeft > 0.1 * _cellActivatedCount)
                 {
-                    if (idsLeft.size() <= 3)
-                        break;
                     Matrixb isInlierFinal(true, _cellActivatedCount);
                     // RANSAC loop
-                    const uint maxInliersCount = run_ransac_loop(maximumIterations, idsLeft, planeNormals, projectedCentroids, maximumSqrtDistance, idsLeftMask, isInlierFinal);
+                    const uint maxInliersCount = run_ransac_loop(maximumIterations, idsLeft, planeNormals, projectedCentroids, idsLeftMask, isInlierFinal);
 
                     // Checkpoint 2
                     if(maxInliersCount < 6)
@@ -226,15 +223,17 @@ namespace rgbd_slam {
                 }
             }
 
-            size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const matrixd& planeNormals, const matrixd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& isInlierFinal)
+            size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const matrixd& planeNormals, const matrixd& projectedCentroids, const Matrixb& idsLeftMask, Matrixb& isInlierFinal)
             {
                 assert(maximumIterations > 0);
-                assert(idsLeft.size() > 3);
-                assert(maximumSqrtDistance > 0);
+                // not enough ids left
+                if(idsLeft.size() < 3)
+                    return 0;
 
                 const uint planeIdsLeft = idsLeft.size();
                 const uint inliersAcceptedCount = 0.9 * planeIdsLeft;
 
+                const static float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
                 // Score of the maximum inliers configuration
                 double minHypothesisDist = maximumSqrtDistance * planeIdsLeft;
                 // Indexes of the inliers of the best configuration
