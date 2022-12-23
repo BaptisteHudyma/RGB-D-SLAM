@@ -50,7 +50,7 @@ namespace rgbd_slam {
                 if (z > 0)
                 {
                     // check for suddent jumps in the depth values, that are superior to the expected quantization for this depth
-                    if(abs(z - zLast) <= 10*utils::get_depth_quantization(z))
+                    if(abs(z - zLast) <= utils::get_depth_quantization(z))
                     {
                         // no suddent jump
                         zLast = z;
@@ -150,7 +150,7 @@ namespace rgbd_slam {
                 //fit a plane to those points 
                 fit_plane();
                 // plane variance should be less than depth quantization, plus a tolerance factor
-                _isPlanar = _isPlanar and _MSE <= pow(utils::get_depth_quantization(_mean.z()) + 10, 2.0);
+                _isPlanar = _isPlanar and _MSE <= pow(utils::get_depth_quantization(_mean.z()), 2.0);
             }
 
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {
@@ -188,7 +188,7 @@ namespace rgbd_slam {
                     {_Szx - _Sx * _Sz * oneOverCount, _Syz - _Sy * _Sz * oneOverCount,  _Szs - _Sz * _Sz * oneOverCount}
                 });
                 // edge case: creates MSE < 0
-                // happens when all points are on the same exact line (rare, probably a sampling problem)
+                // happens when all points are on the same exact dimention (rare, probably a sampling problem)
                 if (cov(0, 0) <= 0.01 or cov(1, 1) <= 0.01 or cov(2, 2) <= 0.01)
                 {
                     _isPlanar = false;

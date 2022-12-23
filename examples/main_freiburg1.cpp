@@ -7,6 +7,8 @@
 #include <fstream>
 #include <ctime>
 // check file existence
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -205,7 +207,7 @@ int main(int argc, char* argv[])
 
         // Load images
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
-        cv::Mat depthImage = cv::imread(depthImagePath, cv::IMREAD_GRAYSCALE);
+        cv::Mat depthImage = cv::imread(depthImagePath, cv::IMREAD_ANYDEPTH);
 
         if (rgbImage.empty())// or depthImage.empty())
         {
@@ -215,11 +217,13 @@ int main(int argc, char* argv[])
         if (depthImage.empty())
         {
             std::cerr << "Could not load depth image " << depthImagePath << std::endl;
-            depthImage = cv::Mat(480, 640, CV_8UC1, cv::Scalar(0.0));
+            depthImage = cv::Mat(480, 640, CV_16UC1, cv::Scalar(0.0));
         }
+
         // convert to mm & float 32
         depthImage.convertTo(depthImage, CV_32FC1);
-        depthImage *= 100.0 / 5.0;
+        depthImage /= 5.0;
+
 
         //clean warp artefacts
 #if 0

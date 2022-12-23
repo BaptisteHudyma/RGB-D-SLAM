@@ -153,7 +153,7 @@ namespace rgbd_slam {
                         _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, maxMergeDistance), 2.0f);
                     }
                 }
-#if 0
+#if 1
 // use this to debug the initial is_planar function
                 // Resize with no interpolation
                 _mask = cv::Scalar(0);
