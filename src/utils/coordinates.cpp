@@ -48,7 +48,7 @@ namespace utils {
         CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
         {
             assert(x() >= 0 and y() >= 0);
-            assert(z() != 0);
+            assert(z() < 0.001 or z() > 0.001);
 
             const static double cameraFX = Parameters::get_camera_1_focal_x();
             const static double cameraFY = Parameters::get_camera_1_focal_y();

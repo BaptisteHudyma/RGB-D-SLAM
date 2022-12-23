@@ -57,8 +57,8 @@ namespace rgbd_slam {
             }
 
             bool Cylinder::is_similar(const Cylinder& cylinder) const {
-                const double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
-                const double minimumNormalDotDiff = Parameters::get_minimum_normals_dot_difference();
+                const static double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
+                const static double minimumNormalDotDiff = Parameters::get_maximum_plane_normals_angle_for_match();
                 if(get_IOU(cylinder) < minimumIOUForMatch)
                     return false;
 
@@ -95,12 +95,11 @@ namespace rgbd_slam {
 
             bool Plane::is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const
             {
-                const double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
-                const double minimumNormalDotDiff = Parameters::get_minimum_normals_dot_difference();
+                const static double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
+                const static double minimumNormalDotDiff = cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI/180.0);
                 if(get_IOU(mask) < minimumIOUForMatch)
                     return false;
-                // transform from [-1; 1] to [0; 1]
-                return (get_plane_normal().dot(planeParametrization.head(3)) + 1.0) / 2.0 > minimumNormalDotDiff;
+                return abs(get_plane_normal().dot(planeParametrization.head(3))) > minimumNormalDotDiff;
             }
 
             bool Plane::is_similar(const Cylinder& cylinder) const {

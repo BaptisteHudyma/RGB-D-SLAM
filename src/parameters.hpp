@@ -53,7 +53,7 @@ namespace rgbd_slam {
 
             // Primitives matching
             static double get_minimum_iou_for_match() { return _minimumIOUToConsiderMatch; };
-            static double get_minimum_normals_dot_difference() { return _minimumNormalsDotDifference; };
+            static double get_maximum_plane_normals_angle_for_match() { return _maximumAngleForPlaneMatch; };
 
             // Optimisation parameters
             static double get_ransac_maximum_retroprojection_error_for_point_inliers() { return _ransacMaximumRetroprojectionErrorForPointInliers; };
@@ -84,7 +84,7 @@ namespace rgbd_slam {
             static uint get_optical_flow_max_distance() { return _opticalFlowMaxDistance; };
             static uint get_keypoint_mask_radius() { return _keypointMaskRadius; };
 
-            static float get_maximum_plane_match_angle() { return _primitiveMaximumCosAngle; };
+            static float get_maximum_plane_merge_angle() { return _maximumPlaneAngleForMerge; };
             static float get_maximum_merge_distance() { return _primitiveMaximumMergeDistance; };
             static uint get_depth_map_patch_size() { return _depthMapPatchSize; };
 
@@ -138,7 +138,7 @@ namespace rgbd_slam {
 
             // primitive matching
             inline static double _minimumIOUToConsiderMatch;    // Inter over Union of the two primitive masks, to consider a primitive match
-            inline static double _minimumNormalsDotDifference;  // Minimum score of the normals of the two primitives (0 to 1)
+            inline static double _maximumAngleForPlaneMatch;    // Maximum angle between two primitives to consider a match
 
             // Position optimization
             inline static uint _minimumPointForOptimization;    // Minimum points to launch optimization
@@ -174,8 +174,8 @@ namespace rgbd_slam {
             inline static uint _keypointMaskRadius;
 
             // Primitive extraction parameters
-            inline static float _primitiveMaximumCosAngle;         // Maximum cosinus of the angle between two planes to consider merging
-            inline static float _primitiveMaximumMergeDistance;    // Maximum plane patch merge distance, in millimeters
+            inline static float _maximumPlaneAngleForMerge;         // Maximum angle between two planes patches to consider merging
+            inline static float _primitiveMaximumMergeDistance;     // Maximum plane patch merge distance, in millimeters
             inline static uint _depthMapPatchSize;         // Size of the minimum search area
 
             inline static uint _minimumPlaneSeedCount;     // Minimum plane patches in a set to consider merging

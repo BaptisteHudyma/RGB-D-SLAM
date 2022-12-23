@@ -129,7 +129,7 @@ namespace rgbd_slam {
 
             void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) 
             {
-                const static float maximumCosAngle = Parameters::get_maximum_plane_match_angle();
+                const static float maximumCosAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
                 const static float sinCosAngleForMerge = sqrtf(1.0f - powf(maximumCosAngle, 2.0f));
 
                 //for each planeGrid cell

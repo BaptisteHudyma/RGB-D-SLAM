@@ -245,8 +245,8 @@ namespace rgbd_slam {
             }
             bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
             {
-                const static float maximumCosAngle = Parameters::get_maximum_plane_match_angle();
-                return get_cos_angle(p) > maximumCosAngle and get_point_distance(p.get_mean()) < maxMatchDistance;
+                const static double maximumMergeAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
+                return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_mean()) < maxMatchDistance;
             }
 
 

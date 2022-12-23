@@ -116,11 +116,11 @@ namespace rgbd_slam {
         _maximumPointPerFrame = 200;
 
         // Primitive extraction
-        _minimumIOUToConsiderMatch = 0.3;
-        _minimumNormalsDotDifference = 0.6;
-        _primitiveMaximumCosAngle = cos(M_PI/10.0); // cos(18°)
-        _primitiveMaximumMergeDistance = sqrtf(50);    //50 mm
-        _depthMapPatchSize = 20;
+        _minimumIOUToConsiderMatch = 0.3;   // Inter Over Union of planes
+        _maximumAngleForPlaneMatch = 60.0;  // Plane segments could be merged below this angle
+        _maximumPlaneAngleForMerge = 18.0;  // plane segments can be merged if their normals angle is below this angle
+        _primitiveMaximumMergeDistance = 50;// Plane segments can be merged if their centroid distance is below this distance
+        _depthMapPatchSize = 20;            // Divide the depth image in patches of this size (pixels) to detect primitives
 
         _minimumPlaneSeedCount = 6;
         _minimumCellActivated = 5;
@@ -288,9 +288,14 @@ namespace rgbd_slam {
             outputs::log_error("Minimum InterOverUnion must be > 0");
             _isValid = false;
         }
-        if (_minimumNormalsDotDifference < 0 or _minimumNormalsDotDifference > 1)
+        if (_maximumAngleForPlaneMatch < 0 or _maximumAngleForPlaneMatch > 180)
         {
-            outputs::log_error("Minimum normal difference must be between 0 and 1");
+            outputs::log_error("Maximum plane match angle must be between 0 and 180");
+            _isValid = false;
+        }
+        if (_maximumPlaneAngleForMerge < 0 or _maximumPlaneAngleForMerge > 180)
+        {
+            outputs::log_error("Maximum plane patch merge angle must be between 0 and 180");
             _isValid = false;
         }
         if (_minimumCellActivated <= 0)
