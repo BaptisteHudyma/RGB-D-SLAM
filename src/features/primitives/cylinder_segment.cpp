@@ -143,8 +143,11 @@ namespace rgbd_slam {
                     idsLeftMask(i) = true;
                 }
                 // Sequential RANSAC main loop
-                while(planeSegmentsLeft > Parameters::get_minimum_cell_activated() and planeSegmentsLeft > 0.1 * _cellActivatedCount)
+                const static size_t minimumCellActivated = static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * samplesCount);
+                while(planeSegmentsLeft > minimumCellActivated and planeSegmentsLeft > 0.1 * _cellActivatedCount)
                 {
+                    if (idsLeft.size() <= 3)
+                        break;
                     Matrixb isInlierFinal(true, _cellActivatedCount);
                     // RANSAC loop
                     const uint maxInliersCount = run_ransac_loop(maximumIterations, idsLeft, planeNormals, projectedCentroids, maximumSqrtDistance, idsLeftMask, isInlierFinal);

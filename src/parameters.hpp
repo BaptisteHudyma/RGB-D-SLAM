@@ -88,8 +88,8 @@ namespace rgbd_slam {
             static float get_maximum_merge_distance() { return _primitiveMaximumMergeDistance; };
             static uint get_depth_map_patch_size() { return _depthMapPatchSize; };
 
-            static uint get_minimum_plane_seed_count() { return _minimumPlaneSeedCount; };
-            static uint get_minimum_cell_activated() { return _minimumCellActivated; };
+            static double get_minimum_plane_seed_proportion() { return _minimumPlaneSeedProportion; };
+            static double get_minimum_cell_activated_proportion() { return _minimumCellActivatedProportion; };
             static float get_minimum_zero_depth_proportion() { return _minimumZeroDepthProportion; };
             static double get_depth_sigma_error() { return _depthSigmaError; };
             static double get_depth_sigma_multiplier() { return _depthSigmaMultiplier; };
@@ -178,8 +178,8 @@ namespace rgbd_slam {
             inline static float _primitiveMaximumMergeDistance;     // Maximum plane patch merge distance, in millimeters
             inline static uint _depthMapPatchSize;         // Size of the minimum search area
 
-            inline static uint _minimumPlaneSeedCount;     // Minimum plane patches in a set to consider merging
-            inline static uint _minimumCellActivated;
+            inline static double _minimumPlaneSeedProportion;       // Minimum plane patches proportion (of th total of planar patches) in a set to consider merging
+            inline static double _minimumCellActivatedProportion;   // Minimum activated plane patches proportion (of th total of planar patches) in a set to consider merging
             inline static float _minimumZeroDepthProportion;    // proportion of invalid depth pixels in a planar patch to reject it
             inline static double _depthSigmaError;
             inline static double _depthSigmaMultiplier;

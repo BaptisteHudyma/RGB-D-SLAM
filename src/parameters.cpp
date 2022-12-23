@@ -122,9 +122,9 @@ namespace rgbd_slam {
         _primitiveMaximumMergeDistance = 50;// Plane segments can be merged if their centroid distance is below this distance
         _depthMapPatchSize = 20;            // Divide the depth image in patches of this size (pixels) to detect primitives
 
-        _minimumPlaneSeedCount = 6;
-        _minimumCellActivated = 5;
-        _minimumZeroDepthProportion = 0.7;  // if this proportion of the points have invalid depth in a planar patch, reject it
+        _minimumPlaneSeedProportion = 0.8 / 100.0;      // grow planes only if we have more than this proportion of planes patch in this seed
+        _minimumCellActivatedProportion = 0.65 / 100.0; // grow planes only if their is this proportion of mergeable planes in the remaining patches
+        _minimumZeroDepthProportion = 0.7;              // if this proportion of the points have invalid depth in a planar patch, reject it
 
         // Parameters taken from "2012 - 3D with Kinect""
         //parameters of equation z_diff = sigmaA + sigmaM * z + sigmaE * z^2, that represent the minimum depth change for a given depth (quantization)
@@ -298,9 +298,14 @@ namespace rgbd_slam {
             outputs::log_error("Maximum plane patch merge angle must be between 0 and 180");
             _isValid = false;
         }
-        if (_minimumCellActivated <= 0)
+        if (_minimumCellActivatedProportion < 0 or _minimumCellActivatedProportion > 100)
         {
-            outputs::log_error("Minimum cell activated must be > 0");
+            outputs::log_error("Minimum cell activated proportion must be in [0, 100]");
+            _isValid = false;
+        }
+        if (_minimumPlaneSeedProportion < 0 or _minimumPlaneSeedProportion > 100)
+        {
+            outputs::log_error("Minimum plane seed proportion must be in [0, 100]");
             _isValid = false;
         }
         if (_minimumZeroDepthProportion < 0 or _minimumZeroDepthProportion > 1)
