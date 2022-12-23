@@ -20,10 +20,13 @@ namespace rgbd_slam {
                     _histogram(blocSize), 
                     _width(width), _height(height),  
                     _pointsPerCellCount(blocSize * blocSize),
-                    _cellWidth(blocSize), _cellHeight(blocSize),
-                    _horizontalCellsCount(_width / _cellWidth), _verticalCellsCount(_height / _cellHeight),
+                    _horizontalCellsCount(_width / blocSize), _verticalCellsCount(_height / blocSize),
                     _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
             {
+                assert(blocSize > 0);
+                assert(width > 0);
+                assert(height > 0);
+
                 //Init variables
                 _isUnassignedMask = vectorb::Zero(_totalCellCount);
                 _cellDistanceTols.assign(_totalCellCount, 0.0f);
@@ -40,8 +43,11 @@ namespace rgbd_slam {
                 _maskCrossKernel.at<uchar>(0,2) = 0;
                 _maskCrossKernel.at<uchar>(2,0) = 0;
 
+                // set before anything related to planar cells
+                Plane_Segment::set_static_members(blocSize, _pointsPerCellCount);
+
                 //array of unique_ptr<Plane_Segment>
-                const Plane_Segment defaultPlaneSegment = Plane_Segment(_cellWidth, _pointsPerCellCount);
+                const Plane_Segment defaultPlaneSegment = Plane_Segment();
                 _planeGrid.reserve(_totalCellCount);
                 for(uint i = 0; i < _totalCellCount; ++i) 
                 {
@@ -327,7 +333,7 @@ namespace rgbd_slam {
                 for(uint segId = 0; segId < cylinderSegment.get_segment_count(); ++segId)
                 {
                     bool isPlaneSegmentFitable = false;
-                    Plane_Segment newMergedPlane(_cellWidth, _pointsPerCellCount);
+                    Plane_Segment newMergedPlane;
                     for(uint col = 0; col < cellActivatedCount; ++col)
                     {
                         if (cylinderSegment.is_inlier_at(segId, col))

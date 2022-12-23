@@ -155,9 +155,6 @@ namespace rgbd_slam {
                     const uint _height;
                     const uint _pointsPerCellCount;
 
-                    const uint _cellWidth;
-                    const uint _cellHeight;
-
                     const uint _horizontalCellsCount;
                     const uint _verticalCellsCount;
                     const uint _totalCellCount;

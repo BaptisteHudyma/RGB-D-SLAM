@@ -2,6 +2,7 @@
 #define RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 
 #include "../../types.hpp"
+#include "../../parameters.hpp"
 
 
 namespace rgbd_slam {
@@ -15,14 +16,24 @@ namespace rgbd_slam {
              */
             class Plane_Segment {
                 public:
+                    Plane_Segment();
                     /**
-                     * \brief Initialize the plane segment with the points from the depth matrix
-                     *
-                     * \param[in] cellWidth Width and height of the depth image divisions
-                     * \param[in] ptsPerCellCount
+                     * \brief Copy construtor
                      */
-                    Plane_Segment(const uint cellWidth, const uint ptsPerCellCount);
                     Plane_Segment(const Plane_Segment& seg);
+
+                    static void set_static_members(const uint cellWidth, const uint pointPerCellCount)
+                    {
+                        assert(pointPerCellCount > 0);
+                        assert(cellWidth > 0);
+
+                        _ptsPerCellCount = pointPerCellCount;
+                        _minZeroPointCount = static_cast<uint>(_ptsPerCellCount * Parameters::get_minimum_zero_depth_proportion()); 
+                        _cellWidth = cellWidth; 
+                        _cellHeight = _ptsPerCellCount / _cellWidth;
+
+                        _isStaticSet = true;
+                    }
 
                     void init_plane_segment(const matrixf& depthCloudArray, const uint cellId);
 
@@ -77,11 +88,11 @@ namespace rgbd_slam {
                         bool is_cell_horizontal_continuous(const matrixf& depthMatrix) const;
 
                 private:
-                        // TODO: those const members could be static  
-                        const uint _ptsPerCellCount;  //max nb of points per initial cell
-                        const uint _minZeroPointCount;  //min acceptable zero points in a node
-                        const uint _cellWidth;
-                        const uint _cellHeight;
+                        static inline uint _ptsPerCellCount;  //max nb of points per initial cell
+                        static inline uint _minZeroPointCount;  //min acceptable zero points in a node
+                        static inline uint _cellWidth;
+                        static inline uint _cellHeight;
+                        static inline bool _isStaticSet = false;
 
                         uint _pointCount;         //point count
                         double _score;    //plane fitting score

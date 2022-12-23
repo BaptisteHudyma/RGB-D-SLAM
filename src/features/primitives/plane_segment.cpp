@@ -11,24 +11,15 @@ namespace rgbd_slam {
 
 
 
-            Plane_Segment::Plane_Segment(const uint cellWidth, const uint ptsPerCellCount) : 
-                _ptsPerCellCount(ptsPerCellCount), 
-                _minZeroPointCount( static_cast<uint>(_ptsPerCellCount * Parameters::get_minimum_zero_depth_proportion())), 
-                _cellWidth(cellWidth), 
-                _cellHeight(_ptsPerCellCount / _cellWidth)
+            Plane_Segment::Plane_Segment()
             {
-                assert(ptsPerCellCount > 0);
-                assert(cellWidth > 0);
+                assert(_isStaticSet);
 
                 clear_plane_parameters();
                 _isPlanar = false;
             }
 
             Plane_Segment::Plane_Segment(const Plane_Segment& seg) :
-                _ptsPerCellCount(seg._ptsPerCellCount), 
-                _minZeroPointCount(seg._minZeroPointCount), 
-                _cellWidth(seg._cellWidth), 
-                _cellHeight(seg._cellHeight),
                 _pointCount(seg._pointCount),
                 _score(seg._score),
                 _MSE(seg._MSE),
@@ -46,6 +37,7 @@ namespace rgbd_slam {
                 _Syz(seg._Syz),
                 _Szx(seg._Szx)
             {
+                assert(_isStaticSet);
             }
 
             /**
