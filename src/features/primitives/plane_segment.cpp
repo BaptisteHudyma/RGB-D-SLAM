@@ -50,7 +50,7 @@ namespace rgbd_slam {
                 if (z > 0)
                 {
                     // check for suddent jumps in the depth values, that are superior to the expected quantization for this depth
-                    if(abs(z - zLast) <= utils::get_depth_quantization(z))
+                    if(abs(z - zLast) <= 2 * utils::get_depth_quantization(z))
                     {
                         // no suddent jump
                         zLast = z;
@@ -182,18 +182,12 @@ namespace rgbd_slam {
 
                 // Expressing covariance as E[PP^t] + E[P]*E[P^T]
                 // no need to fill the upper part, the adjoint solver does not need it
+                // the max(1.0) on the diagonal handle the rare case when all the points have the same measure
                 const matrix33 cov({
-                    {_Sxs - _Sx * _Sx * oneOverCount, 0,                                0},
-                    {_Sxy - _Sx * _Sy * oneOverCount, _Sys - _Sy * _Sy * oneOverCount,  0},
-                    {_Szx - _Sx * _Sz * oneOverCount, _Syz - _Sy * _Sz * oneOverCount,  _Szs - _Sz * _Sz * oneOverCount}
+                    {std::max(1.0, _Sxs - _Sx * _Sx * oneOverCount), 0,                                0},
+                    {_Sxy - _Sx * _Sy * oneOverCount, std::max(1.0, _Sys - _Sy * _Sy * oneOverCount),  0},
+                    {_Szx - _Sx * _Sz * oneOverCount, _Syz - _Sy * _Sz * oneOverCount,  std::max(1.0, _Szs - _Sz * _Sz * oneOverCount)}
                 });
-                // edge case: creates MSE < 0
-                // happens when all points are on the same exact dimention (rare, probably a sampling problem)
-                if (cov(0, 0) <= 0.01 or cov(1, 1) <= 0.01 or cov(2, 2) <= 0.01)
-                {
-                    _isPlanar = false;
-                    return;
-                }
                 // get the centroid of the plane
                 _mean = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
@@ -217,7 +211,14 @@ namespace rgbd_slam {
 
                 // variance of points in our plane divided by number of points in the plane
                 _MSE = eigenValues(0) * oneOverCount;
-                assert(_MSE >= 0);
+
+                // failure case: covariance matrix is hill formed
+                if(_MSE < 0)
+                {
+                    outputs::log_warning("Plane patch covariance matrix is ill formed, reject it");
+                    _isPlanar = false;
+                    return;
+                }
 
                 // second best variance divided by variance of this plane patch
                 _score = eigenValues(1) / eigenValues(0);

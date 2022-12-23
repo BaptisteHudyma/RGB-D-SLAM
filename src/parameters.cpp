@@ -116,7 +116,7 @@ namespace rgbd_slam {
         _maximumPointPerFrame = 200;
 
         // Primitive extraction
-        _minimumIOUToConsiderMatch = 0.3;   // Inter Over Union of planes
+        _minimumIOUToConsiderMatch = 0.7;   // Inter Over Union of planes
         _maximumAngleForPlaneMatch = 60.0;  // Plane segments could be merged below this angle
         _maximumPlaneAngleForMerge = 18.0;  // plane segments can be merged if their normals angle is below this angle
         _primitiveMaximumMergeDistance = 50;// Plane segments can be merged if their centroid distance is below this distance
@@ -129,8 +129,8 @@ namespace rgbd_slam {
         // Parameters taken from "2012 - 3D with Kinect""
         //parameters of equation z_diff = sigmaA + sigmaM * z + sigmaE * z^2, that represent the minimum depth change for a given depth (quantization)
         _depthSigmaError = 2.73 * 1e-6;         // It is the sigmaE
-        _depthSigmaMultiplier = 0.74 * 1e-3;    // It is the sigmaM
-        _depthSigmaMargin = 1;                  // It is the sigmaA, in milimeters, the minimum resolution
+        _depthSigmaMultiplier = 1.74 * 1e-3;    // It is the sigmaM
+        _depthSigmaMargin = 1.0;                // It is the sigmaA, in milimeters, the minimum resolution
 
         // Cylinder ransac fitting
         _cylinderRansacSqrtMaxDistance = 0.04;

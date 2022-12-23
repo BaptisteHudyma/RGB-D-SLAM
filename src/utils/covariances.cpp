@@ -13,7 +13,7 @@ namespace rgbd_slam {
             const static double depthSigmaError = Parameters::get_depth_sigma_error();
             const static double depthSigmaMultiplier = Parameters::get_depth_sigma_multiplier();
             const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
-            return depthSigmaMargin + std::max(0.0, + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0));
+            return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0), 1.0);
         }
 
         const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& screenCoordinate) 
