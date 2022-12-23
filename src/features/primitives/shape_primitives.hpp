@@ -26,6 +26,16 @@ namespace rgbd_slam {
                     cv::Mat get_shape_mask() const { return _shapeMask; };
                     void set_shape_mask(const cv::Mat& mask) { _shapeMask = mask.clone(); };
 
+                    /**
+                    * \brief Return the number of pixels in this plane mask
+                    */
+                    uint get_contained_pixels() const
+                    {
+                        const static uint cellSize = Parameters::get_depth_map_patch_size();
+                        const static uint pixelPerCell = cellSize * cellSize;
+                        return cv::countNonZero(_shapeMask) * pixelPerCell;
+                    }
+
                 protected:
                     /**
                      * \brief Hidden constructor, to set shape
@@ -100,6 +110,22 @@ namespace rgbd_slam {
                      */
                     Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask);
 
+                    static vector6 compute_descriptor(const utils::PlaneCameraCoordinates& parametrization, const vector3& planeCentroid, const uint pixelCount) {
+                        const vector3& normal = parametrization.head(3);
+                        vector6 descriptor(
+                            {
+                            normal.x(), normal.y(), normal.z(),
+                            abs(planeCentroid.x()/pixelCount), abs(planeCentroid.y()/pixelCount), abs(planeCentroid.z()/pixelCount)
+                            }
+                        );
+                        return descriptor;
+                    };
+
+                    double get_similarity(const vector6& descriptor) const
+                    {
+                        return _descriptor.dot(descriptor);
+                    };
+
                     /**
                      * \brief Get the similarity of two planes, based on normal direction
                      *
@@ -111,11 +137,15 @@ namespace rgbd_slam {
                     bool is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const;
                     bool is_similar(const Cylinder& prim) const;
 
-                    vector3 get_plane_normal() const { return _parametrization.head(3); };
+                    vector3 get_normal() const { return _parametrization.head(3); };
                     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
-                    vector3 get_plane_centroid() const { return _centroid; };
+                    vector3 get_centroid() const { return _centroid; };
 
                 private:
+                    vector6 compute_descriptor() const
+                    {
+                        return compute_descriptor(get_parametrization(), get_centroid(), get_contained_pixels());
+                    };
 
                     /**
                      * Return the distance of this primitive to a point
@@ -124,6 +154,8 @@ namespace rgbd_slam {
 
                     utils::PlaneCameraCoordinates _parametrization;     // infinite plane representation
                     vector3 _centroid;      // mean center point of the plane; in camera coordinates
+
+                    vector6 _descriptor;
             };
 
 

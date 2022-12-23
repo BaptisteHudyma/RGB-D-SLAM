@@ -62,10 +62,22 @@ namespace rgbd_slam {
             const size_t _id;
 
             utils::PlaneWorldCoordinates _parametrization;
+            vector3 centroid;
+
             MatchedPrimitive _matchedPlane;
             cv::Mat _shapeMask;
 
             cv::Scalar _color;  // display color of this primitive
+
+            /**
+             * \brief Return the number of pixels in this plane mask
+             */
+            uint get_contained_pixels() const
+            {
+                const static uint cellSize = Parameters::get_depth_map_patch_size();
+                const static uint pixelPerCell = cellSize * cellSize;
+                return cv::countNonZero(_shapeMask) * pixelPerCell;
+            }
 
 
             private:

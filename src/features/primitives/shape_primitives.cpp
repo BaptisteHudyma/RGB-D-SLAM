@@ -3,6 +3,8 @@
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
 #include "cylinder_segment.hpp"
+#include <Eigen/src/Core/Matrix.h>
+#include <Eigen/src/Core/VectorBlock.h>
 
 namespace rgbd_slam {
     namespace features {
@@ -85,7 +87,8 @@ namespace rgbd_slam {
                     planeSeg.get_normal().z(),
                     planeSeg.get_plane_d()
                 ),
-                _centroid(planeSeg.get_centroid())
+                _centroid(planeSeg.get_centroid()),
+                _descriptor(compute_descriptor())
             {
             }
 
@@ -99,7 +102,7 @@ namespace rgbd_slam {
                 const static double minimumNormalDotDiff = cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI/180.0);
                 if(get_IOU(mask) < minimumIOUForMatch)
                     return false;
-                return abs(get_plane_normal().dot(planeParametrization.head(3))) > minimumNormalDotDiff;
+                return abs(get_normal().dot(planeParametrization.head(3))) > minimumNormalDotDiff;
             }
 
             bool Plane::is_similar(const Cylinder& cylinder) const {
@@ -112,7 +115,7 @@ namespace rgbd_slam {
             }
 
             double Plane::get_distance(const vector3& point) const {
-                return get_plane_normal().dot(point - _centroid); 
+                return get_normal().dot(point - _centroid); 
             }
 
         }

@@ -27,6 +27,8 @@ namespace rgbd_slam {
     typedef Eigen::Matrix4d matrix44;
     typedef Eigen::Quaternion<double> quaternion;
 
+    typedef Eigen::Matrix<double, 6, 1> vector6;
+
     struct screenCoordinateCovariance : public matrix33 {};
     struct cameraCoordinateCovariance : public matrix33 {};
     struct worldCoordinateCovariance : public matrix33 {};
