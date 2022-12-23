@@ -9,8 +9,6 @@ namespace rgbd_slam {
     namespace features {
         namespace primitives {
 
-
-
             Plane_Segment::Plane_Segment()
             {
                 assert(_isStaticSet);
@@ -143,10 +141,16 @@ namespace rgbd_slam {
                 _Szx = (xMatrix.array() * depthMatrix.array()).sum();
                 _Syz = (yMatrix.array() * depthMatrix.array()).sum();
 
+                assert(_Sz > _pointCount);
+                assert(_Sxs > 0);
+                assert(_Sys > 0);
+                assert(_Szs > 0);
+
+                _isPlanar = true;
                 //fit a plane to those points 
                 fit_plane();
-                //MSE > T_MSE
-                _isPlanar = _MSE <= pow(utils::get_depth_quantization(_mean.z()), 2);
+                // plane variance should be less than depth quantization, plus a tolerance factor
+                _isPlanar = _isPlanar and _MSE <= pow(utils::get_depth_quantization(_mean.z()) + 10, 2.0);
             }
 
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {
@@ -162,28 +166,41 @@ namespace rgbd_slam {
                 _Syz += planeSegment._Syz;
                 _Szx += planeSegment._Szx;
 
+                assert(_Sz > 0);
+                assert(_Sxs > 0);
+                assert(_Sys > 0);
+                assert(_Szs > 0);
+
                 _pointCount += planeSegment._pointCount;
             }
 
             void Plane_Segment::fit_plane() {
                 assert(_pointCount > 0);
+                //fit a plane to the stored points
 
                 const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
-                //fit a plane to the stored points
-                _mean = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
                 // Expressing covariance as E[PP^t] + E[P]*E[P^T]
-                const double xy = _Sxy - _Sx * _Sy * oneOverCount;
-                const double xz = _Szx - _Sx * _Sz * oneOverCount;
-                const double yz = _Syz - _Sy * _Sz * oneOverCount;
+                // no need to fill the upper part, the adjoint solver does not need it
                 const matrix33 cov({
-                    {_Sxs - _Sx * _Sx * oneOverCount, xy,  xz},
-                    {xy, _Sys - _Sy * _Sy * oneOverCount,  yz},
-                    {xz, yz,  _Szs - _Sz * _Sz * oneOverCount}
+                    {_Sxs - _Sx * _Sx * oneOverCount, 0,                                0},
+                    {_Sxy - _Sx * _Sy * oneOverCount, _Sys - _Sy * _Sy * oneOverCount,  0},
+                    {_Szx - _Sx * _Sz * oneOverCount, _Syz - _Sy * _Sz * oneOverCount,  _Szs - _Sz * _Sz * oneOverCount}
                 });
+                // edge case: creates MSE < 0
+                // happens when all points are on the same exact line (rare, probably a sampling problem)
+                if (cov(0, 0) <= 0.01 or cov(1, 1) <= 0.01 or cov(2, 2) <= 0.01)
+                {
+                    _isPlanar = false;
+                    return;
+                }
+                // get the centroid of the plane
+                _mean = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
                 Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(cov);
+                // eigen values are the point variance along the eigen vectors
                 const vector3& eigenValues = eigenSolver.eigenvalues();
+                // best eigen vector is the most reliable direction for this plane normal
                 const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
 
                 _d = -eigenVector.dot(_mean);
@@ -198,10 +215,11 @@ namespace rgbd_slam {
                 // some values have floatting points errors, renormalize
                 _normal.normalize();
 
-                //_score = sv[0] / (sv[0] + sv[1] + sv[2]);
-                // smallest eigen value divided by number of points
+                // variance of points in our plane divided by number of points in the plane
                 _MSE = eigenValues(0) * oneOverCount;
-                // biggest eigen value divided by smallest
+                assert(_MSE >= 0);
+
+                // second best variance divided by variance of this plane patch
                 _score = eigenValues(1) / eigenValues(0);
 
                 // set segment as planar
