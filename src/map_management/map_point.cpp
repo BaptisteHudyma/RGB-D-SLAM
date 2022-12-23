@@ -164,7 +164,8 @@ namespace rgbd_slam {
 
         double Map_Point::get_confidence() const
         {
-            double confidence = static_cast<double>(_age) / static_cast<double>(Parameters::get_point_age_confidence());
+            const static double pointAgeConfidence = static_cast<double>(Parameters::get_point_age_confidence());
+            double confidence = static_cast<double>(_age) / pointAgeConfidence;
             return std::clamp(confidence, -1.0, 1.0);
         }
 

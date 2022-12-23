@@ -110,7 +110,7 @@ namespace rgbd_slam {
                      */
                     Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask);
 
-                    static vector6 compute_descriptor(const utils::PlaneCameraCoordinates& parametrization, const vector3& planeCentroid, const uint pixelCount) {
+                    static vector6 compute_descriptor(const utils::PlaneCameraCoordinates& parametrization, const utils::CameraCoordinate& planeCentroid, const uint pixelCount) {
                         const vector3& normal = parametrization.head(3);
                         vector6 descriptor(
                             {
@@ -123,7 +123,7 @@ namespace rgbd_slam {
 
                     double get_similarity(const vector6& descriptor) const
                     {
-                        return _descriptor.dot(descriptor);
+                        return (_descriptor - descriptor).norm();
                     };
 
                     /**
@@ -139,7 +139,7 @@ namespace rgbd_slam {
 
                     vector3 get_normal() const { return _parametrization.head(3); };
                     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
-                    vector3 get_centroid() const { return _centroid; };
+                    utils::CameraCoordinate get_centroid() const { return _centroid; };
 
                 private:
                     vector6 compute_descriptor() const
@@ -153,7 +153,7 @@ namespace rgbd_slam {
                     double get_distance(const vector3& point) const;
 
                     utils::PlaneCameraCoordinates _parametrization;     // infinite plane representation
-                    vector3 _centroid;      // mean center point of the plane; in camera coordinates
+                    utils::CameraCoordinate _centroid;      // mean center point of the plane; in camera coordinates
 
                     vector6 _descriptor;
             };

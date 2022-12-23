@@ -228,28 +228,41 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
+        bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& w2c, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
         {
             // project plane in camera space
             const utils::PlaneCameraCoordinates& projectedPlane = mapPlane._parametrization.to_camera_coordinates(worldToCamera);
+            const utils::CameraCoordinate& planeCentroid = mapPlane._centroid.to_camera_coordinates(w2c);
+            const vector6& descriptor = features::primitives::Plane::compute_descriptor(projectedPlane, planeCentroid, mapPlane.get_contained_pixels());
+
+            double smallestSimilarity = std::numeric_limits<double>::max();
+            size_t selectedIndex = 0;
+
             const size_t detectedPlaneSize = detectedPlanes.size();
             for(size_t planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
             {
-                const features::primitives::Plane& shapePlane = detectedPlanes[planeIndex];
                 if (_isPlaneMatched[planeIndex])
                     // Does not allow multiple removal of a single match
                     // TODO: change this
                     continue;
 
-                if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
+                const double descriptorSim  = detectedPlanes[planeIndex].get_similarity(descriptor);
+                if (descriptorSim < smallestSimilarity)
                 {
-                    mapPlane._matchedPlane.mark_matched(planeIndex);
-                    // TODO: replace nullptr by the plane covariance in camera space
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane.get_parametrization(), mapPlane._parametrization, nullptr, mapPlane._id);
-
-                    _isPlaneMatched[planeIndex] = true;
-                    return true;
+                    selectedIndex = planeIndex;
+                    smallestSimilarity = descriptorSim;
                 }
+            }
+
+            if(smallestSimilarity < 0.5)// and detectedPlanes[selectedIndex].is_similar(mapPlane._shapeMask, projectedPlane))
+            {
+                const features::primitives::Plane& shapePlane = detectedPlanes[selectedIndex];
+                mapPlane._matchedPlane.mark_matched(selectedIndex);
+                // TODO: replace nullptr by the plane covariance in camera space
+                matchedPlanes.emplace(matchedPlanes.end(), shapePlane.get_parametrization(), mapPlane._parametrization, nullptr, mapPlane._id);
+
+                _isPlaneMatched[selectedIndex] = true;
+                return true;
             }
 
             return false;
@@ -273,6 +286,7 @@ namespace rgbd_slam {
                     const features::primitives::Plane& detectedPlane = detectedPlanes[matchedPlaneIndex];
                     // TODO update plane
                     mapPlane._parametrization = detectedPlane.get_parametrization().to_world_coordinates(planeCameraToWorld);
+                    mapPlane._centroid = detectedPlane.get_centroid().to_world_coordinates(cameraToWorld);
                     mapPlane._shapeMask = detectedPlane.get_shape_mask();
                 }
                 else if (mapPlane._matchedPlane.is_lost())
@@ -298,10 +312,11 @@ namespace rgbd_slam {
 
                 const features::primitives::Plane& detectedPlane = detectedPlanes[planeIndex];
 
-                MapPlane newMapPlane;
-                newMapPlane._parametrization = detectedPlane.get_parametrization().to_world_coordinates(planeCameraToWorld);
-                newMapPlane._shapeMask = detectedPlane.get_shape_mask();
-
+                const MapPlane newMapPlane(
+                    detectedPlane.get_parametrization().to_world_coordinates(planeCameraToWorld),
+                    detectedPlane.get_centroid().to_world_coordinates(cameraToWorld),
+                    detectedPlane.get_shape_mask()
+                );
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
             }
         }
@@ -750,7 +765,7 @@ namespace rgbd_slam {
             matches_containers::match_plane_container matchedPlaneContainer;
             for(auto& [planeId, mapPlane] : _localPlaneMap)
             {
-                if (not find_match(mapPlane, detectedPlanes, planeWorldToCamera, matchedPlaneContainer))
+                if (not find_match(mapPlane, detectedPlanes, worldToCamera, planeWorldToCamera, matchedPlaneContainer))
                 {
                     // Mark as unmatched
                     mapPlane._matchedPlane.mark_unmatched();

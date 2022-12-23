@@ -115,7 +115,7 @@ namespace rgbd_slam {
             }
 
             double Plane::get_distance(const vector3& point) const {
-                return get_normal().dot(point - _centroid); 
+                return get_normal().dot(point - _centroid.base()); 
             }
 
         }

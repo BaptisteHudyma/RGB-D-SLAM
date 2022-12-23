@@ -40,7 +40,8 @@ namespace rgbd_slam {
 
             bool is_lost() const
             {
-                return _unmatchedCount >= Parameters::get_maximum_unmatched_before_removal();
+                const static size_t maximumUnmatchBeforeremoval = Parameters::get_maximum_unmatched_before_removal();
+                return _unmatchedCount >= maximumUnmatchBeforeremoval;
             }
 
             int _matchIndex; // Id of the last match
@@ -49,7 +50,8 @@ namespace rgbd_slam {
 
         struct MapPlane 
         {
-            MapPlane() : _id(_currentPlaneId++)
+            MapPlane(const utils::PlaneWorldCoordinates& parametrization, const utils::WorldCoordinate& centroid, const cv::Mat& shapeMask) : _id(_currentPlaneId++),
+                _parametrization(parametrization), _centroid(centroid), _shapeMask(shapeMask)
             {
                 cv::Vec3b color;
                 color[0] = utils::Random::get_random_uint(255);
@@ -62,7 +64,7 @@ namespace rgbd_slam {
             const size_t _id;
 
             utils::PlaneWorldCoordinates _parametrization;
-            vector3 centroid;
+            utils::WorldCoordinate _centroid;
 
             MatchedPrimitive _matchedPlane;
             cv::Mat _shapeMask;

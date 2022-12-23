@@ -124,7 +124,7 @@ namespace rgbd_slam {
                  *
                  * \return A boolean indicating if this plane was matched or not
                  */
-                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
+                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& w2c, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
