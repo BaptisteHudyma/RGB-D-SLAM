@@ -36,10 +36,8 @@ namespace rgbd_slam {
                      * \param[in] width The fixed depth image width
                      * \param[in] height The fixed depth image height
                      * \param[in] blocSize Size of an image division, in pixels.
-                     * \param[in] minCosAngleForMerge Minimum cosinus of the angle of two planes to merge those planes
-                     * \param[in] maxMergeDistance Maximum distance between the center of two planes to merge those planes
                      */
-                    Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659f, const float maxMergeDistance = 50.0f);
+                    Primitive_Detection(const uint width, const uint height, const uint blocSize = 20);
 
                     /**
                      * \brief Main compute function: computes the primitives in the depth imahe
@@ -156,8 +154,6 @@ namespace rgbd_slam {
                     const uint _width;
                     const uint _height;
                     const uint _pointsPerCellCount;
-                    const float _minCosAngleForMerge;
-                    const float _maxMergeDist;
 
                     const uint _cellWidth;
                     const uint _cellHeight;

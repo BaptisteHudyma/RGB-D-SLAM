@@ -66,9 +66,7 @@ namespace rgbd_slam {
             _primitiveDetector = new features::primitives::Primitive_Detection(
                     _width,
                     _height,
-                    Parameters::get_depth_map_patch_size(),
-                    Parameters::get_maximum_plane_match_angle(),
-                    Parameters::get_maximum_merge_distance()
+                    Parameters::get_depth_map_patch_size()
                     );
 
             // Point detector and matcher

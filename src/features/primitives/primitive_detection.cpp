@@ -15,12 +15,11 @@ namespace rgbd_slam {
     namespace features {
         namespace primitives {
 
-            Primitive_Detection::Primitive_Detection(const uint width, const uint height, const uint blocSize, const float minCosAngleForMerge, const float maxMergeDistance)
+            Primitive_Detection::Primitive_Detection(const uint width, const uint height, const uint blocSize)
                 :  
                     _histogram(blocSize), 
                     _width(width), _height(height),  
-                    _pointsPerCellCount(blocSize * blocSize), 
-                    _minCosAngleForMerge(minCosAngleForMerge), _maxMergeDist(maxMergeDistance),
+                    _pointsPerCellCount(blocSize * blocSize),
                     _cellWidth(blocSize), _cellHeight(blocSize),
                     _horizontalCellsCount(_width / _cellWidth), _verticalCellsCount(_height / _cellHeight),
                     _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
@@ -124,7 +123,8 @@ namespace rgbd_slam {
 
             void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) 
             {
-                const float sinCosAngleForMerge = sqrtf(1.0f - powf(_minCosAngleForMerge, 2.0f));
+                const static float maximumCosAngle = Parameters::get_maximum_plane_match_angle();
+                const static float sinCosAngleForMerge = sqrtf(1.0f - powf(maximumCosAngle, 2.0f));
 
                 //for each planeGrid cell
                 const size_t planeGridSize = _planeGrid.size();
@@ -143,7 +143,8 @@ namespace rgbd_slam {
                                     depthCloudArray.block(offset, 0, 1, 3)
                                     ).norm();
                         //array of sqrt(depth) metrics: neighbors merging threshold
-                        _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, _maxMergeDist), 2.0f);
+                        const static float maxMergeDistance = Parameters::get_maximum_merge_distance();
+                        _cellDistanceTols[stackedCellId] = powf(std::clamp(cellDiameter * sinCosAngleForMerge, 20.0f, maxMergeDistance), 2.0f);
                     }
                 }
 #if 0
@@ -414,7 +415,8 @@ namespace rgbd_slam {
                                 continue;
 
                             // normals are close enough, distance is small enough
-                            if(planeToExpand.can_be_merged(mergePlane, _maxMergeDist))
+                            const static float maxMergeDistance = Parameters::get_maximum_merge_distance();
+                            if(planeToExpand.can_be_merged(mergePlane, maxMergeDistance))
                             {
                                 //merge plane segments
                                 planeToExpand.expand_segment(mergePlane);
