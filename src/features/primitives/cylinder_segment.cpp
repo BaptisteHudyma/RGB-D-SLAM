@@ -63,13 +63,13 @@ namespace rgbd_slam {
                         assert(j < _local2globalMap.size());
 
                         const vector3& planeNormal = planeGrid[i].get_normal();
-                        const vector3& planeMean = planeGrid[i].get_mean();
+                        const vector3& planeCentroid = planeGrid[i].get_centroid();
                         planeNormals(0, j) = planeNormal.x();
                         planeNormals(1, j) = planeNormal.y();
                         planeNormals(2, j) = planeNormal.z();
-                        planeCentroids(0, j) = planeMean.x();
-                        planeCentroids(1, j) = planeMean.y();
-                        planeCentroids(2, j) = planeMean.z();
+                        planeCentroids(0, j) = planeCentroid.x();
+                        planeCentroids(1, j) = planeCentroid.y();
+                        planeCentroids(2, j) = planeCentroid.z();
 
                         _local2globalMap[j] = i;
                         ++j;

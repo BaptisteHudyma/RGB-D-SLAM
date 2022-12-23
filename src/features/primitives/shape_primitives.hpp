@@ -112,6 +112,10 @@ namespace rgbd_slam {
                     bool is_similar(const Cylinder& prim) const;
 
                     vector3 get_plane_normal() const { return _parametrization.head(3); };
+                    utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
+                    vector3 get_plane_centroid() const { return _centroid; };
+
+                private:
 
                     /**
                      * Return the distance of this primitive to a point
@@ -119,7 +123,7 @@ namespace rgbd_slam {
                     double get_distance(const vector3& point) const;
 
                     utils::PlaneCameraCoordinates _parametrization;     // infinite plane representation
-                    vector3 _mean;      // mean center point of the plane; in camera coordinates
+                    vector3 _centroid;      // mean center point of the plane; in camera coordinates
             };
 
 

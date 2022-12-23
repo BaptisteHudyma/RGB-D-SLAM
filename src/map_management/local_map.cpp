@@ -245,7 +245,7 @@ namespace rgbd_slam {
                 {
                     mapPlane._matchedPlane.mark_matched(planeIndex);
                     // TODO: replace nullptr by the plane covariance in camera space
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, nullptr, mapPlane._id);
+                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane.get_parametrization(), mapPlane._parametrization, nullptr, mapPlane._id);
 
                     _isPlaneMatched[planeIndex] = true;
                     return true;
@@ -272,7 +272,7 @@ namespace rgbd_slam {
 
                     const features::primitives::Plane& detectedPlane = detectedPlanes[matchedPlaneIndex];
                     // TODO update plane
-                    mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
+                    mapPlane._parametrization = detectedPlane.get_parametrization().to_world_coordinates(planeCameraToWorld);
                     mapPlane._shapeMask = detectedPlane.get_shape_mask();
                 }
                 else if (mapPlane._matchedPlane.is_lost())
@@ -299,7 +299,7 @@ namespace rgbd_slam {
                 const features::primitives::Plane& detectedPlane = detectedPlanes[planeIndex];
 
                 MapPlane newMapPlane;
-                newMapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
+                newMapPlane._parametrization = detectedPlane.get_parametrization().to_world_coordinates(planeCameraToWorld);
                 newMapPlane._shapeMask = detectedPlane.get_shape_mask();
 
                 _localPlaneMap.emplace(newMapPlane._id, newMapPlane);

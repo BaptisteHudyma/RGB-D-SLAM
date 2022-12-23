@@ -85,7 +85,7 @@ namespace rgbd_slam {
                     planeSeg.get_normal().z(),
                     planeSeg.get_plane_d()
                 ),
-                _mean(planeSeg.get_mean())
+                _centroid(planeSeg.get_centroid())
             {
             }
 
@@ -112,7 +112,7 @@ namespace rgbd_slam {
             }
 
             double Plane::get_distance(const vector3& point) const {
-                return get_plane_normal().dot(point - _mean); 
+                return get_plane_normal().dot(point - _centroid); 
             }
 
         }

@@ -77,7 +77,7 @@ namespace rgbd_slam {
                 public: //getters
                         double get_MSE() const { return _MSE; };
                         vector3 get_normal() const { return _normal; };
-                        vector3 get_mean() const { return _mean; };
+                        vector3 get_centroid() const { return _centroid; };
                         double get_plane_d() const { return _d; };
                         bool is_planar() const { return _isPlanar; };
                         double get_score() const { return _score; };
@@ -100,7 +100,7 @@ namespace rgbd_slam {
                         double _MSE;     //plane fitting mean square error
                         bool _isPlanar;  //true if node represent a correct node, false: ignore node while mapping
 
-                        vector3 _mean;     //mean point of all points in node
+                        vector3 _centroid;     //mean point of all points in node
                         vector3 _normal;   //fitted plane normal
                         double _d;           //fitted plane d param (ax + by + xz + d)
 

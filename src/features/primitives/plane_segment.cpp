@@ -22,7 +22,7 @@ namespace rgbd_slam {
                 _score(seg._score),
                 _MSE(seg._MSE),
                 _isPlanar(seg._isPlanar),
-                _mean(seg._mean),
+                _centroid(seg._centroid),
                 _normal(seg._normal.normalized()),
                 _d(seg._d),
                 _Sx(seg._Sx),
@@ -150,7 +150,7 @@ namespace rgbd_slam {
                 //fit a plane to those points 
                 fit_plane();
                 // plane variance should be less than depth quantization, plus a tolerance factor
-                _isPlanar = _isPlanar and _MSE <= pow(utils::get_depth_quantization(_mean.z()), 2.0);
+                _isPlanar = _isPlanar and _MSE <= pow(utils::get_depth_quantization(_centroid.z()), 2.0);
             }
 
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {
@@ -189,7 +189,7 @@ namespace rgbd_slam {
                     {_Szx - _Sx * _Sz * oneOverCount, _Syz - _Sy * _Sz * oneOverCount,  std::max(1.0, _Szs - _Sz * _Sz * oneOverCount)}
                 });
                 // get the centroid of the plane
-                _mean = vector3(_Sx, _Sy, _Sz) * oneOverCount;
+                _centroid = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
                 Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(cov);
                 // eigen values are the point variance along the eigen vectors
@@ -197,7 +197,7 @@ namespace rgbd_slam {
                 // best eigen vector is the most reliable direction for this plane normal
                 const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
 
-                _d = -eigenVector.dot(_mean);
+                _d = -eigenVector.dot(_centroid);
 
                 // Enforce normal orientation
                 if(_d > 0) {   //point normal toward the camera
@@ -237,7 +237,7 @@ namespace rgbd_slam {
                 _score = 0;
                 _MSE = 0;
 
-                _mean.setZero();
+                _centroid.setZero();
                 _normal.setZero();
                 _d = 0;
 
@@ -264,7 +264,7 @@ namespace rgbd_slam {
             bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
             {
                 const static double maximumMergeAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
-                return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_mean()) < maxMatchDistance;
+                return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid()) < maxMatchDistance;
             }
 
 
