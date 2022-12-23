@@ -9,9 +9,7 @@ namespace rgbd_slam {
 
         double get_depth_quantization(const double depth)
         {
-            // distance between 2 depth values < minimum depth disparity for this distance
-            // from "plane extraction in organized point clouds using agglomerative hierarchical clustering"
-            // minimum depth diparity at z = sigmaE * z^2 + sigmaM
+            // minimum depth diparity at z is the quadratic function  a + b z + c z^2
             const static double depthSigmaError = Parameters::get_depth_sigma_error();
             const static double depthSigmaMultiplier = Parameters::get_depth_sigma_multiplier();
             const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
@@ -20,8 +18,7 @@ namespace rgbd_slam {
 
         const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& screenCoordinate) 
         {
-            // TODO: remove this /1000 that does not make sense for the covariance I think
-            const double depthQuantization = utils::is_depth_valid(screenCoordinate.z()) ? get_depth_quantization(screenCoordinate.z()/1000.0) : 1000.0;
+            const double depthQuantization = utils::is_depth_valid(screenCoordinate.z()) ? get_depth_quantization(screenCoordinate.z()) : 1000.0;
             // a zero variance will break the kalman gain
             assert(depthQuantization > 0);
             // TODO xy variance should also depend on the placement of the pixel in x and y

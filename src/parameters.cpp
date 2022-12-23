@@ -125,9 +125,11 @@ namespace rgbd_slam {
         _minimumPlaneSeedCount = 6;
         _minimumCellActivated = 5;
         _minimumZeroDepthProportion = 0.7;  // if this proportion of the points have invalid depth in a planar patch, reject it
+
+        // Parameters taken from "2012 - 3D with Kinect""
         //parameters of equation z_diff = sigmaA + sigmaM * z + sigmaE * z^2, that represent the minimum depth change for a given depth (quantization)
-        _depthSigmaError = 150 * 1e-6;         // It is the sigmaE
-        _depthSigmaMultiplier = 50 * 1e-3;    // It is the sigmaM
+        _depthSigmaError = 2.73 * 1e-6;         // It is the sigmaE
+        _depthSigmaMultiplier = 0.74 * 1e-3;    // It is the sigmaM
         _depthSigmaMargin = 1;                  // It is the sigmaA, in milimeters, the minimum resolution
 
         // Cylinder ransac fitting
