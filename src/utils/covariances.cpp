@@ -18,7 +18,8 @@ namespace rgbd_slam {
 
         const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& screenCoordinate) 
         {
-            const double depthQuantization = utils::is_depth_valid(screenCoordinate.z()) ? get_depth_quantization(screenCoordinate.z()) : 1000.0;
+            // TODO: remove the /100 divider
+            const double depthQuantization = utils::is_depth_valid(screenCoordinate.z()) ? get_depth_quantization(screenCoordinate.z())/100 : 1000.0;
             // a zero variance will break the kalman gain
             assert(depthQuantization > 0);
             // TODO xy variance should also depend on the placement of the pixel in x and y
