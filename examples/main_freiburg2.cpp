@@ -218,8 +218,7 @@ int main(int argc, char* argv[])
         }
 
         // convert to mm & float 32
-        depthImage.convertTo(depthImage, CV_32FC1);
-        depthImage /= 5.0;
+        depthImage.convertTo(depthImage, CV_32FC1, 1.0 / 5.0);
 
         //clean warp artefacts
 #if 0
