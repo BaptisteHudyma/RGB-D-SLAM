@@ -213,9 +213,11 @@ namespace rgbd_slam {
 
                 // variance of points in our plane divided by number of points in the plane
                 _MSE = eigenValues(0) * oneOverCount;
+                // second best variance divided by variance of this plane patch
+                _score = eigenValues(1) / eigenValues(0);
 
                 // failure case: covariance matrix is hill formed
-                if(_MSE < 0)
+                if(_MSE < 0 or _score < 0)
                 {
                     // TODO: check why this can happen
                     //outputs::log_warning("Plane patch covariance matrix is ill formed, rejecting it");
@@ -223,8 +225,6 @@ namespace rgbd_slam {
                     return;
                 }
 
-                // second best variance divided by variance of this plane patch
-                _score = eigenValues(1) / eigenValues(0);
 
                 // set segment as planar
                 _isPlanar = true;

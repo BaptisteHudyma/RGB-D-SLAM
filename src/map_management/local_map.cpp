@@ -236,8 +236,8 @@ namespace rgbd_slam {
             mapPlane._matchedPlane.mark_unmatched();
 
             // project plane in camera space
-            const utils::PlaneCameraCoordinates& projectedPlane = mapPlane._parametrization.to_camera_coordinates(worldToCamera);
-            const utils::CameraCoordinate& planeCentroid = mapPlane._centroid.to_camera_coordinates(w2c);
+            const utils::PlaneCameraCoordinates& projectedPlane = mapPlane.get_parametrization().to_camera_coordinates(worldToCamera);
+            const utils::CameraCoordinate& planeCentroid = mapPlane.get_centroid().to_camera_coordinates(w2c);
             const vector6& descriptor = features::primitives::Plane::compute_descriptor(projectedPlane, planeCentroid, mapPlane.get_contained_pixels());
 
             double smallestSimilarity = std::numeric_limits<double>::max();
@@ -253,7 +253,7 @@ namespace rgbd_slam {
 
                 const features::primitives::Plane& shapePlane = detectedPlanes[selectedIndex];
                 const double descriptorSim  = shapePlane.get_similarity(descriptor);
-                if (descriptorSim < smallestSimilarity)// and shapePlane.is_similar(mapPlane._shapeMask, projectedPlane))
+                if (descriptorSim < smallestSimilarity)// and shapePlane.is_similar(mapPlane.get_mask(), projectedPlane))
                 {
                     selectedIndex = planeIndex;
                     smallestSimilarity = descriptorSim;
@@ -265,7 +265,7 @@ namespace rgbd_slam {
                 const features::primitives::Plane& shapePlane = detectedPlanes[selectedIndex];
                 mapPlane._matchedPlane.mark_matched(selectedIndex);
                 // TODO: replace nullptr by the plane covariance in camera space
-                matchedPlanes.emplace(matchedPlanes.end(), shapePlane.get_parametrization(), mapPlane._parametrization, nullptr, mapPlane._id);
+                matchedPlanes.emplace(matchedPlanes.end(), shapePlane.get_parametrization(), mapPlane.get_parametrization(), nullptr, mapPlane._id);
 
                 _isPlaneMatched[selectedIndex] = true;
                 return true;
@@ -284,7 +284,7 @@ namespace rgbd_slam {
             {
                 if (mapPlane._matchedPlane.is_matched())
                 {
-                    const int matchedPlaneIndex = mapPlane._matchedPlane._matchIndex;
+                    const int matchedPlaneIndex = mapPlane._matchedPlane.get_match_index();
                     assert(matchedPlaneIndex != UNMATCHED_PRIMITIVE_ID);
                     assert(matchedPlaneIndex >= 0);
                     assert(static_cast<size_t>(matchedPlaneIndex) < detectedPlanes.size());
@@ -295,7 +295,7 @@ namespace rgbd_slam {
                 else
                 {
                     mapPlane.update_unmatched();
-                    if (mapPlane._matchedPlane.is_lost())
+                    if (mapPlane.is_lost())
                     {
                         // add to planes to remove
                         planesToRemove.emplace(planeId);
@@ -335,7 +335,7 @@ namespace rgbd_slam {
             for (auto& [planeId, mapPlane] : _localPlaneMap)
             {
                 mapPlane.update_unmatched();
-                if (mapPlane._matchedPlane.is_lost())
+                if (mapPlane.is_lost())
                 {
                     // add to planes to remove
                     planesToRemove.emplace(planeId);
@@ -658,11 +658,11 @@ namespace rgbd_slam {
                 if (not mapPlane._matchedPlane.is_matched())
                     continue;
 
-                const cv::Scalar& planeColor = mapPlane._color;
+                const cv::Scalar& planeColor = mapPlane.get_color();
 
                 cv::Mat planeMask;
                 // Resize with no interpolation
-                cv::resize(mapPlane._shapeMask * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
+                cv::resize(mapPlane.get_mask() * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
                 cv::cvtColor(planeMask, planeMask, cv::COLOR_GRAY2BGR);
                 assert(planeMask.size == debugImage.size);
                 assert(planeMask.type() == debugImage.type());
@@ -815,7 +815,7 @@ namespace rgbd_slam {
                     MapPlane& mapPlane = planeMapIterator->second;
                     assert(mapPlane._id == planeId);
                     // add detected plane id to unmatched set
-                    _isPlaneMatched[mapPlane._matchedPlane._matchIndex] = false;
+                    _isPlaneMatched[mapPlane._matchedPlane.get_match_index()] = false;
                     // unmatch
                     mapPlane._matchedPlane.mark_unmatched();
                 }
