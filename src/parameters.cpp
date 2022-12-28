@@ -127,9 +127,9 @@ namespace rgbd_slam {
 
         // Parameters taken from "2012 - 3D with Kinect""
         //parameters of equation z_diff = sigmaA + sigmaM * z + sigmaE * z^2, that represent the minimum depth change for a given depth (quantization)
-        _depthSigmaError = 2.73 * 1e-6;         // It is the sigmaE
-        _depthSigmaMultiplier = 1.74 * 1e-3;    // It is the sigmaM
-        _depthSigmaMargin = 1.0;                // It is the sigmaA, in milimeters, the minimum resolution
+        _depthSigmaError = 2.73;         // It is the sigmaE
+        _depthSigmaMultiplier = 0.74;    // It is the sigmaM
+        _depthSigmaMargin = -0.53;              // It is the sigmaA
 
         // Cylinder ransac fitting
         _cylinderRansacSqrtMaxDistance = 0.04;

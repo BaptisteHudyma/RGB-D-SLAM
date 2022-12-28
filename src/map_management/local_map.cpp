@@ -251,8 +251,9 @@ namespace rgbd_slam {
                     // TODO: change this
                     continue;
 
-                const double descriptorSim  = detectedPlanes[planeIndex].get_similarity(descriptor);
-                if (descriptorSim < smallestSimilarity and detectedPlanes[selectedIndex].is_similar(mapPlane._shapeMask, projectedPlane))
+                const features::primitives::Plane& shapePlane = detectedPlanes[selectedIndex];
+                const double descriptorSim  = shapePlane.get_similarity(descriptor);
+                if (descriptorSim < smallestSimilarity and shapePlane.is_similar(mapPlane._shapeMask, projectedPlane))
                 {
                     selectedIndex = planeIndex;
                     smallestSimilarity = descriptorSim;

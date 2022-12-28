@@ -40,26 +40,23 @@ namespace rgbd_slam {
 
             /**
              * \brief Runs a check on a depth value, and increment a discontinuity counter if needed
-             * \param[in] z The depth value to check
-             * \param[in,out] zLast Last depht value to pass the continuity test
+             * \param[in] pixelDepth The depth value to check
+             * \param[in,out] lastPixelDepth Last depht value to pass the continuity test
              * \return False if a continuities is detected
              */
-            bool is_continuous(const float z, float& zLast)
+            bool is_continuous(const float pixelDepth, float& lastPixelDepth)
             {
                 // ignore empty depth values
-                if (z > 0)
+                if (pixelDepth > 0)
                 {
                     // check for suddent jumps in the depth values, that are superior to the expected quantization for this depth
-                    if(abs(z - zLast) <= 2 * utils::get_depth_quantization(z))
+                    if(abs(pixelDepth - lastPixelDepth) <= pow(2 * utils::get_depth_quantization(pixelDepth), 2.0))
                     {
                         // no suddent jump
-                        zLast = z;
+                        lastPixelDepth = pixelDepth;
+                        return true;
                     }
-                    // else: increment discontinuity counter, check if it is above the limit
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
                 return true;
             }
@@ -69,13 +66,15 @@ namespace rgbd_slam {
                 const uint startValue = _cellWidth / 2;
                 const uint endValue = _ptsPerCellCount - startValue;
 
-                float zLast = std::max(depthMatrix(startValue), depthMatrix(startValue + _cellWidth));  /* handles missing pixels on the borders*/
+                float lastPixelDepth = std::max(depthMatrix(startValue), depthMatrix(startValue + _cellWidth));  /* handles missing pixels on the borders*/
+                if (lastPixelDepth <= 0)
+                    return false;
 
                 // Scan vertically through the middle
                 for(uint i = startValue + _cellWidth; i < endValue; i += _cellWidth)
                 {
-                    const float z = depthMatrix(i);
-                    if (not is_continuous(z, zLast))
+                    const float pixelDepth = depthMatrix(i);
+                    if (not is_continuous(pixelDepth, lastPixelDepth))
                         return false;
                 }
                 // continuous
@@ -87,13 +86,15 @@ namespace rgbd_slam {
                 const uint startValue = static_cast<uint>(_cellWidth * (_cellHeight / 2.0));
                 const uint endValue = startValue + _cellWidth;
 
-                float zLast = std::max(depthMatrix(startValue), depthMatrix(startValue + 1)); /* handles missing pixels on the borders*/
+                float lastPixelDepth = std::max(depthMatrix(startValue), depthMatrix(startValue + 1)); /* handles missing pixels on the borders*/
+                if (lastPixelDepth <= 0)
+                    return false;
 
                 // Scan horizontally through the middle
                 for(uint i = startValue + 1; i < endValue; ++i) 
                 {
-                    const float z = depthMatrix(i);
-                    if (not is_continuous(z, zLast))
+                    const float pixelDepth = depthMatrix(i);
+                    if (not is_continuous(pixelDepth, lastPixelDepth))
                         return false;
                 }
                 // continuous
@@ -150,7 +151,7 @@ namespace rgbd_slam {
                 //fit a plane to those points 
                 fit_plane();
                 // plane variance should be less than depth quantization, plus a tolerance factor
-                _isPlanar = _isPlanar and _MSE <= pow(utils::get_depth_quantization(_centroid.z()), 2.0);
+                _isPlanar = _isPlanar and _MSE <= pow(2 * utils::get_depth_quantization(_centroid.z()), 2.0);
             }
 
             void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) {

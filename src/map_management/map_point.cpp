@@ -44,7 +44,7 @@ namespace rgbd_slam {
         }
 
         // gain 10mm of uncertainty at each iteration
-        const double pointProcessNoise = 10;   // TODO set in parameters
+        const double pointProcessNoise = 0;   // TODO set in parameters
         void IMap_Point_With_Tracking::build_kalman_filter()
         {
             const size_t stateDimension = 3;        //x, y, z

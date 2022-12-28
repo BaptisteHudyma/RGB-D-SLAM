@@ -12,7 +12,7 @@ namespace rgbd_slam {
         /**
          * \brief Return the expected depth quantization at this depth value.
          * \param[in] depht The measured depth value, in millimeters
-         * \return The smallest possible measure in millimeters
+         * \return The smallest possible measure in millimeters (caped at 0.5 mm)
          */
         double get_depth_quantization(const double depht);
 
