@@ -4,6 +4,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
+#include <iostream>
 
 namespace rgbd_slam {
     namespace features {
@@ -108,11 +109,22 @@ namespace rgbd_slam {
                 const uint offset = cellId * _ptsPerCellCount;
 
                 //get z of depth points
-                const matrixf& depthMatrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
+                const matrixf& zMatrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
 
                 // Check number of missing depth points
-                _pointCount =  (depthMatrix.array() > 0).count();
+                _pointCount =  (zMatrix.array() > 0).count();
                 if (_pointCount < _minZeroPointCount){
+                    return;
+                }
+
+                // Check for discontinuities using cross search
+                //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
+                const bool isContinuous =
+                    is_cell_horizontal_continuous(zMatrix) and 
+                    is_cell_vertical_continuous(zMatrix);
+                if (not isContinuous)
+                {
+                    // this segment is not continuous...
                     return;
                 }
 
@@ -120,27 +132,16 @@ namespace rgbd_slam {
                 const matrixf& xMatrix = depthCloudArray.block(offset, 0, _ptsPerCellCount, 1);
                 const matrixf& yMatrix = depthCloudArray.block(offset, 1, _ptsPerCellCount, 1);
 
-                // Check for discontinuities using cross search
-                //Search discontinuities only in a vertical line passing through the center, than an horizontal line passing through the center.
-                const bool isContinuous =
-                    is_cell_horizontal_continuous(depthMatrix) and 
-                    is_cell_vertical_continuous(depthMatrix);
-                if (not isContinuous)
-                {
-                    // this segment is not continuous...
-                    return;
-                }
-
                 //set PCA components
                 _Sx = xMatrix.sum();
                 _Sy = yMatrix.sum();
-                _Sz = depthMatrix.sum();
+                _Sz = zMatrix.sum();
                 _Sxs = (xMatrix.array() * xMatrix.array()).sum();
                 _Sys = (yMatrix.array() * yMatrix.array()).sum();
-                _Szs = (depthMatrix.array() * depthMatrix.array()).sum();
+                _Szs = (zMatrix.array() * zMatrix.array()).sum();
                 _Sxy = (xMatrix.array() * yMatrix.array()).sum();
-                _Szx = (xMatrix.array() * depthMatrix.array()).sum();
-                _Syz = (yMatrix.array() * depthMatrix.array()).sum();
+                _Szx = (xMatrix.array() * zMatrix.array()).sum();
+                _Syz = (yMatrix.array() * zMatrix.array()).sum();
 
                 assert(_Sz > _pointCount);
                 assert(_Sxs > 0);
@@ -216,7 +217,8 @@ namespace rgbd_slam {
                 // failure case: covariance matrix is hill formed
                 if(_MSE < 0)
                 {
-                    outputs::log_warning("Plane patch covariance matrix is ill formed, reject it");
+                    // TODO: check why this can happen
+                    //outputs::log_warning("Plane patch covariance matrix is ill formed, rejecting it");
                     _isPlanar = false;
                     return;
                 }
