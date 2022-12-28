@@ -131,9 +131,10 @@ namespace rgbd_slam {
                  *
                  * \param[in, out] mapPoint the map point to update
                  * \param[in] keypointObject An object to handle all detected points in an image
+                 * \param[in] poseCovariance Covariance of the current pose
                  * \param[in] cameraToWorld A transformation matrix to convert a camera point to a world point
                  */
-                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& cameraToWorld);
+                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld);
 
                 /**
                  * \brief Update local keypoint map features 
@@ -141,7 +142,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Update local keypoint map features when no optimized pose 
@@ -169,7 +170,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Remove unmtached staged keypoints that are too old
