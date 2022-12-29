@@ -19,6 +19,7 @@
 #include "parameters.hpp"
 #include "angle_utils.hpp"
 #include "types.hpp"
+#include "freiburg_parser.hpp"
 
 
 void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
@@ -122,8 +123,6 @@ int main(int argc, char* argv[])
     const std::string depthImageListPath = dataPath.str() + "depth.txt";
     const std::string groundTruthPath = dataPath.str() + "groundtruth.txt";
 
-    std::ifstream rgbImagesFile(rgbImageListPath);
-    std::ifstream depthImagesFile(depthImageListPath);
     std::ifstream groundTruthFile(groundTruthPath);
 
     const int width  = 640; 
@@ -175,11 +174,11 @@ int main(int argc, char* argv[])
 
     //stop condition
     bool shouldRunLoop = true;
-    for(std::string rgbLine, depthLine; shouldRunLoop and std::getline(rgbImagesFile, rgbLine) and std::getline(depthImagesFile, depthLine); ) 
+    for(const Data& imageData : DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath)) 
     {
-        // skip comments    
-        if (rgbLine[0] == '#' or depthLine[0] == '#')
-            continue;
+        // out condition
+        if (not shouldRunLoop)
+            break;
 
         // get the ground truth from file
         std::string groundTruthLine = "";
@@ -191,19 +190,8 @@ int main(int argc, char* argv[])
             continue;
         }
 
-        // Parse lines
-        std::istringstream inputRgbString(rgbLine);
-        std::istringstream inputDepthString(depthLine);
-
-        double rgbTimeStamp = 0;
-        std::string rgbImagePath;
-        inputRgbString >> rgbTimeStamp >> rgbImagePath;
-        rgbImagePath.insert(0, dataPath.str());
-
-        double depthTimeStamp = 0;
-        std::string depthImagePath;
-        inputDepthString >> depthTimeStamp >> depthImagePath;
-        depthImagePath.insert(0, dataPath.str());
+        const std::string rgbImagePath = dataPath.str() + imageData.rgbImage.imagePath;
+        const std::string depthImagePath = dataPath.str() + imageData.depthImage.imagePath;
 
         // Load images
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
@@ -216,7 +204,8 @@ int main(int argc, char* argv[])
         }
         if (depthImage.empty())
         {
-            std::cerr << "Could not load depth image " << depthImagePath << std::endl;
+            if (imageData.depthImage.isValid)
+                std::cerr << "Could not load depth image " << depthImagePath << std::endl;
             depthImage = cv::Mat(480, 640, CV_16UC1, cv::Scalar(0.0));
         }
 
