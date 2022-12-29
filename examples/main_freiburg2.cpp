@@ -7,6 +7,8 @@
 #include <fstream>
 #include <ctime>
 // check file existence
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -16,6 +18,8 @@
 #include "pose.hpp"
 #include "parameters.hpp"
 #include "angle_utils.hpp"
+#include "types.hpp"
+#include "freiburg_parser.hpp"
 
 
 void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
@@ -119,24 +123,25 @@ int main(int argc, char* argv[])
     const std::string depthImageListPath = dataPath.str() + "depth.txt";
     const std::string groundTruthPath = dataPath.str() + "groundtruth.txt";
 
-    std::ifstream rgbImagesFile(rgbImageListPath);
-    std::ifstream depthImagesFile(depthImageListPath);
-    std::ifstream groundTruthFile(groundTruthPath);
+    const std::vector<Data>& datasetContainer = DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath, groundTruthPath);
 
-    const int width  = 640;
+    if (datasetContainer.size() <= 0)
+    {
+        std::cout << "Could not load any dataset elements at " << dataPath.str() << std::endl;
+        return -1;
+    }
+
+    const int width  = 640; 
     const int height = 480;
 
-    // get the first ground truth from file
-    std::string firstGroundTruthLine;
-    std::ifstream initGroundTruth(groundTruthPath);
-    while (std::getline(initGroundTruth, firstGroundTruthLine) and firstGroundTruthLine[0] == '#');
-    const bool isGroundTruthAvailable = firstGroundTruthLine != "";
-    
+
+
     rgbd_slam::utils::Pose pose;
+    const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth;
+    const bool isGroundTruthAvailable = initialGroundTruth.isValid;
     if (isGroundTruthAvailable)
     {
-        const rgbd_slam::utils::Pose& initialGroundTruthPose = get_ground_truth(firstGroundTruthLine);
-        pose.set_parameters(initialGroundTruthPose.get_position(), initialGroundTruthPose.get_orientation_quaternion());
+        pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
     }
 
     // Load a default set of parameters
@@ -163,7 +168,7 @@ int main(int argc, char* argv[])
             std::to_string(1 + gmtTime->tm_min) + ":" +
             std::to_string(1 + gmtTime->tm_sec);
         std::cout << dateAndTime << std::endl;
-        trajectoryFile.open("traj_freiburg1_" + dataset + "_" + dateAndTime + ".txt");
+        trajectoryFile.open("traj_freiburg2_" + dataset + "_" + dateAndTime + ".txt");
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
     }
 
@@ -172,15 +177,11 @@ int main(int argc, char* argv[])
 
     //stop condition
     bool shouldRunLoop = true;
-    for(std::string rgbLine, depthLine; shouldRunLoop and std::getline(rgbImagesFile, rgbLine) and std::getline(depthImagesFile, depthLine); ) 
+    for(const Data& imageData : datasetContainer) 
     {
-        // skip comments    
-        if (rgbLine[0] == '#' or depthLine[0] == '#')
-            continue;
-
-        // get the ground truth from file
-        std::string groundTruthLine = "";
-        std::getline(groundTruthFile, groundTruthLine);
+        // out condition
+        if (not shouldRunLoop)
+            break;
 
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
@@ -188,19 +189,8 @@ int main(int argc, char* argv[])
             continue;
         }
 
-        // Parse lines
-        std::istringstream inputRgbString(rgbLine);
-        std::istringstream inputDepthString(depthLine);
-
-        double rgbTimeStamp = 0;
-        std::string rgbImagePath;
-        inputRgbString >> rgbTimeStamp >> rgbImagePath;
-        rgbImagePath.insert(0, dataPath.str());
-
-        double depthTimeStamp = 0;
-        std::string depthImagePath;
-        inputDepthString >> depthTimeStamp >> depthImagePath;
-        depthImagePath.insert(0, dataPath.str());
+        const std::string rgbImagePath = dataPath.str() + imageData.rgbImage.imagePath;
+        const std::string depthImagePath = dataPath.str() + imageData.depthImage.imagePath;
 
         // Load images
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
@@ -213,12 +203,14 @@ int main(int argc, char* argv[])
         }
         if (depthImage.empty())
         {
-            std::cerr << "Could not load depth image " << depthImagePath << std::endl;
+            if (imageData.depthImage.isValid)
+                std::cerr << "Could not load depth image " << depthImagePath << std::endl;
             depthImage = cv::Mat(480, 640, CV_16UC1, cv::Scalar(0.0));
         }
 
         // convert to mm & float 32
-        depthImage.convertTo(depthImage, CV_32FC1, 1.0 / 5.0);
+        depthImage.convertTo(depthImage, CV_32FC1, 1.0/5.0);
+
 
         //clean warp artefacts
 #if 0
@@ -238,10 +230,10 @@ int main(int argc, char* argv[])
         const double trackingDuration = (cv::getTickCount() - trackingStartTime) / (double)cv::getTickFrequency();
         meanTreatmentDuration += trackingDuration;
 
-        if (isGroundTruthAvailable)
+        // estimate error to ground truth
+        if (imageData.groundTruth.isValid)
         {
-            // estimate error to ground truth
-            const rgbd_slam::utils::Pose& groundTruthPose = get_ground_truth(groundTruthLine);
+            rgbd_slam::utils::PoseBase groundTruthPose(imageData.groundTruth.position, imageData.groundTruth.rotation);
             positionError = pose.get_position_error(groundTruthPose);
             rotationError = pose.get_rotation_error(groundTruthPose);
         }
@@ -289,13 +281,3 @@ int main(int argc, char* argv[])
     cv::destroyAllWindows();
     return 0;
 }
-
-
-
-
-
-
-
-
-
-

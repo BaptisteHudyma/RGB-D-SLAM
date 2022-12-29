@@ -123,22 +123,25 @@ int main(int argc, char* argv[])
     const std::string depthImageListPath = dataPath.str() + "depth.txt";
     const std::string groundTruthPath = dataPath.str() + "groundtruth.txt";
 
-    std::ifstream groundTruthFile(groundTruthPath);
+    const std::vector<Data>& datasetContainer = DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath, groundTruthPath);
+
+    if (datasetContainer.size() <= 0)
+    {
+        std::cout << "Could not load any dataset elements at " << dataPath.str() << std::endl;
+        return -1;
+    }
 
     const int width  = 640; 
     const int height = 480;
 
-    // get the first ground truth from file
-    std::string firstGroundTruthLine;
-    std::ifstream initGroundTruth(groundTruthPath);
-    while (std::getline(initGroundTruth, firstGroundTruthLine) and firstGroundTruthLine[0] == '#');
-    const bool isGroundTruthAvailable = firstGroundTruthLine != "";
-    
+
+
     rgbd_slam::utils::Pose pose;
+    const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth;
+    const bool isGroundTruthAvailable = initialGroundTruth.isValid;
     if (isGroundTruthAvailable)
     {
-        const rgbd_slam::utils::Pose& initialGroundTruthPose = get_ground_truth(firstGroundTruthLine);
-        pose.set_parameters(initialGroundTruthPose.get_position(), initialGroundTruthPose.get_orientation_quaternion());
+        pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
     }
 
     // Load a default set of parameters
@@ -174,15 +177,11 @@ int main(int argc, char* argv[])
 
     //stop condition
     bool shouldRunLoop = true;
-    for(const Data& imageData : DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath)) 
+    for(const Data& imageData : datasetContainer) 
     {
         // out condition
         if (not shouldRunLoop)
             break;
-
-        // get the ground truth from file
-        std::string groundTruthLine = "";
-        std::getline(groundTruthFile, groundTruthLine);
 
         if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
             //do not treat this frame
@@ -232,9 +231,9 @@ int main(int argc, char* argv[])
         meanTreatmentDuration += trackingDuration;
 
         // estimate error to ground truth
-        if (isGroundTruthAvailable)
+        if (imageData.groundTruth.isValid)
         {
-            const rgbd_slam::utils::Pose& groundTruthPose = get_ground_truth(groundTruthLine);
+            rgbd_slam::utils::PoseBase groundTruthPose(imageData.groundTruth.position, imageData.groundTruth.rotation);
             positionError = pose.get_position_error(groundTruthPose);
             rotationError = pose.get_rotation_error(groundTruthPose);
         }
