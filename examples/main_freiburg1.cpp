@@ -138,8 +138,7 @@ int main(int argc, char* argv[])
 
     rgbd_slam::utils::Pose pose;
     const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth;
-    const bool isGroundTruthAvailable = initialGroundTruth.isValid;
-    if (isGroundTruthAvailable)
+    if (initialGroundTruth.isValid)
     {
         pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
     }
@@ -177,6 +176,7 @@ int main(int argc, char* argv[])
 
     //stop condition
     bool shouldRunLoop = true;
+    bool isGroundTruthAvailable = false;
     for(const Data& imageData : datasetContainer) 
     {
         // out condition
@@ -231,7 +231,8 @@ int main(int argc, char* argv[])
         meanTreatmentDuration += trackingDuration;
 
         // estimate error to ground truth
-        if (imageData.groundTruth.isValid)
+        isGroundTruthAvailable = imageData.groundTruth.isValid;
+        if (isGroundTruthAvailable)
         {
             rgbd_slam::utils::PoseBase groundTruthPose(imageData.groundTruth.position, imageData.groundTruth.rotation);
             positionError = pose.get_position_error(groundTruthPose);

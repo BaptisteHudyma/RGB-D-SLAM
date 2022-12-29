@@ -97,7 +97,7 @@ class DatasetParser
         return res;
     }
 
-    static std::vector<Data> associate_data(dataMap& rgbImagesData, dataMap& depthImagesData, groundTruthMap& groundTruthData, const double timeOffset = 0.0, const double maxDifference = 0.1)
+    static std::vector<Data> associate_data(dataMap& rgbImagesData, dataMap& depthImagesData, groundTruthMap& groundTruthData, const double depthTimeOffset = 0.0, const double maxDifference = 0.15)
     {
         struct TimeStampScore {
             double score;
@@ -117,7 +117,7 @@ class DatasetParser
                 const double depthTimeStamp = depthData.first;
 
                 TimeStampScore t;
-                t.score = std::abs(rgbTimeStamp - (depthTimeStamp + timeOffset));
+                t.score = std::abs(rgbTimeStamp - (depthTimeStamp + depthTimeOffset));
                 if (t.score < maxDifference)
                 {
                     t.rgbTimeStamp = rgbTimeStamp;
@@ -132,7 +132,7 @@ class DatasetParser
         }
         // sort by score
         std::sort(timeStampAssociation.begin(), timeStampAssociation.end(), [](const TimeStampScore& a, const TimeStampScore& b) {
-            return a.score < b.score and a.rgbTimeStamp < b.rgbTimeStamp;
+            return a.score < b.score;
         });
 
         const size_t numberOfRGBData = rgbImagesData.size();
@@ -163,7 +163,7 @@ class DatasetParser
 
 #ifdef USE_RGB_WITHOUT_DEPTH
         // RGBD without depth
-        for (dataMap::const_iterator it = rgbImagesData.cbegin();;)
+        for (dataMap::const_iterator it = rgbImagesData.cbegin(); it != rgbImagesData.cend();)
         {
             Data d;
             d.rgbImage.imagePath = it->second;
@@ -181,7 +181,7 @@ class DatasetParser
 
 #ifdef USE_DEPTH_WITHOUT_RGB
         // depth without rgb (ignore)
-        for (dataMap::const_iterator it = depthImagesData.cbegin();;)
+        for (dataMap::const_iterator it = depthImagesData.cbegin(); it != depthImagesData.cend();)
         {
             Data d;
             d.depthImage.imagePath = it->second;
@@ -198,7 +198,11 @@ class DatasetParser
 #endif
 
         std::sort(finalSorted.begin(), finalSorted.end(), [](const Data& a, const Data& b) {
-            return a.rgbImage.imageTimeStamp < b.rgbImage.imageTimeStamp;
+            // rgb timestamp is smaller, OR depth timestamp is smaller
+            return      ((a.rgbImage.isValid and b.rgbImage.isValid)     and a.rgbImage.imageTimeStamp < b.rgbImage.imageTimeStamp)
+                   or   ((a.depthImage.isValid and b.depthImage.isValid) and a.depthImage.imageTimeStamp < b.depthImage.imageTimeStamp);
+                   /*or   ((a.rgbImage.isValid and b.depthImage.isValid) and a.rgbImage.imageTimeStamp < b.depthImage.imageTimeStamp)
+                   or   ((a.depthImage.isValid and b.rgbImage.isValid)   and a.depthImage.imageTimeStamp < b.rgbImage.imageTimeStamp);*/
         });
 
         std::cout << "Used " << (numberOfRGBData - rgbImagesData.size()) << " over " << numberOfRGBData << " RGB images" << std::endl;
@@ -208,7 +212,8 @@ class DatasetParser
         // associate timestamps
         for(Data& data : finalSorted)
         {
-            const double rgbTimeStamp = data.rgbImage.imageTimeStamp;
+            const double timeStamp = data.rgbImage.imageTimeStamp;
+
             GroundTruth closestGT;
             double closestScore = std::numeric_limits<double>::max();
             bool readyToBreak = false;  //save a lot of processing power when frames are organized
@@ -216,9 +221,9 @@ class DatasetParser
             {
                 const double gtTimeStamp = groundTruth.first;
 
-                const double score = std::abs(rgbTimeStamp - (gtTimeStamp + timeOffset));
+                const double score = std::abs(timeStamp - gtTimeStamp);
 
-                if(score < maxDifference)
+                if(score < 0.05)
                 {
                     readyToBreak = true;
                     if (score < closestScore)
