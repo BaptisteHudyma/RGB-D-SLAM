@@ -12,6 +12,9 @@
 #include <utility>
 #include <vector>
 
+#define USE_RGB_WITHOUT_DEPTH
+//#define USE_DEPTH_WITHOUT_RGB
+
 struct ImageWithTimeStamp
 {
     std::string imagePath = "";
@@ -156,42 +159,50 @@ class DatasetParser
                 rgbImagesData.erase(rgbIt);
                 depthImagesData.erase(depthIt);
             }
-            // RGBD without depth
-            /*else if(rgbIt != rgbImagesData.cend())
-            {
-                Data d;
-                d.rgbImage.imagePath = rgbIt->second;
-                d.rgbImage.imageTimeStamp = ts.rgbTimeStamp;
-                d.rgbImage.isValid = true;
-
-                d.depthImage.isValid = false;
-
-                finalSorted.emplace_back(d);
-                rgbImagesData.erase(rgbIt);
-            }
-            // depth without rgb (ignore)
-            else if(depthIt != depthImagesData.cend())
-            {
-                Data d;
-                d.depthImage.imagePath = depthIt->second;
-                d.depthImage.imageTimeStamp = ts.depthTimeStamp;
-                d.depthImage.isValid = true;
-
-                d.rgbImage.isValid = false;
-
-                finalSorted.emplace_back(d);
-                depthImagesData.erase(depthIt);
-            }*/
         }
+
+#ifdef USE_RGB_WITHOUT_DEPTH
+        // RGBD without depth
+        for (dataMap::const_iterator it = rgbImagesData.cbegin();;)
+        {
+            Data d;
+            d.rgbImage.imagePath = it->second;
+            d.rgbImage.imageTimeStamp = it->first;
+            d.rgbImage.isValid = true;
+
+            d.depthImage.isValid = false;
+
+            finalSorted.emplace_back(d);
+            it = rgbImagesData.erase(it);
+            if (it == rgbImagesData.cend())
+                break;
+        }
+#endif
+
+#ifdef USE_DEPTH_WITHOUT_RGB
+        // depth without rgb (ignore)
+        for (dataMap::const_iterator it = depthImagesData.cbegin();;)
+        {
+            Data d;
+            d.depthImage.imagePath = it->second;
+            d.depthImage.imageTimeStamp = it->first;
+            d.depthImage.isValid = true;
+
+            d.rgbImage.isValid = false;
+
+            finalSorted.emplace_back(d);
+            it = depthImagesData.erase(it);
+            if (it == depthImagesData.cend())
+                break;
+        }
+#endif
 
         std::sort(finalSorted.begin(), finalSorted.end(), [](const Data& a, const Data& b) {
             return a.rgbImage.imageTimeStamp < b.rgbImage.imageTimeStamp;
         });
 
-        if (rgbImagesData.size() > 0)
-            std::cout << "Used " << (numberOfRGBData - rgbImagesData.size()) << " over " << numberOfRGBData << " RGB images" << std::endl;
-        if (depthImagesData.size() > 0)
-            std::cout << "Used " << (numberOfDepthData - depthImagesData.size())  << " over " << numberOfDepthData << " depth images" << std::endl;
+        std::cout << "Used " << (numberOfRGBData - rgbImagesData.size()) << " over " << numberOfRGBData << " RGB images" << std::endl;
+        std::cout << "Used " << (numberOfDepthData - depthImagesData.size())  << " over " << numberOfDepthData << " depth images" << std::endl;
 
         const size_t groundTruthCount = groundTruthData.size();
         // associate timestamps
@@ -236,8 +247,7 @@ class DatasetParser
             }
         }
 
-        if (groundTruthData.size() > 0)
-            std::cout << "Uses " << (groundTruthCount - groundTruthData.size()) << " over " << groundTruthCount << " ground truth" << std::endl;
+        std::cout << "Uses " << (groundTruthCount - groundTruthData.size()) << " over " << groundTruthCount << " ground truth" << std::endl;
 
         return finalSorted;
     }
