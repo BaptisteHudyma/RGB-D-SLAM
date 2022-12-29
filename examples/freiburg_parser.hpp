@@ -108,6 +108,7 @@ class DatasetParser
         for(const std::pair<double, std::string> rgbData : rgbImagesData)
         {
             const double rgbTimeStamp = rgbData.first;
+            bool readyToBreak = false;  //save a lot of processing power when frames are organized
             for(const std::pair<double, std::string> depthData : depthImagesData)
             {
                 const double depthTimeStamp = depthData.first;
@@ -119,7 +120,11 @@ class DatasetParser
                     t.rgbTimeStamp = rgbTimeStamp;
                     t.depthTimeStamp = depthTimeStamp;
                     timeStampAssociation.emplace_back(t);
+
+                    readyToBreak = true;
                 }
+                else if(readyToBreak)
+                    break;
             }
         }
         // sort by score
@@ -127,7 +132,8 @@ class DatasetParser
             return a.score < b.score and a.rgbTimeStamp < b.rgbTimeStamp;
         });
 
-
+        const size_t numberOfRGBData = rgbImagesData.size();
+        const size_t numberOfDepthData = depthImagesData.size();
         std::vector<Data> finalSorted;
         finalSorted.reserve(rgbImagesData.size());
         for(const TimeStampScore& ts : timeStampAssociation)
@@ -182,26 +188,38 @@ class DatasetParser
             return a.rgbImage.imageTimeStamp < b.rgbImage.imageTimeStamp;
         });
 
+        if (rgbImagesData.size() > 0)
+            std::cout << "Used " << (numberOfRGBData - rgbImagesData.size()) << " over " << numberOfRGBData << " RGB images" << std::endl;
+        if (depthImagesData.size() > 0)
+            std::cout << "Used " << (numberOfDepthData - depthImagesData.size())  << " over " << numberOfDepthData << " depth images" << std::endl;
 
+        const size_t groundTruthCount = groundTruthData.size();
         // associate timestamps
         for(Data& data : finalSorted)
         {
             const double rgbTimeStamp = data.rgbImage.imageTimeStamp;
             GroundTruth closestGT;
             double closestScore = std::numeric_limits<double>::max();
+            bool readyToBreak = false;  //save a lot of processing power when frames are organized
             for(const std::pair<double, GroundTruth> groundTruth : groundTruthData)
             {
                 const double gtTimeStamp = groundTruth.first;
 
                 const double score = std::abs(rgbTimeStamp - (gtTimeStamp + timeOffset));
 
-                if(score < maxDifference and score < closestScore)
+                if(score < maxDifference)
                 {
-                    closestScore = score;
-                    closestGT.position = groundTruth.second.position;
-                    closestGT.rotation = groundTruth.second.rotation;
-                    closestGT.timeStamp = groundTruth.second.timeStamp;
+                    readyToBreak = true;
+                    if (score < closestScore)
+                    {
+                        closestScore = score;
+                        closestGT.position = groundTruth.second.position;
+                        closestGT.rotation = groundTruth.second.rotation;
+                        closestGT.timeStamp = groundTruth.second.timeStamp;
+                    }
                 }
+                else if(readyToBreak)
+                    break;
             }
 
             if (closestScore < std::numeric_limits<double>::max())
@@ -217,6 +235,9 @@ class DatasetParser
                 data.groundTruth.isValid = false;
             }
         }
+
+        if (groundTruthData.size() > 0)
+            std::cout << "Uses " << (groundTruthCount - groundTruthData.size()) << " over " << groundTruthCount << " ground truth" << std::endl;
 
         return finalSorted;
     }
