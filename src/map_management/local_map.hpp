@@ -63,6 +63,15 @@ namespace rgbd_slam {
                 void update_no_pose();
 
                 /**
+                 * \brief Add features to staged map
+                 * \param[in] optimizedPose The clean true pose of the observer, after optimization
+                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
+                 * \param[in] detectedPlanes A container for all detected planes in the depth image
+                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
+                 */
+                void add_features_to_map(const utils::Pose& pose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures);
+
+                /**
                  * \brief Hard clean the local and staged map
                  */
                 void reset();
@@ -183,8 +192,17 @@ namespace rgbd_slam {
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
+                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
                  */
-                void add_umatched_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
+                void add_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject, const bool addAllFeatures);
+                
+                /**
+                 * \brief Add unmatched detected planes to the map
+                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
+                 * \param[in] detectedPlanes An object containing the detected planes in the depth frame. Must be the same as in find_matches
+                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
+                 */
+                void add_planes_to_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features

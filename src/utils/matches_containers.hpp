@@ -52,6 +52,8 @@ namespace rgbd_slam {
                 _points.swap(other._points);
                 _planes.swap(other._planes);
             }
+
+            size_t size() const { return _points.size() + _planes.size(); };
         };
 
 
