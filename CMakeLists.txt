@@ -30,11 +30,11 @@ list(APPEND LINK_LIBS ${Eigen_LIBRARIES})
 
 #Find g2o
 # Find the header files
-FIND_PATH(G2O_INCLUDE_DIR g2o/core/base_vertex.h)
-find_package(G2O REQUIRED)
-set(G2O_LIBRARIES ${G2O_CORE_LIBRARY} ${G2O_STUFF_LIBRARY} ${G2O_TYPES_SBA} ${G2O_TYPES_SLAM3D} ${G2O_SOLVER_PCG})
-list(APPEND INC_DIRS ${G2O_INCLUDE_DIR})
-list(APPEND LINK_LIBS ${G2O_LIBRARIES})
+# FIND_PATH(G2O_INCLUDE_DIR g2o/core/base_vertex.h)
+# find_package(G2O REQUIRED)
+# set(G2O_LIBRARIES ${G2O_CORE_LIBRARY} ${G2O_STUFF_LIBRARY} ${G2O_TYPES_SBA} ${G2O_TYPES_SLAM3D} ${G2O_SOLVER_PCG})
+# list(APPEND INC_DIRS ${G2O_INCLUDE_DIR})
+# list(APPEND LINK_LIBS ${G2O_LIBRARIES})
 
 # Load GTEST
 include(FetchContent)
@@ -164,13 +164,9 @@ add_executable(slam_CAPE
     ${EXAMPLES}/main_CAPE.cpp)
 target_link_libraries(slam_CAPE ${PROJECT_NAME})
 
-add_executable(slam_freiburg1
-    ${EXAMPLES}/main_freiburg1.cpp)
-target_link_libraries(slam_freiburg1 ${PROJECT_NAME})
-
-add_executable(slam_freiburg2
-    ${EXAMPLES}/main_freiburg2.cpp)
-target_link_libraries(slam_freiburg2 ${PROJECT_NAME})
+add_executable(slam_TUM
+    ${EXAMPLES}/main_TUM.cpp)
+target_link_libraries(slam_TUM ${PROJECT_NAME})
 
 add_executable(test_p3p
     ${THIRD_PARTY}/p3p_test.cpp)

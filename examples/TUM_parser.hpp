@@ -12,7 +12,9 @@
 #include <utility>
 #include <vector>
 
+// Can return RGB frames without depth image
 #define USE_RGB_WITHOUT_DEPTH
+// Can return depth image without RGB
 //#define USE_DEPTH_WITHOUT_RGB
 
 struct ImageWithTimeStamp
@@ -36,7 +38,9 @@ struct Data {
     GroundTruth groundTruth;
 };
 
-
+/**
+ * \brief This class parses a given TUM dataset and return the associated depth and rgb images, along with the ground truth if available
+ */
 class DatasetParser
 {
     public:

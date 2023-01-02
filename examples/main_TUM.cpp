@@ -19,7 +19,7 @@
 #include "parameters.hpp"
 #include "angle_utils.hpp"
 #include "types.hpp"
-#include "freiburg_parser.hpp"
+#include "TUM_parser.hpp"
 
 
 void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
@@ -54,15 +54,15 @@ inline bool is_file_valid (const std::string& fileName) {
 bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, unsigned int& fpsTarget, bool& shouldSavePoses) 
 {
     const cv::String keys = 
-        "{help h usage ?  |             | print this message     }"
-        "{@dataset        | translation | The dataset to read}"
-        "{p primitive     |  1          | display primitive masks }"
-        "{d staged        |  0          | display points in staged container }"
-        "{l lines         |  0          | Detect lines }"
-        "{i index         |  0          | First image to parse   }"
-        "{j jump          |  0          | Only take every j image into consideration   }"
-        "{r fps           |  30         | Used to slow down the treatment to correspond to a certain frame rate }"
-        "{s save          |  0          | Should save all the pose to a file }"
+        "{help h usage ?  |         | print this message     }"
+        "{@dataset        | fr1_xyz | The dataset to read}"
+        "{p primitive     |  1      | display primitive masks }"
+        "{d staged        |  0      | display points in staged container }"
+        "{l lines         |  0      | Detect lines }"
+        "{i index         |  0      | First image to parse   }"
+        "{j jump          |  0      | Only take every j image into consideration   }"
+        "{r fps           |  30     | Used to slow down the treatment to correspond to a certain frame rate }"
+        "{s save          |  0      | Should save all the pose to a file }"
         ;
 
     cv::CommandLineParser parser(argc, argv, keys);
@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
     if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, fpsTarget, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
-    const std::stringstream dataPath("./data/freiburg1_" + dataset + "/");
+    const std::stringstream dataPath("./data/TUM/" + dataset + "/");
 
     // Get file & folder names
     const std::string rgbImageListPath = dataPath.str() + "rgb.txt";
@@ -131,10 +131,15 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    const int width  = 640; 
-    const int height = 480;
-
-
+    // load first frame to set size
+    const cv::Mat& firstRgbImage = cv::imread(dataPath.str() + datasetContainer[0].rgbImage.imagePath, cv::IMREAD_COLOR);
+    if (firstRgbImage.empty())
+    {
+        std::cout << "Could not load the first dataset rgb image" << std::endl;
+        return -1;
+    }
+    const int width  = firstRgbImage.cols;  // 640
+    const int height = firstRgbImage.rows;  // 480
 
     rgbd_slam::utils::Pose pose;
     const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth;
@@ -167,7 +172,7 @@ int main(int argc, char* argv[])
             std::to_string(1 + gmtTime->tm_min) + ":" +
             std::to_string(1 + gmtTime->tm_sec);
         std::cout << dateAndTime << std::endl;
-        trajectoryFile.open("traj_freiburg1_" + dataset + "_" + dateAndTime + ".txt");
+        trajectoryFile.open("traj_TUM_" + dataset + "_" + dateAndTime + ".txt");
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
     }
 
@@ -221,7 +226,7 @@ int main(int argc, char* argv[])
         cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
 #endif
 
-        // rectify the depth image before next step (already rectified in freiburg dataset)
+        // rectify the depth image before next step (already rectified in TU%M datasets)
         //RGBD_Slam.rectify_depth(depthImage);
 
         // get optimized pose
