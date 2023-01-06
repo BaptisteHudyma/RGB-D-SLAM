@@ -80,7 +80,7 @@ namespace rgbd_slam {
             cv::Mat _shapeMask;
 
             cv::Scalar _color;  // display color of this primitive
-            size_t _unmatchedCount; // count of unmatched iterations
+            size_t _failedTrackingCount; // count of unmatched iterations
         };
 
 

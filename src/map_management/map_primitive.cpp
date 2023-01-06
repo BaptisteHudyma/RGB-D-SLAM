@@ -27,7 +27,7 @@ namespace rgbd_slam {
 
 
         MapPlane::MapPlane(const utils::PlaneWorldCoordinates& parametrization, const utils::WorldCoordinate& centroid, const cv::Mat& shapeMask) : _id(_currentPlaneId++),
-            _parametrization(parametrization), _centroid(centroid), _shapeMask(shapeMask), _unmatchedCount(0)
+            _parametrization(parametrization), _centroid(centroid), _shapeMask(shapeMask), _failedTrackingCount(0)
         {
             cv::Vec3b color;
             color[0] = utils::Random::get_random_uint(255);
@@ -50,18 +50,18 @@ namespace rgbd_slam {
             _centroid = detectedPlane.get_centroid().to_world_coordinates(cameraToWorld);
             _shapeMask = detectedPlane.get_shape_mask();
 
-            _unmatchedCount = 0;
+            _failedTrackingCount = 0;
         }
 
         void MapPlane::update_unmatched()
         {
-            _unmatchedCount += 1;
+            _failedTrackingCount += 1;
         }
 
         bool MapPlane::is_lost() const
         {
             const static size_t maximumUnmatchBeforeremoval = Parameters::get_maximum_unmatched_before_removal();
-            return _unmatchedCount >= maximumUnmatchBeforeremoval;
+            return _failedTrackingCount >= maximumUnmatchBeforeremoval;
         }
 
 

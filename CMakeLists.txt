@@ -8,7 +8,7 @@ ENDIF()
 
 set(CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
-set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal")# -Wconversion -Wsign-conversion")
+set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal -DCMAKE_EXPORT_COMPILE_COMMANDS=1")# -Wconversion -Wsign-conversion")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 # if this is set, the progam will be deterministic, and loose some perfs
 add_compile_definitions(MAKE_DETERMINISTIC)
@@ -105,7 +105,6 @@ add_library(primitives SHARED
     )
 
 add_library(mapManagement SHARED
-    ${MAP}/map_point.cpp
     ${MAP}/map_primitive.cpp
     ${MAP}/local_map.cpp
     )
