@@ -194,6 +194,19 @@ namespace rgbd_slam {
                 }
             }
 
+            virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const override
+            {
+                utils::ScreenCoordinate projectedScreenCoordinates;
+                const bool isProjected = _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates);
+                if (isProjected)
+                {
+                    return 
+                        projectedScreenCoordinates.x() >= 0 and projectedScreenCoordinates.x() <= 640 and 
+                        projectedScreenCoordinates.y() >= 0 and projectedScreenCoordinates.y() <= 480;
+                }
+                return false;
+            }
+
             protected:
             virtual bool update_with_match(const DetectedPointType& matchedFeature, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld) override
             {
