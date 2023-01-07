@@ -198,15 +198,18 @@ namespace rgbd_slam {
             virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const override
             {
                 static const uint screenSizeX = Parameters::get_camera_1_size_x(); 
-                static const uint screenSizeY = Parameters::get_camera_2_size_x();
+                static const uint screenSizeY = Parameters::get_camera_1_size_y();
  
                 utils::ScreenCoordinate projectedScreenCoordinates;
                 const bool isProjected = _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates);
                 if (isProjected)
                 {
                     return 
+                        // in screen space
                         projectedScreenCoordinates.x() >= 0 and projectedScreenCoordinates.x() <= screenSizeX and 
-                        projectedScreenCoordinates.y() >= 0 and projectedScreenCoordinates.y() <= screenSizeY;
+                        projectedScreenCoordinates.y() >= 0 and projectedScreenCoordinates.y() <= screenSizeY and
+                        // in front of the camera
+                        projectedScreenCoordinates.z() >= 0;
                 }
                 return false;
             }
