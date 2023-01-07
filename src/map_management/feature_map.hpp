@@ -238,9 +238,8 @@ namespace rgbd_slam {
              * \param[in] worldToCamera A matrix to convert from world to camera space
              * \param[out] trackedFeatures The object thta will contain the tracked features
              * \param[in] localMapDropChance Chance to randomly drop a local map point and not return it
-             * \param[in] stagedMapDropChance Chance to randomly drop a staged map point and not return it
              */
-            void get_tracked_features(const worldToCameraMatrix& worldToCamera, TrackedFeaturesObject& trackedFeatures, const uint localMapDropChance = 1000, const uint stagedMapDropChance = 1000) const
+            void get_tracked_features(const worldToCameraMatrix& worldToCamera, TrackedFeaturesObject& trackedFeatures, const uint localMapDropChance = 1000) const
             {
                 // local Map features
                 for(const auto& [id, mapFeature] : _localMap)
@@ -252,15 +251,7 @@ namespace rgbd_slam {
                     }
                 }
 
-                // staged Map features
-                for(const auto& [id, mapFeature]: _stagedMap)
-                {
-                    assert(id == mapFeature._id);
-                    if (mapFeature.is_matched() and mapFeature.is_visible(worldToCamera))
-                    {
-                        mapFeature.add_to_tracked(worldToCamera, trackedFeatures, stagedMapDropChance);
-                    }
-                }
+                // do not track staged points, as they are not validated yet
             }
 
             /**

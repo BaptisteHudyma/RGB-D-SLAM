@@ -97,7 +97,7 @@ namespace rgbd_slam {
         _opticalFlowPyramidWindowSize = 25;
         _opticalFlowMaxError = 35;      // error in pixel after which a point is rejected
         _opticalFlowMaxDistance = 100;  // distance in pixel after which a point is rejected
-        _keypointMaskRadius = 10;       // do not detect points inside an area of this size (pixels) around existing keypoints
+        _keypointMaskRadius = 50;       // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
         _ransacMaximumRetroprojectionErrorForPointInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
@@ -118,7 +118,7 @@ namespace rgbd_slam {
 
         // Local map
         _pointUnmatchedCountToLoose = 60;   // consecutive unmatched frames before removing from local map
-        _pointStagedAgeConfidence = 10;
+        _pointStagedAgeConfidence = 3;
         _pointMinimumConfidenceForMap = 0.9;
         _maximumPointPerFrame = 200;
 

@@ -52,9 +52,8 @@ namespace rgbd_slam {
             // TODO: check the efficiency gain of those reserve calls
             keypointsWithIds.reserve(numberOfNewKeypoints);
 
-            const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency();
-
-            _localPointMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency * 2, refreshFrequency);
+            const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency() * 2;
+            _localPointMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
             return keypointsWithIds;
         }
 
