@@ -199,7 +199,7 @@ namespace rgbd_slam {
                         continue;
 
                     const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches);
-                    if (matchIndex != -1)
+                    if (matchIndex >= 0)
                     {
                         mapFeature.mark_matched(matchIndex);
                         _isDetectedFeatureMatched[matchIndex] = true;
@@ -223,7 +223,7 @@ namespace rgbd_slam {
                         continue;
 
                     const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, shouldUseStagedPoints);
-                    if (matchIndex != -1)
+                    if (matchIndex >= 0)
                     {
                         mapFeature.mark_matched(matchIndex);
                         _isDetectedFeatureMatched[matchIndex] = true;
@@ -246,7 +246,7 @@ namespace rgbd_slam {
                 for(const auto& [id, mapFeature] : _localMap)
                 {
                     assert(id == mapFeature._id);
-                    if (mapFeature.is_matched())
+                    if (mapFeature.is_matched() and mapFeature.is_visible(worldToCamera))
                     {
                         mapFeature.add_to_tracked(worldToCamera, trackedFeatures, localMapDropChance);
                     }
@@ -256,7 +256,7 @@ namespace rgbd_slam {
                 for(const auto& [id, mapFeature]: _stagedMap)
                 {
                     assert(id == mapFeature._id);
-                    if (mapFeature.is_matched())
+                    if (mapFeature.is_matched() and mapFeature.is_visible(worldToCamera))
                     {
                         mapFeature.add_to_tracked(worldToCamera, trackedFeatures, stagedMapDropChance);
                     }
