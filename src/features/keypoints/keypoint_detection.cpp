@@ -125,7 +125,7 @@ namespace rgbd_slam {
                 std::vector<cv::Point2f> detectedKeypoints;
                 cv::Mat keypointDescriptors;
                 // TODO: better metric to search for more keypoints
-                const bool shouldDetectKeypoints = opticalFlowTrackedPointCount < minimumPointsForOptimization and opticalFlowTrackedPointCount < maximumPointsForLocalMap;
+                const bool shouldDetectKeypoints = opticalFlowTrackedPointCount < minimumPointsForOptimization * 3 and opticalFlowTrackedPointCount < maximumPointsForLocalMap;
                 if (forceKeypointDetection or shouldDetectKeypoints)
                 {
                     // create a mask at current keypoint location
