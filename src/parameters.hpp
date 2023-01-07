@@ -33,11 +33,15 @@ namespace rgbd_slam {
             static uint get_available_core_number() { return _coreNumber; };
 
             // Camera 1 is the left camera in stereo, and the color camera in RGBD
+            static uint get_camera_1_size_x() { return _camera1SizeX; };
+            static uint get_camera_1_size_y() { return _camera1SizeY; };
             static double get_camera_1_center_x() { return _camera1CenterX; };
             static double get_camera_1_center_y() { return _camera1CenterY; };
             static double get_camera_1_focal_x() { return _camera1FocalX; };
             static double get_camera_1_focal_y() { return _camera1FocalY; };
             // Camera 2 is the right camera in stereo, and the depth camera in RGBD
+            static uint get_camera_2_size_x() { return _camera2SizeX; };
+            static uint get_camera_2_size_y() { return _camera2SizeY; };
             static double get_camera_2_center_x() { return _camera2CenterX; };
             static double get_camera_2_center_y() { return _camera2CenterY; };
             static double get_camera_2_focal_x() { return _camera2FocalX; };
@@ -104,7 +108,6 @@ namespace rgbd_slam {
             // Max unmatched points to consider this map point as lost
             static uint get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
             //Observe a point for N frames to gain max liability
-            static uint get_point_age_confidence() { return _pointAgeConfidence; };
             static uint get_point_staged_age_confidence() { return _pointStagedAgeConfidence; };
             // Minimum point liability for the local map
             static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
@@ -116,11 +119,15 @@ namespace rgbd_slam {
             inline static uint _coreNumber;     // number of available cores on the computer (1 for no threads)
 
             // Cameras intrinsics parameters
+            inline static uint _camera1SizeX;
+            inline static uint _camera1SizeY;
             inline static double _camera1CenterX;
             inline static double _camera1CenterY;
             inline static double _camera1FocalX;
             inline static double _camera1FocalY;
 
+            inline static uint _camera2SizeX;
+            inline static uint _camera2SizeY;
             inline static double _camera2CenterX;
             inline static double _camera2CenterY;
             inline static double _camera2FocalX;
@@ -190,7 +197,6 @@ namespace rgbd_slam {
 
             // local map management
             inline static uint _pointUnmatchedCountToLoose;    // Maximum unmatched times before removal
-            inline static uint _pointAgeConfidence;            // Minimum age of a point to consider it good 
             inline static uint _pointStagedAgeConfidence;        // Minimum age of a point in staged map to consider it good 
             inline static double _pointMinimumConfidenceForMap;        // Minimum confidence of a staged point to add it to local map
 

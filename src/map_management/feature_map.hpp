@@ -6,6 +6,7 @@
 #include <opencv2/core/types.hpp>
 #include <unordered_map>
 
+#include "camera_transformation.hpp"
 #include "coordinates.hpp"
 #include "covariances.hpp"
 #include "parameters.hpp"
@@ -101,6 +102,13 @@ namespace rgbd_slam {
             virtual void draw(const worldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const = 0;
 
             /**
+             * \brief Return true if the map feature is visible from the given position
+             * \param[in] worldToCamMatrix A matrix to change from world to camera space
+             * \return True if the feature should be visible
+             */
+            virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const = 0;
+
+            /**
              *  Members
              */
             size_t _failedTrackingCount;
@@ -187,6 +195,9 @@ namespace rgbd_slam {
                     // start by reseting this point
                     mapFeature.mark_unmatched();
 
+                    if (not mapFeature.is_visible(worldToCamera))
+                        continue;
+
                     const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches);
                     if (matchIndex != -1)
                     {
@@ -202,11 +213,14 @@ namespace rgbd_slam {
                 const bool shouldUseStagedPoints = matches.size() < minimumPointsForOptimization;
 
                 // search matches in staged map second
-                for(auto& [mapId, mapFeature] : _stagedMap) 
+                for(auto& [mapId, mapFeature] : _stagedMap)
                 {
                     assert(mapId == mapFeature._id);
                     // start by reseting this point
                     mapFeature.mark_unmatched();
+
+                    if (not mapFeature.is_visible(worldToCamera))
+                        continue;
 
                     const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, shouldUseStagedPoints);
                     if (matchIndex != -1)

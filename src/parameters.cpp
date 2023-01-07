@@ -22,13 +22,17 @@ namespace rgbd_slam {
             return false;
         }
 
-        // Load Camera 1 parameters
+        // Load camera 1 parameters
+        _camera1SizeX = int(configFile["camera_1_size_x"]);
+        _camera1SizeY = int(configFile["camera_1_size_y"]);
         _camera1FocalX = configFile["camera_1_focal_x"];
         _camera1FocalY = configFile["camera_1_focal_y"];
         _camera1CenterX = configFile["camera_1_center_x"];
         _camera1CenterY = configFile["camera_1_center_y"];
 
         // Load camera 2 parameters
+        _camera2SizeX = int(configFile["camera_2_size_x"]);
+        _camera2SizeY = int(configFile["camera_2_size_y"]);
         _camera2FocalX = configFile["camera_2_focal_x"];
         _camera2FocalY = configFile["camera_2_focal_y"];
         _camera2CenterX = configFile["camera_2_center_x"];
@@ -54,11 +58,15 @@ namespace rgbd_slam {
         set_parameters();
 
         // Camera intrinsic parameters
+        _camera1SizeX = 640;    //pixels
+        _camera1SizeY = 480;    //pixels
         _camera1FocalX = 548.86723733696215;
         _camera1FocalY = 549.58402532237187;
         _camera1CenterX = 316.49655835885483;
         _camera1CenterY = 229.23873484682150;
 
+        _camera2SizeX = 640;    //pixels
+        _camera2SizeY = 480;    //pixels
         _camera2FocalX = 575.92685448804468;
         _camera2FocalY = 576.40791601093247;
         _camera2CenterX = 315.15026356388171;
@@ -110,8 +118,7 @@ namespace rgbd_slam {
 
         // Local map
         _pointUnmatchedCountToLoose = 60;   // consecutive unmatched frames before removing from local map
-        _pointAgeConfidence = 15;
-        _pointStagedAgeConfidence = 10;
+        _pointStagedAgeConfidence = 2;
         _pointMinimumConfidenceForMap = 0.9;
         _maximumPointPerFrame = 200;
 
@@ -265,11 +272,6 @@ namespace rgbd_slam {
             outputs::log_error("Unmatched points to loose tracking must be > 0");
             _isValid = false;
         }
-        if (_pointAgeConfidence <= 0)
-        {
-            outputs::log_error("Point age confidence must be > 0");
-            _isValid = false;
-        }
         if (_pointStagedAgeConfidence <= 0)
         {
             outputs::log_error("Staged point confidence must be > 0");
@@ -346,7 +348,16 @@ namespace rgbd_slam {
             _isValid = false;
         }
 
-
+        if (_camera1SizeX <= 0)
+        {
+            outputs::log_error("Camera 1 size X must be > 0");
+            _isValid = false;
+        }
+        if (_camera1SizeY <= 0)
+        {
+            outputs::log_error("Camera 1 size Y must be > 0");
+            _isValid = false;
+        }
         if (_camera1FocalX <= 0)
         {
             outputs::log_error("Camera 1 focal X distance must be > 0");
@@ -368,7 +379,16 @@ namespace rgbd_slam {
             _isValid = false;
         }
 
-
+        if (_camera2SizeX <= 0)
+        {
+            outputs::log_error("Camera 2 size X must be > 0");
+            _isValid = false;
+        }
+        if (_camera2SizeY <= 0)
+        {
+            outputs::log_error("Camera 2 size Y must be > 0");
+            _isValid = false;
+        }
         if (_camera2FocalX <= 0)
         {
             outputs::log_error("Camera 2 focal X distance must be > 0");

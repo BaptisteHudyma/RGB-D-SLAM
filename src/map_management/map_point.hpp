@@ -10,6 +10,7 @@
 #include "feature_map.hpp"
 #include "logger.hpp"
 #include "map_primitive.hpp"
+#include "parameters.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
@@ -192,6 +193,22 @@ namespace rgbd_slam {
                 {
                     cv::circle(debugImage, cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())), 3, color, -1);
                 }
+            }
+
+            virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const override
+            {
+                static const uint screenSizeX = Parameters::get_camera_1_size_x(); 
+                static const uint screenSizeY = Parameters::get_camera_2_size_x();
+ 
+                utils::ScreenCoordinate projectedScreenCoordinates;
+                const bool isProjected = _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates);
+                if (isProjected)
+                {
+                    return 
+                        projectedScreenCoordinates.x() >= 0 and projectedScreenCoordinates.x() <= screenSizeX and 
+                        projectedScreenCoordinates.y() >= 0 and projectedScreenCoordinates.y() <= screenSizeY;
+                }
+                return false;
             }
 
             protected:
