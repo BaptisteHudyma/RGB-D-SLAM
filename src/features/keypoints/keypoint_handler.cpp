@@ -53,8 +53,6 @@ namespace rgbd_slam {
 
                 const static double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
                 assert(cellSize > 0);
-                _searchSpaceCellRadius = static_cast<uint>(std::ceil(Parameters::get_search_matches_distance() / cellSize));
-                assert(_searchSpaceCellRadius > 0);
 
                 _cellCountX = static_cast<uint>(std::ceil(depthImageCols / cellSize));
                 _cellCountY = static_cast<uint>(std::ceil(depthImageRows / cellSize));
@@ -162,15 +160,16 @@ namespace rgbd_slam {
                 return cellCoordinates;
             }
 
-            const cv::Mat Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const vectorb& isKeyPointMatchedContainer) const
+            const cv::Mat Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const vectorb& isKeyPointMatchedContainer, const uint searchSpaceCellRadius) const
             {
+                
                 const uint_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
                 // compute a search zone for the potential matches of this point
-                const uint startY = std::max(0U, searchSpaceCoordinates.first - _searchSpaceCellRadius);
-                const uint startX = std::max(0U, searchSpaceCoordinates.second - _searchSpaceCellRadius);
+                const uint startY = std::max(0U, searchSpaceCoordinates.first - searchSpaceCellRadius);
+                const uint startX = std::max(0U, searchSpaceCoordinates.second - searchSpaceCellRadius);
 
-                const uint endY = std::min(_cellCountY, searchSpaceCoordinates.first + _searchSpaceCellRadius + 1);
-                const uint endX = std::min(_cellCountX, searchSpaceCoordinates.second + _searchSpaceCellRadius + 1);
+                const uint endY = std::min(_cellCountY, searchSpaceCoordinates.first + searchSpaceCellRadius + 1);
+                const uint endX = std::min(_cellCountX, searchSpaceCoordinates.second + searchSpaceCellRadius + 1);
 
                 // Squared search diameter, to compare distance without sqrt
                 const static float squaredSearchDiameter = static_cast<float>(pow(Parameters::get_search_matches_distance(), 2.0));
@@ -243,17 +242,22 @@ namespace rgbd_slam {
                 return INVALID_MATCH_INDEX;
             }
 
-            int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const vectorb& isKeyPointMatchedContainer) const
+            int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const vectorb& isKeyPointMatchedContainer, const double searchSpaceRadius) const
             {
                 assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
                 // cannot compute matches without a match or descriptors
                 if (_keypoints.empty() or _descriptors.rows <= 0)
                     return INVALID_MATCH_INDEX;
 
+                static const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+                assert(cellSize > 0);
+                const uint searchSpaceCellRadius = static_cast<uint>(std::ceil(searchSpaceRadius / cellSize));
+                assert(searchSpaceCellRadius > 0);
+
                 // check descriptor dimensions
                 assert(mapPointDescriptor.cols == _descriptors.cols);
 
-                const cv::Mat& keyPointMask = compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer);
+                const cv::Mat& keyPointMask = compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer, searchSpaceCellRadius);
 
                 std::vector< std::vector<cv::DMatch> > knnMatches;
                 _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask);

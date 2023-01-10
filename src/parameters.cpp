@@ -91,7 +91,8 @@ namespace rgbd_slam {
         _matchSearchRadius = 30;        // max distance to a point after which we do not consider a math (pixels)
         _matchSearchCellSize = 50;      // size of the squares dividing the image to search for point matches (pixels)
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
-        _maxNumberOfPointsToDetect = 200;   // Maximum number of point features to detect
+        _maxNumberOfPointsToDetect = 300;   // Maximum number of point features to detect
+        _keypointCellDetectionSize = 250;   // Size of the keypoint detection window (pixels)
         _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
         _opticalFlowPyramidWindowSize = 25;
@@ -166,6 +167,11 @@ namespace rgbd_slam {
         if (_maxNumberOfPointsToDetect <= 0)
         {
             outputs::log_error("Keypoint detector hessian must be > 0");
+            _isValid = false;
+        }
+        if (_keypointCellDetectionSize <= 0)
+        {
+            outputs::log_error("Keypoint detection cell size must be > 0");
             _isValid = false;
         }
         if (_keypointRefreshFrequency <= 0)
