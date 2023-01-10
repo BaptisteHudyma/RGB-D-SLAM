@@ -113,6 +113,8 @@ namespace rgbd_slam {
 
             virtual int find_match(const DetectedKeypointsObject& detectedFeatures, const worldToCameraMatrix& worldToCamera, const vectorb& isDetectedFeatureMatched, std::list<PointMatchType>& matches, const bool shouldAddToMatches = true) const override 
             {
+                static const double searchSpaceRadius = Parameters::get_search_matches_distance();
+
                 // try to match with tracking
                 const int invalidfeatureIndex = features::keypoints::INVALID_MATCH_INDEX;
                 int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
@@ -122,7 +124,9 @@ namespace rgbd_slam {
                     utils::ScreenCoordinate2D projectedMapPoint;
                     const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
                     if (isScreenCoordinatesValid)
-                        matchIndex = detectedFeatures.get_match_index(projectedMapPoint, _descriptor, isDetectedFeatureMatched);
+                    {
+                        matchIndex = detectedFeatures.get_match_index(projectedMapPoint, _descriptor, isDetectedFeatureMatched, searchSpaceRadius);
+                    }
                 }
 
                 if (matchIndex == invalidfeatureIndex) {

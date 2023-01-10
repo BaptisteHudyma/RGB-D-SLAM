@@ -6,6 +6,7 @@
 // circle
 #include <opencv2/features2d.hpp>
 #include <opencv2/opencv.hpp>
+#include <vector>
 
 
 namespace rgbd_slam {
@@ -17,27 +18,49 @@ namespace rgbd_slam {
              */
 
             Key_Point_Extraction::Key_Point_Extraction(const uint maxFeaturesToDetect) :
-                // Create feature extractor and matcher
-                _featureDetector(cv::ORB::create(maxFeaturesToDetect)),
-                _advancedFeatureDetector(cv::ORB::create(maxFeaturesToDetect)),
                 _meanPointExtractionDuration(0.0)
             {
+                const size_t imageHeight = Parameters::get_camera_1_size_y();
+                const size_t imageWidth = Parameters::get_camera_1_size_x();
+
+                const size_t cellSize = Parameters::get_keypoint_detection_cell_size();
+                const size_t numCellsY = 1 + ((imageHeight - 1) / cellSize);
+                const size_t numCellsX = 1 + ((imageWidth - 1) / cellSize);
+
+                const size_t numberOfCells = numCellsY * numCellsX;
+
+                // Create feature extractor and matcher
+                _featureDetector = cv::Ptr<cv::FeatureDetector>(cv::ORB::create(static_cast<int>(maxFeaturesToDetect / numberOfCells)));
+                _advancedFeatureDetector = cv::Ptr<cv::FeatureDetector>(cv::ORB::create(static_cast<int>(maxFeaturesToDetect / numberOfCells)));
                 assert(not _featureDetector.empty());
                 assert(not _advancedFeatureDetector.empty());
+
+                // create the detection windows
+                _detectionWindows.reserve(numberOfCells);
+                for(size_t cellYIndex = 0; cellYIndex < numCellsY; ++cellYIndex)
+                {
+                    for(size_t cellXIndex = 0; cellXIndex < numCellsX; ++cellXIndex)
+                    {
+                        // adjust cell size if we reach the limits
+                        const size_t cellSizeY = ((cellYIndex == numCellsY - 1) && ((cellYIndex + 1) * cellSize > imageHeight)) ? imageHeight - (cellYIndex * cellSize) : cellSize;
+                        const size_t cellSizeX = ((cellXIndex == numCellsX - 1) && ((cellXIndex + 1) * cellSize > imageWidth)) ? imageWidth - (cellXIndex * cellSize) : cellSize;
+
+                        _detectionWindows.push_back(cv::Rect(static_cast<int>(cellXIndex * cellSize), static_cast<int>(cellYIndex * cellSize), static_cast<int>(cellSizeX), static_cast<int>(cellSizeY)));
+                    }
+                }
             }
 
             const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const
             {
+                assert(grayImage.size() == mask.size());
                 // search keypoints, using an advanced detector if not enough features are found
                 std::vector<cv::KeyPoint> frameKeypoints;
-                assert(grayImage.size() == mask.size());
-                _featureDetector->detect(grayImage, frameKeypoints, mask); 
+                perform_keypoint_detection(grayImage, mask, _featureDetector, frameKeypoints);
 
-                if (frameKeypoints.size() <=  minimumPointsForValidity)
+                if (frameKeypoints.size() <= minimumPointsForValidity)
                 {
                     // Not enough keypoints detected: restart with a more precise detector
-                    frameKeypoints.clear();
-                    _advancedFeatureDetector->detect(grayImage, frameKeypoints, mask); 
+                    perform_keypoint_detection(grayImage, mask, _advancedFeatureDetector, frameKeypoints);
                 }
 
                 // compute a subcorner accuracy estimation for all waypoints 
@@ -192,11 +215,11 @@ namespace rgbd_slam {
 
                 // contains the ids of the good waypoints
                 std::vector<size_t> keypointIndexContainer;
-                keypointIndexContainer.reserve(previousKeyPointCount);
-
                 // set output structure
                 std::vector<cv::Point2f> newKeypoints;
+                keypointIndexContainer.reserve(previousKeyPointCount);
                 newKeypoints.reserve(previousKeyPointCount);
+
 
                 // Remove outliers from current waypoint list by creating a new one
                 for(size_t keypointIndex = 0; keypointIndex < previousKeyPointCount; ++keypointIndex)
@@ -237,11 +260,12 @@ namespace rgbd_slam {
                 keypointStruct.reserve(keypointSize);
                 for(size_t i = 0; i < keypointSize; ++i)
                 {
-                    const size_t keypointIndex = keypointIndexContainer[i];
-                    if(statusContainer[i] != 1) {
+                    if(statusContainer[i] != 1 or errorContainer[i] > errorThreshold)
+                    {
                         continue;
                     }
 
+                    const size_t keypointIndex = keypointIndexContainer[i];
                     const KeypointsWithIdStruct::keypointWithId& lastKeypoint = lastKeypointsWithIds.get(keypointIndex);
                     // check distance of the backpropagated point to the original point
                     if (cv::norm(lastKeypoint._point - backwardKeypoints[i]) > maxDistanceThreshold) {
@@ -266,6 +290,30 @@ namespace rgbd_slam {
                 if (frameCount > 0) { 
                     const double meanPointExtractionDuration = _meanPointExtractionDuration / static_cast<double>(frameCount);
                     std::cout << "\tMean point extraction time is " << meanPointExtractionDuration << " seconds (" << get_percent_of_elapsed_time(meanPointExtractionDuration, meanFrameTreatmentDuration) << "%)" << std::endl;
+                }
+            }
+
+            void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage, const cv::Mat& mask, const cv::Ptr<cv::FeatureDetector>& featureDetector, std::vector<cv::KeyPoint>& frameKeypoints) const
+            {
+                assert(not featureDetector.empty());
+                assert(grayImage.size() == mask.size());
+                frameKeypoints.clear();
+
+                for(const cv::Rect& rect : _detectionWindows)
+                {
+                    const cv::Mat& subImg = grayImage(rect);
+                    const cv::Mat& maskImg = mask(rect);
+
+                    std::vector<cv::KeyPoint> keypoints;
+                    keypoints.reserve(20);
+                    featureDetector->detect(subImg, keypoints, maskImg);
+
+                    for (uint j = 0; j < keypoints.size(); j++)
+                    {
+                        keypoints[j].pt.x += (float)rect.x;
+                        keypoints[j].pt.y += (float)rect.y;
+                    }
+                    frameKeypoints.insert(frameKeypoints.end(), keypoints.begin(), keypoints.end());
                 }
             }
 

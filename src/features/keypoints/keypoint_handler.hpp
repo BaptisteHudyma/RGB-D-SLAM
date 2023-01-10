@@ -148,7 +148,7 @@ namespace rgbd_slam {
                      *
                      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
                      */
-                    int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const vectorb& isKeyPointMatchedContainer) const; 
+                    int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const vectorb& isKeyPointMatchedContainer, const double searchSpaceRadius) const; 
 
                     /**
                      * \brief return the keypoint associated with the index
@@ -196,10 +196,11 @@ namespace rgbd_slam {
                      *
                      * \param[in] pointToSearch The 2D screen coordinates of the point to match
                      * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched 
+                     * \param[in] searchSpaceCellRadius Radius of the match search
                      *
                      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
                      */
-                    const cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const vectorb& isKeyPointMatchedContainer) const;
+                    const cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const vectorb& isKeyPointMatchedContainer, const uint searchSpaceCellRadius) const;
 
                     typedef std::pair<uint, uint> uint_pair;
                     /**
@@ -232,7 +233,6 @@ namespace rgbd_slam {
                     // Number of image divisions (cells)
                     uint _cellCountX;
                     uint _cellCountY;
-                    uint _searchSpaceCellRadius; 
 
                     // Corresponds to a 2D box containing index of key points in those boxes
                     typedef std::vector<uint> index_container;

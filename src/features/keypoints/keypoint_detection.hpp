@@ -67,16 +67,27 @@ namespace rgbd_slam {
                      * \return An array of points in the input image
                      */
                     const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const;
+                    
+                    /**
+                     * \brief Perform keypoint detection on the image, divided in smaller patches.
+                     * \param[in] grayImage Image in which to detect keypoints
+                     * \param[in] mask Mask of the image in which to detect keypoints. No keypoints will be detected in this area
+                     * \param[in] featureDetector The feature detector to use
+                     * \param[out] frameKeypoints the detected keypoints in the image 
+                     */
+                    void perform_keypoint_detection(const cv::Mat& grayImage, const cv::Mat& mask, const cv::Ptr<cv::FeatureDetector>& featureDetector, std::vector<cv::KeyPoint>& frameKeypoints) const;
 
                     const cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const;
 
                 private:
                     cv::Ptr<cv::FeatureDetector> _featureDetector;
                     cv::Ptr<cv::FeatureDetector> _advancedFeatureDetector;
+                    std::vector<cv::Rect> _detectionWindows;
 
                     std::vector<cv::Mat> _lastFramePyramide;
 
                     double _meanPointExtractionDuration;
+
 
             };
 
