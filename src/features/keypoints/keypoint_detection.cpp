@@ -116,7 +116,6 @@ namespace rgbd_slam {
                 // load parameters
                 const static int pyramidWindowSize = static_cast<int>(Parameters::get_optical_flow_pyramid_windown_size());
                 const static int pyramidDepth = static_cast<int>(Parameters::get_optical_flow_pyramid_depth());
-                const static uint maxError = Parameters::get_optical_flow_max_error();
                 const static uint maxDistance = Parameters::get_optical_flow_max_distance();
                 const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
                 const static uint maximumPointsForLocalMap = Parameters::get_maximum_point_count_per_frame();
@@ -131,7 +130,7 @@ namespace rgbd_slam {
                 if (_lastFramePyramide.size() > 0)
                 {
                     if (lastKeypointsWithIds.size() > 0) {
-                        get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxError, maxDistance, newKeypointsObject);
+                        get_keypoints_from_optical_flow(_lastFramePyramide, newImagePyramide, lastKeypointsWithIds, pyramidDepth, pyramidWindowSize, maxDistance, newKeypointsObject);
 
                         // TODO: add descriptors to handle short term rematching of lost optical flow features
                     }
@@ -195,10 +194,10 @@ namespace rgbd_slam {
             }
 
 
-            void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double errorThreshold, const double maxDistanceThreshold, KeypointsWithIdStruct& keypointStruct)
+            void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv::Mat>& imagePreviousPyramide, const std::vector<cv::Mat>& imageCurrentPyramide, const KeypointsWithIdStruct& lastKeypointsWithIds, const uint pyramidDepth, const uint windowSize, const double maxDistanceThreshold, KeypointsWithIdStruct& keypointStruct)
             {
                 // START of optical flow
-                if (imagePreviousPyramide.empty() or imageCurrentPyramide.empty() or errorThreshold < 0 or lastKeypointsWithIds.empty())
+                if (imagePreviousPyramide.empty() or imageCurrentPyramide.empty() or lastKeypointsWithIds.empty())
                 {
                     outputs::log_error("OpticalFlow: invalid parameters");
                     return;
@@ -224,8 +223,8 @@ namespace rgbd_slam {
                 // Remove outliers from current waypoint list by creating a new one
                 for(size_t keypointIndex = 0; keypointIndex < previousKeyPointCount; ++keypointIndex)
                 {
-                    if(statusContainer[keypointIndex] != 1 or errorContainer[keypointIndex] > errorThreshold) {
-                        // point was not associated or error is too great
+                    if(statusContainer[keypointIndex] != 1)
+                    {   // point was not associated or error is too great
                         continue;
                     }
                     if (not is_in_border(forwardPoints[keypointIndex], imageCurrentPyramide.at(0)))
@@ -255,7 +254,7 @@ namespace rgbd_slam {
                 keypointStruct.reserve(keypointSize);
                 for(size_t i = 0; i < keypointSize; ++i)
                 {
-                    if(statusContainer[i] != 1 or errorContainer[i] > errorThreshold)
+                    if(statusContainer[i] != 1)
                     {
                         continue;
                     }
@@ -293,7 +292,7 @@ namespace rgbd_slam {
                 assert(not featureDetector.empty());
                 assert(grayImage.size() == mask.size());
                 static const uint maxKeypointToDetect = Parameters::get_maximum_number_of_detectable_features();
-                static const uint maxKeypointToDetectByCell = Parameters::get_maximum_number_of_detectable_features() / _detectionWindows.size();
+                static const uint maxKeypointToDetectByCell = maxKeypointToDetect / _detectionWindows.size();
 
                 frameKeypoints.clear();
                 frameKeypoints.reserve(maxKeypointToDetect);

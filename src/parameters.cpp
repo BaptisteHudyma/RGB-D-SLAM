@@ -96,9 +96,8 @@ namespace rgbd_slam {
         _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
         _opticalFlowPyramidWindowSize = 25;
-        _opticalFlowMaxError = 35;      // error in pixel after which a point is rejected
-        _opticalFlowMaxDistance = 100;  // distance in pixel after which a point is rejected
-        _keypointMaskRadius = 50;       // do not detect points inside an area of this size (pixels) around existing keypoints
+        _opticalFlowMaxDistance = 100;  // distance between the last frame point and the new one after which the new detection it is rejected
+        _keypointMaskRadius = 25;       // do not detect points inside an area of this size (pixels) around existing keypoints
 
         // Pose Optimization
         _ransacMaximumRetroprojectionErrorForPointInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
@@ -187,11 +186,6 @@ namespace rgbd_slam {
         if (_opticalFlowPyramidWindowSize <= 0)
         {
             outputs::log_error("Pyramid window size must be > 0");
-            _isValid = false;
-        }
-        if (_opticalFlowMaxError <= 0)
-        {
-            outputs::log_error("Optical flow maximum error  must be > 0");
             _isValid = false;
         }
         if (_opticalFlowMaxDistance <= 0)

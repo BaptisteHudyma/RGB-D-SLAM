@@ -85,7 +85,6 @@ namespace rgbd_slam {
             static uint get_keypoint_refresh_frequency() { return _keypointRefreshFrequency; };
             static uint get_optical_flow_pyramid_depth() { return _opticalFlowPyramidDepth; };
             static uint get_optical_flow_pyramid_windown_size() { return _opticalFlowPyramidWindowSize; };
-            static uint get_optical_flow_max_error() { return _opticalFlowMaxError; };
             static uint get_optical_flow_max_distance() { return _opticalFlowMaxDistance; };
             static uint get_keypoint_mask_radius() { return _keypointMaskRadius; };
 
@@ -177,7 +176,6 @@ namespace rgbd_slam {
             inline static uint _keypointRefreshFrequency;
             inline static uint _opticalFlowPyramidDepth;
             inline static uint _opticalFlowPyramidWindowSize;
-            inline static uint _opticalFlowMaxError;
             inline static uint _opticalFlowMaxDistance;
             inline static uint _keypointMaskRadius;
 
