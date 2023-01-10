@@ -94,10 +94,10 @@ namespace rgbd_slam {
         _maxNumberOfPointsToDetect = 100;   // Maximum number of point features to detect
         _keypointCellDetectionSize = 250;   // Size of the keypoint detection window (pixels)
         _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls
-        _opticalFlowPyramidDepth = 5;   // depth of the optical pyramid
-        _opticalFlowPyramidWindowSize = 25;
+        _opticalFlowPyramidDepth = 4;   // depth of the optical pyramid (0 based. Higher than 5 levels is mostly useless)
+        _opticalFlowPyramidWindowSize = 50; // search size at each pyramid level (pixel)
         _opticalFlowMaxDistance = 100;  // distance between the last frame point and the new one after which the new detection it is rejected
-        _keypointMaskRadius = 25;       // do not detect points inside an area of this size (pixels) around existing keypoints
+        _keypointMaskRadius = 25;       // do not detect points inside an area of this size (pixels) around existing optical flow keypoints
 
         // Pose Optimization
         _ransacMaximumRetroprojectionErrorForPointInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
