@@ -17,6 +17,19 @@ namespace rgbd_slam {
             const size_t INVALID_MAP_POINT_ID = 0;  // should be the same as INVALID_POINT_UNIQ_ID in map_point.hpp
             const int INVALID_MATCH_INDEX = -1;
 
+            struct DetectedKeyPoint
+            {
+                utils::ScreenCoordinate _coordinates;
+                cv::Mat _descriptor;
+
+                bool can_add_to_map() const
+                {
+                    // descriptor is not empty, depth is valid
+                    return (not _descriptor.empty()) and (utils::is_depth_valid(_coordinates.z()));
+                }
+            };
+
+
             /**
              * \brief checks if a point is in an image, a with border
              */
@@ -161,6 +174,19 @@ namespace rgbd_slam {
                     size_t get_keypoint_count() const
                     {
                         return _keypoints.size();
+                    }
+
+                    size_t size() const { return _keypoints.size(); };
+
+                    DetectedKeyPoint get(const size_t index) const 
+                    {
+                        DetectedKeyPoint newKp;
+                        newKp._coordinates = get_keypoint(index);
+                        if(is_descriptor_computed(index))
+                            newKp._descriptor = get_descriptor(index);
+                        else
+                            newKp._descriptor = cv::Mat();
+                        return newKp;
                     }
 
                 protected:

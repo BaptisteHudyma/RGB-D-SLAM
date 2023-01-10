@@ -1,7 +1,9 @@
 #include "rgbd_slam.hpp"
 
+#include <iostream>
 #include <opencv2/core.hpp>
 
+#include "camera_transformation.hpp"
 #include "parameters.hpp"
 #include "outputs/logger.hpp"
 #include "utils/random.hpp"
@@ -248,7 +250,12 @@ namespace rgbd_slam {
             // add unmatched features if not tracking could be done last call
             const bool addAllFeatures = _isTrackingLost;
             if (addAllFeatures)
-                _localMap->add_features_to_map(predictedPose, keypointObject, detectedPlanes, true);
+            {
+                const matrix33& poseCovariance = utils::compute_pose_covariance(predictedPose);
+                const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(predictedPose.get_orientation_quaternion(), predictedPose.get_position());
+
+                _localMap->add_features_to_map(poseCovariance, cameraToWorld, keypointObject, detectedPlanes, true);
+            }
 
             // tracking is lost after some consecutive fails
             // TODO add to parameters

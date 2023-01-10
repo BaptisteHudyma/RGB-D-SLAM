@@ -106,11 +106,8 @@ namespace rgbd_slam {
             }
 
             bool Plane::is_similar(const Cylinder& cylinder) const {
-                const double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
-                if(get_IOU(cylinder) < minimumIOUForMatch)
-                    return false;
-
                 // TODO: not implemented
+                outputs::log_error("is_similar is not implemented between plane and cylinder");
                 return false;
             }
 

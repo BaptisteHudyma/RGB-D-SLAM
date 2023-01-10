@@ -119,18 +119,10 @@ int main(int argc, char* argv[]) {
     }
     const std::stringstream dataPath("./data/CAPE/" + dataset + "/");
 
-    int width, height;
-    cv::Mat rgbImage, depthImage;
-    if(not load_images(dataPath, startIndex, rgbImage, depthImage) ) {
-        std::cout << "Error loading images at " << dataPath.str() << std::endl;
-        return -1;
-    }
-
-    width = rgbImage.cols;
-    height = rgbImage.rows;
-
     // Load a default set of parameters
     rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
+    const uint width  = rgbd_slam::Parameters::get_camera_1_size_x();  // 640
+    const uint height = rgbd_slam::Parameters::get_camera_1_size_y();  // 480
 
     //start with ground truth pose
     rgbd_slam::utils::Pose pose;
@@ -170,8 +162,11 @@ int main(int argc, char* argv[]) {
         }
 
         // read images
+        cv::Mat rgbImage, depthImage;
         if(not load_images(dataPath, frameIndex, rgbImage, depthImage))
             break;
+        assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);
+        assert(static_cast<uint>(depthImage.cols) == width and static_cast<uint>(depthImage.rows) == height);
 
         // rectify the depth image before next step
         RGBD_Slam.rectify_depth(depthImage);

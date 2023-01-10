@@ -1,186 +1,311 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
+#include <opencv2/core/mat.hpp>
 #include <opencv2/opencv.hpp>
 
 #include "../utils/coordinates.hpp"
 #include "../tracking/kalman_filter.hpp"
+#include "../features/keypoints/keypoint_handler.hpp"
+#include "feature_map.hpp"
+#include "logger.hpp"
+#include "map_primitive.hpp"
+#include "parameters.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
 
         const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
 
-        /**
-         * \brief Basic keypoint class 
-         */
-        struct Point 
+        struct Point
         {
             // world coordinates
             utils::WorldCoordinate _coordinates;
-
-            // 3D descriptor (SURF)
+            // 3D descriptor (ORB)
             cv::Mat _descriptor;
+            // position covariance
+            matrix33 _covariance;
 
-            // unique identifier, to match this point without using descriptors
-            const size_t _id;
+            Point(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+                _coordinates(coordinates), 
+                _descriptor(descriptor),
+                _covariance(covariance)
+            {
+                build_kalman_filter();
 
-            protected:
-            Point (const utils::WorldCoordinate& coordinates, const cv::Mat& descriptor);
-            // copy constructor
-            Point (const utils::WorldCoordinate& coordinates, const cv::Mat& descriptor, const size_t id);
-
-            inline static size_t _currentPointId = 1;   // 0 is invalid
-        };
-
-        /**
-         * \brief Prepare the basic functions for a staged/map point
-         */
-        struct IMap_Point_With_Tracking
-            : public Point
-        {
-            IMap_Point_With_Tracking(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
-            IMap_Point_With_Tracking(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
-            /**
-             * \brief Compute a confidence in this point (-1, 1)
-             */
-            virtual double get_confidence() const =  0;
-
-            /**
-             * \brief Call when this point was matched to another point
-             */
-            virtual double update_matched(const utils::WorldCoordinate& newPointCoordinates, const matrix33& covariance) = 0;
-
-            /**
-             * \brief Call when this point was not matched to anything
-             */
-            virtual void update_unmatched(int removeNMatches = 1) = 0;
-
-            const matrixd get_covariance_matrix() const { 
-                return _pointCovariance;
+                assert(not _descriptor.empty() and _descriptor.cols > 0);
+                assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and not std::isnan(_coordinates.z()));
             };
-
-            /**
-             * \brief Return True if this point is mark as matched (_matchIndex will be valid)
-             */
-            bool is_matched() const;
-
-            /**
-             * \brief mark this point as unmatched
-             */
-            void mark_unmatched();
-
-            // Match index in the detected point object (can be UNMATCHED_POINT_MATCH_INDEX);
-            int _matchIndex;
-
-            protected:
 
             /**
              * \brief update the current point by tracking with a kalman filter. Will update the point position & covariance
              * \return The distance between the new position ans the previous one
              */
-            double track_point(const utils::WorldCoordinate& newPointCoordinates, const matrix33& newPointCovariance);
+            double track_point(const utils::WorldCoordinate& newPointCoordinates, const matrix33& newPointCovariance)
+            {
+                assert(_kalmanFilter != nullptr);
 
+                const std::pair<vector3, matrix33>& res = _kalmanFilter->get_new_state(_coordinates, _covariance, newPointCoordinates, newPointCovariance);
+
+                const double score = (_coordinates - res.first).norm();
+
+                _coordinates = res.first;
+                _covariance = res.second;
+                assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and not std::isnan(_coordinates.z()));
+                return score;
+            }
+
+            private:
             /**
              * \brief Build the inputs caracteristics of the kalman filter
              */
-            void build_kalman_filter();
+            static void build_kalman_filter()
+            {
+                if (_kalmanFilter == nullptr)
+                {
+                    // gain 10mm of uncertainty at each iteration
+                    const double pointProcessNoise = 0;   // TODO set in parameters
+                    const size_t stateDimension = 3;        //x, y, z
+                    const size_t measurementDimension = 3;  //x, y, z
 
-            private:
-                matrix33 _pointCovariance;
+                    matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+                    matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+                    matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
 
-                // shared kalman filter, between all points
-                inline static tracking::SharedKalmanFilter* _kalmanFilter = nullptr;
+                    // Points are not supposed to move, so no dynamics
+                    systemDynamics.setIdentity();
+                    // we need all positions
+                    outputMatrix.setIdentity();
+
+                    processNoiseCovariance.setIdentity();
+                    processNoiseCovariance *= pointProcessNoise;
+
+                    _kalmanFilter = new tracking::SharedKalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
+                }
+            }
+            // shared kalman filter, between all points
+            inline static tracking::SharedKalmanFilter* _kalmanFilter = nullptr;
+        };
+
+        typedef features::keypoints::Keypoint_Handler DetectedKeypointsObject;
+        typedef features::keypoints::DetectedKeyPoint DetectedPointType;
+        typedef matches_containers::PointMatch PointMatchType;
+        typedef features::keypoints::KeypointsWithIdStruct TrackedPointsObject;
+
+
+        class MapPoint
+            : public Point, public IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>
+        {
+            public:
+            MapPoint(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+                Point(coordinates, covariance, descriptor),
+                IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>()
+            {
+                assert(_id > 0);
+            }
+
+            MapPoint(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id) :
+                Point(coordinates, covariance, descriptor),
+                IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>(id)
+            {
+                assert(_id > 0);
+            }
+
+            virtual int find_match(const DetectedKeypointsObject& detectedFeatures, const worldToCameraMatrix& worldToCamera, const vectorb& isDetectedFeatureMatched, std::list<PointMatchType>& matches, const bool shouldAddToMatches = true) const override 
+            {
+                // try to match with tracking
+                const int invalidfeatureIndex = features::keypoints::INVALID_MATCH_INDEX;
+                int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
+                if (matchIndex == invalidfeatureIndex)
+                {
+                    // No match: try to find match in a window around the point
+                    utils::ScreenCoordinate2D projectedMapPoint;
+                    const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
+                    if (isScreenCoordinatesValid)
+                        matchIndex = detectedFeatures.get_match_index(projectedMapPoint, _descriptor, isDetectedFeatureMatched);
+                }
+
+                if (matchIndex == invalidfeatureIndex) {
+                    //unmatched point
+                    return UNMATCHED_FEATURE_INDEX;
+                }
+
+                assert(matchIndex >= 0);
+                assert(static_cast<Eigen::Index>(matchIndex) < isDetectedFeatureMatched.size());
+                if (isDetectedFeatureMatched[matchIndex])
+                {
+                    //point was already matched
+                    outputs::log_error("The requested point unique index is already matched");
+                }
+
+                if (shouldAddToMatches)
+                {
+                    const utils::ScreenCoordinate& matchedScreenpoint = detectedFeatures.get_keypoint(matchIndex);
+                    if (utils::is_depth_valid(matchedScreenpoint.z()) ) 
+                    {
+                        // 3D point
+                        const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(_coordinates, _covariance);
+                        //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
+                        const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
+                        matches.emplace_back(PointMatchType(matchedScreenpoint, _coordinates, screenPointCovariance, _id));
+                    }
+                    else {
+                        // 2D point
+                        const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(_coordinates, _covariance);
+                        //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
+                        const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
+                        matches.emplace_back(PointMatchType(matchedScreenpoint, _coordinates, screenPointCovariance, _id));
+                    }
+                }
+                return matchIndex;
+            }
+
+            virtual bool add_to_tracked(const worldToCameraMatrix& worldToCamera, TrackedPointsObject& trackedFeatures, const uint dropChance = 1000) const override
+            {
+                const bool shouldNotDropPoint = utils::Random::get_random_uint(dropChance) != 0;
+
+                assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and not std::isnan(_coordinates.z()));
+                if (shouldNotDropPoint)
+                {
+                    utils::ScreenCoordinate2D screenCoordinates;
+                    if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
+                    {
+                        // use previously known screen coordinates
+                        trackedFeatures.add(
+                            _id,
+                            screenCoordinates.x(),
+                            screenCoordinates.y()
+                        );
+
+                        return true;
+                    }
+                }
+                // point was not added
+                return false;
+            }
+
+            virtual void draw(const worldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
+            {
+                utils::ScreenCoordinate2D screenPoint;
+                const bool isCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint);
+
+                if (isCoordinatesValid)
+                {
+                    cv::circle(debugImage, cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())), 3, color, -1);
+                }
+            }
+
+            virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const override
+            {
+                static const uint screenSizeX = Parameters::get_camera_1_size_x(); 
+                static const uint screenSizeY = Parameters::get_camera_2_size_x();
+ 
+                utils::ScreenCoordinate projectedScreenCoordinates;
+                const bool isProjected = _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates);
+                if (isProjected)
+                {
+                    return 
+                        projectedScreenCoordinates.x() >= 0 and projectedScreenCoordinates.x() <= screenSizeX and 
+                        projectedScreenCoordinates.y() >= 0 and projectedScreenCoordinates.y() <= screenSizeY;
+                }
+                return false;
+            }
+
+            protected:
+            virtual bool update_with_match(const DetectedPointType& matchedFeature, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld) override
+            {
+                assert(_matchIndex >= 0);
+
+                const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
+                if(utils::is_depth_valid(matchedScreenPoint.z()))
+                {
+                    // transform screen point to world point
+                    const utils::WorldCoordinate& worldPointCoordinates = matchedScreenPoint.to_world_coordinates(cameraToWorld);
+                    // get a measure of the estimated variance of the new world point
+                    const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(matchedScreenPoint);
+
+                    // update this map point errors & position
+                    track_point(worldPointCoordinates, cameraPointCovariance.base() + poseCovariance);
+
+                    // If a new descriptor is available, update it
+                    const cv::Mat& descriptor = matchedFeature._descriptor;
+                    if (not descriptor.empty())
+                        _descriptor = descriptor;
+
+                    return true;
+                }
+                else
+                {
+                    // TODO: Point is 2D, handle separatly
+                }
+                return false;
+            }
+
+            virtual void update_no_match() override 
+            {
+                // do nothing
+            }
         };
 
         /**
          * \brief Candidate for a map point
          */
-        class Staged_Point
-            : public IMap_Point_With_Tracking
+        class StagedMapPoint
+            : public virtual MapPoint, public virtual IStagedMapFeature<DetectedPointType>
         {
             public:
-                Staged_Point(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
-                Staged_Point(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
+                StagedMapPoint(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const DetectedPointType& detectedFeature) :
+                    MapPoint(
+                        detectedFeature._coordinates.to_world_coordinates(cameraToWorld),
+                        utils::get_camera_point_covariance(detectedFeature._coordinates) + poseCovariance,
+                        detectedFeature._descriptor
+                    )
+                {
+                }
 
-                // Count the number of times his points was matched
-                int _matchesCount;
+                virtual bool should_remove_from_staged() const override
+                {
+                    return get_confidence() <= 0;
+                }
 
-                /**
-                 * \brief Should add this staged point to the local map
-                 */
-                bool should_add_to_local_map() const;
+                virtual bool should_add_to_local_map() const override
+                {
+                    const static double minimumConfidenceForLocalMap = Parameters::get_minimum_confidence_for_local_map();
+                    return (get_confidence() > minimumConfidenceForLocalMap);
+                }
 
-                /**
-                 * \brief True if this staged point should not be added to local map
-                 */
-                bool should_remove_from_staged() const;
-
-                /**
-                 * \brief Call when this point was not matched to anything
-                 */
-                void update_unmatched(int removeNMatches = 1) override;
-
-                /**
-                 * \brief Call when this point was matched to another point
-                 */
-                double update_matched(const utils::WorldCoordinate& newPointCoordinates, const matrix33& covariance) override;
-
-            private:
-                /**
-                 * \brief Compute a confidence in this point (-1, 1)
-                 */
-                double get_confidence() const override;
+            protected:
+                double get_confidence() const 
+                {
+                    const static double stagedPointconfidence = static_cast<double>(Parameters::get_point_staged_age_confidence());
+                    const double confidence = static_cast<double>(_successivMatchedCount) / stagedPointconfidence;
+                    return std::clamp(confidence, -1.0, 1.0);
+                }
         };
 
 
         /**
          * \brief A map point structure, containing all the necessary informations to identify a map point in local map
          */
-        class Map_Point 
-            : public IMap_Point_With_Tracking 
+        class LocalMapPoint 
+            : public MapPoint, public ILocalMapFeature<StagedMapPoint>
         {
-
             public:
-                Map_Point(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor);
-                Map_Point(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor, const size_t id);
+                LocalMapPoint(const StagedMapPoint& stagedPoint) : 
+                    MapPoint(stagedPoint._coordinates, stagedPoint._covariance, stagedPoint._descriptor, stagedPoint._id)
+                {
+                    // new map point, new color
+                    set_color();
 
-
-                /**
-                 * \brief True is this point is lost : should be removed from local map. Should be used only for map points
-                 */
-                bool is_lost() const; 
-
-                /**
-                 * \brief Update this point without it being detected/matched
-                 */
-                void update_unmatched(int removeNMatches = 1) override;
-
-                /**
-                 * \brief Update this map point with the given informations: it is matched with another point
-                 */
-                double update_matched(const utils::WorldCoordinate& newPointCoordinates, const matrix33& covariance) override;
-
-                int get_age() const {
-                    return _age;
+                    _matchIndex = stagedPoint._matchIndex;
+                    _successivMatchedCount = stagedPoint._successivMatchedCount;
                 }
 
-                cv::Scalar _color;  // display color of this primitive
-
-            protected:
-                void set_random_color();
-
-                /**
-                 * \brief Compute a confidence score (-1, 1)
-                 */
-                double get_confidence() const override; 
-
-            private:
-                // The number of times this point failed tracking.
-                unsigned int _failTrackingCount;
-
-                // Successful matches count
-                int _age;
+                virtual bool is_lost() const override
+                {
+                    const static uint maximumUnmatchBeforeRemoval = Parameters::get_maximum_unmatched_before_removal();
+                    return (_failedTrackingCount > maximumUnmatchBeforeRemoval);
+                }
         };
 
     } /* map_management */

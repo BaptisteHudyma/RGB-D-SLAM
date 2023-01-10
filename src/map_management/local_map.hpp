@@ -16,6 +16,7 @@
 #include "../features/keypoints/keypoint_handler.hpp"
 #include "../features/primitives/shape_primitives.hpp"
 
+#include "feature_map.hpp" 
 
 
 namespace rgbd_slam {
@@ -64,12 +65,13 @@ namespace rgbd_slam {
 
                 /**
                  * \brief Add features to staged map
-                 * \param[in] optimizedPose The clean true pose of the observer, after optimization
+                 * \param[in] poseCovariance The pose covariance of the observer, after optimization
+                 * \param[in] cameraToWorld The matrix to go from camera to world space
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
                  * \param[in] detectedPlanes A container for all detected planes in the depth image
                  * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
                  */
-                void add_features_to_map(const utils::Pose& pose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures);
+                void add_features_to_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures);
 
                 /**
                  * \brief Hard clean the local and staged map
@@ -109,20 +111,6 @@ namespace rgbd_slam {
                  */
                 matches_containers::match_plane_container find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes);
 
-
-                /**
-                 * \brief Compute a match for a given point, and update this point match index. It will update the _isPointMatched object if a point is matched
-                 *
-                 * \param[in, out] point A map point that we want to match to detected points
-                 * \param[in] detectedKeypointsObject An object to handle all detected points in an image
-                 * \param[in] worldToCamera A matrix to transform a world point to a camera point
-                 * \param[in, out] matchedPoints A container associating the detected to the map points
-                 * \param[in] shouldAddMatchToContainer If this flag is false, this point will not be inserted in matchedPoints.
-                 *
-                 * \return A boolean indicating if this point was matched or not
-                 */
-                bool find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const worldToCameraMatrix& worldToCamera, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer=true);
-
                 /**
                  * \brief Compute a match for a given plane, and update this plane match status.
                  *
@@ -134,16 +122,6 @@ namespace rgbd_slam {
                  * \return A boolean indicating if this plane was matched or not
                  */
                 bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& w2c, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
-
-                /**
-                 * \brief Update the Matched/Unmatched status of a map point
-                 *
-                 * \param[in, out] mapPoint the map point to update
-                 * \param[in] keypointObject An object to handle all detected points in an image
-                 * \param[in] poseCovariance Covariance of the current pose
-                 * \param[in] cameraToWorld A transformation matrix to convert a camera point to a world point
-                 */
-                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld);
 
                 /**
                  * \brief Update local keypoint map features 
@@ -210,17 +188,6 @@ namespace rgbd_slam {
                 void update_local_to_global();
 
 
-                /**
-                 * \brief Draw a given map point on the given debug image
-                 *
-                 * \param[in] mapPoint The 3D world point
-                 * \param[in] worldToCameraMatrix A matrix to transforme a world point to a camera point
-                 * \param[in] pointColor The color of the point to draw
-                 * \param[in] radius The radius of the point to display
-                 * \param[out] debugImage The image to draw the points modify
-                 */
-                static void draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius = 3);
-
                 void draw_planes_on_image(const worldToCameraMatrix& worldToCamera, cv::Mat& debugImage) const;
 
 
@@ -235,37 +202,15 @@ namespace rgbd_slam {
                  */
                 void mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes);
 
-                /**
-                 * \brief Mark a point with the id pointId as unmatched. Will search the staged and local map.
-                 *
-                 * \param[in] pointId The uniq id of the point to unmatch
-                 * 
-                 * \return true if the point was found and updated
-                 */
-                bool mark_point_with_id_as_unmatched(const size_t pointId);
-
-                /**
-                 * \brief mark a point as unmatched
-                 * \param[in] point The point to mark as unmatched
-                 */
-                void mark_point_with_id_as_unmatched(IMap_Point_With_Tracking& point);
-
             private:
                 // Define types
 
-                // local map point container
-                typedef std::unordered_map<size_t, Map_Point> point_map_container;
-                // staged points container
-                typedef std::unordered_map<size_t, Staged_Point> staged_point_container;
+                typedef Feature_Map<LocalMapPoint, StagedMapPoint, features::keypoints::Keypoint_Handler, features::keypoints::DetectedKeyPoint, matches_containers::PointMatch, features::keypoints::KeypointsWithIdStruct> localPointMap;
+                localPointMap _localPointMap;
+
                 // local shape plane map container
                 typedef std::unordered_map<size_t, MapPlane> plane_map_container; 
 
-                // Local map contains world points with a good confidence
-                point_map_container _localPointMap;
-                // Staged points are potential new map points, waiting to confirm confidence
-                staged_point_container _stagedPoints;
-                // Hold unmatched detected point indexes, to add in the staged point container
-                vectorb _isPointMatched;
 
                 //local plane map
                 plane_map_container _localPlaneMap;

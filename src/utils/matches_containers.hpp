@@ -19,7 +19,7 @@ namespace rgbd_slam {
 
             FeatureCameraSpace _screenFeature;   // Coordinates of the detected screen point
             FeatureWorldSpace _worldFeature;    // coordinates of the local world point
-            WorldFeatureCovariance _worldFeatureCovariance;
+            WorldFeatureCovariance _worldFeatureCovariance; //projected to screen space
             size_t _idInMap;     // Id of the world feature in the local map 
         };
 

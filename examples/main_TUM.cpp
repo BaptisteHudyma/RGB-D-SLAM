@@ -131,16 +131,6 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    // load first frame to set size
-    const cv::Mat& firstRgbImage = cv::imread(dataPath.str() + datasetContainer[0].rgbImage.imagePath, cv::IMREAD_COLOR);
-    if (firstRgbImage.empty())
-    {
-        std::cout << "Could not load the first dataset rgb image" << std::endl;
-        return -1;
-    }
-    const int width  = firstRgbImage.cols;  // 640
-    const int height = firstRgbImage.rows;  // 480
-
     rgbd_slam::utils::Pose pose;
     const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth;
     if (initialGroundTruth.isValid)
@@ -150,6 +140,9 @@ int main(int argc, char* argv[])
 
     // Load a default set of parameters
     rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
+
+    const uint width  = rgbd_slam::Parameters::get_camera_1_size_x();  // 640
+    const uint height = rgbd_slam::Parameters::get_camera_1_size_y();  // 480
 
     rgbd_slam::RGBD_SLAM RGBD_Slam (pose, width, height);
 
@@ -212,6 +205,8 @@ int main(int argc, char* argv[])
                 std::cerr << "Could not load depth image " << depthImagePath << std::endl;
             depthImage = cv::Mat(480, 640, CV_16UC1, cv::Scalar(0.0));
         }
+        assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);
+        assert(static_cast<uint>(depthImage.cols) == width and static_cast<uint>(depthImage.rows) == height);
 
         // convert to mm & float 32
         depthImage.convertTo(depthImage, CV_32FC1, 1.0/5.0);
