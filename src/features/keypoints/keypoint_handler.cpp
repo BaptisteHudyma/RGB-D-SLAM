@@ -1,5 +1,7 @@
 #include "keypoint_handler.hpp"
 
+#include <cstddef>
+
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
 #include "../../types.hpp"
@@ -51,14 +53,14 @@ namespace rgbd_slam {
                 // knn matcher
                 _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
 
-                const static double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+                const static double cellSize = static_cast<double>(Parameters::get_search_matches_distance() + 1);
                 assert(cellSize > 0);
 
                 _cellCountX = static_cast<uint>(std::ceil(depthImageCols / cellSize));
                 _cellCountY = static_cast<uint>(std::ceil(depthImageRows / cellSize));
                 assert(_cellCountX > 0 and _cellCountY > 0);
-                
-                _searchSpaceIndexContainer.resize(_cellCountY * _cellCountX);
+
+                _searchSpaceIndexContainer.resize(static_cast<size_t>(_cellCountY) * _cellCountX);
                 for(index_container& indexContainer :  _searchSpaceIndexContainer)
                 {
                     indexContainer.reserve(5);
@@ -152,7 +154,7 @@ namespace rgbd_slam {
 
             const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const
             {
-                const static double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+                const static double cellSize = static_cast<double>(Parameters::get_search_matches_distance() + 1);
                 const uint_pair cellCoordinates(
                         std::clamp(floor(pointToPlace.y() / cellSize), 0.0, _cellCountY - 1.0),
                         std::clamp(floor(pointToPlace.x() / cellSize), 0.0, _cellCountX - 1.0)
@@ -249,7 +251,7 @@ namespace rgbd_slam {
                 if (_keypoints.empty() or _descriptors.rows <= 0)
                     return INVALID_MATCH_INDEX;
 
-                static const double cellSize = static_cast<double>(Parameters::get_search_matches_cell_size());
+                static const double cellSize = static_cast<double>(Parameters::get_search_matches_distance() + 1);
                 assert(cellSize > 0);
                 const uint searchSpaceCellRadius = static_cast<uint>(std::ceil(searchSpaceRadius / cellSize));
                 assert(searchSpaceCellRadius > 0);

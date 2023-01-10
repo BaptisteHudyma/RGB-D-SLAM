@@ -89,15 +89,12 @@ namespace rgbd_slam {
 
         // Point detection/Matching
         _matchSearchRadius = 30;        // max distance to a point after which we do not consider a math (pixels)
-        _matchSearchCellSize = 50;      // size of the squares dividing the image to search for point matches (pixels)
         _maximumMatchDistance = 0.7;    // The closer to 0, the more discriminating
-        _maxNumberOfPointsToDetect = 100;   // Maximum number of point features to detect
+        _maxNumberOfPointsToDetect = 100;   // Maximum number of point features to detect per frame
         _keypointCellDetectionSize = 250;   // Size of the keypoint detection window (pixels)
         _keypointRefreshFrequency = 5;  // Update the keypoint list every N calls
         _opticalFlowPyramidDepth = 4;   // depth of the optical pyramid (0 based. Higher than 5 levels is mostly useless)
         _opticalFlowPyramidWindowSize = 50; // search size at each pyramid level (pixel)
-        _opticalFlowMaxDistance = 100;  // distance between the last frame point and the new one after which the new detection it is rejected
-        _keypointMaskRadius = 25;       // do not detect points inside an area of this size (pixels) around existing optical flow keypoints
 
         // Pose Optimization
         _ransacMaximumRetroprojectionErrorForPointInliers = 10;  // Max retroprojection error between two screen points, in pixels, before rejecting the match
@@ -153,11 +150,6 @@ namespace rgbd_slam {
             outputs::log_error("Match search radius must be > 0");
             _isValid = false;
         }
-        if (_matchSearchCellSize <= 0)
-        {
-            outputs::log_error("Match search cell size must be > 0");
-            _isValid = false;
-        }
         if (_maximumMatchDistance <= 0)
         {
             outputs::log_error("Minimum match distance must be > 0");
@@ -186,16 +178,6 @@ namespace rgbd_slam {
         if (_opticalFlowPyramidWindowSize <= 0)
         {
             outputs::log_error("Pyramid window size must be > 0");
-            _isValid = false;
-        }
-        if (_opticalFlowMaxDistance <= 0)
-        {
-            outputs::log_error("Optical flow maximum distance  must be > 0");
-            _isValid = false;
-        }
-        if (_keypointMaskRadius <= 0)
-        {
-            outputs::log_error("keypoint mask diameters must be > 0");
             _isValid = false;
         }
 
