@@ -174,10 +174,10 @@ namespace rgbd_slam {
             inline static uint _maxNumberOfPointsToDetect;  // point detector sensitivity
             inline static uint _keypointCellDetectionSize;  // in pixel, the size of the keypoint detection window 
             inline static uint _keypointRefreshFrequency;
-            inline static uint _opticalFlowPyramidDepth;
-            inline static uint _opticalFlowPyramidWindowSize;
-            inline static uint _opticalFlowMaxDistance;
-            inline static uint _keypointMaskRadius;
+            inline static uint _opticalFlowPyramidDepth;        // depth of the pyramid for optical flow seach (0 based)
+            inline static uint _opticalFlowPyramidWindowSize;   // search size at each pyramid level (pixel)
+            inline static uint _opticalFlowMaxDistance;         // max retro optical flow distance, after which the point is rejected
+            inline static uint _keypointMaskRadius;             // radius around optical flow points in which we cont detect new points
 
             // Primitive extraction parameters
             inline static float _maximumPlaneAngleForMerge;         // Maximum angle between two planes patches to consider merging
