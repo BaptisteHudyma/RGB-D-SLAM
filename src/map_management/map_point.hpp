@@ -1,15 +1,12 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
-#include <opencv2/core/mat.hpp>
 #include <opencv2/opencv.hpp>
 
 #include "../utils/coordinates.hpp"
 #include "../tracking/kalman_filter.hpp"
 #include "../features/keypoints/keypoint_handler.hpp"
 #include "feature_map.hpp"
-#include "logger.hpp"
-#include "map_primitive.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {

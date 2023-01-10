@@ -18,7 +18,7 @@ namespace rgbd_slam {
                     /**
                      * \param[in] maxFeaturesToDetect The maximum number of features to retain
                      */
-                    Key_Point_Extraction(const uint maxFeaturesToDetect = 200);
+                    Key_Point_Extraction();
 
                     /**
                      * \brief compute the keypoints in the gray image, using optical flow and/or generic feature detectors 
@@ -59,11 +59,9 @@ namespace rgbd_slam {
 
                     /**
                      * \brief Compute new key point, with an optional mask to exclude detection zones
-                     *
                      * \param[in] grayImage The image in which we want to detect waypoints
                      * \param[in] mask The mask which we do not want to detect waypoints
                      * \param[in] minimumPointsForValidity The minimum number of points under which we will use the precise detector
-                     *
                      * \return An array of points in the input image
                      */
                     const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage, const cv::Mat& mask, const uint minimumPointsForValidity) const;
