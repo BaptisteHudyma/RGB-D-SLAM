@@ -123,19 +123,29 @@ namespace rgbd_slam {
             const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // add local map points
-            update_local_keypoint_map(cameraToWorld, keypointObject);
+            update_local_keypoint_map(cameraToWorld, poseCovariance, keypointObject);
 
             // add staged points to local map
-            update_staged_keypoints_map(cameraToWorld, keypointObject);
-
-            // Add unmatched poins to the staged map, to unsure tracking of new features
-            add_umatched_keypoints_to_staged_map(poseCovariance, cameraToWorld, keypointObject);
+            update_staged_keypoints_map(cameraToWorld, poseCovariance, keypointObject);
 
             // add planes to local map
             update_local_plane_map(cameraToWorld, detectedPlanes);
 
+            const bool addAllFeatures = false;  // only add unmatched features
+            add_features_to_map(optimizedPose, keypointObject, detectedPlanes, addAllFeatures);
+
             // add local map points to global map
             update_local_to_global();
+        }
+
+        void Local_Map::add_features_to_map(const utils::Pose& pose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures)
+        {
+            const matrix33& poseCovariance = utils::compute_pose_covariance(pose);
+            const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(pose.get_orientation_quaternion(), pose.get_position());
+
+            // Add unmatched poins to the staged map, to unsure tracking of new features
+            add_keypoints_to_staged_map(poseCovariance, cameraToWorld, keypointObject, addAllFeatures);
+            add_planes_to_map(cameraToWorld, detectedPlanes, addAllFeatures);
         }
 
         void Local_Map::update_local_to_global() 
@@ -170,6 +180,9 @@ namespace rgbd_slam {
 
         bool Local_Map::find_match(IMap_Point_With_Tracking& point, const features::keypoints::Keypoint_Handler& detectedKeypointsObject, const worldToCameraMatrix& worldToCamera, matches_containers::match_point_container& matchedPoints, const bool shouldAddMatchToContainer)
         {
+            // start by reseting this point
+            point.mark_unmatched();
+
             // try to find a match with opticalflow
             int matchIndex = detectedKeypointsObject.get_tracking_match_index(point._id, _isPointMatched);
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
@@ -183,11 +196,10 @@ namespace rgbd_slam {
 
             if (matchIndex == features::keypoints::INVALID_MATCH_INDEX) {
                 //unmatched point
-                point.mark_unmatched();
                 return false;
             }
             assert(matchIndex >= 0);
-            assert(static_cast<size_t>(matchIndex) < _isPointMatched.size());
+            assert(static_cast<Eigen::Index>(matchIndex) < _isPointMatched.size());
             if (_isPointMatched[matchIndex])
             {
                 //point was already matched
@@ -228,28 +240,45 @@ namespace rgbd_slam {
             return false;
         }
 
-        bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
+        bool Local_Map::find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& w2c, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes)
         {
+            // start by flagging it as unmatched
+            mapPlane._matchedPlane.mark_unmatched();
+
             // project plane in camera space
-            const utils::PlaneCameraCoordinates& projectedPlane = mapPlane._parametrization.to_camera_coordinates(worldToCamera);
+            const utils::PlaneCameraCoordinates& projectedPlane = mapPlane.get_parametrization().to_camera_coordinates(worldToCamera);
+            const utils::CameraCoordinate& planeCentroid = mapPlane.get_centroid().to_camera_coordinates(w2c);
+            const vector6& descriptor = features::primitives::Plane::compute_descriptor(projectedPlane, planeCentroid, mapPlane.get_contained_pixels());
+
+            double smallestSimilarity = std::numeric_limits<double>::max();
+            size_t selectedIndex = 0;
+
             const size_t detectedPlaneSize = detectedPlanes.size();
             for(size_t planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
             {
-                const features::primitives::Plane& shapePlane = detectedPlanes[planeIndex];
                 if (_isPlaneMatched[planeIndex])
                     // Does not allow multiple removal of a single match
                     // TODO: change this
                     continue;
 
-                if(shapePlane.is_similar(mapPlane._shapeMask, projectedPlane)) 
+                const features::primitives::Plane& shapePlane = detectedPlanes[selectedIndex];
+                const double descriptorSim  = shapePlane.get_similarity(descriptor);
+                if (descriptorSim < smallestSimilarity)// and shapePlane.is_similar(mapPlane.get_mask(), projectedPlane))
                 {
-                    mapPlane._matchedPlane.mark_matched(planeIndex);
-                    // TODO: replace nullptr by the plane covariance in camera space
-                    matchedPlanes.emplace(matchedPlanes.end(), shapePlane._parametrization, mapPlane._parametrization, nullptr, mapPlane._id);
-
-                    _isPlaneMatched[planeIndex] = true;
-                    return true;
+                    selectedIndex = planeIndex;
+                    smallestSimilarity = descriptorSim;
                 }
+            }
+
+            if(false and smallestSimilarity < 0.2)
+            {
+                const features::primitives::Plane& shapePlane = detectedPlanes[selectedIndex];
+                mapPlane._matchedPlane.mark_matched(selectedIndex);
+                // TODO: replace nullptr by the plane covariance in camera space
+                matchedPlanes.emplace(matchedPlanes.end(), shapePlane.get_parametrization(), mapPlane.get_parametrization(), nullptr, mapPlane._id);
+
+                _isPlaneMatched[selectedIndex] = true;
+                return true;
             }
 
             return false;
@@ -265,20 +294,22 @@ namespace rgbd_slam {
             {
                 if (mapPlane._matchedPlane.is_matched())
                 {
-                    const int matchedPlaneIndex = mapPlane._matchedPlane._matchIndex;
+                    const int matchedPlaneIndex = mapPlane._matchedPlane.get_match_index();
                     assert(matchedPlaneIndex != UNMATCHED_PRIMITIVE_ID);
                     assert(matchedPlaneIndex >= 0);
                     assert(static_cast<size_t>(matchedPlaneIndex) < detectedPlanes.size());
 
                     const features::primitives::Plane& detectedPlane = detectedPlanes[matchedPlaneIndex];
-                    // TODO update plane
-                    mapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
-                    mapPlane._shapeMask = detectedPlane.get_shape_mask();
+                    mapPlane.update(detectedPlane, planeCameraToWorld, cameraToWorld);
                 }
-                else if (mapPlane._matchedPlane.is_lost())
+                else
                 {
-                    // add to planes to remove
-                    planesToRemove.emplace(planeId);
+                    mapPlane.update_unmatched();
+                    if (mapPlane.is_lost())
+                    {
+                        // add to planes to remove
+                        planesToRemove.emplace(planeId);
+                    }
                 }
             }
 
@@ -287,25 +318,6 @@ namespace rgbd_slam {
             {
                 _localPlaneMap.erase(planeId);
             }
-
-            // add unmatched planes to local map
-            const size_t detectedplaneCount = _isPlaneMatched.size();
-            assert(detectedplaneCount == detectedPlanes.size());
-            for(size_t planeIndex = 0; planeIndex < detectedplaneCount; ++planeIndex)
-            {
-                if (_isPlaneMatched[planeIndex])
-                    continue;
-
-                const features::primitives::Plane& detectedPlane = detectedPlanes[planeIndex];
-
-                MapPlane newMapPlane;
-                newMapPlane._parametrization = detectedPlane._parametrization.to_world_coordinates(planeCameraToWorld);
-                newMapPlane._shapeMask = detectedPlane.get_shape_mask();
-
-                _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
-            }
-
-            _isPlaneMatched.clear();
         }
 
         void Local_Map::update_local_plane_map_with_tracking_lost()
@@ -314,7 +326,8 @@ namespace rgbd_slam {
             // Update planes
             for (auto& [planeId, mapPlane] : _localPlaneMap)
             {
-                if (mapPlane._matchedPlane.is_lost())
+                mapPlane.update_unmatched();
+                if (mapPlane.is_lost())
                 {
                     // add to planes to remove
                     planesToRemove.emplace(planeId);
@@ -326,11 +339,9 @@ namespace rgbd_slam {
             {
                 _localPlaneMap.erase(planeId);
             }
-
-            _isPlaneMatched.clear();
         }
 
-        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& cameraToWorld)
+        void Local_Map::update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld)
         {
             if (mapPoint.is_matched())
             {
@@ -349,7 +360,7 @@ namespace rgbd_slam {
                     const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(matchedPointCoordinates);
 
                     // update this map point errors & position
-                    mapPoint.update_matched(worldPointCoordinates, cameraPointCovariance.base());
+                    mapPoint.update_matched(worldPointCoordinates, cameraPointCovariance.base() + poseCovariance);
 
                     // If a new descriptor is available, update it
                     if (keypointObject.is_descriptor_computed(matchedPointIndex))
@@ -395,7 +406,7 @@ namespace rgbd_slam {
             mapPoint.update_unmatched();
         }
 
-        void Local_Map::update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // use this precprocessor directiv if you observe a lot of duplicated points in the local map
             #ifdef REMOVE_DUPLICATE_STAGED_POINTS
@@ -423,7 +434,7 @@ namespace rgbd_slam {
                 assert(pointMapIterator->first == mapPoint._id);
 
                 // update the point match status (matched/unmatched)
-                update_point_match_status(mapPoint, keypointObject, cameraToWorld);
+                update_point_match_status(mapPoint, keypointObject, poseCovariance, cameraToWorld);
 
                 if (mapPoint.is_lost()) {
                     // write to file
@@ -484,7 +495,7 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject)
         {
             // Add correct staged points to local map
             staged_point_container::iterator stagedPointIterator = _stagedPoints.begin();
@@ -494,7 +505,7 @@ namespace rgbd_slam {
                 assert(stagedPointIterator->first == stagedPoint._id);
 
                 // Update the matched/unmatched status
-                update_point_match_status(stagedPoint, keypointObject, cameraToWorld);
+                update_point_match_status(stagedPoint, keypointObject, poseCovariance, cameraToWorld);
 
                 if (stagedPoint.should_add_to_local_map())
                 {
@@ -546,13 +557,15 @@ namespace rgbd_slam {
             }
         }
 
-        void Local_Map::add_umatched_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject)
+        void Local_Map::add_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject, const bool addAllFeatures)
         {
             // Add all unmatched points to staged point container 
             const size_t keypointVectorSize = _isPointMatched.size();
             for(unsigned int i = 0; i < keypointVectorSize; ++i)
             {
-                if (not _isPointMatched[i]) {
+                // Add all features, or add only the unmatched points
+                if (addAllFeatures or not _isPointMatched[i])
+                {
                     // TODO remove this condition when we will compute the descriptor for optical flow points 
                     if(! keypointObject.is_descriptor_computed(i))
                     {
@@ -579,6 +592,30 @@ namespace rgbd_slam {
                 }
             }
 
+        }
+
+        void Local_Map::add_planes_to_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures)
+        {
+            const planeCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
+
+            // add unmatched planes to local map
+            const size_t detectedplaneCount = _isPlaneMatched.size();
+            assert(detectedplaneCount == detectedPlanes.size());
+            for(size_t planeIndex = 0; planeIndex < detectedplaneCount; ++planeIndex)
+            {
+                // Add all features, or add only the unmatched plane
+                if (addAllFeatures or not _isPlaneMatched[planeIndex])
+                {
+                    const features::primitives::Plane& detectedPlane = detectedPlanes[planeIndex];
+
+                    const MapPlane newMapPlane(
+                        detectedPlane.get_parametrization().to_world_coordinates(planeCameraToWorld),
+                        detectedPlane.get_centroid().to_world_coordinates(cameraToWorld),
+                        detectedPlane.get_shape_mask()
+                    );
+                    _localPlaneMap.emplace(newMapPlane._id, newMapPlane);
+                }
+            }
         }
 
         void Local_Map::draw_point_on_image(const IMap_Point_With_Tracking& mapPoint, const worldToCameraMatrix& worldToCameraMatrix, const cv::Scalar& pointColor, cv::Mat& debugImage, const size_t radius)
@@ -639,11 +676,11 @@ namespace rgbd_slam {
                 if (not mapPlane._matchedPlane.is_matched())
                     continue;
 
-                const cv::Scalar& planeColor = mapPlane._color;
+                const cv::Scalar& planeColor = mapPlane.get_color();
 
                 cv::Mat planeMask;
                 // Resize with no interpolation
-                cv::resize(mapPlane._shapeMask * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
+                cv::resize(mapPlane.get_mask() * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
                 cv::cvtColor(planeMask, planeMask, cv::COLOR_GRAY2BGR);
                 assert(planeMask.size == debugImage.size);
                 assert(planeMask.type() == debugImage.type());
@@ -715,8 +752,7 @@ namespace rgbd_slam {
         matches_containers::match_point_container Local_Map::find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject)
         {
             // will be used to detect new keypoints for the stagged map
-            _isPointMatched.clear();
-            _isPointMatched.assign(detectedKeypointsObject.get_keypoint_count(), false);
+            _isPointMatched = vectorb::Zero(detectedKeypointsObject.get_keypoint_count());
             matches_containers::match_point_container matchedPoints; 
 
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
@@ -725,6 +761,9 @@ namespace rgbd_slam {
             for (auto& [pointId, mapPoint] : _localPointMap) 
             {
                 assert(pointId == mapPoint._id);
+                // start by reseting this point
+                mapPoint.mark_unmatched();
+
                 find_match(mapPoint, detectedKeypointsObject, worldToCamera, matchedPoints);
             }
 
@@ -737,6 +776,9 @@ namespace rgbd_slam {
             for(auto& [pointId, stagedPoint] : _stagedPoints)
             {
                 assert(pointId == stagedPoint._id);
+                // start by reseting this point
+                stagedPoint.mark_unmatched();
+
                 find_match(stagedPoint, detectedKeypointsObject, worldToCamera, matchedPoints, shouldUseStagedPoints);
             }
 
@@ -745,8 +787,7 @@ namespace rgbd_slam {
 
         matches_containers::match_plane_container Local_Map::find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes)
         {
-            _isPlaneMatched.clear();
-            _isPlaneMatched.assign(detectedPlanes.size(), false);
+            _isPlaneMatched = vectorb::Zero(detectedPlanes.size());
 
             // Compute a world to camera transformation matrix
             const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(currentPose.get_orientation_quaternion(), currentPose.get_position());
@@ -756,11 +797,9 @@ namespace rgbd_slam {
             matches_containers::match_plane_container matchedPlaneContainer;
             for(auto& [planeId, mapPlane] : _localPlaneMap)
             {
-                if (not find_match(mapPlane, detectedPlanes, planeWorldToCamera, matchedPlaneContainer))
-                {
-                    // Mark as unmatched
-                    mapPlane._matchedPlane.mark_unmatched();
-                }
+                // start by resetting the match status 
+                mapPlane._matchedPlane.mark_unmatched();
+                find_match(mapPlane, detectedPlanes, worldToCamera, planeWorldToCamera, matchedPlaneContainer);
             }
 
             return matchedPlaneContainer;
@@ -794,7 +833,7 @@ namespace rgbd_slam {
                     MapPlane& mapPlane = planeMapIterator->second;
                     assert(mapPlane._id == planeId);
                     // add detected plane id to unmatched set
-                    _isPlaneMatched[mapPlane._matchedPlane._matchIndex] = false;
+                    _isPlaneMatched[mapPlane._matchedPlane.get_match_index()] = false;
                     // unmatch
                     mapPlane._matchedPlane.mark_unmatched();
                 }

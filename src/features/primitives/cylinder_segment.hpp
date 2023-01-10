@@ -26,7 +26,7 @@ namespace rgbd_slam {
                      * \param[in] isActivatedMask An array of size planeCount, referencing activated plane segments 
                      * \param[in] cellActivatedCount
                      */
-                    Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const std::vector<bool>& isActivatedMask, const uint cellActivatedCount);
+                    Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid, const vectorb& isActivatedMask, const uint cellActivatedCount);
 
                     /**
                      * \brief Copy constructor
@@ -143,14 +143,13 @@ namespace rgbd_slam {
                          * \param[in] maximumIterations The maximum RANSAC loops that this function will run
                          * \param[in] idsLeft Ids of the planes left to fit. Contains all the ids, and mark as false the already fitted segments
                          * \param[in] planeNormals Normals of the planes to fit
-                         * \param[in] projectedCentroids 
-                         * \param[in] maximumSqrtDistance Maximum distance between planes before rejecting cylinder fitting
+                         * \param[in] projectedCentroids
                          * \param[in] idsLeftMask container of the same size as idsLeft, indicating which ids are inliers 
                          * \param[IFinal] 
                          *
                          * \brief Return the number of inliers of this cylinder fitting
                          */
-                        size_t run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const matrixd& planeNormals, const matrixd& projectedCentroids, const float maximumSqrtDistance, const Matrixb& idsLeftMask, Matrixb& IFinal);
+                        size_t run_ransac_loop(const uint maximumIterations, const std::vector<uint>& idsLeft,const matrixd& planeNormals, const matrixd& projectedCentroids, const Matrixb& idsLeftMask, Matrixb& IFinal);
 
                         double get_distance(const vector3& point, const size_t segmentId) const;
 

@@ -3,6 +3,7 @@
 
 
 #include <Eigen/Dense>
+#include <Eigen/src/Core/Matrix.h>
 #include <vector>
 
 namespace rgbd_slam {
@@ -17,6 +18,7 @@ namespace rgbd_slam {
     typedef Eigen::MatrixXd matrixd;
     typedef Eigen::Vector2d vector2;
     typedef Eigen::VectorXd vectorxd;
+    typedef Eigen::Vector<bool, Eigen::Dynamic> vectorb;
     typedef Eigen::Matrix<double, 3, 1> vector3;
     typedef Eigen::Vector4d vector4;
     typedef Eigen::Matrix3d matrix33;
@@ -24,6 +26,8 @@ namespace rgbd_slam {
     typedef Eigen::Matrix<double, 4, 3> matrix43;
     typedef Eigen::Matrix4d matrix44;
     typedef Eigen::Quaternion<double> quaternion;
+
+    typedef Eigen::Matrix<double, 6, 1> vector6;
 
     struct screenCoordinateCovariance : public matrix33 {};
     struct cameraCoordinateCovariance : public matrix33 {};

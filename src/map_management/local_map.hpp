@@ -63,6 +63,15 @@ namespace rgbd_slam {
                 void update_no_pose();
 
                 /**
+                 * \brief Add features to staged map
+                 * \param[in] optimizedPose The clean true pose of the observer, after optimization
+                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_keypoint_matches
+                 * \param[in] detectedPlanes A container for all detected planes in the depth image
+                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
+                 */
+                void add_features_to_map(const utils::Pose& pose, const features::keypoints::Keypoint_Handler& keypointObject, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures);
+
+                /**
                  * \brief Hard clean the local and staged map
                  */
                 void reset();
@@ -124,16 +133,17 @@ namespace rgbd_slam {
                  *
                  * \return A boolean indicating if this plane was matched or not
                  */
-                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
+                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& w2c, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
 
                 /**
                  * \brief Update the Matched/Unmatched status of a map point
                  *
                  * \param[in, out] mapPoint the map point to update
                  * \param[in] keypointObject An object to handle all detected points in an image
+                 * \param[in] poseCovariance Covariance of the current pose
                  * \param[in] cameraToWorld A transformation matrix to convert a camera point to a world point
                  */
-                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const cameraToWorldMatrix& cameraToWorld);
+                void update_point_match_status(IMap_Point_With_Tracking& mapPoint, const features::keypoints::Keypoint_Handler& keypointObject, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld);
 
                 /**
                  * \brief Update local keypoint map features 
@@ -141,7 +151,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Update local keypoint map features when no optimized pose 
@@ -169,7 +179,7 @@ namespace rgbd_slam {
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
                  */
-                void update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
+                void update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject);
 
                 /**
                  * \brief Remove unmtached staged keypoints that are too old
@@ -182,8 +192,17 @@ namespace rgbd_slam {
                  * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
                  * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
+                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
                  */
-                void add_umatched_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject);
+                void add_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject, const bool addAllFeatures);
+                
+                /**
+                 * \brief Add unmatched detected planes to the map
+                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
+                 * \param[in] detectedPlanes An object containing the detected planes in the depth frame. Must be the same as in find_matches
+                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
+                 */
+                void add_planes_to_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures);
 
                 /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
@@ -246,12 +265,12 @@ namespace rgbd_slam {
                 // Staged points are potential new map points, waiting to confirm confidence
                 staged_point_container _stagedPoints;
                 // Hold unmatched detected point indexes, to add in the staged point container
-                std::vector<bool> _isPointMatched;
+                vectorb _isPointMatched;
 
                 //local plane map
                 plane_map_container _localPlaneMap;
                 // Hold unmatched plane ids, to add to the local map
-                std::vector<bool> _isPlaneMatched;
+                vectorb _isPlaneMatched;
 
                 outputs::XYZ_Map_Writer* _mapWriter; 
 

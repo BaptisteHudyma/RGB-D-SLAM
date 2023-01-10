@@ -15,6 +15,7 @@ namespace rgbd_slam {
         _width(imageWidth),
         _height(imageHeight),
         _isTrackingLost(true),
+        _failedTrackingCount(0),
 
         _totalFrameTreated(0),
         _meanDepthMapTreatmentDuration(0.0),
@@ -66,9 +67,7 @@ namespace rgbd_slam {
             _primitiveDetector = new features::primitives::Primitive_Detection(
                     _width,
                     _height,
-                    Parameters::get_depth_map_patch_size(),
-                    Parameters::get_maximum_plane_match_angle(),
-                    Parameters::get_maximum_merge_distance()
+                    Parameters::get_depth_map_patch_size()
                     );
 
             // Point detector and matcher
@@ -121,7 +120,6 @@ namespace rgbd_slam {
 
     const utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool shouldDetectLines) 
     {
-        _isTrackingLost = true;
         assert(static_cast<size_t>(inputDepthImage.rows) == _height);
         assert(static_cast<size_t>(inputDepthImage.cols) == _width);
         assert(static_cast<size_t>(inputRgbImage.rows) == _height);
@@ -143,7 +141,7 @@ namespace rgbd_slam {
             const double lineDetectionStartTime = cv::getTickCount();
             const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, inputDepthImage);
             _meanLineTreatmentDuration += (cv::getTickCount() - lineDetectionStartTime) / (double)cv::getTickFrequency();
-            
+
             cv::Mat outImage = inputRgbImage.clone();
             _lineDetector->get_image_with_lines(detectedLines, inputDepthImage, outImage); 
 
@@ -194,16 +192,18 @@ namespace rgbd_slam {
     const utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage, const cv::Mat& depthImage, const matrixf& cloudArrayOrganized) 
     {
         //get a pose with the decaying motion model
-        utils::Pose refinedPose = _motionModel.predict_next_pose(_currentPose);
+        const utils::Pose& predictedPose = _motionModel.predict_next_pose(_currentPose);
 
         // every now and then, restart the search of points even if we have enough features
-        const bool shouldRecomputeKeypoints = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) == 0;
+        _computeKeypointCount = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) + 1;
+        const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
 
-        // Detect and match key points with local map points
+        // Get map points that were tracked last call, and retroproject them to screen space using last pose (used for optical flow)
         const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer = _localMap->get_tracked_keypoints_features(_currentPose);
+        // Detect keypoints, and match the one detected by optical flow
         const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
 
-        // Run primitive detection 
+        // Run primitive detection
         const double primitiveDetectionStartTime = cv::getTickCount();
         features::primitives::plane_container detectedPlanes;
         // TODO: handle detected cylinders in local map
@@ -211,57 +211,54 @@ namespace rgbd_slam {
         _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPlanes, detectedCylinders);
         _meanPrimitiveTreatmentDuration += (cv::getTickCount() - primitiveDetectionStartTime) / static_cast<double>(cv::getTickFrequency());
 
+        // Find matches by the pose predicted by motion model 
         const double findMatchesStartTime = cv::getTickCount();
-        const matches_containers::matchContainer& matchedFeatures = _localMap->find_feature_matches(refinedPose, keypointObject, detectedPlanes);
+        const matches_containers::matchContainer& matchedFeatures = _localMap->find_feature_matches(predictedPose, keypointObject, detectedPlanes);
         _meanFindMatchTime += (cv::getTickCount() - findMatchesStartTime) / static_cast<double>(cv::getTickFrequency());
 
-        matches_containers::match_sets matchSets;
-        // only == 0 if this is the first call to this function
-        const bool isFirstCall = (_computeKeypointCount == 0);
-        if (not isFirstCall)
-        {
-            // Optimize refined pose
-            const double optimizePoseStartTime = cv::getTickCount();
-            utils::Pose optimizedPose;
-            //if (matchedPoints.size() >= Parameters::get_minimum_point_count_for_optimization())
-            const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(refinedPose, matchedFeatures, optimizedPose, matchSets);
-            if (isPoseValid)
-            {
-                refinedPose = optimizedPose;
-                _isTrackingLost = false;
-            }
-            else {
-                outputs::log_error("Could not find an optimized pose");
-            }
-            // else the refined pose will follow the motion model
-            _meanPoseOptimizationFromFeatures += (cv::getTickCount() - optimizePoseStartTime) / static_cast<double>(cv::getTickFrequency());
-        }
-        //else: first call: no optimization
+        // The new pose, after optimization
+        utils::Pose newPose;
 
-        // if keypoints were re searched, or if tracking is lost, reset the counter
-        if (shouldRecomputeKeypoints or _isTrackingLost) {
-            // reset the counter to not overflow
-            _computeKeypointCount = 0; 
-        }
-        // if tracking was lost, counter will be 0. Do not increment counter: it should stay at 0 to redetect new points
-        if (isFirstCall or not _isTrackingLost)
-            _computeKeypointCount += 1;
+        // Optimize refined pose
+        utils::Pose optimizedPose;
+        matches_containers::match_sets matchSets;
+
+        const double optimizePoseStartTime = cv::getTickCount();
+        const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(predictedPose, matchedFeatures, optimizedPose, matchSets);
+        _meanPoseOptimizationFromFeatures += (cv::getTickCount() - optimizePoseStartTime) / static_cast<double>(cv::getTickFrequency());
 
         const double updateLocalMapStartTime = cv::getTickCount();
-        // First call always update the map, tracking lost does not update the map
-        if (isFirstCall or not _isTrackingLost)
+        if (isPoseValid)
         {
+            newPose = optimizedPose;
+
             // Update local map if a valid transformation was found
-            _localMap->update(refinedPose, keypointObject, detectedPlanes, matchSets._pointSets._outliers, matchSets._planeSets._outliers);
+            _localMap->update(optimizedPose, keypointObject, detectedPlanes, matchSets._pointSets._outliers, matchSets._planeSets._outliers);
+            _isTrackingLost = false;
+            _failedTrackingCount = 0;
         }
+        // else the refined pose will follow the motion model
         else
         {
+            newPose = predictedPose;
+
             // no valid transformation
             _localMap->update_no_pose();
+
+            // add unmatched features if not tracking could be done last call
+            const bool addAllFeatures = _isTrackingLost;
+            if (addAllFeatures)
+                _localMap->add_features_to_map(predictedPose, keypointObject, detectedPlanes, true);
+
+            // tracking is lost after some consecutive fails
+            // TODO add to parameters
+            _isTrackingLost = (++_failedTrackingCount) > 3;
+
+            outputs::log_error("Could not find an optimized pose");
         }
         _meanLocalMapUpdateDuration += (cv::getTickCount() - updateLocalMapStartTime) / static_cast<double>(cv::getTickFrequency());
 
-        return refinedPose;
+        return newPose;
     }
 
 

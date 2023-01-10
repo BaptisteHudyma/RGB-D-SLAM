@@ -1,23 +1,29 @@
 # RGB-D-SLAM
 
 My take on a SLAM, based on shape primitive recognition with a RGB-D camera.
-The system uses depth informations as a connected 2D graph to extract primitive shapes, and use them with 3D points and lines to estimate it's position in space.
+The system extracts primitive shapes for the depth image, and use those primitives with 3D points and lines to estimate the observer position in space.
 A map is created with those points, lines and primitive shapes.
+See the Doxygen documentation for this program on [GitHub Pages](https://baptistehudyma.github.io/RGB-D-SLAM/html/index.html).
 
-The primitive detection is based on [Fast Cylinder and Plane Extraction from Depth Cameras for Visua Odometry](https://arxiv.org/pdf/1803.02380.pdf).
-See the Doxygen documentation on [GitHub Pages](https://baptistehudyma.github.io/RGB-D-SLAM/html/index.html).
+Each map feature is tracked using independent Kalman filter instead of bundle adjustment.
 
-For now, we are at the state of visual odometry with local mapping.
+Point detection is based on [ORB detection and descriptors](https://ieeexplore.ieee.org/document/6126544), as well as optical flow for short term tracking.
+Line detection uses [LSD - Line Segment Detector](http://www.ipol.im/pub/art/2012/gjmr-lsd/).
+The primitive detection is based on [Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry](https://arxiv.org/pdf/1803.02380.pdf).
 
+
+For now, the program can do basic visual odometry with local mapping, and do not uses loop closures.
+The program runs above real time (200 - 400 FPS), the feature extraction process being the most time consumming part (50%).
 
 ## Examples
-Some examples are given, but their dataset are not given.
-A configuration file must be given for every example, based on the model given in **configuration_example.yaml**.
+Some examples are provided, but their datasets must be downloaded separatly.
+A configuration file must be provided for every example, based on the model given in **configuration_example.yaml**.
 This configuration file must be placed in the **data/my_dataset** folder.
 
 - **CAPE** : The CAPE dataset contains RGB-D (size: 640x480) sequences of low textured environments, that are challenging for point-based SLAMs. It contains planes and cylinders, initially to test the CAPE process.
 The groundtrut trajectory are given for some sequences. 
-- **freiburg-Berkeley** : The Freiburg-Berkeley datasets are sequences of raw RGB-D (size: 640x480), with accelerometers data and groundtruth trajectories. Their is a lot of different videos, with different conditions (translation/rotations only, dynamic environments, ...)
+- **TUM-RGBD** : The TUM RGBD datasets are sequences of raw RGB-D (size: 640x480), with accelerometers data and groundtruth trajectories. There is a lot of different videos, with different conditions (translation/rotations only, dynamic environments, low texture, ...).
+The RGB and depth images must be synchronised by the user. The example program given here synchronises them with a greedy method.
 
 ## packages
 ```
@@ -44,10 +50,31 @@ make
 When all the tests are validated, you can run the main SLAM algorithm
 
 ### How to use
+Use the provided example programs with the dataset at your disposal.
+The dataset should be located next to the src folder, in a data folder.
+Ex: For TUM fr1_xyz, you should place it in data/TUM/fr1_xyz
+
+Running this program will produce a map file (format is .xyz for now) at the location of the executable.
+
+While the program is running, an OpenCV windows displays the current frame with the tracked features in it.
+Each feature is assigned to a random color, that will never change during the mapping process.
+A good tracking/SLAM process will keep the same feature's colors during the whole process.
+
+The top bar displays the number of points in the local map, as well as the planes and their colors.
+
+#### CAPE
+CAPE provides the yoga and tunnel dataset, composed of low textured environment with cylinder primitives
 ```
-./slam_freiburg1 desk
+./slam_CAPE tunnel
 ```
-Parameters
+
+#### TUM
+TUM contains many sequences, but it's best to start with the fr1_xyz and fr1_rpy (respectivly pure translations and pure rotations).
+```
+./slam_TUM fr1_xyz
+```
+
+#### Launch parameters
 ```
 -h Display the help
 -d displays the staged features (not yet in local map)
@@ -57,12 +84,20 @@ Parameters
 -i index of starting frame (> 0)
 -l compute line features
 -s Save the trajectory in an output file
+-r FPS limiter, to debug sequences in real time
 ```
 
 Check memory errors
 ```
-valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./slam_freiburg1 desk
+valgrind --suppressions=/usr/share/opencv4/valgrind.supp --suppressions=/usr/share/opencv4/valgrind_3rdparty.supp ./slam_TUM desk
 ```
+
+Most of the program's parameters are stored in the parameters.cpp file.
+They can be modified as needed, and basic checks are launched at startup to detect erroneous parameters.
+The provided configuration should work for most of the use cases.
+
+The user can also choose to run the program with deterministic results, by activating the `MAKE_DETERMINISTIC` option in the CMakeList.txt file.
+The maping process will be a bit slower but the result will always be the same between two sequences, allowing for reproductibility and debugging.
 
 ## Detailed process
 ### feature detection & matching
@@ -73,21 +108,21 @@ Those high level features are matched on one frame to another by comparing their
 
 The system also extract points and lines, to improve reliability of pose extraction.
 The lines are extracted using LSD.
-The feature points are tracked by optical flow and matched by their BRIEF descriptors when needed, and every N frames to prevent optical flow drift.
+The feature points are tracked by optical flow and matched by their ORB descriptors when needed, and every N frames to prevent optical flow drift.
 
 ### local map
 Every features are maintained in a local map, that keep tracks of the reliable local features.
-Those features parameters (positions, uncertainties, speed, ...) is updated if a map feature is matched, using an individual Kalman filter per feature (no bundle adjustment yet).
+Those features parameters (positions, uncertainties, speed, ...) are updated if a map feature is matched, using an individual Kalman filter per feature (no bundle adjustment yet).
 
 New features are maintained in a staged feature container, that behaves exactly like the local map, but as a lesser priority during the matching step.
 
 ### pose optimization
 The final pose for the frame is computed using the local map to detected feature matches.
-Outliers are filtered out using a simple RANSAC, and the final pose is computed using Levenberg Marquardt algorithm, with custom weighting functions.
+Outliers are filtered out using a simple RANSAC, and the final pose is computed using Levenberg Marquardt algorithm, with custom weighting functions (based on per feature covariance).
 
-The optimized pose is used to update the local map and motion model, in case the features are lost for a moment.
+The optimized pose is used to update the local map and decaying motion model, in case the features are lost for a moment.
 
-The complete systems runs in real time, between 30FPS and 60FPS for images of 640x480 pixels (depth and RGB images).
+The complete systems runs in real time, between 300FPS and 600FPS for images of 640x480 pixels (depth and RGB images).
 
 ## To be implemented soon
 - Advanced camera parameter model

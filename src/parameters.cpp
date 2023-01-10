@@ -116,18 +116,20 @@ namespace rgbd_slam {
         _maximumPointPerFrame = 200;
 
         // Primitive extraction
-        _minimumIOUToConsiderMatch = 0.3;
-        _minimumNormalsDotDifference = 0.6;
-        _primitiveMaximumCosAngle = cos(M_PI/10.0);
-        _primitiveMaximumMergeDistance = 100;
-        _depthMapPatchSize = 20;
+        _minimumIOUToConsiderMatch = 0.7;   // Inter Over Union of planes
+        _maximumAngleForPlaneMatch = 60.0;  // Plane segments could be merged below this angle
+        _maximumPlaneAngleForMerge = 18.0;  // plane segments can be merged if their normals angle is below this angle
+        _depthMapPatchSize = 20;            // Divide the depth image in patches of this size (pixels) to detect primitives
 
-        _minimumPlaneSeedCount = 6;
-        _minimumCellActivated = 5;
-        _depthSigmaError = 1.425e-6;
-        _depthSigmaMargin = 12;
-        _depthDiscontinuityLimit = 10;
-        _depthAlpha = 0.06;
+        _minimumPlaneSeedProportion = 0.8 / 100.0;      // grow planes only if we have more than this proportion of planes patch in this seed
+        _minimumCellActivatedProportion = 0.65 / 100.0; // grow planes only if their is this proportion of mergeable planes in the remaining patches
+        _minimumZeroDepthProportion = 0.7;              // if this proportion of the points have invalid depth in a planar patch, reject it
+
+        // Parameters taken from "2012 - 3D with Kinect""
+        //parameters of equation z_diff = sigmaA + sigmaM * z + sigmaE * z^2, that represent the minimum depth change for a given depth (quantization)
+        _depthSigmaError = 2.73;         // It is the sigmaE
+        _depthSigmaMultiplier = 0.74;    // It is the sigmaM
+        _depthSigmaMargin = -0.53;              // It is the sigmaA
 
         // Cylinder ransac fitting
         _cylinderRansacSqrtMaxDistance = 0.04;
@@ -285,34 +287,34 @@ namespace rgbd_slam {
             outputs::log_error("Minimum InterOverUnion must be > 0");
             _isValid = false;
         }
-        if (_minimumNormalsDotDifference < 0 or _minimumNormalsDotDifference > 1)
+        if (_maximumAngleForPlaneMatch < 0 or _maximumAngleForPlaneMatch > 180)
         {
-            outputs::log_error("Minimum normal difference must be between 0 and 1");
+            outputs::log_error("Maximum plane match angle must be between 0 and 180");
             _isValid = false;
         }
-        if (_minimumCellActivated <= 0)
+        if (_maximumPlaneAngleForMerge < 0 or _maximumPlaneAngleForMerge > 180)
         {
-            outputs::log_error("Minimum cell activated must be > 0");
+            outputs::log_error("Maximum plane patch merge angle must be between 0 and 180");
+            _isValid = false;
+        }
+        if (_minimumCellActivatedProportion < 0 or _minimumCellActivatedProportion > 100)
+        {
+            outputs::log_error("Minimum cell activated proportion must be in [0, 100]");
+            _isValid = false;
+        }
+        if (_minimumPlaneSeedProportion < 0 or _minimumPlaneSeedProportion > 100)
+        {
+            outputs::log_error("Minimum plane seed proportion must be in [0, 100]");
+            _isValid = false;
+        }
+        if (_minimumZeroDepthProportion < 0 or _minimumZeroDepthProportion > 1)
+        {
+            outputs::log_error("Minimum Zero depth proportion must be in [0, 1]");
             _isValid = false;
         }
         if (_depthSigmaError <= 0)
         {
             outputs::log_error("Depth sigma error must be > 0");
-            _isValid = false;
-        }
-        if (_depthSigmaMargin <= 0)
-        {
-            outputs::log_error("Depth sigma margin must be > 0");
-            _isValid = false;
-        }
-        if (_depthDiscontinuityLimit <= 0)
-        {
-            outputs::log_error("Depth discontinuous limit must be > 0");
-            _isValid = false;
-        }
-        if (_depthAlpha <= 0)
-        {
-            outputs::log_error("Depth Alpha must be > 0");
             _isValid = false;
         }
 

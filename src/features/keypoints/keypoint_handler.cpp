@@ -162,7 +162,7 @@ namespace rgbd_slam {
                 return cellCoordinates;
             }
 
-            const cv::Mat Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const
+            const cv::Mat Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const vectorb& isKeyPointMatchedContainer) const
             {
                 const uint_pair& searchSpaceCoordinates = get_search_space_coordinates(pointToSearch);
                 // compute a search zone for the potential matches of this point
@@ -222,16 +222,16 @@ namespace rgbd_slam {
                 return INVALID_MATCH_INDEX;
             }
 
-            int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId, const std::vector<bool>& isKeyPointMatchedContainer) const
+            int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId, const vectorb& isKeyPointMatchedContainer) const
             {
-                assert(isKeyPointMatchedContainer.size() == _keypoints.size());
+                assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
 
                 if (mapPointId != INVALID_MAP_POINT_ID) {
                     const int trackingIndex = get_tracking_match_index(mapPointId);
                     if (trackingIndex != INVALID_MATCH_INDEX)
                     {
-                        assert(trackingIndex >= 0 and static_cast<size_t>(trackingIndex) < isKeyPointMatchedContainer.size());
-                        if (not isKeyPointMatchedContainer[static_cast<size_t>(trackingIndex)]) {
+                        assert(trackingIndex >= 0 and static_cast<Eigen::Index>(trackingIndex) < isKeyPointMatchedContainer.size());
+                        if (not isKeyPointMatchedContainer[static_cast<Eigen::Index>(trackingIndex)]) {
                             return trackingIndex;
                         }
                         else {
@@ -243,9 +243,9 @@ namespace rgbd_slam {
                 return INVALID_MATCH_INDEX;
             }
 
-            int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const
+            int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const vectorb& isKeyPointMatchedContainer) const
             {
-                assert(isKeyPointMatchedContainer.size() == _keypoints.size());
+                assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
                 // cannot compute matches without a match or descriptors
                 if (_keypoints.empty() or _descriptors.rows <= 0)
                     return INVALID_MATCH_INDEX;

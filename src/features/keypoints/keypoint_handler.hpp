@@ -123,7 +123,7 @@ namespace rgbd_slam {
                      *
                      * \return the index of the tracked point in _keypoints, or -1 if no match was found
                      */
-                    int get_tracking_match_index(const size_t mapPointId, const std::vector<bool>& isKeyPointMatchedContainer) const;
+                    int get_tracking_match_index(const size_t mapPointId, const vectorb& isKeyPointMatchedContainer) const;
                     int get_tracking_match_index(const size_t mapPointId) const;
 
                     /**
@@ -135,7 +135,7 @@ namespace rgbd_slam {
                      *
                      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
                      */
-                    int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const std::vector<bool>& isKeyPointMatchedContainer) const; 
+                    int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint, const cv::Mat& mapPointDescriptor, const vectorb& isKeyPointMatchedContainer) const; 
 
                     /**
                      * \brief return the keypoint associated with the index
@@ -173,7 +173,7 @@ namespace rgbd_slam {
                      *
                      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
                      */
-                    const cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const std::vector<bool>& isKeyPointMatchedContainer) const;
+                    const cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch, const vectorb& isKeyPointMatchedContainer) const;
 
                     typedef std::pair<uint, uint> uint_pair;
                     /**

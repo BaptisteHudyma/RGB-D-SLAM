@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
     if (not parse_parameters(argc, argv, dataset, shouldDisplayPrimitiveMasks, shouldDisplayStagedPoints, shouldUseLineDetection, startIndex, jumpFrames, fpsTarget, shouldSavePoses)) {
         return 0;   //could not parse parameters correctly 
     }
-    const std::stringstream dataPath("./data/CAPE_" + dataset + "/");
+    const std::stringstream dataPath("./data/CAPE/" + dataset + "/");
 
     int width, height;
     cv::Mat rgbImage, depthImage;

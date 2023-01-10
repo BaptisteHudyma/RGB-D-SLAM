@@ -21,15 +21,15 @@ namespace primitives {
         _B.clear();
     }
 
-    void Histogram::init_histogram(const matrixd& points, const std::vector<bool>& isUnasignedMask) {
+    void Histogram::init_histogram(const matrixd& points, const vectorb& isUnasignedMask) {
         //_reset();
         _pointCount = points.rows();
         _B.assign(_pointCount, -1);
 
         assert(_pointCount == isUnasignedMask.size());
-        assert(_B.size() == isUnasignedMask.size());
+        assert(_B.size() == static_cast<size_t>(isUnasignedMask.size()));
 
-        for(uint i = 0; i < _pointCount; i += 1) {
+        for(uint i = 0; i < _pointCount; ++i) {
             if(isUnasignedMask[i]) {
                 const int xQ = (_binPerCoordCount - 1) * (points(i, 0) - _minX) / _maxXminX;
                 //dealing with degeneracy

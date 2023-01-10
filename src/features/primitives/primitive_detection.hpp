@@ -36,10 +36,8 @@ namespace rgbd_slam {
                      * \param[in] width The fixed depth image width
                      * \param[in] height The fixed depth image height
                      * \param[in] blocSize Size of an image division, in pixels.
-                     * \param[in] minCosAngleForMerge Minimum cosinus of the angle of two planes to merge those planes
-                     * \param[in] maxMergeDistance Maximum distance between the center of two planes to merge those planes
                      */
-                    Primitive_Detection(const uint width, const uint height, const uint blocSize = 20, const float minCosAngleForMerge = 0.9659f, const float maxMergeDistance = 50.0f);
+                    Primitive_Detection(const uint width, const uint height, const uint blocSize = 20);
 
                     /**
                      * \brief Main compute function: computes the primitives in the depth imahe
@@ -90,6 +88,22 @@ namespace rgbd_slam {
                     intpair_vector grow_planes_and_cylinders(const uint remainingPlanarCells);
 
                     /**
+                     * \brief When given a plan seed, try to make it grow with it's neighboring cells. Try to fit a cylinder to those merged planes
+                     * \param[in] seedId The id of the plane to try to grow
+                     * \param[in, out] untriedPlanarCellsCount Count of planar cells that have not been tested for merge yet
+                     * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs that composes it
+                     */
+                    void grow_plane_segment_at_seed(const uint seedId, uint& untriedPlanarCellsCount, intpair_vector& cylinder2regionMap);
+
+                    /**
+                     *
+                     * \param[in] cellActivatedCount Number of activated planar cells
+                     * \param[in] isActivatedMap A vector associating for each planar patch a flag indicating if it was merged this iteration
+                     * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs that composes it
+                     */
+                    void cylinder_fitting(const uint cellActivatedCount, const vectorb& isActivatedMap, intpair_vector& cylinder2regionMap);
+
+                    /**
                      * \brief Merge close planes by comparing normals and MSE
                      *
                      * \return Container of merged indexes: associates plane index to other plane index
@@ -117,10 +131,10 @@ namespace rgbd_slam {
                      *
                      * \param[in] x Start X coordinates
                      * \param[in] y Start Y coordinates
-                     * \param[in] seedPlaneNormal Normal of the plane to grow from (Components A, B, C of the standard plane equation)
-                     * \param[in] seedPlaneD D component of the plane to grow from
+                     * \param[in] planeToExpand The plane to grow
+                     * \param[in, out] isActivatedMap map of flags, indicating which plane segment were merged
                      */
-                    void region_growing(const uint x, const uint y, const vector3& seedPlaneNormal, const double seedPlaneD);
+                    void region_growing(const uint x, const uint y, const Plane_Segment& planeToExpand, vectorb& isActivatedMap);
 
                     /**
                      * \brief Fill an association matrix that links connected plane components
@@ -140,11 +154,6 @@ namespace rgbd_slam {
                     const uint _width;
                     const uint _height;
                     const uint _pointsPerCellCount;
-                    const float _minCosAngleForMerge;
-                    const float _maxMergeDist;
-
-                    const uint _cellWidth;
-                    const uint _cellHeight;
 
                     const uint _horizontalCellsCount;
                     const uint _verticalCellsCount;
@@ -154,12 +163,15 @@ namespace rgbd_slam {
                     plane_segments_container _planeSegments;
                     cylinder_segments_container _cylinderSegments;
 
+                    // a grid representing a scaled down depth image, where each pixel represents a potential planar region.
+                    // Each pixel as the value of the plane it belongs to, this value is the index of the plane (> 0).
+                    // A value of 0 means no plane in this cell
                     cv::Mat_<int> _gridPlaneSegmentMap;
+                    // Same, for the cylinders
                     cv::Mat_<int> _gridCylinderSegMap;
 
                     //arrays
-                    std::vector<bool> _isActivatedMap;
-                    std::vector<bool> _isUnassignedMask;
+                    vectorb _isUnassignedMask;
                     std::vector<float> _cellDistanceTols;
 
                     // primitive cell mask
