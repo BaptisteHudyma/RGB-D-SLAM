@@ -73,7 +73,7 @@ namespace rgbd_slam {
                     );
 
             // Point detector and matcher
-            _pointDetector = new features::keypoints::Key_Point_Extraction(Parameters::get_maximum_number_of_detectable_features());
+            _pointDetector = new features::keypoints::Key_Point_Extraction();
 
             // Line segment detector
             _lineDetector = new features::lines::Line_Detection(0.3, 0.9);
