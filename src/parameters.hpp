@@ -78,15 +78,12 @@ namespace rgbd_slam {
             static double get_maximum_retroprojection_error() { return _maximumRetroprojectionError; };
 
             static double get_search_matches_distance() { return _matchSearchRadius; };
-            static double get_search_matches_cell_size() { return _matchSearchCellSize; };
             static double get_maximum_match_distance() { return _maximumMatchDistance; };
             static uint get_maximum_number_of_detectable_features() { return _maxNumberOfPointsToDetect; };
             static uint get_keypoint_detection_cell_size() { return _keypointCellDetectionSize; };
             static uint get_keypoint_refresh_frequency() { return _keypointRefreshFrequency; };
             static uint get_optical_flow_pyramid_depth() { return _opticalFlowPyramidDepth; };
-            static uint get_optical_flow_pyramid_windown_size() { return _opticalFlowPyramidWindowSize; };
-            static uint get_optical_flow_max_distance() { return _opticalFlowMaxDistance; };
-            static uint get_keypoint_mask_radius() { return _keypointMaskRadius; };
+            static uint get_optical_flow_pyramid_window_size() { return _opticalFlowPyramidWindowSize; };
 
             static float get_maximum_plane_merge_angle() { return _maximumPlaneAngleForMerge; };
             static uint get_depth_map_patch_size() { return _depthMapPatchSize; };
@@ -168,8 +165,7 @@ namespace rgbd_slam {
             inline static double _maximumRetroprojectionError;              // In pixel: maximum distance after which we can consider a retroprojection as invalid
 
             // Point Detection & matching
-            inline static double _matchSearchRadius;    // Radius of the space around a point to search match points ins
-            inline static int _matchSearchCellSize;     // Size of a search space divider 
+            inline static double _matchSearchRadius;    // Radius of the space around a point to search match points in pixels
             inline static double _maximumMatchDistance; // Maximum distance between a point and his mach before refusing the match
             inline static uint _maxNumberOfPointsToDetect;  // point detector sensitivity
             inline static uint _keypointCellDetectionSize;  // in pixel, the size of the keypoint detection window 

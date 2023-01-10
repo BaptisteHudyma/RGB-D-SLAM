@@ -84,7 +84,7 @@ namespace rgbd_slam {
 
             const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const
             {
-                const static int radiusOfAreaAroundPoint = static_cast<int>(Parameters::get_keypoint_mask_radius());  // in pixels
+                const static int radiusOfAreaAroundPoint = static_cast<int>(Parameters::get_search_matches_distance());  // in pixels
                 const static cv::Scalar fillColor(0);
                 cv::Mat mask = cv::Mat(imageSize, CV_8UC1, cv::Scalar::all(255));
                 for (const cv::Point2f& point : keypointContainer)
@@ -114,9 +114,9 @@ namespace rgbd_slam {
                  */
 
                 // load parameters
-                const static int pyramidWindowSize = static_cast<int>(Parameters::get_optical_flow_pyramid_windown_size());
+                const static int pyramidWindowSize = static_cast<int>(Parameters::get_optical_flow_pyramid_window_size());
                 const static int pyramidDepth = static_cast<int>(Parameters::get_optical_flow_pyramid_depth());
-                const static uint maxDistance = Parameters::get_optical_flow_max_distance();
+                const static double maxDistance = Parameters::get_search_matches_distance();
                 const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
                 const static uint maximumPointsForLocalMap = Parameters::get_maximum_point_count_per_frame();
                 const static double maximumMatchDistance = Parameters::get_maximum_match_distance();
