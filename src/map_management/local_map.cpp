@@ -63,7 +63,16 @@ namespace rgbd_slam {
 
             matches_containers::matchContainer matchSets;
 
-            matchSets._points = _localPointMap.get_matches(detectedKeypointsObject, worldToCamera);
+            // find point matches
+            static const size_t minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
+            _localPointMap.get_matches(detectedKeypointsObject, worldToCamera, false, matchSets._points);
+            if (matchSets._points.size() < minimumPointsForOptimization or matchSets._points.size() < std::min(detectedKeypointsObject.size(), _localPointMap.get_local_map_size()) / 2)
+            {
+                // if the process as not enough matches, retry matches with a greater margin
+                _localPointMap.get_matches(detectedKeypointsObject, worldToCamera, true, matchSets._points);
+            }
+
+            // find plane matches
             matchSets._planes = find_plane_matches(currentPose, detectedPlanes);
 
             return matchSets;
