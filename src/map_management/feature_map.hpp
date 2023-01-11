@@ -36,9 +36,10 @@ namespace rgbd_slam {
              * \param[in, out] isDetectedFeatureMatched A vector of booleans indicating which detected features are already matched. should be updated if a match is found
              * \param[in, out] matches The object that contains the feature matches
              * \param[in] shouldAddToMatches If false, will mark feature as matched but wont add them to the match vector
+             * \param[in] useAdvancedSearch If true, will search matches with a lesser accuracy, but further
              * \return the index of the match if found, or UNMATCHED_FEATURE_INDEX
              */
-            virtual int find_match(const DetectedFeaturesObject& detectedFeatures, const worldToCameraMatrix& worldToCamera, const vectorb& isDetectedFeatureMatched, std::list<FeatureMatchType>& matches, const bool shouldAddToMatches = true) const = 0;
+            virtual int find_match(const DetectedFeaturesObject& detectedFeatures, const worldToCameraMatrix& worldToCamera, const vectorb& isDetectedFeatureMatched, std::list<FeatureMatchType>& matches, const bool shouldAddToMatches = true, const bool useAdvancedSearch = false) const = 0;
 
             /**
              * \return True if this map feature is marked as matched 
@@ -179,14 +180,14 @@ namespace rgbd_slam {
              * \brief return the object thta contains the matches between detected and map feature. Set the _isDetectedFeatureMatched flags
              * \param[in] detectedFeatures The object of detected features to match
              * \param[in] worldToCamera A matrix to convert from world to camera space
-             * \return An object of matches between map object and detected features
+             * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if True. Also less precise
+             * \param[out] matches An object of matches between map object and detected features
              */
-            std::list<FeatureMatchType> get_matches(const DetectedFeaturesObject& detectedFeatures, const worldToCameraMatrix& worldToCamera)
+            void get_matches(const DetectedFeaturesObject& detectedFeatures, const worldToCameraMatrix& worldToCamera, const bool useAdvancedMatch, std::list<FeatureMatchType>& matches)
             {
                 // reset match status
                 _isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
-
-                std::list<FeatureMatchType> matches;
+                matches.clear();
 
                 // search matches in local map first
                 for(auto& [mapId, mapFeature] : _localMap) 
@@ -198,7 +199,7 @@ namespace rgbd_slam {
                     if (not mapFeature.is_visible(worldToCamera))
                         continue;
 
-                    const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches);
+                    const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, true, useAdvancedMatch);
                     if (matchIndex >= 0)
                     {
                         mapFeature.mark_matched(matchIndex);
@@ -222,15 +223,13 @@ namespace rgbd_slam {
                     if (not mapFeature.is_visible(worldToCamera))
                         continue;
 
-                    const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, shouldUseStagedPoints);
+                    const int matchIndex = mapFeature.find_match(detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, shouldUseStagedPoints, useAdvancedMatch);
                     if (matchIndex >= 0)
                     {
                         mapFeature.mark_matched(matchIndex);
                         _isDetectedFeatureMatched[matchIndex] = true;
                     }
                 }
-
-                return matches;
             }
 
             /**
@@ -389,6 +388,7 @@ namespace rgbd_slam {
 
             size_t get_local_map_size() const { return _localMap.size(); };
             size_t get_staged_map_size() const { return _stagedMap.size(); };
+            size_t size() const { return get_local_map_size() + get_staged_map_size(); };
 
             protected:
 
