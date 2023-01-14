@@ -70,7 +70,7 @@ namespace rgbd_slam {
              * \param[in] inputParametersSize Number of input parameters 
              * \param[in,out] points Matched 2D (screen) to 3D (world) points
              */
-            Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes);
+            Global_Pose_Estimator(const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes);
 
             /**
              * \brief Implementation of the objective function

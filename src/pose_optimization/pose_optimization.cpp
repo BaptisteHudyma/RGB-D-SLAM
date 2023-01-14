@@ -280,7 +280,6 @@ namespace rgbd_slam {
             // Optimization function 
             Global_Pose_Functor pose_optimisation_functor(
                     Global_Pose_Estimator(
-                        input.size(), 
                         matchedFeatures._pointSets._inliers,
                         matchedFeatures._planeSets._inliers
                         )
