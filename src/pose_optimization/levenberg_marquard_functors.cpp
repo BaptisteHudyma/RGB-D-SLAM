@@ -47,8 +47,8 @@ namespace rgbd_slam {
          * GLOBAL POSE ESTIMATOR members
          */
 
-        Global_Pose_Estimator::Global_Pose_Estimator(const size_t inputParametersSize, const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes) :
-            Levenberg_Marquardt_Functor<double>(inputParametersSize, points.size() * 2 + planes.size() * 3),
+        Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point_container& points, const matches_containers::match_plane_container& planes) :
+            Levenberg_Marquardt_Functor<double>(6, points.size() * 2 + planes.size() * 3),
             // TODO: optimize below: we copy the containers instead of referencing them
             _points(points),
             _planes(planes)
