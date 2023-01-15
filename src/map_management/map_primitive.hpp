@@ -208,14 +208,12 @@ namespace rgbd_slam {
 
             virtual bool should_remove_from_staged() const override
             {
-                // TODO remve from staged after a time
-                return false;
+                return _failedTrackingCount >= 2;
             }
 
             virtual bool should_add_to_local_map() const override
             {
-                // TODO: criteria to add to local map
-                return true;
+                return _successivMatchedCount >= 1;
             }
         };
 
