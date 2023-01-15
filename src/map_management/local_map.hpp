@@ -92,16 +92,6 @@ namespace rgbd_slam {
             protected:
 
                 /**
-                 * \brief Compute the point feature matches between the local map and a given set of points. Update the staged point list matched points
-                 *
-                 * \param[in] currentPose The current observer pose.
-                 * \param[in] detectedKeypointsObject An object containing the detected key points in the rgbd frame
-                 *
-                 * \return A container associating the map/staged points to detected key points
-                 */
-                matches_containers::match_point_container find_keypoint_matches(const utils::Pose& currentPose, const features::keypoints::Keypoint_Handler& detectedKeypointsObject); 
-
-                /**
                  * \brief Compute the plane matches
                  *
                  * \param[in] currentPose The current observer pose.
@@ -123,18 +113,6 @@ namespace rgbd_slam {
                  */
                 bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& w2c, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
 
-                /**
-                 * \brief Update local keypoint map features 
-                 *
-                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
-                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
-                 */
-                void update_local_keypoint_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject);
-
-                /**
-                 * \brief Update local keypoint map features when no optimized pose 
-                 */
-                void update_local_keypoint_map_with_tracking_lost();
 
                 /**
                  * \brief Update the local plane map features
@@ -151,29 +129,6 @@ namespace rgbd_slam {
                  */
                 void update_local_plane_map_with_tracking_lost();
 
-                /**
-                 * \brief Add previously uncertain keypoint features to the local map
-                 *
-                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
-                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
-                 */
-                void update_staged_keypoints_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const features::keypoints::Keypoint_Handler& keypointObject);
-
-                /**
-                 * \brief Remove unmtached staged keypoints that are too old
-                 */
-                void update_staged_keypoints_map_with_tracking_lost();
-
-                /**
-                 * \brief Add unmatched detected points to the staged map
-                 *
-                 * \param[in] poseCovariance The covariance matrix of the optimized position of the observer
-                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
-                 * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in find_matches
-                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
-                 */
-                void add_keypoints_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const features::keypoints::Keypoint_Handler& keypointObject, const bool addAllFeatures);
-                
                 /**
                  * \brief Add unmatched detected planes to the map
                  * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
