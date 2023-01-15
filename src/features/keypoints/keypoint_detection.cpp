@@ -260,7 +260,7 @@ namespace rgbd_slam {
                     }
 
                     const size_t keypointIndex = keypointIndexContainer[i];
-                    const KeypointsWithIdStruct::keypointWithId& lastKeypoint = lastKeypointsWithIds.get(keypointIndex);
+                    const KeypointsWithIdStruct::keypointWithId& lastKeypoint = lastKeypointsWithIds.at(keypointIndex);
                     // check distance of the backpropagated point to the original point
                     if (cv::norm(lastKeypoint._point - backwardKeypoints[i]) > maxDistanceThreshold) {
                         continue;

@@ -36,6 +36,12 @@ namespace rgbd_slam {
                         return cv::countNonZero(_shapeMask) * pixelPerCell;
                     }
 
+                    bool can_add_to_map() const
+                    {
+                        // TODO
+                        return false;
+                    }
+
                 protected:
                     /**
                      * \brief Hidden constructor, to set shape

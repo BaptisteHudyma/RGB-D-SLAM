@@ -7,6 +7,7 @@
 #include "../tracking/kalman_filter.hpp"
 #include "../features/keypoints/keypoint_handler.hpp"
 #include "feature_map.hpp"
+#include "matches_containers.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {
@@ -293,8 +294,8 @@ namespace rgbd_slam {
         /**
          * \brief A map point structure, containing all the necessary informations to identify a map point in local map
          */
-        class LocalMapPoint 
-            : public MapPoint, public ILocalMapFeature<StagedMapPoint>
+        class LocalMapPoint
+            : public virtual MapPoint, public ILocalMapFeature<StagedMapPoint>
         {
             public:
                 LocalMapPoint(const StagedMapPoint& stagedPoint) : 
