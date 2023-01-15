@@ -92,58 +92,15 @@ namespace rgbd_slam {
             protected:
 
                 /**
-                 * \brief Compute the plane matches
-                 *
-                 * \param[in] currentPose The current observer pose.
-                 * \param[in] detectedPlanes The planes detected in the image
-                 *
-                 * \return A container associating the map planes to detected planes
-                 */
-                matches_containers::match_plane_container find_plane_matches(const utils::Pose& currentPose, const features::primitives::plane_container& detectedPlanes);
-
-                /**
-                 * \brief Compute a match for a given plane, and update this plane match status.
-                 *
-                 * \param[in, out] mapPlane A map plane that we want to match to a detected plane
-                 * \param[in] detectedPlanes A container that stores all the detected planes
-                 * \param[in] worldToCamera A matrix to transform a world plane to a camera plane
-                 * \param[in, out] matchedPlanes A container associating the detected planes to the map planes
-                 *
-                 * \return A boolean indicating if this plane was matched or not
-                 */
-                bool find_match(MapPlane& mapPlane, const features::primitives::plane_container& detectedPlanes, const worldToCameraMatrix& w2c, const planeWorldToCameraMatrix& worldToCamera, matches_containers::match_plane_container& matchedPlanes);
-
-
-                /**
-                 * \brief Update the local plane map features
-                 *
-                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz) It represent the current pose after optimization
-                 * \param[in] detectedPlanes A container that stores the detected planes in the depth image
-                 */
-                void update_local_plane_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes);
-                
-                /**
-                 * \brief Update the local plane map features when no pose optimization have been made
-                 *
-                 * \param[in] detectedPlanes A container that stores the detected planes in the depth image
-                 */
-                void update_local_plane_map_with_tracking_lost();
-
-                /**
-                 * \brief Add unmatched detected planes to the map
-                 * \param[in] cameraToWorld A transformation matrix to go from a screen point (UVD) to a 3D world point (xyz). It represent the current pose after optimization
-                 * \param[in] detectedPlanes An object containing the detected planes in the depth frame. Must be the same as in find_matches
-                 * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of the match status
-                 */
-                void add_planes_to_map(const cameraToWorldMatrix& cameraToWorld, const features::primitives::plane_container& detectedPlanes, const bool addAllFeatures);
-
-                /**
                  * \brief Clean the local map so it stays local, and update the global map with the good features
                  */
                 void update_local_to_global();
 
 
-                void draw_planes_on_image(const worldToCameraMatrix& worldToCamera, cv::Mat& debugImage) const;
+                /**
+                 * \brief draw the top information band on the debug image
+                 */
+                void draw_image_head_band(cv::Mat& debugImage) const;
 
 
                 /**
@@ -159,20 +116,16 @@ namespace rgbd_slam {
 
             private:
                 // Define types
+                typedef Feature_Map<LocalMapPoint, StagedMapPoint, DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject> localPointMap;
+                typedef Feature_Map<LocalMapPlane, StagedMapPlane, DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject> localPlaneMap;
 
-                typedef Feature_Map<LocalMapPoint, StagedMapPoint, features::keypoints::Keypoint_Handler, features::keypoints::DetectedKeyPoint, matches_containers::PointMatch, features::keypoints::KeypointsWithIdStruct> localPointMap;
                 localPointMap _localPointMap;
+                localPlaneMap _localPlaneMap;
 
                 // local shape plane map container
                 typedef std::unordered_map<size_t, MapPlane> plane_map_container; 
 
-
-                //local plane map
-                plane_map_container _localPlaneMap;
-                // Hold unmatched plane ids, to add to the local map
-                vectorb _isPlaneMatched;
-
-                outputs::XYZ_Map_Writer* _mapWriter; 
+                outputs::XYZ_Map_Writer* _mapWriter;
 
                 // Remove copy operators
                 Local_Map(const Local_Map& map) = delete;

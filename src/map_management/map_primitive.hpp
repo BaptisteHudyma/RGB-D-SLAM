@@ -1,89 +1,250 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
+#include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
+
+#include "feature_map.hpp"
 
 #include "../parameters.hpp"
 #include "../features/primitives/shape_primitives.hpp"
 
 #include "../utils/random.hpp"
 #include "../utils/coordinates.hpp"
+#include "../utils/matches_containers.hpp"
+#include "../utils/camera_transformation.hpp"
 
 namespace rgbd_slam {
     namespace map_management {
 
-        const int UNMATCHED_PRIMITIVE_ID = -1;
 
-        /**
-         * \brief Represent a matched primitive, in the detected planes
-         */
-        struct MatchedPrimitive 
+        typedef features::primitives::Plane DetectedPlaneType;
+        typedef features::primitives::plane_container DetectedPlaneObject;
+        typedef matches_containers::PlaneMatch PlaneMatchType;
+        typedef void* TrackedPlaneObject;   // TODO implement
+
+
+        class Plane
         {
-            MatchedPrimitive();
-
-            bool is_matched() const;
-
-            void mark_matched(const uint matchIndex);
-
-            void mark_unmatched();
-
-            int get_match_index() const { return _matchIndex; };
-
-            private:
-            int _matchIndex; // Id of the last match
-        };
-
-        /**
-         * \brief Represent a plane in the local map
-         */
-        struct MapPlane 
-        {
-            MapPlane(const utils::PlaneWorldCoordinates& parametrization, const utils::WorldCoordinate& centroid, const cv::Mat& shapeMask);
-
+            public:
             /**
              * \brief Return the number of pixels in this plane mask
              */
-            uint get_contained_pixels() const;
-            
-            /**
-             * \brief update a map plane with the given detected plane 
-             * \param[in] detectedPlane The detected plane, associated with this plane, in camera space
-             * \param[in] planeCameraToWorld A matrix to convert from a camera plane to a world plane
-             * \param[in] cameraToWorld A matrix to convert from camera point to a world point
-             */
-            void update(const features::primitives::Plane& detectedPlane, const planeCameraToWorldMatrix& planeCameraToWorld, const cameraToWorldMatrix& cameraToWorld);
+            uint get_contained_pixels() const
+            {
+                const static uint cellSize = Parameters::get_depth_map_patch_size();
+                const static uint pixelPerCell = cellSize * cellSize;
+                return cv::countNonZero(_shapeMask) * pixelPerCell;
+            }
 
-            /**
-             * \brief Update a plane with no matches
-             */
-            void update_unmatched();
+            utils::PlaneWorldCoordinates get_parametrization() const 
+            {
+                return _parametrization;
+            }
 
-            bool is_lost() const;
+            utils::WorldCoordinate get_centroid() const
+            {
+                return _centroid;
+            }
 
-            // Unique identifier of this primitive in map
-            const size_t _id;
-            // matched detected plane
-            MatchedPrimitive _matchedPlane;
+            cv::Mat get_mask() const
+            {
+                return _shapeMask;
+            }
 
-            utils::PlaneWorldCoordinates get_parametrization() const { return _parametrization; };
-            utils::WorldCoordinate get_centroid() const { return _centroid; };
-            cv::Mat get_mask() const { return _shapeMask; };
-            cv::Scalar get_color() const { return _color; };
-
-
-            private:
-            inline static size_t _currentPlaneId = 1;   // 0 is invalid
-
+            protected:
             utils::PlaneWorldCoordinates _parametrization;
             utils::WorldCoordinate _centroid;
 
             cv::Mat _shapeMask;
-
-            cv::Scalar _color;  // display color of this primitive
-            size_t _failedTrackingCount; // count of unmatched iterations
         };
 
 
+        class MapPlane
+            : public Plane, public IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject>
+        {
+            public:
+            MapPlane() :
+                IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject>()
+            {
+                assert(_id > 0);
+            }
+
+            MapPlane(const size_t id) :
+                IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject>(id)
+            {
+                assert(_id > 0);
+            }
+
+            virtual int find_match(const DetectedPlaneObject& detectedFeatures, const worldToCameraMatrix& worldToCamera, const vectorb& isDetectedFeatureMatched, std::list<PlaneMatchType>& matches, const bool shouldAddToMatches = true, const bool useAdvancedSearch = false) const override 
+            {
+                const planeWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
+                // project plane in camera space
+                const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(planeCameraToWorld);
+                const utils::CameraCoordinate& planeCentroid = get_centroid().to_camera_coordinates(worldToCamera);
+                const vector6& descriptor = features::primitives::Plane::compute_descriptor(projectedPlane, planeCentroid, get_contained_pixels());
+                const double similarityThreshold = useAdvancedSearch ? 0.2 : 0.4;
+
+                double smallestSimilarity = std::numeric_limits<double>::max();
+                int selectedIndex = UNMATCHED_FEATURE_INDEX;
+
+                const size_t detectedPlaneSize = detectedFeatures.size();
+                for(size_t planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
+                {
+                    if (isDetectedFeatureMatched[planeIndex])
+                        // Does not allow multiple removal of a single match
+                        // TODO: change this
+                        continue;
+
+                    const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
+                    const double descriptorSimilarity  = shapePlane.get_similarity(descriptor);
+                    if (descriptorSimilarity < smallestSimilarity)// and shapePlane.is_similar(get_mask(), projectedPlane))
+                    {
+                        selectedIndex = static_cast<int>(planeIndex);
+                        smallestSimilarity = descriptorSimilarity;
+                    }
+                }
+
+                if(true)
+                    return UNMATCHED_FEATURE_INDEX;
+
+                if (selectedIndex != UNMATCHED_FEATURE_INDEX)
+                {
+                    if(shouldAddToMatches and smallestSimilarity < similarityThreshold)
+                    {
+                        const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
+                        // TODO: replace nullptr by the plane covariance in camera space
+                        matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), nullptr, _id);
+                    }
+                }
+
+                return selectedIndex;
+            }
+
+            virtual bool add_to_tracked(const worldToCameraMatrix& worldToCamera, TrackedPlaneObject& trackedFeatures, const uint dropChance = 1000) const override
+            {
+                // silence warning for unused parameters
+                (void)worldToCamera;
+                (void)trackedFeatures;
+                (void)dropChance;
+                return false;
+            }
+
+            virtual void draw(const worldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
+            {
+                // silence unused parameter warning
+                (void)worldToCamMatrix;
+
+                assert(not get_mask().empty());
+
+                const double maskAlpha = 0.3;
+                const cv::Size& debugImageSize = debugImage.size();
+
+                cv::Mat planeMask, planeColorMask;
+                // Resize with no interpolation
+                cv::resize(get_mask() * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
+                cv::cvtColor(planeMask, planeColorMask, cv::COLOR_GRAY2BGR);
+                assert(planeMask.size == debugImage.size);
+                assert(planeMask.size == debugImage.size);
+                assert(planeColorMask.type() == debugImage.type());
+
+                // merge with debug image
+                planeColorMask.setTo(color, planeMask);
+                cv::Mat maskedInput, ImaskedInput;
+                // get masked original image, with the only visible part being the plane part
+                debugImage.copyTo(maskedInput, planeMask);
+                // get masked original image, with the only visible part being the non plane part
+                debugImage.copyTo(ImaskedInput, 255 - planeMask);
+
+                cv::addWeighted(maskedInput, (1 - maskAlpha), planeColorMask, maskAlpha, 0.0, maskedInput);
+
+                debugImage = maskedInput + ImaskedInput;
+            }
+
+            virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const override
+            {
+                // TODO
+                (void)worldToCamMatrix;
+                return true;
+            }
+
+            protected:
+            virtual bool update_with_match(const DetectedPlaneType& matchedFeature, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld) override
+            {
+                (void)poseCovariance;
+                assert(_matchIndex >= 0);
+
+                const planeCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
+
+                // TODO real plane tracking model
+                _parametrization = matchedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld);
+                _centroid = matchedFeature.get_centroid().to_world_coordinates(cameraToWorld);
+                _shapeMask = matchedFeature.get_shape_mask();
+
+                return true;
+            }
+
+            virtual void update_no_match() override 
+            {
+            }
+        };
+
+
+
+        class StagedMapPlane
+            : public virtual MapPlane, public virtual IStagedMapFeature<DetectedPlaneType>
+        {
+            public:
+            StagedMapPlane(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const DetectedPlaneType& detectedFeature) :
+                MapPlane()
+            {
+                (void)poseCovariance;
+
+                const planeCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
+                _parametrization = detectedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
+                _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld),
+                _shapeMask = detectedFeature.get_shape_mask();
+            }
+
+            virtual bool should_remove_from_staged() const override
+            {
+                // TODO remve from staged after a time
+                return false;
+            }
+
+            virtual bool should_add_to_local_map() const override
+            {
+                // TODO: criteria to add to local map
+                return true;
+            }
+        };
+
+
+
+        class LocalMapPlane
+            : public MapPlane, public ILocalMapFeature<StagedMapPlane>
+        {
+            public:
+            LocalMapPlane(const StagedMapPlane& stagedPlane) : 
+                    MapPlane(stagedPlane._id)
+            {
+                // new map point, new color
+                set_color();
+
+                _matchIndex = stagedPlane._matchIndex;
+                _successivMatchedCount = stagedPlane._successivMatchedCount;
+
+                _parametrization = stagedPlane.get_parametrization();
+                _centroid = stagedPlane.get_centroid();
+                _shapeMask = stagedPlane.get_mask();
+            }
+
+            virtual bool is_lost() const override
+            {
+                const static size_t maximumUnmatchBeforeremoval = Parameters::get_maximum_unmatched_before_removal();
+                return _failedTrackingCount >= maximumUnmatchBeforeremoval;
+            }
+        };
 
     }   // map_management
 }       // rgbd_slam

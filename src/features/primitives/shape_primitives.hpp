@@ -39,7 +39,7 @@ namespace rgbd_slam {
                     bool can_add_to_map() const
                     {
                         // TODO
-                        return false;
+                        return true;
                     }
 
                 protected:
