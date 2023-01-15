@@ -24,6 +24,10 @@ namespace rgbd_slam {
             assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
 
             _mapWriter = new outputs::XYZ_Map_Writer("out");
+
+            // For testing purposes, one can deactivate those maps
+            //_localPointMap.deactivate();
+            //_localPlaneMap.deactivate();
         }
 
         Local_Map::~Local_Map()

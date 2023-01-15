@@ -172,6 +172,9 @@ namespace rgbd_slam {
              */
             void reset()
             {
+                if (not _isActivated)
+                    return;
+
                 _localMap.clear();
                 _stagedMap.clear();
             }
@@ -185,6 +188,9 @@ namespace rgbd_slam {
              */
             void get_matches(const DetectedFeaturesObject& detectedFeatures, const worldToCameraMatrix& worldToCamera, const bool useAdvancedMatch, std::list<FeatureMatchType>& matches)
             {
+                if (not _isActivated)
+                    return;
+
                 // reset match status
                 _isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
                 matches.clear();
@@ -240,6 +246,9 @@ namespace rgbd_slam {
              */
             void get_tracked_features(const worldToCameraMatrix& worldToCamera, TrackedFeaturesObject& trackedFeatures, const uint localMapDropChance = 1000) const
             {
+                if (not _isActivated)
+                    return;
+
                 // local Map features
                 for(const auto& [id, mapFeature] : _localMap)
                 {
@@ -261,6 +270,9 @@ namespace rgbd_slam {
              */
             void update_map(const cameraToWorldMatrix& cameraToWorld, const matrix33& poseCovariance, const DetectedFeaturesObject& detectedFeatureObject)
             {
+                if (not _isActivated)
+                    return;
+
                 update_local_map(cameraToWorld, poseCovariance, detectedFeatureObject);
                 update_staged_map(cameraToWorld, poseCovariance, detectedFeatureObject);
             }
@@ -270,6 +282,9 @@ namespace rgbd_slam {
              */
             void update_with_no_tracking()
             {
+                if (not _isActivated)
+                    return;
+
                 update_local_map_with_no_tracking();
                 update_staged_map_with_no_tracking();
             }
@@ -283,6 +298,9 @@ namespace rgbd_slam {
              */
             void add_features_to_staged_map(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const DetectedFeaturesObject& detectedFeatures, const bool addAllFeatures)
             {
+                if (not _isActivated)
+                    return;
+
                 // Add all unmatched points to staged point container 
                 const size_t featureVectorSize = detectedFeatures.size();
                 assert(featureVectorSize == static_cast<size_t>(_isDetectedFeatureMatched.size()));
@@ -314,6 +332,9 @@ namespace rgbd_slam {
              */
             bool mark_feature_with_id_as_unmatched(const size_t featureId)
             {
+                if (not _isActivated)
+                    return false;
+
                 if (featureId == 0)
                 {
                     outputs::log_error("Cannot match a feature with invalid id");
@@ -365,6 +386,9 @@ namespace rgbd_slam {
              */
             void draw_on_image(const worldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const bool shouldDisplayStaged = false) const
             {
+                if (not _isActivated)
+                    return;
+
                 if (shouldDisplayStaged)
                 {
                     for(const auto& [id, mapFeature] : _stagedMap)
@@ -384,6 +408,14 @@ namespace rgbd_slam {
                         mapFeature.draw(worldToCamMatrix, debugImage, mapFeature._color);
                     }
                 }
+            }
+
+            /**
+             * \brief Dectivate this local map
+             */
+            void deactivate()
+            {
+                _isActivated = false;
             }
 
             size_t get_local_map_size() const { return _localMap.size(); };
@@ -526,6 +558,7 @@ namespace rgbd_slam {
             }
 
             private:
+            bool _isActivated;  // if false, no updates will occur on this map object (no matches, no tracking, ...)
             localMapType _localMap;
             stagedMapType _stagedMap;
             vectorb _isDetectedFeatureMatched;   // indicates if a detected feature is macthed to a local map feature
