@@ -35,7 +35,7 @@ namespace rgbd_slam {
             const utils::CameraCoordinate2D& pointB = point2Db.to_camera_coordinates();
 
             // Linear-LS triangulation
-            Eigen::Matrix<double, 4, 4> triangulationMatrix;
+            matrix44 triangulationMatrix;
             triangulationMatrix << pointA.x() * currentWorldToCamera.row(2) - currentWorldToCamera.row(0),
                                    pointA.y() * currentWorldToCamera.row(2) - currentWorldToCamera.row(1),
                                    pointB.x() * newWorldToCamera.row(2) - newWorldToCamera.row(0),

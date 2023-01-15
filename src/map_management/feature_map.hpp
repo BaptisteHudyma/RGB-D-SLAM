@@ -291,7 +291,7 @@ namespace rgbd_slam {
                     // Add all features, or add only the unmatched points
                     if (addAllFeatures or not _isDetectedFeatureMatched[i])
                     {
-                        const DetectedFeatureType& detectedfeature = detectedFeatures.get(i); 
+                        const DetectedFeatureType& detectedfeature = detectedFeatures.at(i); 
                         // some features cannot be added to map
                         if(detectedfeature.can_add_to_map())
                         {
@@ -408,7 +408,7 @@ namespace rgbd_slam {
                         const size_t matchedFeatureIndex = mapFeature._matchIndex;
                         assert(matchedFeatureIndex < detectedFeatureObject.size());
 
-                        const DetectedFeatureType& detectedFeature = detectedFeatureObject.get(matchedFeatureIndex);
+                        const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);
                         mapFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);
                     }
                     else
@@ -446,7 +446,7 @@ namespace rgbd_slam {
                         const size_t matchedFeatureIndex = stagedFeature._matchIndex;
                         assert(matchedFeatureIndex < detectedFeatureObject.size());
 
-                        const DetectedFeatureType& detectedFeature = detectedFeatureObject.get(matchedFeatureIndex);
+                        const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);
                         stagedFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);
                     }
                     else

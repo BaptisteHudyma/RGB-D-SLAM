@@ -76,7 +76,7 @@ namespace rgbd_slam {
                     return size() == 0;
                 }
 
-                const keypointWithId get(const size_t index) const
+                const keypointWithId at(const size_t index) const
                 {
                     assert(index < size());
                     return keypointWithId(_ids[index], _keypoints[index]);
@@ -178,7 +178,7 @@ namespace rgbd_slam {
 
                     size_t size() const { return _keypoints.size(); };
 
-                    DetectedKeyPoint get(const size_t index) const 
+                    DetectedKeyPoint at(const size_t index) const 
                     {
                         DetectedKeyPoint newKp;
                         newKp._coordinates = get_keypoint(index);

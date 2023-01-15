@@ -114,7 +114,7 @@ namespace rgbd_slam {
                     const size_t newKeypointIndex = pointIndex + keypointIndexOffset;
 
                     // fill in unique point index
-                    const KeypointsWithIdStruct::keypointWithId& kp = lastKeypointsWithIds.get(pointIndex);
+                    const KeypointsWithIdStruct::keypointWithId& kp = lastKeypointsWithIds.at(pointIndex);
                     const size_t uniqueIndex = kp._id;
                     const cv::Point2f& pt = kp._point;
 
