@@ -105,7 +105,6 @@ add_library(primitives SHARED
     )
 
 add_library(mapManagement SHARED
-    ${MAP}/map_primitive.cpp
     ${MAP}/local_map.cpp
     )
 
