@@ -30,6 +30,9 @@ namespace rgbd_slam {
             }
 
             double IPrimitive::get_IOU(const cv::Mat& mask) const {
+                assert(not mask.empty());
+                assert(not _shapeMask.empty());
+
                 //get union of masks
                 const cv::Mat unionMat = (_shapeMask | mask);
                 const int IOU = cv::countNonZero(unionMat);

@@ -393,11 +393,8 @@ namespace rgbd_slam {
                 {
                     for(const auto& [id, mapFeature] : _stagedMap)
                     {
-                        if (mapFeature.is_matched())
-                        {
-                            const cv::Scalar stagedColor = (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);
-                            mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);
-                        }
+                        const cv::Scalar stagedColor = (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);
+                        mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);
                     }
                 }
 
