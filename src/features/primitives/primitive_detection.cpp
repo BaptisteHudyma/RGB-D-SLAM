@@ -450,15 +450,18 @@ namespace rgbd_slam {
                 //refine the coarse planes boundaries to smoother versions
                 for(uint planeIndex = 0; planeIndex < planeCount; ++planeIndex) 
                 {
-                    if (planeIndex != planeMergeLabels[planeIndex])
-                        continue;
+                    // index of this plane merge index
+                    const uint planeMergeLabel = planeMergeLabels[planeIndex];
+                    if (planeIndex != planeMergeLabel)
+                        continue;   // plane should be merged by another plane index
                     if (not _planeSegments[planeIndex].is_planar())
-                        continue;
+                        continue;   // not planar segment: TODO: remove ?
 
                     _mask = cv::Scalar(0);
+                    // add all merged planes to the mask
                     for(uint j = planeIndex; j < planeCount; ++j) 
                     {
-                        if(planeMergeLabels[j] == planeMergeLabels[planeIndex])
+                        if(planeMergeLabels[j] == planeMergeLabel)
                             _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
                     }
                     // Opening

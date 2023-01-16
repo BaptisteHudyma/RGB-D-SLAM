@@ -53,10 +53,10 @@ namespace rgbd_slam {
             }
 
             protected:
-            utils::PlaneWorldCoordinates _parametrization;
-            utils::WorldCoordinate _centroid;
+            utils::PlaneWorldCoordinates _parametrization;  // parametrization of this plana in world space
 
-            cv::Mat _shapeMask;
+            utils::WorldCoordinate _centroid;   // centroid of the detected plane
+            cv::Mat _shapeMask; // mask of the detected plane
         };
 
 
@@ -104,9 +104,6 @@ namespace rgbd_slam {
                         smallestSimilarity = descriptorSimilarity;
                     }
                 }
-
-                if(true)
-                    return UNMATCHED_FEATURE_INDEX;
 
                 if (selectedIndex != UNMATCHED_FEATURE_INDEX)
                 {

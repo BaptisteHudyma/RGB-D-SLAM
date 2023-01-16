@@ -65,6 +65,7 @@ namespace rgbd_slam {
                     //remove copy functions
                     //IPrimitive(const IPrimitive&) = delete;
                     IPrimitive& operator=(const IPrimitive&) = delete;
+                    IPrimitive() = delete;
             };
 
             /**
@@ -99,6 +100,11 @@ namespace rgbd_slam {
 
                     vector3 _normal;
                     double _radius;
+
+                private:
+                    //remove copy functions
+                    Cylinder() = delete;
+                    Cylinder& operator=(const Cylinder&) = delete;
             };
 
             /**
@@ -162,6 +168,10 @@ namespace rgbd_slam {
                     utils::CameraCoordinate _centroid;      // mean center point of the plane; in camera coordinates
 
                     vector6 _descriptor;
+
+                    //remove copy functions
+                    Plane() = delete;
+                    Plane& operator=(const Plane&) = delete;
             };
 
 
