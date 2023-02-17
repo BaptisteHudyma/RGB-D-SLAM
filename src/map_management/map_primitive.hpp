@@ -88,18 +88,18 @@ namespace rgbd_slam {
                 double smallestSimilarity = std::numeric_limits<double>::max();
                 int selectedIndex = UNMATCHED_FEATURE_INDEX;
 
-                const size_t detectedPlaneSize = detectedFeatures.size();
-                for(size_t planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
+                const int detectedPlaneSize = static_cast<int>(detectedFeatures.size());
+                for(int planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
                 {
                     if (isDetectedFeatureMatched[planeIndex])
                         // Does not allow multiple removal of a single match
                         // TODO: change this
                         continue;
 
-                    const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
-                    //assert(not shapePlane.get_shape_mask().empty());
+                    assert(planeIndex >= 0 and planeIndex < detectedPlaneSize);
+                    const features::primitives::Plane& shapePlane = detectedFeatures[planeIndex];
                     const double descriptorSimilarity  = shapePlane.get_similarity(descriptor);
-                    if (descriptorSimilarity < smallestSimilarity)// and shapePlane.is_similar(get_mask(), projectedPlane))
+                    if (descriptorSimilarity < smallestSimilarity)
                     {
                         selectedIndex = static_cast<int>(planeIndex);
                         smallestSimilarity = descriptorSimilarity;
