@@ -81,6 +81,12 @@ namespace rgbd_slam {
                      * \param[in] shapeMask Mask of the shape in the reference image
                      */
                     Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask);
+                    Cylinder(const Cylinder& cylinder)
+                        : IPrimitive(cylinder._shapeMask),
+                        _normal(cylinder._normal),
+                        _radius(cylinder._radius)
+                    {
+                    }
 
                     /**
                      * \brief Get the similarity of two cylinders, based on normal direction and radius
@@ -121,6 +127,14 @@ namespace rgbd_slam {
                      * \param[in] shapeMask Mask of the shape in the reference image
                      */
                     Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask);
+
+                    Plane(const Plane& plane)
+                        : IPrimitive(plane._shapeMask),
+                        _parametrization(plane._parametrization),
+                        _centroid(plane._centroid),
+                        _descriptor(plane._descriptor)
+                    {
+                    }
 
                     static vector6 compute_descriptor(const utils::PlaneCameraCoordinates& parametrization, const utils::CameraCoordinate& planeCentroid, const uint pixelCount) {
                         const vector3& normal = parametrization.head(3);

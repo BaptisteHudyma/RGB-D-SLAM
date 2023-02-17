@@ -137,7 +137,7 @@ namespace rgbd_slam {
             if (initialFeatureScore < 1.0)
             {
                 // if there is not enough potential inliers to optimize a pose
-                outputs::log_warning("Not enough features to optimize a pose (" + std::to_string(matchedPointSize) + " points, " +  std::to_string(matchedPlaneSize) + " planes)");
+                outputs::log_warning("Not enough features to optimize a pose (" + std::to_string(static_cast<int>(matchedPointSize)) + " points, " +  std::to_string(static_cast<int>(matchedPlaneSize)) + " planes)");
                 return false;
             }
 
