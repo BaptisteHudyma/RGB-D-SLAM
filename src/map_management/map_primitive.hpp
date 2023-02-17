@@ -97,6 +97,7 @@ namespace rgbd_slam {
                         continue;
 
                     const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
+                    //assert(not shapePlane.get_shape_mask().empty());
                     const double descriptorSimilarity  = shapePlane.get_similarity(descriptor);
                     if (descriptorSimilarity < smallestSimilarity)// and shapePlane.is_similar(get_mask(), projectedPlane))
                     {

@@ -31,11 +31,11 @@ namespace rgbd_slam {
                 _isUnassignedMask = vectorb::Zero(_totalCellCount);
                 _cellDistanceTols.assign(_totalCellCount, 0.0f);
 
-                _gridPlaneSegmentMap = cv::Mat_<int>(_verticalCellsCount, _horizontalCellsCount, 0);
-                _gridCylinderSegMap  = cv::Mat_<int>(_verticalCellsCount, _horizontalCellsCount, 0);
+                _gridPlaneSegmentMap = cv::Mat_<int>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), 0);
+                _gridCylinderSegMap  = cv::Mat_<int>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), 0);
 
-                _mask = cv::Mat(_verticalCellsCount, _horizontalCellsCount, CV_8U);
-                _maskEroded = cv::Mat(_verticalCellsCount, _horizontalCellsCount, CV_8U);
+                _mask = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
+                _maskEroded = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
 
                 _maskCrossKernel = cv::Mat::ones(3, 3, CV_8U);
                 _maskCrossKernel.at<uchar>(0,0) = 0;
@@ -71,38 +71,38 @@ namespace rgbd_slam {
                 int64 t1 = cv::getTickCount();
                 //init planar grid
                 init_planar_cell_fitting(depthMatrix);
-                double td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+                double td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 resetTime += td;
 
                 //init and fill histogram
                 t1 = cv::getTickCount();
                 const uint remainingPlanarCells = init_histogram();
-                td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+                td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 initTime += td;
 
                 t1 = cv::getTickCount();
                 const intpair_vector& cylinder2regionMap = grow_planes_and_cylinders(remainingPlanarCells);
-                td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+                td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 growTime += td;
 
                 //merge sparse planes
                 t1 = cv::getTickCount();
                 const uint_vector& planeMergeLabels = merge_planes();
-                td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+                td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 initTime += td;
                 mergeTime += td;
 
                 t1 = cv::getTickCount();
                 //fill the final planes vector
                 add_planes_to_primitives(planeMergeLabels, planeContainer);
-                td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+                td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 initTime += td;
                 refineTime += td;
 
                 t1 = cv::getTickCount();
                 //refine cylinders boundaries and fill the final cylinders vector
                 add_cylinders_to_primitives(cylinder2regionMap, primitiveContainer); 
-                td = (cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+                td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
                 initTime += td;
                 refineTime += td;
             }
@@ -129,7 +129,7 @@ namespace rgbd_slam {
 
             void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) 
             {
-                const static float sinAngleForMerge = sinf(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
+                const static float sinAngleForMerge = sinf(static_cast<float>(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0));
 
                 //for each planeGrid cell
                 const size_t planeGridSize = _planeGrid.size();
@@ -149,7 +149,7 @@ namespace rgbd_slam {
                                     ).norm();
                         // merge distance threshold (from "2021 - Real Time Plane Detection with Consistency from Point Cloud Sequences")
                         // use the plane diameter as a merge threshold, with a small error (1.5)
-                        _cellDistanceTols[stackedCellId] = 1.5f * cellDiameter * sinAngleForMerge * sqrtf(planeSegment.get_point_count());
+                        _cellDistanceTols[stackedCellId] = 1.5f * cellDiameter * sinAngleForMerge * sqrtf(static_cast<float>(planeSegment.get_point_count()));
                     }
                 }
 #if 0
@@ -300,14 +300,14 @@ namespace rgbd_slam {
                 {
                     //its certainly a plane or we ignore cylinder detection
                     _planeSegments.push_back(newPlaneSegment);
-                    const size_t currentPlaneCount = _planeSegments.size();
+                    const int currentPlaneCount = static_cast<int>(_planeSegments.size());
                     //mark cells that belong to this plane with a new id
-                    for(uint row = 0, activationIndex = 0; row < _verticalCellsCount; ++row) 
+                    for(int row = 0, activationIndex = 0; row < static_cast<int>(_verticalCellsCount); ++row) 
                     {
                         int* rowPtr = _gridPlaneSegmentMap.ptr<int>(row);
-                        for(uint col = 0; col < _horizontalCellsCount; ++col, ++activationIndex)
+                        for(int col = 0; col < static_cast<int>(_horizontalCellsCount); ++col, ++activationIndex)
                         {
-                            assert(activationIndex < activationMapSize);
+                            assert(activationIndex < static_cast<int>(activationMapSize));
 
                             if(isActivatedMap[activationIndex])
                                 rowPtr[col] = currentPlaneCount;
@@ -359,13 +359,13 @@ namespace rgbd_slam {
                     {
                         //MSE of the plane is less than MSE of the cylinder + this plane, so keep this one as a plane
                         _planeSegments.push_back(newMergedPlane);
-                        const uint currentPlaneCount = _planeSegments.size();
+                        const int currentPlaneCount = static_cast<int>(_planeSegments.size());
                         for(uint col = 0; col < cellActivatedCount; ++col)
                         {
                             if (cylinderSegment.is_inlier_at(segId, col))
                             {
-                                const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
-                                _gridPlaneSegmentMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = currentPlaneCount;
+                                const int cellId = static_cast<int>(cylinderSegment.get_local_to_global_mapping(col));
+                                _gridPlaneSegmentMap.at<int>(cellId / static_cast<int>(_horizontalCellsCount), cellId % static_cast<int>(_horizontalCellsCount)) = currentPlaneCount;
                             }
                         }
                     }
@@ -374,14 +374,14 @@ namespace rgbd_slam {
                         // Set a new cylinder
                         assert(_cylinderSegments.size() > 0);
                         cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
-                        const size_t cylinderCount = cylinder2regionMap.size();
+                        const int cylinderCount = static_cast<int>(cylinder2regionMap.size());
 
                         for(uint col = 0; col < cellActivatedCount; ++col)
                         {
                             if (cylinderSegment.is_inlier_at(segId, col))
                             {
-                                const uint cellId = cylinderSegment.get_local_to_global_mapping(col);
-                                _gridCylinderSegMap.at<int>(cellId / _horizontalCellsCount, cellId % _horizontalCellsCount) = cylinderCount;
+                                const int cellId = static_cast<int>(cylinderSegment.get_local_to_global_mapping(col));
+                                _gridCylinderSegMap.at<int>(cellId / static_cast<int>(_horizontalCellsCount), cellId % static_cast<int>(_horizontalCellsCount)) = cylinderCount;
                             }
                         }
                     }
@@ -513,17 +513,17 @@ namespace rgbd_slam {
                 assert(segmentMap.rows > 0);
                 assert(segmentMap.cols > 0);
 
-                Matrixb isPlanesConnectedMatrix = Matrixb::Constant(numberOfPlanes, numberOfPlanes, false);
+                Matrixb isPlanesConnectedMatrix = Matrixb::Constant(static_cast<int>(numberOfPlanes), static_cast<int>(numberOfPlanes), false);
                 if (numberOfPlanes == 0)
                     return isPlanesConnectedMatrix;
 
-                const uint rows2scanCount = segmentMap.rows - 1;
-                const uint cols2scanCount = segmentMap.cols - 1;
-                for(uint row = 0; row < rows2scanCount; ++row) 
+                const int rows2scanCount = segmentMap.rows - 1;
+                const int cols2scanCount = segmentMap.cols - 1;
+                for(int row = 0; row < rows2scanCount; ++row) 
                 {
                     const int* rowPtr = segmentMap.ptr<int>(row);
                     const int* rowBelowPtr = segmentMap.ptr<int>(row + 1);
-                    for(uint col = 0; col < cols2scanCount; ++col) 
+                    for(int col = 0; col < cols2scanCount; ++col) 
                     {
                         //value of the pixel at this coordinates. Represents a plane segment
                         const int planeId = rowPtr[col];
@@ -554,17 +554,17 @@ namespace rgbd_slam {
                 assert(isActivatedMap.size() == _isUnassignedMask.size());
                 assert(_horizontalCellsCount > 0);
 
-                const size_t index = x + _horizontalCellsCount * y;
-                if (index >= _totalCellCount)
+                const int index = static_cast<int>(x + _horizontalCellsCount * y);
+                if (static_cast<size_t>(index) >= _totalCellCount)
                     return;
 
-                assert(index < static_cast<size_t>(isActivatedMap.size()));
-                assert(index < static_cast<size_t>(_isUnassignedMask.size()));
+                assert(index < isActivatedMap.size());
+                assert(index < _isUnassignedMask.size());
                 if ((not _isUnassignedMask[index]) or isActivatedMap[index]) 
                     //pixel is not part of a component or already labelled, or not a plane (_isUnassignedMask is always false for non planar patches)
                     return;
 
-                assert(index < _planeGrid.size());
+                assert(static_cast<size_t>(index) < _planeGrid.size());
                 const Plane_Segment& planePatch = _planeGrid[index];
                 if (planeToExpand.can_be_merged(planePatch, _cellDistanceTols[index]))
                 {
