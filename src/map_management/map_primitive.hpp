@@ -88,6 +88,7 @@ namespace rgbd_slam {
                 double smallestSimilarity = std::numeric_limits<double>::max();
                 int selectedIndex = UNMATCHED_FEATURE_INDEX;
 
+                // search best match score
                 const int detectedPlaneSize = static_cast<int>(detectedFeatures.size());
                 for(int planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
                 {
@@ -98,6 +99,8 @@ namespace rgbd_slam {
 
                     assert(planeIndex >= 0 and planeIndex < detectedPlaneSize);
                     const features::primitives::Plane& shapePlane = detectedFeatures[planeIndex];
+
+                    // compute a similarity score
                     const double descriptorSimilarity  = shapePlane.get_similarity(descriptor);
                     if (descriptorSimilarity < smallestSimilarity)
                     {
@@ -106,14 +109,14 @@ namespace rgbd_slam {
                     }
                 }
 
-                if (selectedIndex != UNMATCHED_FEATURE_INDEX)
+                if (selectedIndex == UNMATCHED_FEATURE_INDEX or smallestSimilarity >= similarityThreshold)
+                    return UNMATCHED_FEATURE_INDEX;
+
+                if(shouldAddToMatches)
                 {
-                    if(shouldAddToMatches and smallestSimilarity < similarityThreshold)
-                    {
-                        const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
-                        // TODO: replace nullptr by the plane covariance in camera space
-                        matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), nullptr, _id);
-                    }
+                    const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
+                    // TODO: replace nullptr by the plane covariance in camera space
+                    matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), nullptr, _id);
                 }
 
                 return selectedIndex;

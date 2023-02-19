@@ -144,22 +144,10 @@ namespace rgbd_slam {
 
                 if (shouldAddToMatches)
                 {
-                    const utils::ScreenCoordinate& matchedScreenpoint = detectedFeatures.get_keypoint(matchIndex);
-                    if (utils::is_depth_valid(matchedScreenpoint.z()) ) 
-                    {
-                        // 3D point
-                        const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(_coordinates, _covariance);
-                        //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
-                        const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
-                        matches.emplace_back(PointMatchType(matchedScreenpoint, _coordinates, screenPointCovariance, _id));
-                    }
-                    else {
-                        // 2D point
-                        const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(_coordinates, _covariance);
-                        //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
-                        const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
-                        matches.emplace_back(PointMatchType(matchedScreenpoint, _coordinates, screenPointCovariance, _id));
-                    }
+                    const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(_coordinates, _covariance);
+                    //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
+                    const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
+                    matches.emplace_back(PointMatchType(detectedFeatures.get_keypoint(matchIndex), _coordinates, screenPointCovariance, _id));
                 }
                 return matchIndex;
             }
