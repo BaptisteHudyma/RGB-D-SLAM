@@ -194,16 +194,17 @@ int main(int argc, char* argv[])
         cv::Mat rgbImage = cv::imread(rgbImagePath, cv::IMREAD_COLOR);
         cv::Mat depthImage = cv::imread(depthImagePath, cv::IMREAD_ANYDEPTH);
 
-        if (rgbImage.empty())// or depthImage.empty())
+        if (rgbImage.empty())
         {
-            std::cerr << "Cannot load rgb image " << rgbImagePath<< std::endl;
-            continue;
+            if (imageData.rgbImage.isValid)
+                std::cerr << "Cannot load rgb image " << rgbImagePath<< std::endl;
+            rgbImage = cv::Mat(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
         }
         if (depthImage.empty())
         {
             if (imageData.depthImage.isValid)
                 std::cerr << "Could not load depth image " << depthImagePath << std::endl;
-            depthImage = cv::Mat(480, 640, CV_16UC1, cv::Scalar(0.0));
+            depthImage = cv::Mat(rgbd_slam::Parameters::get_camera_2_size_y(), rgbd_slam::Parameters::get_camera_2_size_x(), CV_16UC1, cv::Scalar(0.0));
         }
         assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);
         assert(static_cast<uint>(depthImage.cols) == width and static_cast<uint>(depthImage.rows) == height);

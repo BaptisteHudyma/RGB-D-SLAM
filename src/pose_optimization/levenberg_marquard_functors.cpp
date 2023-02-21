@@ -62,9 +62,9 @@ namespace rgbd_slam {
             }
             for(const matches_containers::PlaneMatch& match: _planes) {
                 // TODO: replace with a true covariance value
-                _dividers.emplace(_dividers.end(), 0.1);
-                _dividers.emplace(_dividers.end(), 0.1);
-                _dividers.emplace(_dividers.end(), 0.1);
+                _dividers.emplace(_dividers.end(), 0.01);
+                _dividers.emplace(_dividers.end(), 0.01);
+                _dividers.emplace(_dividers.end(), 0.01);
             }
         }
 
