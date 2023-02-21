@@ -177,9 +177,7 @@ class DatasetParser
             d.depthImage.isValid = false;
 
             finalSorted.emplace_back(d);
-            it = rgbImagesData.erase(it);
-            if (it == rgbImagesData.cend())
-                break;
+            rgbImagesData.erase(it++);
         }
 #endif
 
@@ -195,9 +193,7 @@ class DatasetParser
             d.rgbImage.isValid = false;
 
             finalSorted.emplace_back(d);
-            it = depthImagesData.erase(it);
-            if (it == depthImagesData.cend())
-                break;
+            depthImagesData.erase(it++);
         }
 #endif
 

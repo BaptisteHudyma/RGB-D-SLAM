@@ -208,8 +208,7 @@ namespace rgbd_slam {
         // Run primitive detection
         const double primitiveDetectionStartTime = cv::getTickCount();
         features::primitives::plane_container detectedPlanes;
-        // TODO: handle detected cylinders in local map
-        features::primitives::cylinder_container detectedCylinders;
+        features::primitives::cylinder_container detectedCylinders;// TODO: handle detected cylinders in local map
         _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPlanes, detectedCylinders);
         _meanPrimitiveTreatmentDuration += (cv::getTickCount() - primitiveDetectionStartTime) / static_cast<double>(cv::getTickFrequency());
 
