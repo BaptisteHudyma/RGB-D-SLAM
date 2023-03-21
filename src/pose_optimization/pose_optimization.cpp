@@ -12,6 +12,7 @@
 #include "../utils/random.hpp"
 
 #include "../../third_party/p3p.hpp"
+#include "types.hpp"
 
 #include <Eigen/StdVector>
 #include <cmath>
@@ -242,17 +243,16 @@ namespace rgbd_slam {
             const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets);
             if (isPoseValid)
             {
+                matrix66 estimatedPoseCovariance;
                 // Compute pose variance
-                vector3 estimatedPoseVariance;
-                // TODO: compute variance with planes too
-                if (not featureSets._pointSets._inliers.empty() and utils::compute_pose_variance(optimizedPose, featureSets._pointSets._inliers, estimatedPoseVariance))
+                if (compute_pose_variance(optimizedPose, featureSets, estimatedPoseCovariance))
                 {
-                    optimizedPose.set_position_variance( estimatedPoseVariance + currentPose.get_position_variance());
+                    optimizedPose.set_position_variance(currentPose.get_pose_variance() + estimatedPoseCovariance);
                 }
                 else
                 {
-                    outputs::log_warning("Could not compute pose variance, as we only work with 2D points");
-                    optimizedPose.set_position_variance(currentPose.get_position_variance());
+                    outputs::log_warning("Could not compute pose variance");
+                    return false;
                 }
             }
             return isPoseValid;
@@ -371,6 +371,70 @@ namespace rgbd_slam {
             }
             // At least one valid pose found
             return closestPoseDistance < std::numeric_limits<double>::max();
+        }
+
+
+        bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPose, const matches_containers::match_sets& matchedFeatures, matrix66& poseCovariance, const uint iterations)
+        {
+            assert(iterations > 0);
+            poseCovariance = matrix66::Zero();
+
+            vector6 medium = vector6::Zero();
+            std::vector<vector6> poses;
+            poses.reserve(iterations);
+            for(uint i = 0; i < iterations; ++i)
+            {
+                utils::PoseBase newPose;
+                if(compute_random_variation_of_pose(optimizedPose, matchedFeatures, newPose))
+                {
+                    const vector6& pose6dof = newPose.get_vector();
+                    medium += pose6dof;
+                    poses.emplace_back(pose6dof);
+                }
+                else {
+                    outputs::log_warning("fail iteration " + std::to_string(i) + ": rejected pose optimization");
+                }
+            }
+            if (poses.size() < iterations / 2)
+            {
+                outputs::log_error("Could not compute covariance: too many faileds iterations");
+                return false;
+            }
+            medium /= static_cast<double>(poses.size());
+
+            for(const vector6& pose : poses)
+            {
+                const vector6 def = pose - medium;
+                poseCovariance += def * def.transpose();
+            }
+            poseCovariance /= static_cast<double>(poses.size() - 1);
+
+            return true;
+        }
+
+
+        bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& currentPose, const matches_containers::match_sets& matchedFeatures, utils::PoseBase& optimizedPose)
+        {
+            matches_containers::match_sets variatedSet;
+            for(const matches_containers::PointMatch& match : matchedFeatures._pointSets._inliers)
+            {
+                // make random variation
+                utils::WorldCoordinate variatedCoordinates = match._worldFeature;
+                variatedCoordinates.x() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.x());
+                variatedCoordinates.y() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.y());
+                variatedCoordinates.z() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.z());
+
+                // add to the new match set
+                const matches_containers::PointMatch variatedPointMatch(match._screenFeature, variatedCoordinates, match._worldFeatureCovariance, match._projectedWorldfeatureCovariance, match._idInMap);
+                variatedSet._pointSets._inliers.emplace_back(variatedPointMatch);
+            }
+            for(const matches_containers::PlaneMatch& match : matchedFeatures._planeSets._inliers)
+            {
+                // TODO: variate plane coordinates
+                variatedSet._planeSets._inliers.emplace_back(match);
+            }
+
+            return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);
         }
 
     }   /* pose_optimization*/

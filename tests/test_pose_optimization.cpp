@@ -91,6 +91,7 @@ namespace rgbd_slam {
                 matchedPoints.emplace(matchedPoints.end(), 
                     transformedPoint,   // screenPoint
                     worldPointStart,    // worldPoint
+                    vector3::Ones(),
                     vector2::Ones(),
                     0                   // uniq map id
                 );
@@ -122,7 +123,7 @@ namespace rgbd_slam {
         
             const utils::PlaneCameraCoordinates& cameraPlane =  worldPlane.to_camera_coordinates(worldToCamera);
 
-            matchedPlanes.emplace(matchedPlanes.cend(), cameraPlane, worldPlane, nullptr, 0);
+            matchedPlanes.emplace(matchedPlanes.cend(), cameraPlane, worldPlane, nullptr, nullptr, 0);
         }
         return matchedPlanes;
     }

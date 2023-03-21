@@ -52,23 +52,6 @@ namespace rgbd_slam {
          */
         const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint, const screenCoordinateCovariance& screenPointCovariance);
 
-        /**
-         * \brief Compute the variance of the final pose in X Y Z
-         *
-         * \param[in] pose The pose to compute the variance of
-         * \param[in] matchedPoints A container of matched features (inliers)
-         * \param[out] poseVariance If the function returns true, then this is the estimated position variance estimated from matched points
-         *
-         * \return True if the variance was estimated 
-         */
-        bool compute_pose_variance(const Pose& pose, const matches_containers::match_point_container& matchedPoints, vector3& poseVariance);
-
-        /**
-         * \brief Compute a pose covariance matrix from a pose
-         * \param[in] pose The pose to analyze
-         */
-        const matrix33 compute_pose_covariance(const Pose& pose);
-
     }   // utils
 }       // rgbd_slam
 
