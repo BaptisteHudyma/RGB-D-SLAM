@@ -86,7 +86,7 @@ namespace rgbd_slam {
             mark_outliers_as_unmatched(outlierMatchedPoints);
             mark_outliers_as_unmatched(outlierMatchedPlanes);
 
-            const matrix33& poseCovariance = utils::compute_pose_covariance(optimizedPose);
+            const matrix33& poseCovariance = optimizedPose.get_position_variance();
             const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
             // update all local maps

@@ -147,14 +147,14 @@ namespace rgbd_slam {
                     const rgbd_slam::screenCoordinateCovariance& screenCovariance = utils::get_screen_point_covariance(_coordinates, _covariance);
                     //consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
                     const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
-                    matches.emplace_back(PointMatchType(detectedFeatures.get_keypoint(matchIndex), _coordinates, screenPointCovariance, _id));
+                    matches.emplace_back(PointMatchType(detectedFeatures.get_keypoint(matchIndex), _coordinates, _covariance.diagonal(), screenPointCovariance, _id));
                 }
                 return matchIndex;
             }
 
             virtual bool add_to_tracked(const worldToCameraMatrix& worldToCamera, TrackedPointsObject& trackedFeatures, const uint dropChance = 1000) const override
             {
-                const bool shouldNotDropPoint = utils::Random::get_random_uint(dropChance) != 0;
+                const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
                 assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and not std::isnan(_coordinates.z()));
                 if (shouldNotDropPoint)

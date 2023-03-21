@@ -24,6 +24,15 @@ namespace rgbd_slam {
                 const vector3 get_position() const { return _position; }
                 const matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
                 const quaternion get_orientation_quaternion() const { return _orientation; }
+                /**
+                 * \return a 6 element vector of the position followed by the rotation in radians
+                 */
+                const vector6 get_vector() const
+                {
+                    vector6 t;
+                    t << _position, _orientation.toRotationMatrix().eulerAngles(0, 1, 2);
+                    return t;
+                }
 
                 /**
                  * \brief compute a position error (Units are the same as the position units)
@@ -53,10 +62,11 @@ namespace rgbd_slam {
             public:
                 Pose();
                 Pose(const vector3& position, const quaternion& orientation);
-                Pose(const vector3& position, const quaternion& orientation, const vector3& poseVariance);
+                Pose(const vector3& position, const quaternion& orientation, const matrix66& poseVariance);
 
-                void set_position_variance(const vector3& variance) { _positionVariance = variance; };
-                const vector3 get_position_variance() const { return _positionVariance; };
+                void set_position_variance(const matrix66& variance) { _positionVariance = variance; };
+                const matrix66 get_pose_variance() const { return _positionVariance; };
+                const matrix33 get_position_variance() const { return _positionVariance.block(0, 0, 3, 3); };
 
                 /**
                  * \brief A display function, to avoid a friend operator function
@@ -64,7 +74,7 @@ namespace rgbd_slam {
                 void display(std::ostream& os) const;
 
             private:
-                vector3 _positionVariance;
+                matrix66 _positionVariance;
         };
 
         std::ostream& operator<<(std::ostream& os, const PoseBase& pose);

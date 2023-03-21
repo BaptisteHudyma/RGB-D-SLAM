@@ -25,6 +25,18 @@ namespace rgbd_slam {
                  */
                 static bool compute_optimized_pose(const utils::Pose& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::Pose& optimizedPose, matches_containers::match_sets& featureSets); 
 
+                /**
+                 * \brief Compute the variance of a given pose, using multiple iterations of the optimization process
+                 *
+                 * \param[in] optimizedPose The pose to compute the variance of
+                 * \param[in] matchedFeatures The features used to compute this pose
+                 * \param[out] poseCovariance The computed covariance, only valid if this function returns true
+                 * \param[in] iterations The number of optimization iterations. The higher the better the estimation, but it gets less and less efficient
+                 *
+                 * \return True if the process succeded, or False
+                 */
+                static bool compute_pose_variance(const utils::PoseBase& optimizedPose, const matches_containers::match_sets& matchedFeatures, matrix66& poseCovariance, const uint iterations=100);
+
             private:
                 /**
                  * \brief Optimize a global pose (orientation/translation) of the observer, given a match set
@@ -51,6 +63,17 @@ namespace rgbd_slam {
                 static bool compute_pose_with_ransac(const utils::PoseBase& currentPose, const matches_containers::matchContainer& matchedFeatures, utils::PoseBase& finalPose, matches_containers::match_sets& featureSets); 
 
                 static bool compute_p3p_pose(const utils::PoseBase& currentPose, const matches_containers::match_point_container& matchedPoints, utils::PoseBase& optimizedPose);
+
+                /**
+                 * \brief
+                 *
+                 * \param[in] currentPose The pose to recompute
+                 * \param[in] matchedFeatures the feature set to make variations of
+                 * \param[out] optimizedPose The pose optimized with the variated feature set, if the functon returned true
+                 *
+                 * \return True if the new pose optimization is succesful, or False
+                 */
+                static bool compute_random_variation_of_pose(const utils::PoseBase& currentPose, const matches_containers::match_sets& matchedFeatures, utils::PoseBase& optimizedPose);
         };
 
     }   /* pose_optimization */

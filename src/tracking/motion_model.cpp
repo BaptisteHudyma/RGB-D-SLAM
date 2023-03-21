@@ -56,7 +56,7 @@ namespace tracking {
         integralQ.normalize();
 
         // TODO: predict variance instead of copying ? 
-        return utils::Pose(integralPos, integralQ, currentPose.get_position_variance());
+        return utils::Pose(integralPos, integralQ, currentPose.get_pose_variance());
     }
 
 

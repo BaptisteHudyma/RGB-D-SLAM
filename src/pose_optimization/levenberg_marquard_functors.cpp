@@ -57,8 +57,8 @@ namespace rgbd_slam {
 
             _dividers.reserve(_points.size() + _planes.size());
             for(const matches_containers::PointMatch& match : _points) {
-                _dividers.emplace(_dividers.end(), 1.0 / sqrt(match._worldFeatureCovariance.x()));
-                _dividers.emplace(_dividers.end(), 1.0 / sqrt(match._worldFeatureCovariance.y()));
+                _dividers.emplace(_dividers.end(), 1.0 / sqrt(match._projectedWorldfeatureCovariance.x()));
+                _dividers.emplace(_dividers.end(), 1.0 / sqrt(match._projectedWorldfeatureCovariance.y()));
             }
             for(const matches_containers::PlaneMatch& match: _planes) {
                 // TODO: replace with a true covariance value

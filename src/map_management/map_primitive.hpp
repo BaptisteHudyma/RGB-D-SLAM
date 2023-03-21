@@ -116,7 +116,7 @@ namespace rgbd_slam {
                 {
                     const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
                     // TODO: replace nullptr by the plane covariance in camera space
-                    matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), nullptr, _id);
+                    matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), nullptr, nullptr, _id);
                 }
 
                 return selectedIndex;
