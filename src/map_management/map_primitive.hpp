@@ -78,9 +78,9 @@ namespace rgbd_slam {
                 _covariance = newEstimatedCovariance - smallestEigenValue * smallestEigenVector * smallestEigenVector.transpose();
 
                 // parameters update
-                vector4 renormalizedVector = newEstimatedParameters.normalized();
+                vector4 renormalizedVector = newEstimatedParameters / sqrt( pow(newEstimatedParameters.head(3).norm(), 2.0) + pow(newEstimatedParameters(3), 2.0));
                 renormalizedVector /= sqrt(1.0 - pow(renormalizedVector(3), 2.0));
-                _parametrization << renormalizedVector;
+                _parametrization << renormalizedVector.head(3).normalized(), renormalizedVector(3);
 
                 // update centroid
                 _centroid = detectedCentroid;
@@ -92,8 +92,8 @@ namespace rgbd_slam {
             }
 
             protected:
-            utils::PlaneWorldCoordinates _parametrization;  // parametrization of this plana in world space
-            matrix44 _covariance;
+            utils::PlaneWorldCoordinates _parametrization;  // parametrization of this plane in world space
+            matrix44 _covariance;               // covariance of this plane in world space
             utils::WorldCoordinate _centroid;   // centroid of the detected plane
             cv::Mat _shapeMask; // mask of the detected plane
 
