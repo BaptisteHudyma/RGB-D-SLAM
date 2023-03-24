@@ -8,6 +8,7 @@
 
 #include "../parameters.hpp"
 #include "../features/primitives/shape_primitives.hpp"
+#include "../tracking/kalman_filter.hpp"
 
 #include "../utils/random.hpp"
 #include "../utils/coordinates.hpp"
@@ -27,6 +28,15 @@ namespace rgbd_slam {
         class Plane
         {
             public:
+            Plane()
+            {
+                _parametrization.setZero();
+                _covariance.setIdentity();
+                _centroid.setZero();
+
+                build_kalman_filter();
+            }
+
             /**
              * \brief Return the number of pixels in this plane mask
              */
@@ -36,27 +46,86 @@ namespace rgbd_slam {
                 const static uint pixelPerCell = cellSize * cellSize;
                 return cv::countNonZero(_shapeMask) * pixelPerCell;
             }
+            
+            utils::PlaneWorldCoordinates get_parametrization() const { return _parametrization; }
+            utils::WorldCoordinate get_centroid() const { return _centroid; }
+            cv::Mat get_mask() const { return _shapeMask; }
 
-            utils::PlaneWorldCoordinates get_parametrization() const 
+            /**
+             * \brief Update this plane coordinates using a new detection
+             *
+             * \param[in] newDetectionParameters The detected plane parameters
+             * \param[in] newCovariance The covariance of the newly detected feature
+             *
+             * \return The update score (distance between old and new parametrization)
+             */
+            double track(const utils::PlaneWorldCoordinates& newDetectionParameters, const matrix44& newDetectionCovariance, const utils::WorldCoordinate& detectedCentroid)
             {
-                return _parametrization;
-            }
+                assert(_kalmanFilter != nullptr);
 
-            utils::WorldCoordinate get_centroid() const
-            {
-                return _centroid;
-            }
+                const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(_parametrization, _covariance, newDetectionParameters, newDetectionCovariance);
+                const vector4& newEstimatedParameters = res.first;
+                const matrix44& newEstimatedCovariance = res.second;
 
-            cv::Mat get_mask() const
-            {
-                return _shapeMask;
+                const double score = (_parametrization - res.first).norm();
+
+                //source: Revisiting Uncertainty Analysis for Optimum Planes Extracted from 3D Range Sensor Point-Clouds
+
+                // covariance update
+                Eigen::SelfAdjointEigenSolver<matrix44> covarianceSolver(newEstimatedCovariance);
+                const double smallestEigenValue = covarianceSolver.eigenvalues()(0);
+                const vector4& smallestEigenVector = covarianceSolver.eigenvectors().col(0).normalized();
+                _covariance = newEstimatedCovariance - smallestEigenValue * smallestEigenVector * smallestEigenVector.transpose();
+
+                // parameters update
+                vector4 renormalizedVector = newEstimatedParameters.normalized();
+                renormalizedVector /= sqrt(1.0 - pow(renormalizedVector(3), 2.0));
+                _parametrization << renormalizedVector;
+
+                // update centroid
+                _centroid = detectedCentroid;
+
+                // static sanity checks
+                assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and _covariance.diagonal()(3) >= 0);
+                assert(not std::isnan(_parametrization.x()) and not std::isnan(_parametrization.y()) and not std::isnan(_parametrization.z()) and not std::isnan(_parametrization.w()));
+                return score;
             }
 
             protected:
             utils::PlaneWorldCoordinates _parametrization;  // parametrization of this plana in world space
-
+            matrix44 _covariance;
             utils::WorldCoordinate _centroid;   // centroid of the detected plane
             cv::Mat _shapeMask; // mask of the detected plane
+
+            private:
+            /**
+             * \brief Build the parameter kalman filter
+             */
+            static void build_kalman_filter()
+            {
+                if (_kalmanFilter == nullptr)
+                {
+                    const double parametersProcessNoise = 0;   // TODO set in parameters
+                    const size_t stateDimension = 4;        //nx, ny, nz, d
+                    const size_t measurementDimension = 4;  //nx, ny, nz, d
+
+                    matrixd systemDynamics(stateDimension, stateDimension); // System dynamics matrix
+                    matrixd outputMatrix(measurementDimension, stateDimension); // Output matrix
+                    matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+
+                    // Points are not supposed to move, so no dynamics
+                    systemDynamics.setIdentity();
+                    // we need all positions
+                    outputMatrix.setIdentity();
+
+                    processNoiseCovariance.setIdentity();
+                    processNoiseCovariance *= parametersProcessNoise;
+
+                    _kalmanFilter = new tracking::SharedKalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
+                }
+            }
+            // shared kalman filter, between all planes
+            inline static tracking::SharedKalmanFilter* _kalmanFilter = nullptr;
         };
 
 
@@ -172,14 +241,18 @@ namespace rgbd_slam {
             protected:
             virtual bool update_with_match(const DetectedPlaneType& matchedFeature, const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld) override
             {
-                (void)poseCovariance;
                 assert(_matchIndex >= 0);
 
                 const planeCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
-                // TODO real plane tracking model
-                _parametrization = matchedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld);
-                _centroid = matchedFeature.get_centroid().to_world_coordinates(cameraToWorld);
+                matrix44 detectedPlaneCovariance;
+                detectedPlaneCovariance.setIdentity();
+                track(
+                    matchedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
+                    detectedPlaneCovariance,    // TODO: transform covariance to world
+                    matchedFeature.get_centroid().to_world_coordinates(cameraToWorld)
+                );
+
                 _shapeMask = matchedFeature.get_shape_mask();
 
                 return true;
