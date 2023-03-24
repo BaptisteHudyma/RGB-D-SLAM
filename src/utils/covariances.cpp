@@ -67,7 +67,7 @@ namespace rgbd_slam {
                 {0.0,                        screenPoint.z() / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY },
                 {0.0,                        0.0,                        1.0}
             };
-            
+
             cameraCoordinateCovariance cameraPointCovariance;
             cameraPointCovariance.base() = jacobian * screenPointCovariance * jacobian.transpose();
             return cameraPointCovariance;

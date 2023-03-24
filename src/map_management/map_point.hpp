@@ -36,14 +36,18 @@ namespace rgbd_slam {
             };
 
             /**
-             * \brief update the current point by tracking with a kalman filter. Will update the point position & covariance
-             * \return The distance between the new position ans the previous one
+             * \brief update this point coordinates using a new detection
+             *
+             * \param[in] newDetectionCoordinates The newly detected point
+             * \param[in] newDetectionCovariance The newly detected point covariance
+             *
+             * \return The distance between the updated position ans the previous one
              */
-            double track_point(const utils::WorldCoordinate& newPointCoordinates, const matrix33& newPointCovariance)
+            double track(const utils::WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance)
             {
                 assert(_kalmanFilter != nullptr);
 
-                const std::pair<vector3, matrix33>& res = _kalmanFilter->get_new_state(_coordinates, _covariance, newPointCoordinates, newPointCovariance);
+                const std::pair<vector3, matrix33>& res = _kalmanFilter->get_new_state(_coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
 
                 const double score = (_coordinates - res.first).norm();
 
@@ -55,7 +59,7 @@ namespace rgbd_slam {
 
             private:
             /**
-             * \brief Build the inputs caracteristics of the kalman filter
+             * \brief Build the caracteristics of the kalman filter
              */
             static void build_kalman_filter()
             {
@@ -218,9 +222,9 @@ namespace rgbd_slam {
                     const utils::WorldCoordinate& worldPointCoordinates = matchedScreenPoint.to_world_coordinates(cameraToWorld);
                     // get a measure of the estimated variance of the new world point
                     const cameraCoordinateCovariance& cameraPointCovariance = utils::get_camera_point_covariance(matchedScreenPoint);
-
+                    const matrix33& worldCovariance = poseCovariance + cameraPointCovariance.base();
                     // update this map point errors & position
-                    track_point(worldPointCoordinates, cameraPointCovariance.base() + poseCovariance);
+                    track(worldPointCoordinates, worldCovariance);
 
                     // If a new descriptor is available, update it
                     const cv::Mat& descriptor = matchedFeature._descriptor;

@@ -4,6 +4,7 @@
 
 #include "../../parameters.hpp"
 #include "../../outputs/logger.hpp"
+#include "types.hpp"
 #include <iostream>
 
 namespace rgbd_slam {
@@ -196,8 +197,9 @@ namespace rgbd_slam {
                 Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(cov);
                 // eigen values are the point variance along the eigen vectors
                 const vector3& eigenValues = eigenSolver.eigenvalues();
+                const matrix33& eigenVectors = eigenSolver.eigenvectors();
                 // best eigen vector is the most reliable direction for this plane normal
-                const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
+                const vector3& eigenVector = eigenVectors.col(0);
 
                 _d = -eigenVector.dot(_centroid);
 
