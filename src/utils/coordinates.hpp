@@ -67,15 +67,9 @@ struct ScreenCoordinate : public ScreenCoordinate2D
      */
     CameraCoordinate to_camera_coordinates() const;
 
-    double z() const
-    {
-        return _z;
-    };
+    double z() const { return _z; };
 
-    vector3 base() const
-    {
-        return vector3(x(), y(), z());
-    };
+    vector3 base() const { return vector3(x(), y(), z()); };
 
   private:
     double _z;
@@ -87,9 +81,10 @@ struct ScreenCoordinate : public ScreenCoordinate2D
  */
 struct CameraCoordinate2D : public vector2
 {
-    CameraCoordinate2D() {};
-    CameraCoordinate2D(const vector2& coords) : vector2(coords) {};
+    CameraCoordinate2D() : vector2(vector2::Zero()) {};
+    CameraCoordinate2D(const vector2& other) : vector2(other) {};
     CameraCoordinate2D(const double x, const double y) : vector2(x, y) {};
+    CameraCoordinate2D(const CameraCoordinate2D& other) : vector2(other) {};
 
     /**
      * \brief Transform a point from camera to screen coordinate system
@@ -111,17 +106,15 @@ struct CameraCoordinate : public CameraCoordinate2D
      * \brief Scores a 3D coordinate in camera (x, y, depth). It can be projected to world space using a pose
      * transformation
      */
-    CameraCoordinate() {};
+    CameraCoordinate() : CameraCoordinate2D(), _z(0.0) {};
+    CameraCoordinate(const CameraCoordinate& other) : CameraCoordinate2D(other), _z(other._z) {};
     CameraCoordinate(const vector3& coords) : CameraCoordinate2D(coords.x(), coords.y()), _z(coords.z()) {};
     CameraCoordinate(const vector4& homegenousCoordinates) :
         CameraCoordinate2D(homegenousCoordinates.x() / homegenousCoordinates[3],
                            homegenousCoordinates.y() / homegenousCoordinates[3]),
         _z(homegenousCoordinates.z() / homegenousCoordinates[3]) {};
     CameraCoordinate(const double x, const double y, const double z) : CameraCoordinate2D(x, y), _z(z) {};
-    vector4 get_homogenous() const
-    {
-        return vector4(x(), y(), z(), 1);
-    };
+    vector4 get_homogenous() const { return vector4(x(), y(), z(), 1); };
 
     /**
      * \brief Transform a camera point to a 3D world point
@@ -142,15 +135,13 @@ struct CameraCoordinate : public CameraCoordinate2D
     bool to_screen_coordinates(ScreenCoordinate& screenPoint) const;
     bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const;
 
-    double z() const
-    {
-        return _z;
-    };
+    double& z() { return _z; };
+    double z() const { return _z; };
 
-    vector3 base() const
-    {
-        return vector3(x(), y(), z());
-    };
+    vector3 base() const { return vector3(x(), y(), z()); };
+
+    void operator=(const vector3& other);
+    void operator=(const CameraCoordinate& other);
 
   private:
     double _z;
@@ -165,7 +156,7 @@ struct WorldCoordinate : public vector3
     /**
      * \brief Scores a 3D coordinate in world space (x, y, depth).
      */
-    WorldCoordinate() {};
+    WorldCoordinate() : vector3(vector3::Zero()) {};
     WorldCoordinate(const vector3& coords) : vector3(coords) {};
     WorldCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
 
@@ -219,10 +210,7 @@ struct WorldCoordinate : public vector3
     /**
      * \brief Compute a signed distance with another world point
      */
-    vector3 get_signed_distance(const WorldCoordinate& worldPoint) const
-    {
-        return this->base() - worldPoint;
-    };
+    vector3 get_signed_distance(const WorldCoordinate& worldPoint) const { return this->base() - worldPoint; };
     double get_distance(const WorldCoordinate& worldPoint) const
     {
         return get_signed_distance(worldPoint).lpNorm<1>();
@@ -231,7 +219,7 @@ struct WorldCoordinate : public vector3
 
 struct PlaneCameraCoordinates : vector4
 {
-    PlaneCameraCoordinates() {};
+    PlaneCameraCoordinates() : vector4(vector4::Zero()) {};
     PlaneCameraCoordinates(const vector4& plane) : vector4(plane) {};
     PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
@@ -240,7 +228,7 @@ struct PlaneCameraCoordinates : vector4
 
 struct PlaneWorldCoordinates : vector4
 {
-    PlaneWorldCoordinates() {};
+    PlaneWorldCoordinates() : vector4(vector4::Zero()) {};
     PlaneWorldCoordinates(const vector4& plane) : vector4(plane) {};
     PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 

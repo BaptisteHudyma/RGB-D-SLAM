@@ -2,6 +2,7 @@ data
 build
 .cache
 .clang*
+.clang-format
 .editorconfig
 .gitattributes
 code_analysis-cppcheck-build-dir/*
