@@ -3,6 +3,7 @@
 
 #include "../../parameters.hpp"
 #include "../../types.hpp"
+#include "coordinates.hpp"
 
 namespace rgbd_slam {
 namespace features {
@@ -90,7 +91,7 @@ class Plane_Segment
     {
         return _normal;
     };
-    vector3 get_centroid() const
+    utils::CameraCoordinate get_centroid() const
     {
         return _centroid;
     };
@@ -127,9 +128,9 @@ class Plane_Segment
     double _MSE;      // plane fitting mean square error
     bool _isPlanar;   // true if node represent a correct node, false: ignore node while mapping
 
-    vector3 _centroid; // mean point of all points in node
-    vector3 _normal;   // fitted plane normal
-    double _d;         // fitted plane d param (ax + by + xz + d)
+    utils::CameraCoordinate _centroid; // mean point of all points in node
+    vector3 _normal;                   // fitted plane normal
+    double _d;                         // fitted plane d param (ax + by + xz + d)
 
     // PCA stored coeffs: efficient calculations of point cloud characteristics
     double _Sx;  // sum of x

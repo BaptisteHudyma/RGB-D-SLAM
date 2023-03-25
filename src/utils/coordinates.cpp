@@ -11,10 +11,7 @@ namespace utils {
 const double MIN_DEPTH_DISTANCE = 40;   // (millimeters) is the depth camera minimum reliable distance
 const double MAX_DEPTH_DISTANCE = 6000; // (millimeters) is the depth camera maximum reliable distance
 
-bool is_depth_valid(const double depth)
-{
-    return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
-}
+bool is_depth_valid(const double depth) { return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE); }
 
 /**
  *      SCREEN COORDINATES
@@ -104,6 +101,15 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
     }
     return false;
 }
+
+void CameraCoordinate::operator=(const vector3& other)
+{
+    this->x() = other.x();
+    this->y() = other.y();
+    this->z() = other.z();
+}
+
+void CameraCoordinate::operator=(const CameraCoordinate& other) { this->operator=(other.base()); }
 
 /**
  *      WORLD COORDINATES

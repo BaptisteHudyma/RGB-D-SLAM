@@ -208,7 +208,7 @@ void Plane_Segment::fit_plane()
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
 
     // get the centroid of the plane
-    _centroid = vector3(_Sx, _Sy, _Sz) * oneOverCount;
+    _centroid = (vector3(_Sx, _Sy, _Sz) * oneOverCount);
 
     // no need to fill the upper part, the adjoint solver does not need it
     Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(get_point_cloud_covariance());
@@ -217,7 +217,7 @@ void Plane_Segment::fit_plane()
     // best eigen vector is the most reliable direction for this plane normal
     const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
 
-    _d = -eigenVector.dot(_centroid);
+    _d = -eigenVector.dot(_centroid.base());
 
     // Enforce normal orientation
     if (_d > 0)
@@ -289,7 +289,7 @@ double Plane_Segment::get_point_distance(const vector3& point) const
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
 {
     const static double maximumMergeAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
-    return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid()) < maxMatchDistance;
+    return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid().base()) < maxMatchDistance;
 }
 
 } // namespace primitives
