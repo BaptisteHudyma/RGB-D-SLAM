@@ -82,6 +82,12 @@ class Plane_Segment
      */
     matrix33 get_point_cloud_covariance() const;
 
+    /**
+     * \brief Compute the covariance matrix of this plane parameters
+     * \return the covariance of the parameters in camera space
+     */
+    matrix44 get_plane_covariance() const;
+
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   public: // getters

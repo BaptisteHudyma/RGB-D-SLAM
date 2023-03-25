@@ -7,6 +7,7 @@
 #include "feature_map.hpp"
 #include "matches_containers.hpp"
 #include "parameters.hpp"
+#include "types.hpp"
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam {
@@ -21,9 +22,11 @@ struct Point
     // 3D descriptor (ORB)
     cv::Mat _descriptor;
     // position covariance
-    matrix33 _covariance;
+    worldCoordinateCovariance _covariance;
 
-    Point(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+    Point(const utils::WorldCoordinate& coordinates,
+          const worldCoordinateCovariance& covariance,
+          const cv::Mat& descriptor) :
         _coordinates(coordinates),
         _descriptor(descriptor),
         _covariance(covariance)
@@ -48,12 +51,12 @@ struct Point
         assert(_kalmanFilter != nullptr);
 
         const std::pair<vector3, matrix33>& res = _kalmanFilter->get_new_state(
-                _coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
+                _coordinates, _covariance.base(), newDetectionCoordinates, newDetectionCovariance);
 
         const double score = (_coordinates - res.first).norm();
 
         _coordinates = res.first;
-        _covariance = res.second;
+        _covariance.base() = res.second;
         assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and
                not std::isnan(_coordinates.z()));
         return score;
@@ -101,7 +104,9 @@ class MapPoint :
     public IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>
 {
   public:
-    MapPoint(const utils::WorldCoordinate& coordinates, const matrix33& covariance, const cv::Mat& descriptor) :
+    MapPoint(const utils::WorldCoordinate& coordinates,
+             const worldCoordinateCovariance& covariance,
+             const cv::Mat& descriptor) :
         Point(coordinates, covariance, descriptor),
         IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>()
     {
@@ -109,7 +114,7 @@ class MapPoint :
     }
 
     MapPoint(const utils::WorldCoordinate& coordinates,
-             const matrix33& covariance,
+             const worldCoordinateCovariance& covariance,
              const cv::Mat& descriptor,
              const size_t id) :
         Point(coordinates, covariance, descriptor),
@@ -282,7 +287,7 @@ class StagedMapPoint : public virtual MapPoint, public virtual IStagedMapFeature
                    const cameraToWorldMatrix& cameraToWorld,
                    const DetectedPointType& detectedFeature) :
         MapPoint(detectedFeature._coordinates.to_world_coordinates(cameraToWorld),
-                 utils::get_camera_point_covariance(detectedFeature._coordinates) + poseCovariance,
+                 utils::get_world_point_covariance(detectedFeature._coordinates, poseCovariance),
                  detectedFeature._descriptor)
     {
     }

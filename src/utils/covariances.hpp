@@ -4,6 +4,7 @@
 #include "coordinates.hpp"
 #include "matches_containers.hpp"
 #include "pose.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
 namespace utils {
@@ -16,19 +17,24 @@ namespace utils {
 double get_depth_quantization(const double depht);
 
 /**
- * \brief compute a covariance matrix for a screen point associated with a depth measurement
- * \param[in] ScreenCoordinate The coordinates of this point, in screen space
- * \return A 3x3 covariance matrix. It should be diagonal
- */
-const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate);
-
-/**
  * \brief Compute a screen point covariance from a given point
  *
- * \param[in] point The coordinates of this 3D point (world or camera space)
- * \param[in] pointCovariance The covariance associated with this point (world or camera space)
+ * \param[in] point The coordinates of this 3D point (world space)
+ * \param[in] pointCovariance The covariance associated with this point (world space)
  */
-const screenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance);
+const screenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                             const worldCoordinateCovariance& pointCovariance);
+
+/**
+ * \brief Compute the covariance of a world point
+ */
+const worldCoordinateCovariance get_world_point_covariance(const cameraCoordinateCovariance& cameraPointCovariance,
+                                                           const matrix33& poseCovariance);
+/**
+ * \brief Compute covariance of a screen point in world state
+ */
+const worldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                           const matrix33& poseCovariance);
 
 /**
  * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This
