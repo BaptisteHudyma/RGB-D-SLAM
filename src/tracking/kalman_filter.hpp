@@ -84,19 +84,10 @@ class KalmanFilter : public SharedKalmanFilter
                 const matrixd& measurementNoiseCovariance,
                 const matrixd& systemDynamics);
 
-    vectorxd get_state() const
-    {
-        return _stateEstimate;
-    };
-    matrixd get_state_covariance() const
-    {
-        return _estimateErrorCovariance;
-    };
+    vectorxd get_state() const { return _stateEstimate; };
+    matrixd get_state_covariance() const { return _estimateErrorCovariance; };
 
-    bool is_initialized() const
-    {
-        return _isInitialized;
-    }
+    bool is_initialized() const { return _isInitialized; }
 
   private:
     // Is the filter isInitialized?

@@ -42,25 +42,15 @@ class Plane
         return cv::countNonZero(_shapeMask) * pixelPerCell;
     }
 
-    utils::PlaneWorldCoordinates get_parametrization() const
-    {
-        return _parametrization;
-    }
-    utils::WorldCoordinate get_centroid() const
-    {
-        return _centroid;
-    }
-    cv::Mat get_mask() const
-    {
-        return _shapeMask;
-    }
+    utils::PlaneWorldCoordinates get_parametrization() const { return _parametrization; }
+    utils::WorldCoordinate get_centroid() const { return _centroid; }
+    cv::Mat get_mask() const { return _shapeMask; }
 
     /**
      * \brief Update this plane coordinates using a new detection
-     *
      * \param[in] newDetectionParameters The detected plane parameters
-     * \param[in] newCovariance The covariance of the newly detected feature
-     *
+     * \param[in] newDetectionCovariance The covariance of the newly detected feature
+     * \param[in] detectedCentroid The centroid of the detected plane
      * \return The update score (distance between old and new parametrization)
      */
     double track(const utils::PlaneWorldCoordinates& newDetectionParameters,
@@ -279,9 +269,7 @@ class MapPlane :
         return true;
     }
 
-    virtual void update_no_match() override
-    {
-    }
+    virtual void update_no_match() override {}
 };
 
 class StagedMapPlane : public virtual MapPlane, public virtual IStagedMapFeature<DetectedPlaneType>
@@ -300,15 +288,9 @@ class StagedMapPlane : public virtual MapPlane, public virtual IStagedMapFeature
         _shapeMask = detectedFeature.get_shape_mask();
     }
 
-    virtual bool should_remove_from_staged() const override
-    {
-        return _failedTrackingCount >= 2;
-    }
+    virtual bool should_remove_from_staged() const override { return _failedTrackingCount >= 2; }
 
-    virtual bool should_add_to_local_map() const override
-    {
-        return _successivMatchedCount >= 1;
-    }
+    virtual bool should_add_to_local_map() const override { return _successivMatchedCount >= 1; }
 };
 
 class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>

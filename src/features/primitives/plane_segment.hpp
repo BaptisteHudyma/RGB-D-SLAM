@@ -59,6 +59,8 @@ class Plane_Segment
     double get_point_distance(const vector3& point) const;
 
     /**
+     * \brief Check if this plane segment and another onsatisfy the mertge conditions
+     * \param[in] p The other plane segment to check merge conditions with
      * \param[in] maxMatchDistance Maximum distance after which two planes wont be merged
      * \return True if the planes could be merged. It is based on the normal angles and center distances
      */
@@ -83,34 +85,13 @@ class Plane_Segment
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   public: // getters
-    double get_MSE() const
-    {
-        return _MSE;
-    };
-    vector3 get_normal() const
-    {
-        return _normal;
-    };
-    utils::CameraCoordinate get_centroid() const
-    {
-        return _centroid;
-    };
-    double get_plane_d() const
-    {
-        return _d;
-    };
-    bool is_planar() const
-    {
-        return _isPlanar;
-    };
-    double get_score() const
-    {
-        return _score;
-    };
-    uint get_point_count() const
-    {
-        return _pointCount;
-    };
+    double get_MSE() const { return _MSE; };
+    vector3 get_normal() const { return _normal; };
+    utils::CameraCoordinate get_centroid() const { return _centroid; };
+    double get_plane_d() const { return _d; };
+    bool is_planar() const { return _isPlanar; };
+    double get_score() const { return _score; };
+    uint get_point_count() const { return _pointCount; };
 
   protected:
     bool is_cell_vertical_continuous(const matrixf& depthMatrix) const;

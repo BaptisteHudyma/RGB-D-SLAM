@@ -346,10 +346,7 @@ double Cylinder_Segment::get_distance(const vector3& point, const size_t segment
 /*
  *  Getters
  */
-uint Cylinder_Segment::get_segment_count() const
-{
-    return _segmentCount;
-}
+uint Cylinder_Segment::get_segment_count() const { return _segmentCount; }
 
 double Cylinder_Segment::get_MSE_at(const uint index) const
 {
@@ -398,15 +395,9 @@ double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other)
     return std::abs(_axis.dot(other._axis));
 }
 
-const vector3 Cylinder_Segment::get_normal() const
-{
-    return _axis;
-}
+const vector3 Cylinder_Segment::get_normal() const { return _axis; }
 
-Cylinder_Segment::~Cylinder_Segment()
-{
-    _cellActivatedCount = 0;
-}
+Cylinder_Segment::~Cylinder_Segment() { _cellActivatedCount = 0; }
 
 } // namespace primitives
 } // namespace features

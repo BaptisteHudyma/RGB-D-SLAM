@@ -54,27 +54,18 @@ class IMapFeature
     /**
      * \return True if this map feature is marked as matched
      */
-    bool is_matched() const
-    {
-        return _matchIndex != UNMATCHED_FEATURE_INDEX;
-    };
+    bool is_matched() const { return _matchIndex != UNMATCHED_FEATURE_INDEX; };
 
     /**
      * \brief mark this map feature as having no match
      */
-    void mark_unmatched()
-    {
-        _matchIndex = UNMATCHED_FEATURE_INDEX;
-    };
+    void mark_unmatched() { _matchIndex = UNMATCHED_FEATURE_INDEX; };
 
     /**
      * \brief mark this map feature as having a match at the given index
      * \param[in] matchIndex The index of the match in the detected features
      */
-    void mark_matched(const int matchIndex)
-    {
-        _matchIndex = matchIndex;
-    };
+    void mark_matched(const int matchIndex) { _matchIndex = matchIndex; };
 
     /**
      * \brief Update the feature, with the corresponding match
@@ -462,23 +453,11 @@ class Feature_Map
     /**
      * \brief Dectivate this local map
      */
-    void deactivate()
-    {
-        _isActivated = false;
-    }
+    void deactivate() { _isActivated = false; }
 
-    size_t get_local_map_size() const
-    {
-        return _localMap.size();
-    };
-    size_t get_staged_map_size() const
-    {
-        return _stagedMap.size();
-    };
-    size_t size() const
-    {
-        return get_local_map_size() + get_staged_map_size();
-    };
+    size_t get_local_map_size() const { return _localMap.size(); };
+    size_t get_staged_map_size() const { return _stagedMap.size(); };
+    size_t size() const { return get_local_map_size() + get_staged_map_size(); };
 
   protected:
     void update_local_map(const cameraToWorldMatrix& cameraToWorld,

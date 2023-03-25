@@ -21,14 +21,8 @@ class IPrimitive
   public:
     virtual ~IPrimitive() {};
 
-    cv::Mat get_shape_mask() const
-    {
-        return _shapeMask;
-    };
-    void set_shape_mask(const cv::Mat& mask)
-    {
-        _shapeMask = mask.clone();
-    };
+    cv::Mat get_shape_mask() const { return _shapeMask; };
+    void set_shape_mask(const cv::Mat& mask) { _shapeMask = mask.clone(); };
 
     /**
      * \brief Return the number of pixels in this plane mask
@@ -154,10 +148,7 @@ class Plane : public IPrimitive
         return descriptor;
     };
 
-    double get_similarity(const vector6& descriptor) const
-    {
-        return (_descriptor - descriptor).norm();
-    };
+    double get_similarity(const vector6& descriptor) const { return (_descriptor - descriptor).norm(); };
 
     /**
      * \brief Get the similarity of two planes, based on normal direction
@@ -170,18 +161,9 @@ class Plane : public IPrimitive
     bool is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const;
     bool is_similar(const Cylinder& prim) const;
 
-    vector3 get_normal() const
-    {
-        return _parametrization.head(3);
-    };
-    utils::PlaneCameraCoordinates get_parametrization() const
-    {
-        return _parametrization;
-    };
-    utils::CameraCoordinate get_centroid() const
-    {
-        return _centroid;
-    };
+    vector3 get_normal() const { return _parametrization.head(3); };
+    utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
+    utils::CameraCoordinate get_centroid() const { return _centroid; };
 
   private:
     vector6 compute_descriptor() const

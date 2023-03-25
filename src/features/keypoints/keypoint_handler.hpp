@@ -71,10 +71,7 @@ struct KeypointsWithIdStruct
         return _keypoints.size();
     }
 
-    bool empty() const
-    {
-        return size() == 0;
-    }
+    bool empty() const { return size() == 0; }
 
     const keypointWithId at(const size_t index) const
     {
@@ -92,14 +89,8 @@ struct KeypointsWithIdStruct
         _ids.emplace_back(id);
     }
 
-    const std::vector<cv::Point2f>& get_keypoints() const
-    {
-        return _keypoints;
-    }
-    const std::vector<size_t>& get_ids() const
-    {
-        return _ids;
-    }
+    const std::vector<cv::Point2f>& get_keypoints() const { return _keypoints; }
+    const std::vector<size_t>& get_ids() const { return _ids; }
 
   private:
     std::vector<cv::Point2f> _keypoints;
@@ -114,6 +105,8 @@ class Keypoint_Handler
 {
   public:
     /**
+     * \param[in] depthImageCols The number of columns of the depth image
+     * \param[in] depthImageRows The number of rows of the depth image
      * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
      */
     Keypoint_Handler(const uint depthImageCols, const uint depthImageRows, const double maxMatchDistance = 0.7);
@@ -132,10 +125,8 @@ class Keypoint_Handler
 
     /**
      * \brief Get a tracking index if it exist, or -1.
-     *
      * \param[in] mapPointId The unique id that we want to check
      * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched
-     *
      * \return the index of the tracked point in _keypoints, or -1 if no match was found
      */
     int get_tracking_match_index(const size_t mapPointId, const vectorb& isKeyPointMatchedContainer) const;
@@ -143,11 +134,10 @@ class Keypoint_Handler
 
     /**
      * \brief get an index corresponding to the index of the point matches.
-     *
      * \param[in] projectedMapPoint A 2D map point to match
      * \param[in] mapPointDescriptor The descriptor of this map point
      * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched
-     *
+     * \param[in] searchSpaceRadius The radius of the search space for potential matches, in pixels
      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
      */
     int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint,
@@ -164,10 +154,7 @@ class Keypoint_Handler
         return _keypoints[index];
     }
 
-    bool is_descriptor_computed(const uint index) const
-    {
-        return index < static_cast<uint>(_descriptors.rows);
-    }
+    bool is_descriptor_computed(const uint index) const { return index < static_cast<uint>(_descriptors.rows); }
 
     const cv::Mat get_descriptor(const uint index) const
     {
@@ -176,15 +163,9 @@ class Keypoint_Handler
         return _descriptors.row(index);
     }
 
-    size_t get_keypoint_count() const
-    {
-        return _keypoints.size();
-    }
+    size_t get_keypoint_count() const { return _keypoints.size(); }
 
-    size_t size() const
-    {
-        return _keypoints.size();
-    };
+    size_t size() const { return _keypoints.size(); };
 
     DetectedKeyPoint at(const size_t index) const
     {

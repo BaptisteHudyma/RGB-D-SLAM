@@ -62,10 +62,7 @@ struct matchContainer
         _planes.swap(other._planes);
     }
 
-    size_t size() const
-    {
-        return _points.size() + _planes.size();
-    };
+    size_t size() const { return _points.size() + _planes.size(); };
 };
 
 /**

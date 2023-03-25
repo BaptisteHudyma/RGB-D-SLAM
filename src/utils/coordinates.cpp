@@ -8,6 +8,7 @@
 namespace rgbd_slam {
 namespace utils {
 
+// TODO set in parameters
 const double MIN_DEPTH_DISTANCE = 40;   // (millimeters) is the depth camera minimum reliable distance
 const double MAX_DEPTH_DISTANCE = 6000; // (millimeters) is the depth camera maximum reliable distance
 
@@ -110,6 +111,15 @@ void CameraCoordinate::operator=(const vector3& other)
 }
 
 void CameraCoordinate::operator=(const CameraCoordinate& other) { this->operator=(other.base()); }
+
+void CameraCoordinate::operator<<(const vector3& other)
+{
+    this->x() = other.x();
+    this->y() = other.y();
+    this->z() = other.z();
+}
+
+void CameraCoordinate::operator<<(const CameraCoordinate& other) { this->operator<<(other.base()); }
 
 /**
  *      WORLD COORDINATES

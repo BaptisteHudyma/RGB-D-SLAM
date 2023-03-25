@@ -46,28 +46,13 @@ class Depth_Map_Transformation
      *
      * \return False if the camera parameters could not be loaded
      */
-    bool is_ok() const
-    {
-        return _isOk;
-    };
+    bool is_ok() const { return _isOk; };
 
   public: // getters
-    float get_rgb_fx() const
-    {
-        return _fxRgb;
-    }
-    float get_rgb_fy() const
-    {
-        return _fyRgb;
-    }
-    float get_rgb_cx() const
-    {
-        return _cxRgb;
-    }
-    float get_rgb_cy() const
-    {
-        return _cyRgb;
-    }
+    float get_rgb_fx() const { return _fxRgb; }
+    float get_rgb_fy() const { return _fyRgb; }
+    float get_rgb_cx() const { return _cxRgb; }
+    float get_rgb_cy() const { return _cyRgb; }
 
   protected:
     /**

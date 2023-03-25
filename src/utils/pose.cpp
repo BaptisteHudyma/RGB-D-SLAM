@@ -14,10 +14,7 @@ PoseBase::PoseBase()
     _orientation.setIdentity();
 }
 
-PoseBase::PoseBase(const vector3& position, const quaternion& orientation)
-{
-    set_parameters(position, orientation);
-}
+PoseBase::PoseBase(const vector3& position, const quaternion& orientation) { set_parameters(position, orientation); }
 
 void PoseBase::set_parameters(const vector3& position, const quaternion& orientation)
 {
@@ -44,10 +41,7 @@ std::ostream& operator<<(std::ostream& os, const PoseBase& pose)
     return os;
 }
 
-double PoseBase::get_position_error(const PoseBase& pose) const
-{
-    return (pose.get_position() - _position).norm();
-}
+double PoseBase::get_position_error(const PoseBase& pose) const { return (pose.get_position() - _position).norm(); }
 
 double PoseBase::get_rotation_error(const PoseBase& pose) const
 {
@@ -59,10 +53,7 @@ double PoseBase::get_rotation_error(const PoseBase& pose) const
  * Pose
  */
 
-Pose::Pose() : PoseBase()
-{
-    _positionVariance.setZero();
-}
+Pose::Pose() : PoseBase() { _positionVariance.setZero(); }
 
 Pose::Pose(const vector3& position, const quaternion& orientation) : PoseBase(position, orientation)
 {

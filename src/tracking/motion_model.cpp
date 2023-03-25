@@ -3,10 +3,7 @@
 namespace rgbd_slam {
 namespace tracking {
 
-Motion_Model::Motion_Model()
-{
-    this->reset();
-}
+Motion_Model::Motion_Model() { this->reset(); }
 
 void Motion_Model::reset()
 {

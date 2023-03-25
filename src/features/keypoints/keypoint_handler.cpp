@@ -143,10 +143,7 @@ uint Keypoint_Handler::get_search_space_index(const uint_pair& searchSpaceIndex)
 {
     return get_search_space_index(searchSpaceIndex.second, searchSpaceIndex.first);
 }
-uint Keypoint_Handler::get_search_space_index(const uint x, const uint y) const
-{
-    return y * _cellCountY + x;
-}
+uint Keypoint_Handler::get_search_space_index(const uint x, const uint y) const { return y * _cellCountY + x; }
 
 const Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(
         const utils::ScreenCoordinate2D& pointToPlace) const

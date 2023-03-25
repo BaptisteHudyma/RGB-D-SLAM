@@ -7,10 +7,6 @@
 namespace rgbd_slam {
 namespace pose_optimization {
 
-/**
- * \brief Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for
- * Levenberg-Marquardt algorithm
- */
 vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
 {
     // forcing positive "w" to work from 0 to PI
@@ -31,9 +27,6 @@ vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
     }
 }
 
-/**
- * \brief Compute a quaternion from it's scaled axis representation
- */
 quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients)
 {
     const double a = optimizationCoefficients.norm();
@@ -119,28 +112,6 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
         ++pointIndex;
     }
     return 0;
-}
-
-double get_transformation_score(const matches_containers::match_point_container& points,
-                                const utils::PoseBase& finalPose)
-{
-    // Get the new estimated pose
-    const quaternion& rotation = finalPose.get_orientation_quaternion();
-    const vector3& translation = finalPose.get_position();
-
-    const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-    double meanOfDistances = 0;
-
-    // Compute retroprojection distances
-    for (const matches_containers::PointMatch& match: points)
-    {
-        // Compute retroprojected distance
-        const double distance = match._worldFeature.get_distance(match._screenFeature, transformationMatrix);
-        assert(distance >= 0.0);
-
-        meanOfDistances += distance;
-    }
-    return meanOfDistances / static_cast<double>(points.size());
 }
 
 /**

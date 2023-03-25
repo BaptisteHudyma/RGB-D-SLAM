@@ -28,102 +28,36 @@ class Parameters
      */
     static void set_parameters();
 
-    static bool is_valid()
-    {
-        return _isValid;
-    };
+    static bool is_valid() { return _isValid; };
 
-    static uint get_available_core_number()
-    {
-        return _coreNumber;
-    };
+    static uint get_available_core_number() { return _coreNumber; };
 
     // Camera 1 is the left camera in stereo, and the color camera in RGBD
-    static uint get_camera_1_size_x()
-    {
-        return _camera1SizeX;
-    };
-    static uint get_camera_1_size_y()
-    {
-        return _camera1SizeY;
-    };
-    static double get_camera_1_center_x()
-    {
-        return _camera1CenterX;
-    };
-    static double get_camera_1_center_y()
-    {
-        return _camera1CenterY;
-    };
-    static double get_camera_1_focal_x()
-    {
-        return _camera1FocalX;
-    };
-    static double get_camera_1_focal_y()
-    {
-        return _camera1FocalY;
-    };
+    static uint get_camera_1_size_x() { return _camera1SizeX; };
+    static uint get_camera_1_size_y() { return _camera1SizeY; };
+    static double get_camera_1_center_x() { return _camera1CenterX; };
+    static double get_camera_1_center_y() { return _camera1CenterY; };
+    static double get_camera_1_focal_x() { return _camera1FocalX; };
+    static double get_camera_1_focal_y() { return _camera1FocalY; };
     // Camera 2 is the right camera in stereo, and the depth camera in RGBD
-    static uint get_camera_2_size_x()
-    {
-        return _camera2SizeX;
-    };
-    static uint get_camera_2_size_y()
-    {
-        return _camera2SizeY;
-    };
-    static double get_camera_2_center_x()
-    {
-        return _camera2CenterX;
-    };
-    static double get_camera_2_center_y()
-    {
-        return _camera2CenterY;
-    };
-    static double get_camera_2_focal_x()
-    {
-        return _camera2FocalX;
-    };
-    static double get_camera_2_focal_y()
-    {
-        return _camera2FocalY;
-    };
+    static uint get_camera_2_size_x() { return _camera2SizeX; };
+    static uint get_camera_2_size_y() { return _camera2SizeY; };
+    static double get_camera_2_center_x() { return _camera2CenterX; };
+    static double get_camera_2_center_y() { return _camera2CenterY; };
+    static double get_camera_2_focal_x() { return _camera2FocalX; };
+    static double get_camera_2_focal_y() { return _camera2FocalY; };
 
-    static double get_camera_2_translation_x()
-    {
-        return _camera2TranslationX;
-    };
-    static double get_camera_2_translation_y()
-    {
-        return _camera2TranslationY;
-    };
-    static double get_camera_2_translation_z()
-    {
-        return _camera2TranslationZ;
-    };
+    static double get_camera_2_translation_x() { return _camera2TranslationX; };
+    static double get_camera_2_translation_y() { return _camera2TranslationY; };
+    static double get_camera_2_translation_z() { return _camera2TranslationZ; };
 
-    static double get_camera_2_rotation_x()
-    {
-        return _camera2RotationX;
-    };
-    static double get_camera_2_rotation_y()
-    {
-        return _camera2RotationY;
-    };
-    static double get_camera_2_rotation_z()
-    {
-        return _camera2RotationZ;
-    };
+    static double get_camera_2_rotation_x() { return _camera2RotationX; };
+    static double get_camera_2_rotation_y() { return _camera2RotationY; };
+    static double get_camera_2_rotation_z() { return _camera2RotationZ; };
 
     // Primitives matching
-    static double get_minimum_iou_for_match()
-    {
-        return _minimumIOUToConsiderMatch;
-    };
-    static double get_maximum_plane_normals_angle_for_match()
-    {
-        return _maximumAngleForPlaneMatch;
-    };
+    static double get_minimum_iou_for_match() { return _minimumIOUToConsiderMatch; };
+    static double get_maximum_plane_normals_angle_for_match() { return _maximumAngleForPlaneMatch; };
 
     // Optimisation parameters
     static double get_ransac_maximum_retroprojection_error_for_point_inliers()
@@ -138,153 +72,51 @@ class Parameters
     {
         return _ransacMinimumInliersProportionForEarlyStop;
     };
-    static double get_ransac_probability_of_success()
-    {
-        return _ransacProbabilityOfSuccess;
-    };
-    static double get_ransac_inlier_proportion()
-    {
-        return _ransacInlierProportion;
-    };
+    static double get_ransac_probability_of_success() { return _ransacProbabilityOfSuccess; };
+    static double get_ransac_inlier_proportion() { return _ransacInlierProportion; };
 
-    static uint get_minimum_point_count_for_optimization()
-    {
-        return _minimumPointForOptimization;
-    };
-    static uint get_minimum_plane_count_for_optimization()
-    {
-        return _minimumPlanesForOptimization;
-    };
-    static uint get_maximum_point_count_per_frame()
-    {
-        return _maximumPointPerFrame;
-    };
-    static uint get_optimization_maximum_iterations()
-    {
-        return _optimizationMaximumIterations;
-    };
-    static double get_optimization_error_precision()
-    {
-        return _optimizationErrorPrecision;
-    };
-    static double get_optimization_xtol()
-    {
-        return _optimizationToleranceOfSolutionVectorNorm;
-    };
-    static double get_optimization_ftol()
-    {
-        return _optimizationToleranceOfVectorFunction;
-    };
-    static double get_optimization_gtol()
-    {
-        return _optimizationToleranceOfErrorFunctionGradient;
-    };
-    static double get_optimization_factor()
-    {
-        return _optimizationDiagonalStepBoundShift;
-    };
-    static double get_maximum_retroprojection_error()
-    {
-        return _maximumRetroprojectionError;
-    };
+    static uint get_minimum_point_count_for_optimization() { return _minimumPointForOptimization; };
+    static uint get_minimum_plane_count_for_optimization() { return _minimumPlanesForOptimization; };
+    static uint get_maximum_point_count_per_frame() { return _maximumPointPerFrame; };
+    static uint get_optimization_maximum_iterations() { return _optimizationMaximumIterations; };
+    static double get_optimization_error_precision() { return _optimizationErrorPrecision; };
+    static double get_optimization_xtol() { return _optimizationToleranceOfSolutionVectorNorm; };
+    static double get_optimization_ftol() { return _optimizationToleranceOfVectorFunction; };
+    static double get_optimization_gtol() { return _optimizationToleranceOfErrorFunctionGradient; };
+    static double get_optimization_factor() { return _optimizationDiagonalStepBoundShift; };
+    static double get_maximum_retroprojection_error() { return _maximumRetroprojectionError; };
 
-    static double get_search_matches_distance()
-    {
-        return _matchSearchRadius;
-    };
-    static double get_maximum_match_distance()
-    {
-        return _maximumMatchDistance;
-    };
-    static uint get_maximum_number_of_detectable_features()
-    {
-        return _maxNumberOfPointsToDetect;
-    };
-    static uint get_keypoint_detection_cell_size()
-    {
-        return _keypointCellDetectionSize;
-    };
-    static uint get_keypoint_refresh_frequency()
-    {
-        return _keypointRefreshFrequency;
-    };
-    static uint get_optical_flow_pyramid_depth()
-    {
-        return _opticalFlowPyramidDepth;
-    };
-    static uint get_optical_flow_pyramid_window_size()
-    {
-        return _opticalFlowPyramidWindowSize;
-    };
+    static double get_search_matches_distance() { return _matchSearchRadius; };
+    static double get_maximum_match_distance() { return _maximumMatchDistance; };
+    static uint get_maximum_number_of_detectable_features() { return _maxNumberOfPointsToDetect; };
+    static uint get_keypoint_detection_cell_size() { return _keypointCellDetectionSize; };
+    static uint get_keypoint_refresh_frequency() { return _keypointRefreshFrequency; };
+    static uint get_optical_flow_pyramid_depth() { return _opticalFlowPyramidDepth; };
+    static uint get_optical_flow_pyramid_window_size() { return _opticalFlowPyramidWindowSize; };
 
-    static float get_maximum_plane_merge_angle()
-    {
-        return _maximumPlaneAngleForMerge;
-    };
-    static uint get_depth_map_patch_size()
-    {
-        return _depthMapPatchSize;
-    };
+    static float get_maximum_plane_merge_angle() { return _maximumPlaneAngleForMerge; };
+    static uint get_depth_map_patch_size() { return _depthMapPatchSize; };
 
-    static double get_minimum_plane_seed_proportion()
-    {
-        return _minimumPlaneSeedProportion;
-    };
-    static double get_minimum_cell_activated_proportion()
-    {
-        return _minimumCellActivatedProportion;
-    };
-    static float get_minimum_zero_depth_proportion()
-    {
-        return _minimumZeroDepthProportion;
-    };
-    static double get_depth_sigma_error()
-    {
-        return _depthSigmaError;
-    };
-    static double get_depth_sigma_multiplier()
-    {
-        return _depthSigmaMultiplier;
-    };
-    static double get_depth_sigma_margin()
-    {
-        return _depthSigmaMargin;
-    };
+    static double get_minimum_plane_seed_proportion() { return _minimumPlaneSeedProportion; };
+    static double get_minimum_cell_activated_proportion() { return _minimumCellActivatedProportion; };
+    static float get_minimum_zero_depth_proportion() { return _minimumZeroDepthProportion; };
+    static double get_depth_sigma_error() { return _depthSigmaError; };
+    static double get_depth_sigma_multiplier() { return _depthSigmaMultiplier; };
+    static double get_depth_sigma_margin() { return _depthSigmaMargin; };
 
-    static float get_cylinder_ransac_max_distance()
-    {
-        return _cylinderRansacSqrtMaxDistance;
-    };
-    static float get_cylinder_ransac_minimum_score()
-    {
-        return _cylinderRansacMinimumScore;
-    };
-    static float get_cylinder_ransac_inlier_proportion()
-    {
-        return _cylinderRansacInlierProportions;
-    };
-    static float get_cylinder_ransac_probability_of_success()
-    {
-        return _cylinderRansacProbabilityOfSuccess;
-    };
+    static float get_cylinder_ransac_max_distance() { return _cylinderRansacSqrtMaxDistance; };
+    static float get_cylinder_ransac_minimum_score() { return _cylinderRansacMinimumScore; };
+    static float get_cylinder_ransac_inlier_proportion() { return _cylinderRansacInlierProportions; };
+    static float get_cylinder_ransac_probability_of_success() { return _cylinderRansacProbabilityOfSuccess; };
 
     // Map
 
     // Max unmatched points to consider this map point as lost
-    static uint get_maximum_unmatched_before_removal()
-    {
-        return _pointUnmatchedCountToLoose;
-    };
+    static uint get_maximum_unmatched_before_removal() { return _pointUnmatchedCountToLoose; };
     // Observe a point for N frames to gain max liability
-    static uint get_point_staged_age_confidence()
-    {
-        return _pointStagedAgeConfidence;
-    };
+    static uint get_point_staged_age_confidence() { return _pointStagedAgeConfidence; };
     // Minimum point liability for the local map
-    static double get_minimum_confidence_for_local_map()
-    {
-        return _pointMinimumConfidenceForMap;
-    };
+    static double get_minimum_confidence_for_local_map() { return _pointMinimumConfidenceForMap; };
 
   private:
     // Is this set of parameters valid
