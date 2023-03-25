@@ -22,18 +22,27 @@ double get_depth_quantization(const double depht);
  * \param[in] point The coordinates of this 3D point (world space)
  * \param[in] pointCovariance The covariance associated with this point (world space)
  */
-const screenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
-                                                             const worldCoordinateCovariance& pointCovariance);
+const ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                             const WorldCoordinateCovariance& pointCovariance);
+
+/**
+ * \brief Compute a screen point covariance from a given point
+ *
+ * \param[in] point The coordinates of this 3D point (camera space)
+ * \param[in] pointCovariance The covariance associated with this point (camera space)
+ */
+const ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
+                                                             const CameraCoordinateCovariance& pointCovariance);
 
 /**
  * \brief Compute the covariance of a world point
  */
-const worldCoordinateCovariance get_world_point_covariance(const cameraCoordinateCovariance& cameraPointCovariance,
+const WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
                                                            const matrix33& poseCovariance);
 /**
  * \brief Compute covariance of a screen point in world state
  */
-const worldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+const WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
                                                            const matrix33& poseCovariance);
 
 /**
@@ -42,7 +51,7 @@ const worldCoordinateCovariance get_world_point_covariance(const ScreenCoordinat
  * \param[in] screenPoint The 2D point in screen coordinates
  * \return the covariance of the 3D camera point
  */
-const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint);
+const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint);
 
 /**
  * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point
@@ -50,8 +59,8 @@ const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordin
  * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
  * \return the covariance of the 3D camera point
  */
-const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
-                                                             const screenCoordinateCovariance& screenPointCovariance);
+const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
+                                                             const ScreenCoordinateCovariance& screenPointCovariance);
 
 } // namespace utils
 } // namespace rgbd_slam

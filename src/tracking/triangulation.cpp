@@ -13,7 +13,7 @@ utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const doub
 
 bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
                                              const utils::ScreenCoordinate2D& screenPoint,
-                                             const worldToCameraMatrix& worldToCamera,
+                                             const WorldToCameraMatrix& worldToCamera,
                                              const double& maximumRetroprojectionError)
 {
     utils::ScreenCoordinate2D projectedScreenPoint;
@@ -28,8 +28,8 @@ bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& world
     return (retroprojectionError > maximumRetroprojectionError);
 }
 
-bool Triangulation::triangulate(const worldToCameraMatrix& currentWorldToCamera,
-                                const worldToCameraMatrix& newWorldToCamera,
+bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
+                                const WorldToCameraMatrix& newWorldToCamera,
                                 const utils::ScreenCoordinate2D& point2Da,
                                 const utils::ScreenCoordinate2D& point2Db,
                                 utils::WorldCoordinate& triangulatedPoint)

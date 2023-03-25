@@ -63,9 +63,9 @@ TEST(PointCoordinateSystemTests, ScreenToCameraToScreen)
     }
 }
 
-void test_point_set_screen_to_world_to_screen(const cameraToWorldMatrix& cameraToWorld)
+void test_point_set_screen_to_world_to_screen(const CameraToWorldMatrix& cameraToWorld)
 {
-    const worldToCameraMatrix worldToCamera = compute_world_to_camera_transform(cameraToWorld);
+    const WorldToCameraMatrix worldToCamera = compute_world_to_camera_transform(cameraToWorld);
 
     const double xRange = 640.0;
     const double yRange = 480.0;
@@ -102,7 +102,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenAtOrigin)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(0, 0, 0));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
@@ -114,7 +114,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenFarFromOrigin)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(-100, 1000, 100));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
@@ -126,7 +126,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation1)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0.3, 0.2, 0.1, 0.4), vector3(0, 0, 0));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
@@ -138,7 +138,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation2)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(0, 0, 0));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
@@ -150,7 +150,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation3)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
@@ -163,10 +163,10 @@ void estimate_plane_error(const vector4& pointA, const vector4& pointB)
     EXPECT_NEAR(pointA.w(), pointB.w(), 0.001);
 }
 
-void test_plane_set_camera_to_world_to_camera(const cameraToWorldMatrix& cameraToWorld)
+void test_plane_set_camera_to_world_to_camera(const CameraToWorldMatrix& cameraToWorld)
 {
-    const planeCameraToWorldMatrix& planeCameraToWorld = compute_plane_camera_to_world_matrix(cameraToWorld);
-    const planeWorldToCameraMatrix& planeWorldToCamera =
+    const PlaneCameraToWorldMatrix& planeCameraToWorld = compute_plane_camera_to_world_matrix(cameraToWorld);
+    const PlaneWorldToCameraMatrix& planeWorldToCamera =
             compute_plane_world_to_camera_matrix(compute_world_to_camera_transform(cameraToWorld));
     const double normalXIter = 0.3;
     const double normalYIter = 0.1;
@@ -202,7 +202,7 @@ TEST(PlaneCoordinateSystemTests, ScreenToWorldToScreenAtOrigin)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(0, 0, 0));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
@@ -214,7 +214,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraFarFromOrigin)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(-100, 1000, 100));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
@@ -226,7 +226,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation1)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0.3, 0.2, 0.1, 0.4), vector3(0, 0, 0));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
@@ -238,7 +238,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation2)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(0, 0, 0));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
@@ -250,7 +250,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation3)
         Parameters::load_defaut();
     }
 
-    const cameraToWorldMatrix& cameraToWorld =
+    const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }

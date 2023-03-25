@@ -33,7 +33,7 @@ double get_point_inliers_outliers(const matches_containers::match_point_containe
     pointMatcheSets.clear();
 
     // get a world to camera transform to evaluate the retroprojection score
-    const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
+    const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
             transformationPose.get_orientation_quaternion(), transformationPose.get_position());
 
     double retroprojectionScore = 0.0;
@@ -74,7 +74,7 @@ double get_plane_inliers_outliers(const matches_containers::match_plane_containe
     planeMatchSets.clear();
 
     // get a world to camera transform to evaluate the retroprojection score
-    const planeWorldToCameraMatrix& worldToCamera =
+    const PlaneWorldToCameraMatrix& worldToCamera =
             utils::compute_plane_world_to_camera_matrix(utils::compute_world_to_camera_transform(
                     transformationPose.get_orientation_quaternion(), transformationPose.get_position()));
 

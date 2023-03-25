@@ -79,7 +79,7 @@ class Local_Map
      * the match status
      */
     void add_features_to_map(const matrix33& poseCovariance,
-                             const cameraToWorldMatrix& cameraToWorld,
+                             const CameraToWorldMatrix& cameraToWorld,
                              const features::keypoints::Keypoint_Handler& keypointObject,
                              const features::primitives::plane_container& detectedPlanes,
                              const bool addAllFeatures);

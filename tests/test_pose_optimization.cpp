@@ -76,7 +76,7 @@ const point_container get_cube_points(const uint numberOfPoints, const double er
 matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
 {
     assert(error >= 0);
-    const worldToCameraMatrix& worldToCamera =
+    const WorldToCameraMatrix& worldToCamera =
             utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
     uint invalidPointsCounter = 0;
 
@@ -113,7 +113,7 @@ matches_containers::match_point_container get_matched_points(const utils::Pose& 
 
 matches_containers::match_plane_container get_matched_planes(const utils::Pose& endPose)
 {
-    const planeWorldToCameraMatrix& worldToCamera = utils::compute_plane_world_to_camera_matrix(
+    const PlaneWorldToCameraMatrix& worldToCamera = utils::compute_plane_world_to_camera_matrix(
             utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position()));
     std::uniform_real_distribution<double> normalDistribution(-1, 1);
 

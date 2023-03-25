@@ -25,8 +25,8 @@ class Triangulation
      *
      * \return True is the triangulation was successful
      */
-    static bool triangulate(const worldToCameraMatrix& currentWorldToCamera,
-                            const worldToCameraMatrix& newWorldToCamera,
+    static bool triangulate(const WorldToCameraMatrix& currentWorldToCamera,
+                            const WorldToCameraMatrix& newWorldToCamera,
                             const utils::ScreenCoordinate2D& point2Da,
                             const utils::ScreenCoordinate2D& point2Db,
                             utils::WorldCoordinate& triangulatedPoint);
@@ -44,7 +44,7 @@ class Triangulation
      */
     static bool is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
                                          const utils::ScreenCoordinate2D& screenPoint,
-                                         const worldToCameraMatrix& worldToCamera,
+                                         const WorldToCameraMatrix& worldToCamera,
                                          const double& maximumRetroprojectionError);
 };
 

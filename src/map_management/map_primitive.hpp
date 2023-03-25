@@ -146,13 +146,13 @@ class MapPlane :
     }
 
     virtual int find_match(const DetectedPlaneObject& detectedFeatures,
-                           const worldToCameraMatrix& worldToCamera,
+                           const WorldToCameraMatrix& worldToCamera,
                            const vectorb& isDetectedFeatureMatched,
                            std::list<PlaneMatchType>& matches,
                            const bool shouldAddToMatches = true,
                            const bool useAdvancedSearch = false) const override
     {
-        const planeWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
+        const PlaneWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
         // project plane in camera space
         const utils::PlaneCameraCoordinates& projectedPlane =
                 get_parametrization().to_camera_coordinates(planeCameraToWorld);
@@ -198,7 +198,7 @@ class MapPlane :
         return selectedIndex;
     }
 
-    virtual bool add_to_tracked(const worldToCameraMatrix& worldToCamera,
+    virtual bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedPlaneObject& trackedFeatures,
                                 const uint dropChance = 1000) const override
     {
@@ -209,7 +209,7 @@ class MapPlane :
         return false;
     }
 
-    virtual void draw(const worldToCameraMatrix& worldToCamMatrix,
+    virtual void draw(const WorldToCameraMatrix& worldToCamMatrix,
                       cv::Mat& debugImage,
                       const cv::Scalar& color) const override
     {
@@ -242,7 +242,7 @@ class MapPlane :
         debugImage = maskedInput + ImaskedInput;
     }
 
-    virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const override
+    virtual bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
         // TODO
         (void)worldToCamMatrix;
@@ -252,11 +252,11 @@ class MapPlane :
   protected:
     virtual bool update_with_match(const DetectedPlaneType& matchedFeature,
                                    const matrix33& poseCovariance,
-                                   const cameraToWorldMatrix& cameraToWorld) override
+                                   const CameraToWorldMatrix& cameraToWorld) override
     {
         assert(_matchIndex >= 0);
 
-        const planeCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
+        const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
         matrix44 detectedPlaneCovariance;
         detectedPlaneCovariance.setIdentity();
@@ -276,13 +276,13 @@ class StagedMapPlane : public virtual MapPlane, public virtual IStagedMapFeature
 {
   public:
     StagedMapPlane(const matrix33& poseCovariance,
-                   const cameraToWorldMatrix& cameraToWorld,
+                   const CameraToWorldMatrix& cameraToWorld,
                    const DetectedPlaneType& detectedFeature) :
         MapPlane()
     {
         (void)poseCovariance;
 
-        const planeCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
+        const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
         _parametrization = detectedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
         _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld),
         _shapeMask = detectedFeature.get_shape_mask();

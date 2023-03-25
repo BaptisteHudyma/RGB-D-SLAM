@@ -61,7 +61,7 @@ struct ScreenCoordinate : public ScreenCoordinate2D
      * \param[in] cameraToWorld Matrix to transform local to world coordinates
      * \return A 3D point in world coordinates
      */
-    WorldCoordinate to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
+    WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const;
 
     /**
      * \brief Transform a screen point with a depth value to a 3D camera point
@@ -72,7 +72,7 @@ struct ScreenCoordinate : public ScreenCoordinate2D
     /**
      * \brief Compute a covariance in screen space
      */
-    screenCoordinateCovariance get_covariance() const;
+    ScreenCoordinateCovariance get_covariance() const;
 
     double z() const { return _z; };
     double& z() { return _z; };
@@ -132,7 +132,7 @@ struct CameraCoordinate : public CameraCoordinate2D
      * \param[in] cameraToWorld Matrix to transform local to world coordinates
      * \return A 3D point in world coordinates
      */
-    WorldCoordinate to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const;
+    WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const;
 
     /**
      * \brief Transform a point from camera to screen coordinate system
@@ -175,15 +175,15 @@ struct WorldCoordinate : public vector3
      * \param[out] screenPoint The point screen coordinates, if the function returned true
      * \return True if the screen position is valid
      */
-    bool to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate& screenPoint) const;
-    bool to_screen_coordinates(const worldToCameraMatrix& worldToCamera, ScreenCoordinate2D& screenPoint) const;
+    bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera, ScreenCoordinate& screenPoint) const;
+    bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera, ScreenCoordinate2D& screenPoint) const;
 
     /**
      * \brief Transform a vector in world space to a vector in camera space
      * \param[in] worldToCamera Matrix to transform the world to a local coordinate system
      * \return The input vector transformed to camera space
      */
-    CameraCoordinate to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const;
+    CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const;
 
     /**
      * \brief Compute a signed 2D distance between this world point and a screen point, by retroprojecting the world
@@ -193,7 +193,7 @@ struct WorldCoordinate : public vector3
      * \return a 2D signed distance in camera space (pixels)
      */
     vector2 get_signed_distance_2D(const ScreenCoordinate2D& screenPoint,
-                                   const worldToCameraMatrix& worldToCamera) const;
+                                   const WorldToCameraMatrix& worldToCamera) const;
     /**
      * \brief Compute a distance between this world point and a screen point, by retroprojecting the world point to
      * screen space.
@@ -201,7 +201,7 @@ struct WorldCoordinate : public vector3
      * \param[in] worldToCamera A transformation matrix to convert from world to camera space
      * \return an unsigned distance in camera space (pixels)
      */
-    double get_distance(const ScreenCoordinate2D& screenPoint, const worldToCameraMatrix& worldToCamera) const;
+    double get_distance(const ScreenCoordinate2D& screenPoint, const WorldToCameraMatrix& worldToCamera) const;
     /**
      * \brief Compute a signed distance between a world point and a 3D point in screen space, by projecting the screen
      * point to world space
@@ -209,7 +209,7 @@ struct WorldCoordinate : public vector3
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \return The 3D signed distance in world space
      */
-    vector3 get_signed_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const;
+    vector3 get_signed_distance(const ScreenCoordinate& screenPoint, const CameraToWorldMatrix& cameraToWorld) const;
     /**
      * \brief Compute a distance between a world point and a 3D point in screen space, by projecting the screen point to
      * world space
@@ -217,7 +217,7 @@ struct WorldCoordinate : public vector3
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \return The unsigned distance in world space
      */
-    double get_distance(const ScreenCoordinate& screenPoint, const cameraToWorldMatrix& cameraToWorld) const;
+    double get_distance(const ScreenCoordinate& screenPoint, const CameraToWorldMatrix& cameraToWorld) const;
     /**
      * \brief Compute a signed distance with another world point
      */
@@ -234,7 +234,7 @@ struct PlaneCameraCoordinates : vector4
     PlaneCameraCoordinates(const vector4& plane) : vector4(plane) {};
     PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
-    PlaneWorldCoordinates to_world_coordinates(const planeCameraToWorldMatrix& cameraToWorld) const;
+    PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
 };
 
 struct PlaneWorldCoordinates : vector4
@@ -243,7 +243,7 @@ struct PlaneWorldCoordinates : vector4
     PlaneWorldCoordinates(const vector4& plane) : vector4(plane) {};
     PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
-    PlaneCameraCoordinates to_camera_coordinates(const planeWorldToCameraMatrix& worldToCamera) const;
+    PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
 
     /**
      * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space
@@ -253,7 +253,7 @@ struct PlaneWorldCoordinates : vector4
      * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
      */
     vector4 get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                const planeWorldToCameraMatrix& worldToCamera) const;
+                                const PlaneWorldToCameraMatrix& worldToCamera) const;
     /**
      * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space. Result is reduced
      * to two angles and a distance
@@ -262,7 +262,7 @@ struct PlaneWorldCoordinates : vector4
      * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
      */
     vector3 get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                        const planeWorldToCameraMatrix& worldToCamera) const;
+                                        const PlaneWorldToCameraMatrix& worldToCamera) const;
 };
 
 } // namespace utils

@@ -45,7 +45,7 @@ class IMapFeature
      * \return the index of the match if found, or UNMATCHED_FEATURE_INDEX
      */
     virtual int find_match(const DetectedFeaturesObject& detectedFeatures,
-                           const worldToCameraMatrix& worldToCamera,
+                           const WorldToCameraMatrix& worldToCamera,
                            const vectorb& isDetectedFeatureMatched,
                            std::list<FeatureMatchType>& matches,
                            const bool shouldAddToMatches = true,
@@ -76,7 +76,7 @@ class IMapFeature
      */
     void update_matched(const DetectedFeatureType& matchedFeature,
                         const matrix33& poseCovariance,
-                        const cameraToWorldMatrix& cameraToWorld)
+                        const CameraToWorldMatrix& cameraToWorld)
     {
         if (update_with_match(matchedFeature, poseCovariance, cameraToWorld))
         {
@@ -105,7 +105,7 @@ class IMapFeature
      * \param[in] dropChance 1/dropChance to drop this feature and not add it
      * \return True if this was added to trackedFeatures object
      */
-    virtual bool add_to_tracked(const worldToCameraMatrix& worldToCamera,
+    virtual bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedFeaturesObject& trackedFeatures,
                                 const uint dropChance = 1000) const = 0;
 
@@ -115,7 +115,7 @@ class IMapFeature
      * \param[in, out] debugImage The image on which to display this feeature
      * \param[in] color Color of the feature to draw
      */
-    virtual void draw(const worldToCameraMatrix& worldToCamMatrix,
+    virtual void draw(const WorldToCameraMatrix& worldToCamMatrix,
                       cv::Mat& debugImage,
                       const cv::Scalar& color) const = 0;
 
@@ -124,7 +124,7 @@ class IMapFeature
      * \param[in] worldToCamMatrix A matrix to change from world to camera space
      * \return True if the feature should be visible
      */
-    virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const = 0;
+    virtual bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const = 0;
 
     /**
      *  Members
@@ -139,7 +139,7 @@ class IMapFeature
   protected:
     virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
                                    const matrix33& poseCovariance,
-                                   const cameraToWorldMatrix& cameraToWorld) = 0;
+                                   const CameraToWorldMatrix& cameraToWorld) = 0;
 
     virtual void update_no_match() = 0;
 
@@ -150,7 +150,7 @@ class IMapFeature
 template<class DetectedFeatureType> class IStagedMapFeature
 {
   public:
-    // IStagedMapFeature(const matrix33& poseCovariance, const cameraToWorldMatrix& cameraToWorld, const
+    // IStagedMapFeature(const matrix33& poseCovariance, const CameraToWorldMatrix& cameraToWorld, const
     // DetectedFeatureType& detectedFeature);
     virtual bool should_remove_from_staged() const = 0;
     virtual bool should_add_to_local_map() const = 0;
@@ -211,7 +211,7 @@ class Feature_Map
      * \param[out] matches An object of matches between map object and detected features
      */
     void get_matches(const DetectedFeaturesObject& detectedFeatures,
-                     const worldToCameraMatrix& worldToCamera,
+                     const WorldToCameraMatrix& worldToCamera,
                      const bool useAdvancedMatch,
                      std::list<FeatureMatchType>& matches)
     {
@@ -279,7 +279,7 @@ class Feature_Map
      * \param[out] trackedFeatures The object thta will contain the tracked features
      * \param[in] localMapDropChance Chance to randomly drop a local map point and not return it
      */
-    void get_tracked_features(const worldToCameraMatrix& worldToCamera,
+    void get_tracked_features(const WorldToCameraMatrix& worldToCamera,
                               TrackedFeaturesObject& trackedFeatures,
                               const uint localMapDropChance = 1000) const
     {
@@ -305,7 +305,7 @@ class Feature_Map
      * \param[in] poseCovariance Covariance of the pose after tracking
      * \param[in] detectedFeatureObject The object containing the detected features used for the tracking
      */
-    void update_map(const cameraToWorldMatrix& cameraToWorld,
+    void update_map(const CameraToWorldMatrix& cameraToWorld,
                     const matrix33& poseCovariance,
                     const DetectedFeaturesObject& detectedFeatureObject)
     {
@@ -337,7 +337,7 @@ class Feature_Map
      * unmatched features to staged map
      */
     void add_features_to_staged_map(const matrix33& poseCovariance,
-                                    const cameraToWorldMatrix& cameraToWorld,
+                                    const CameraToWorldMatrix& cameraToWorld,
                                     const DetectedFeaturesObject& detectedFeatures,
                                     const bool addAllFeatures)
     {
@@ -424,7 +424,7 @@ class Feature_Map
      * \param[in, out] debugImage The image on which to draw the map content
      * \param[in] shouldDisplayStaged If true, will also display the content of the staged map
      */
-    void draw_on_image(const worldToCameraMatrix& worldToCamMatrix,
+    void draw_on_image(const WorldToCameraMatrix& worldToCamMatrix,
                        cv::Mat& debugImage,
                        const bool shouldDisplayStaged = false) const
     {
@@ -460,7 +460,7 @@ class Feature_Map
     size_t size() const { return get_local_map_size() + get_staged_map_size(); };
 
   protected:
-    void update_local_map(const cameraToWorldMatrix& cameraToWorld,
+    void update_local_map(const CameraToWorldMatrix& cameraToWorld,
                           const matrix33& poseCovariance,
                           const DetectedFeaturesObject& detectedFeatureObject)
     {
@@ -501,7 +501,7 @@ class Feature_Map
         }
     }
 
-    void update_staged_map(const cameraToWorldMatrix& cameraToWorld,
+    void update_staged_map(const CameraToWorldMatrix& cameraToWorld,
                            const matrix33& poseCovariance,
                            const DetectedFeaturesObject& detectedFeatureObject)
     {

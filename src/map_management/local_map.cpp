@@ -36,7 +36,7 @@ const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoint
 {
     const size_t numberOfNewKeypoints = _localPointMap.get_local_map_size() + _localPointMap.get_staged_map_size();
 
-    const worldToCameraMatrix& worldToCamera =
+    const WorldToCameraMatrix& worldToCamera =
             utils::compute_world_to_camera_transform(lastPose.get_orientation_quaternion(), lastPose.get_position());
 
     // initialize output structure
@@ -55,7 +55,7 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
         const features::keypoints::Keypoint_Handler& detectedKeypointsObject,
         const features::primitives::plane_container& detectedPlanes)
 {
-    const worldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
+    const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
             currentPose.get_orientation_quaternion(), currentPose.get_position());
 
     matches_containers::matchContainer matchSets;
@@ -94,7 +94,7 @@ void Local_Map::update(const utils::Pose& optimizedPose,
     mark_outliers_as_unmatched(outlierMatchedPlanes);
 
     const matrix33& poseCovariance = optimizedPose.get_position_variance();
-    const cameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
+    const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
     // update all local maps
@@ -109,7 +109,7 @@ void Local_Map::update(const utils::Pose& optimizedPose,
 }
 
 void Local_Map::add_features_to_map(const matrix33& poseCovariance,
-                                    const cameraToWorldMatrix& cameraToWorld,
+                                    const CameraToWorldMatrix& cameraToWorld,
                                     const features::keypoints::Keypoint_Handler& keypointObject,
                                     const features::primitives::plane_container& detectedPlanes,
                                     const bool addAllFeatures)
@@ -195,7 +195,7 @@ void Local_Map::get_debug_image(const utils::Pose& camPose,
 {
     draw_image_head_band(debugImage);
 
-    const worldToCameraMatrix& worldToCamMatrix =
+    const WorldToCameraMatrix& worldToCamMatrix =
             utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
     // draw all map features
     _localPointMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
