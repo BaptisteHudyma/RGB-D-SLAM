@@ -1,13 +1,25 @@
 \hypertarget{map__primitive_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/map\+\_\+primitive.hpp File Reference}
 \label{map__primitive_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_primitive.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_primitive.hpp}}
 {\ttfamily \#include \char`\"{}../features/primitives/shape\+\_\+primitives.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../tracking/kalman\+\_\+filter.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/camera\+\_\+transformation.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/coordinates.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/matches\+\_\+containers.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/random.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}feature\+\_\+map.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$opencv2/highgui.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_primitive}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Matched\+Primitive}}
+class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane}}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_primitive}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Primitive}}
+class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane}}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+Map\+Plane}}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+Map\+Plane}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
@@ -16,8 +28,14 @@ namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\+\_\+slam\+::map\+\_\+management}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Variables}
+\doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-const uchar \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad98995d16892884117ea909064c6b41c}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+UNMATCHED\+\_\+\+PRIMITIVE\+\_\+\+ID}} = 0
+typedef features\+::primitives\+::\+Plane \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aacb253b3ad5f6c5efbbe7bab588e03df}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Plane\+Type}}
+\item 
+typedef features\+::primitives\+::plane\+\_\+container \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ae81589b5d45d36b6a81b595c1d750d05}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Plane\+Object}}
+\item 
+typedef matches\+\_\+containers\+::\+Plane\+Match \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2a6b855421340e137ed5f3534ad8d7fc}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+Match\+Type}}
+\item 
+typedef void $\ast$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad040cfd44b25854570bb2d067c07b639}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Tracked\+Plane\+Object}}
 \end{DoxyCompactItemize}

@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['levenberg_5fmarquard_5ffunctors_2ecpp_0',['levenberg_marquard_functors.cpp',['../levenberg__marquard__functors_8cpp.html',1,'']]],
-  ['levenberg_5fmarquard_5ffunctors_2ehpp_1',['levenberg_marquard_functors.hpp',['../levenberg__marquard__functors_8hpp.html',1,'']]],
-  ['line_5fdetection_2ecpp_2',['line_detection.cpp',['../line__detection_8cpp.html',1,'']]],
-  ['line_5fdetection_2ehpp_3',['line_detection.hpp',['../line__detection_8hpp.html',1,'']]],
-  ['local_5fmap_2ecpp_4',['local_map.cpp',['../local__map_8cpp.html',1,'']]],
-  ['local_5fmap_2ehpp_5',['local_map.hpp',['../local__map_8hpp.html',1,'']]],
-  ['logger_2ecpp_6',['logger.cpp',['../logger_8cpp.html',1,'']]],
-  ['logger_2ehpp_7',['logger.hpp',['../logger_8hpp.html',1,'']]]
+  ['kalman_5ffilter_2ecpp_0',['kalman_filter.cpp',['../kalman__filter_8cpp.html',1,'']]],
+  ['kalman_5ffilter_2ehpp_1',['kalman_filter.hpp',['../kalman__filter_8hpp.html',1,'']]],
+  ['keypoint_5fdetection_2ecpp_2',['keypoint_detection.cpp',['../keypoint__detection_8cpp.html',1,'']]],
+  ['keypoint_5fdetection_2ehpp_3',['keypoint_detection.hpp',['../keypoint__detection_8hpp.html',1,'']]],
+  ['keypoint_5fhandler_2ecpp_4',['keypoint_handler.cpp',['../keypoint__handler_8cpp.html',1,'']]],
+  ['keypoint_5fhandler_2ehpp_5',['keypoint_handler.hpp',['../keypoint__handler_8hpp.html',1,'']]]
 ];

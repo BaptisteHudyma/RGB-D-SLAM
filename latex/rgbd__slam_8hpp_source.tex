@@ -2,89 +2,90 @@
 \label{rgbd__slam_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/rgbd\_slam.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/rgbd\_slam.hpp}}
 \mbox{\hyperlink{rgbd__slam_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_RGBDSLAM\_HPP}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_RGBDSLAM\_HPP}}
-\DoxyCodeLine{3 }
-\DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <opencv2/line\_descriptor.hpp>}}
-\DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Eigen/Dense>}}
-\DoxyCodeLine{8 }
-\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{line__detection_8hpp}{features/lines/line\_detection.hpp}}"{}}}
-\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{depth__map__transformation_8hpp}{features/primitives/depth\_map\_transformation.hpp}}"{}}}
-\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{primitive__detection_8hpp}{features/primitives/primitive\_detection.hpp}}"{}}}
-\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{keypoint__detection_8hpp}{features/keypoints/keypoint\_detection.hpp}}"{}}}
-\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{line__detection_8hpp}{features/lines/line\_detection.hpp}}"{}}}
-\DoxyCodeLine{14 }
-\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{local__map_8hpp}{map\_management/local\_map.hpp}}"{}}}
-\DoxyCodeLine{16 }
-\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{motion__model_8hpp}{tracking/motion\_model.hpp}}"{}}}
-\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{pose_8hpp}{utils/pose.hpp}}"{}}}
-\DoxyCodeLine{19 }
-\DoxyCodeLine{20 }
-\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{22 }
-\DoxyCodeLine{27     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}} \{}
-\DoxyCodeLine{28         \textcolor{keyword}{public}:}
-\DoxyCodeLine{29             }
-\DoxyCodeLine{35             \textcolor{keyword}{explicit} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}{RGBD\_SLAM}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} \&startPose, \textcolor{keyword}{const} uint imageWidth = 640, \textcolor{keyword}{const} uint imageHeight = 480);}
-\DoxyCodeLine{36             \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}{\string~RGBD\_SLAM}}();}
-\DoxyCodeLine{37 }
-\DoxyCodeLine{47             \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a2d46b45a8cbb0855481e230ac8f44198}{track}}(\textcolor{keyword}{const} cv::Mat\& inputRgbImage, \textcolor{keyword}{const} cv::Mat\& inputDepthImage, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} shouldDetectLines = \textcolor{keyword}{false});}
-\DoxyCodeLine{48 }
-\DoxyCodeLine{59             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a008cefbaca5a56008abd12909be97b71}{get\_debug\_image}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& camPose, \textcolor{keyword}{const} cv::Mat\& originalRGB, cv::Mat\& debugImage, \textcolor{keyword}{const} \textcolor{keywordtype}{double} elapsedTime, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} shouldDisplayStagedPoints = \textcolor{keyword}{false}, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} shouldDisplayPrimitiveMasks = \textcolor{keyword}{false});}
-\DoxyCodeLine{60 }
-\DoxyCodeLine{64             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ab4e4a7a16ea2d66a16d962c1ff2747a1}{show\_statistics}}(\textcolor{keywordtype}{double} meanFrameTreatmentDuration) \textcolor{keyword}{const};}
-\DoxyCodeLine{65 }
-\DoxyCodeLine{66         \textcolor{keyword}{protected}:}
-\DoxyCodeLine{67 }
-\DoxyCodeLine{77             \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a4b96f6f32a074a157a3622643f06242f}{compute\_new\_pose}} (\textcolor{keyword}{const} cv::Mat\& grayImage, \textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} Eigen::MatrixXf\& cloudArrayOrganized);}
-\DoxyCodeLine{78 }
-\DoxyCodeLine{79             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a80bf1bf691ef1247d8275535d0eb433c}{compute\_lines}}(\textcolor{keyword}{const} cv::Mat\& grayImage, \textcolor{keyword}{const} cv::Mat\& depthImage, cv::Mat\& outImage);}
-\DoxyCodeLine{80 }
-\DoxyCodeLine{81             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b806720e8040b9}{set\_color\_vector}}();}
-\DoxyCodeLine{82 }
-\DoxyCodeLine{83         \textcolor{keyword}{private}:}
-\DoxyCodeLine{84             \textcolor{keyword}{const} uint \_width;}
-\DoxyCodeLine{85             \textcolor{keyword}{const} uint \_height;}
-\DoxyCodeLine{86 }
-\DoxyCodeLine{87             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{features::primitives::Depth\_Map\_Transformation}}* \_depthOps;}
-\DoxyCodeLine{88 }
-\DoxyCodeLine{89             \textcolor{keywordtype}{size\_t} \_computeKeypointCount;}
-\DoxyCodeLine{90 }
-\DoxyCodeLine{91             \textcolor{comment}{/* Detectors */}}
-\DoxyCodeLine{92             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{features::primitives::Primitive\_Detection}}* \_primitiveDetector;}
-\DoxyCodeLine{93 }
-\DoxyCodeLine{94             \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map}{map\_management::Local\_Map}}* \_localMap;}
-\DoxyCodeLine{95             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction}{features::keypoints::Key\_Point\_Extraction}}* \_pointDetector;}
-\DoxyCodeLine{96             \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{features::lines::Line\_Detection}}* \_lineDetector;}
-\DoxyCodeLine{97 }
-\DoxyCodeLine{98             \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} \_currentPose;}
-\DoxyCodeLine{99             \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model}{tracking::Motion\_Model}} \_motionModel;}
-\DoxyCodeLine{100 }
-\DoxyCodeLine{101             \textcolor{keywordtype}{bool} isTrackingLost;    \textcolor{comment}{// True is the tracking of last frame failed}}
-\DoxyCodeLine{102 }
-\DoxyCodeLine{103             \textcolor{comment}{// debug}}
-\DoxyCodeLine{104             uint \_totalFrameTreated;}
-\DoxyCodeLine{105             \textcolor{keywordtype}{double} \_meanDepthMapTreatmentDuration;}
-\DoxyCodeLine{106             \textcolor{keywordtype}{double} \_meanPoseOptimizationDuration;}
-\DoxyCodeLine{107 }
-\DoxyCodeLine{108             \textcolor{keywordtype}{double} \_meanPrimitiveTreatmentDuration;}
-\DoxyCodeLine{109             \textcolor{keywordtype}{double} \_meanLineTreatmentDuration;}
-\DoxyCodeLine{110             \textcolor{keywordtype}{double} \_meanFindMatchTime;}
-\DoxyCodeLine{111             \textcolor{keywordtype}{double} \_meanPoseOptimizationFromFeatures;}
-\DoxyCodeLine{112             \textcolor{keywordtype}{double} \_meanLocalMapUpdateDuration;}
-\DoxyCodeLine{113 }
-\DoxyCodeLine{114         \textcolor{keyword}{private}:}
-\DoxyCodeLine{115             \textcolor{comment}{// remove copy constructors as we have dynamically instantiated members}}
-\DoxyCodeLine{116             \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}{RGBD\_SLAM}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\& rgbdSlam) = \textcolor{keyword}{delete};}
-\DoxyCodeLine{117             \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\& rgbdSlam) = \textcolor{keyword}{delete};}
-\DoxyCodeLine{118     \};}
-\DoxyCodeLine{119 }
-\DoxyCodeLine{120 }
-\DoxyCodeLine{121 \}}
-\DoxyCodeLine{122 }
-\DoxyCodeLine{123 }
-\DoxyCodeLine{124 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_RGBDSLAM\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_RGBDSLAM\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{keypoint__detection_8hpp}{features/keypoints/keypoint\_detection.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{line__detection_8hpp}{features/lines/line\_detection.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{depth__map__transformation_8hpp}{features/primitives/depth\_map\_transformation.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{primitive__detection_8hpp}{features/primitives/primitive\_detection.hpp}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{local__map_8hpp}{map\_management/local\_map.hpp}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{motion__model_8hpp}{tracking/motion\_model.hpp}}"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{pose_8hpp}{utils/pose.hpp}}"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <opencv2/line\_descriptor.hpp>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\&\ startPose,\ \textcolor{keyword}{const}\ uint\ imageWidth\ =\ 640,\ \textcolor{keyword}{const}\ uint\ imageHeight\ =\ 480);}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}{\string~RGBD\_SLAM}}();}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a51b11f3c63fb22540c62a2cad6523f43}{rectify\_depth}}(cv::Mat\&\ depthImage);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a2d46b45a8cbb0855481e230ac8f44198}{track}}(\textcolor{keyword}{const}\ cv::Mat\&\ inputRgbImage,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ inputDepthImage,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldDetectLines\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a008cefbaca5a56008abd12909be97b71}{get\_debug\_image}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\&\ camPose,}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ originalRGB,}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ debugImage,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ elapsedTime,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldDisplayStagedPoints\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldDisplayPrimitiveMasks\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ab4e4a7a16ea2d66a16d962c1ff2747a1}{show\_statistics}}(\textcolor{keywordtype}{double}\ meanFrameTreatmentDuration)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ae1bd3d3499e79eb3c0047f2ea8e9982c}{compute\_new\_pose}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ depthImage,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}}\&\ cloudArrayOrganized);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a80bf1bf691ef1247d8275535d0eb433c}{compute\_lines}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,\ \textcolor{keyword}{const}\ cv::Mat\&\ depthImage,\ cv::Mat\&\ outImage);}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b806720e8040b9}{set\_color\_vector}}();}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{const}\ uint\ \_width;}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{const}\ uint\ \_height;}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{features::primitives::Depth\_Map\_Transformation}}*\ \_depthOps;}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \_computeKeypointCount;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{comment}{/*\ Detectors\ */}}
+\DoxyCodeLine{00099\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{features::primitives::Primitive\_Detection}}*\ \_primitiveDetector;}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map}{map\_management::Local\_Map}}*\ \_localMap;}
+\DoxyCodeLine{00102\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction}{features::keypoints::Key\_Point\_Extraction}}*\ \_pointDetector;}
+\DoxyCodeLine{00103\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{features::lines::Line\_Detection}}*\ \_lineDetector;}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\ \_currentPose;}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model}{tracking::Motion\_Model}}\ \_motionModel;}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_isTrackingLost;\ \ \ \ \ \ \textcolor{comment}{//\ True\ is\ the\ tracking\ of\ last\ frame\ failed}}
+\DoxyCodeLine{00109\ \ \ \ \ uint\ \_failedTrackingCount;\ \textcolor{comment}{//\ number\ of\ consecutive\ lost\ tracking}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{comment}{//\ debug}}
+\DoxyCodeLine{00112\ \ \ \ \ uint\ \_totalFrameTreated;}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanDepthMapTreatmentDuration;}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPoseOptimizationDuration;}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPrimitiveTreatmentDuration;}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanLineTreatmentDuration;}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanFindMatchTime;}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPoseOptimizationFromFeatures;}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanLocalMapUpdateDuration;}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ remove\ copy\ constructors\ as\ we\ have\ dynamically\ instantiated\ members}}
+\DoxyCodeLine{00124\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ rgbdSlam)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00125\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ rgbdSlam)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00126\ \};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

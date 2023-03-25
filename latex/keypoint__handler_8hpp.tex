@@ -1,14 +1,20 @@
 \hypertarget{keypoint__handler_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/keypoint\+\_\+handler.hpp File Reference}
 \label{keypoint__handler_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp}}
-{\ttfamily \#include $<$list$>$}\newline
-{\ttfamily \#include $<$vector$>$}\newline
-{\ttfamily \#include $<$opencv2/xfeatures2d.\+hpp$>$}\newline
 {\ttfamily \#include \char`\"{}../../utils/coordinates.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$opencv2/core/types.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/xfeatures2d.\+hpp$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Detected\+Key\+Point}}
+\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct}}
 \begin{DoxyCompactList}\small\item\em Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::keypoint\+With\+Id}}
+\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}}
 \begin{DoxyCompactList}\small\item\em Handler object to store a reference to detected key points. Passed to other classes for data association purposes. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
@@ -30,7 +36,7 @@ double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_aa2419fb1e607bada0d49a6afc37df62a}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+BORDER\+\_\+\+SIZE}} = 1.
+const int \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a0559f810d254e2321e79ac81051d7058}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+BORDER\+\_\+\+SIZE}} = 1
 \item 
 const size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+INVALID\+\_\+\+MAP\+\_\+\+POINT\+\_\+\+ID}} = 0
 \item 

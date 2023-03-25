@@ -2,7 +2,7 @@
 \label{classrgbd__slam_1_1features_1_1primitives_1_1_plane}\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
 
 
-Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} class. Handles planes.  
+Handles planes.  
 
 
 
@@ -18,29 +18,68 @@ Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Plane\+:\beg
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a79b0a7eea6d0291d276b52a47f29222c}{Plane}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+Seg, uint id, const cv\+::\+Mat \&shape\+Mask)
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a495a2e32fb47f3d576eaf70fb123103c}{Plane}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+Seg, const cv\+::\+Mat \&shape\+Mask)
 \begin{DoxyCompactList}\small\item\em Construct a plane object. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6599e52c069b47d77d5a930b717967ee}{is\+\_\+similar}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} \&prim) override
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_aceff4b8c1fcec4ee29f70ba3d525703c}{Plane}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} \&plane)
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_ae27e87c68f42c421d716be8a67c99085}{get\+\_\+similarity}} (const \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{vector6}} \&descriptor) const
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a77de5d23a39a7b87a6ab2d80b21f2eab}{is\+\_\+similar}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} \&prim) const
 \begin{DoxyCompactList}\small\item\em Get the similarity of two planes, based on normal direction. \end{DoxyCompactList}\item 
-virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a85fdc2ee54c3fb1c5622f1c09752071f}{get\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) override
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a9b2359f446fd9742f444e4cdeb0cc8dc}{is\+\_\+similar}} (const cv\+::\+Mat \&mask, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}} \&plane\+Parametrization) const
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a0b4cd7fca1505bd7aa9221083707330a}{is\+\_\+similar}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} \&prim) const
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a57d79d8fe4b9ff744056c9935c4e6fd5}{get\+\_\+normal}} () const
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_adf12e912231471386701a11d003479d7}{get\+\_\+parametrization}} () const
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_ae2e93010d7ae57d066492b162b962d52}{get\+\_\+centroid}} () const
 \end{DoxyCompactItemize}
-\doxysubsection*{Public Attributes}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive}}}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a320a470f59b6f322894162a8ea17576c}{\+\_\+d}}
+virtual \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a91f8908c4d1bdeb608afb2c9dd2d703c}{$\sim$\+IPrimitive}} ()
+\item 
+cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a71f6a83c970280a5fa178aad54e5d052}{get\+\_\+shape\+\_\+mask}} () const
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7215414226fe5f61ed62c0b4b328d951}{set\+\_\+shape\+\_\+mask}} (const cv\+::\+Mat \&mask)
+\item 
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7056be096b83f3367192db1e5303a870}{get\+\_\+contained\+\_\+pixels}} () const
+\begin{DoxyCompactList}\small\item\em Return the number of pixels in this plane mask. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1a43837708a375ce3edd7af6f8785bbf}{can\+\_\+add\+\_\+to\+\_\+map}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{vector6}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a453fd9811cdbe6b9dad6772f8b8812b7}{compute\+\_\+descriptor}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}} \&parametrization, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} \&plane\+Centroid, const uint pixel\+Count)
 \end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a69305ec72e95d91e7abb26c86984422d}{IPrimitive}} (const cv\+::\+Mat \&shape\+Mask)
+\begin{DoxyCompactList}\small\item\em Hidden constructor, to set shape. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_ac24216fb167ae471911d13ddbbe62f47}{get\+\_\+\+IOU}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{IPrimitive}} \&prim) const
+\begin{DoxyCompactList}\small\item\em Compute the Inter over Union factor of two masks. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a8aa4afd9eee9669f066905a251ad8cc3}{get\+\_\+\+IOU}} (const cv\+::\+Mat \&mask) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive}}}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1e8c070a3e48598e1f9d2b0ce76b6dec}{\+\_\+shape\+Mask}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} class. Handles planes. 
+Handles planes. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a79b0a7eea6d0291d276b52a47f29222c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a79b0a7eea6d0291d276b52a47f29222c}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a495a2e32fb47f3d576eaf70fb123103c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a495a2e32fb47f3d576eaf70fb123103c}} 
 \index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!Plane@{Plane}}
 \index{Plane@{Plane}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
-\doxysubsubsection{\texorpdfstring{Plane()}{Plane()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::\+Plane (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+Seg,  }\item[{uint}]{id,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{Plane()}{Plane()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::\+Plane (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+Seg,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})}
 
 
 
@@ -50,29 +89,65 @@ Construct a plane object.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em plane\+Seg} & \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} to copy \\
 \hline
-\mbox{\texttt{ in}}  & {\em id} & ID assigned to this shape (for tracking and debug) \\
-\hline
 \mbox{\texttt{ in}}  & {\em shape\+Mask} & Mask of the shape in the reference image \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_aceff4b8c1fcec4ee29f70ba3d525703c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_aceff4b8c1fcec4ee29f70ba3d525703c}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!Plane@{Plane}}
+\index{Plane@{Plane}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{Plane()}{Plane()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::\+Plane (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} \&}]{plane }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a85fdc2ee54c3fb1c5622f1c09752071f}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a85fdc2ee54c3fb1c5622f1c09752071f}} 
-\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!get\_distance@{get\_distance}}
-\index{get\_distance@{get\_distance}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
-\doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a453fd9811cdbe6b9dad6772f8b8812b7}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a453fd9811cdbe6b9dad6772f8b8812b7}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!compute\_descriptor@{compute\_descriptor}}
+\index{compute\_descriptor@{compute\_descriptor}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{compute\_descriptor()}{compute\_descriptor()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{vector6}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::compute\+\_\+descriptor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}} \&}]{parametrization,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} \&}]{plane\+Centroid,  }\item[{const uint}]{pixel\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
-Return the distance of this primitive to a point 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_ae2e93010d7ae57d066492b162b962d52}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_ae2e93010d7ae57d066492b162b962d52}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!get\_centroid@{get\_centroid}}
+\index{get\_centroid@{get\_centroid}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{get\_centroid()}{get\_centroid()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6537b793a2db1e5fb5009b5ddcf4fdb8}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a57d79d8fe4b9ff744056c9935c4e6fd5}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a57d79d8fe4b9ff744056c9935c4e6fd5}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!get\_normal@{get\_normal}}
+\index{get\_normal@{get\_normal}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{get\_normal()}{get\_normal()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6599e52c069b47d77d5a930b717967ee}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a6599e52c069b47d77d5a930b717967ee}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_adf12e912231471386701a11d003479d7}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_adf12e912231471386701a11d003479d7}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!get\_parametrization@{get\_parametrization}}
+\index{get\_parametrization@{get\_parametrization}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{get\_parametrization()}{get\_parametrization()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+parametrization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_ae27e87c68f42c421d716be8a67c99085}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_ae27e87c68f42c421d716be8a67c99085}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!get\_similarity@{get\_similarity}}
+\index{get\_similarity@{get\_similarity}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{get\_similarity()}{get\_similarity()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::get\+\_\+similarity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{vector6}} \&}]{descriptor }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a9b2359f446fd9742f444e4cdeb0cc8dc}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a9b2359f446fd9742f444e4cdeb0cc8dc}} 
 \index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!is\_similar@{is\_similar}}
 \index{is\_similar@{is\_similar}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
-\doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} \&}]{prim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+\doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{mask,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}} \&}]{plane\+Parametrization }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a0b4cd7fca1505bd7aa9221083707330a}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a0b4cd7fca1505bd7aa9221083707330a}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!is\_similar@{is\_similar}}
+\index{is\_similar@{is\_similar}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} \&}]{prim }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a77de5d23a39a7b87a6ab2d80b21f2eab}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a77de5d23a39a7b87a6ab2d80b21f2eab}} 
+\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!is\_similar@{is\_similar}}
+\index{is\_similar@{is\_similar}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
+\doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} \&}]{prim }\end{DoxyParamCaption}) const}
 
 
 
@@ -84,21 +159,8 @@ Get the similarity of two planes, based on normal direction.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-A double between 0 and 1, with 1 indicating identical planes 
+A true if those shapes are similar 
 \end{DoxyReturn}
-
-
-Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a53479b4b4bf59c798bb366bc8d30fa41}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
-
-
-
-\doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a320a470f59b6f322894162a8ea17576c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane_a320a470f59b6f322894162a8ea17576c}} 
-\index{rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}!\_d@{\_d}}
-\index{\_d@{\_d}!rgbd\_slam::features::primitives::Plane@{rgbd\_slam::features::primitives::Plane}}
-\doxysubsubsection{\texorpdfstring{\_d}{\_d}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+::\+\_\+d}
-
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

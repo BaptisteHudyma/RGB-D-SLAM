@@ -2,67 +2,145 @@
 \label{coordinates_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates.hpp}}
 \mbox{\hyperlink{coordinates_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_COORDINATES\_HPP}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_COORDINATES\_HPP}}
-\DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}../types.hpp"{}}}
-\DoxyCodeLine{5 }
-\DoxyCodeLine{6 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{7 \textcolor{keyword}{namespace }utils \{}
-\DoxyCodeLine{8 }
-\DoxyCodeLine{9     \textcolor{keyword}{struct }ScreenCoordinate;}
-\DoxyCodeLine{10     \textcolor{keyword}{struct }CameraCoordinate;}
-\DoxyCodeLine{11     \textcolor{keyword}{struct }WorldCoordinate;}
-\DoxyCodeLine{12 }
-\DoxyCodeLine{16     \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{is\_depth\_valid}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} depth);}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{22     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \{}
-\DoxyCodeLine{26         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a06c1768dfc9473375e5f758ff4e0c6a6}{ScreenCoordinate}}() \{\};}
-\DoxyCodeLine{27         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_afd07ed55581a6f534a659717a56a96aa}{ScreenCoordinate}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\& coords, \textcolor{keyword}{const} \textcolor{keywordtype}{double} depth = 0) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(coords.x(), coords.y(), depth) \{\};}
-\DoxyCodeLine{28         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_ac6adcae9cd8e0389bf8e0cd1b0e604c2}{ScreenCoordinate}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, 0) \{\};}
-\DoxyCodeLine{29         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_aca0c8432fdddbed04d3b86e2422c428a}{ScreenCoordinate}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} z) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, z) \{\};}
-\DoxyCodeLine{30 }
-\DoxyCodeLine{31         \textcolor{comment}{/*}}
-\DoxyCodeLine{32 \textcolor{comment}{         * \(\backslash\)brief Transform a screen point with a value to a 3D world point}}
-\DoxyCodeLine{33 \textcolor{comment}{         *}}
-\DoxyCodeLine{34 \textcolor{comment}{         * \(\backslash\)param[in] cameraToWorld Matrix to transform local to world coordinates}}
-\DoxyCodeLine{35 \textcolor{comment}{         *}}
-\DoxyCodeLine{36 \textcolor{comment}{         * \(\backslash\)return A 3D point in frame coordinates}}
-\DoxyCodeLine{37 \textcolor{comment}{         */}}
-\DoxyCodeLine{38         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a0f9594f0fb42f01cefa0ef4a3defd80a}{to\_world\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{cameraToWorldMatrix}}\& cameraToWorld) \textcolor{keyword}{const};}
-\DoxyCodeLine{39     \};}
-\DoxyCodeLine{40 }
-\DoxyCodeLine{41 }
-\DoxyCodeLine{46     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \{}
-\DoxyCodeLine{50         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a2f9b8d619ae652abf7b7c601f6415d13}{CameraCoordinate}}() \{\};}
-\DoxyCodeLine{51         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a1ab926926ef3d3bbbb4081e4c41a9704}{CameraCoordinate}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coords) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(coords) \{\};}
-\DoxyCodeLine{52         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_afec38c0949fc16849add6211f66af1f3}{CameraCoordinate}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\& homegenousCoordinates) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(}
-\DoxyCodeLine{53             homegenousCoordinates.x()/homegenousCoordinates[3],}
-\DoxyCodeLine{54             homegenousCoordinates.y()/homegenousCoordinates[3],}
-\DoxyCodeLine{55             homegenousCoordinates.z()/homegenousCoordinates[3]}
-\DoxyCodeLine{56         ) \{\};}
-\DoxyCodeLine{57         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_ae3bb1a7cffafa05daf9daedab5043bd6}{CameraCoordinate}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} z) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, z) \{\};}
-\DoxyCodeLine{58         \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a3dd5f12c57f9fad736ef9de9dce459d7}{get\_homogenous}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(x(), y(), z(), 1);\};}
-\DoxyCodeLine{59 }
-\DoxyCodeLine{60         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a879b77b2a8ebaaa2419bd7625d0ba9c0}{to\_world\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{cameraToWorldMatrix}}\& cameraToWorld) \textcolor{keyword}{const};}
-\DoxyCodeLine{61 }
-\DoxyCodeLine{62         \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a95e23682ed9c58bda423b3249c094aba}{to\_screen\_coordinates}}(\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}}\& screenPoint) \textcolor{keyword}{const};}
-\DoxyCodeLine{63     \};}
-\DoxyCodeLine{64 }
-\DoxyCodeLine{65 }
-\DoxyCodeLine{70     \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}} : \textcolor{keyword}{public} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \{}
-\DoxyCodeLine{74         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a4c91ee8ba105188bd820fc5f42423d71}{WorldCoordinate}}() \{\};}
-\DoxyCodeLine{75         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_ae616cff6d615e8eb326bcae8d50b6cca}{WorldCoordinate}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& coords) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(coords) \{\};}
-\DoxyCodeLine{76         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_af93a851cb45a3ef0571c8532b992332c}{WorldCoordinate}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} z) : \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x, y, z) \{\};}
-\DoxyCodeLine{77 }
-\DoxyCodeLine{86         \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}{to\_screen\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\& worldToCamera, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}}\& screenPoint) \textcolor{keyword}{const};}
-\DoxyCodeLine{87 }
-\DoxyCodeLine{95         \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}{to\_camera\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\& worldToCamera) \textcolor{keyword}{const};}
-\DoxyCodeLine{96     \};}
-\DoxyCodeLine{97 }
-\DoxyCodeLine{98 \}}
-\DoxyCodeLine{99 \}}
-\DoxyCodeLine{100 }
-\DoxyCodeLine{101 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_COORDINATES\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_UTILS\_COORDINATES\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../types.hpp"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }utils\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }ScreenCoordinate2D;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{struct\ }ScreenCoordinate;}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }CameraCoordinate2D;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{struct\ }CameraCoordinate;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{struct\ }WorldCoordinate;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{struct\ }PlaneCameraCoordinates;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }PlaneWorldCoordinates;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{is\_depth\_valid}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ depth);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}}
+\DoxyCodeLine{00030\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ad551c839382e53ee9545350e12910709}{ScreenCoordinate2D}}()\ :\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}(\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}::Zero())\ \{\};}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ae962a23616a38d84cea8af71b910b496}{ScreenCoordinate2D}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\&\ coords)\ :\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}(coords)\ \{\};}
+\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a5d9a15ba0baa9c132bf6c151b62087d7}{ScreenCoordinate2D}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ y)\ :\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}(x,\ y)\ \{\};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a49412d9e80902d72f81cdbd1a7631b48}{to\_camera\_coordinates}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}}
+\DoxyCodeLine{00047\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a06c1768dfc9473375e5f758ff4e0c6a6}{ScreenCoordinate}}()\ :\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}(),\ \_z(0.0)\ \{\};}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ ScreenCoordinate(const\ ScreenCoordinate\&\ screenCoordinates)\ :\ ScreenCoordinate2D(screenCoordinates.x(),}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ screenCoordinates.y()),\ \_z(screenCoordinates.z())\ \{\};}}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_aca0c8432fdddbed04d3b86e2422c428a}{ScreenCoordinate}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a022b9f3a22ba5bd47a166c0c4ca204b4}{z}})\ :\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}(x,\ y),\ \_z(\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a022b9f3a22ba5bd47a166c0c4ca204b4}{z}})\ \{\};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00058\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a0f9594f0fb42f01cefa0ef4a3defd80a}{to\_world\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{cameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00064\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a0fe32ffcc4ee62695aa97373c010747a}{to\_camera\_coordinates}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a022b9f3a22ba5bd47a166c0c4ca204b4}{z}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_z;\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a355d6318d9129fe3ab435729f589d287}{base}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x(),\ y(),\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a022b9f3a22ba5bd47a166c0c4ca204b4}{z}}());\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{double}\ \_z;}
+\DoxyCodeLine{00072\ \};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}}
+\DoxyCodeLine{00079\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d_afc1512b3b8e2de6822d769a47079190f}{CameraCoordinate2D}}()\ :\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}(\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}::Zero())\ \{\};}
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d_acbffe79e7d68b696dafe136b0ffb38e5}{CameraCoordinate2D}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\&\ other)\ :\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}(other)\ \{\};}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d_a91e3186a122c9f10e5dca45c5568549d}{CameraCoordinate2D}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ y)\ :\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}(x,\ y)\ \{\};}
+\DoxyCodeLine{00083\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d_a15d4f34a2d2544e2983b4ec6ad620c51}{CameraCoordinate2D}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}\&\ other)\ :\ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}(other)\ \{\};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d_a601485792a69166b634d9278a18ff852}{to\_screen\_coordinates}}(\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}\&\ screenPoint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00091\ \};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00097\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}}
+\DoxyCodeLine{00098\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a2f9b8d619ae652abf7b7c601f6415d13}{CameraCoordinate}}()\ :\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}(),\ \_z(0.0)\ \{\};}
+\DoxyCodeLine{00104\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_ad922fd7da4a1695dd0a48cd785a28875}{CameraCoordinate}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}}\&\ other)\ :\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}(other),\ \_z(other.\_z)\ \{\};}
+\DoxyCodeLine{00105\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a1ab926926ef3d3bbbb4081e4c41a9704}{CameraCoordinate}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ coords)\ :\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}(coords.x(),\ coords.y()),\ \_z(coords.\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aa3be88a5102ab670e18992e496a8c63a}{z}}())\ \{\};}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_afec38c0949fc16849add6211f66af1f3}{CameraCoordinate}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\&\ homegenousCoordinates)\ :}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}(homegenousCoordinates.x()\ /\ homegenousCoordinates[3],}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ homegenousCoordinates.y()\ /\ homegenousCoordinates[3]),}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \_z(homegenousCoordinates.\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aa3be88a5102ab670e18992e496a8c63a}{z}}()\ /\ homegenousCoordinates[3])\ \{\};}
+\DoxyCodeLine{00110\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_ae3bb1a7cffafa05daf9daedab5043bd6}{CameraCoordinate}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aa3be88a5102ab670e18992e496a8c63a}{z}})\ :\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{CameraCoordinate2D}}(x,\ y),\ \_z(\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aa3be88a5102ab670e18992e496a8c63a}{z}})\ \{\};}
+\DoxyCodeLine{00111\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a3dd5f12c57f9fad736ef9de9dce459d7}{get\_homogenous}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(x(),\ y(),\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aa3be88a5102ab670e18992e496a8c63a}{z}}(),\ 1);\ \};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00118\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a879b77b2a8ebaaa2419bd7625d0ba9c0}{to\_world\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{cameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a95e23682ed9c58bda423b3249c094aba}{to\_screen\_coordinates}}(\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}}\&\ screenPoint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a8efd31f78e35740cbdd0e51c84dfe6a4}{to\_screen\_coordinates}}(\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}\&\ screenPoint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{double}\&\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aa3be88a5102ab670e18992e496a8c63a}{z}}()\ \{\ \textcolor{keywordflow}{return}\ \_z;\ \};}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_acd38d4debddbc0609c3a162c81407f4a}{z}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_z;\ \};}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_a24ce42f0688549a918992948797fdabc}{base}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x(),\ y(),\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aa3be88a5102ab670e18992e496a8c63a}{z}}());\ \};}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_af22af52f3496d51a39a751df27eace58}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ other);}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_af22af52f3496d51a39a751df27eace58}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}}\&\ other);}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aac7f1bac56912cb9f5f786c3d5fc014f}{operator<<}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ other);}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate_aac7f1bac56912cb9f5f786c3d5fc014f}{operator<<}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}}\&\ other);}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordtype}{double}\ \_z;}
+\DoxyCodeLine{00140\ \};}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00146\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}}
+\DoxyCodeLine{00147\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a4c91ee8ba105188bd820fc5f42423d71}{WorldCoordinate}}()\ :\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}::Zero())\ \{\};}
+\DoxyCodeLine{00152\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_ae616cff6d615e8eb326bcae8d50b6cca}{WorldCoordinate}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ coords)\ :\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(coords)\ \{\};}
+\DoxyCodeLine{00153\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_af93a851cb45a3ef0571c8532b992332c}{WorldCoordinate}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ z)\ :\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}(x,\ y,\ z)\ \{\};}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}{to\_screen\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ worldToCamera,\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}}\&\ screenPoint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}{to\_screen\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ worldToCamera,\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}\&\ screenPoint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00169\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{CameraCoordinate}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}{to\_camera\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ worldToCamera)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00178\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a74c1893cd9710f35f9d0563da439db54}{get\_signed\_distance\_2D}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}\&\ screenPoint,}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ worldToCamera)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_aab6700b55875840f5d6aaf43b07024d7}{get\_distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{ScreenCoordinate2D}}\&\ screenPoint,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ worldToCamera)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00195\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a5b29afe79b7a5e9774e569bd33da5167}{get\_signed\_distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}}\&\ screenPoint,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{cameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_aab6700b55875840f5d6aaf43b07024d7}{get\_distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{ScreenCoordinate}}\&\ screenPoint,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{cameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00207\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a6968809018bc0d1a86a684c1a9f02caa}{get\_signed\_distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}}\&\ worldPoint)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>base()\ -\/\ worldPoint;\ \};}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a617433334bd007402bccb95f0130074b}{get\_distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{WorldCoordinate}}\&\ worldPoint)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00209\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a5b29afe79b7a5e9774e569bd33da5167}{get\_signed\_distance}}(worldPoint).lpNorm<1>();}
+\DoxyCodeLine{00211\ \ \ \ \ \};}
+\DoxyCodeLine{00212\ \};}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{PlaneCameraCoordinates}}\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}}
+\DoxyCodeLine{00215\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates_a80fcdecbef062156f701bd06ed832b51}{PlaneCameraCoordinates}}()\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(\mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}::Zero())\ \{\};}
+\DoxyCodeLine{00217\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates_abf78a7a2fb35b3a7ef46d5510894d0ce}{PlaneCameraCoordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\&\ plane)\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(plane)\ \{\};}
+\DoxyCodeLine{00218\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates_a400d34a8923ecec3b76c94825ebbc6a7}{PlaneCameraCoordinates}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ z,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ d)\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(x,\ y,\ z,\ d)\ \{\};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{PlaneWorldCoordinates}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates_a6ed2daea8a8e27a1e6c51b8020ac7f40}{to\_world\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1plane_camera_to_world_matrix}{planeCameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00221\ \};}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{PlaneWorldCoordinates}}\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}}
+\DoxyCodeLine{00224\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates_a9bb8e8f0ff5764afdb5d7120150720f6}{PlaneWorldCoordinates}}()\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(\mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}::Zero())\ \{\};}
+\DoxyCodeLine{00226\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates_ad2c690f1b07b2d1f7a4362cbcf1d976c}{PlaneWorldCoordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\&\ plane)\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(plane)\ \{\};}
+\DoxyCodeLine{00227\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates_ab3351161a4b338464c7410a750d8e305}{PlaneWorldCoordinates}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ z,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ d)\ :\ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}(x,\ y,\ z,\ d)\ \{\};}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{PlaneCameraCoordinates}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates_a8c34c38885d6e4c67183255113de06e2}{to\_camera\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1plane_world_to_camera_matrix}{planeWorldToCameraMatrix}}\&\ worldToCamera)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00238\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates_aa4d6c4b3818bcb3cc12aa1a260b69864}{get\_signed\_distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{PlaneCameraCoordinates}}\&\ cameraPlane,}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1plane_world_to_camera_matrix}{planeWorldToCameraMatrix}}\&\ worldToCamera)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00247\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates_a973b2625b3b613587433cd4b938a09dc}{get\_reduced\_signed\_distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{PlaneCameraCoordinates}}\&\ cameraPlane,}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1plane_world_to_camera_matrix}{planeWorldToCameraMatrix}}\&\ worldToCamera)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \}\ \textcolor{comment}{//\ namespace\ utils}}
+\DoxyCodeLine{00252\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

@@ -1,20 +1,22 @@
 \hypertarget{map__point_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/map\+\_\+point.hpp File Reference}
 \label{map__point_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_point.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_point.hpp}}
-{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
-{\ttfamily \#include \char`\"{}../utils/coordinates.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../features/keypoints/keypoint\+\_\+handler.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../tracking/kalman\+\_\+filter.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/coordinates.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}feature\+\_\+map.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}matches\+\_\+containers.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_matched_screen_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Matched\+Screen\+Point}}
-\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point}}
-\begin{DoxyCompactList}\small\item\em Basic keypoint class. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_i_map___point___with___tracking}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+\_\+\+Point\+\_\+\+With\+\_\+\+Tracking}}
-\begin{DoxyCompactList}\small\item\em Prepare the basic functions for a staged/map point. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged___point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+\_\+\+Point}}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Point}}
+\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+Map\+Point}}
 \begin{DoxyCompactList}\small\item\em Candidate for a map point. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map___point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+\_\+\+Point}}
+class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+Map\+Point}}
 \begin{DoxyCompactList}\small\item\em A map point structure, containing all the necessary informations to identify a map point in local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
@@ -23,10 +25,19 @@ namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\+\_\+slam\+::map\+\_\+management}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef features\+::keypoints\+::\+Keypoint\+\_\+\+Handler \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a95c21ce2a6639057adf799fea76af9b1}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Keypoints\+Object}}
+\item 
+typedef features\+::keypoints\+::\+Detected\+Key\+Point \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2894a3e69da189eb9f8a08cbe55f3da9}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Point\+Type}}
+\item 
+typedef matches\+\_\+containers\+::\+Point\+Match \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a05288063cc8e5137112e03da885de895}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+Match\+Type}}
+\item 
+typedef features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1c750ff4cc7dbe8bb4fa3bc6092bdcf3}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Tracked\+Points\+Object}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 const size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad715b0460102980c8d6fcaa81b1107d3}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+INVALID\+\_\+\+POINT\+\_\+\+UNIQ\+\_\+\+ID}} = 0
-\item 
-const int \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ac4b9445dc894687f9645da2c1d7fb3df}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+UNMATCHED\+\_\+\+POINT\+\_\+\+INDEX}} = -\/1
 \end{DoxyCompactItemize}

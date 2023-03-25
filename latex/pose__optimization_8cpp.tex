@@ -1,15 +1,19 @@
 \hypertarget{pose__optimization_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/pose\+\_\+optimization.cpp File Reference}
 \label{pose__optimization_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp}}
 {\ttfamily \#include \char`\"{}pose\+\_\+optimization.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}levenberg\+\_\+marquard\+\_\+functors.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}ransac.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../third\+\_\+party/p3p.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../outputs/logger.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../parameters.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../utils/camera\+\_\+transformation.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/distance\+\_\+utils.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../utils/covariances.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../outputs/logger.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../../third\+\_\+party/p3p.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/random.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}levenberg\+\_\+marquard\+\_\+functors.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}matches\+\_\+containers.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ransac.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
 {\ttfamily \#include $<$Eigen/\+Std\+Vector$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -17,3 +21,14 @@ namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad39ae55c25371ec8ee66b553d1940fc7}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+point\+\_\+inliers\+\_\+outliers}} (const matches\+\_\+containers\+::match\+\_\+point\+\_\+container \&points\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error, const utils\+::\+Pose\+Base \&transformation\+Pose, matches\+\_\+containers\+::point\+\_\+match\+\_\+sets \&point\+Matche\+Sets)
+\begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a8c3da22dd5264b5d590be1c6100ad2c8}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+plane\+\_\+inliers\+\_\+outliers}} (const matches\+\_\+containers\+::match\+\_\+plane\+\_\+container \&planes\+To\+Evaluate, const double plane\+Max\+Retroprojection\+Error, const utils\+::\+Pose\+Base \&transformation\+Pose, matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets \&plane\+Match\+Sets)
+\begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0d83bf863f3d422bf228b3944c8fcf9c}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+features\+\_\+inliers\+\_\+outliers}} (const matches\+\_\+containers\+::match\+Container \&features\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error, const double plane\+Max\+Retroprojection\+Error, const utils\+::\+Pose\+Base \&transformation\+Pose, matches\+\_\+containers\+::match\+\_\+sets \&feature\+Set)
+\item 
+matches\+\_\+containers\+::match\+\_\+sets \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+subset}} (const uint number\+Of\+Points\+To\+Sample, const uint number\+Of\+Planes\+To\+Sample, const matches\+\_\+containers\+::match\+Container \&matched\+Features)
+\begin{DoxyCompactList}\small\item\em Return a subset of a given inlier set. \end{DoxyCompactList}\end{DoxyCompactItemize}

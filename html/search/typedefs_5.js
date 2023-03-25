@@ -1,11 +1,13 @@
 var searchData=
 [
-  ['plane_5fsegment_5funique_5fptr_0',['plane_segment_unique_ptr',['../classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment.html#ae8d00fa987ce851fbce1cc3f3fc0267c',1,'rgbd_slam::features::primitives::Cylinder_Segment::plane_segment_unique_ptr()'],['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a201ea8e0b9952678eb64941e75c72a02',1,'rgbd_slam::features::primitives::Primitive_Detection::plane_segment_unique_ptr()']]],
-  ['planes_5fptr_5fvector_1',['planes_ptr_vector',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a1c6de1dae1c5b4783520c1720ad1bd7b',1,'rgbd_slam::features::primitives::Primitive_Detection']]],
-  ['point_5fmap_5fcontainer_2',['point_map_container',['../classrgbd__slam_1_1map__management_1_1_local___map.html#adba0ccb456215900a47b062474ed222e',1,'rgbd_slam::map_management::Local_Map']]],
-  ['pose_5farray_3',['pose_array',['../namespacergbd__slam_1_1utils.html#ad5c3e0ac91a5ac0fa91e12e608cb8399',1,'rgbd_slam::utils']]],
-  ['primitive_5fcontainer_4',['primitive_container',['../namespacergbd__slam_1_1features_1_1primitives.html#a353a99b78e30a56a60d54a47cf318705',1,'rgbd_slam::features::primitives']]],
-  ['primitive_5fmap_5fcontainer_5',['primitive_map_container',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a7e3162059a4ff3d0d879a856bd0a0a14',1,'rgbd_slam::map_management::Local_Map']]],
-  ['primitive_5fpair_6',['primitive_pair',['../namespacergbd__slam_1_1matches__containers.html#addcfd69bfd74aa49b8c719ccbd9edd2e',1,'rgbd_slam::matches_containers']]],
-  ['primitive_5funiq_5fptr_7',['primitive_uniq_ptr',['../namespacergbd__slam_1_1features_1_1primitives.html#a0aa09aec2d1144a845fc0f65591ce93f',1,'rgbd_slam::features::primitives']]]
+  ['match_5fplane_5fcontainer_0',['match_plane_container',['../namespacergbd__slam_1_1matches__containers.html#a58801f59c64a14987579f745edbd3276',1,'rgbd_slam::matches_containers']]],
+  ['match_5fpoint_5fcontainer_1',['match_point_container',['../namespacergbd__slam_1_1matches__containers.html#ab56afd18853a71d647cdd9564ac2ee73',1,'rgbd_slam::matches_containers']]],
+  ['matrix33_2',['matrix33',['../namespacergbd__slam.html#a2877fc3a278a20d5132bcd38e12faf69',1,'rgbd_slam']]],
+  ['matrix34_3',['matrix34',['../namespacergbd__slam.html#ae454c342bc3dc5ead4e6c1df65e3fd84',1,'rgbd_slam']]],
+  ['matrix43_4',['matrix43',['../namespacergbd__slam.html#a823edbcbe45c6e21187073ad28cd0370',1,'rgbd_slam']]],
+  ['matrix44_5',['matrix44',['../namespacergbd__slam.html#a4c5100025d8dbfb05b957c61197cc83a',1,'rgbd_slam']]],
+  ['matrix66_6',['matrix66',['../namespacergbd__slam.html#a94c77331186bb0c8fdcb26baa0d910d5',1,'rgbd_slam']]],
+  ['matrixb_7',['Matrixb',['../namespacergbd__slam.html#a0fe13c1b6f4e20bd00b1d8c76d6fcc53',1,'rgbd_slam']]],
+  ['matrixd_8',['matrixd',['../namespacergbd__slam.html#ad3944806a3e625773f01e4fd81d3b05b',1,'rgbd_slam']]],
+  ['matrixf_9',['matrixf',['../namespacergbd__slam.html#ac9a8753b26f3eee39bc45a91f8f9c650',1,'rgbd_slam']]]
 ];

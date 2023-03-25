@@ -13,9 +13,11 @@ var searchData=
   ['local_5fmap_10',['Local_Map',['../classrgbd__slam_1_1map__management_1_1_local___map.html#a55f49d47df2e5c63d581786b64645ee6',1,'rgbd_slam::map_management::Local_Map::Local_Map()'],['../classrgbd__slam_1_1map__management_1_1_local___map.html',1,'rgbd_slam::map_management::Local_Map']]],
   ['local_5fmap_2ecpp_11',['local_map.cpp',['../local__map_8cpp.html',1,'']]],
   ['local_5fmap_2ehpp_12',['local_map.hpp',['../local__map_8hpp.html',1,'']]],
-  ['log_13',['log',['../namespacergbd__slam_1_1outputs.html#ac481964e17f115af5414d23bdc2d97a7',1,'rgbd_slam::outputs']]],
-  ['log_5ferror_14',['log_error',['../namespacergbd__slam_1_1outputs.html#a7c11e499578358f64a58d71f5b0dfb4d',1,'rgbd_slam::outputs']]],
-  ['log_5fwarning_15',['log_warning',['../namespacergbd__slam_1_1outputs.html#a854c348cba8433fee04b58feb5054cc6',1,'rgbd_slam::outputs']]],
-  ['logger_2ecpp_16',['logger.cpp',['../logger_8cpp.html',1,'']]],
-  ['logger_2ehpp_17',['logger.hpp',['../logger_8hpp.html',1,'']]]
+  ['localmapplane_13',['LocalMapPlane',['../classrgbd__slam_1_1map__management_1_1_local_map_plane.html#a21160232b1d91542eb8d2385e7b3d1d8',1,'rgbd_slam::map_management::LocalMapPlane::LocalMapPlane()'],['../classrgbd__slam_1_1map__management_1_1_local_map_plane.html',1,'rgbd_slam::map_management::LocalMapPlane']]],
+  ['localmappoint_14',['LocalMapPoint',['../classrgbd__slam_1_1map__management_1_1_local_map_point.html#a43e4e516be1dfd72e0f96538127d5b1e',1,'rgbd_slam::map_management::LocalMapPoint::LocalMapPoint()'],['../classrgbd__slam_1_1map__management_1_1_local_map_point.html',1,'rgbd_slam::map_management::LocalMapPoint']]],
+  ['log_15',['log',['../namespacergbd__slam_1_1outputs.html#ac481964e17f115af5414d23bdc2d97a7',1,'rgbd_slam::outputs']]],
+  ['log_5ferror_16',['log_error',['../namespacergbd__slam_1_1outputs.html#a7c11e499578358f64a58d71f5b0dfb4d',1,'rgbd_slam::outputs']]],
+  ['log_5fwarning_17',['log_warning',['../namespacergbd__slam_1_1outputs.html#a854c348cba8433fee04b58feb5054cc6',1,'rgbd_slam::outputs']]],
+  ['logger_2ecpp_18',['logger.cpp',['../logger_8cpp.html',1,'']]],
+  ['logger_2ehpp_19',['logger.hpp',['../logger_8hpp.html',1,'']]]
 ];

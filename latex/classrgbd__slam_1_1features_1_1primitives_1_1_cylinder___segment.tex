@@ -12,7 +12,7 @@ Stored a cylinder segment. Computes the parameters (radius, normal of the main a
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a14b8d2ca82e53e9b9a3f96edda9fabbc}{Cylinder\+\_\+\+Segment}} (const std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ae8d00fa987ce851fbce1cc3f3fc0267c}{plane\+\_\+segment\+\_\+unique\+\_\+ptr}} $>$ \&plane\+Grid, const std\+::vector$<$ bool $>$ \&is\+Activated\+Mask, const uint cell\+Activated\+Count)
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aa1219be8369783879959a1c2d25038ea}{Cylinder\+\_\+\+Segment}} (const std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \&plane\+Grid, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Activated\+Mask, const uint cell\+Activated\+Count)
 \begin{DoxyCompactList}\small\item\em Main constructor\+: fits a cylinder using the plane segments in plane\+Grid, using RANSAC. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ac4315d3396bf884157894e07f06082d4}{Cylinder\+\_\+\+Segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&seg, const uint sub\+Region\+Id)
 \begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
@@ -42,15 +42,10 @@ double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder__
 \begin{DoxyCompactList}\small\item\em Return the absolute result of the dot product of the two normals. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a7bafa1f1e627a6714955d8c265034975}{get\+\_\+normal}} () const
 \end{DoxyCompactItemize}
-\doxysubsection*{Protected Types}
-\begin{DoxyCompactItemize}
-\item 
-typedef std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ae8d00fa987ce851fbce1cc3f3fc0267c}{plane\+\_\+segment\+\_\+unique\+\_\+ptr}}
-\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a8729f2a811f0cdecfb2f1e53e668327b}{run\+\_\+ransac\+\_\+loop}} (const uint maximum\+Iterations, const std\+::vector$<$ uint $>$ \&ids\+Left, const Eigen\+::\+Matrix\+Xd \&plane\+Normals, const Eigen\+::\+Matrix\+Xd \&projected\+Centroids, const float maximum\+Sqrt\+Distance, const \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&ids\+Left\+Mask, \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&IFinal)
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a6e87afe9936c4ff4f84baafe1366420c}{run\+\_\+ransac\+\_\+loop}} (const uint maximum\+Iterations, const std\+::vector$<$ uint $>$ \&ids\+Left, const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&plane\+Normals, const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&projected\+Centroids, const \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&ids\+Left\+Mask, \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&IFinal)
 \begin{DoxyCompactList}\small\item\em Run a RANSAC pose optimization with 6 points. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a3cb39c00dfe5020baf1b352e1558a0c5}{get\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point, const size\+\_\+t segment\+Id) const
 \end{DoxyCompactItemize}
@@ -59,21 +54,12 @@ double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder__
 \doxysubsection{Detailed Description}
 Stored a cylinder segment. Computes the parameters (radius, normal of the main axis, eigen values) with a RANSAC fitting. 
 
-\doxysubsection{Member Typedef Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ae8d00fa987ce851fbce1cc3f3fc0267c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ae8d00fa987ce851fbce1cc3f3fc0267c}} 
-\index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!plane\_segment\_unique\_ptr@{plane\_segment\_unique\_ptr}}
-\index{plane\_segment\_unique\_ptr@{plane\_segment\_unique\_ptr}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
-\doxysubsubsection{\texorpdfstring{plane\_segment\_unique\_ptr}{plane\_segment\_unique\_ptr}}
-{\footnotesize\ttfamily typedef std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ae8d00fa987ce851fbce1cc3f3fc0267c}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::plane\+\_\+segment\+\_\+unique\+\_\+ptr}}\hspace{0.3cm}{\ttfamily [protected]}}
-
-
-
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a14b8d2ca82e53e9b9a3f96edda9fabbc}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a14b8d2ca82e53e9b9a3f96edda9fabbc}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aa1219be8369783879959a1c2d25038ea}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_aa1219be8369783879959a1c2d25038ea}} 
 \index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!Cylinder\_Segment@{Cylinder\_Segment}}
 \index{Cylinder\_Segment@{Cylinder\_Segment}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
 \doxysubsubsection{\texorpdfstring{Cylinder\_Segment()}{Cylinder\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::\+Cylinder\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_ae8d00fa987ce851fbce1cc3f3fc0267c}{plane\+\_\+segment\+\_\+unique\+\_\+ptr}} $>$ \&}]{plane\+Grid,  }\item[{const std\+::vector$<$ bool $>$ \&}]{is\+Activated\+Mask,  }\item[{const uint}]{cell\+Activated\+Count }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::\+Cylinder\+\_\+\+Segment (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \&}]{plane\+Grid,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Activated\+Mask,  }\item[{const uint}]{cell\+Activated\+Count }\end{DoxyParamCaption})}
 
 
 
@@ -178,7 +164,7 @@ Compute the point to cylinder surface distance. This distance is an approximatio
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em point} & The point to compute distance to\\
+\mbox{\texttt{ in}}  & {\em point} & The point to compute distance to \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -209,7 +195,7 @@ The signed distance between the point and cylinder surface
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em index} & The index of the cylinder part to search\\
+\mbox{\texttt{ in}}  & {\em index} & The index of the cylinder part to search \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -233,7 +219,7 @@ Return the absolute result of the dot product of the two normals.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em other} & The cyclinder segment to compare normal with\\
+\mbox{\texttt{ in}}  & {\em other} & The cyclinder segment to compare normal with \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -267,11 +253,11 @@ The number of plane segments fitted in this cylinder surface
 \doxysubsubsection{\texorpdfstring{is\_inlier\_at()}{is\_inlier\_at()}}
 {\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::is\+\_\+inlier\+\_\+at (\begin{DoxyParamCaption}\item[{const uint}]{indexA,  }\item[{const uint}]{indexB }\end{DoxyParamCaption}) const}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a8729f2a811f0cdecfb2f1e53e668327b}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a8729f2a811f0cdecfb2f1e53e668327b}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a6e87afe9936c4ff4f84baafe1366420c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment_a6e87afe9936c4ff4f84baafe1366420c}} 
 \index{rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}!run\_ransac\_loop@{run\_ransac\_loop}}
 \index{run\_ransac\_loop@{run\_ransac\_loop}!rgbd\_slam::features::primitives::Cylinder\_Segment@{rgbd\_slam::features::primitives::Cylinder\_Segment}}
 \doxysubsubsection{\texorpdfstring{run\_ransac\_loop()}{run\_ransac\_loop()}}
-{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::run\+\_\+ransac\+\_\+loop (\begin{DoxyParamCaption}\item[{const uint}]{maximum\+Iterations,  }\item[{const std\+::vector$<$ uint $>$ \&}]{ids\+Left,  }\item[{const Eigen\+::\+Matrix\+Xd \&}]{plane\+Normals,  }\item[{const Eigen\+::\+Matrix\+Xd \&}]{projected\+Centroids,  }\item[{const float}]{maximum\+Sqrt\+Distance,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&}]{ids\+Left\+Mask,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&}]{IFinal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+\_\+\+Segment\+::run\+\_\+ransac\+\_\+loop (\begin{DoxyParamCaption}\item[{const uint}]{maximum\+Iterations,  }\item[{const std\+::vector$<$ uint $>$ \&}]{ids\+Left,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{plane\+Normals,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{projected\+Centroids,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&}]{ids\+Left\+Mask,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \&}]{IFinal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -287,11 +273,9 @@ Run a RANSAC pose optimization with 6 points.
 \hline
 \mbox{\texttt{ in}}  & {\em projected\+Centroids} & \\
 \hline
-\mbox{\texttt{ in}}  & {\em maximum\+Sqrt\+Distance} & Maximum distance between planes before rejecting cylinder fitting \\
-\hline
 \mbox{\texttt{ in}}  & {\em ids\+Left\+Mask} & container of the same size as ids\+Left, indicating which ids are inliers \\
 \hline
- & {\em \mbox{[}\+IFinal\mbox{]}} & \\
+\mbox{\texttt{ in}}  & {\em IFinal} & \\
 \hline
 \end{DoxyParams}
 Return the number of inliers of this cylinder fitting 

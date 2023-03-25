@@ -2,6 +2,10 @@
 \label{coordinates_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates.cpp}}
 {\ttfamily \#include \char`\"{}coordinates.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../parameters.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../utils/distance\+\_\+utils.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}camera\+\_\+transformation.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -13,7 +17,9 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils
 \begin{DoxyCompactItemize}
 \item 
 bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{rgbd\+\_\+slam\+::utils\+::is\+\_\+depth\+\_\+valid}} (const double depth)
-\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
+vector3 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2cc2686d6a374d4a900f27c84478d070}{rgbd\+\_\+slam\+::utils\+::get\+\_\+plane\+\_\+transformation}} (const vector4 \&plane)
+\begin{DoxyCompactList}\small\item\em Compute a reduced plane form, allowing for better optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 

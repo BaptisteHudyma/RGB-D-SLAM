@@ -1,7 +1,13 @@
 var searchData=
 [
-  ['ransac_2ehpp_0',['ransac.hpp',['../ransac_8hpp.html',1,'']]],
-  ['readme_2emd_1',['README.md',['../_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../src_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)']]],
-  ['rgbd_5fslam_2ecpp_2',['rgbd_slam.cpp',['../rgbd__slam_8cpp.html',1,'']]],
-  ['rgbd_5fslam_2ehpp_3',['rgbd_slam.hpp',['../rgbd__slam_8hpp.html',1,'']]]
+  ['parameters_2ecpp_0',['parameters.cpp',['../parameters_8cpp.html',1,'']]],
+  ['parameters_2ehpp_1',['parameters.hpp',['../parameters_8hpp.html',1,'']]],
+  ['plane_5fsegment_2ecpp_2',['plane_segment.cpp',['../plane__segment_8cpp.html',1,'']]],
+  ['plane_5fsegment_2ehpp_3',['plane_segment.hpp',['../plane__segment_8hpp.html',1,'']]],
+  ['pose_2ecpp_4',['pose.cpp',['../pose_8cpp.html',1,'']]],
+  ['pose_2ehpp_5',['pose.hpp',['../pose_8hpp.html',1,'']]],
+  ['pose_5foptimization_2ecpp_6',['pose_optimization.cpp',['../pose__optimization_8cpp.html',1,'']]],
+  ['pose_5foptimization_2ehpp_7',['pose_optimization.hpp',['../pose__optimization_8hpp.html',1,'']]],
+  ['primitive_5fdetection_2ecpp_8',['primitive_detection.cpp',['../primitive__detection_8cpp.html',1,'']]],
+  ['primitive_5fdetection_2ehpp_9',['primitive_detection.hpp',['../primitive__detection_8hpp.html',1,'']]]
 ];

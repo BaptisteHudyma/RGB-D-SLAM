@@ -5,7 +5,7 @@
 %%For: 
 %Magnification: 1.00
 %%Orientation: Portrait
-%%BoundingBox: 0 0 500 164.609055
+%%BoundingBox: 0 0 500 162.601624
 %%Pages: 0
 %%BeginSetup
 %%EndSetup
@@ -19,7 +19,7 @@
 /marginwidth 10 def
 /distx 20 def
 /disty 40 def
-/boundaspect 3.037500 def  % aspect ratio of the BoundingBox (width/height)
+/boundaspect 3.075000 def  % aspect ratio of the BoundingBox (width/height)
 /boundx 500 def
 /boundy boundx boundaspect div def
 /xspacing 0 def
@@ -174,7 +174,7 @@
 boxfont setfont
 1 boundaspect scale
 (rgbd_slam::features::primitives::Cylinder) cw
-(rgbd_slam::features::primitives::Primitive) cw
+(rgbd_slam::features::primitives::IPrimitive) cw
 /boxwidth boxwidth marginwidth 2 mul add def
 /xspacing boxwidth distx add def
 /yspacing boxheight disty add def
@@ -187,7 +187,7 @@ boundx scalefactor div boundy scalefactor div scale
 % ----- classes -----
 
  (rgbd_slam::features::primitives::Cylinder) 0.000000 0.000000 box
- (rgbd_slam::features::primitives::Primitive) 0.000000 1.000000 box
+ (rgbd_slam::features::primitives::IPrimitive) 0.000000 1.000000 box
 
 % ----- relations -----
 

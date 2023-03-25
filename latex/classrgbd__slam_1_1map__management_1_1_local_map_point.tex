@@ -1,0 +1,154 @@
+\hypertarget{classrgbd__slam_1_1map__management_1_1_local_map_point}{}\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Local\+Map\+Point Class Reference}
+\label{classrgbd__slam_1_1map__management_1_1_local_map_point}\index{rgbd\_slam::map\_management::LocalMapPoint@{rgbd\_slam::map\_management::LocalMapPoint}}
+
+
+A map point structure, containing all the necessary informations to identify a map point in local map.  
+
+
+
+
+{\ttfamily \#include $<$map\+\_\+point.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::Local\+Map\+Point\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.728218cm]{classrgbd__slam_1_1map__management_1_1_local_map_point}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point_a43e4e516be1dfd72e0f96538127d5b1e}{Local\+Map\+Point}} (const \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{Staged\+Map\+Point}} \&staged\+Point)
+\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point_a9eea3c7b88e2919e739ebf9cce887702}{is\+\_\+lost}} () const override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Point}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a96d952d921e676fb23dc3a283fe2302e}{Map\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a80945027399007da7d28dc18ac928d05}{Map\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor, const size\+\_\+t id)
+\item 
+virtual int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a6e01727ab96288235a0fae988ccb26eb}{find\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a95c21ce2a6639057adf799fea76af9b1}{Detected\+Keypoints\+Object}} \&detected\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Detected\+Feature\+Matched, std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a05288063cc8e5137112e03da885de895}{Point\+Match\+Type}} $>$ \&matches, const bool should\+Add\+To\+Matches=true, const bool use\+Advanced\+Search=false) const override
+\begin{DoxyCompactList}\small\item\em Searches for a match in the detected\+Features object. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_ac81f11804daec452b06f406563ac8b3d}{add\+\_\+to\+\_\+tracked}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1c750ff4cc7dbe8bb4fa3bc6092bdcf3}{Tracked\+Points\+Object}} \&tracked\+Features, const uint drop\+Chance=1000) const override
+\begin{DoxyCompactList}\small\item\em Add the current feature to the tracked\+Features object. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a957b2d7cbb3a0d56f0ff25eea3a42231}{draw}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix, cv\+::\+Mat \&debug\+Image, const cv\+::\+Scalar \&color) const override
+\begin{DoxyCompactList}\small\item\em Draw this feature on the given image. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_ad60d4e2cec26feab3229bcd98de4b451}{is\+\_\+visible}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix) const override
+\begin{DoxyCompactList}\small\item\em Return true if the map feature is visible from the given position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a93f33e8e6e997f3babfe0c104ff95d47}{Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a0693e602b92fa0d3b12fb045e8c74580}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&new\+Detection\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&new\+Detection\+Covariance)
+\begin{DoxyCompactList}\small\item\em update this point coordinates using a new detection \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Keypoints\+Object, Detected\+Point\+Type, Point\+Match\+Type, Tracked\+Points\+Object $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a27bcc4947154718cc94d2ab884012501}{IMap\+Feature}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aa0673e0693625747f856bbaee9cf17f7}{IMap\+Feature}} (const size\+\_\+t id)
+\item 
+virtual int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_afaa4f0c52c1bb35ce10250ce002dffc6}{find\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a95c21ce2a6639057adf799fea76af9b1}{Detected\+Keypoints\+Object}} \&detected\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Detected\+Feature\+Matched, std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a05288063cc8e5137112e03da885de895}{Point\+Match\+Type}} $>$ \&matches, const bool should\+Add\+To\+Matches=true, const bool use\+Advanced\+Search=false) const=0
+\begin{DoxyCompactList}\small\item\em Searches for a match in the detected\+Features object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a6beb4a077f930d39e78d59a429cd89c3}{is\+\_\+matched}} () const
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ac3e463b77f6924cd0202817b20f4cc93}{mark\+\_\+unmatched}} ()
+\begin{DoxyCompactList}\small\item\em mark this map feature as having no match \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a0d8d9dd6ceae1e898c236c5a4a5a620a}{mark\+\_\+matched}} (const int match\+Index)
+\begin{DoxyCompactList}\small\item\em mark this map feature as having a match at the given index \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a55e3a577c3f1c291d45e9a5300333f40}{update\+\_\+matched}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2894a3e69da189eb9f8a08cbe55f3da9}{Detected\+Point\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
+\begin{DoxyCompactList}\small\item\em Update the feature, with the corresponding match. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_af081fbddaf8d75beae457fd4470b6c4a}{update\+\_\+unmatched}} ()
+\begin{DoxyCompactList}\small\item\em Update the feature, with the no match status. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a09408d864bc2af9663353620f2845a03}{add\+\_\+to\+\_\+tracked}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1c750ff4cc7dbe8bb4fa3bc6092bdcf3}{Tracked\+Points\+Object}} \&tracked\+Features, const uint drop\+Chance=1000) const=0
+\begin{DoxyCompactList}\small\item\em Add the current feature to the tracked\+Features object. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_abc1b10ae3b6192c0af88297859e84660}{draw}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix, cv\+::\+Mat \&debug\+Image, const cv\+::\+Scalar \&color) const=0
+\begin{DoxyCompactList}\small\item\em Draw this feature on the given image. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a70d06b6fbda9a3aacf637896599b1418}{is\+\_\+visible}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix) const=0
+\begin{DoxyCompactList}\small\item\em Return true if the map feature is visible from the given position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+ILocal\+Map\+Feature$<$ Staged\+Map\+Point $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature_a2d200b78a7cfd700bf2770cfbca40f5b}{is\+\_\+lost}} () const=0
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature_a213516b7a940144f3033242d830af924}{set\+\_\+color}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_aa538c84e53a30f94804c77fbfa6dda0c}{\+\_\+coordinates}}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_acb78f641c06c5c7ad59b03bc4cebed47}{\+\_\+descriptor}}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a8f4fe80c0500949f7eb49e74b21f379e}{\+\_\+covariance}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Keypoints\+Object, Detected\+Point\+Type, Point\+Match\+Type, Tracked\+Points\+Object $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_af1c6ff5c9dd91b5aef2eefd7c85364b3}{\+\_\+failed\+Tracking\+Count}}
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a652dc56e42d950f53c4791e71cde7c7f}{\+\_\+successiv\+Matched\+Count}}
+\item 
+const uint \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aa7b6261d017379730064aa6912771f57}{\+\_\+id}}
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a2cdcd6ba3138a1fe84346b571479d3de}{\+\_\+match\+Index}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+ILocal\+Map\+Feature$<$ Staged\+Map\+Point $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+Vec3b \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature_a58fa73b1593e3601b53c42b41a1898e0}{\+\_\+color}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Keypoints\+Object, Detected\+Point\+Type, Point\+Match\+Type, Tracked\+Points\+Object $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static const int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a965a94a5ffa851e7fb3851aa47b9ce09}{UNMATCHED\+\_\+\+FEATURE\+\_\+\+INDEX}}
+\item 
+static const int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a82d85e722ecbc9b0dd4acb46e947fbec}{FIRST\+\_\+\+DETECTION\+\_\+\+INDEX}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Point}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a8fe1147af7699f63c92d2c038655a9d7}{update\+\_\+with\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2894a3e69da189eb9f8a08cbe55f3da9}{Detected\+Point\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World) override
+\item 
+virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a4ab945a43f4e6b20e0e97f1d498f9519}{update\+\_\+no\+\_\+match}} () override
+\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ab734a9993f3a1d3b3a3714a0000b906f}{update\+\_\+with\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2894a3e69da189eb9f8a08cbe55f3da9}{Detected\+Point\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)=0
+\item 
+virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ab97a2ee3935ba54fbf3fbec01b4c370a}{update\+\_\+no\+\_\+match}} ()=0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A map point structure, containing all the necessary informations to identify a map point in local map. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local_map_point_a43e4e516be1dfd72e0f96538127d5b1e}\label{classrgbd__slam_1_1map__management_1_1_local_map_point_a43e4e516be1dfd72e0f96538127d5b1e}} 
+\index{rgbd\_slam::map\_management::LocalMapPoint@{rgbd\_slam::map\_management::LocalMapPoint}!LocalMapPoint@{LocalMapPoint}}
+\index{LocalMapPoint@{LocalMapPoint}!rgbd\_slam::map\_management::LocalMapPoint@{rgbd\_slam::map\_management::LocalMapPoint}}
+\doxysubsubsection{\texorpdfstring{LocalMapPoint()}{LocalMapPoint()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+Map\+Point\+::\+Local\+Map\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{Staged\+Map\+Point}} \&}]{staged\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_local_map_point_a9eea3c7b88e2919e739ebf9cce887702}\label{classrgbd__slam_1_1map__management_1_1_local_map_point_a9eea3c7b88e2919e739ebf9cce887702}} 
+\index{rgbd\_slam::map\_management::LocalMapPoint@{rgbd\_slam::map\_management::LocalMapPoint}!is\_lost@{is\_lost}}
+\index{is\_lost@{is\_lost}!rgbd\_slam::map\_management::LocalMapPoint@{rgbd\_slam::map\_management::LocalMapPoint}}
+\doxysubsubsection{\texorpdfstring{is\_lost()}{is\_lost()}}
+{\footnotesize\ttfamily virtual bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+Map\+Point\+::is\+\_\+lost (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature_a2d200b78a7cfd700bf2770cfbca40f5b}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+ILocal\+Map\+Feature$<$ Staged\+Map\+Point $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8hpp}{map\+\_\+point.\+hpp}}\end{DoxyCompactItemize}

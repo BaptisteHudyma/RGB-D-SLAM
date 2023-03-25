@@ -3,35 +3,65 @@
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match}{Match}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{match\+\_\+sets}}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}
+\begin{DoxyCompactList}\small\item\em Store a set of inlier and a set of outliers. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{match\+Container}}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::list$<$ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match}{Match}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{match\+\_\+point\+\_\+container}}
+typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}}, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}, \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}{Point\+Match}}
 \item 
-typedef std\+::pair$<$ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}{primitive\+\_\+pair}}
+typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}{Point\+Match}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{match\+\_\+point\+\_\+container}}
 \item 
-typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}{primitive\+\_\+pair}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{match\+\_\+primitive\+\_\+container}}
+typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}}, void $\ast$, void $\ast$ $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}{Plane\+Match}}
+\item 
+typedef std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}{Plane\+Match}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{match\+\_\+plane\+\_\+container}}
+\item 
+typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{match\+\_\+point\+\_\+container}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}{point\+\_\+match\+\_\+sets}}
+\item 
+typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{match\+\_\+plane\+\_\+container}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}{plane\+\_\+match\+\_\+sets}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}\label{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}} 
+\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}\label{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!match\_plane\_container@{match\_plane\_container}}
+\index{match\_plane\_container@{match\_plane\_container}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{match\_plane\_container}{match\_plane\_container}}
+{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}{Plane\+Match}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}}}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}\label{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}} 
 \index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!match\_point\_container@{match\_point\_container}}
 \index{match\_point\_container@{match\_point\_container}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
 \doxysubsubsection{\texorpdfstring{match\_point\_container}{match\_point\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match}{Match}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+point\+\_\+container}}}
+{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}{Point\+Match}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+point\+\_\+container}}}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}\label{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}} 
-\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!match\_primitive\_container@{match\_primitive\_container}}
-\index{match\_primitive\_container@{match\_primitive\_container}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
-\doxysubsubsection{\texorpdfstring{match\_primitive\_container}{match\_primitive\_container}}
-{\footnotesize\ttfamily typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}{primitive\+\_\+pair}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+primitive\+\_\+container}}}
+\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}\label{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!plane\_match\_sets@{plane\_match\_sets}}
+\index{plane\_match\_sets@{plane\_match\_sets}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{plane\_match\_sets}{plane\_match\_sets}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{match\+\_\+plane\+\_\+container}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets}}}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}\label{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}} 
-\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!primitive\_pair@{primitive\_pair}}
-\index{primitive\_pair@{primitive\_pair}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
-\doxysubsubsection{\texorpdfstring{primitive\_pair}{primitive\_pair}}
-{\footnotesize\ttfamily typedef std\+::pair$<$\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::primitive\+\_\+pair}}}
+\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}\label{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!PlaneMatch@{PlaneMatch}}
+\index{PlaneMatch@{PlaneMatch}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{PlaneMatch}{PlaneMatch}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}}, void$\ast$, void$\ast$$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Plane\+Match}}}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}\label{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!point\_match\_sets@{point\_match\_sets}}
+\index{point\_match\_sets@{point\_match\_sets}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{point\_match\_sets}{point\_match\_sets}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{match\+\_\+point\+\_\+container}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::point\+\_\+match\+\_\+sets}}}
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}\label{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!PointMatch@{PointMatch}}
+\index{PointMatch@{PointMatch}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{PointMatch}{PointMatch}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}}, \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}, \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Point\+Match}}}
 

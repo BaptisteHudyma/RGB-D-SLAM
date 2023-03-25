@@ -18,20 +18,20 @@ Inheritance diagram for rgbd\+\_\+slam\+::tracking\+::Shared\+Kalman\+Filter\+:\
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a3259e3651b7d00ab2bfe83de03f6a649}{Shared\+Kalman\+Filter}} (const Eigen\+::\+Matrix\+Xd \&system\+Dynamics, const Eigen\+::\+Matrix\+Xd \&output\+Matrix, const Eigen\+::\+Matrix\+Xd \&process\+Noise\+Covariance)
+\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ab5f4a85e15fa62fbbabc4035c4714a86}{Shared\+Kalman\+Filter}} (const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&system\+Dynamics, const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&output\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&process\+Noise\+Covariance)
 \begin{DoxyCompactList}\small\item\em Create a Kalman filter with the specified matrices. \end{DoxyCompactList}\item 
-std\+::pair$<$ Eigen\+::\+Vector\+Xd, Eigen\+::\+Matrix\+Xd $>$ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_adf74d1ae9cfc1522d858a6560543deeb}{get\+\_\+new\+\_\+state}} (const Eigen\+::\+Vector\+Xd \&current\+State, const Eigen\+::\+Matrix\+Xd \&state\+Noise\+Covariance, const Eigen\+::\+Vector\+Xd \&new\+Measurement, const Eigen\+::\+Matrix\+Xd \&measurement\+Noise\+Covariance)
+std\+::pair$<$ \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}}, \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac91372f16c707d0af2668c74de28d510}{get\+\_\+new\+\_\+state}} (const \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&current\+State, const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&state\+Noise\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&new\+Measurement, const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&measurement\+Noise\+Covariance)
 \begin{DoxyCompactList}\small\item\em Update the estimated state based on measured values. The time step is assumed to remain constant. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a51fb2810c5904ce29207d1297e131e8f}{\+\_\+system\+Dynamics}}
+\mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a77238d052e4b6b45002fefa3818ef44d}{\+\_\+system\+Dynamics}}
 \item 
-const Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a4a4778e13f0ffba576f995062dd5094f}{\+\_\+output\+Matrix}}
+const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a88544f314f1dfb22eabd939c063624bd}{\+\_\+output\+Matrix}}
 \item 
-const Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1a7eac7a3a96076918ae05bac66e187a}{\+\_\+process\+Noise\+Covariance}}
+const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1c708013b79365a4b49fee3e75d89d0e}{\+\_\+process\+Noise\+Covariance}}
 \item 
-Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a8613451c5f4b1af0b88ce6765728660b}{\+\_\+identity}}
+\mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa5d7234ce317c27aa8ab9557112c102d}{\+\_\+identity}}
 \end{DoxyCompactItemize}
 
 
@@ -39,11 +39,11 @@ Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_ka
 Implement a Kalman filter that can be shared by multiple systems, if they share the same dimentions. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a3259e3651b7d00ab2bfe83de03f6a649}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a3259e3651b7d00ab2bfe83de03f6a649}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ab5f4a85e15fa62fbbabc4035c4714a86}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ab5f4a85e15fa62fbbabc4035c4714a86}} 
 \index{rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}!SharedKalmanFilter@{SharedKalmanFilter}}
 \index{SharedKalmanFilter@{SharedKalmanFilter}!rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}}
 \doxysubsubsection{\texorpdfstring{SharedKalmanFilter()}{SharedKalmanFilter()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+Shared\+Kalman\+Filter (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xd \&}]{system\+Dynamics,  }\item[{const Eigen\+::\+Matrix\+Xd \&}]{output\+Matrix,  }\item[{const Eigen\+::\+Matrix\+Xd \&}]{process\+Noise\+Covariance }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+Shared\+Kalman\+Filter (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{system\+Dynamics,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{output\+Matrix,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{process\+Noise\+Covariance }\end{DoxyParamCaption})}
 
 
 
@@ -61,11 +61,11 @@ Create a Kalman filter with the specified matrices.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_adf74d1ae9cfc1522d858a6560543deeb}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_adf74d1ae9cfc1522d858a6560543deeb}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac91372f16c707d0af2668c74de28d510}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac91372f16c707d0af2668c74de28d510}} 
 \index{rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}!get\_new\_state@{get\_new\_state}}
 \index{get\_new\_state@{get\_new\_state}!rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}}
 \doxysubsubsection{\texorpdfstring{get\_new\_state()}{get\_new\_state()}}
-{\footnotesize\ttfamily std\+::pair$<$ Eigen\+::\+Vector\+Xd, Eigen\+::\+Matrix\+Xd $>$ rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::get\+\_\+new\+\_\+state (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{current\+State,  }\item[{const Eigen\+::\+Matrix\+Xd \&}]{state\+Noise\+Covariance,  }\item[{const Eigen\+::\+Vector\+Xd \&}]{new\+Measurement,  }\item[{const Eigen\+::\+Matrix\+Xd \&}]{measurement\+Noise\+Covariance }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}}, \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} $>$ rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::get\+\_\+new\+\_\+state (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&}]{current\+State,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{state\+Noise\+Covariance,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&}]{new\+Measurement,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{measurement\+Noise\+Covariance }\end{DoxyParamCaption})}
 
 
 
@@ -88,29 +88,29 @@ A pair of the new state and covariance matrix
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a8613451c5f4b1af0b88ce6765728660b}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a8613451c5f4b1af0b88ce6765728660b}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa5d7234ce317c27aa8ab9557112c102d}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa5d7234ce317c27aa8ab9557112c102d}} 
 \index{rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}!\_identity@{\_identity}}
 \index{\_identity@{\_identity}!rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}}
 \doxysubsubsection{\texorpdfstring{\_identity}{\_identity}}
-{\footnotesize\ttfamily Eigen\+::\+Matrix\+Xd rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+identity\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+identity\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a4a4778e13f0ffba576f995062dd5094f}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a4a4778e13f0ffba576f995062dd5094f}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a88544f314f1dfb22eabd939c063624bd}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a88544f314f1dfb22eabd939c063624bd}} 
 \index{rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}!\_outputMatrix@{\_outputMatrix}}
 \index{\_outputMatrix@{\_outputMatrix}!rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}}
 \doxysubsubsection{\texorpdfstring{\_outputMatrix}{\_outputMatrix}}
-{\footnotesize\ttfamily const Eigen\+::\+Matrix\+Xd rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+output\+Matrix\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+output\+Matrix\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1a7eac7a3a96076918ae05bac66e187a}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1a7eac7a3a96076918ae05bac66e187a}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1c708013b79365a4b49fee3e75d89d0e}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1c708013b79365a4b49fee3e75d89d0e}} 
 \index{rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}!\_processNoiseCovariance@{\_processNoiseCovariance}}
 \index{\_processNoiseCovariance@{\_processNoiseCovariance}!rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}}
 \doxysubsubsection{\texorpdfstring{\_processNoiseCovariance}{\_processNoiseCovariance}}
-{\footnotesize\ttfamily const Eigen\+::\+Matrix\+Xd rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+process\+Noise\+Covariance\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+process\+Noise\+Covariance\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a51fb2810c5904ce29207d1297e131e8f}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a51fb2810c5904ce29207d1297e131e8f}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a77238d052e4b6b45002fefa3818ef44d}\label{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a77238d052e4b6b45002fefa3818ef44d}} 
 \index{rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}!\_systemDynamics@{\_systemDynamics}}
 \index{\_systemDynamics@{\_systemDynamics}!rgbd\_slam::tracking::SharedKalmanFilter@{rgbd\_slam::tracking::SharedKalmanFilter}}
 \doxysubsubsection{\texorpdfstring{\_systemDynamics}{\_systemDynamics}}
-{\footnotesize\ttfamily Eigen\+::\+Matrix\+Xd rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+system\+Dynamics\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter\+::\+\_\+system\+Dynamics\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 

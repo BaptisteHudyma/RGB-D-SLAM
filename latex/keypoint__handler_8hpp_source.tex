@@ -2,103 +2,179 @@
 \label{keypoint__handler_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_handler.hpp}}
 \mbox{\hyperlink{keypoint__handler_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_FEATURES\_KEYPOINTS\_KEYPOINTS\_HANDLER\_HPP}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_FEATURES\_KEYPOINTS\_KEYPOINTS\_HANDLER\_HPP}}
-\DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <list>}}
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <vector>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <opencv2/xfeatures2d.hpp>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}../../utils/coordinates.hpp"{}}}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{10 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{11     \textcolor{keyword}{namespace }features \{}
-\DoxyCodeLine{12         \textcolor{keyword}{namespace }keypoints \{}
-\DoxyCodeLine{13 }
-\DoxyCodeLine{14             \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_aa2419fb1e607bada0d49a6afc37df62a}{BORDER\_SIZE}} = 1.; \textcolor{comment}{// Border of an image, in which points will be ignored}}
-\DoxyCodeLine{15             \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b}{INVALID\_MAP\_POINT\_ID}} = 0;  \textcolor{comment}{// should be the same as INVALID\_POINT\_UNIQ\_ID in map\_point.hpp}}
-\DoxyCodeLine{16             \textcolor{keyword}{const} \textcolor{keywordtype}{int} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a971a9b22938388e8501402da887c4bb1}{INVALID\_MATCH\_INDEX}} = -\/1;}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{21             \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a6c6e02021b7ede338ae200ddad7645c5}{is\_in\_border}}(\textcolor{keyword}{const} cv::Point2f \&pt, \textcolor{keyword}{const} cv::Mat \&im, \textcolor{keyword}{const} \textcolor{keywordtype}{double} borderSize = 0);}
-\DoxyCodeLine{22 }
-\DoxyCodeLine{26             \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad80397e4b7ec8be74317bf0}{get\_depth\_approximation}}(\textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} cv::Point2f\& depthCoordinates);}
-\DoxyCodeLine{27 }
-\DoxyCodeLine{31             \textcolor{keyword}{struct }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}} \{}
-\DoxyCodeLine{32                 std::vector<cv::Point2f> \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ada3897aeb7c22d54019734a7b699d464}{\_keypoints}};}
-\DoxyCodeLine{33                 std::vector<size\_t> \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a509c8414107ea830162ef7b0142258e5}{\_ids}};}
-\DoxyCodeLine{34             \};}
-\DoxyCodeLine{35 }
-\DoxyCodeLine{39             \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}}}
-\DoxyCodeLine{40             \{}
-\DoxyCodeLine{41                 \textcolor{keyword}{public}:}
-\DoxyCodeLine{49                     \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a6ea38b39a6ae26a9525216ea2d63ee08}{Keypoint\_Handler}}(std::vector<cv::Point2f>\& inKeypoints, cv::Mat\& inDescriptors, \textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\& lastKeypointsWithIds, \textcolor{keyword}{const} cv::Mat\& depthImage, \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxMatchDistance = 0.7);}
-\DoxyCodeLine{50 }
-\DoxyCodeLine{59                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a3bf3676adbaed6ab3ccf729ad0be6ba1}{get\_tracking\_match\_index}}(\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapPointId, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const};}
-\DoxyCodeLine{60                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a3bf3676adbaed6ab3ccf729ad0be6ba1}{get\_tracking\_match\_index}}(\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} mapPointId) \textcolor{keyword}{const};}
-\DoxyCodeLine{61 }
-\DoxyCodeLine{71                     \textcolor{keywordtype}{int} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa546aea8b245f2c2770775e5365bb191}{get\_match\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils::ScreenCoordinate}}\& projectedMapPoint, \textcolor{keyword}{const} cv::Mat\& mapPointDescriptor, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const}; }
-\DoxyCodeLine{72 }
-\DoxyCodeLine{76                     \textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils::ScreenCoordinate}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a9633779b8e95af25326b1b7bb89ebe62}{get\_keypoint}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const }}
-\DoxyCodeLine{77 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{78                         assert(index < \_keypoints.size());}
-\DoxyCodeLine{79                         \textcolor{keywordflow}{return} \_keypoints[index];}
-\DoxyCodeLine{80                     \}}
-\DoxyCodeLine{81 }
-\DoxyCodeLine{82                     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}{is\_descriptor\_computed}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
-\DoxyCodeLine{83 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{84                         \textcolor{keywordflow}{return} index < static\_cast<uint>(\_descriptors.rows);}
-\DoxyCodeLine{85                     \}}
-\DoxyCodeLine{86 }
-\DoxyCodeLine{87                     \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}{get\_descriptor}}(\textcolor{keyword}{const} uint index)\textcolor{keyword}{ const}}
-\DoxyCodeLine{88 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{89                         assert(index < \textcolor{keyword}{static\_cast<}uint\textcolor{keyword}{>}(\_descriptors.rows));}
-\DoxyCodeLine{90 }
-\DoxyCodeLine{91                         \textcolor{keywordflow}{return} \_descriptors.row(index);}
-\DoxyCodeLine{92                     \}}
-\DoxyCodeLine{93 }
-\DoxyCodeLine{94                     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a213657ddbef0adb8d38b1c48a17f5b53}{get\_keypoint\_count}}()\textcolor{keyword}{ const}}
-\DoxyCodeLine{95 \textcolor{keyword}{                    }\{}
-\DoxyCodeLine{96                         \textcolor{keywordflow}{return} \_keypoints.size();}
-\DoxyCodeLine{97                     \}}
-\DoxyCodeLine{98 }
-\DoxyCodeLine{99                 \textcolor{keyword}{protected}:}
-\DoxyCodeLine{100 }
-\DoxyCodeLine{109                     \textcolor{keyword}{const} cv::Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a4d2bd180c24ff535615eb91da77953b6}{compute\_key\_point\_mask}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils::ScreenCoordinate}}\& pointToSearch, \textcolor{keyword}{const} std::vector<bool>\& isKeyPointMatchedContainer) \textcolor{keyword}{const};}
-\DoxyCodeLine{110 }
-\DoxyCodeLine{111                     \textcolor{keyword}{typedef} std::pair<uint, uint> \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}};}
-\DoxyCodeLine{115                     \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a996addaac61eb12c1a151a344dc7b901}{get\_search\_space\_coordinates}}(\textcolor{keyword}{const} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils::ScreenCoordinate}}\& pointToPlace) \textcolor{keyword}{const};}
-\DoxyCodeLine{116 }
-\DoxyCodeLine{122                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}{get\_search\_space\_index}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}}\& searchSpaceIndex) \textcolor{keyword}{const};}
-\DoxyCodeLine{123                     uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}{get\_search\_space\_index}}(\textcolor{keyword}{const} uint x, \textcolor{keyword}{const} uint y) \textcolor{keyword}{const};}
-\DoxyCodeLine{124 }
-\DoxyCodeLine{125 }
-\DoxyCodeLine{126                 \textcolor{keyword}{private}:}
-\DoxyCodeLine{127                     cv::Ptr<cv::DescriptorMatcher> \_featuresMatcher;}
-\DoxyCodeLine{128 }
-\DoxyCodeLine{129                     \textcolor{keyword}{const} \textcolor{keywordtype}{double} \_maxMatchDistance;}
-\DoxyCodeLine{130 }
-\DoxyCodeLine{131                     \textcolor{comment}{//store current frame keypoints}}
-\DoxyCodeLine{132                     std::vector<utils::ScreenCoordinate> \_keypoints;}
-\DoxyCodeLine{133                     \textcolor{keyword}{typedef} std::unordered\_map<size\_t, size\_t> uintToUintContainer;}
-\DoxyCodeLine{134                     uintToUintContainer \_uniqueIdsToKeypointIndex;}
-\DoxyCodeLine{135                     cv::Mat \_descriptors;}
-\DoxyCodeLine{136 }
-\DoxyCodeLine{137                     \textcolor{comment}{// Number of image divisions (cells)}}
-\DoxyCodeLine{138                     uint \_cellCountX;}
-\DoxyCodeLine{139                     uint \_cellCountY;}
-\DoxyCodeLine{140                     uint \_searchSpaceCellRadius; }
-\DoxyCodeLine{141 }
-\DoxyCodeLine{142                     \textcolor{comment}{// Corresponds to a 2D box containing index of key points in those boxes}}
-\DoxyCodeLine{143                     \textcolor{keyword}{typedef} std::list<uint> index\_container;}
-\DoxyCodeLine{144                     std::vector<index\_container> \_searchSpaceIndexContainer;}
-\DoxyCodeLine{145 }
-\DoxyCodeLine{146 }
-\DoxyCodeLine{147             \};}
-\DoxyCodeLine{148 }
-\DoxyCodeLine{149         \}}
-\DoxyCodeLine{150     \}}
-\DoxyCodeLine{151 \}}
-\DoxyCodeLine{152 }
-\DoxyCodeLine{153 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_FEATURES\_KEYPOINTS\_KEYPOINTS\_HANDLER\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_FEATURES\_KEYPOINTS\_KEYPOINTS\_HANDLER\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../../utils/coordinates.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <opencv2/core/types.hpp>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <opencv2/xfeatures2d.hpp>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }features\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }keypoints\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a0559f810d254e2321e79ac81051d7058}{BORDER\_SIZE}}\ =\ 1;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Border\ of\ an\ image,\ in\ which\ points\ will\ be\ ignored}}
+\DoxyCodeLine{00016\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b}{INVALID\_MAP\_POINT\_ID}}\ =\ 0;\ \textcolor{comment}{//\ should\ be\ the\ same\ as\ INVALID\_POINT\_UNIQ\_ID\ in\ map\_point.hpp}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a971a9b22938388e8501402da887c4bb1}{INVALID\_MATCH\_INDEX}}\ =\ -\/1;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedKeyPoint}}}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils::ScreenCoordinate}}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a8023fa5ba7a0222bdff0c37968af2a8e}{\_coordinates}};}
+\DoxyCodeLine{00022\ \ \ \ \ cv::Mat\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a1eb2ad0355ba61e0407ec06afc301d84}{\_descriptor}};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a7d03f3b9df29485070991d563548c641}{can\_add\_to\_map}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ descriptor\ is\ not\ empty,\ depth\ is\ valid}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (not\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a1eb2ad0355ba61e0407ec06afc301d84}{\_descriptor}}.empty())\ and\ (\mbox{\hyperlink{namespacergbd__slam_1_1utils_adba3e96e0d019dbd7284e4a6dc4911f3}{utils::is\_depth\_valid}}(\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a8023fa5ba7a0222bdff0c37968af2a8e}{\_coordinates}}.\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate_a022b9f3a22ba5bd47a166c0c4ca204b4}{z}}()));}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a6c6e02021b7ede338ae200ddad7645c5}{is\_in\_border}}(\textcolor{keyword}{const}\ cv::Point2f\&\ pt,\ \textcolor{keyword}{const}\ cv::Mat\&\ im,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ borderSize\ =\ 0);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00040\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad80397e4b7ec8be74317bf0}{get\_depth\_approximation}}(\textcolor{keyword}{const}\ cv::Mat\&\ depthImage,\ \textcolor{keyword}{const}\ cv::Point2f\&\ depthCoordinates);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}}
+\DoxyCodeLine{00047\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypointWithId}}}
+\DoxyCodeLine{00049\ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id_a259349f24e53fc2436d7efdcb3d37d8d}{\_id}};}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ cv::Point2f\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id_ad7596301675aeaa9705230170ee547d4}{\_point}};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id_a4fabb8eb8c9c0cec2f35648de0655dff}{keypointWithId}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ cv::Point2f\&\ point)\ :\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id_a259349f24e53fc2436d7efdcb3d37d8d}{\_id}}(id),\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id_ad7596301675aeaa9705230170ee547d4}{\_point}}(point)\ \{\};}
+\DoxyCodeLine{00054\ \ \ \ \ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a77f4c35cb919c91afc66a55919e66807}{clear}}()}
+\DoxyCodeLine{00057\ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \_keypoints.clear();}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \_ids.clear();}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a37306c3a2ac2d508c36bd4548a005c28}{reserve}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ numberOfNewKeypoints)}
+\DoxyCodeLine{00063\ \ \ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \_keypoints.reserve(numberOfNewKeypoints);}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \_ids.reserve(numberOfNewKeypoints);}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a9ec255b5ca25332c64843b83ca1c2fae}{size}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00069\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ assert(\_keypoints.size()\ ==\ \_ids.size());}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_keypoints.size();}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_abab02d094aa1e4fd618610614eaa37a3}{empty}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a9ec255b5ca25332c64843b83ca1c2fae}{size}}()\ ==\ 0;\ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypointWithId}}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec5f33ccd60fcc2c01c16f37b1b31fd2}{at}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00077\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ assert(index\ <\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a9ec255b5ca25332c64843b83ca1c2fae}{size}}());}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypointWithId}}(\_ids[index],\ \_keypoints[index]);}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6d57bd1cc5fc732b61470fab30221bac}{add}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ pointX,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ pointY)}
+\DoxyCodeLine{00083\ \ \ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6d57bd1cc5fc732b61470fab30221bac}{add}}(\textcolor{keywordtype}{id},\ cv::Point2f(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(pointX),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(pointY)));}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a81323684a4f875773016fbb10c733a95}{add}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ cv::Point2f\ point)}
+\DoxyCodeLine{00087\ \ \ \ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \_keypoints.emplace\_back(point);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \_ids.emplace\_back(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<cv::Point2f>\&\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec631861a7ba4d345b04d6a75d01e812}{get\_keypoints}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_keypoints;\ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<size\_t>\&\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6a145b0b00e8d6fd81bd7bdf086a6858}{get\_ids}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_ids;\ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00096\ \ \ \ \ std::vector<cv::Point2f>\ \_keypoints;}
+\DoxyCodeLine{00097\ \ \ \ \ std::vector<size\_t>\ \_ids;}
+\DoxyCodeLine{00098\ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}}}
+\DoxyCodeLine{00105\ \{}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00112\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}}(\textcolor{keyword}{const}\ uint\ depthImageCols,\ \textcolor{keyword}{const}\ uint\ depthImageRows,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ maxMatchDistance\ =\ 0.7);}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ab7eaa2f7d32a6b2ed32f996cfb0d2bac}{set}}(std::vector<cv::Point2f>\&\ inKeypoints,}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ inDescriptors,}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\&\ lastKeypointsWithIds,}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ depthImage);}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5c91eb5ffe6398f16309667053291720}{get\_tracking\_match\_index}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mapPointId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}}\&\ isKeyPointMatchedContainer)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5c91eb5ffe6398f16309667053291720}{get\_tracking\_match\_index}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mapPointId)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a22b92c6bcad04249ba7ea9b3c3d5cbec}{get\_match\_index}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ projectedMapPoint,}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ mapPointDescriptor,}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}}\&\ isKeyPointMatchedContainer,}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ searchSpaceRadius)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils::ScreenCoordinate}}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a9633779b8e95af25326b1b7bb89ebe62}{get\_keypoint}}(\textcolor{keyword}{const}\ uint\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00152\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ assert(index\ <\ \_keypoints.size());}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_keypoints[index];}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}{is\_descriptor\_computed}}(\textcolor{keyword}{const}\ uint\ index)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ index\ <\ static\_cast<uint>(\_descriptors.rows);\ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}{get\_descriptor}}(\textcolor{keyword}{const}\ uint\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00160\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ assert(index\ <\ \textcolor{keyword}{static\_cast<}uint\textcolor{keyword}{>}(\_descriptors.rows));}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_descriptors.row(index);}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a213657ddbef0adb8d38b1c48a17f5b53}{get\_keypoint\_count}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_keypoints.size();\ \}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad0e7991c1bbf0d1b86b8e1b14f31ae14}{size}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_keypoints.size();\ \};}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedKeyPoint}}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a603df5820f88b507207175980ab07bd2}{at}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00171\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedKeyPoint}}\ newKp;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ newKp.\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a8023fa5ba7a0222bdff0c37968af2a8e}{\_coordinates}}\ =\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a9633779b8e95af25326b1b7bb89ebe62}{get\_keypoint}}(index);}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}{is\_descriptor\_computed}}(index))}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ newKp.\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a1eb2ad0355ba61e0407ec06afc301d84}{\_descriptor}}\ =\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}{get\_descriptor}}(index);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ newKp.\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point_a1eb2ad0355ba61e0407ec06afc301d84}{\_descriptor}}\ =\ cv::Mat();}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ newKp;}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa24e6468ef134d76dec647cb102d095c}{compute\_key\_point\_mask}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ pointToSearch,}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}}\&\ isKeyPointMatchedContainer,}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint\ searchSpaceCellRadius)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{typedef}\ std::pair<uint,\ uint>\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}};}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_abbce39337e950fa363c4ccc49f8248f4}{get\_search\_space\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ pointToPlace)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00207\ \ \ \ \ uint\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}{get\_search\_space\_index}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\_pair}}\&\ searchSpaceIndex)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00208\ \ \ \ \ uint\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}{get\_search\_space\_index}}(\textcolor{keyword}{const}\ uint\ x,\ \textcolor{keyword}{const}\ uint\ y)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aaa809cd5cf54e695371d5685e24b2fd0}{clear}}();}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00213\ \ \ \ \ cv::Ptr<cv::DescriptorMatcher>\ \_featuresMatcher;}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \_maxMatchDistance;}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{comment}{//\ store\ current\ frame\ keypoints}}
+\DoxyCodeLine{00218\ \ \ \ \ std::vector<utils::ScreenCoordinate>\ \_keypoints;}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{typedef}\ std::unordered\_map<size\_t,\ size\_t>\ uintToUintContainer;}
+\DoxyCodeLine{00220\ \ \ \ \ uintToUintContainer\ \_uniqueIdsToKeypointIndex;}
+\DoxyCodeLine{00221\ \ \ \ \ cv::Mat\ \_descriptors;}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{comment}{//\ Number\ of\ image\ divisions\ (cells)}}
+\DoxyCodeLine{00224\ \ \ \ \ uint\ \_cellCountX;}
+\DoxyCodeLine{00225\ \ \ \ \ uint\ \_cellCountY;}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{comment}{//\ Corresponds\ to\ a\ 2D\ box\ containing\ index\ of\ key\ points\ in\ those\ boxes}}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{typedef}\ std::vector<uint>\ index\_container;}
+\DoxyCodeLine{00229\ \ \ \ \ std::vector<index\_container>\ \_searchSpaceIndexContainer;}
+\DoxyCodeLine{00230\ \};}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \}\ \textcolor{comment}{//\ namespace\ keypoints}}
+\DoxyCodeLine{00233\ \}\ \textcolor{comment}{//\ namespace\ features}}
+\DoxyCodeLine{00234\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

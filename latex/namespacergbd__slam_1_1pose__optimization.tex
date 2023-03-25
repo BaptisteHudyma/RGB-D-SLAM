@@ -20,16 +20,28 @@ class \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimiza
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \&quat)
-\begin{DoxyCompactList}\small\item\em Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}{get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&optimization\+Coefficients)
-\begin{DoxyCompactList}\small\item\em Compute a quaternion from it\textquotesingle{}s scaled axis representation. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9c8ca146c62743ad50683aad87acee8}{get\+\_\+transformation\+\_\+score}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&final\+Pose)
-\begin{DoxyCompactList}\small\item\em Compute a mean transformation score for a pose and a set of point matches. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from the Lie projection (Scaled Axis representation) \end{DoxyCompactList}\item 
 const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
-\begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad39ae55c25371ec8ee66b553d1940fc7}{get\+\_\+point\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}{matches\+\_\+containers\+::point\+\_\+match\+\_\+sets}} \&point\+Matche\+Sets)
+\begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a8c3da22dd5264b5d590be1c6100ad2c8}{get\+\_\+plane\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \&planes\+To\+Evaluate, const double plane\+Max\+Retroprojection\+Error, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}{matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets}} \&plane\+Match\+Sets)
+\begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0d83bf863f3d422bf228b3944c8fcf9c}{get\+\_\+features\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&features\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error, const double plane\+Max\+Retroprojection\+Error, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&feature\+Set)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}{get\+\_\+random\+\_\+subset}} (const uint number\+Of\+Points\+To\+Sample, const uint number\+Of\+Planes\+To\+Sample, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&matched\+Features)
+\begin{DoxyCompactList}\small\item\em Return a subset of a given inlier set. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0d83bf863f3d422bf228b3944c8fcf9c}\label{namespacergbd__slam_1_1pose__optimization_a0d83bf863f3d422bf228b3944c8fcf9c}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_features\_inliers\_outliers@{get\_features\_inliers\_outliers}}
+\index{get\_features\_inliers\_outliers@{get\_features\_inliers\_outliers}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_features\_inliers\_outliers()}{get\_features\_inliers\_outliers()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+features\+\_\+inliers\+\_\+outliers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{features\+To\+Evaluate,  }\item[{const double}]{point\+Max\+Retroprojection\+Error,  }\item[{const double}]{plane\+Max\+Retroprojection\+Error,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{transformation\+Pose,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&}]{feature\+Set }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}\label{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}}
 \index{get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -42,8 +54,61 @@ Return a string corresponding to the end status of the optimization.
 
 Use for debug.
 
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em status} & The status to converto string \\
+\hline
+\end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 Returns a string with the human readable version of Eigen Levenberg\+Marquardt output status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a8c3da22dd5264b5d590be1c6100ad2c8}\label{namespacergbd__slam_1_1pose__optimization_a8c3da22dd5264b5d590be1c6100ad2c8}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_plane\_inliers\_outliers@{get\_plane\_inliers\_outliers}}
+\index{get\_plane\_inliers\_outliers@{get\_plane\_inliers\_outliers}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_plane\_inliers\_outliers()}{get\_plane\_inliers\_outliers()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+plane\+\_\+inliers\+\_\+outliers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \&}]{planes\+To\+Evaluate,  }\item[{const double}]{plane\+Max\+Retroprojection\+Error,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{transformation\+Pose,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}{matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets}} \&}]{plane\+Match\+Sets }\end{DoxyParamCaption})}
+
+
+
+Compute a score for a transformation, and compute an inlier and outlier set. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em planes\+To\+Evaluate} & The set of planes to evaluate the transformation on \\
+\hline
+\mbox{\texttt{ in}}  & {\em plane\+Max\+Retroprojection\+Error} & The maximum retroprojection error between two planes, below which we classifying the match as inlier \\
+\hline
+\mbox{\texttt{ in}}  & {\em transformation\+Pose} & The transformation that needs to be evaluated \\
+\hline
+\mbox{\texttt{ out}}  & {\em plane\+Match\+Sets} & The set of inliers/outliers of this transformation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The transformation score 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ad39ae55c25371ec8ee66b553d1940fc7}\label{namespacergbd__slam_1_1pose__optimization_ad39ae55c25371ec8ee66b553d1940fc7}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_point\_inliers\_outliers@{get\_point\_inliers\_outliers}}
+\index{get\_point\_inliers\_outliers@{get\_point\_inliers\_outliers}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_point\_inliers\_outliers()}{get\_point\_inliers\_outliers()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+point\+\_\+inliers\+\_\+outliers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points\+To\+Evaluate,  }\item[{const double}]{point\+Max\+Retroprojection\+Error,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{transformation\+Pose,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}{matches\+\_\+containers\+::point\+\_\+match\+\_\+sets}} \&}]{point\+Matche\+Sets }\end{DoxyParamCaption})}
+
+
+
+Compute a score for a transformation, and compute an inlier and outlier set. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em points\+To\+Evaluate} & The set of points to evaluate the transformation on \\
+\hline
+\mbox{\texttt{ in}}  & {\em point\+Max\+Retroprojection\+Error} & The maximum retroprojection error between two point, below which we classifying the match as inlier \\
+\hline
+\mbox{\texttt{ in}}  & {\em transformation\+Pose} & The transformation that needs to be evaluated \\
+\hline
+\mbox{\texttt{ out}}  & {\em point\+Matche\+Sets} & The set of inliers/outliers of this transformation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The transformation score (sum of retroprojection distances) 
 \end{DoxyReturn}
 \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}\label{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_quaternion\_from\_scale\_axis\_coefficients@{get\_quaternion\_from\_scale\_axis\_coefficients}}
@@ -53,9 +118,27 @@ Returns a string with the human readable version of Eigen Levenberg\+Marquardt o
 
 
 
-Compute a quaternion from it\textquotesingle{}s scaled axis representation. 
+Compute a quaternion from the Lie projection (Scaled Axis representation) 
 
-Compute a quaternion from the Lie projection (Scaled Axis representation) \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}\label{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}} 
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em optimization\+Coefficients} & The coefficients to transform back to quaternion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The quaternion obtained from the coefficients 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}\label{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_random\_subset@{get\_random\_subset}}
+\index{get\_random\_subset@{get\_random\_subset}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_random\_subset()}{get\_random\_subset()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+subset (\begin{DoxyParamCaption}\item[{const uint}]{number\+Of\+Points\+To\+Sample,  }\item[{const uint}]{number\+Of\+Planes\+To\+Sample,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{matched\+Features }\end{DoxyParamCaption})}
+
+
+
+Return a subset of a given inlier set. 
+
+\mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}\label{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}}
 \index{get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_scaled\_axis\_coefficients\_from\_quaternion()}{get\_scaled\_axis\_coefficients\_from\_quaternion()}}
@@ -63,15 +146,13 @@ Compute a quaternion from the Lie projection (Scaled Axis representation) \mbox{
 
 
 
-Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. 
-
-Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) \mbox{\Hypertarget{namespacergbd__slam_1_1pose__optimization_ad9c8ca146c62743ad50683aad87acee8}\label{namespacergbd__slam_1_1pose__optimization_ad9c8ca146c62743ad50683aad87acee8}} 
-\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_transformation\_score@{get\_transformation\_score}}
-\index{get\_transformation\_score@{get\_transformation\_score}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
-\doxysubsubsection{\texorpdfstring{get\_transformation\_score()}{get\_transformation\_score()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+transformation\+\_\+score (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{final\+Pose }\end{DoxyParamCaption})}
+Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) 
 
 
-
-Compute a mean transformation score for a pose and a set of point matches. 
-
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em quat} & The quaternion to transform \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The coefficients corresponding to this quaternion 
+\end{DoxyReturn}

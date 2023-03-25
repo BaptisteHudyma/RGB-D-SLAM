@@ -2,7 +2,7 @@
 \label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}\index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
 
 
-Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} class. Handles cylinder primitives.  
+Handles cylinder primitives.  
 
 
 
@@ -18,24 +18,60 @@ Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::Cylinder\+:\
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a743fc844099b6383e6f1685fc4b252d4}{Cylinder}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&cylinder\+Seg, uint id, const cv\+::\+Mat \&shape\+Mask)
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a28cd3cc2caa926fc69c5237a7cc8cf62}{Cylinder}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&cylinder\+Seg, const cv\+::\+Mat \&shape\+Mask)
 \begin{DoxyCompactList}\small\item\em Construct a cylinder object. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a57a48c9117254d24e161447fcc606970}{is\+\_\+similar}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} \&prim) override
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a62c338158dcd37bf964d243df88cbae3}{Cylinder}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} \&cylinder)
+\item 
+virtual bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a22a08ae6f8ba44321bd08d35f6c43060}{is\+\_\+similar}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} \&prim) const
 \begin{DoxyCompactList}\small\item\em Get the similarity of two cylinders, based on normal direction and radius. \end{DoxyCompactList}\item 
-virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a118fff7905ebb024914fad065d456e0e}{get\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) override
+virtual double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a93fd261a91f95fd0452d9a82393f53f8}{get\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) const
 \begin{DoxyCompactList}\small\item\em Get the distance of a point to the surface of the cylinder. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a91f8908c4d1bdeb608afb2c9dd2d703c}{$\sim$\+IPrimitive}} ()
+\item 
+cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a71f6a83c970280a5fa178aad54e5d052}{get\+\_\+shape\+\_\+mask}} () const
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7215414226fe5f61ed62c0b4b328d951}{set\+\_\+shape\+\_\+mask}} (const cv\+::\+Mat \&mask)
+\item 
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7056be096b83f3367192db1e5303a870}{get\+\_\+contained\+\_\+pixels}} () const
+\begin{DoxyCompactList}\small\item\em Return the number of pixels in this plane mask. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1a43837708a375ce3edd7af6f8785bbf}{can\+\_\+add\+\_\+to\+\_\+map}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a9cf14f0ed35e95910b6bd419e2991f04}{\+\_\+normal}}
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ab11ae8930a5be2e1f0360c1ffcdc15bc}{\+\_\+radius}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a69305ec72e95d91e7abb26c86984422d}{IPrimitive}} (const cv\+::\+Mat \&shape\+Mask)
+\begin{DoxyCompactList}\small\item\em Hidden constructor, to set shape. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_ac24216fb167ae471911d13ddbbe62f47}{get\+\_\+\+IOU}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{IPrimitive}} \&prim) const
+\begin{DoxyCompactList}\small\item\em Compute the Inter over Union factor of two masks. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a8aa4afd9eee9669f066905a251ad8cc3}{get\+\_\+\+IOU}} (const cv\+::\+Mat \&mask) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive}}}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1e8c070a3e48598e1f9d2b0ce76b6dec}{\+\_\+shape\+Mask}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Specification of the \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} class. Handles cylinder primitives. 
+Handles cylinder primitives. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a743fc844099b6383e6f1685fc4b252d4}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a743fc844099b6383e6f1685fc4b252d4}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a28cd3cc2caa926fc69c5237a7cc8cf62}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a28cd3cc2caa926fc69c5237a7cc8cf62}} 
 \index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!Cylinder@{Cylinder}}
 \index{Cylinder@{Cylinder}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
-\doxysubsubsection{\texorpdfstring{Cylinder()}{Cylinder()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::\+Cylinder (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&}]{cylinder\+Seg,  }\item[{uint}]{id,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{Cylinder()}{Cylinder()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::\+Cylinder (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} \&}]{cylinder\+Seg,  }\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})}
 
 
 
@@ -45,19 +81,23 @@ Construct a cylinder object.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em cylinder\+Seg} & \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} segment to copy \\
 \hline
-\mbox{\texttt{ in}}  & {\em id} & ID assigned to this shape (for tracking and debug) \\
-\hline
 \mbox{\texttt{ in}}  & {\em shape\+Mask} & Mask of the shape in the reference image \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a62c338158dcd37bf964d243df88cbae3}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a62c338158dcd37bf964d243df88cbae3}} 
+\index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!Cylinder@{Cylinder}}
+\index{Cylinder@{Cylinder}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
+\doxysubsubsection{\texorpdfstring{Cylinder()}{Cylinder()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::\+Cylinder (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} \&}]{cylinder }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a118fff7905ebb024914fad065d456e0e}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a118fff7905ebb024914fad065d456e0e}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a93fd261a91f95fd0452d9a82393f53f8}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a93fd261a91f95fd0452d9a82393f53f8}} 
 \index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!get\_distance@{get\_distance}}
 \index{get\_distance@{get\_distance}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
 \doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -66,15 +106,11 @@ Get the distance of a point to the surface of the cylinder.
 \begin{DoxyReturn}{Returns}
 The signed distance of the point to the surface, 0 if the point is on the surface, and \texorpdfstring{$<$}{<} 0 if the point is inside the cylinder 
 \end{DoxyReturn}
-
-
-Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a6537b793a2db1e5fb5009b5ddcf4fdb8}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a57a48c9117254d24e161447fcc606970}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a57a48c9117254d24e161447fcc606970}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a22a08ae6f8ba44321bd08d35f6c43060}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a22a08ae6f8ba44321bd08d35f6c43060}} 
 \index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!is\_similar@{is\_similar}}
 \index{is\_similar@{is\_similar}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
 \doxysubsubsection{\texorpdfstring{is\_similar()}{is\_similar()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive}{Primitive}} \&}]{prim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::is\+\_\+similar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} \&}]{prim }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -82,7 +118,7 @@ Get the similarity of two cylinders, based on normal direction and radius.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em prim} & Another primitive to compare to\\
+\mbox{\texttt{ in}}  & {\em prim} & Another cylinder to compare to\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -90,7 +126,18 @@ A double between 0 and 1, with 1 indicating identical cylinders
 \end{DoxyReturn}
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_a53479b4b4bf59c798bb366bc8d30fa41}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive}}.
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a9cf14f0ed35e95910b6bd419e2991f04}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_a9cf14f0ed35e95910b6bd419e2991f04}} 
+\index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!\_normal@{\_normal}}
+\index{\_normal@{\_normal}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
+\doxysubsubsection{\texorpdfstring{\_normal}{\_normal}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::\+\_\+normal}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ab11ae8930a5be2e1f0360c1ffcdc15bc}\label{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder_ab11ae8930a5be2e1f0360c1ffcdc15bc}} 
+\index{rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}!\_radius@{\_radius}}
+\index{\_radius@{\_radius}!rgbd\_slam::features::primitives::Cylinder@{rgbd\_slam::features::primitives::Cylinder}}
+\doxysubsubsection{\texorpdfstring{\_radius}{\_radius}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Cylinder\+::\+\_\+radius}
 
 
 

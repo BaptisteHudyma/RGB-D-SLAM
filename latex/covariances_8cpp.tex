@@ -1,9 +1,9 @@
 \hypertarget{covariances_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/covariances.cpp File Reference}
 \label{covariances_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/covariances.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/covariances.cpp}}
 {\ttfamily \#include \char`\"{}covariances.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}camera\+\_\+transformation.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}../parameters.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}camera\+\_\+transformation.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -14,15 +14,13 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a735eb52dd2f316b4f402b3efeea5e524}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&Screen\+Coordinate)
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a823b15c372a579e1530327dc01545363}{rgbd\+\_\+slam\+::utils\+::get\+\_\+depth\+\_\+quantization}} (const double depht)
+\begin{DoxyCompactList}\small\item\em Return the expected depth quantization at this depth value. \end{DoxyCompactList}\item 
+const screen\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_aede262c3a1f121d6b1cdf563589af35e}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&Screen\+Coordinate)
 \begin{DoxyCompactList}\small\item\em compute a covariance matrix for a screen point associated with a depth measurement \end{DoxyCompactList}\item 
-const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a74331ed538d26f84e263c632da076f02}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const Camera\+Coordinate \&camera\+Point, const matrix33 \&world\+Point\+Covariance)
-\begin{DoxyCompactList}\small\item\em Compute a screen point covariance from a given camera point. \end{DoxyCompactList}\item 
-const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_acd862c5bf78564bf9ba508bfc7c32d69}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&screen\+Point)
-\begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. This function will internaly compute the covariance of the screen point. \end{DoxyCompactList}\item 
-const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5169c9a45bacd1ff12039e2522344efe}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&screen\+Point, const matrix33 \&screen\+Point\+Covariance)
-\begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to world point. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a58e29e70d22c5d0a1b86c820acb7159e}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+pose\+\_\+variance}} (const Pose \&pose, const matches\+\_\+containers\+::match\+\_\+point\+\_\+container \&matched\+Points, vector3 \&pose\+Variance)
-\begin{DoxyCompactList}\small\item\em Compute the variance of the final pose in X Y Z. \end{DoxyCompactList}\item 
-const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a25aefd4d0548c521c2fc7818f3ace9c5}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+pose\+\_\+covariance}} (const Pose \&pose)
-\begin{DoxyCompactList}\small\item\em Compute a pose covariance matrix from a pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
+const screen\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_a54ea82737d46ab46f8aebebdf565b517}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const vector3 \&point, const matrix33 \&point\+Covariance)
+\begin{DoxyCompactList}\small\item\em Compute a screen point covariance from a given point. \end{DoxyCompactList}\item 
+const camera\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_affb3af7de401247c96630ba2e56be652}{rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&screen\+Point)
+\begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This function will internaly compute the covariance of the screen point. \end{DoxyCompactList}\item 
+const camera\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac170dd09810eef1955f5bf07830e4cdd}{rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&screen\+Point, const screen\+Coordinate\+Covariance \&screen\+Point\+Covariance)
+\begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to camera point. \end{DoxyCompactList}\end{DoxyCompactItemize}

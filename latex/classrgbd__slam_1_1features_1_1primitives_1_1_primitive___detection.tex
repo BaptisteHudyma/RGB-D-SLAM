@@ -12,9 +12,9 @@ Main extraction class. Extracts shape primitives from an organized cloud of poin
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a820def3cf19e327da91dd115f2df1ed9}{Primitive\+\_\+\+Detection}} (const uint width, const uint height, const uint bloc\+Size=20, const float min\+Cos\+Angle\+For\+Merge=0.\+9659f, const float max\+Merge\+Distance=50.\+0f)
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_aafd984e33a354993f42c59809a05948f}{Primitive\+\_\+\+Detection}} (const uint width, const uint height, const uint bloc\+Size=20)
 \item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_aeea3bf02c163af62c6f3e5be9078a6ae}{find\+\_\+primitives}} (const Eigen\+::\+Matrix\+Xf \&depth\+Matrix, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{primitive\+\_\+container}} \&primitive\+Segments)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad223a36f28f91651cf1a6bf3c0e3aa24}{find\+\_\+primitives}} (const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&depth\+Matrix, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}{plane\+\_\+container}} \&plane\+Container, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}{cylinder\+\_\+container}} \&primitive\+Container)
 \begin{DoxyCompactList}\small\item\em Main compute function\+: computes the primitives in the depth imahe. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a9f64424ca0ce70414c2df2022c32dc7f}{$\sim$\+Primitive\+\_\+\+Detection}} ()
 \end{DoxyCompactItemize}
@@ -36,13 +36,9 @@ double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive_
 \item 
 typedef std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}}
 \item 
-typedef std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a201ea8e0b9952678eb64941e75c72a02}{plane\+\_\+segment\+\_\+unique\+\_\+ptr}}
+typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad932dca122cc146cc1bcebbe27985baa}{plane\+\_\+segments\+\_\+container}}
 \item 
-typedef std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab465ee5f8b6cc649497f2d291e07de46}{cylinder\+\_\+segment\+\_\+unique\+\_\+ptr}}
-\item 
-typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a201ea8e0b9952678eb64941e75c72a02}{plane\+\_\+segment\+\_\+unique\+\_\+ptr}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1c6de1dae1c5b4783520c1720ad1bd7b}{planes\+\_\+ptr\+\_\+vector}}
-\item 
-typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab465ee5f8b6cc649497f2d291e07de46}{cylinder\+\_\+segment\+\_\+unique\+\_\+ptr}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ae175d07a6ac399887ee4cd473b76fa41}{cylinders\+\_\+ptr\+\_\+vector}}
+typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a28e6911a61d96fda78154f7c21cae95f}{cylinder\+\_\+segments\+\_\+container}}
 \item 
 typedef std\+::vector$<$ uint $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\+\_\+vector}}
 \end{DoxyCompactItemize}
@@ -51,19 +47,23 @@ typedef std\+::vector$<$ uint $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1
 \item 
 void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a115d7b6c99fa776c20350d6c5be88524}{reset\+\_\+data}} ()
 \begin{DoxyCompactList}\small\item\em Reset the stored data in prevision of another analysis. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a2432ff11db00aad60cdf4aac0a371c3d}{init\+\_\+planar\+\_\+cell\+\_\+fitting}} (const Eigen\+::\+Matrix\+Xf \&depth\+Cloud\+Array)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a5f604aef3e0abf3c176d906d83bafbff}{init\+\_\+planar\+\_\+cell\+\_\+fitting}} (const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&depth\+Cloud\+Array)
 \begin{DoxyCompactList}\small\item\em Init plane\+Grid and cell\+Distance\+Tols. \end{DoxyCompactList}\item 
 uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ae722fbe4e5f4c84ce22ba26272a890ea}{init\+\_\+histogram}} ()
 \begin{DoxyCompactList}\small\item\em Initialize and fill the histogram bins. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a6612a5c01bb67707842ab5b883f8231d}{grow\+\_\+planes\+\_\+and\+\_\+cylinders}} (const uint remaining\+Planar\+Cells)
 \begin{DoxyCompactList}\small\item\em grow planes and find cylinders from those planes \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a37b4ae4c5f7d24999bbceccea758ee64}{grow\+\_\+plane\+\_\+segment\+\_\+at\+\_\+seed}} (const uint seed\+Id, uint \&untried\+Planar\+Cells\+Count, \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&cylinder2region\+Map)
+\begin{DoxyCompactList}\small\item\em When given a plan seed, try to make it grow with it\textquotesingle{}s neighboring cells. Try to fit a cylinder to those merged planes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a88637f10b74486d093fae1bf36c3e941}{cylinder\+\_\+fitting}} (const uint cell\+Activated\+Count, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Activated\+Map, \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&cylinder2region\+Map)
+\item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\+\_\+vector}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a776295f859bf74f880c444ad54b3b5a1}{merge\+\_\+planes}} ()
 \begin{DoxyCompactList}\small\item\em Merge close planes by comparing normals and MSE. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a7380a8da1013d394a0e890fc1ff9fa27}{add\+\_\+planes\+\_\+to\+\_\+primitives}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\+\_\+vector}} \&plane\+Merge\+Labels, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{primitive\+\_\+container}} \&primitive\+Segments)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a83a260355ecd73d7731d37229ae399f8}{add\+\_\+planes\+\_\+to\+\_\+primitives}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\+\_\+vector}} \&plane\+Merge\+Labels, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}{plane\+\_\+container}} \&plane\+Container)
 \begin{DoxyCompactList}\small\item\em Add final plane to primitives, compute a mask for display. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_af2030d3307593d3a880dec07fe53d97c}{add\+\_\+cylinders\+\_\+to\+\_\+primitives}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&cylinder\+To\+Region\+Map, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{primitive\+\_\+container}} \&primitive\+Segments)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad312415b1531336aceaf18fa2809c42b}{add\+\_\+cylinders\+\_\+to\+\_\+primitives}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&cylinder\+To\+Region\+Map, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}{cylinder\+\_\+container}} \&cylinder\+Container)
 \begin{DoxyCompactList}\small\item\em Add final cylinders to primitives, compute a mask for display. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a602ab8dedad6aa64477ddd5c007ba8d1}{region\+\_\+growing}} (const uint x, const uint y, const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&seed\+Plane\+Normal, const double seed\+PlaneD)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1d38b52a5306b89ec4e1069f26183702}{region\+\_\+growing}} (const uint x, const uint y, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+To\+Expand, \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Activated\+Map)
 \begin{DoxyCompactList}\small\item\em Recursively Grow a plane seed and merge it with it\textquotesingle{}s neighbors. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a9165bccb3b0055fa50bc7e14a8de1a24}{get\+\_\+connected\+\_\+components\+\_\+matrix}} (const cv\+::\+Mat \&segment\+Map, const size\+\_\+t number\+Of\+Planes) const
 \begin{DoxyCompactList}\small\item\em Fill an association matrix that links connected plane components. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -73,17 +73,11 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___
 Main extraction class. Extracts shape primitives from an organized cloud of points. 
 
 \doxysubsection{Member Typedef Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab465ee5f8b6cc649497f2d291e07de46}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab465ee5f8b6cc649497f2d291e07de46}} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!cylinder\_segment\_unique\_ptr@{cylinder\_segment\_unique\_ptr}}
-\index{cylinder\_segment\_unique\_ptr@{cylinder\_segment\_unique\_ptr}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{cylinder\_segment\_unique\_ptr}{cylinder\_segment\_unique\_ptr}}
-{\footnotesize\ttfamily typedef std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab465ee5f8b6cc649497f2d291e07de46}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::cylinder\+\_\+segment\+\_\+unique\+\_\+ptr}}\hspace{0.3cm}{\ttfamily [protected]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ae175d07a6ac399887ee4cd473b76fa41}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ae175d07a6ac399887ee4cd473b76fa41}} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!cylinders\_ptr\_vector@{cylinders\_ptr\_vector}}
-\index{cylinders\_ptr\_vector@{cylinders\_ptr\_vector}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{cylinders\_ptr\_vector}{cylinders\_ptr\_vector}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab465ee5f8b6cc649497f2d291e07de46}{cylinder\+\_\+segment\+\_\+unique\+\_\+ptr}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ae175d07a6ac399887ee4cd473b76fa41}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::cylinders\+\_\+ptr\+\_\+vector}}\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a28e6911a61d96fda78154f7c21cae95f}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a28e6911a61d96fda78154f7c21cae95f}} 
+\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!cylinder\_segments\_container@{cylinder\_segments\_container}}
+\index{cylinder\_segments\_container@{cylinder\_segments\_container}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
+\doxysubsubsection{\texorpdfstring{cylinder\_segments\_container}{cylinder\_segments\_container}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}{Cylinder\+\_\+\+Segment}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a28e6911a61d96fda78154f7c21cae95f}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::cylinder\+\_\+segments\+\_\+container}}\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!intpair\_vector@{intpair\_vector}}
@@ -91,17 +85,11 @@ Main extraction class. Extracts shape primitives from an organized cloud of poin
 \doxysubsubsection{\texorpdfstring{intpair\_vector}{intpair\_vector}}
 {\footnotesize\ttfamily typedef std\+::vector$<$std\+::pair$<$int, int$>$ $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::intpair\+\_\+vector}}\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a201ea8e0b9952678eb64941e75c72a02}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a201ea8e0b9952678eb64941e75c72a02}} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!plane\_segment\_unique\_ptr@{plane\_segment\_unique\_ptr}}
-\index{plane\_segment\_unique\_ptr@{plane\_segment\_unique\_ptr}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{plane\_segment\_unique\_ptr}{plane\_segment\_unique\_ptr}}
-{\footnotesize\ttfamily typedef std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a201ea8e0b9952678eb64941e75c72a02}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::plane\+\_\+segment\+\_\+unique\+\_\+ptr}}\hspace{0.3cm}{\ttfamily [protected]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1c6de1dae1c5b4783520c1720ad1bd7b}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1c6de1dae1c5b4783520c1720ad1bd7b}} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!planes\_ptr\_vector@{planes\_ptr\_vector}}
-\index{planes\_ptr\_vector@{planes\_ptr\_vector}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{planes\_ptr\_vector}{planes\_ptr\_vector}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a201ea8e0b9952678eb64941e75c72a02}{plane\+\_\+segment\+\_\+unique\+\_\+ptr}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1c6de1dae1c5b4783520c1720ad1bd7b}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::planes\+\_\+ptr\+\_\+vector}}\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad932dca122cc146cc1bcebbe27985baa}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad932dca122cc146cc1bcebbe27985baa}} 
+\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!plane\_segments\_container@{plane\_segments\_container}}
+\index{plane\_segments\_container@{plane\_segments\_container}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
+\doxysubsubsection{\texorpdfstring{plane\_segments\_container}{plane\_segments\_container}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}}$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad932dca122cc146cc1bcebbe27985baa}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::plane\+\_\+segments\+\_\+container}}\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!uint\_vector@{uint\_vector}}
@@ -112,11 +100,11 @@ Main extraction class. Extracts shape primitives from an organized cloud of poin
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a820def3cf19e327da91dd115f2df1ed9}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a820def3cf19e327da91dd115f2df1ed9}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_aafd984e33a354993f42c59809a05948f}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_aafd984e33a354993f42c59809a05948f}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!Primitive\_Detection@{Primitive\_Detection}}
 \index{Primitive\_Detection@{Primitive\_Detection}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
 \doxysubsubsection{\texorpdfstring{Primitive\_Detection()}{Primitive\_Detection()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::\+Primitive\+\_\+\+Detection (\begin{DoxyParamCaption}\item[{const uint}]{width,  }\item[{const uint}]{height,  }\item[{const uint}]{bloc\+Size = {\ttfamily 20},  }\item[{const float}]{min\+Cos\+Angle\+For\+Merge = {\ttfamily 0.9659f},  }\item[{const float}]{max\+Merge\+Distance = {\ttfamily 50.0f} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::\+Primitive\+\_\+\+Detection (\begin{DoxyParamCaption}\item[{const uint}]{width,  }\item[{const uint}]{height,  }\item[{const uint}]{bloc\+Size = {\ttfamily 20} }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -125,10 +113,6 @@ Main extraction class. Extracts shape primitives from an organized cloud of poin
 \mbox{\texttt{ in}}  & {\em height} & The fixed depth image height \\
 \hline
 \mbox{\texttt{ in}}  & {\em bloc\+Size} & Size of an image division, in pixels. \\
-\hline
-\mbox{\texttt{ in}}  & {\em min\+Cos\+Angle\+For\+Merge} & Minimum cosinus of the angle of two planes to merge those planes \\
-\hline
-\mbox{\texttt{ in}}  & {\em max\+Merge\+Distance} & Maximum distance between the center of two planes to merge those planes \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a9f64424ca0ce70414c2df2022c32dc7f}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a9f64424ca0ce70414c2df2022c32dc7f}} 
@@ -140,11 +124,11 @@ Main extraction class. Extracts shape primitives from an organized cloud of poin
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_af2030d3307593d3a880dec07fe53d97c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_af2030d3307593d3a880dec07fe53d97c}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad312415b1531336aceaf18fa2809c42b}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad312415b1531336aceaf18fa2809c42b}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!add\_cylinders\_to\_primitives@{add\_cylinders\_to\_primitives}}
 \index{add\_cylinders\_to\_primitives@{add\_cylinders\_to\_primitives}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
 \doxysubsubsection{\texorpdfstring{add\_cylinders\_to\_primitives()}{add\_cylinders\_to\_primitives()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::add\+\_\+cylinders\+\_\+to\+\_\+primitives (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&}]{cylinder\+To\+Region\+Map,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{primitive\+\_\+container}} \&}]{primitive\+Segments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::add\+\_\+cylinders\+\_\+to\+\_\+primitives (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&}]{cylinder\+To\+Region\+Map,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}{cylinder\+\_\+container}} \&}]{cylinder\+Container }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -154,14 +138,14 @@ Add final cylinders to primitives, compute a mask for display.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em cylinder\+To\+Region\+Map} & Associate a cylinder ID with all the planes IDs that composes it \\
 \hline
-\mbox{\texttt{ in,out}}  & {\em primitive\+Segments} & Container of shapes detected in this depth image \\
+\mbox{\texttt{ out}}  & {\em cylinder\+Container} & Container of cylinders detected in this depth image \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a7380a8da1013d394a0e890fc1ff9fa27}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a7380a8da1013d394a0e890fc1ff9fa27}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a83a260355ecd73d7731d37229ae399f8}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a83a260355ecd73d7731d37229ae399f8}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!add\_planes\_to\_primitives@{add\_planes\_to\_primitives}}
 \index{add\_planes\_to\_primitives@{add\_planes\_to\_primitives}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
 \doxysubsubsection{\texorpdfstring{add\_planes\_to\_primitives()}{add\_planes\_to\_primitives()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::add\+\_\+planes\+\_\+to\+\_\+primitives (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\+\_\+vector}} \&}]{plane\+Merge\+Labels,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{primitive\+\_\+container}} \&}]{primitive\+Segments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::add\+\_\+planes\+\_\+to\+\_\+primitives (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ab3ed9416eca995f1a3dc2fc2795bb2db}{uint\+\_\+vector}} \&}]{plane\+Merge\+Labels,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}{plane\+\_\+container}} \&}]{plane\+Container }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -171,14 +155,29 @@ Add final plane to primitives, compute a mask for display.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em plane\+Merge\+Labels} & Container associating plane ID to global plane IDs \\
 \hline
-\mbox{\texttt{ in,out}}  & {\em primitive\+Segments} & Container of shapes detected in this depth image \\
+\mbox{\texttt{ out}}  & {\em plane\+Container} & Container of planes detected in this depth image \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_aeea3bf02c163af62c6f3e5be9078a6ae}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_aeea3bf02c163af62c6f3e5be9078a6ae}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a88637f10b74486d093fae1bf36c3e941}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a88637f10b74486d093fae1bf36c3e941}} 
+\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!cylinder\_fitting@{cylinder\_fitting}}
+\index{cylinder\_fitting@{cylinder\_fitting}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
+\doxysubsubsection{\texorpdfstring{cylinder\_fitting()}{cylinder\_fitting()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::cylinder\+\_\+fitting (\begin{DoxyParamCaption}\item[{const uint}]{cell\+Activated\+Count,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Activated\+Map,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&}]{cylinder2region\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cell\+Activated\+Count} & Number of activated planar cells \\
+\hline
+\mbox{\texttt{ in}}  & {\em is\+Activated\+Map} & A vector associating for each planar patch a flag indicating if it was merged this iteration\\
+\hline
+\mbox{\texttt{ in,out}}  & {\em cylinder2region\+Map} & A container that associates a cylinder ID with all the planes IDs that composes it \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad223a36f28f91651cf1a6bf3c0e3aa24}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad223a36f28f91651cf1a6bf3c0e3aa24}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!find\_primitives@{find\_primitives}}
 \index{find\_primitives@{find\_primitives}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
 \doxysubsubsection{\texorpdfstring{find\_primitives()}{find\_primitives()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::find\+\_\+primitives (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xf \&}]{depth\+Matrix,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a353a99b78e30a56a60d54a47cf318705}{primitive\+\_\+container}} \&}]{primitive\+Segments }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::find\+\_\+primitives (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&}]{depth\+Matrix,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}{plane\+\_\+container}} \&}]{plane\+Container,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}{cylinder\+\_\+container}} \&}]{primitive\+Container }\end{DoxyParamCaption})}
 
 
 
@@ -188,7 +187,9 @@ Main compute function\+: computes the primitives in the depth imahe.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em depth\+Matrix} & Organized cloud of points, constructed from depth map \\
 \hline
-\mbox{\texttt{ out}}  & {\em primitive\+Segments} & Container of detected segments in depth image \\
+\mbox{\texttt{ out}}  & {\em plane\+Container} & Container of detected planes in depth image \\
+\hline
+\mbox{\texttt{ out}}  & {\em primitive\+Container} & Container of detected cylinders in depth image \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a9165bccb3b0055fa50bc7e14a8de1a24}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a9165bccb3b0055fa50bc7e14a8de1a24}} 
@@ -211,6 +212,25 @@ Fill an association matrix that links connected plane components.
 \begin{DoxyReturn}{Returns}
 A symmetrical boolean matrix, indicating if a plane segment is connected to another plane segment 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a37b4ae4c5f7d24999bbceccea758ee64}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a37b4ae4c5f7d24999bbceccea758ee64}} 
+\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!grow\_plane\_segment\_at\_seed@{grow\_plane\_segment\_at\_seed}}
+\index{grow\_plane\_segment\_at\_seed@{grow\_plane\_segment\_at\_seed}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
+\doxysubsubsection{\texorpdfstring{grow\_plane\_segment\_at\_seed()}{grow\_plane\_segment\_at\_seed()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::grow\+\_\+plane\+\_\+segment\+\_\+at\+\_\+seed (\begin{DoxyParamCaption}\item[{const uint}]{seed\+Id,  }\item[{uint \&}]{untried\+Planar\+Cells\+Count,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_ad96ff3c75c6a7784c3a8f1f4b0102a65}{intpair\+\_\+vector}} \&}]{cylinder2region\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+When given a plan seed, try to make it grow with it\textquotesingle{}s neighboring cells. Try to fit a cylinder to those merged planes. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em seed\+Id} & The id of the plane to try to grow\\
+\hline
+\mbox{\texttt{ in,out}}  & {\em untried\+Planar\+Cells\+Count} & Count of planar cells that have not been tested for merge yet\\
+\hline
+\mbox{\texttt{ in,out}}  & {\em cylinder2region\+Map} & A container that associates a cylinder ID with all the planes IDs that composes it \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a6612a5c01bb67707842ab5b883f8231d}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a6612a5c01bb67707842ab5b883f8231d}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!grow\_planes\_and\_cylinders@{grow\_planes\_and\_cylinders}}
 \index{grow\_planes\_and\_cylinders@{grow\_planes\_and\_cylinders}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
@@ -242,11 +262,11 @@ Initialize and fill the histogram bins.
 \begin{DoxyReturn}{Returns}
 Number of initial planar surfaces 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a2432ff11db00aad60cdf4aac0a371c3d}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a2432ff11db00aad60cdf4aac0a371c3d}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a5f604aef3e0abf3c176d906d83bafbff}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a5f604aef3e0abf3c176d906d83bafbff}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!init\_planar\_cell\_fitting@{init\_planar\_cell\_fitting}}
 \index{init\_planar\_cell\_fitting@{init\_planar\_cell\_fitting}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
 \doxysubsubsection{\texorpdfstring{init\_planar\_cell\_fitting()}{init\_planar\_cell\_fitting()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::init\+\_\+planar\+\_\+cell\+\_\+fitting (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xf \&}]{depth\+Cloud\+Array }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::init\+\_\+planar\+\_\+cell\+\_\+fitting (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&}]{depth\+Cloud\+Array }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -270,11 +290,11 @@ Merge close planes by comparing normals and MSE.
 \begin{DoxyReturn}{Returns}
 Container of merged indexes\+: associates plane index to other plane index 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a602ab8dedad6aa64477ddd5c007ba8d1}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a602ab8dedad6aa64477ddd5c007ba8d1}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1d38b52a5306b89ec4e1069f26183702}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1d38b52a5306b89ec4e1069f26183702}} 
 \index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!region\_growing@{region\_growing}}
 \index{region\_growing@{region\_growing}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
 \doxysubsubsection{\texorpdfstring{region\_growing()}{region\_growing()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::region\+\_\+growing (\begin{DoxyParamCaption}\item[{const uint}]{x,  }\item[{const uint}]{y,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{seed\+Plane\+Normal,  }\item[{const double}]{seed\+PlaneD }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::region\+\_\+growing (\begin{DoxyParamCaption}\item[{const uint}]{x,  }\item[{const uint}]{y,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+To\+Expand,  }\item[{\mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Activated\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -286,9 +306,9 @@ Recursively Grow a plane seed and merge it with it\textquotesingle{}s neighbors.
 \hline
 \mbox{\texttt{ in}}  & {\em y} & Start Y coordinates \\
 \hline
-\mbox{\texttt{ in}}  & {\em seed\+Plane\+Normal} & Normal of the plane to grow from (Components A, B, C of the standard plane equation) \\
+\mbox{\texttt{ in}}  & {\em plane\+To\+Expand} & The plane to grow \\
 \hline
-\mbox{\texttt{ in}}  & {\em seed\+PlaneD} & D component of the plane to grow from \\
+\mbox{\texttt{ in,out}}  & {\em is\+Activated\+Map} & map of flags, indicating which plane segment were merged \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a115d7b6c99fa776c20350d6c5be88524}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a115d7b6c99fa776c20350d6c5be88524}} 

@@ -26,8 +26,22 @@ Inheritance diagram for rgbd\+\_\+slam\+::utils\+::World\+Coordinate\+:\begin{fi
 \item 
 bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}{to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point) const
 \begin{DoxyCompactList}\small\item\em Transform a point from world to screen coordinate system. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a5690359f19e9231af54e6b91bab5643a}{to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&screen\+Point) const
+\item 
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}{to\+\_\+camera\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera) const
-\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in camera space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Transform a vector in world space to a vector in camera space. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a74c1893cd9710f35f9d0563da439db54}{get\+\_\+signed\+\_\+distance\+\_\+2D}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera) const
+\begin{DoxyCompactList}\small\item\em Compute a signed 2D distance between this world point and a screen point, by retroprojecting the world point to screen space. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_aab6700b55875840f5d6aaf43b07024d7}{get\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera) const
+\begin{DoxyCompactList}\small\item\em Compute a distance between this world point and a screen point, by retroprojecting the world point to screen space. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a5b29afe79b7a5e9774e569bd33da5167}{get\+\_\+signed\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World) const
+\begin{DoxyCompactList}\small\item\em Compute a signed distance between a world point and a 3D point in screen space, by projecting the screen point to world space. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a052498c0df95109eb7c186cfc8f973bc}{get\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World) const
+\begin{DoxyCompactList}\small\item\em Compute a distance between a world point and a 3D point in screen space, by projecting the screen point to world space. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a6968809018bc0d1a86a684c1a9f02caa}{get\+\_\+signed\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&world\+Point) const
+\begin{DoxyCompactList}\small\item\em Compute a signed distance with another world point. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate_a617433334bd007402bccb95f0130074b}{get\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&world\+Point) const
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -59,6 +73,102 @@ Scores a 3D coordinate in world space (x, y, depth).
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a052498c0df95109eb7c186cfc8f973bc}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a052498c0df95109eb7c186cfc8f973bc}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!get\_distance@{get\_distance}}
+\index{get\_distance@{get\_distance}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption}) const}
+
+
+
+Compute a distance between a world point and a 3D point in screen space, by projecting the screen point to world space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em screen\+Point} & A 3D point in screen space \\
+\hline
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A matrix to convert from camera to world space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The unsigned distance in world space 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_aab6700b55875840f5d6aaf43b07024d7}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_aab6700b55875840f5d6aaf43b07024d7}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!get\_distance@{get\_distance}}
+\index{get\_distance@{get\_distance}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption}) const}
+
+
+
+Compute a distance between this world point and a screen point, by retroprojecting the world point to screen space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em screen\+Point} & A point in screen space. Only the x and y components will be used \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A transformation matrix to convert from world to camera space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an unsigned distance in camera space (pixels) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a617433334bd007402bccb95f0130074b}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a617433334bd007402bccb95f0130074b}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!get\_distance@{get\_distance}}
+\index{get\_distance@{get\_distance}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{get\_distance()}{get\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::get\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&}]{world\+Point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a5b29afe79b7a5e9774e569bd33da5167}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a5b29afe79b7a5e9774e569bd33da5167}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!get\_signed\_distance@{get\_signed\_distance}}
+\index{get\_signed\_distance@{get\_signed\_distance}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{get\_signed\_distance()}{get\_signed\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::get\+\_\+signed\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption}) const}
+
+
+
+Compute a signed distance between a world point and a 3D point in screen space, by projecting the screen point to world space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em screen\+Point} & A 3D point in screen space \\
+\hline
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A matrix to convert from camera to world space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The 3D signed distance in world space 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a6968809018bc0d1a86a684c1a9f02caa}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a6968809018bc0d1a86a684c1a9f02caa}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!get\_signed\_distance@{get\_signed\_distance}}
+\index{get\_signed\_distance@{get\_signed\_distance}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{get\_signed\_distance()}{get\_signed\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::get\+\_\+signed\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&}]{world\+Point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compute a signed distance with another world point. 
+
+\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a74c1893cd9710f35f9d0563da439db54}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a74c1893cd9710f35f9d0563da439db54}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!get\_signed\_distance\_2D@{get\_signed\_distance\_2D}}
+\index{get\_signed\_distance\_2D@{get\_signed\_distance\_2D}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{get\_signed\_distance\_2D()}{get\_signed\_distance\_2D()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::get\+\_\+signed\+\_\+distance\+\_\+2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption}) const}
+
+
+
+Compute a signed 2D distance between this world point and a screen point, by retroprojecting the world point to screen space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em screen\+Point} & A point in screen space. Only the x and y components will be used \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A transformation matrix to convert from world to camera space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a 2D signed distance in camera space (pixels) 
+\end{DoxyReturn}
 \mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_ab7c086860bc38df84a4b32781514c822}} 
 \index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!to\_camera\_coordinates@{to\_camera\_coordinates}}
 \index{to\_camera\_coordinates@{to\_camera\_coordinates}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
@@ -71,16 +181,16 @@ Transform a vector in world space to a vector in camera space.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & Matrix to transform the world to a local coordinate system\\
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & Matrix to transform the world to a local coordinate system \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The input vector transformed to camera space 
+The input vector transformed to camera space
 \end{DoxyReturn}
-\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}} 
+CAMERA COORDINATES \mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a8e45201bdaeaf8a7570ec78d4bacf0a8}} 
 \index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!to\_screen\_coordinates@{to\_screen\_coordinates}}
 \index{to\_screen\_coordinates@{to\_screen\_coordinates}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
-\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}}
+\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point }\end{DoxyParamCaption}) const}
 
 
@@ -91,12 +201,18 @@ Transform a point from world to screen coordinate system.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em world\+To\+Camera} & Matrix to transform the world to a local coordinate system \\
 \hline
-\mbox{\texttt{ out}}  & {\em screen\+Point} & The point screen coordinates, if the function returned true\\
+\mbox{\texttt{ out}}  & {\em screen\+Point} & The point screen coordinates, if the function returned true \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-True if the screen position is valid 
+True if the screen position is valid
 \end{DoxyReturn}
+WORLD COORDINATES \mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_world_coordinate_a5690359f19e9231af54e6b91bab5643a}\label{structrgbd__slam_1_1utils_1_1_world_coordinate_a5690359f19e9231af54e6b91bab5643a}} 
+\index{rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}!to\_screen\_coordinates@{to\_screen\_coordinates}}
+\index{to\_screen\_coordinates@{to\_screen\_coordinates}!rgbd\_slam::utils::WorldCoordinate@{rgbd\_slam::utils::WorldCoordinate}}
+\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate\+::to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&}]{screen\+Point }\end{DoxyParamCaption}) const}
+
 
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}

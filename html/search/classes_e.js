@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['xyz_5fmap_5fwriter_0',['XYZ_Map_Writer',['../classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer.html',1,'rgbd_slam::outputs']]]
+  ['worldcoordinate_0',['WorldCoordinate',['../structrgbd__slam_1_1utils_1_1_world_coordinate.html',1,'rgbd_slam::utils']]],
+  ['worldcoordinatecovariance_1',['worldCoordinateCovariance',['../structrgbd__slam_1_1world_coordinate_covariance.html',1,'rgbd_slam']]],
+  ['worldtocameramatrix_2',['worldToCameraMatrix',['../structrgbd__slam_1_1world_to_camera_matrix.html',1,'rgbd_slam']]]
 ];

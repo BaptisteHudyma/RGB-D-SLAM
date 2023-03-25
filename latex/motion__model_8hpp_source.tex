@@ -2,47 +2,50 @@
 \label{motion__model_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/motion\_model.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/motion\_model.hpp}}
 \mbox{\hyperlink{motion__model_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef RGBDSLAM\_UTILS\_MOTIONMODEL\_HPP}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define RGBDSLAM\_UTILS\_MOTIONMODEL\_HPP}}
-\DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}../types.hpp"{}}}
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{pose_8hpp}{utils/pose.hpp}}"{}}}
-\DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}} \{}
-\DoxyCodeLine{8 \textcolor{keyword}{namespace }tracking \{}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{13     \textcolor{keyword}{class }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model}{Motion\_Model}} \{}
-\DoxyCodeLine{14 }
-\DoxyCodeLine{15         \textcolor{keyword}{public}:}
-\DoxyCodeLine{16             \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a6dbed86f658750c0fd0611ea9deef792}{Motion\_Model}}();}
-\DoxyCodeLine{17             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a60f524c8cf187181078d5854d763ea0f}{reset}}();}
-\DoxyCodeLine{18             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a60f524c8cf187181078d5854d763ea0f}{reset}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& lastPosition, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& lastRotation);}
-\DoxyCodeLine{19 }
-\DoxyCodeLine{25             \textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_afe4b38ff40ff2445b9979ca3665ae030}{predict\_next\_pose}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& currentPose) \textcolor{keyword}{const};}
-\DoxyCodeLine{26 }
-\DoxyCodeLine{32             \textcolor{keywordtype}{void} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a618116afe541a872964daed45135e575}{update\_model}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\& pose);}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34             EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
-\DoxyCodeLine{35 }
-\DoxyCodeLine{36         \textcolor{keyword}{protected}:}
-\DoxyCodeLine{37 }
-\DoxyCodeLine{38             \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a8e90aaa35f2e712262c6ed347389356c}{get\_rotational\_velocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& lastRotation, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& lastVelocity, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\& currentRotation) \textcolor{keyword}{const};}
-\DoxyCodeLine{39             \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a2efd6fd4ba9ec78cb19093d83f2eb498}{get\_position\_velocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& lastPosition, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& lastVelocity, \textcolor{keyword}{const} \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\& currentPosition) \textcolor{keyword}{const};}
-\DoxyCodeLine{40 }
-\DoxyCodeLine{41         \textcolor{keyword}{private}:}
-\DoxyCodeLine{42                 \textcolor{comment}{// Last known rotation quaternion estimated by the motion model (set by update\_model)}}
-\DoxyCodeLine{43                 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \_lastQ;}
-\DoxyCodeLine{44                 \textcolor{comment}{// Last computed angular velocity}}
-\DoxyCodeLine{45                 \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \_angularVelocity;}
-\DoxyCodeLine{46                 \textcolor{comment}{// Last known translation estimated by the motion model (set by update\_model)}}
-\DoxyCodeLine{47                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_lastPosition;}
-\DoxyCodeLine{48                 \textcolor{comment}{// Last computed linear velocity}}
-\DoxyCodeLine{49                 \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \_linearVelocity;}
-\DoxyCodeLine{50     \};}
-\DoxyCodeLine{51 }
-\DoxyCodeLine{52 \}}
-\DoxyCodeLine{53 \}}
-\DoxyCodeLine{54 }
-\DoxyCodeLine{55 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_MOTIONMODEL\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_UTILS\_MOTIONMODEL\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../types.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../utils/pose.hpp"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }tracking\ \{}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model}{Motion\_Model}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a6dbed86f658750c0fd0611ea9deef792}{Motion\_Model}}();}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a60f524c8cf187181078d5854d763ea0f}{reset}}();}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a60f524c8cf187181078d5854d763ea0f}{reset}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ lastPosition,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\&\ lastRotation);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_afe4b38ff40ff2445b9979ca3665ae030}{predict\_next\_pose}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\&\ currentPose)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a618116afe541a872964daed45135e575}{update\_model}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\&\ pose);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a8e90aaa35f2e712262c6ed347389356c}{get\_rotational\_velocity}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\&\ lastRotation,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\&\ lastVelocity,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\&\ currentRotation)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_motion___model_a2efd6fd4ba9ec78cb19093d83f2eb498}{get\_position\_velocity}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ lastPosition,}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ lastVelocity,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\&\ currentPosition)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ Last\ known\ rotation\ quaternion\ estimated\ by\ the\ motion\ model\ (set\ by\ update\_model)}}
+\DoxyCodeLine{00046\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\ \_lastQ;}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{//\ Last\ computed\ angular\ velocity}}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\ \_angularVelocity;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ Last\ known\ translation\ estimated\ by\ the\ motion\ model\ (set\ by\ update\_model)}}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \_lastPosition;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ Last\ computed\ linear\ velocity}}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}\ \_linearVelocity;}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \}\ \textcolor{comment}{//\ namespace\ tracking}}
+\DoxyCodeLine{00056\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

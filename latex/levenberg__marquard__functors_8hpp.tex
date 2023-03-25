@@ -24,10 +24,8 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+
 \begin{DoxyCompactItemize}
 \item 
 vector3 \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const quaternion \&quat)
-\begin{DoxyCompactList}\small\item\em Compute a scaled axis representation of a rotation quaternion. The scaled axis is easier to optimize for Levenberg-\/\+Marquardt algorithm. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) \end{DoxyCompactList}\item 
 quaternion \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const vector3 \&optimization\+Coefficients)
-\begin{DoxyCompactList}\small\item\em Compute a quaternion from it\textquotesingle{}s scaled axis representation. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9c8ca146c62743ad50683aad87acee8}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+transformation\+\_\+score}} (const matches\+\_\+containers\+::match\+\_\+point\+\_\+container \&points, const utils\+::\+Pose \&final\+Pose)
-\begin{DoxyCompactList}\small\item\em Compute a mean transformation score for a pose and a set of point matches. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Compute a quaternion from the Lie projection (Scaled Axis representation) \end{DoxyCompactList}\item 
 const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
 \begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}

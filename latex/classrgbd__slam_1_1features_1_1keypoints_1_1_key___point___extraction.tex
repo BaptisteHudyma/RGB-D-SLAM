@@ -12,7 +12,7 @@ A class to detect and track keypoints. This class will detect keypoints in gray 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5254682f0f79e0810606b7339857a50d}{Key\+\_\+\+Point\+\_\+\+Extraction}} (const uint min\+Hessian=25)
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_adf8a35140fc380cc46b4c7a1f5e5abc8}{Key\+\_\+\+Point\+\_\+\+Extraction}} ()
 \item 
 const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\+\_\+\+Handler}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aca210323ab089b71468435f136d96aad}{compute\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&depth\+Image, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const bool force\+Keypoint\+Detection=false)
 \begin{DoxyCompactList}\small\item\em compute the keypoints in the gray image, using optical flow and/or generic feature detectors \end{DoxyCompactList}\item 
@@ -23,12 +23,14 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point__
 \item 
 const std\+::vector$<$ cv\+::\+Point2f $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd4e2a25365bca3f79c605ac069503c}{detect\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&mask, const uint minimum\+Points\+For\+Validity) const
 \begin{DoxyCompactList}\small\item\em Compute new key point, with an optional mask to exclude detection zones. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6e524bd7df260bcced969b179ae84e5e}{perform\+\_\+keypoint\+\_\+detection}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&mask, const cv\+::\+Ptr$<$ cv\+::\+Feature\+Detector $>$ \&feature\+Detector, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&frame\+Keypoints) const
+\begin{DoxyCompactList}\small\item\em Perform keypoint detection on the image, divided in smaller patches. \end{DoxyCompactList}\item 
 const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a41ff5b3e5511b495d5bbb94d4048c5de}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const cv\+::\+Size image\+Size, const std\+::vector$<$ cv\+::\+Point2f $>$ \&keypoint\+Container) const
 \end{DoxyCompactItemize}
 \doxysubsection*{Static Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac93a7e1d204e8476e54df557a3ec2d77}{get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow}} (const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Previous\+Pyramide, const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Current\+Pyramide, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const uint pyramid\+Depth, const uint window\+Size, const double error\+Threshold, const double max\+Distance\+Threshold)
+static void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac39cdfc1afc1fafa4aecc02754593450}{get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow}} (const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Previous\+Pyramide, const std\+::vector$<$ cv\+::\+Mat $>$ \&image\+Current\+Pyramide, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const uint pyramid\+Depth, const uint window\+Size, const double max\+Distance\+Threshold, \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&keypoint\+Struct)
 \begin{DoxyCompactList}\small\item\em Compute the current frame keypoints from optical flow. There is need for matching with this configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -36,17 +38,12 @@ static \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_
 A class to detect and track keypoints. This class will detect keypoints in gray images, compute descriptors and track those points using optical flow and/or descriptor matching. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5254682f0f79e0810606b7339857a50d}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a5254682f0f79e0810606b7339857a50d}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_adf8a35140fc380cc46b4c7a1f5e5abc8}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_adf8a35140fc380cc46b4c7a1f5e5abc8}} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!Key\_Point\_Extraction@{Key\_Point\_Extraction}}
 \index{Key\_Point\_Extraction@{Key\_Point\_Extraction}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{Key\_Point\_Extraction()}{Key\_Point\_Extraction()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::\+Key\+\_\+\+Point\+\_\+\+Extraction (\begin{DoxyParamCaption}\item[{const uint}]{min\+Hessian = {\ttfamily 25} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::\+Key\+\_\+\+Point\+\_\+\+Extraction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em min\+Hessian} & The \char`\"{}precision\char`\"{} of the keypoint descriptor \\
-\hline
-\end{DoxyParams}
 
 
 \doxysubsection{Member Function Documentation}
@@ -72,7 +69,7 @@ compute the keypoints in the gray image, using optical flow and/or generic featu
 \hline
 \mbox{\texttt{ in}}  & {\em depth\+Image} & The input depth image from camera \\
 \hline
-\mbox{\texttt{ in}}  & {\em last\+Keypoints\+With\+Ids} & The keypoints of the previous detection step, that will be tracked with optical flow \\
+\mbox{\texttt{ in}}  & {\em last\+Keypoints\+With\+Ids} & The keypoints of the previous detection step, that will be tracked with optical flow\\
 \hline
 \mbox{\texttt{ in}}  & {\em force\+Keypoint\+Detection} & Force the detection of keypoints in the image\\
 \hline
@@ -96,17 +93,17 @@ Compute new key point, with an optional mask to exclude detection zones.
 \hline
 \mbox{\texttt{ in}}  & {\em mask} & The mask which we do not want to detect waypoints \\
 \hline
-\mbox{\texttt{ in}}  & {\em minimum\+Points\+For\+Validity} & The minimum number of points under which we will use the precise detector\\
+\mbox{\texttt{ in}}  & {\em minimum\+Points\+For\+Validity} & The minimum number of points under which we will use the precise detector \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 An array of points in the input image 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac93a7e1d204e8476e54df557a3ec2d77}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac93a7e1d204e8476e54df557a3ec2d77}} 
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac39cdfc1afc1fafa4aecc02754593450}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ac39cdfc1afc1fafa4aecc02754593450}} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!get\_keypoints\_from\_optical\_flow@{get\_keypoints\_from\_optical\_flow}}
 \index{get\_keypoints\_from\_optical\_flow@{get\_keypoints\_from\_optical\_flow}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{get\_keypoints\_from\_optical\_flow()}{get\_keypoints\_from\_optical\_flow()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Previous\+Pyramide,  }\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Current\+Pyramide,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&}]{last\+Keypoints\+With\+Ids,  }\item[{const uint}]{pyramid\+Depth,  }\item[{const uint}]{window\+Size,  }\item[{const double}]{error\+Threshold,  }\item[{const double}]{max\+Distance\+Threshold }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::get\+\_\+keypoints\+\_\+from\+\_\+optical\+\_\+flow (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Previous\+Pyramide,  }\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{image\+Current\+Pyramide,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&}]{last\+Keypoints\+With\+Ids,  }\item[{const uint}]{pyramid\+Depth,  }\item[{const uint}]{window\+Size,  }\item[{const double}]{max\+Distance\+Threshold,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&}]{keypoint\+Struct }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
 
 
 
@@ -124,9 +121,30 @@ Compute the current frame keypoints from optical flow. There is need for matchin
 \hline
 \mbox{\texttt{ in}}  & {\em window\+Size} & The chosen size of the optical flow window \\
 \hline
-\mbox{\texttt{ in}}  & {\em error\+Threshold} & an error Threshold for optical flow, in pixels \\
-\hline
 \mbox{\texttt{ in}}  & {\em max\+Distance\+Threshold} & a distance threshold, in pixels \\
+\hline
+\mbox{\texttt{ out}}  & {\em keypoint\+Struct} & The keypoints tracked by optical flow \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6e524bd7df260bcced969b179ae84e5e}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6e524bd7df260bcced969b179ae84e5e}} 
+\index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!perform\_keypoint\_detection@{perform\_keypoint\_detection}}
+\index{perform\_keypoint\_detection@{perform\_keypoint\_detection}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
+\doxysubsubsection{\texorpdfstring{perform\_keypoint\_detection()}{perform\_keypoint\_detection()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::perform\+\_\+keypoint\+\_\+detection (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat \&}]{mask,  }\item[{const cv\+::\+Ptr$<$ cv\+::\+Feature\+Detector $>$ \&}]{feature\+Detector,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{frame\+Keypoints }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Perform keypoint detection on the image, divided in smaller patches. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em gray\+Image} & Image in which to detect keypoints \\
+\hline
+\mbox{\texttt{ in}}  & {\em mask} & Mask of the image in which to detect keypoints. No keypoints will be detected in this area\\
+\hline
+\mbox{\texttt{ in}}  & {\em feature\+Detector} & The feature detector to use\\
+\hline
+\mbox{\texttt{ out}}  & {\em frame\+Keypoints} & the detected keypoints in the image \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a7c1fbb870b6cde4b7ed30fc3195d669e}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a7c1fbb870b6cde4b7ed30fc3195d669e}} 
@@ -141,7 +159,7 @@ Show the time statistics for certain parts of the program. Kind of a basic profi
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em mean\+Frame\+Treatment\+Duration} & The mean duration in seconds that this program used to treat one frame \\
+\mbox{\texttt{ in}}  & {\em mean\+Frame\+Treatment\+Duration} & The mean duration in seconds that this program used to treat one frame\\
 \hline
 \mbox{\texttt{ in}}  & {\em frame\+Count} & Total of frame treated by the program \\
 \hline

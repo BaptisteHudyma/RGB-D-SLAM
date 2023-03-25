@@ -1,10 +1,17 @@
 \hypertarget{matches__containers_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/matches\+\_\+containers.hpp File Reference}
 \label{matches__containers_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/matches\_containers.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/matches\_containers.hpp}}
 {\ttfamily \#include \char`\"{}coordinates.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$list$>$}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Match}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Match\+Template$<$ Feature\+Camera\+Space, Feature\+World\+Space, World\+Feature\+Covariance, Projected\+World\+Feature\+Covariance $>$}}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+Container}}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+sets\+\_\+template$<$ Container $>$}}
+\begin{DoxyCompactList}\small\item\em Store a set of inlier and a set of outliers. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+sets}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
@@ -16,9 +23,15 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers}{rgbd\+\_\
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::list$<$ Match $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a69e137115cf0342c9d0dcc61d0823af9}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+point\+\_\+container}}
+typedef Match\+Template$<$ utils\+::\+Screen\+Coordinate, utils\+::\+World\+Coordinate, vector3, vector2 $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Point\+Match}}
 \item 
-typedef std\+::pair$<$ vector3, vector3 $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_addcfd69bfd74aa49b8c719ccbd9edd2e}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::primitive\+\_\+pair}}
+typedef std\+::list$<$ Point\+Match $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+point\+\_\+container}}
 \item 
-typedef std\+::list$<$ primitive\+\_\+pair $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a97738459fd8c450454fb64fdce577492}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+primitive\+\_\+container}}
+typedef Match\+Template$<$ utils\+::\+Plane\+Camera\+Coordinates, utils\+::\+Plane\+World\+Coordinates, void $\ast$, void $\ast$ $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Plane\+Match}}
+\item 
+typedef std\+::list$<$ Plane\+Match $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}}
+\item 
+typedef match\+\_\+sets\+\_\+template$<$ match\+\_\+point\+\_\+container $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::point\+\_\+match\+\_\+sets}}
+\item 
+typedef match\+\_\+sets\+\_\+template$<$ match\+\_\+plane\+\_\+container $>$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets}}
 \end{DoxyCompactItemize}

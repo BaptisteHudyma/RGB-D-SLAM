@@ -1,0 +1,262 @@
+\hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map}{}\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classrgbd__slam_1_1map__management_1_1_feature___map}\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+
+
+{\ttfamily \#include $<$feature\+\_\+map.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a805019000a0994d77c8d8ce20f334b65}{reset}} ()
+\begin{DoxyCompactList}\small\item\em Reset the content of this map, empty all local maps. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_aa1d4d8480cee63e4de5ac57ffc984b86}{get\+\_\+matches}} (const Detected\+Features\+Object \&detected\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, const bool use\+Advanced\+Match, std\+::list$<$ Feature\+Match\+Type $>$ \&matches)
+\begin{DoxyCompactList}\small\item\em return the object thta contains the matches between detected and map feature. Set the \+\_\+is\+Detected\+Feature\+Matched flags \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a630f1ec0d02e52665b0b918ddbff9f94}{get\+\_\+tracked\+\_\+features}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, Tracked\+Features\+Object \&tracked\+Features, const uint local\+Map\+Drop\+Chance=1000) const
+\begin{DoxyCompactList}\small\item\em Get the feature that were tracked for the last tracking step. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a35e8da56481675a4aa2edad79c2aaa18}{update\+\_\+map}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const Detected\+Features\+Object \&detected\+Feature\+Object)
+\begin{DoxyCompactList}\small\item\em Update this local map with a succesful tracking. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_aa518383168bfd92b14e56fcbb4d73d51}{update\+\_\+with\+\_\+no\+\_\+tracking}} ()
+\begin{DoxyCompactList}\small\item\em Update this local map with a failed tracking. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ad18d1fe2999b675ff57bbb5372aa7473}{add\+\_\+features\+\_\+to\+\_\+staged\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const Detected\+Features\+Object \&detected\+Features, const bool add\+All\+Features)
+\begin{DoxyCompactList}\small\item\em Add a set of detected features to the staged features. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a34d341165939549837f1b6a85a246454}{mark\+\_\+feature\+\_\+with\+\_\+id\+\_\+as\+\_\+unmatched}} (const size\+\_\+t feature\+Id)
+\begin{DoxyCompactList}\small\item\em Mark the map feature with the given id as unmatched. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ad43b3ee8abf58a8720715095d97108c6}{draw\+\_\+on\+\_\+image}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix, cv\+::\+Mat \&debug\+Image, const bool should\+Display\+Staged=false) const
+\begin{DoxyCompactList}\small\item\em Draw the content of this local map on the given image (draw only matched features) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ac34314302fc775b25bfec4a9e7b6d6df}{deactivate}} ()
+\begin{DoxyCompactList}\small\item\em Dectivate this local map. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a6e2306e4c4be600b3f8afc394afa1468}{get\+\_\+local\+\_\+map\+\_\+size}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a3ef35b4451fb1a505adf3366f4ad4b33}{get\+\_\+staged\+\_\+map\+\_\+size}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a4a1737fccae8de9663453410d7d90b05}{size}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ae1ed732167e986e56560ec57da71bf3d}{update\+\_\+local\+\_\+map}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const Detected\+Features\+Object \&detected\+Feature\+Object)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a8d2feb816a029f0119934a63b30ca2d2}{update\+\_\+staged\+\_\+map}} (const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const Detected\+Features\+Object \&detected\+Feature\+Object)
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a06106f9dc597aee1240bfe8674c8e1ce}{update\+\_\+local\+\_\+map\+\_\+with\+\_\+no\+\_\+tracking}} ()
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a40b93cc76386dcf3fe194bbad7614777}{update\+\_\+staged\+\_\+map\+\_\+with\+\_\+no\+\_\+tracking}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class Map\+Feature\+Type, class Staged\+Feature\+Type, class Detected\+Features\+Object, class Detected\+Feature\+Type, class Feature\+Match\+Type, class Tracked\+Features\+Object$>$\newline
+class rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$}
+Handle the storage and update of features in local and staged map 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_ad18d1fe2999b675ff57bbb5372aa7473}\label{classrgbd__slam_1_1map__management_1_1_feature___map_ad18d1fe2999b675ff57bbb5372aa7473}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!add\_features\_to\_staged\_map@{add\_features\_to\_staged\_map}}
+\index{add\_features\_to\_staged\_map@{add\_features\_to\_staged\_map}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{add\_features\_to\_staged\_map()}{add\_features\_to\_staged\_map()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::add\+\_\+features\+\_\+to\+\_\+staged\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const Detected\+Features\+Object \&}]{detected\+Features,  }\item[{const bool}]{add\+All\+Features }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add a set of detected features to the staged features. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em pose\+Covariance} & Covariance of the pose where those features were detected \\
+\hline
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A matrix to convert from camera to world space \\
+\hline
+\mbox{\texttt{ in}}  & {\em detected\+Features} & The object that contains the detected features to add \\
+\hline
+\mbox{\texttt{ in}}  & {\em add\+All\+Features} & If true, will add all detected features to the staged map. If false, will only add the unmatched features to staged map \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_ac34314302fc775b25bfec4a9e7b6d6df}\label{classrgbd__slam_1_1map__management_1_1_feature___map_ac34314302fc775b25bfec4a9e7b6d6df}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!deactivate@{deactivate}}
+\index{deactivate@{deactivate}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{deactivate()}{deactivate()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::deactivate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Dectivate this local map. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_ad43b3ee8abf58a8720715095d97108c6}\label{classrgbd__slam_1_1map__management_1_1_feature___map_ad43b3ee8abf58a8720715095d97108c6}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!draw\_on\_image@{draw\_on\_image}}
+\index{draw\_on\_image@{draw\_on\_image}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{draw\_on\_image()}{draw\_on\_image()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::draw\+\_\+on\+\_\+image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Cam\+Matrix,  }\item[{cv\+::\+Mat \&}]{debug\+Image,  }\item[{const bool}]{should\+Display\+Staged = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Draw the content of this local map on the given image (draw only matched features) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+To\+Cam\+Matrix} & A matrix to convert from world to camera space \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em debug\+Image} & The image on which to draw the map content \\
+\hline
+\mbox{\texttt{ in}}  & {\em should\+Display\+Staged} & If true, will also display the content of the staged map \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a6e2306e4c4be600b3f8afc394afa1468}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a6e2306e4c4be600b3f8afc394afa1468}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!get\_local\_map\_size@{get\_local\_map\_size}}
+\index{get\_local\_map\_size@{get\_local\_map\_size}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{get\_local\_map\_size()}{get\_local\_map\_size()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::get\+\_\+local\+\_\+map\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_aa1d4d8480cee63e4de5ac57ffc984b86}\label{classrgbd__slam_1_1map__management_1_1_feature___map_aa1d4d8480cee63e4de5ac57ffc984b86}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!get\_matches@{get\_matches}}
+\index{get\_matches@{get\_matches}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{get\_matches()}{get\_matches()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::get\+\_\+matches (\begin{DoxyParamCaption}\item[{const Detected\+Features\+Object \&}]{detected\+Features,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{const bool}]{use\+Advanced\+Match,  }\item[{std\+::list$<$ Feature\+Match\+Type $>$ \&}]{matches }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return the object thta contains the matches between detected and map feature. Set the \+\_\+is\+Detected\+Feature\+Matched flags 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em detected\+Features} & The object of detected features to match \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A matrix to convert from world to camera space \\
+\hline
+\mbox{\texttt{ in}}  & {\em use\+Advanced\+Match} & If true, will restart the matching process to detected features further than if True. Also less precise \\
+\hline
+\mbox{\texttt{ out}}  & {\em matches} & An object of matches between map object and detected features \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a3ef35b4451fb1a505adf3366f4ad4b33}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a3ef35b4451fb1a505adf3366f4ad4b33}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!get\_staged\_map\_size@{get\_staged\_map\_size}}
+\index{get\_staged\_map\_size@{get\_staged\_map\_size}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{get\_staged\_map\_size()}{get\_staged\_map\_size()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::get\+\_\+staged\+\_\+map\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a630f1ec0d02e52665b0b918ddbff9f94}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a630f1ec0d02e52665b0b918ddbff9f94}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!get\_tracked\_features@{get\_tracked\_features}}
+\index{get\_tracked\_features@{get\_tracked\_features}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{get\_tracked\_features()}{get\_tracked\_features()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::get\+\_\+tracked\+\_\+features (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{Tracked\+Features\+Object \&}]{tracked\+Features,  }\item[{const uint}]{local\+Map\+Drop\+Chance = {\ttfamily 1000} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the feature that were tracked for the last tracking step. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A matrix to convert from world to camera space \\
+\hline
+\mbox{\texttt{ out}}  & {\em tracked\+Features} & The object thta will contain the tracked features \\
+\hline
+\mbox{\texttt{ in}}  & {\em local\+Map\+Drop\+Chance} & Chance to randomly drop a local map point and not return it \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a34d341165939549837f1b6a85a246454}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a34d341165939549837f1b6a85a246454}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!mark\_feature\_with\_id\_as\_unmatched@{mark\_feature\_with\_id\_as\_unmatched}}
+\index{mark\_feature\_with\_id\_as\_unmatched@{mark\_feature\_with\_id\_as\_unmatched}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{mark\_feature\_with\_id\_as\_unmatched()}{mark\_feature\_with\_id\_as\_unmatched()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::mark\+\_\+feature\+\_\+with\+\_\+id\+\_\+as\+\_\+unmatched (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{feature\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Mark the map feature with the given id as unmatched. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em feature\+Id} & The id of the feature to mark as unmatched \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the feature was found, or false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a805019000a0994d77c8d8ce20f334b65}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a805019000a0994d77c8d8ce20f334b65}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!reset@{reset}}
+\index{reset@{reset}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reset the content of this map, empty all local maps. 
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a4a1737fccae8de9663453410d7d90b05}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a4a1737fccae8de9663453410d7d90b05}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!size@{size}}
+\index{size@{size}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_ae1ed732167e986e56560ec57da71bf3d}\label{classrgbd__slam_1_1map__management_1_1_feature___map_ae1ed732167e986e56560ec57da71bf3d}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!update\_local\_map@{update\_local\_map}}
+\index{update\_local\_map@{update\_local\_map}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{update\_local\_map()}{update\_local\_map()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::update\+\_\+local\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const Detected\+Features\+Object \&}]{detected\+Feature\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a06106f9dc597aee1240bfe8674c8e1ce}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a06106f9dc597aee1240bfe8674c8e1ce}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!update\_local\_map\_with\_no\_tracking@{update\_local\_map\_with\_no\_tracking}}
+\index{update\_local\_map\_with\_no\_tracking@{update\_local\_map\_with\_no\_tracking}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{update\_local\_map\_with\_no\_tracking()}{update\_local\_map\_with\_no\_tracking()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::update\+\_\+local\+\_\+map\+\_\+with\+\_\+no\+\_\+tracking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a35e8da56481675a4aa2edad79c2aaa18}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a35e8da56481675a4aa2edad79c2aaa18}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!update\_map@{update\_map}}
+\index{update\_map@{update\_map}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{update\_map()}{update\_map()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::update\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const Detected\+Features\+Object \&}]{detected\+Feature\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update this local map with a succesful tracking. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & A matrix to convert from camera to world space \\
+\hline
+\mbox{\texttt{ in}}  & {\em pose\+Covariance} & Covariance of the pose after tracking \\
+\hline
+\mbox{\texttt{ in}}  & {\em detected\+Feature\+Object} & The object containing the detected features used for the tracking \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a8d2feb816a029f0119934a63b30ca2d2}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a8d2feb816a029f0119934a63b30ca2d2}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!update\_staged\_map@{update\_staged\_map}}
+\index{update\_staged\_map@{update\_staged\_map}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{update\_staged\_map()}{update\_staged\_map()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::update\+\_\+staged\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const Detected\+Features\+Object \&}]{detected\+Feature\+Object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_a40b93cc76386dcf3fe194bbad7614777}\label{classrgbd__slam_1_1map__management_1_1_feature___map_a40b93cc76386dcf3fe194bbad7614777}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!update\_staged\_map\_with\_no\_tracking@{update\_staged\_map\_with\_no\_tracking}}
+\index{update\_staged\_map\_with\_no\_tracking@{update\_staged\_map\_with\_no\_tracking}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{update\_staged\_map\_with\_no\_tracking()}{update\_staged\_map\_with\_no\_tracking()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::update\+\_\+staged\+\_\+map\+\_\+with\+\_\+no\+\_\+tracking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_feature___map_aa518383168bfd92b14e56fcbb4d73d51}\label{classrgbd__slam_1_1map__management_1_1_feature___map_aa518383168bfd92b14e56fcbb4d73d51}} 
+\index{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}!update\_with\_no\_tracking@{update\_with\_no\_tracking}}
+\index{update\_with\_no\_tracking@{update\_with\_no\_tracking}!rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$@{rgbd\_slam::map\_management::Feature\_Map$<$ MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject $>$}}
+\doxysubsubsection{\texorpdfstring{update\_with\_no\_tracking()}{update\_with\_no\_tracking()}}
+{\footnotesize\ttfamily template$<$class Map\+Feature\+Type , class Staged\+Feature\+Type , class Detected\+Features\+Object , class Detected\+Feature\+Type , class Feature\+Match\+Type , class Tracked\+Features\+Object $>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Feature\+\_\+\+Map}}$<$ Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object $>$\+::update\+\_\+with\+\_\+no\+\_\+tracking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update this local map with a failed tracking. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{feature__map_8hpp}{feature\+\_\+map.\+hpp}}\end{DoxyCompactItemize}

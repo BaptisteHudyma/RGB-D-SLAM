@@ -32,6 +32,8 @@ const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{ma
 \item 
 const \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_a2b80066cc6773d5dbf4f8d470534c1bc}{get\+\_\+orientation\+\_\+quaternion}} () const
 \item 
+const \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{vector6}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_a5ee25e1f66f763c3aadc4ab29b76a707}{get\+\_\+vector}} () const
+\item 
 double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_a4b01a7063d9250252cad45ceb488ce35}{get\+\_\+position\+\_\+error}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&pose) const
 \begin{DoxyCompactList}\small\item\em compute a position error (Units are the same as the position units) \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base_a2f524eb98caec1e353c2802088ef7919}{get\+\_\+rotation\+\_\+error}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&pose) const
@@ -107,6 +109,15 @@ compute a position error (Units are the same as the position units)
 
 compute a rotation error (degrees) 
 
+\mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_base_a5ee25e1f66f763c3aadc4ab29b76a707}\label{classrgbd__slam_1_1utils_1_1_pose_base_a5ee25e1f66f763c3aadc4ab29b76a707}} 
+\index{rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}!get\_vector@{get\_vector}}
+\index{get\_vector@{get\_vector}!rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}}
+\doxysubsubsection{\texorpdfstring{get\_vector()}{get\_vector()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{vector6}} rgbd\+\_\+slam\+::utils\+::\+Pose\+Base\+::get\+\_\+vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+a 6 element vector of the position followed by the rotation in radians 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classrgbd__slam_1_1utils_1_1_pose_base_aa37ceeef0e2c56ae729cd4de27afa3f5}\label{classrgbd__slam_1_1utils_1_1_pose_base_aa37ceeef0e2c56ae729cd4de27afa3f5}} 
 \index{rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}!set\_parameters@{set\_parameters}}
 \index{set\_parameters@{set\_parameters}!rgbd\_slam::utils::PoseBase@{rgbd\_slam::utils::PoseBase}}

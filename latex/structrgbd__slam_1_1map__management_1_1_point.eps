@@ -5,7 +5,7 @@
 %%For: 
 %Magnification: 1.00
 %%Orientation: Portrait
-%%BoundingBox: 0 0 500 88.235291
+%%BoundingBox: 0 0 500 106.382980
 %%Pages: 0
 %%BeginSetup
 %%EndSetup
@@ -19,7 +19,7 @@
 /marginwidth 10 def
 /distx 20 def
 /disty 40 def
-/boundaspect 5.666667 def  % aspect ratio of the BoundingBox (width/height)
+/boundaspect 4.700000 def  % aspect ratio of the BoundingBox (width/height)
 /boundx 500 def
 /boundy boundx boundaspect div def
 /xspacing 0 def
@@ -174,9 +174,9 @@
 boxfont setfont
 1 boundaspect scale
 (rgbd_slam::map_management::Point) cw
-(rgbd_slam::map_management::IMap_Point_With_Tracking) cw
-(rgbd_slam::map_management::Map_Point) cw
-(rgbd_slam::map_management::Staged_Point) cw
+(rgbd_slam::map_management::MapPoint) cw
+(rgbd_slam::map_management::LocalMapPoint) cw
+(rgbd_slam::map_management::StagedMapPoint) cw
 /boxwidth boxwidth marginwidth 2 mul add def
 /xspacing boxwidth distx add def
 /yspacing boxheight disty add def
@@ -189,9 +189,9 @@ boundx scalefactor div boundy scalefactor div scale
 % ----- classes -----
 
  (rgbd_slam::map_management::Point) 0.500000 2.000000 box
- (rgbd_slam::map_management::IMap_Point_With_Tracking) 0.500000 1.000000 box
- (rgbd_slam::map_management::Map_Point) 0.000000 0.000000 box
- (rgbd_slam::map_management::Staged_Point) 1.000000 0.000000 box
+ (rgbd_slam::map_management::MapPoint) 0.500000 1.000000 box
+ (rgbd_slam::map_management::LocalMapPoint) 0.000000 0.000000 box
+ (rgbd_slam::map_management::StagedMapPoint) 1.000000 0.000000 box
 
 % ----- relations -----
 
