@@ -81,7 +81,7 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
             vector3(optimizedParameters(3), optimizedParameters(4), optimizedParameters(5)));
     const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
 
-    const worldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+    const WorldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
     Eigen::Index pointIndex = 0; // index of the match being treated
     // Compute retroprojection distances
     for (const matches_containers::PointMatch& match: _points)
@@ -97,7 +97,7 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
     }
 
     // add plane optimization vectors
-    const planeWorldToCameraMatrix& planeTransformationMatrix =
+    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
             utils::compute_plane_world_to_camera_matrix(transformationMatrix);
     for (const matches_containers::PlaneMatch& match: _planes)
     {

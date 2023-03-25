@@ -15,8 +15,7 @@ double get_depth_quantization(const double depth)
     return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0), 0.5);
 }
 
-const screenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
-                                                             const worldCoordinateCovariance& pointCovariance)
+const ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance)
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -25,32 +24,44 @@ const screenCoordinateCovariance get_screen_point_covariance(const WorldCoordina
     const matrix33 jacobian {{cameraFX / point.z(), 0.0, -cameraFX * point.x() / pow(point.z(), 2.0)},
                              {0.0, cameraFY / point.z(), -cameraFY * point.y() / pow(point.z(), 2.0)},
                              {0.0, 0.0, 1.0}};
-    screenCoordinateCovariance screenPointCovariance;
+    ScreenCoordinateCovariance screenPointCovariance;
     screenPointCovariance.base() = (jacobian * pointCovariance * jacobian.transpose());
     return screenPointCovariance;
 }
 
-const worldCoordinateCovariance get_world_point_covariance(const cameraCoordinateCovariance& cameraPointCovariance,
+const ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                             const WorldCoordinateCovariance& pointCovariance)
+{
+    return get_screen_point_covariance(point.base(), pointCovariance.base());
+}
+
+const ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
+                                                             const CameraCoordinateCovariance& pointCovariance)
+{
+    return get_screen_point_covariance(point.base(), pointCovariance.base());
+}
+
+const WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
                                                            const matrix33& poseCovariance)
 {
-    worldCoordinateCovariance cov;
+    WorldCoordinateCovariance cov;
     cov.base() << cameraPointCovariance + poseCovariance;
     return cov;
 }
 
-const worldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+const WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
                                                            const matrix33& poseCovariance)
 {
     return get_world_point_covariance(utils::get_camera_point_covariance(screenPoint), poseCovariance);
 }
 
-const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint)
+const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint)
 {
     return get_camera_point_covariance(screenPoint, screenPoint.get_covariance());
 }
 
-const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
-                                                             const screenCoordinateCovariance& screenPointCovariance)
+const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
+                                                             const ScreenCoordinateCovariance& screenPointCovariance)
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -62,7 +73,7 @@ const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordin
                              {0.0, screenPoint.z() / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY},
                              {0.0, 0.0, 1.0}};
 
-    cameraCoordinateCovariance cameraPointCovariance;
+    CameraCoordinateCovariance cameraPointCovariance;
     cameraPointCovariance.base() = jacobian * screenPointCovariance * jacobian.transpose();
     return cameraPointCovariance;
 }

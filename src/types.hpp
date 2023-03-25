@@ -30,27 +30,27 @@ typedef Eigen::Quaternion<double> quaternion;
 typedef Eigen::Matrix<double, 6, 1> vector6;
 typedef Eigen::Matrix<double, 6, 6> matrix66;
 
-struct screenCoordinateCovariance : public matrix33
+struct ScreenCoordinateCovariance : public matrix33
 {
 };
-struct cameraCoordinateCovariance : public matrix33
+struct CameraCoordinateCovariance : public matrix33
 {
 };
-struct worldCoordinateCovariance : public matrix33
+struct WorldCoordinateCovariance : public matrix33
 {
 };
 
 // define new classes to not mix types
-struct worldToCameraMatrix : public matrix44
+struct WorldToCameraMatrix : public matrix44
 {
 };
-struct cameraToWorldMatrix : public matrix44
+struct CameraToWorldMatrix : public matrix44
 {
 };
-struct planeWorldToCameraMatrix : public matrix44
+struct PlaneWorldToCameraMatrix : public matrix44
 {
 };
-struct planeCameraToWorldMatrix : public matrix44
+struct PlaneCameraToWorldMatrix : public matrix44
 {
 };
 

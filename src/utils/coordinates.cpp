@@ -43,7 +43,7 @@ matrix22 ScreenCoordinate2D::get_covariance() const
     return matrix22({{xyVariance, 0.0}, {0.0, xyVariance}});
 }
 
-screenCoordinateCovariance ScreenCoordinate::get_covariance() const
+ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
 {
     const matrix22& covariance2D = ScreenCoordinate2D::get_covariance();
 
@@ -51,12 +51,12 @@ screenCoordinateCovariance ScreenCoordinate::get_covariance() const
     // a zero variance will break the kalman gain
     assert(depthQuantization > 0);
 
-    screenCoordinateCovariance cov;
+    ScreenCoordinateCovariance cov;
     cov << covariance2D, vector2::Zero(), 0.0, 0.0, depthQuantization;
     return cov;
 }
 
-WorldCoordinate ScreenCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const
 {
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates();
     return cameraPoint.to_world_coordinates(cameraToWorld);
@@ -115,7 +115,7 @@ bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) 
     return false;
 }
 
-WorldCoordinate CameraCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
+WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const
 {
     const vector4 homogenousWorldCoords = cameraToWorld * this->get_homogenous();
     return WorldCoordinate(homogenousWorldCoords.head<3>());
@@ -156,7 +156,7 @@ void CameraCoordinate::operator<<(const CameraCoordinate& other) { this->operato
  *      WORLD COORDINATES
  */
 
-bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCamera,
+bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                             ScreenCoordinate& screenPoint) const
 {
     assert(not std::isnan(x()) and not std::isnan(y()) and not std::isnan(z()));
@@ -167,7 +167,7 @@ bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCa
     return cameraPoint.to_screen_coordinates(screenPoint);
 }
 
-bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCamera,
+bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                             ScreenCoordinate2D& screenPoint) const
 {
     ScreenCoordinate screenCoordinates;
@@ -181,7 +181,7 @@ bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCa
 }
 
 vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screenPoint,
-                                                const worldToCameraMatrix& worldToCamera) const
+                                                const WorldToCameraMatrix& worldToCamera) const
 {
     ScreenCoordinate2D projectedScreenPoint;
     const bool isCoordinatesValid = to_screen_coordinates(worldToCamera, projectedScreenPoint);
@@ -197,7 +197,7 @@ vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screen
 }
 
 double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint,
-                                     const worldToCameraMatrix& worldToCamera) const
+                                     const WorldToCameraMatrix& worldToCamera) const
 {
     const vector2& distance2D = get_signed_distance_2D(screenPoint, worldToCamera);
     if (distance2D.x() >= std::numeric_limits<double>::max() or distance2D.y() >= std::numeric_limits<double>::max())
@@ -208,14 +208,14 @@ double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint,
 }
 
 vector3 WorldCoordinate::get_signed_distance(const ScreenCoordinate& screenPoint,
-                                             const cameraToWorldMatrix& cameraToWorld) const
+                                             const CameraToWorldMatrix& cameraToWorld) const
 {
     const WorldCoordinate& projectedScreenPoint = screenPoint.to_world_coordinates(cameraToWorld);
     return this->base() - projectedScreenPoint;
 }
 
 double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
-                                     const cameraToWorldMatrix& cameraToWorld) const
+                                     const CameraToWorldMatrix& cameraToWorld) const
 {
     return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
 }
@@ -224,7 +224,7 @@ double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
  *      CAMERA COORDINATES
  */
 
-CameraCoordinate WorldCoordinate::to_camera_coordinates(const worldToCameraMatrix& worldToCamera) const
+CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const
 {
     // WorldCoordinate
     vector4 homogenousWorldCoordinates;
@@ -238,18 +238,18 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const worldToCameraMatri
  *      PLANE COORDINATES
  */
 
-PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const planeCameraToWorldMatrix& cameraToWorld) const
+PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const
 {
     return PlaneWorldCoordinates(cameraToWorld.base() * this->base());
 }
 
-PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const planeWorldToCameraMatrix& worldToCamera) const
+PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const
 {
     return PlaneCameraCoordinates(worldToCamera.base() * this->base());
 }
 
 vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                                   const planeWorldToCameraMatrix& worldToCamera) const
+                                                   const PlaneWorldToCameraMatrix& worldToCamera) const
 {
     const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
 
@@ -268,7 +268,7 @@ vector3 get_plane_transformation(const vector4& plane)
 }
 
 vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                                           const planeWorldToCameraMatrix& worldToCamera) const
+                                                           const PlaneWorldToCameraMatrix& worldToCamera) const
 {
     const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
 

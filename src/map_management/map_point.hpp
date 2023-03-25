@@ -22,10 +22,10 @@ struct Point
     // 3D descriptor (ORB)
     cv::Mat _descriptor;
     // position covariance
-    worldCoordinateCovariance _covariance;
+    WorldCoordinateCovariance _covariance;
 
     Point(const utils::WorldCoordinate& coordinates,
-          const worldCoordinateCovariance& covariance,
+          const WorldCoordinateCovariance& covariance,
           const cv::Mat& descriptor) :
         _coordinates(coordinates),
         _descriptor(descriptor),
@@ -105,7 +105,7 @@ class MapPoint :
 {
   public:
     MapPoint(const utils::WorldCoordinate& coordinates,
-             const worldCoordinateCovariance& covariance,
+             const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
         Point(coordinates, covariance, descriptor),
         IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>()
@@ -114,7 +114,7 @@ class MapPoint :
     }
 
     MapPoint(const utils::WorldCoordinate& coordinates,
-             const worldCoordinateCovariance& covariance,
+             const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor,
              const size_t id) :
         Point(coordinates, covariance, descriptor),
@@ -124,7 +124,7 @@ class MapPoint :
     }
 
     virtual int find_match(const DetectedKeypointsObject& detectedFeatures,
-                           const worldToCameraMatrix& worldToCamera,
+                           const WorldToCameraMatrix& worldToCamera,
                            const vectorb& isDetectedFeatureMatched,
                            std::list<PointMatchType>& matches,
                            const bool shouldAddToMatches = true,
@@ -165,7 +165,7 @@ class MapPoint :
 
         if (shouldAddToMatches)
         {
-            const rgbd_slam::screenCoordinateCovariance& screenCovariance =
+            const rgbd_slam::ScreenCoordinateCovariance& screenCovariance =
                     utils::get_screen_point_covariance(_coordinates, _covariance);
             // consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
             const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
@@ -178,7 +178,7 @@ class MapPoint :
         return matchIndex;
     }
 
-    virtual bool add_to_tracked(const worldToCameraMatrix& worldToCamera,
+    virtual bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedPointsObject& trackedFeatures,
                                 const uint dropChance = 1000) const override
     {
@@ -201,7 +201,7 @@ class MapPoint :
         return false;
     }
 
-    virtual void draw(const worldToCameraMatrix& worldToCamMatrix,
+    virtual void draw(const WorldToCameraMatrix& worldToCamMatrix,
                       cv::Mat& debugImage,
                       const cv::Scalar& color) const override
     {
@@ -218,7 +218,7 @@ class MapPoint :
         }
     }
 
-    virtual bool is_visible(const worldToCameraMatrix& worldToCamMatrix) const override
+    virtual bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
         static const uint screenSizeX = Parameters::get_camera_1_size_x();
         static const uint screenSizeY = Parameters::get_camera_1_size_y();
@@ -240,7 +240,7 @@ class MapPoint :
   protected:
     virtual bool update_with_match(const DetectedPointType& matchedFeature,
                                    const matrix33& poseCovariance,
-                                   const cameraToWorldMatrix& cameraToWorld) override
+                                   const CameraToWorldMatrix& cameraToWorld) override
     {
         assert(_matchIndex >= 0);
 
@@ -251,7 +251,7 @@ class MapPoint :
             const utils::WorldCoordinate& worldPointCoordinates =
                     matchedScreenPoint.to_world_coordinates(cameraToWorld);
             // get a measure of the estimated variance of the new world point
-            const cameraCoordinateCovariance& cameraPointCovariance =
+            const CameraCoordinateCovariance& cameraPointCovariance =
                     utils::get_camera_point_covariance(matchedScreenPoint);
             const matrix33& worldCovariance = poseCovariance + cameraPointCovariance.base();
             // update this map point errors & position
@@ -284,7 +284,7 @@ class StagedMapPoint : public virtual MapPoint, public virtual IStagedMapFeature
 {
   public:
     StagedMapPoint(const matrix33& poseCovariance,
-                   const cameraToWorldMatrix& cameraToWorld,
+                   const CameraToWorldMatrix& cameraToWorld,
                    const DetectedPointType& detectedFeature) :
         MapPoint(detectedFeature._coordinates.to_world_coordinates(cameraToWorld),
                  utils::get_world_point_covariance(detectedFeature._coordinates, poseCovariance),
