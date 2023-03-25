@@ -202,6 +202,13 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     return covariance;
 }
 
+matrix44 Plane_Segment::get_plane_covariance() const
+{
+    matrix44 covariance;
+
+    return covariance;
+}
+
 void Plane_Segment::fit_plane()
 {
     assert(_pointCount > 0);

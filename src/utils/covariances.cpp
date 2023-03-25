@@ -15,22 +15,8 @@ double get_depth_quantization(const double depth)
     return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0), 0.5);
 }
 
-const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& screenCoordinate)
-{
-    const double depthQuantization =
-            utils::is_depth_valid(screenCoordinate.z()) ? get_depth_quantization(screenCoordinate.z()) : 1000.0;
-    // a zero variance will break the kalman gain
-    assert(depthQuantization > 0);
-    // TODO xy variance should also depend on the placement of the pixel in x and y
-    const double xyVariance = pow(0.1, 2.0);
-
-    screenCoordinateCovariance screenPointCovariance;
-    screenPointCovariance.base() =
-            matrix33({{xyVariance, 0.0, 0.0}, {0.0, xyVariance, 0.0}, {0.0, 0.0, pow(depthQuantization, 2.0)}});
-    return screenPointCovariance;
-}
-
-const screenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance)
+const screenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                             const worldCoordinateCovariance& pointCovariance)
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -44,9 +30,23 @@ const screenCoordinateCovariance get_screen_point_covariance(const vector3& poin
     return screenPointCovariance;
 }
 
+const worldCoordinateCovariance get_world_point_covariance(const cameraCoordinateCovariance& cameraPointCovariance,
+                                                           const matrix33& poseCovariance)
+{
+    worldCoordinateCovariance cov;
+    cov.base() << cameraPointCovariance + poseCovariance;
+    return cov;
+}
+
+const worldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                           const matrix33& poseCovariance)
+{
+    return get_world_point_covariance(utils::get_camera_point_covariance(screenPoint), poseCovariance);
+}
+
 const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint)
 {
-    return get_camera_point_covariance(screenPoint, get_screen_point_covariance(screenPoint));
+    return get_camera_point_covariance(screenPoint, screenPoint.get_covariance());
 }
 
 const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,

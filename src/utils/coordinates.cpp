@@ -2,6 +2,8 @@
 #include "../parameters.hpp"
 #include "../utils/distance_utils.hpp"
 #include "camera_transformation.hpp"
+#include "covariances.hpp"
+#include "types.hpp"
 #include <cmath>
 #include <math.h>
 
@@ -34,6 +36,26 @@ CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
     return cameraPoint;
 }
 
+matrix22 ScreenCoordinate2D::get_covariance() const
+{
+    // TODO xy variance should also depend on the placement of the pixel in x and y
+    const double xyVariance = 0.1 * 0.1;
+    return matrix22({{xyVariance, 0.0}, {0.0, xyVariance}});
+}
+
+screenCoordinateCovariance ScreenCoordinate::get_covariance() const
+{
+    const matrix22& covariance2D = ScreenCoordinate2D::get_covariance();
+
+    const double depthQuantization = utils::is_depth_valid(_z) ? get_depth_quantization(_z) : 1000.0;
+    // a zero variance will break the kalman gain
+    assert(depthQuantization > 0);
+
+    screenCoordinateCovariance cov;
+    cov << covariance2D, vector2::Zero(), 0.0, 0.0, depthQuantization;
+    return cov;
+}
+
 WorldCoordinate ScreenCoordinate::to_world_coordinates(const cameraToWorldMatrix& cameraToWorld) const
 {
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates();
@@ -57,6 +79,19 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
     return cameraPoint;
 }
 
+void ScreenCoordinate::operator=(const vector3& other)
+{
+    this->x() = other.x();
+    this->y() = other.y();
+    this->z() = other.z();
+}
+
+void ScreenCoordinate::operator=(const ScreenCoordinate& other) { this->operator=(other.base()); }
+
+void ScreenCoordinate::operator<<(const vector3& other) { this->operator=(other); }
+
+void ScreenCoordinate::operator<<(const ScreenCoordinate& other) { this->operator<<(other.base()); }
+
 /**
  *      CAMERA COORDINATES
  */
@@ -73,7 +108,8 @@ bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) 
 
     if (not std::isnan(screenX) and not std::isnan(screenY))
     {
-        screenPoint = ScreenCoordinate2D(screenX, screenY);
+        screenPoint.x() = screenX;
+        screenPoint.y() = screenY;
         return true;
     }
     return false;
@@ -112,12 +148,7 @@ void CameraCoordinate::operator=(const vector3& other)
 
 void CameraCoordinate::operator=(const CameraCoordinate& other) { this->operator=(other.base()); }
 
-void CameraCoordinate::operator<<(const vector3& other)
-{
-    this->x() = other.x();
-    this->y() = other.y();
-    this->z() = other.z();
-}
+void CameraCoordinate::operator<<(const vector3& other) { this->operator=(other); }
 
 void CameraCoordinate::operator<<(const CameraCoordinate& other) { this->operator<<(other.base()); }
 
@@ -142,7 +173,8 @@ bool WorldCoordinate::to_screen_coordinates(const worldToCameraMatrix& worldToCa
     ScreenCoordinate screenCoordinates;
     if (to_screen_coordinates(worldToCamera, screenCoordinates))
     {
-        screenPoint = ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y());
+        screenPoint.x() = screenCoordinates.x();
+        screenPoint.y() = screenCoordinates.y();
         return true;
     }
     return false;

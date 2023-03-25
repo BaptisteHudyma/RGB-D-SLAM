@@ -20,6 +20,7 @@ typedef Eigen::VectorXd vectorxd;
 typedef Eigen::Vector<bool, Eigen::Dynamic> vectorb;
 typedef Eigen::Matrix<double, 3, 1> vector3;
 typedef Eigen::Vector4d vector4;
+typedef Eigen::Matrix2d matrix22;
 typedef Eigen::Matrix3d matrix33;
 typedef Eigen::Matrix<double, 3, 4> matrix34;
 typedef Eigen::Matrix<double, 4, 3> matrix43;

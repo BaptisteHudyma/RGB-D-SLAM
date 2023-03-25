@@ -29,14 +29,20 @@ bool is_depth_valid(const double depth);
 struct ScreenCoordinate2D : public vector2
 {
     ScreenCoordinate2D() : vector2(vector2::Zero()) {};
-    ScreenCoordinate2D(const vector2& coords) : vector2(coords) {};
+    ScreenCoordinate2D(const vector2& other) : vector2(other) {};
     ScreenCoordinate2D(const double x, const double y) : vector2(x, y) {};
+    ScreenCoordinate2D(const ScreenCoordinate2D& other) : vector2(other.x(), other.y()) {};
 
     /**
      * \brief Transform a screen point with a depth value to a 3D camera point
      * \return A 3D point in camera coordinates
      */
     CameraCoordinate2D to_camera_coordinates() const;
+
+    /**
+     * \brief Compute a covariance in screen space
+     */
+    matrix22 get_covariance() const;
 };
 
 /**
@@ -46,8 +52,8 @@ struct ScreenCoordinate2D : public vector2
 struct ScreenCoordinate : public ScreenCoordinate2D
 {
     ScreenCoordinate() : ScreenCoordinate2D(), _z(0.0) {};
-    // ScreenCoordinate(const ScreenCoordinate& screenCoordinates) : ScreenCoordinate2D(screenCoordinates.x(),
-    // screenCoordinates.y()), _z(screenCoordinates.z()) {};
+    ScreenCoordinate(const vector3& other) : ScreenCoordinate2D(other.head(2)), _z(other.z()) {};
+    ScreenCoordinate(const ScreenCoordinate& other) : ScreenCoordinate2D(other), _z(other.z()) {};
     ScreenCoordinate(const double x, const double y, const double z) : ScreenCoordinate2D(x, y), _z(z) {};
 
     /**
@@ -63,7 +69,18 @@ struct ScreenCoordinate : public ScreenCoordinate2D
      */
     CameraCoordinate to_camera_coordinates() const;
 
+    /**
+     * \brief Compute a covariance in screen space
+     */
+    screenCoordinateCovariance get_covariance() const;
+
     double z() const { return _z; };
+    double& z() { return _z; };
+
+    void operator=(const vector3& other);
+    void operator=(const ScreenCoordinate& other);
+    void operator<<(const vector3& other);
+    void operator<<(const ScreenCoordinate& other);
 
     vector3 base() const { return vector3(x(), y(), z()); };
 
@@ -102,7 +119,7 @@ struct CameraCoordinate : public CameraCoordinate2D
      */
     CameraCoordinate() : CameraCoordinate2D(), _z(0.0) {};
     CameraCoordinate(const CameraCoordinate& other) : CameraCoordinate2D(other), _z(other._z) {};
-    CameraCoordinate(const vector3& coords) : CameraCoordinate2D(coords.x(), coords.y()), _z(coords.z()) {};
+    CameraCoordinate(const vector3& coords) : CameraCoordinate2D(coords.head(2)), _z(coords.z()) {};
     CameraCoordinate(const vector4& homegenousCoordinates) :
         CameraCoordinate2D(homegenousCoordinates.x() / homegenousCoordinates[3],
                            homegenousCoordinates.y() / homegenousCoordinates[3]),
