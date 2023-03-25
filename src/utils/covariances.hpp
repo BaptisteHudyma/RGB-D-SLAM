@@ -17,9 +17,7 @@ double get_depth_quantization(const double depht);
 
 /**
  * \brief compute a covariance matrix for a screen point associated with a depth measurement
- *
  * \param[in] ScreenCoordinate The coordinates of this point, in screen space
- *
  * \return A 3x3 covariance matrix. It should be diagonal
  */
 const screenCoordinateCovariance get_screen_point_covariance(const ScreenCoordinate& ScreenCoordinate);
@@ -35,19 +33,15 @@ const screenCoordinateCovariance get_screen_point_covariance(const vector3& poin
 /**
  * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This
  * function will internaly compute the covariance of the screen point.
- *
  * \param[in] screenPoint The 2D point in screen coordinates
- *
  * \return the covariance of the 3D camera point
  */
 const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint);
 
 /**
  * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point
- *
  * \param[in] screenPoint The 2D point in screen coordinates
  * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
- *
  * \return the covariance of the 3D camera point
  */
 const cameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,

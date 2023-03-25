@@ -30,7 +30,7 @@ class Local_Map
     /**
      * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global
      * ids
-     * \param[in] pose The current pose of the observer
+     * \param[in] lastpose The last known pose of the observer
      */
     const features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(const utils::Pose& lastpose) const;
 

@@ -14,10 +14,7 @@ namespace primitives {
  *      PRIMITIVE
  *
  */
-IPrimitive::IPrimitive(const cv::Mat& shapeMask) : _shapeMask(shapeMask.clone())
-{
-    assert(not shapeMask.empty());
-}
+IPrimitive::IPrimitive(const cv::Mat& shapeMask) : _shapeMask(shapeMask.clone()) { assert(not shapeMask.empty()); }
 
 double IPrimitive::get_IOU(const IPrimitive& prim) const
 {
@@ -93,10 +90,7 @@ Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
 {
 }
 
-bool Plane::is_similar(const Plane& plane) const
-{
-    return is_similar(plane._shapeMask, plane._parametrization);
-}
+bool Plane::is_similar(const Plane& plane) const { return is_similar(plane._shapeMask, plane._parametrization); }
 
 bool Plane::is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const
 {
@@ -115,10 +109,7 @@ bool Plane::is_similar(const Cylinder& cylinder) const
     return false;
 }
 
-double Plane::get_distance(const vector3& point) const
-{
-    return get_normal().dot(point - _centroid.base());
-}
+double Plane::get_distance(const vector3& point) const { return get_normal().dot(point - _centroid.base()); }
 
 } // namespace primitives
 } // namespace features

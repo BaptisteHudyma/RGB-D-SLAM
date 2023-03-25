@@ -22,18 +22,9 @@ class PoseBase
     void update(const vector3& position, const quaternion& orientation);
 
     // getters
-    const vector3 get_position() const
-    {
-        return _position;
-    }
-    const matrix33 get_orientation_matrix() const
-    {
-        return _orientation.toRotationMatrix();
-    }
-    const quaternion get_orientation_quaternion() const
-    {
-        return _orientation;
-    }
+    const vector3 get_position() const { return _position; }
+    const matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
+    const quaternion get_orientation_quaternion() const { return _orientation; }
     /**
      * \return a 6 element vector of the position followed by the rotation in radians
      */
@@ -73,18 +64,9 @@ class Pose : public PoseBase
     Pose(const vector3& position, const quaternion& orientation);
     Pose(const vector3& position, const quaternion& orientation, const matrix66& poseVariance);
 
-    void set_position_variance(const matrix66& variance)
-    {
-        _positionVariance = variance;
-    };
-    const matrix66 get_pose_variance() const
-    {
-        return _positionVariance;
-    };
-    const matrix33 get_position_variance() const
-    {
-        return _positionVariance.block(0, 0, 3, 3);
-    };
+    void set_position_variance(const matrix66& variance) { _positionVariance = variance; };
+    const matrix66 get_pose_variance() const { return _positionVariance; };
+    const matrix33 get_position_variance() const { return _positionVariance.block(0, 0, 3, 3); };
 
     /**
      * \brief A display function, to avoid a friend operator function

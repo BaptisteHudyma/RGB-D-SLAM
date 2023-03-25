@@ -287,10 +287,7 @@ class StagedMapPoint : public virtual MapPoint, public virtual IStagedMapFeature
     {
     }
 
-    virtual bool should_remove_from_staged() const override
-    {
-        return get_confidence() <= 0;
-    }
+    virtual bool should_remove_from_staged() const override { return get_confidence() <= 0; }
 
     virtual bool should_add_to_local_map() const override
     {

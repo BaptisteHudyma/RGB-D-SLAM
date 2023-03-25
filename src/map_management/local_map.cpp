@@ -29,10 +29,7 @@ Local_Map::Local_Map()
     //_localPlaneMap.deactivate();
 }
 
-Local_Map::~Local_Map()
-{
-    delete _mapWriter;
-}
+Local_Map::~Local_Map() { delete _mapWriter; }
 
 const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(
         const utils::Pose& lastPose) const

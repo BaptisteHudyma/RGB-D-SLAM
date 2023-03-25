@@ -96,9 +96,7 @@ void Histogram::remove_point(const uint pointId)
     _B[pointId] = 1;
 }
 
-Histogram::~Histogram()
-{
-}
+Histogram::~Histogram() {}
 
 } // namespace primitives
 } // namespace features

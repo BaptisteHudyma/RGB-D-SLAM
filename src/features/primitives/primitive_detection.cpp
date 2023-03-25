@@ -602,9 +602,7 @@ void Primitive_Detection::region_growing(const uint x,
     // else: do not merge this plane segment
 }
 
-Primitive_Detection::~Primitive_Detection()
-{
-}
+Primitive_Detection::~Primitive_Detection() {}
 
 } // namespace primitives
 } // namespace features

@@ -23,9 +23,7 @@ IMap_Writer::~IMap_Writer()
 /**
  *     XYZ format
  */
-XYZ_Map_Writer::XYZ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".xyz")
-{
-}
+XYZ_Map_Writer::XYZ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".xyz") {}
 
 void XYZ_Map_Writer::add_point(const vector3& pointCoordinates)
 {
