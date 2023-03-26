@@ -5,6 +5,7 @@
 #include "coordinates.hpp"
 #include "covariances.hpp"
 #include "types.hpp"
+#include <cmath>
 
 namespace rgbd_slam {
 namespace features {
@@ -187,9 +188,9 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
 
     // diagonal
     // the max(1.0) on the diagonal handle the rare case when all the points have the same measure
-    const double xxCovariance = std::max(1.0, _Sxs - _Sx * _Sx * oneOverCount);
-    const double yyCovariance = std::max(1.0, _Sys - _Sy * _Sy * oneOverCount);
-    const double zzCovariance = std::max(1.0, _Szs - _Sz * _Sz * oneOverCount);
+    const double xxCovariance = std::max(0.01, _Sxs - _Sx * _Sx * oneOverCount);
+    const double yyCovariance = std::max(0.01, _Sys - _Sy * _Sy * oneOverCount);
+    const double zzCovariance = std::max(0.01, _Szs - _Sz * _Sz * oneOverCount);
 
     // bottom/top half
     const double xyCovariance = _Sxy - _Sx * _Sy * oneOverCount;
@@ -203,31 +204,39 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     return covariance;
 }
 
-matrix44 Plane_Segment::get_covariance() const
+matrix44 Plane_Segment::get_Hessian() const
 {
+    // From: revisiting uncertainty analysis for optimum planes extracted from 3d range sensor point-cloud
+
     // project the covariance of centroid of the plane to world space
     utils::ScreenCoordinate projected;
     if (not _centroid.to_screen_coordinates(projected))
     {
         // this should never happen, as the detected planes are always in camera view
-        outputs::log_error("Could project back the plane centroid to screen coordinates");
+        outputs::log_error("Could not backproject the plane centroid to screen coordinates");
         exit(-1);
     }
     // get the covariance of the centroid distance to origin
     const double centroidCovariance = 1.0 / utils::get_camera_point_covariance(projected).trace();
+    assert(not std::isnan(centroidCovariance) and centroidCovariance > 0);
 
+    const vector3& centroid = _centroid.base();
     // compute the hessian of the covariance
     const matrix33& leastSquarePlaneParameters = get_point_cloud_covariance();
     const double hessianOfDistance = -centroidCovariance;
-    const vector3 hessianDistanceNormal = -hessianOfDistance * _centroid.base();
+    const vector3 hessianDistanceNormal = centroidCovariance * centroid;
     const matrix33 hessianOfNormal =
-            -leastSquarePlaneParameters + hessianOfDistance * _centroid.base() * _centroid.base().transpose() +
+            -leastSquarePlaneParameters + hessianOfDistance * centroid * centroid.transpose() +
             (_normal.transpose() * leastSquarePlaneParameters * _normal) * matrix33::Identity();
-    matrix44 hessianCovariance;
-    hessianCovariance << hessianOfNormal, hessianDistanceNormal, hessianDistanceNormal.transpose(), hessianOfDistance;
+    matrix44 hessian;
+    hessian << hessianOfNormal, hessianDistanceNormal, hessianDistanceNormal.transpose(), hessianOfDistance;
+    return hessian;
+}
 
+matrix44 Plane_Segment::get_covariance() const
+{
     // compute covariance matrix (negative pseudo inverse of the matrix)
-    const matrix44& covariance = -hessianCovariance.completeOrthogonalDecomposition().pseudoInverse();
+    const matrix44& covariance = -get_Hessian().completeOrthogonalDecomposition().pseudoInverse();
     assert(covariance.diagonal()(0) >= 0 and covariance.diagonal()(1) >= 0 and covariance.diagonal()(2) >= 0 and
            covariance.diagonal()(3) >= 0);
     return covariance;

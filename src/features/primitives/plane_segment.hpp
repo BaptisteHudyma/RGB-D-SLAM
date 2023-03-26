@@ -69,7 +69,7 @@ class Plane_Segment
     /**
      * \brief Fit a plane to the contained points using PCA
      */
-    void fit_plane(); // fit a plane to this node points
+    void fit_plane();
 
     /**
      * \brief Clears this segment parameters to restart analysis
@@ -82,6 +82,10 @@ class Plane_Segment
      */
     matrix33 get_point_cloud_covariance() const;
 
+    /**
+     * \brief Compute the hessian matrix of this plane
+     */
+    matrix44 get_Hessian() const;
     /**
      * \brief Compute the covariance matrix of this plane parameters, in camera space
      * \return the covariance of the parameters in camera space

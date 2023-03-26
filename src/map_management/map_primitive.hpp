@@ -258,8 +258,12 @@ class MapPlane :
 
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
+        // TODO: must transform to world space
+        // Maybe just compute a variance of the distance to the origin and add it to the d component
+        const matrix44 worldCovariance = matchedFeature.get_covariance();
+
         track(matchedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
-              matchedFeature.get_covariance(), // TODO: transform covariance to world
+              worldCovariance,
               matchedFeature.get_centroid().to_world_coordinates(cameraToWorld));
 
         _shapeMask = matchedFeature.get_shape_mask();
