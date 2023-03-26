@@ -83,9 +83,9 @@ double Cylinder::get_distance(const vector3& point) const
 Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
     IPrimitive(shapeMask),
 
-    _parametrization(
-            planeSeg.get_normal().x(), planeSeg.get_normal().y(), planeSeg.get_normal().z(), planeSeg.get_plane_d()),
+    _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
     _centroid(planeSeg.get_centroid()),
+    _covariance(planeSeg.get_covariance()),
     _descriptor(compute_descriptor())
 {
 }

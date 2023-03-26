@@ -258,10 +258,8 @@ class MapPlane :
 
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
-        matrix44 detectedPlaneCovariance;
-        detectedPlaneCovariance.setIdentity();
         track(matchedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
-              detectedPlaneCovariance, // TODO: transform covariance to world
+              matchedFeature.get_covariance(), // TODO: transform covariance to world
               matchedFeature.get_centroid().to_world_coordinates(cameraToWorld));
 
         _shapeMask = matchedFeature.get_shape_mask();

@@ -92,6 +92,12 @@ void ScreenCoordinate::operator<<(const vector3& other) { this->operator=(other)
 
 void ScreenCoordinate::operator<<(const ScreenCoordinate& other) { this->operator<<(other.base()); }
 
+std::ostream& operator<<(std::ostream& os, const CameraCoordinate& coordinates)
+{
+    os << coordinates.base().transpose();
+    return os;
+}
+
 /**
  *      CAMERA COORDINATES
  */

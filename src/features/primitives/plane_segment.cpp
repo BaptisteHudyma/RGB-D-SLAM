@@ -2,6 +2,7 @@
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
 #include "Eigen/Eigenvalues"
+#include "coordinates.hpp"
 #include "covariances.hpp"
 #include "types.hpp"
 
@@ -202,10 +203,33 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     return covariance;
 }
 
-matrix44 Plane_Segment::get_plane_covariance() const
+matrix44 Plane_Segment::get_covariance() const
 {
-    matrix44 covariance;
+    // project the covariance of centroid of the plane to world space
+    utils::ScreenCoordinate projected;
+    if (not _centroid.to_screen_coordinates(projected))
+    {
+        // this should never happen, as the detected planes are always in camera view
+        outputs::log_error("Could project back the plane centroid to screen coordinates");
+        exit(-1);
+    }
+    // get the covariance of the centroid distance to origin
+    const double centroidCovariance = 1.0 / utils::get_camera_point_covariance(projected).trace();
 
+    // compute the hessian of the covariance
+    const matrix33& leastSquarePlaneParameters = get_point_cloud_covariance();
+    const double hessianOfDistance = -centroidCovariance;
+    const vector3 hessianDistanceNormal = -hessianOfDistance * _centroid.base();
+    const matrix33 hessianOfNormal =
+            -leastSquarePlaneParameters + hessianOfDistance * _centroid.base() * _centroid.base().transpose() +
+            (_normal.transpose() * leastSquarePlaneParameters * _normal) * matrix33::Identity();
+    matrix44 hessianCovariance;
+    hessianCovariance << hessianOfNormal, hessianDistanceNormal, hessianDistanceNormal.transpose(), hessianOfDistance;
+
+    // compute covariance matrix (negative pseudo inverse of the matrix)
+    const matrix44& covariance = -hessianCovariance.completeOrthogonalDecomposition().pseudoInverse();
+    assert(covariance.diagonal()(0) >= 0 and covariance.diagonal()(1) >= 0 and covariance.diagonal()(2) >= 0 and
+           covariance.diagonal()(3) >= 0);
     return covariance;
 }
 
@@ -215,7 +239,7 @@ void Plane_Segment::fit_plane()
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
 
     // get the centroid of the plane
-    _centroid = (vector3(_Sx, _Sy, _Sz) * oneOverCount);
+    _centroid = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
     // no need to fill the upper part, the adjoint solver does not need it
     Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(get_point_cloud_covariance());
