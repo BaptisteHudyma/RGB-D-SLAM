@@ -142,8 +142,9 @@ class Plane : public IPrimitive
 
     vector3 get_normal() const { return _parametrization.head(3); };
     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
-    matrix44 get_covariance() const { return _covariance; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
+
+    matrix44 compute_covariance(const matrix33& worldPositionCovariance = matrix33::Zero()) const;
 
   private:
     vector6 compute_descriptor() const;
@@ -155,7 +156,7 @@ class Plane : public IPrimitive
 
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
-    matrix44 _covariance;                           // covariance of the parameters, in camera coordinates
+    matrix33 _parametersMatrix; // the parameter matrix used to compute the plane parameters (used for covariance)
 
     vector6 _descriptor;
 

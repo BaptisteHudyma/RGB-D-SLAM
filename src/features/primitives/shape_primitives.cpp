@@ -1,6 +1,7 @@
 #include "shape_primitives.hpp"
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
+#include "covariances.hpp"
 #include "cylinder_segment.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/VectorBlock.h>
@@ -92,7 +93,7 @@ Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
 
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
     _centroid(planeSeg.get_centroid()),
-    _covariance(planeSeg.get_covariance()),
+    _parametersMatrix(planeSeg.get_point_cloud_covariance()),
     _descriptor(compute_descriptor())
 {
 }
@@ -101,7 +102,7 @@ Plane::Plane(const Plane& plane) :
     IPrimitive(plane._shapeMask),
     _parametrization(plane._parametrization),
     _centroid(plane._centroid),
-    _covariance(plane._covariance),
+    _parametersMatrix(plane._parametersMatrix),
     _descriptor(plane._descriptor)
 {
 }
@@ -145,6 +146,12 @@ bool Plane::is_similar(const Cylinder& cylinder) const
 }
 
 double Plane::get_distance(const vector3& point) const { return get_normal().dot(point - _centroid.base()); }
+
+matrix44 Plane::compute_covariance(const matrix33& worldPositionCovariance) const
+{
+    return utils::compute_plane_covariance(
+            _parametersMatrix, get_normal(), get_centroid().base(), worldPositionCovariance);
+}
 
 } // namespace primitives
 } // namespace features

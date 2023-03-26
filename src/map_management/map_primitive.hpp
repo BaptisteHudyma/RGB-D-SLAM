@@ -45,6 +45,7 @@ class Plane
     utils::PlaneWorldCoordinates get_parametrization() const { return _parametrization; }
     utils::WorldCoordinate get_centroid() const { return _centroid; }
     cv::Mat get_mask() const { return _shapeMask; }
+    matrix44 get_covariance() const { return _covariance; };
 
     /**
      * \brief Update this plane coordinates using a new detection
@@ -258,9 +259,7 @@ class MapPlane :
 
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
-        // TODO: must transform to world space
-        // Maybe just compute a variance of the distance to the origin and add it to the d component
-        const matrix44 worldCovariance = matchedFeature.get_covariance();
+        const matrix44 worldCovariance = matchedFeature.compute_covariance(poseCovariance);
 
         track(matchedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
               worldCovariance,
@@ -282,12 +281,12 @@ class StagedMapPlane : public virtual MapPlane, public virtual IStagedMapFeature
                    const DetectedPlaneType& detectedFeature) :
         MapPlane()
     {
-        (void)poseCovariance;
-
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
         _parametrization = detectedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
         _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld),
         _shapeMask = detectedFeature.get_shape_mask();
+
+        _covariance = detectedFeature.compute_covariance(poseCovariance);
     }
 
     virtual bool should_remove_from_staged() const override { return _failedTrackingCount >= 2; }
@@ -309,6 +308,7 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _parametrization = stagedPlane.get_parametrization();
         _centroid = stagedPlane.get_centroid();
         _shapeMask = stagedPlane.get_mask();
+        _covariance = stagedPlane.get_covariance();
     }
 
     virtual bool is_lost() const override
