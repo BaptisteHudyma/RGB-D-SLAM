@@ -2,6 +2,7 @@
 #define RGBDSLAM_UTILS_COORDINATES_HPP
 
 #include "../types.hpp"
+#include <ostream>
 
 namespace rgbd_slam {
 namespace utils {
@@ -156,6 +157,8 @@ struct CameraCoordinate : public CameraCoordinate2D
     double _z;
 };
 
+std::ostream& operator<<(std::ostream& os, const CameraCoordinate& coordinates);
+
 /**
  * \brief Contains a single of coordinate in world space.
  * World space is defined as (x, y, z) in distance (millimeters), relative to the world center
@@ -232,6 +235,7 @@ struct PlaneCameraCoordinates : vector4
 {
     PlaneCameraCoordinates() : vector4(vector4::Zero()) {};
     PlaneCameraCoordinates(const vector4& plane) : vector4(plane) {};
+    PlaneCameraCoordinates(const vector3& normal, const double d) : vector4(normal.x(), normal.y(), normal.z(), d) {};
     PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
     PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;

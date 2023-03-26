@@ -130,6 +130,7 @@ class Plane : public IPrimitive
         IPrimitive(plane._shapeMask),
         _parametrization(plane._parametrization),
         _centroid(plane._centroid),
+        _covariance(plane._covariance),
         _descriptor(plane._descriptor)
     {
     }
@@ -163,6 +164,7 @@ class Plane : public IPrimitive
 
     vector3 get_normal() const { return _parametrization.head(3); };
     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
+    matrix44 get_covariance() const { return _covariance; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
 
   private:
@@ -178,6 +180,7 @@ class Plane : public IPrimitive
 
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
+    matrix44 _covariance;                           // covariance of the parameters, in camera coordinates
 
     vector6 _descriptor;
 

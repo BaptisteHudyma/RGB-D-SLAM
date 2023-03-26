@@ -83,10 +83,10 @@ class Plane_Segment
     matrix33 get_point_cloud_covariance() const;
 
     /**
-     * \brief Compute the covariance matrix of this plane parameters
+     * \brief Compute the covariance matrix of this plane parameters, in camera space
      * \return the covariance of the parameters in camera space
      */
-    matrix44 get_plane_covariance() const;
+    matrix44 get_covariance() const;
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -95,6 +95,7 @@ class Plane_Segment
     vector3 get_normal() const { return _normal; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
     double get_plane_d() const { return _d; };
+    vector4 get_parametrization() const { return vector4(_normal.x(), _normal.y(), _normal.z(), _d); };
     bool is_planar() const { return _isPlanar; };
     double get_score() const { return _score; };
     uint get_point_count() const { return _pointCount; };
