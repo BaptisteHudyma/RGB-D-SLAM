@@ -79,12 +79,7 @@ class Cylinder : public IPrimitive
      * \param[in] shapeMask Mask of the shape in the reference image
      */
     Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask);
-    Cylinder(const Cylinder& cylinder) :
-        IPrimitive(cylinder._shapeMask),
-        _normal(cylinder._normal),
-        _radius(cylinder._radius)
-    {
-    }
+    Cylinder(const Cylinder& cylinder);
 
     /**
      * \brief Get the similarity of two cylinders, based on normal direction and radius
@@ -126,28 +121,11 @@ class Plane : public IPrimitive
      */
     Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask);
 
-    Plane(const Plane& plane) :
-        IPrimitive(plane._shapeMask),
-        _parametrization(plane._parametrization),
-        _centroid(plane._centroid),
-        _covariance(plane._covariance),
-        _descriptor(plane._descriptor)
-    {
-    }
+    Plane(const Plane& plane);
 
     static vector6 compute_descriptor(const utils::PlaneCameraCoordinates& parametrization,
                                       const utils::CameraCoordinate& planeCentroid,
-                                      const uint pixelCount)
-    {
-        const vector3& normal = parametrization.head(3);
-        vector6 descriptor({normal.x(),
-                            normal.y(),
-                            normal.z(),
-                            abs(planeCentroid.x() / pixelCount),
-                            abs(planeCentroid.y() / pixelCount),
-                            abs(planeCentroid.z() / pixelCount)});
-        return descriptor;
-    };
+                                      const uint pixelCount);
 
     double get_similarity(const vector6& descriptor) const { return (_descriptor - descriptor).norm(); };
 
@@ -168,10 +146,7 @@ class Plane : public IPrimitive
     utils::CameraCoordinate get_centroid() const { return _centroid; };
 
   private:
-    vector6 compute_descriptor() const
-    {
-        return compute_descriptor(get_parametrization(), get_centroid(), get_contained_pixels());
-    };
+    vector6 compute_descriptor() const;
 
     /**
      * Return the distance of this primitive to a point

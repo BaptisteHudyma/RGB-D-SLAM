@@ -427,9 +427,9 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
                                               const uint iterations)
 {
     assert(iterations > 0);
-    poseCovariance = matrix66::Zero();
-
+    poseCovariance.setZero();
     vector6 medium = vector6::Zero();
+
     std::vector<vector6> poses;
     poses.reserve(iterations);
     for (uint i = 0; i < iterations; ++i)

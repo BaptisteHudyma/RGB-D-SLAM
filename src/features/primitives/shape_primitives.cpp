@@ -58,6 +58,13 @@ Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask
     _normal = cylinderSeg.get_normal();
 }
 
+Cylinder::Cylinder(const Cylinder& cylinder) :
+    IPrimitive(cylinder._shapeMask),
+    _normal(cylinder._normal),
+    _radius(cylinder._radius)
+{
+}
+
 bool Cylinder::is_similar(const Cylinder& cylinder) const
 {
     const static double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
@@ -88,6 +95,34 @@ Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
     _covariance(planeSeg.get_covariance()),
     _descriptor(compute_descriptor())
 {
+}
+
+Plane::Plane(const Plane& plane) :
+    IPrimitive(plane._shapeMask),
+    _parametrization(plane._parametrization),
+    _centroid(plane._centroid),
+    _covariance(plane._covariance),
+    _descriptor(plane._descriptor)
+{
+}
+
+vector6 Plane::compute_descriptor(const utils::PlaneCameraCoordinates& parametrization,
+                                  const utils::CameraCoordinate& planeCentroid,
+                                  const uint pixelCount)
+{
+    const vector3& normal = parametrization.head(3);
+    vector6 descriptor({normal.x(),
+                        normal.y(),
+                        normal.z(),
+                        abs(planeCentroid.x() / pixelCount),
+                        abs(planeCentroid.y() / pixelCount),
+                        abs(planeCentroid.z() / pixelCount)});
+    return descriptor;
+};
+
+vector6 Plane::compute_descriptor() const
+{
+    return compute_descriptor(get_parametrization(), get_centroid(), get_contained_pixels());
 }
 
 bool Plane::is_similar(const Plane& plane) const { return is_similar(plane._shapeMask, plane._parametrization); }
