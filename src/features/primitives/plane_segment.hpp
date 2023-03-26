@@ -82,16 +82,6 @@ class Plane_Segment
      */
     matrix33 get_point_cloud_covariance() const;
 
-    /**
-     * \brief Compute the hessian matrix of this plane
-     */
-    matrix44 get_Hessian() const;
-    /**
-     * \brief Compute the covariance matrix of this plane parameters, in camera space
-     * \return the covariance of the parameters in camera space
-     */
-    matrix44 get_covariance() const;
-
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   public: // getters
