@@ -8,10 +8,10 @@
 #include "matches_containers.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
+#include <memory>
 #include <opencv2/opencv.hpp>
 
-namespace rgbd_slam {
-namespace map_management {
+namespace rgbd_slam::map_management {
 
 const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
 
@@ -50,13 +50,15 @@ struct Point
     {
         assert(_kalmanFilter != nullptr);
 
-        const std::pair<vector3, matrix33>& res = _kalmanFilter->get_new_state(
+        vector3 newCoordinates;
+        matrix33 newCovariance;
+        std::tie(newCoordinates, newCovariance) = _kalmanFilter->get_new_state(
                 _coordinates, _covariance.base(), newDetectionCoordinates, newDetectionCovariance);
 
-        const double score = (_coordinates - res.first).norm();
+        const double score = (_coordinates - newCoordinates).norm();
 
-        _coordinates = res.first;
-        _covariance.base() = res.second;
+        _coordinates = newCoordinates.base();
+        _covariance.base() = newCovariance;
         assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and
                not std::isnan(_coordinates.z()));
         return score;
@@ -87,17 +89,18 @@ struct Point
             processNoiseCovariance.setIdentity();
             processNoiseCovariance *= pointProcessNoise;
 
-            _kalmanFilter = new tracking::SharedKalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
+            _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter>(
+                    systemDynamics, outputMatrix, processNoiseCovariance);
         }
     }
     // shared kalman filter, between all points
-    inline static tracking::SharedKalmanFilter* _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::SharedKalmanFilter> _kalmanFilter = nullptr;
 };
 
-typedef features::keypoints::Keypoint_Handler DetectedKeypointsObject;
-typedef features::keypoints::DetectedKeyPoint DetectedPointType;
-typedef matches_containers::PointMatch PointMatchType;
-typedef features::keypoints::KeypointsWithIdStruct TrackedPointsObject;
+using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
+using DetectedPointType = features::keypoints::DetectedKeyPoint;
+using PointMatchType = matches_containers::PointMatch;
+using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 
 class MapPoint :
     public Point,
@@ -123,12 +126,12 @@ class MapPoint :
         assert(_id > 0);
     }
 
-    virtual int find_match(const DetectedKeypointsObject& detectedFeatures,
-                           const WorldToCameraMatrix& worldToCamera,
-                           const vectorb& isDetectedFeatureMatched,
-                           std::list<PointMatchType>& matches,
-                           const bool shouldAddToMatches = true,
-                           const bool useAdvancedSearch = false) const override
+    int find_match(const DetectedKeypointsObject& detectedFeatures,
+                   const WorldToCameraMatrix& worldToCamera,
+                   const vectorb& isDetectedFeatureMatched,
+                   std::list<PointMatchType>& matches,
+                   const bool shouldAddToMatches = true,
+                   const bool useAdvancedSearch = false) const override
     {
         static const double searchSpaceRadius = Parameters::get_search_matches_distance();
         static const double advancedSearchSpaceRadius = Parameters::get_search_matches_distance() * 2;
@@ -169,18 +172,18 @@ class MapPoint :
                     utils::get_screen_point_covariance(_coordinates, _covariance);
             // consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
             const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
-            matches.emplace_back(PointMatchType(detectedFeatures.get_keypoint(matchIndex),
-                                                _coordinates,
-                                                _covariance.diagonal(),
-                                                screenPointCovariance,
-                                                _id));
+            matches.emplace_back(detectedFeatures.get_keypoint(matchIndex),
+                                 _coordinates,
+                                 _covariance.diagonal(),
+                                 screenPointCovariance,
+                                 _id);
         }
         return matchIndex;
     }
 
-    virtual bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
-                                TrackedPointsObject& trackedFeatures,
-                                const uint dropChance = 1000) const override
+    bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
+                        TrackedPointsObject& trackedFeatures,
+                        const uint dropChance = 1000) const override
     {
         const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
@@ -201,9 +204,7 @@ class MapPoint :
         return false;
     }
 
-    virtual void draw(const WorldToCameraMatrix& worldToCamMatrix,
-                      cv::Mat& debugImage,
-                      const cv::Scalar& color) const override
+    void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
     {
         utils::ScreenCoordinate2D screenPoint;
         const bool isCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint);
@@ -218,14 +219,13 @@ class MapPoint :
         }
     }
 
-    virtual bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
+    bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
         static const uint screenSizeX = Parameters::get_camera_1_size_x();
         static const uint screenSizeY = Parameters::get_camera_1_size_y();
 
-        utils::ScreenCoordinate projectedScreenCoordinates;
-        const bool isProjected = _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates);
-        if (isProjected)
+        if (utils::ScreenCoordinate projectedScreenCoordinates;
+            _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates))
         {
             return
                     // in screen space
@@ -238,14 +238,14 @@ class MapPoint :
     }
 
   protected:
-    virtual bool update_with_match(const DetectedPointType& matchedFeature,
-                                   const matrix33& poseCovariance,
-                                   const CameraToWorldMatrix& cameraToWorld) override
+    bool update_with_match(const DetectedPointType& matchedFeature,
+                           const matrix33& poseCovariance,
+                           const CameraToWorldMatrix& cameraToWorld) override
     {
         assert(_matchIndex >= 0);
 
-        const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
-        if (utils::is_depth_valid(matchedScreenPoint.z()))
+        if (const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
+            utils::is_depth_valid(matchedScreenPoint.z()))
         {
             // transform screen point to world point
             const utils::WorldCoordinate& worldPointCoordinates =
@@ -258,8 +258,7 @@ class MapPoint :
             track(worldPointCoordinates, worldCovariance);
 
             // If a new descriptor is available, update it
-            const cv::Mat& descriptor = matchedFeature._descriptor;
-            if (not descriptor.empty())
+            if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
                 _descriptor = descriptor;
 
             return true;
@@ -271,7 +270,7 @@ class MapPoint :
         return false;
     }
 
-    virtual void update_no_match() override
+    void update_no_match() override
     {
         // do nothing
     }
@@ -280,7 +279,7 @@ class MapPoint :
 /**
  * \brief Candidate for a map point
  */
-class StagedMapPoint : public virtual MapPoint, public virtual IStagedMapFeature<DetectedPointType>
+class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointType>
 {
   public:
     StagedMapPoint(const matrix33& poseCovariance,
@@ -292,9 +291,9 @@ class StagedMapPoint : public virtual MapPoint, public virtual IStagedMapFeature
     {
     }
 
-    virtual bool should_remove_from_staged() const override { return get_confidence() <= 0; }
+    bool should_remove_from_staged() const override { return get_confidence() <= 0; }
 
-    virtual bool should_add_to_local_map() const override
+    bool should_add_to_local_map() const override
     {
         const static double minimumConfidenceForLocalMap = Parameters::get_minimum_confidence_for_local_map();
         return (get_confidence() > minimumConfidenceForLocalMap);
@@ -312,7 +311,7 @@ class StagedMapPoint : public virtual MapPoint, public virtual IStagedMapFeature
 /**
  * \brief A map point structure, containing all the necessary informations to identify a map point in local map
  */
-class LocalMapPoint : public virtual MapPoint, public ILocalMapFeature<StagedMapPoint>
+class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
 {
   public:
     LocalMapPoint(const StagedMapPoint& stagedPoint) :
@@ -325,14 +324,13 @@ class LocalMapPoint : public virtual MapPoint, public ILocalMapFeature<StagedMap
         _successivMatchedCount = stagedPoint._successivMatchedCount;
     }
 
-    virtual bool is_lost() const override
+    bool is_lost() const override
     {
         const static uint maximumUnmatchBeforeRemoval = Parameters::get_maximum_unmatched_before_removal();
         return (_failedTrackingCount > maximumUnmatchBeforeRemoval);
     }
 };
 
-} // namespace map_management
-} // namespace rgbd_slam
+} // namespace rgbd_slam::map_management
 
 #endif

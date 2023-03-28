@@ -12,27 +12,23 @@
 #include "pose.hpp"
 #include "shape_primitives.hpp"
 #include "types.hpp"
-#include <iostream>
+#include <memory>
 
-namespace rgbd_slam {
-namespace map_management {
+namespace rgbd_slam::map_management {
 
 Local_Map::Local_Map()
 {
     // Check constants
     assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
 
-    _mapWriter = new outputs::XYZ_Map_Writer("out");
+    _mapWriter = std::make_unique<outputs::XYZ_Map_Writer>("out");
 
     // For testing purposes, one can deactivate those maps
     //_localPointMap.deactivate();
     //_localPlaneMap.deactivate();
 }
 
-Local_Map::~Local_Map() { delete _mapWriter; }
-
-const features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(
-        const utils::Pose& lastPose) const
+features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& lastPose) const
 {
     const size_t numberOfNewKeypoints = _localPointMap.get_local_map_size() + _localPointMap.get_staged_map_size();
 
@@ -153,7 +149,7 @@ void Local_Map::draw_image_head_band(cv::Mat& debugImage) const
 
     // 20 pixels
     const uint bandSize = 20;
-    const uint placeInBand = bandSize * 0.75;
+    const int placeInBand = static_cast<int>(std::floor(bandSize * 0.75));
 
     std::stringstream textPoints;
     textPoints << "Points:" << _localPointMap.get_staged_map_size() << "|" << _localPointMap.get_local_map_size();
@@ -231,5 +227,4 @@ void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_plane
     }
 }
 
-} // namespace map_management
-} // namespace rgbd_slam
+} // namespace rgbd_slam::map_management

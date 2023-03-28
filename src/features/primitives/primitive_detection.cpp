@@ -8,9 +8,7 @@
 #include <limits>
 #include <opencv2/highgui.hpp>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 Primitive_Detection::Primitive_Detection(const uint width, const uint height, const uint blocSize) :
     _histogram(blocSize),
@@ -73,38 +71,38 @@ void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
     int64 t1 = cv::getTickCount();
     // init planar grid
     init_planar_cell_fitting(depthMatrix);
-    double td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+    double td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     resetTime += td;
 
     // init and fill histogram
     t1 = cv::getTickCount();
     const uint remainingPlanarCells = init_histogram();
-    td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+    td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     initTime += td;
 
     t1 = cv::getTickCount();
     const intpair_vector& cylinder2regionMap = grow_planes_and_cylinders(remainingPlanarCells);
-    td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+    td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     growTime += td;
 
     // merge sparse planes
     t1 = cv::getTickCount();
     const uint_vector& planeMergeLabels = merge_planes();
-    td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+    td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     initTime += td;
     mergeTime += td;
 
     t1 = cv::getTickCount();
     // fill the final planes vector
     add_planes_to_primitives(planeMergeLabels, planeContainer);
-    td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+    td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     initTime += td;
     refineTime += td;
 
     t1 = cv::getTickCount();
     // refine cylinders boundaries and fill the final cylinders vector
     add_cylinders_to_primitives(cylinder2regionMap, primitiveContainer);
-    td = static_cast<double>(cv::getTickCount() - t1) / static_cast<double>(cv::getTickFrequency());
+    td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     initTime += td;
     refineTime += td;
 }
@@ -140,11 +138,11 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
     {
         // init the plane patch
         Plane_Segment& planeSegment = _planeGrid[stackedCellId];
-        planeSegment.init_plane_segment(depthCloudArray, stackedCellId);
+        planeSegment.init_plane_segment(depthCloudArray, static_cast<uint>(stackedCellId));
         // if this plane patch is planar, compute the diagonal distance
         if (planeSegment.is_planar())
         {
-            const uint offset = stackedCellId * _pointsPerCellCount;
+            const uint offset = static_cast<uint>(std::floor(stackedCellId * _pointsPerCellCount));
             // cell diameter, in millimeters
             const float cellDiameter = (
                                                // right down corner (x, y, z)
@@ -211,10 +209,12 @@ Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinde
     {
         // get seed candidates
         const std::vector<uint>& seedCandidates = _histogram.get_points_from_most_frequent_bin();
-        const static uint planeSeedCount =
-                static_cast<uint>(Parameters::get_minimum_plane_seed_proportion() * _totalCellCount);
-        if (seedCandidates.size() < planeSeedCount)
+        if (const static uint planeSeedCount =
+                    static_cast<uint>(Parameters::get_minimum_plane_seed_proportion() * _totalCellCount);
+            seedCandidates.size() < planeSeedCount)
+        {
             break;
+        }
 
         // select seed cell with min MSE
         uint seedId = 0; // should not necessarily stay to 0 after the loop
@@ -222,19 +222,20 @@ Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinde
         for (const uint seedCandidate: seedCandidates)
         {
             const double candidateMSE = _planeGrid[seedCandidate].get_MSE();
-            if (candidateMSE < minMSE)
+            if (candidateMSE >= minMSE)
             {
-                seedId = seedCandidate;
-                minMSE = candidateMSE;
-                if (minMSE <= 0)
-                    break;
+                continue;
             }
+            seedId = seedCandidate;
+            minMSE = candidateMSE;
+            if (minMSE <= 0)
+                break;
         }
         if (minMSE >= std::numeric_limits<double>::max())
         {
             // seedId is invalid
-            outputs::log_error("Could not find a single plane segment");
-            break;
+            outputs::log_error("Could not find a single plane segment: invalid seed");
+            exit(-1);
         }
 
         // try to grow the selected plane at seedId
@@ -259,8 +260,8 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
     Plane_Segment newPlaneSegment(planeToGrow);
 
     // Seed cell growing
-    const uint y = static_cast<uint>(seedId / _horizontalCellsCount);
-    const uint x = static_cast<uint>(seedId % _horizontalCellsCount);
+    const uint y = seedId / _horizontalCellsCount;
+    const uint x = seedId % _horizontalCellsCount;
 
     // activationMap set to false (will have bits at true when a plane segment will be merged to this one)
     vectorb isActivatedMap = vectorb::Zero(_totalCellCount);
@@ -293,9 +294,9 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
         }
     }
 
-    const static uint minimumCellActivated =
-            static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * _totalCellCount);
-    if (not isPlaneFitable or cellActivatedCount < minimumCellActivated)
+    if (const static uint minimumCellActivated =
+                static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * _totalCellCount);
+        not isPlaneFitable or cellActivatedCount < minimumCellActivated)
     {
         _histogram.remove_point(seedId);
         return;
@@ -304,29 +305,102 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
     // fit plane to merged data
     newPlaneSegment.fit_plane();
 
+    // set it as plane or cylinder
     // TODO: why 100 ? seems random
     if (newPlaneSegment.get_score() > 100)
     {
-        // its certainly a plane or we ignore cylinder detection
-        _planeSegments.push_back(newPlaneSegment);
-        const int currentPlaneCount = static_cast<int>(_planeSegments.size());
-        // mark cells that belong to this plane with a new id
-        for (int row = 0, activationIndex = 0; row < static_cast<int>(_verticalCellsCount); ++row)
-        {
-            int* rowPtr = _gridPlaneSegmentMap.ptr<int>(row);
-            for (int col = 0; col < static_cast<int>(_horizontalCellsCount); ++col, ++activationIndex)
-            {
-                assert(activationIndex < static_cast<int>(activationMapSize));
-
-                if (isActivatedMap[activationIndex])
-                    rowPtr[col] = currentPlaneCount;
-            }
-        }
+        add_plane_segment_to_features(newPlaneSegment, isActivatedMap);
     }
     // TODO: why 5 ? seems random
     else if (cellActivatedCount > 5)
     {
         cylinder_fitting(cellActivatedCount, isActivatedMap, cylinder2regionMap);
+    }
+}
+
+void Primitive_Detection::add_plane_segment_to_features(const Plane_Segment& newPlaneSegment,
+                                                        const vectorb& isActivatedMap)
+{
+    const size_t activationMapSize = isActivatedMap.size();
+
+    // its certainly a plane or we ignore cylinder detection
+    _planeSegments.push_back(newPlaneSegment);
+    const int currentPlaneCount = static_cast<int>(_planeSegments.size());
+    // mark cells that belong to this plane with a new id
+    for (int row = 0, activationIndex = 0; row < static_cast<int>(_verticalCellsCount); ++row)
+    {
+        int* rowPtr = _gridPlaneSegmentMap.ptr<int>(row);
+        for (int col = 0; col < static_cast<int>(_horizontalCellsCount); ++col, ++activationIndex)
+        {
+            assert(activationIndex < static_cast<int>(activationMapSize));
+
+            if (isActivatedMap[activationIndex])
+                rowPtr[col] = currentPlaneCount;
+        }
+    }
+}
+
+bool Primitive_Detection::find_plane_segment_in_cylinder(const Cylinder_Segment& cylinderSegment,
+                                                         const uint cellActivatedCount,
+                                                         const uint segId,
+                                                         Plane_Segment& newMergedPlane)
+{
+    bool isPlaneSegmentFitable = false;
+    for (uint col = 0; col < cellActivatedCount; ++col)
+    {
+        if (cylinderSegment.is_inlier_at(segId, col))
+        {
+            const uint localMapIndex = cylinderSegment.get_local_to_global_mapping(col);
+            assert(localMapIndex < _planeGrid.size());
+
+            if (const Plane_Segment& planeSegment = _planeGrid[localMapIndex]; planeSegment.is_planar())
+            {
+                newMergedPlane.expand_segment(planeSegment);
+                isPlaneSegmentFitable = true;
+            }
+        }
+    }
+    return isPlaneSegmentFitable;
+}
+
+void Primitive_Detection::add_cylinder_to_features(const Cylinder_Segment& cylinderSegment,
+                                                   const uint cellActivatedCount,
+                                                   const uint segId,
+                                                   const Plane_Segment& newMergedPlane,
+                                                   intpair_vector& cylinder2regionMap)
+{
+    // Model selection based on MSE
+    if (newMergedPlane.get_MSE() < cylinderSegment.get_MSE_at(segId))
+    {
+        // MSE of the plane is less than MSE of the cylinder + this plane, so keep this one as a plane
+        _planeSegments.push_back(newMergedPlane);
+        const int currentPlaneCount = static_cast<int>(_planeSegments.size());
+        for (uint col = 0; col < cellActivatedCount; ++col)
+        {
+            if (cylinderSegment.is_inlier_at(segId, col))
+            {
+                const int cellId = static_cast<int>(cylinderSegment.get_local_to_global_mapping(col));
+                _gridPlaneSegmentMap.at<int>(cellId / static_cast<int>(_horizontalCellsCount),
+                                             cellId % static_cast<int>(_horizontalCellsCount)) = currentPlaneCount;
+            }
+        }
+    }
+    else
+    {
+        // Set a new cylinder
+        assert(_cylinderSegments.size() > 0);
+        cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
+        const int cylinderCount = static_cast<int>(cylinder2regionMap.size());
+
+        for (uint col = 0; col < cellActivatedCount; ++col)
+        {
+            if (cylinderSegment.is_inlier_at(segId, col))
+            {
+                const int cellId = static_cast<int>(cylinderSegment.get_local_to_global_mapping(col));
+                _gridCylinderSegMap.at<int>(cellId / static_cast<int>(_horizontalCellsCount),
+                                            cellId % static_cast<int>(_horizontalCellsCount)) = cylinderCount;
+            }
+        }
     }
 }
 
@@ -336,73 +410,27 @@ void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount,
 {
     // try cylinder fitting on the activated planes
     const Cylinder_Segment& cylinderSegment = Cylinder_Segment(_planeGrid, isActivatedMap, cellActivatedCount);
+    // TODO: emplace back
     _cylinderSegments.push_back(cylinderSegment);
 
     // Fit planes to subsegments
-    for (uint segId = 0; segId < cylinderSegment.get_segment_count(); ++segId)
+    const uint cylinderSegmentCount = cylinderSegment.get_segment_count();
+    for (uint segId = 0; segId < cylinderSegmentCount; ++segId)
     {
-        bool isPlaneSegmentFitable = false;
         Plane_Segment newMergedPlane;
-        for (uint col = 0; col < cellActivatedCount; ++col)
-        {
-            if (cylinderSegment.is_inlier_at(segId, col))
-            {
-                const uint localMapIndex = cylinderSegment.get_local_to_global_mapping(col);
-                assert(localMapIndex < _planeGrid.size());
-
-                const Plane_Segment& planeSegment = _planeGrid[localMapIndex];
-                if (planeSegment.is_planar())
-                {
-                    newMergedPlane.expand_segment(planeSegment);
-                    isPlaneSegmentFitable = true;
-                }
-            }
-        }
-
         // No continuous planes, pass
-        if (not isPlaneSegmentFitable)
+        if (not find_plane_segment_in_cylinder(cylinderSegment, cellActivatedCount, segId, newMergedPlane))
             continue;
 
         newMergedPlane.fit_plane();
-        // Model selection based on MSE
-        if (newMergedPlane.get_MSE() < cylinderSegment.get_MSE_at(segId))
-        {
-            // MSE of the plane is less than MSE of the cylinder + this plane, so keep this one as a plane
-            _planeSegments.push_back(newMergedPlane);
-            const int currentPlaneCount = static_cast<int>(_planeSegments.size());
-            for (uint col = 0; col < cellActivatedCount; ++col)
-            {
-                if (cylinderSegment.is_inlier_at(segId, col))
-                {
-                    const int cellId = static_cast<int>(cylinderSegment.get_local_to_global_mapping(col));
-                    _gridPlaneSegmentMap.at<int>(cellId / static_cast<int>(_horizontalCellsCount),
-                                                 cellId % static_cast<int>(_horizontalCellsCount)) = currentPlaneCount;
-                }
-            }
-        }
-        else
-        {
-            // Set a new cylinder
-            assert(_cylinderSegments.size() > 0);
-            cylinder2regionMap.push_back(std::make_pair(_cylinderSegments.size() - 1, segId));
-            const int cylinderCount = static_cast<int>(cylinder2regionMap.size());
 
-            for (uint col = 0; col < cellActivatedCount; ++col)
-            {
-                if (cylinderSegment.is_inlier_at(segId, col))
-                {
-                    const int cellId = static_cast<int>(cylinderSegment.get_local_to_global_mapping(col));
-                    _gridCylinderSegMap.at<int>(cellId / static_cast<int>(_horizontalCellsCount),
-                                                cellId % static_cast<int>(_horizontalCellsCount)) = cylinderCount;
-                }
-            }
-        }
+        add_cylinder_to_features(cylinderSegment, cellActivatedCount, segId, newMergedPlane, cylinder2regionMap);
     }
 }
 
 Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
 {
-    const uint planeCount = _planeSegments.size();
+    const uint planeCount = static_cast<uint>(_planeSegments.size());
 
     Matrixb isPlanesConnectedMatrix = get_connected_components_matrix(_gridPlaneSegmentMap, planeCount);
     assert(isPlanesConnectedMatrix.rows() == isPlanesConnectedMatrix.cols());
@@ -413,8 +441,8 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
         // We use planes indexes as ids
         planeMergeLabels.push_back(planeIndex);
 
-    const uint isPlanesConnectedMatrixRows = isPlanesConnectedMatrix.rows();
-    const uint isPlanesConnectedMatrixCols = isPlanesConnectedMatrix.cols();
+    const uint isPlanesConnectedMatrixRows = static_cast<uint>(isPlanesConnectedMatrix.rows());
+    const uint isPlanesConnectedMatrixCols = static_cast<uint>(isPlanesConnectedMatrix.cols());
     for (uint row = 0; row < isPlanesConnectedMatrixRows; ++row)
     {
         bool wasPlaneExpanded = false;
@@ -425,25 +453,25 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
 
         for (uint col = row + 1; col < isPlanesConnectedMatrixCols; ++col)
         {
-            if (isPlanesConnectedMatrix(row, col))
-            {
-                const Plane_Segment& mergePlane = _planeSegments[col];
-                if (not mergePlane.is_planar())
-                    continue;
+            if (not isPlanesConnectedMatrix(row, col))
+                continue;
 
-                // normals are close enough, distance is small enough
-                if (planeToExpand.can_be_merged(mergePlane, _cellDistanceTols[col]))
-                {
-                    // merge plane segments
-                    planeToExpand.expand_segment(mergePlane);
-                    planeMergeLabels[col] = planeId;
-                    wasPlaneExpanded = true;
-                }
-                else
-                {
-                    isPlanesConnectedMatrix(row, col) = false;
-                    isPlanesConnectedMatrix(col, row) = false;
-                }
+            const Plane_Segment& mergePlane = _planeSegments[col];
+            if (not mergePlane.is_planar())
+                continue;
+
+            // normals are close enough, distance is small enough
+            if (planeToExpand.can_be_merged(mergePlane, _cellDistanceTols[col]))
+            {
+                // merge plane segments
+                planeToExpand.expand_segment(mergePlane);
+                planeMergeLabels[col] = planeId;
+                wasPlaneExpanded = true;
+            }
+            else
+            {
+                isPlanesConnectedMatrix(row, col) = false;
+                isPlanesConnectedMatrix(col, row) = false;
             }
         }
         if (wasPlaneExpanded) // plane was merged with other planes
@@ -455,7 +483,7 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
 
 void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels, plane_container& planeContainer)
 {
-    const uint planeCount = _planeSegments.size();
+    const uint planeCount = static_cast<uint>(_planeSegments.size());
     planeContainer.clear();
     planeContainer.reserve(planeCount);
 
@@ -480,14 +508,15 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         cv::dilate(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, _maskEroded, _maskCrossKernel);
-        double min, max;
+        double min;
+        double max;
         cv::minMaxLoc(_maskEroded, &min, &max);
 
         if (max <= 0 or min >= max) // completely eroded: irrelevant plane
             continue;
 
         // add new plane to final shapes
-        planeContainer.emplace_back(Plane(_planeSegments[planeIndex], _mask));
+        planeContainer.emplace_back(_planeSegments[planeIndex], _mask);
     }
 }
 
@@ -508,7 +537,8 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
         cv::dilate(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, _maskEroded, _maskCrossKernel);
-        double min, max;
+        double min;
+        double max;
         cv::minMaxLoc(_maskEroded, &min, &max);
 
         if (max <= 0 or min >= max) // completely eroded: irrelevant cylinder
@@ -517,7 +547,7 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
         const uint regId = cylinderToRegionMap[cylinderIndex].first;
 
         // add new cylinder to final shapes
-        cylinderContainer.emplace_back(Cylinder(_cylinderSegments[regId], _mask));
+        cylinderContainer.emplace_back(_cylinderSegments[regId], _mask);
     }
 }
 
@@ -542,20 +572,20 @@ Matrixb Primitive_Detection::get_connected_components_matrix(const cv::Mat& segm
         {
             // value of the pixel at this coordinates. Represents a plane segment
             const int planeId = rowPtr[col];
-            if (planeId > 0)
+            if (planeId <= 0)
+                continue;
+
+            const int nextPlaneId = rowPtr[col + 1];
+            const int belowPlaneId = rowBelowPtr[col];
+            if (nextPlaneId > 0 and planeId != nextPlaneId)
             {
-                const int nextPlaneId = rowPtr[col + 1];
-                const int belowPlaneId = rowBelowPtr[col];
-                if (nextPlaneId > 0 and planeId != nextPlaneId)
-                {
-                    isPlanesConnectedMatrix(planeId - 1, nextPlaneId - 1) = true;
-                    isPlanesConnectedMatrix(nextPlaneId - 1, planeId - 1) = true;
-                }
-                if (belowPlaneId > 0 and planeId != belowPlaneId)
-                {
-                    isPlanesConnectedMatrix(planeId - 1, belowPlaneId - 1) = true;
-                    isPlanesConnectedMatrix(belowPlaneId - 1, planeId - 1) = true;
-                }
+                isPlanesConnectedMatrix(planeId - 1, nextPlaneId - 1) = true;
+                isPlanesConnectedMatrix(nextPlaneId - 1, planeId - 1) = true;
+            }
+            if (belowPlaneId > 0 and planeId != belowPlaneId)
+            {
+                isPlanesConnectedMatrix(planeId - 1, belowPlaneId - 1) = true;
+                isPlanesConnectedMatrix(belowPlaneId - 1, planeId - 1) = true;
             }
         }
     }
@@ -602,8 +632,4 @@ void Primitive_Detection::region_growing(const uint x,
     // else: do not merge this plane segment
 }
 
-Primitive_Detection::~Primitive_Detection() {}
-
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::primitives

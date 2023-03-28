@@ -130,7 +130,7 @@ void Parameters::set_parameters()
     _minimumCellActivatedProportion =
             0.65 / 100.0; // grow planes only if their is this proportion of mergeable planes in the remaining patches
     _minimumZeroDepthProportion =
-            0.7; // if this proportion of the points have invalid depth in a planar patch, reject it
+            0.7f; // if this proportion of the points have invalid depth in a planar patch, reject it
 
     // Parameters taken from "2012 - 3D with Kinect""
     // parameters of equation z_diff = sigmaA + sigmaM * z + sigmaE * z^2, that represent the minimum depth change for a
@@ -140,7 +140,7 @@ void Parameters::set_parameters()
     _depthSigmaMargin = -0.53;    // It is the sigmaA
 
     // Cylinder ransac fitting
-    _cylinderRansacSqrtMaxDistance = 0.04;
+    _cylinderRansacSqrtMaxDistance = 0.04f;
     _cylinderRansacMinimumScore = 75;
     _cylinderRansacProbabilityOfSuccess = 0.8f;
     _cylinderRansacInlierProportions = 0.33f;

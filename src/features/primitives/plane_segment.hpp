@@ -1,13 +1,13 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 
+#include <cmath>
+
 #include "../../parameters.hpp"
 #include "../../types.hpp"
 #include "coordinates.hpp"
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 /**
  * \brief Node class representing a depth graph point.
@@ -29,7 +29,8 @@ class Plane_Segment
         assert(cellWidth > 0);
 
         _ptsPerCellCount = pointPerCellCount;
-        _minZeroPointCount = static_cast<uint>(_ptsPerCellCount * Parameters::get_minimum_zero_depth_proportion());
+        _minZeroPointCount = static_cast<uint>(
+                std::floor(static_cast<float>(_ptsPerCellCount) * Parameters::get_minimum_zero_depth_proportion()));
         _cellWidth = cellWidth;
         _cellHeight = _ptsPerCellCount / _cellWidth;
 
@@ -84,7 +85,6 @@ class Plane_Segment
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-  public: // getters
     double get_MSE() const { return _MSE; };
     vector3 get_normal() const { return _normal; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
@@ -125,13 +125,10 @@ class Plane_Segment
     double _Syz; // sum of y*z
     double _Szx; // sum of z*x
 
-  private:
     // prevent backend copy
     Plane_Segment& operator=(const Plane_Segment& seg);
 };
 
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::primitives
 
 #endif

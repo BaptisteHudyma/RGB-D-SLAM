@@ -3,9 +3,7 @@
 
 #include "keypoint_handler.hpp"
 
-namespace rgbd_slam {
-namespace features {
-namespace keypoints {
+namespace rgbd_slam::features::keypoints {
 
 /**
  * \brief A class to detect and track keypoints.
@@ -27,10 +25,10 @@ class Key_Point_Extraction
      *
      * \return An object that contains the detected keypoints
      */
-    const Keypoint_Handler compute_keypoints(const cv::Mat& grayImage,
-                                             const cv::Mat& depthImage,
-                                             const KeypointsWithIdStruct& lastKeypointsWithIds,
-                                             const bool forceKeypointDetection = false);
+    Keypoint_Handler compute_keypoints(const cv::Mat& grayImage,
+                                       const cv::Mat& depthImage,
+                                       const KeypointsWithIdStruct& lastKeypointsWithIds,
+                                       const bool forceKeypointDetection = false);
 
     /**
      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
@@ -68,9 +66,9 @@ class Key_Point_Extraction
      * \param[in] minimumPointsForValidity The minimum number of points under which we will use the precise
      * detector \return An array of points in the input image
      */
-    const std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage,
-                                                    const cv::Mat& mask,
-                                                    const uint minimumPointsForValidity) const;
+    std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage,
+                                              const cv::Mat& mask,
+                                              const uint minimumPointsForValidity) const;
 
     /**
      * \brief Perform keypoint detection on the image, divided in smaller patches.
@@ -84,8 +82,7 @@ class Key_Point_Extraction
                                     const cv::Ptr<cv::FeatureDetector>& featureDetector,
                                     std::vector<cv::KeyPoint>& frameKeypoints) const;
 
-    const cv::Mat compute_key_point_mask(const cv::Size imageSize,
-                                         const std::vector<cv::Point2f>& keypointContainer) const;
+    cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const;
 
   private:
     cv::Ptr<cv::FeatureDetector> _featureDetector;
@@ -97,8 +94,6 @@ class Key_Point_Extraction
     double _meanPointExtractionDuration;
 };
 
-} // namespace keypoints
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::keypoints
 
 #endif

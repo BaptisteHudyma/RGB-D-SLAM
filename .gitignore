@@ -5,6 +5,7 @@ build
 .clang-format
 .editorconfig
 .gitattributes
+.gitignore
 code_analysis-cppcheck-build-dir/*
 
 ################################

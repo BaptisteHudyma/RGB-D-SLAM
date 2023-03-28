@@ -8,8 +8,7 @@
 // types
 #include <unsupported/Eigen/NonLinearOptimization>
 
-namespace rgbd_slam {
-namespace pose_optimization {
+namespace rgbd_slam::pose_optimization {
 
 /**
  * \brief Structure given to the Levenberg-Marquardt algorithm. It optimizes a rotation (quaternion) and a translation
@@ -19,7 +18,7 @@ namespace pose_optimization {
 template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic> struct Levenberg_Marquardt_Functor
 {
     // tell the called the numerical type and input/ouput size
-    typedef _Scalar Scalar;
+    using Scalar = _Scalar;
     enum
     {
         InputsAtCompileTime = NX,
@@ -27,9 +26,9 @@ template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic> str
     };
 
     // typedefs for the original functor
-    typedef Eigen::Matrix<Scalar, InputsAtCompileTime, 1> InputType;
-    typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, 1> ValueType;
-    typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
+    using InputType = Eigen::Matrix<Scalar, InputsAtCompileTime, 1>;
+    using ValueType = Eigen::Matrix<Scalar, ValuesAtCompileTime, 1>;
+    using JacobianType = Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime>;
 
     Levenberg_Marquardt_Functor(const uint inputCount, const uint outputCount) :
         _inputCount(inputCount),
@@ -95,9 +94,8 @@ struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator>
  * \param[in] status The status to converto string
  * \return Returns a string with the human readable version of Eigen LevenbergMarquardt output status
  */
-const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status);
+std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status);
 
-} // namespace pose_optimization
-} // namespace rgbd_slam
+} // namespace rgbd_slam::pose_optimization
 
 #endif

@@ -8,9 +8,7 @@
 #include "plane_segment.hpp"
 #include <opencv2/opencv.hpp>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 /**
  * \brief A base class used to compute the tracking analysis.
@@ -19,8 +17,6 @@ namespace primitives {
 class IPrimitive
 {
   public:
-    virtual ~IPrimitive() {};
-
     cv::Mat get_shape_mask() const { return _shapeMask; };
     void set_shape_mask(const cv::Mat& mask) { _shapeMask = mask.clone(); };
 
@@ -40,7 +36,6 @@ class IPrimitive
         return true;
     }
 
-  protected:
     /**
      * \brief Hidden constructor, to set shape
      */
@@ -61,7 +56,6 @@ class IPrimitive
 
   private:
     // remove copy functions
-    // IPrimitive(const IPrimitive&) = delete;
     IPrimitive& operator=(const IPrimitive&) = delete;
     IPrimitive() = delete;
 };
@@ -88,7 +82,7 @@ class Cylinder : public IPrimitive
      *
      * \return A double between 0 and 1, with 1 indicating identical cylinders
      */
-    virtual bool is_similar(const Cylinder& prim) const;
+    bool is_similar(const Cylinder& prim) const;
 
     /**
      * \brief Get the distance of a point to the surface of the cylinder
@@ -96,10 +90,12 @@ class Cylinder : public IPrimitive
      * \return The signed distance of the point to the surface, 0 if the point is on the surface, and < 0 if the point
      * is inside the cylinder
      */
-    virtual double get_distance(const vector3& point) const;
+    double get_distance(const vector3& point) const;
 
     vector3 _normal;
     double _radius;
+
+    ~Cylinder() = default;
 
   private:
     // remove copy functions
@@ -146,6 +142,8 @@ class Plane : public IPrimitive
 
     matrix44 compute_covariance(const matrix33& worldPositionCovariance = matrix33::Zero()) const;
 
+    ~Plane() = default;
+
   private:
     vector6 compute_descriptor() const;
 
@@ -166,10 +164,9 @@ class Plane : public IPrimitive
 };
 
 // types for detected primitives
-typedef std::vector<Cylinder> cylinder_container;
-typedef std::vector<Plane> plane_container;
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+using cylinder_container = std::vector<Cylinder>;
+using plane_container = std::vector<Plane>;
+
+} // namespace rgbd_slam::features::primitives
 
 #endif

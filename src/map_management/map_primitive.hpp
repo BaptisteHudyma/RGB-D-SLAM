@@ -9,16 +9,16 @@
 #include "../utils/matches_containers.hpp"
 #include "../utils/random.hpp"
 #include "feature_map.hpp"
+#include <memory>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 
-namespace rgbd_slam {
-namespace map_management {
+namespace rgbd_slam::map_management {
 
-typedef features::primitives::Plane DetectedPlaneType;
-typedef features::primitives::plane_container DetectedPlaneObject;
-typedef matches_containers::PlaneMatch PlaneMatchType;
-typedef void* TrackedPlaneObject; // TODO implement
+using DetectedPlaneType = features::primitives::Plane;
+using DetectedPlaneObject = features::primitives::plane_container;
+using PlaneMatchType = matches_containers::PlaneMatch;
+using TrackedPlaneObject = void*; // TODO implement
 
 class Plane
 {
@@ -60,21 +60,21 @@ class Plane
     {
         assert(_kalmanFilter != nullptr);
 
-        const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(
+        vector4 newEstimatedParameters;
+        matrix44 newEstimatedCovariance;
+        std::tie(newEstimatedParameters, newEstimatedCovariance) = _kalmanFilter->get_new_state(
                 _parametrization, _covariance, newDetectionParameters, newDetectionCovariance);
-        const vector4& newEstimatedParameters = res.first;
-        const matrix44& newEstimatedCovariance = res.second;
 
-        const double score = (_parametrization - res.first).norm();
+        const double score = (_parametrization - newEstimatedParameters).norm();
 
         // source: Revisiting Uncertainty Analysis for Optimum Planes Extracted from 3D Range Sensor Point-Clouds
 
         // covariance update
-        Eigen::SelfAdjointEigenSolver<matrix44> covarianceSolver(newEstimatedCovariance);
+        /*Eigen::SelfAdjointEigenSolver<matrix44> covarianceSolver(newEstimatedCovariance);
         const double smallestEigenValue = covarianceSolver.eigenvalues()(0);
-        const vector4& smallestEigenVector = covarianceSolver.eigenvectors().col(0).normalized();
-        _covariance =
-                newEstimatedCovariance - smallestEigenValue * smallestEigenVector * smallestEigenVector.transpose();
+        const vector4& smallestEigenVector = covarianceSolver.eigenvectors().col(0).normalized();*/
+        _covariance = newEstimatedCovariance;
+        // newEstimatedCovariance - smallestEigenValue * smallestEigenVector * smallestEigenVector.transpose();
 
         // parameters update
         vector4 renormalizedVector = newEstimatedParameters / sqrt(pow(newEstimatedParameters.head(3).norm(), 2.0) +
@@ -93,7 +93,6 @@ class Plane
         return score;
     }
 
-  protected:
     utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                          // covariance of this plane in world space
     utils::WorldCoordinate _centroid;              // centroid of the detected plane
@@ -123,11 +122,12 @@ class Plane
             processNoiseCovariance.setIdentity();
             processNoiseCovariance *= parametersProcessNoise;
 
-            _kalmanFilter = new tracking::SharedKalmanFilter(systemDynamics, outputMatrix, processNoiseCovariance);
+            _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter>(
+                    systemDynamics, outputMatrix, processNoiseCovariance);
         }
     }
     // shared kalman filter, between all planes
-    inline static tracking::SharedKalmanFilter* _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::SharedKalmanFilter> _kalmanFilter = nullptr;
 };
 
 class MapPlane :
@@ -146,12 +146,14 @@ class MapPlane :
         assert(_id > 0);
     }
 
-    virtual int find_match(const DetectedPlaneObject& detectedFeatures,
-                           const WorldToCameraMatrix& worldToCamera,
-                           const vectorb& isDetectedFeatureMatched,
-                           std::list<PlaneMatchType>& matches,
-                           const bool shouldAddToMatches = true,
-                           const bool useAdvancedSearch = false) const override
+    virtual ~MapPlane() = default;
+
+    int find_match(const DetectedPlaneObject& detectedFeatures,
+                   const WorldToCameraMatrix& worldToCamera,
+                   const vectorb& isDetectedFeatureMatched,
+                   std::list<PlaneMatchType>& matches,
+                   const bool shouldAddToMatches = true,
+                   const bool useAdvancedSearch = false) const override
     {
         const PlaneWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
         // project plane in camera space
@@ -181,7 +183,7 @@ class MapPlane :
             const double descriptorSimilarity = shapePlane.get_similarity(descriptor);
             if (descriptorSimilarity < smallestSimilarity)
             {
-                selectedIndex = static_cast<int>(planeIndex);
+                selectedIndex = planeIndex;
                 smallestSimilarity = descriptorSimilarity;
             }
         }
@@ -199,9 +201,9 @@ class MapPlane :
         return selectedIndex;
     }
 
-    virtual bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
-                                TrackedPlaneObject& trackedFeatures,
-                                const uint dropChance = 1000) const override
+    bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
+                        TrackedPlaneObject& trackedFeatures,
+                        const uint dropChance = 1000) const override
     {
         // silence warning for unused parameters
         (void)worldToCamera;
@@ -210,9 +212,7 @@ class MapPlane :
         return false;
     }
 
-    virtual void draw(const WorldToCameraMatrix& worldToCamMatrix,
-                      cv::Mat& debugImage,
-                      const cv::Scalar& color) const override
+    void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
     {
         // silence unused parameter warning
         (void)worldToCamMatrix;
@@ -222,7 +222,8 @@ class MapPlane :
         const double maskAlpha = 0.3;
         const cv::Size& debugImageSize = debugImage.size();
 
-        cv::Mat planeMask, planeColorMask;
+        cv::Mat planeMask;
+        cv::Mat planeColorMask;
         // Resize with no interpolation
         cv::resize(get_mask() * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
         cv::cvtColor(planeMask, planeColorMask, cv::COLOR_GRAY2BGR);
@@ -232,7 +233,8 @@ class MapPlane :
 
         // merge with debug image
         planeColorMask.setTo(color, planeMask);
-        cv::Mat maskedInput, ImaskedInput;
+        cv::Mat maskedInput;
+        cv::Mat ImaskedInput;
         // get masked original image, with the only visible part being the plane part
         debugImage.copyTo(maskedInput, planeMask);
         // get masked original image, with the only visible part being the non plane part
@@ -243,7 +245,7 @@ class MapPlane :
         debugImage = maskedInput + ImaskedInput;
     }
 
-    virtual bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
+    bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
         // TODO
         (void)worldToCamMatrix;
@@ -251,9 +253,9 @@ class MapPlane :
     }
 
   protected:
-    virtual bool update_with_match(const DetectedPlaneType& matchedFeature,
-                                   const matrix33& poseCovariance,
-                                   const CameraToWorldMatrix& cameraToWorld) override
+    bool update_with_match(const DetectedPlaneType& matchedFeature,
+                           const matrix33& poseCovariance,
+                           const CameraToWorldMatrix& cameraToWorld) override
     {
         assert(_matchIndex >= 0);
 
@@ -265,15 +267,17 @@ class MapPlane :
               worldCovariance,
               matchedFeature.get_centroid().to_world_coordinates(cameraToWorld));
 
-        _shapeMask = matchedFeature.get_shape_mask();
-
+        _shapeMask = matchedFeature.get_shape_mask().clone();
         return true;
     }
 
-    virtual void update_no_match() override {}
+    void update_no_match() override
+    {
+        // do nothing
+    }
 };
 
-class StagedMapPlane : public virtual MapPlane, public virtual IStagedMapFeature<DetectedPlaneType>
+class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneType>
 {
   public:
     StagedMapPlane(const matrix33& poseCovariance,
@@ -282,16 +286,16 @@ class StagedMapPlane : public virtual MapPlane, public virtual IStagedMapFeature
         MapPlane()
     {
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
-        _parametrization = detectedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
-        _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld),
+        _parametrization = detectedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld);
+        _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld);
         _shapeMask = detectedFeature.get_shape_mask();
 
         _covariance = detectedFeature.compute_covariance(poseCovariance);
     }
 
-    virtual bool should_remove_from_staged() const override { return _failedTrackingCount >= 2; }
+    bool should_remove_from_staged() const override { return _failedTrackingCount >= 2; }
 
-    virtual bool should_add_to_local_map() const override { return _successivMatchedCount >= 1; }
+    bool should_add_to_local_map() const override { return _successivMatchedCount >= 1; }
 };
 
 class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
@@ -311,14 +315,13 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _covariance = stagedPlane.get_covariance();
     }
 
-    virtual bool is_lost() const override
+    bool is_lost() const override
     {
         const static size_t maximumUnmatchBeforeremoval = Parameters::get_maximum_unmatched_before_removal();
         return _failedTrackingCount >= maximumUnmatchBeforeremoval;
     }
 };
 
-} // namespace map_management
-} // namespace rgbd_slam
+} // namespace rgbd_slam::map_management
 
 #endif

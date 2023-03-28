@@ -8,6 +8,7 @@
 #include "map_management/local_map.hpp"
 #include "tracking/motion_model.hpp"
 #include "utils/pose.hpp"
+#include <memory>
 #include <opencv2/line_descriptor.hpp>
 
 namespace rgbd_slam {
@@ -24,8 +25,7 @@ class RGBD_SLAM
      * \param[in] imageWidth The width of the depth images (fixed)
      * \param[in] imageHeight The height of the depth image (fixed)
      */
-    explicit RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth = 640, const uint imageHeight = 480);
-    ~RGBD_SLAM();
+    RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth = 640, const uint imageHeight = 480);
 
     /**
      * \brief Convert the given depth image to the rectified version. IE: align it with the RGB image
@@ -42,9 +42,9 @@ class RGBD_SLAM
      *
      * \return The new estimated pose
      */
-    const utils::Pose track(const cv::Mat& inputRgbImage,
-                            const cv::Mat& inputDepthImage,
-                            const bool shouldDetectLines = false);
+    utils::Pose track(const cv::Mat& inputRgbImage,
+                      const cv::Mat& inputDepthImage,
+                      const bool shouldDetectLines = false);
 
     /**
      * \brief Compute a debug image
@@ -61,7 +61,7 @@ class RGBD_SLAM
                          cv::Mat& debugImage,
                          const double elapsedTime,
                          const bool shouldDisplayStagedPoints = false,
-                         const bool shouldDisplayPrimitiveMasks = false);
+                         const bool shouldDisplayPrimitiveMasks = false) const;
 
     /**
      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
@@ -79,9 +79,9 @@ class RGBD_SLAM
      *
      * \return The new estimated pose from points positions
      */
-    const utils::Pose compute_new_pose(const cv::Mat& grayImage,
-                                       const cv::Mat& depthImage,
-                                       const matrixf& cloudArrayOrganized);
+    utils::Pose compute_new_pose(const cv::Mat& grayImage,
+                                 const cv::Mat& depthImage,
+                                 const matrixf& cloudArrayOrganized);
 
     void compute_lines(const cv::Mat& grayImage, const cv::Mat& depthImage, cv::Mat& outImage);
 
@@ -91,16 +91,16 @@ class RGBD_SLAM
     const uint _width;
     const uint _height;
 
-    features::primitives::Depth_Map_Transformation* _depthOps;
+    std::unique_ptr<features::primitives::Depth_Map_Transformation> _depthOps = nullptr;
 
     size_t _computeKeypointCount;
 
     /* Detectors */
-    features::primitives::Primitive_Detection* _primitiveDetector;
+    std::unique_ptr<features::primitives::Primitive_Detection> _primitiveDetector = nullptr;
 
-    map_management::Local_Map* _localMap;
-    features::keypoints::Key_Point_Extraction* _pointDetector;
-    features::lines::Line_Detection* _lineDetector;
+    std::unique_ptr<map_management::Local_Map> _localMap = nullptr;
+    std::unique_ptr<features::keypoints::Key_Point_Extraction> _pointDetector = nullptr;
+    std::unique_ptr<features::lines::Line_Detection> _lineDetector = nullptr;
 
     utils::Pose _currentPose;
     tracking::Motion_Model _motionModel;

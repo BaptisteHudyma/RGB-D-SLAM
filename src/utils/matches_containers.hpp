@@ -4,8 +4,7 @@
 #include "coordinates.hpp"
 #include <list>
 
-namespace rgbd_slam {
-namespace matches_containers {
+namespace rgbd_slam::matches_containers {
 
 template<class FeatureCameraSpace,
          class FeatureWorldSpace,
@@ -35,15 +34,15 @@ struct MatchTemplate
 //      - the coordinates of the detected point in screen space
 //      - the coordinates of the matched point in world space
 //      - the covariance of the world plane projected in screen space
-typedef MatchTemplate<utils::ScreenCoordinate, utils::WorldCoordinate, vector3, vector2> PointMatch;
-typedef std::list<PointMatch> match_point_container;
+using PointMatch = MatchTemplate<utils::ScreenCoordinate, utils::WorldCoordinate, vector3, vector2>;
+using match_point_container = std::list<PointMatch>;
 
 // MapPlane matching: contains :
 //      - the normal vector of the plane in camera space
 //      - the normal vector of the plane in world space
 //      - the covariance of the world plane projected in camera space
-typedef MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, void*, void*> PlaneMatch;
-typedef std::list<PlaneMatch> match_plane_container;
+using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, void*, void*>;
+using match_plane_container = std::list<PlaneMatch>;
 
 struct matchContainer
 {
@@ -56,7 +55,7 @@ struct matchContainer
         _planes.clear();
     }
 
-    void swap(matchContainer& other)
+    void swap(matchContainer& other) noexcept
     {
         _points.swap(other._points);
         _planes.swap(other._planes);
@@ -79,7 +78,7 @@ template<class Container> struct match_sets_template
         _outliers.clear();
     }
 
-    void swap(match_sets_template& other)
+    void swap(match_sets_template& other) noexcept
     {
         _inliers.swap(other._inliers);
         _outliers.swap(other._outliers);
@@ -87,9 +86,9 @@ template<class Container> struct match_sets_template
 };
 
 // store a set of inliers and a set of outliers for points
-typedef match_sets_template<match_point_container> point_match_sets;
+using point_match_sets = match_sets_template<match_point_container>;
 // store a set of inliers and a set of outliers for planes
-typedef match_sets_template<match_plane_container> plane_match_sets;
+using plane_match_sets = match_sets_template<match_plane_container>;
 
 // store a set of inliers and a set of outliers for all features
 struct match_sets
@@ -103,13 +102,13 @@ struct match_sets
         _planeSets.clear();
     }
 
-    void swap(match_sets& other)
+    void swap(match_sets& other) noexcept
     {
         _pointSets.swap(other._pointSets);
         _planeSets.swap(other._planeSets);
     }
 };
-} // namespace matches_containers
-} // namespace rgbd_slam
+
+} // namespace rgbd_slam::matches_containers
 
 #endif

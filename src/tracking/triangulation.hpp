@@ -4,8 +4,7 @@
 #include "../utils/coordinates.hpp"
 #include "../utils/pose.hpp"
 
-namespace rgbd_slam {
-namespace tracking {
+namespace rgbd_slam::tracking {
 
 /**
  * \brief Triangulate 2D point (screen space) to find 3D correspondances (camera space)
@@ -48,7 +47,6 @@ class Triangulation
                                          const double& maximumRetroprojectionError);
 };
 
-} // namespace tracking
-} // namespace rgbd_slam
+} // namespace rgbd_slam::tracking
 
 #endif

@@ -1,28 +1,27 @@
 #include "camera_transformation.hpp"
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
-const CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
+CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position)
 {
     CameraToWorldMatrix cameraToWorld;
     cameraToWorld << rotation.toRotationMatrix(), position, 0, 0, 0, 1;
     return cameraToWorld;
 }
 
-const WorldToCameraMatrix compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
+WorldToCameraMatrix compute_world_to_camera_transform(const quaternion& rotation, const vector3& position)
 {
     return compute_world_to_camera_transform(compute_camera_to_world_transform(rotation, position));
 }
 
-const WorldToCameraMatrix compute_world_to_camera_transform(const CameraToWorldMatrix& cameraToWorld)
+WorldToCameraMatrix compute_world_to_camera_transform(const CameraToWorldMatrix& cameraToWorld)
 {
     WorldToCameraMatrix worldToCamera;
     worldToCamera << cameraToWorld.inverse();
     return worldToCamera;
 }
 
-const CameraToWorldMatrix compute_camera_to_world_transform(const WorldToCameraMatrix& worldToCamera)
+CameraToWorldMatrix compute_camera_to_world_transform(const WorldToCameraMatrix& worldToCamera)
 {
     CameraToWorldMatrix cameraToWorld;
     cameraToWorld << worldToCamera.inverse();
@@ -48,5 +47,4 @@ PlaneWorldToCameraMatrix compute_plane_world_to_camera_matrix(const WorldToCamer
     return cameraToWorld;
 }
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils

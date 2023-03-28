@@ -2,13 +2,12 @@
 #define RGBDSLAM_FEATURES_LINES_LINE_DETECTION_HPP
 
 #include "../../../third_party/line_segment_detector.hpp"
+#include <memory>
 #include <opencv2/opencv.hpp>
 
-namespace rgbd_slam {
-namespace features {
-namespace lines {
+namespace rgbd_slam::features::lines {
 
-typedef std::vector<cv::Vec4f> line_container;
+using line_container = std::vector<cv::Vec4f>;
 
 /**
  * \brief A class to detect and store lines
@@ -35,11 +34,11 @@ class Line_Detection
      * \param[in] depthImage The measured depth of the image in which the lines were detected
      * \param[in, out] outImage The image on which to display the lines
      */
-    void get_image_with_lines(const line_container& linesToDisplay, const cv::Mat& depthImage, cv::Mat& outImage);
+    void get_image_with_lines(const line_container& linesToDisplay, const cv::Mat& depthImage, cv::Mat& outImage) const;
 
   private:
     // LineSegmentDetector
-    cv::LSD* _lineDetector;
+    std::unique_ptr<cv::LSD> _lineDetector;
 
     // kernel for morphological operations
     cv::Mat _kernel;
@@ -49,8 +48,6 @@ class Line_Detection
     Line_Detection& operator=(const Line_Detection& lineDetector) = delete;
 };
 
-} // namespace lines
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::lines
 
 #endif

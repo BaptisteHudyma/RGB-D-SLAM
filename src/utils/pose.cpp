@@ -2,8 +2,7 @@
 #include "angle_utils.hpp"
 #include "types.hpp"
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 /**
  * PoseBase
@@ -80,5 +79,5 @@ std::ostream& operator<<(std::ostream& os, const Pose& pose)
     pose.display(os);
     return os;
 }
-} // namespace utils
-} // namespace rgbd_slam
+
+} // namespace rgbd_slam::utils

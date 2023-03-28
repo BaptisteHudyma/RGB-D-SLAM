@@ -1,7 +1,6 @@
 #include "motion_model.hpp"
 
-namespace rgbd_slam {
-namespace tracking {
+namespace rgbd_slam::tracking {
 
 Motion_Model::Motion_Model() { this->reset(); }
 
@@ -23,26 +22,26 @@ void Motion_Model::reset(const vector3& lastPosition, const quaternion& lastRota
     _linearVelocity.setZero();
 }
 
-const quaternion Motion_Model::get_rotational_velocity(const quaternion& lastRotation,
-                                                       const quaternion& lastVelocity,
-                                                       const quaternion& currentRotation) const
+quaternion Motion_Model::get_rotational_velocity(const quaternion& lastRotation,
+                                                 const quaternion& lastVelocity,
+                                                 const quaternion& currentRotation) const
 {
     const quaternion angVelDiff = currentRotation * lastRotation.inverse();
+    // smooth velocity over time (decaying model)
     quaternion newAngVel = angVelDiff.slerp(0.5, lastVelocity);
-    newAngVel.normalize();
-    return newAngVel;
+    return newAngVel.normalized();
 }
 
-const vector3 Motion_Model::get_position_velocity(const vector3& lastPosition,
-                                                  const vector3& lastVelocity,
-                                                  const vector3& currentPosition) const
+vector3 Motion_Model::get_position_velocity(const vector3& lastPosition,
+                                            const vector3& lastVelocity,
+                                            const vector3& currentPosition) const
 {
-    const vector3 newLinVelocity = currentPosition - lastPosition;
+    const vector3 newLinVelocity = (currentPosition - lastPosition) / 1000.0;
     // smooth velocity over time (decaying model)
     return (newLinVelocity + lastVelocity) * 0.5;
 }
 
-const utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose) const
+utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose) const
 {
     const quaternion& currentRotation = currentPose.get_orientation_quaternion();
     const vector3& currentPosition = currentPose.get_position();
@@ -54,8 +53,7 @@ const utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose
 
     // Integrate to compute predictions
     const vector3 integralPos = currentPosition + newLinVelocity;
-    quaternion integralQ = currentRotation * newVelocity;
-    integralQ.normalize();
+    const quaternion integralQ = (currentRotation * newVelocity).normalized();
 
     // TODO: predict variance instead of copying ?
     return utils::Pose(integralPos, integralQ, currentPose.get_pose_variance());
@@ -75,5 +73,4 @@ void Motion_Model::update_model(const utils::Pose& pose)
     _lastPosition = currentPosition;
 }
 
-} // namespace tracking
-} // namespace rgbd_slam
+} // namespace rgbd_slam::tracking

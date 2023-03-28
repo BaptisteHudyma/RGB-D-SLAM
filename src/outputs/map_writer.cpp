@@ -1,8 +1,7 @@
 #include "map_writer.hpp"
 #include "logger.hpp"
 
-namespace rgbd_slam {
-namespace outputs {
+namespace rgbd_slam::outputs {
 
 IMap_Writer::IMap_Writer(const std::string& filename)
 {
@@ -72,5 +71,4 @@ void PCD_Map_Writer::add_point(const vector3& pointCoordinates)
     _file << pointCoordinates.x() << " " << pointCoordinates.y() << " " << pointCoordinates.z() << "\n";
 }
 
-} // namespace outputs
-} // namespace rgbd_slam
+} // namespace rgbd_slam::outputs

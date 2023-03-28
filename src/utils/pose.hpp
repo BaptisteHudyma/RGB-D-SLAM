@@ -3,8 +3,7 @@
 
 #include "../types.hpp"
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 /**
  * \brief Store a position
@@ -16,19 +15,21 @@ class PoseBase
     PoseBase();
     PoseBase(const vector3& position, const quaternion& orientation);
 
+    virtual ~PoseBase() = default;
+
     // setters
     void set_parameters(const vector3& position, const quaternion& orientation);
 
     void update(const vector3& position, const quaternion& orientation);
 
     // getters
-    const vector3 get_position() const { return _position; }
-    const matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
-    const quaternion get_orientation_quaternion() const { return _orientation; }
+    vector3 get_position() const { return _position; }
+    matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
+    quaternion get_orientation_quaternion() const { return _orientation; }
     /**
      * \return a 6 element vector of the position followed by the rotation in radians
      */
-    const vector6 get_vector() const
+    vector6 get_vector() const
     {
         vector6 t;
         t << _position, _orientation.toRotationMatrix().eulerAngles(0, 1, 2);
@@ -47,7 +48,7 @@ class PoseBase
     /**
      * \brief A display function, to avoid a friend operator function
      */
-    void display(std::ostream& os) const;
+    virtual void display(std::ostream& os) const;
 
   private:
     quaternion _orientation;
@@ -64,14 +65,16 @@ class Pose : public PoseBase
     Pose(const vector3& position, const quaternion& orientation);
     Pose(const vector3& position, const quaternion& orientation, const matrix66& poseVariance);
 
+    virtual ~Pose() = default;
+
     void set_position_variance(const matrix66& variance) { _positionVariance = variance; };
-    const matrix66 get_pose_variance() const { return _positionVariance; };
-    const matrix33 get_position_variance() const { return _positionVariance.block(0, 0, 3, 3); };
+    matrix66 get_pose_variance() const { return _positionVariance; };
+    matrix33 get_position_variance() const { return _positionVariance.block(0, 0, 3, 3); };
 
     /**
      * \brief A display function, to avoid a friend operator function
      */
-    void display(std::ostream& os) const;
+    void display(std::ostream& os) const override;
 
   private:
     matrix66 _positionVariance;
@@ -81,9 +84,8 @@ std::ostream& operator<<(std::ostream& os, const PoseBase& pose);
 std::ostream& operator<<(std::ostream& os, const Pose& pose);
 
 // array of poses
-typedef std::vector<Pose, Eigen::aligned_allocator<Pose>> pose_array;
+using pose_array = std::vector<Pose, Eigen::aligned_allocator<Pose>>;
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils
 
 #endif
