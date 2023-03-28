@@ -7,7 +7,6 @@
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <cmath>
-#include <iostream>
 
 namespace rgbd_slam::features::primitives {
 

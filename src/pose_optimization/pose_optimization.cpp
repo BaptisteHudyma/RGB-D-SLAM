@@ -5,6 +5,7 @@
 #include "../utils/camera_transformation.hpp"
 #include "../utils/covariances.hpp"
 #include "../utils/random.hpp"
+#include "coordinates.hpp"
 #include "levenberg_marquard_functors.hpp"
 #include "matches_containers.hpp"
 #include "ransac.hpp"
@@ -482,8 +483,21 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     }
     for (const matches_containers::PlaneMatch& match: matchedFeatures._planeSets._inliers)
     {
-        // TODO: variate plane coordinates
-        variatedSet._planeSets._inliers.emplace_back(match);
+        utils::PlaneWorldCoordinates variatedCoordinates = match._worldFeature;
+
+        // TODO: use true covariance model when it will work
+        variatedCoordinates.x() += 0.1; // utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.x());
+        variatedCoordinates.y() += 0.1; // utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.y());
+        variatedCoordinates.z() += 0.1; // utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.z());
+        variatedCoordinates.head(3).normalize();
+
+        variatedCoordinates.w() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.w());
+
+        variatedSet._planeSets._inliers.emplace_back(match._screenFeature,
+                                                     variatedCoordinates,
+                                                     match._worldFeatureCovariance,
+                                                     match._projectedWorldfeatureCovariance,
+                                                     match._idInMap);
     }
 
     return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);

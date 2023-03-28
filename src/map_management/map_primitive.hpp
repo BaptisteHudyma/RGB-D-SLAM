@@ -6,7 +6,7 @@
 #include "../tracking/kalman_filter.hpp"
 #include "../utils/camera_transformation.hpp"
 #include "../utils/coordinates.hpp"
-#include "../utils/matches_containers.hpp"
+#include "../matches_containers.hpp"
 #include "../utils/random.hpp"
 #include "distance_utils.hpp"
 #include "feature_map.hpp"
@@ -67,17 +67,11 @@ class Plane
         const matrix44& newEstimatedCovariance = res.second;
         const double score = (_parametrization - newEstimatedParameters).norm();
 
-        // source: Revisiting Uncertainty Analysis for Optimum Planes Extracted from 3D Range Sensor Point-Clouds
-
         // covariance update
         _covariance = newEstimatedCovariance;
 
         // parameters update
-        vector4 renormalizedVector = newEstimatedParameters / sqrt(pow(newEstimatedParameters.head(3).norm(), 2.0) +
-                                                                   pow(newEstimatedParameters(3), 2.0));
-        assert(utils::double_equal(renormalizedVector.norm(), 1.0));
-        renormalizedVector /= sqrt(1.0 - pow(renormalizedVector(3), 2.0));
-        _parametrization << renormalizedVector.head(3).normalized(), renormalizedVector(3);
+        _parametrization << newEstimatedParameters.head(3).normalized(), newEstimatedParameters(3);
 
         // update centroid
         _centroid = detectedCentroid;
@@ -191,9 +185,16 @@ class MapPlane :
 
         if (shouldAddToMatches)
         {
+            // TODO: true screen variance model
+            vector4 screenCovariance = _covariance.diagonal();
+
             const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
             // TODO: replace nullptr by the plane covariance in camera space
-            matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), nullptr, nullptr, _id);
+            matches.emplace_back(shapePlane.get_parametrization(),
+                                 get_parametrization(),
+                                 _covariance.diagonal(),
+                                 screenCovariance,
+                                 _id);
         }
 
         return selectedIndex;
