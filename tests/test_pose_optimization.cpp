@@ -8,7 +8,6 @@
 #include "utils/coordinates.hpp"
 #include "utils/pose.hpp"
 #include <gtest/gtest.h>
-#include <iostream>
 #include <random>
 
 namespace rgbd_slam {

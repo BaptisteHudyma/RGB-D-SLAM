@@ -96,11 +96,6 @@ Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
 {
     assert(utils::double_equal(planeSeg.get_normal().norm(), 1.0));
     assert(utils::double_equal(get_normal().norm(), 1.0));
-    // TODO: WIP
-    const vector3 absoluteCovariance = planeSeg.get_normal().cwiseAbs();
-    // distribute the variance on the normal coefficients
-    const vector3 distributedError = (absoluteCovariance * planeSeg.get_MSE()).cwiseAbs();
-    // std::cout << distributedError.transpose() << std::endl;
 }
 
 Plane::Plane(const Plane& plane) :
