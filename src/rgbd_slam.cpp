@@ -116,11 +116,12 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputD
     assert(static_cast<size_t>(inputRgbImage.cols) == _width);
 
     // project depth image in an organized cloud
-    const double depthImageTreatmentStartTime = cv::getTickCount();
+    const double depthImageTreatmentStartTime = static_cast<double>(cv::getTickCount());
     // organized 3D depth image
     matrixf cloudArrayOrganized;
     _depthOps->get_organized_cloud_array(inputDepthImage, cloudArrayOrganized);
-    _meanDepthMapTreatmentDuration += (cv::getTickCount() - depthImageTreatmentStartTime) / cv::getTickFrequency();
+    _meanDepthMapTreatmentDuration +=
+            (static_cast<double>(cv::getTickCount()) - depthImageTreatmentStartTime) / cv::getTickFrequency();
 
     // Compute a gray image for feature extractions
     cv::Mat grayImage;
@@ -129,9 +130,10 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputD
     if (shouldDetectLines)
     { // detect lines in image
 
-        const double lineDetectionStartTime = cv::getTickCount();
+        const double lineDetectionStartTime = static_cast<double>(cv::getTickCount());
         const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, inputDepthImage);
-        _meanLineTreatmentDuration += (cv::getTickCount() - lineDetectionStartTime) / cv::getTickFrequency();
+        _meanLineTreatmentDuration +=
+                (static_cast<double>(cv::getTickCount()) - lineDetectionStartTime) / cv::getTickFrequency();
 
         cv::Mat outImage = inputRgbImage.clone();
         _lineDetector->get_image_with_lines(detectedLines, inputDepthImage, outImage);
@@ -140,9 +142,10 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputD
     }
 
     // this frame points and  assoc
-    const double computePoseStartTime = cv::getTickCount();
+    const double computePoseStartTime = static_cast<double>(cv::getTickCount());
     const utils::Pose& refinedPose = this->compute_new_pose(grayImage, inputDepthImage, cloudArrayOrganized);
-    _meanPoseOptimizationDuration += (cv::getTickCount() - computePoseStartTime) / cv::getTickFrequency();
+    _meanPoseOptimizationDuration +=
+            (static_cast<double>(cv::getTickCount()) - computePoseStartTime) / cv::getTickFrequency();
 
     // update motion model with refined pose
     _motionModel.update_model(refinedPose);
@@ -154,19 +157,23 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputD
     return refinedPose;
 }
 
-void RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
-                                const cv::Mat& originalRGB,
-                                cv::Mat& debugImage,
-                                const double elapsedTime,
-                                const bool shouldDisplayStagedPoints,
-                                const bool shouldDisplayPrimitiveMasks) const
+cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
+                                   const cv::Mat& originalRGB,
+                                   const double elapsedTime,
+                                   const bool shouldDisplayStagedPoints,
+                                   const bool shouldDisplayPrimitiveMasks) const
 {
-    debugImage = originalRGB.clone();
+    cv::Mat debugImage = originalRGB.clone();
 
-    const uint bandSize = _height / 25.0; // 1/25 of the total image should be for the top black band
+    const uint bandSize =
+            static_cast<uint>(std::floor(_height / 25.0)); // 1/25 of the total image should be for the top black band
 
     // Show frame rate and labels
-    cv::rectangle(debugImage, cv::Point(0, 0), cv::Point(_width, bandSize), cv::Scalar(0, 0, 0), -1);
+    cv::rectangle(debugImage,
+                  cv::Point(0, 0),
+                  cv::Point(static_cast<int>(_width), static_cast<int>(bandSize)),
+                  cv::Scalar(0, 0, 0),
+                  -1);
     if (elapsedTime > 0)
     {
         std::stringstream fps;
@@ -183,6 +190,8 @@ void RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
         const cv::Size& debugImageSize = debugImage.size();
         cv::addWeighted(debugImage, 0.8, cv::Mat(debugImageSize, CV_8UC3, cv::Scalar(0, 0, 255)), 0.2, 1, debugImage);
     }
+
+    return debugImage;
 }
 
 utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
@@ -205,17 +214,18 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
 
     // Run primitive detection
-    const double primitiveDetectionStartTime = cv::getTickCount();
+    const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
     features::primitives::plane_container detectedPlanes;
     features::primitives::cylinder_container detectedCylinders; // TODO: handle detected cylinders in local map
     _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPlanes, detectedCylinders);
-    _meanPrimitiveTreatmentDuration += (cv::getTickCount() - primitiveDetectionStartTime) / cv::getTickFrequency();
+    _meanPrimitiveTreatmentDuration +=
+            (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
 
     // Find matches by the pose predicted by motion model
-    const double findMatchesStartTime = cv::getTickCount();
+    const double findMatchesStartTime = static_cast<double>(cv::getTickCount());
     const matches_containers::matchContainer& matchedFeatures =
             _localMap->find_feature_matches(predictedPose, keypointObject, detectedPlanes);
-    _meanFindMatchTime += (cv::getTickCount() - findMatchesStartTime) / cv::getTickFrequency();
+    _meanFindMatchTime += (static_cast<double>(cv::getTickCount()) - findMatchesStartTime) / cv::getTickFrequency();
 
     // The new pose, after optimization
     utils::Pose newPose;
@@ -224,12 +234,13 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     utils::Pose optimizedPose;
     matches_containers::match_sets matchSets;
 
-    const double optimizePoseStartTime = cv::getTickCount();
+    const double optimizePoseStartTime = static_cast<double>(cv::getTickCount());
     const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(
             predictedPose, matchedFeatures, optimizedPose, matchSets);
-    _meanPoseOptimizationFromFeatures += (cv::getTickCount() - optimizePoseStartTime) / cv::getTickFrequency();
+    _meanPoseOptimizationFromFeatures +=
+            (static_cast<double>(cv::getTickCount()) - optimizePoseStartTime) / cv::getTickFrequency();
 
-    const double updateLocalMapStartTime = cv::getTickCount();
+    const double updateLocalMapStartTime = static_cast<double>(cv::getTickCount());
     if (isPoseValid)
     {
         newPose = optimizedPose;
@@ -267,7 +278,8 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
 
         outputs::log_error("Could not find an optimized pose");
     }
-    _meanLocalMapUpdateDuration += (cv::getTickCount() - updateLocalMapStartTime) / cv::getTickFrequency();
+    _meanLocalMapUpdateDuration +=
+            (static_cast<double>(cv::getTickCount()) - updateLocalMapStartTime) / cv::getTickFrequency();
 
     return newPose;
 }
