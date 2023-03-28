@@ -6,8 +6,7 @@
 #include "pose.hpp"
 #include "types.hpp"
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 /**
  * \brief Return the expected depth quantization at this depth value.
@@ -22,8 +21,8 @@ double get_depth_quantization(const double depht);
  * \param[in] point The coordinates of this 3D point (world space)
  * \param[in] pointCovariance The covariance associated with this point (world space)
  */
-const ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
-                                                             const WorldCoordinateCovariance& pointCovariance);
+ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                       const WorldCoordinateCovariance& pointCovariance);
 
 /**
  * \brief Compute a screen point covariance from a given point
@@ -31,19 +30,19 @@ const ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordina
  * \param[in] point The coordinates of this 3D point (camera space)
  * \param[in] pointCovariance The covariance associated with this point (camera space)
  */
-const ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
-                                                             const CameraCoordinateCovariance& pointCovariance);
+ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
+                                                       const CameraCoordinateCovariance& pointCovariance);
 
 /**
  * \brief Compute the covariance of a world point
  */
-const WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
-                                                           const matrix33& poseCovariance);
+WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
+                                                     const matrix33& poseCovariance);
 /**
  * \brief Compute covariance of a screen point in world state
  */
-const WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
-                                                           const matrix33& poseCovariance);
+WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                     const matrix33& poseCovariance);
 
 /**
  * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This
@@ -51,7 +50,7 @@ const WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinat
  * \param[in] screenPoint The 2D point in screen coordinates
  * \return the covariance of the 3D camera point
  */
-const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint);
+CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint);
 
 /**
  * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point
@@ -59,8 +58,8 @@ const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordin
  * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
  * \return the covariance of the 3D camera point
  */
-const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
-                                                             const ScreenCoordinateCovariance& screenPointCovariance);
+CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
+                                                       const ScreenCoordinateCovariance& screenPointCovariance);
 
 /**
  * \brief Compute the covariance of the plane parameters
@@ -71,12 +70,11 @@ const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordin
  * \param[in] centroidError optionnal. if given, will be added to the centroid error.
  * \return the covariance of the plane. If centroidError is not given, it is in camera space.
  */
-const matrix44 compute_plane_covariance(const matrix33& parametersMatrix,
-                                        const vector3& normal,
-                                        const vector3& centroid,
-                                        const matrix33& centroidError = matrix33::Zero());
+matrix44 compute_plane_covariance(const matrix33& parametersMatrix,
+                                  const vector3& normal,
+                                  const vector3& centroid,
+                                  const matrix33& centroidError = matrix33::Zero());
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils
 
 #endif

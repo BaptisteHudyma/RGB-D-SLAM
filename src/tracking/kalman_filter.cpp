@@ -1,7 +1,7 @@
 #include "kalman_filter.hpp"
+#include <tuple>
 
-namespace rgbd_slam {
-namespace tracking {
+namespace rgbd_slam::tracking {
 
 SharedKalmanFilter::SharedKalmanFilter(const matrixd& systemDynamics,
                                        const matrixd& outputMatrix,
@@ -14,10 +14,10 @@ SharedKalmanFilter::SharedKalmanFilter(const matrixd& systemDynamics,
     _identity.setIdentity();
 }
 
-std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& currentState,
-                                                               const matrixd& stateNoiseCovariance,
-                                                               const vectorxd& newMeasurement,
-                                                               const matrixd& measurementNoiseCovariance)
+std::tuple<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& currentState,
+                                                                const matrixd& stateNoiseCovariance,
+                                                                const vectorxd& newMeasurement,
+                                                                const matrixd& measurementNoiseCovariance)
 {
     // Get new raw estimate
     const vectorxd& newStateEstimate = _systemDynamics * currentState;
@@ -31,8 +31,8 @@ std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& c
                     .inverse();
 
     // return the covariance and state estimation
-    return std::make_pair(newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate),
-                          (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance);
+    return std::make_tuple(newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate),
+                           (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance);
 }
 
 KalmanFilter::KalmanFilter(const matrixd& systemDynamics,
@@ -55,12 +55,9 @@ void KalmanFilter::update(const vectorxd& newMeasurement, const matrixd& measure
 {
     assert(is_initialized());
 
-    const std::pair<vectorxd, matrixd>& res =
-            get_new_state(_stateEstimate, _estimateErrorCovariance, newMeasurement, measurementNoiseCovariance);
-
     // update the covariance and state estimation
-    _estimateErrorCovariance = res.second;
-    _stateEstimate = res.first;
+    std::tie(_stateEstimate, _estimateErrorCovariance) =
+            get_new_state(_stateEstimate, _estimateErrorCovariance, newMeasurement, measurementNoiseCovariance);
 }
 
 void KalmanFilter::update(const vectorxd& newMeasurement,
@@ -71,5 +68,4 @@ void KalmanFilter::update(const vectorxd& newMeasurement,
     update(newMeasurement, measurementNoiseCovariance);
 }
 
-} // namespace tracking
-} // namespace rgbd_slam
+} // namespace rgbd_slam::tracking

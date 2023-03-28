@@ -8,9 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-namespace rgbd_slam {
-namespace features {
-namespace keypoints {
+namespace rgbd_slam::features::keypoints {
 
 /*
  * Keypoint extraction
@@ -58,9 +56,9 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     }
 }
 
-const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage,
-                                                                      const cv::Mat& mask,
-                                                                      const uint minimumPointsForValidity) const
+std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage,
+                                                                const cv::Mat& mask,
+                                                                const uint minimumPointsForValidity) const
 {
     assert(grayImage.size() == mask.size());
     // search keypoints, using an advanced detector if not enough features are found
@@ -91,8 +89,8 @@ const std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::
     return framePoints;
 }
 
-const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize,
-                                                           const std::vector<cv::Point2f>& keypointContainer) const
+cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize,
+                                                     const std::vector<cv::Point2f>& keypointContainer) const
 {
     const static int radiusOfAreaAroundPoint = static_cast<int>(Parameters::get_search_matches_distance()); // in pixels
     const static cv::Scalar fillColor(0);
@@ -112,10 +110,10 @@ const cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageS
     return mask;
 }
 
-const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage,
-                                                               const cv::Mat& depthImage,
-                                                               const KeypointsWithIdStruct& lastKeypointsWithIds,
-                                                               const bool forceKeypointDetection)
+Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage,
+                                                         const cv::Mat& depthImage,
+                                                         const KeypointsWithIdStruct& lastKeypointsWithIds,
+                                                         const bool forceKeypointDetection)
 {
     KeypointsWithIdStruct newKeypointsObject;
 
@@ -142,23 +140,19 @@ const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& gr
     cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
     // TODO: when the optical flow will not show so much drift, maybe we could remove the tracked keypoint
     // redetection
-    if (_lastFramePyramide.size() > 0)
+    if (not _lastFramePyramide.empty() and not lastKeypointsWithIds.empty())
     {
-        if (lastKeypointsWithIds.size() > 0)
-        {
-            get_keypoints_from_optical_flow(_lastFramePyramide,
-                                            newImagePyramide,
-                                            lastKeypointsWithIds,
-                                            pyramidDepth,
-                                            pyramidWindowSize,
-                                            maxDistance,
-                                            newKeypointsObject);
+        get_keypoints_from_optical_flow(_lastFramePyramide,
+                                        newImagePyramide,
+                                        lastKeypointsWithIds,
+                                        pyramidDepth,
+                                        pyramidWindowSize,
+                                        maxDistance,
+                                        newKeypointsObject);
 
-            // TODO: add descriptors to handle short term rematching of lost optical flow features
-        }
-        // else: no optical flow
+        // TODO: add descriptors to handle short term rematching of lost optical flow features
     }
-    // else: No optical flow for the first frame
+    // else: No optical flow for the first frame or no optical flow for this frame
     _lastFramePyramide = newImagePyramide;
 
     const size_t opticalFlowTrackedPointCount = newKeypointsObject.size();
@@ -172,9 +166,8 @@ const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& gr
     std::vector<cv::Point2f> detectedKeypoints;
     cv::Mat keypointDescriptors;
     // TODO: better metric to search for more keypoints
-    const bool shouldDetectKeypoints = opticalFlowTrackedPointCount / 3 < minimumPointsForOptimization and
-                                       opticalFlowTrackedPointCount < maximumPointsForLocalMap;
-    if (forceKeypointDetection or shouldDetectKeypoints)
+    if (forceKeypointDetection or (opticalFlowTrackedPointCount / 3 < minimumPointsForOptimization and
+                                   opticalFlowTrackedPointCount < maximumPointsForLocalMap))
     {
         // create a mask at current keypoint location
         const cv::Mat& keypointMask = compute_key_point_mask(grayImage.size(), newKeypointsObject.get_keypoints());
@@ -182,7 +175,7 @@ const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& gr
         // get new keypoints
         detectedKeypoints = detect_keypoints(grayImage, keypointMask, minimumPointsForOptimization);
 
-        if (detectedKeypoints.size() > 0)
+        if (not detectedKeypoints.empty())
         {
             /**
              *  DESCRIPTORS
@@ -212,8 +205,8 @@ const Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& gr
 
     // Update last keypoint struct
     keypointHandler.set(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage);
-    _meanPointExtractionDuration += static_cast<double>(cv::getTickCount() - keypointDetectionStartTime) /
-                                    static_cast<double>(cv::getTickFrequency());
+    _meanPointExtractionDuration +=
+            static_cast<double>(cv::getTickCount() - keypointDetectionStartTime) / cv::getTickFrequency();
     return keypointHandler;
 }
 
@@ -240,7 +233,7 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
     const size_t previousKeyPointCount = lastKeypointsWithIds.size();
     const cv::Size windowSizeObject = cv::Size(static_cast<int>(windowSize), static_cast<int>(windowSize));
     const static cv::TermCriteria criteria =
-            cv::TermCriteria((cv::TermCriteria::COUNT) + (cv::TermCriteria::EPS), 10, 0.03);
+            cv::TermCriteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 10, 0.03);
 
     // Get forward points: optical flow from previous to current image to extract new keypoints
     cv::calcOpticalFlowPyrLK(imagePreviousPyramide,
@@ -368,6 +361,4 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
     }
 }
 
-} // namespace keypoints
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::keypoints

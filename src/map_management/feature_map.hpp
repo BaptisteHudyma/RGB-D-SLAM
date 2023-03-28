@@ -14,8 +14,7 @@
 #include <opencv2/core/types.hpp>
 #include <unordered_map>
 
-namespace rgbd_slam {
-namespace map_management {
+namespace rgbd_slam::map_management {
 
 template<class DetectedFeaturesObject, class DetectedFeatureType, class FeatureMatchType, class TrackedFeaturesObject>
 class IMapFeature
@@ -131,8 +130,8 @@ class IMapFeature
      */
     size_t _failedTrackingCount;
     int _successivMatchedCount;
-    const uint _id;  // uniq id of this point in the program
-    int _matchIndex; // index of the last matched feature id
+    const size_t _id; // uniq id of this point in the program
+    int _matchIndex;  // index of the last matched feature id
     static const int UNMATCHED_FEATURE_INDEX = -1;
     static const int FIRST_DETECTION_INDEX = -2; // set for the first detection, to use tracking even if no match is set
 
@@ -150,8 +149,6 @@ class IMapFeature
 template<class DetectedFeatureType> class IStagedMapFeature
 {
   public:
-    // IStagedMapFeature(const matrix33& poseCovariance, const CameraToWorldMatrix& cameraToWorld, const
-    // DetectedFeatureType& detectedFeature);
     virtual bool should_remove_from_staged() const = 0;
     virtual bool should_add_to_local_map() const = 0;
 };
@@ -159,7 +156,6 @@ template<class DetectedFeatureType> class IStagedMapFeature
 template<class StagedMapFeature> class ILocalMapFeature
 {
   public:
-    // ILocalMapFeature(const StagedMapFeature& stagedFeature);
     virtual bool is_lost() const = 0;
 
     cv::Vec3b _color;
@@ -185,10 +181,12 @@ template<class MapFeatureType,
 class Feature_Map
 {
   private:
-    typedef std::unordered_map<size_t, MapFeatureType> localMapType;
-    typedef std::unordered_map<size_t, StagedFeatureType> stagedMapType;
+    using localMapType = std::unordered_map<size_t, MapFeatureType>;
+    using stagedMapType = std::unordered_map<size_t, StagedFeatureType>;
 
   public:
+    Feature_Map() : _isActivated(true) {}
+
     /**
      * \brief Reset the content of this map, empty all local maps
      */
@@ -381,8 +379,8 @@ class Feature_Map
             return false;
         }
         // Check if id is in local map
-        typename localMapType::iterator featureMapIterator = _localMap.find(featureId);
-        if (featureMapIterator != _localMap.end())
+        if (typename localMapType::iterator featureMapIterator = _localMap.find(featureId);
+            featureMapIterator != _localMap.end())
         {
             MapFeatureType& mapFeature = featureMapIterator->second;
             assert(mapFeature._id == featureId);
@@ -398,8 +396,8 @@ class Feature_Map
         }
 
         // Check if it is in staged map
-        typename stagedMapType::iterator stagedMapIterator = _stagedMap.find(featureId);
-        if (stagedMapIterator != _stagedMap.end())
+        if (typename stagedMapType::iterator stagedMapIterator = _stagedMap.find(featureId);
+            stagedMapIterator != _stagedMap.end())
         {
             StagedFeatureType& mapFeature = stagedMapIterator->second;
             assert(mapFeature._id == featureId);
@@ -602,7 +600,6 @@ class Feature_Map
     vectorb _isDetectedFeatureMatched; // indicates if a detected feature is macthed to a local map feature
 };
 
-} // namespace map_management
-} // namespace rgbd_slam
+} // namespace rgbd_slam::map_management
 
 #endif

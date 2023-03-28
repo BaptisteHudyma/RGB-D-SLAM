@@ -13,8 +13,7 @@
 #include <cmath>
 #include <string>
 
-namespace rgbd_slam {
-namespace pose_optimization {
+namespace rgbd_slam::pose_optimization {
 
 /**
  * \brief Compute a score for a transformation, and compute an inlier and outlier set
@@ -190,13 +189,15 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     // get the min and max values of planes and points to select
     const uint maxNumberOfPoints = std::min(minimumPointsForOptimization, (uint)matchedPointSize);
     const uint maxNumberOfPlanes = std::min(minimumPlanesForOptimization, (uint)matchedPlaneSize);
-    const uint minNumberOfPlanes = std::ceil((1.0 - maxNumberOfPoints * pointFeatureScore) / planeFeatureScore);
-    const uint minNumberOfPoints = std::ceil((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore);
+    const uint minNumberOfPlanes =
+            static_cast<uint>(std::ceil((1.0 - maxNumberOfPoints * pointFeatureScore) / planeFeatureScore));
+    const uint minNumberOfPoints =
+            static_cast<uint>(std::ceil((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore));
 
     // Compute maximum iteration with the original RANSAC formula
-    const uint maximumIterations =
+    const uint maximumIterations = static_cast<uint>(
             std::ceil(log(1.0 - Parameters::get_ransac_probability_of_success()) /
-                      log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization)));
+                      log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization))));
     assert(maximumIterations > 0);
 
     // set the start score to the maximum score
@@ -209,7 +210,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                                                                         (utils::Random::get_random_double() > 0.5);
         // depending on this number of planes, get a number of points to sample for this RANSAC iteration
         const uint numberOfPointsToSample =
-                std::ceil((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore);
+                static_cast<uint>(std::ceil((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore));
 
         const double subsetScore =
                 numberOfPointsToSample * pointFeatureScore + numberOfPlanesToSample * planeFeatureScore;
@@ -240,11 +241,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
 
         // compute a new candidate pose to evaluate
         utils::PoseBase candidatePose;
-        const bool isPoseValid =
-                Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, candidatePose);
-        // const bool isPoseValid = Pose_Optimization::compute_p3p_pose(currentPose, selectedPointMatches,
-        // candidatePose);
-        if (not isPoseValid)
+        if (not Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, candidatePose))
             continue;
 
         // get inliers and outliers for this transformation
@@ -340,7 +337,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     Global_Pose_Functor pose_optimisation_functor(
             Global_Pose_Estimator(matchedFeatures._pointSets._inliers, matchedFeatures._planeSets._inliers));
     // Optimization algorithm
-    Eigen::LevenbergMarquardt<Global_Pose_Functor, double> poseOptimizator(pose_optimisation_functor);
+    Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
     // maxfev   : maximum number of function evaluation
     poseOptimizator.parameters.maxfev = Parameters::get_optimization_maximum_iterations();
@@ -391,8 +388,8 @@ bool Pose_Optimization::compute_p3p_pose(const utils::PoseBase& currentPose,
     {
         const vector3& cameraPoint = match._screenFeature.to_camera_coordinates().base();
 
-        cameraPoints.push_back(cameraPoint.normalized());
-        worldPoints.push_back(match._worldFeature / multiplier);
+        cameraPoints.emplace_back(cameraPoint.normalized());
+        worldPoints.emplace_back(match._worldFeature / multiplier);
     }
 
     const std::vector<lambdatwist::CameraPose>& finalCameraPoses = lambdatwist::p3p(cameraPoints, worldPoints);
@@ -477,12 +474,11 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
         variatedCoordinates.z() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.z());
 
         // add to the new match set
-        const matches_containers::PointMatch variatedPointMatch(match._screenFeature,
-                                                                variatedCoordinates,
-                                                                match._worldFeatureCovariance,
-                                                                match._projectedWorldfeatureCovariance,
-                                                                match._idInMap);
-        variatedSet._pointSets._inliers.emplace_back(variatedPointMatch);
+        variatedSet._pointSets._inliers.emplace_back(match._screenFeature,
+                                                     variatedCoordinates,
+                                                     match._worldFeatureCovariance,
+                                                     match._projectedWorldfeatureCovariance,
+                                                     match._idInMap);
     }
     for (const matches_containers::PlaneMatch& match: matchedFeatures._planeSets._inliers)
     {
@@ -493,5 +489,4 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);
 }
 
-} // namespace pose_optimization
-} // namespace rgbd_slam
+} // namespace rgbd_slam::pose_optimization

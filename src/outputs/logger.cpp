@@ -2,8 +2,7 @@
 #include <filesystem>
 #include <iostream>
 
-namespace rgbd_slam {
-namespace outputs {
+namespace rgbd_slam::outputs {
 
 void log(const std::string_view& message, const std::source_location& location)
 {
@@ -30,5 +29,4 @@ void log_error(const std::string_view& message, const std::source_location& loca
               << message << std::endl;
 }
 
-} // namespace outputs
-} // namespace rgbd_slam
+} // namespace rgbd_slam::outputs

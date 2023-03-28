@@ -5,9 +5,7 @@
 #include "plane_segment.hpp"
 #include <vector>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 /**
  * \brief Stored a cylinder segment.
@@ -51,7 +49,6 @@ class Cylinder_Segment
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-  public:
     /**
      * \brief
      * \return The number of plane segments fitted in this cylinder surface
@@ -105,7 +102,7 @@ class Cylinder_Segment
      * \param[in] other The cyclinder segment to compare normal with
      * \return A double between 0 and 1, 0 when the normals are orthogonal, 1 il they are parallels.
      */
-    double get_normal_similarity(const Cylinder_Segment& other);
+    double get_normal_similarity(const Cylinder_Segment& other) const;
 
     const vector3 get_normal() const;
 
@@ -126,7 +123,7 @@ class Cylinder_Segment
                            const matrixd& planeNormals,
                            const matrixd& projectedCentroids,
                            const Matrixb& idsLeftMask,
-                           Matrixb& IFinal);
+                           Matrixb& IFinal) const;
 
     double get_distance(const vector3& point, const size_t segmentId) const;
 
@@ -146,13 +143,10 @@ class Cylinder_Segment
     uint _segmentCount;
     std::vector<uint> _local2globalMap;
 
-  private:
     // prevent dangerous and inefficient back end copy
     Cylinder_Segment& operator=(const Cylinder_Segment& seg); // copy operator
 };
 
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::primitives
 
 #endif

@@ -7,8 +7,7 @@
 #include <cmath>
 #include <math.h>
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 // TODO set in parameters
 const double MIN_DEPTH_DISTANCE = 40;   // (millimeters) is the depth camera minimum reliable distance
@@ -79,14 +78,23 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
     return cameraPoint;
 }
 
-void ScreenCoordinate::operator=(const vector3& other)
+ScreenCoordinate& ScreenCoordinate::operator=(const vector3& other)
 {
     this->x() = other.x();
     this->y() = other.y();
     this->z() = other.z();
+
+    return *this;
 }
 
-void ScreenCoordinate::operator=(const ScreenCoordinate& other) { this->operator=(other.base()); }
+ScreenCoordinate& ScreenCoordinate::operator=(const ScreenCoordinate& other)
+{
+    if (this == &other)
+        return *this;
+
+    this->operator=(other.base());
+    return *this;
+}
 
 void ScreenCoordinate::operator<<(const vector3& other) { this->operator=(other); }
 
@@ -111,7 +119,6 @@ bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) 
 
     const double screenX = cameraFX * x() + cameraCX;
     const double screenY = cameraFY * y() + cameraCY;
-
     if (not std::isnan(screenX) and not std::isnan(screenY))
     {
         screenPoint.x() = screenX;
@@ -136,7 +143,6 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
 
     const double screenX = cameraFX * x() / z() + cameraCX;
     const double screenY = cameraFY * y() / z() + cameraCY;
-
     if (not std::isnan(screenX) and not std::isnan(screenY))
     {
         screenPoint = ScreenCoordinate(screenX, screenY, z());
@@ -145,14 +151,22 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
     return false;
 }
 
-void CameraCoordinate::operator=(const vector3& other)
+CameraCoordinate& CameraCoordinate::operator=(const vector3& other)
 {
     this->x() = other.x();
     this->y() = other.y();
     this->z() = other.z();
+    return *this;
 }
 
-void CameraCoordinate::operator=(const CameraCoordinate& other) { this->operator=(other.base()); }
+CameraCoordinate& CameraCoordinate::operator=(const CameraCoordinate& other)
+{
+    if (this == &other)
+        return *this;
+
+    this->operator=(other.base());
+    return *this;
+}
 
 void CameraCoordinate::operator<<(const vector3& other) { this->operator=(other); }
 
@@ -176,8 +190,7 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
 bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                             ScreenCoordinate2D& screenPoint) const
 {
-    ScreenCoordinate screenCoordinates;
-    if (to_screen_coordinates(worldToCamera, screenCoordinates))
+    if (ScreenCoordinate screenCoordinates; to_screen_coordinates(worldToCamera, screenCoordinates))
     {
         screenPoint.x() = screenCoordinates.x();
         screenPoint.y() = screenCoordinates.y();
@@ -189,9 +202,7 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
 vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screenPoint,
                                                 const WorldToCameraMatrix& worldToCamera) const
 {
-    ScreenCoordinate2D projectedScreenPoint;
-    const bool isCoordinatesValid = to_screen_coordinates(worldToCamera, projectedScreenPoint);
-    if (isCoordinatesValid)
+    if (ScreenCoordinate2D projectedScreenPoint; to_screen_coordinates(worldToCamera, projectedScreenPoint))
     {
         vector2 distance = screenPoint - projectedScreenPoint;
         assert(not std::isnan(distance.x()));
@@ -224,6 +235,23 @@ double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
                                      const CameraToWorldMatrix& cameraToWorld) const
 {
     return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
+}
+
+WorldCoordinate& WorldCoordinate::operator=(const vector3& other)
+{
+    this->x() = other.x();
+    this->y() = other.y();
+    this->z() = other.z();
+    return *this;
+}
+
+WorldCoordinate& WorldCoordinate::operator=(const WorldCoordinate& other)
+{
+    if (this == &other)
+        return *this;
+
+    this->operator=(other.base());
+    return *this;
 }
 
 /**
@@ -286,5 +314,4 @@ vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoor
                    cameraPlaneSimplified.z() - worldPlaneSimplified.z());
 }
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils

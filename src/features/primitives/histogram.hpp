@@ -4,9 +4,7 @@
 #include "../../types.hpp"
 #include <vector>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 /**
  * \brief Basic 2D Histogram class, handling an histogram of N x N
@@ -17,7 +15,7 @@ class Histogram
     /**
      * \param[in] binPerCoordCount Size of a bin, in pixels
      */
-    explicit Histogram(const uint binPerCoordCount);
+    Histogram(const uint binPerCoordCount);
 
     /**
      * \brief Initialise the histogram
@@ -44,9 +42,6 @@ class Histogram
      */
     void reset();
 
-    ~Histogram();
-
-  protected:
   private:
     std::vector<uint> _H;
     std::vector<int> _B;
@@ -59,14 +54,11 @@ class Histogram
     const double _maxXminX;
     const double _maxYminY;
 
-  private:
     // prevent backend copy
     Histogram(const Histogram&);
     Histogram& operator=(const Histogram&);
 };
 
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::primitives
 
 #endif

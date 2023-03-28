@@ -4,8 +4,7 @@
 #include "../utils/matches_containers.hpp"
 #include "../utils/pose.hpp"
 
-namespace rgbd_slam {
-namespace pose_optimization {
+namespace rgbd_slam::pose_optimization {
 
 /**
  * \brief Find the transformation between a matches feature sets, using a custom Levenberg Marquardt method
@@ -94,7 +93,6 @@ class Pose_Optimization
                                                  utils::PoseBase& optimizedPose);
 };
 
-} // namespace pose_optimization
-} // namespace rgbd_slam
+} // namespace rgbd_slam::pose_optimization
 
 #endif

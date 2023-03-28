@@ -4,8 +4,7 @@
 #include "../types.hpp"
 #include <fstream>
 
-namespace rgbd_slam {
-namespace outputs {
+namespace rgbd_slam::outputs {
 
 /**
  * \brief Interface for the map writter classes
@@ -29,7 +28,7 @@ class IMap_Writer
 class XYZ_Map_Writer : public IMap_Writer
 {
   public:
-    explicit XYZ_Map_Writer(const std::string& filename);
+    XYZ_Map_Writer(const std::string& filename);
 
     void add_point(const vector3& pointCoordinates) override;
 };
@@ -41,12 +40,11 @@ class XYZ_Map_Writer : public IMap_Writer
 class PCD_Map_Writer : public IMap_Writer
 {
   public:
-    explicit PCD_Map_Writer(const std::string& filename);
+    PCD_Map_Writer(const std::string& filename);
 
     void add_point(const vector3& pointCoordinates) override;
 };
 
-} // namespace outputs
-} // namespace rgbd_slam
+} // namespace rgbd_slam::outputs
 
 #endif

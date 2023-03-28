@@ -3,11 +3,10 @@
 
 #include "../utils/random.hpp"
 #include <algorithm>
+#include <cassert>
 #include <vector>
 
-namespace rgbd_slam {
-namespace pose_optimization {
-namespace ransac {
+namespace rgbd_slam::pose_optimization::ransac {
 
 /**
  * \brief Return a random subset of unique elements, of size n. It is inefficient if n is very inferior to
@@ -57,8 +56,6 @@ Container<T> get_random_subset_with_duplicates(const Container<T>& inContainer, 
     return outContainer;
 }
 
-} // namespace ransac
-} // namespace pose_optimization
-} // namespace rgbd_slam
+} // namespace rgbd_slam::pose_optimization::ransac
 
 #endif

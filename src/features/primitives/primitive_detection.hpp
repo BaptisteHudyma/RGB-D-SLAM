@@ -9,9 +9,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 /**
  * \brief Main extraction class.
@@ -22,10 +20,10 @@ class Primitive_Detection
     // check for planes in an organized depth points matrix
   protected:
     // typdefs
-    typedef std::vector<std::pair<int, int>> intpair_vector;
-    typedef std::vector<Plane_Segment> plane_segments_container;
-    typedef std::vector<Cylinder_Segment> cylinder_segments_container;
-    typedef std::vector<uint> uint_vector;
+    using intpair_vector = std::vector<std::pair<int, int>>;
+    using plane_segments_container = std::vector<Plane_Segment>;
+    using cylinder_segments_container = std::vector<Cylinder_Segment>;
+    using uint_vector = std::vector<uint>;
 
   public:
     /**
@@ -37,7 +35,6 @@ class Primitive_Detection
 
     /**
      * \brief Main compute function: computes the primitives in the depth imahe
-     *
      * \param[in] depthMatrix Organized cloud of points, constructed from depth map
      * \param[out] planeContainer Container of detected planes in depth image
      * \param[out] primitiveContainer Container of detected cylinders in depth image
@@ -45,8 +42,6 @@ class Primitive_Detection
     void find_primitives(const matrixf& depthMatrix,
                          plane_container& planeContainer,
                          cylinder_container& primitiveContainer);
-
-    ~Primitive_Detection();
 
     // perf measurments
     double resetTime;
@@ -63,42 +58,77 @@ class Primitive_Detection
 
     /**
      * \brief Init planeGrid and cellDistanceTols
-     *
      * \param[in] depthCloudArray Organized point cloud extracted from depth images
      */
     void init_planar_cell_fitting(const matrixf& depthCloudArray);
 
     /**
      * \brief Initialize and fill the histogram bins
-     *
      * \return  Number of initial planar surfaces
      */
     uint init_histogram();
 
     /**
      * \brief grow planes and find cylinders from those planes
-     *
      * \param[in] remainingPlanarCells Unmatched plane count
-     *
      * \return A container that associates a cylinder ID with all the planes IDs that composes it
      */
     intpair_vector grow_planes_and_cylinders(const uint remainingPlanarCells);
 
     /**
      * \brief When given a plan seed, try to make it grow with it's neighboring cells. Try to fit a cylinder to those
-     * merged planes \param[in] seedId The id of the plane to try to grow \param[in, out] untriedPlanarCellsCount Count
-     * of planar cells that have not been tested for merge yet \param[in, out] cylinder2regionMap A container that
-     * associates a cylinder ID with all the planes IDs that composes it
+     * merged planes
+     * \param[in] seedId The id of the plane to try to grow
+     * \param[in, out] untriedPlanarCellsCount Count of planar cells that have not been tested for merge yet
+     * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs that
+     * composes it
      */
     void grow_plane_segment_at_seed(const uint seedId,
                                     uint& untriedPlanarCellsCount,
                                     intpair_vector& cylinder2regionMap);
 
     /**
-     *
+     * \brief Add the given plane segment to the tracked features
+     * \param[in] newPlaneSegment The plane segment to add
+     * \param[in] isActivatedMap container of the patches to add to this plane. A value at true means that the
+     * associated patch index is part of this plane
+     */
+    void add_plane_segment_to_features(const Plane_Segment& newPlaneSegment, const vectorb& isActivatedMap);
+
+    /**
+     * \brief Try to fit a plane to a cylinder
+     * \param[in] cylinderSegment The cylinder segment to fit
+     * \param[in] cellActivatedCount Number of activated planar cells
+     * \param[in] segId Id of the part of the cylinfer we try to fit
+     * \param[out] newMergedPlane A plane segment that is part of the cylinder. Not define if this function returns
+     * false
+     * \return True if a plane fitting was found
+     */
+    bool find_plane_segment_in_cylinder(const Cylinder_Segment& cylinderSegment,
+                                        const uint cellActivatedCount,
+                                        const uint segId,
+                                        Plane_Segment& newMergedPlane);
+
+    /**
+     * \param[in] cylinderSegment The cylinder segment to fit
+     * \param[in] cellActivatedCount Number of activated planar cells
+     * \param[in] segId Id of the part of the cylinfer we try to fit
+     * \param[in] newMergedPlane A plane segment that is part of the cylinder
+     * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs
+     * that composes it
+     */
+    void add_cylinder_to_features(const Cylinder_Segment& cylinderSegment,
+                                  const uint cellActivatedCount,
+                                  const uint segId,
+                                  const Plane_Segment& newMergedPlane,
+                                  intpair_vector& cylinder2regionMap);
+
+    /**
+     * \brief
      * \param[in] cellActivatedCount Number of activated planar cells
      * \param[in] isActivatedMap A vector associating for each planar patch a flag indicating if it was merged this
-     * iteration \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs
+     * iteration
+     * \param[in, out] cylinder2regionMap A container that associates a cylinder ID with all the planes IDs
      * that composes it
      */
     void cylinder_fitting(const uint cellActivatedCount,
@@ -180,13 +210,11 @@ class Primitive_Detection
     // kernel
     cv::Mat _maskCrossKernel;
 
-  private:
     // prevent backend copy
     Primitive_Detection(const Primitive_Detection&);
     Primitive_Detection& operator=(const Primitive_Detection&);
 };
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+
+} // namespace rgbd_slam::features::primitives
 
 #endif

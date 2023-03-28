@@ -4,9 +4,7 @@
 #include "../../utils/random.hpp"
 #include "Eigen/Eigenvalues"
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRegionId) :
     _cellActivatedCount(0),
@@ -25,6 +23,7 @@ Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg, const uint subRe
  *  Copy constructor
  */
 Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg) :
+    _axis(seg._axis),
     _centers(seg._centers),
     _radius(seg._radius),
     _cellActivatedCount(0),
@@ -33,7 +32,6 @@ Cylinder_Segment::Cylinder_Segment(const Cylinder_Segment& seg) :
     //_pointsAxis1 = seg.pointsAxis1;
     //_pointsAxis2 = seg.pointsAxis2;
     //_normalsAxis1Axis2 = seg._normalsAxis1Axis2;
-    _axis = seg._axis;
 }
 
 Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
@@ -52,8 +50,8 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
     matrixd planeCentroids(3, _cellActivatedCount);
 
     // Init. normals and centroids
-    size_t j = 0;
-    for (size_t i = 0; i < samplesCount; ++i)
+    uint j = 0;
+    for (uint i = 0; i < samplesCount; ++i)
     {
         if (isActivatedMask[i])
         {
@@ -76,7 +74,7 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
     }
 
     // Concatenate [Normals -Normals]
-    for (size_t i = 0; i < samplesCount; ++i)
+    for (uint i = 0; i < samplesCount; ++i)
     {
         if (isActivatedMask[i])
         {
@@ -99,9 +97,11 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
     const double score = eigenValues(2) / eigenValues(0);
 
     // Checkpoint 1
-    const static float minimumCyinderScore = Parameters::get_cylinder_ransac_minimum_score();
-    if (score < minimumCyinderScore)
+    if (const static float minimumCyinderScore = Parameters::get_cylinder_ransac_minimum_score();
+        score < minimumCyinderScore)
+    {
         return;
+    }
 
     const vector3& cylinderAxis = eigenSolver.eigenvectors().col(0);
     _axis = cylinderAxis;
@@ -144,12 +144,12 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
     }
     // Sequential RANSAC main loop
     const static size_t minimumCellActivated =
-            static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * samplesCount);
+            static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * static_cast<double>(samplesCount));
     while (planeSegmentsLeft > minimumCellActivated and planeSegmentsLeft > 0.1 * _cellActivatedCount)
     {
         Matrixb isInlierFinal(true, _cellActivatedCount);
         // RANSAC loop
-        const uint maxInliersCount = run_ransac_loop(
+        const size_t maxInliersCount = run_ransac_loop(
                 maximumIterations, idsLeft, planeNormals, projectedCentroids, idsLeftMask, isInlierFinal);
 
         // Checkpoint 2
@@ -182,7 +182,7 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
 
         const double oneOverMaxInliersCountSquared = 1.0 / static_cast<double>(maxInliersCount * maxInliersCount);
         const double a = 1 - sumOfNormals.squaredNorm() * oneOverMaxInliersCountSquared;
-        b /= maxInliersCount;
+        b /= static_cast<double>(maxInliersCount);
         b -= sumOfNormals.dot(sumOfCenters) * oneOverMaxInliersCountSquared;
         double radius = b / a;
         const matrixd center = (sumOfCenters - radius * sumOfNormals) / maxInliersCount;
@@ -216,7 +216,7 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
                 mse += distance;
             }
         }
-        mse /= maxInliersCount;
+        mse /= static_cast<double>(maxInliersCount);
         _MSE.push_back(mse);
 
         // Save points on axis, useful for computing distances afterwards
@@ -231,19 +231,19 @@ size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations,
                                          const matrixd& planeNormals,
                                          const matrixd& projectedCentroids,
                                          const Matrixb& idsLeftMask,
-                                         Matrixb& isInlierFinal)
+                                         Matrixb& isInlierFinal) const
 {
     assert(maximumIterations > 0);
     // not enough ids left
     if (idsLeft.size() < 3)
         return 0;
 
-    const uint planeIdsLeft = idsLeft.size();
-    const uint inliersAcceptedCount = 0.9 * planeIdsLeft;
+    const uint planeIdsLeft = static_cast<uint>(idsLeft.size());
+    const uint inliersAcceptedCount = static_cast<uint>(std::floor(0.9 * planeIdsLeft));
 
     const static float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
     // Score of the maximum inliers configuration
-    double minHypothesisDist = maximumSqrtDistance * planeIdsLeft;
+    double minHypothesisDist = maximumSqrtDistance * static_cast<float>(planeIdsLeft);
     // Indexes of the inliers of the best configuration
     std::vector<uint> finalInlierIndexes;
 
@@ -284,21 +284,22 @@ size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations,
         double dist = 0.0;
         for (uint i = 0; i < _cellActivatedCount; ++i)
         {
-            if (idsLeftMask(i))
+            if (not idsLeftMask(i))
             {
-                // Normal dist
-                const double distance =
-                        ((projectedCentroids.col(i) - radius * planeNormals.col(i)) - center.col(0)).squaredNorm() *
-                        oneOverRadiusSquared;
-                if (distance < maximumSqrtDistance)
-                {
-                    dist += distance;
-                    inlierIndexes.push_back(i);
-                }
-                else
-                {
-                    dist += maximumSqrtDistance;
-                }
+                continue;
+            }
+            // Normal dist
+            const double distance =
+                    ((projectedCentroids.col(i) - radius * planeNormals.col(i)) - center.col(0)).squaredNorm() *
+                    oneOverRadiusSquared;
+            if (distance < maximumSqrtDistance)
+            {
+                dist += distance;
+                inlierIndexes.push_back(i);
+            }
+            else
+            {
+                dist += maximumSqrtDistance;
             }
         }
 
@@ -390,7 +391,7 @@ double Cylinder_Segment::get_radius(const uint index) const
     return _radius[index];
 }
 
-double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other)
+double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other) const
 {
     return std::abs(_axis.dot(other._axis));
 }
@@ -399,6 +400,4 @@ const vector3 Cylinder_Segment::get_normal() const { return _axis; }
 
 Cylinder_Segment::~Cylinder_Segment() { _cellActivatedCount = 0; }
 
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::primitives

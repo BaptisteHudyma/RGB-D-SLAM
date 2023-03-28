@@ -8,9 +8,7 @@
 #include <utility>
 #include <vector>
 
-namespace rgbd_slam {
-namespace features {
-namespace keypoints {
+namespace rgbd_slam::features::keypoints {
 
 const int BORDER_SIZE = 1;             // Border of an image, in which points will be ignored
 const size_t INVALID_MAP_POINT_ID = 0; // should be the same as INVALID_POINT_UNIQ_ID in map_point.hpp
@@ -71,9 +69,9 @@ struct KeypointsWithIdStruct
         return _keypoints.size();
     }
 
-    bool empty() const { return size() == 0; }
+    bool empty() const { return _keypoints.empty(); }
 
-    const keypointWithId at(const size_t index) const
+    keypointWithId at(const size_t index) const
     {
         assert(index < size());
         return keypointWithId(_ids[index], _keypoints[index]);
@@ -85,7 +83,7 @@ struct KeypointsWithIdStruct
     }
     void add(const size_t id, const cv::Point2f point)
     {
-        _keypoints.emplace_back(point);
+        _keypoints.push_back(point);
         _ids.emplace_back(id);
     }
 
@@ -119,7 +117,7 @@ class Keypoint_Handler
      * \param[in] depthImage The depth image in which those keypoints were detected
      */
     void set(std::vector<cv::Point2f>& inKeypoints,
-             cv::Mat& inDescriptors,
+             const cv::Mat& inDescriptors,
              const KeypointsWithIdStruct& lastKeypointsWithIds,
              const cv::Mat& depthImage);
 
@@ -148,7 +146,7 @@ class Keypoint_Handler
     /**
      * \brief return the keypoint associated with the index
      */
-    const utils::ScreenCoordinate get_keypoint(const uint index) const
+    utils::ScreenCoordinate get_keypoint(const uint index) const
     {
         assert(index < _keypoints.size());
         return _keypoints[index];
@@ -156,11 +154,11 @@ class Keypoint_Handler
 
     bool is_descriptor_computed(const uint index) const { return index < static_cast<uint>(_descriptors.rows); }
 
-    const cv::Mat get_descriptor(const uint index) const
+    cv::Mat get_descriptor(const uint index) const
     {
         assert(index < static_cast<uint>(_descriptors.rows));
 
-        return _descriptors.row(index);
+        return _descriptors.row(static_cast<int>(index));
     }
 
     size_t get_keypoint_count() const { return _keypoints.size(); }
@@ -169,10 +167,11 @@ class Keypoint_Handler
 
     DetectedKeyPoint at(const size_t index) const
     {
+        const uint i = static_cast<uint>(index);
         DetectedKeyPoint newKp;
-        newKp._coordinates = get_keypoint(index);
-        if (is_descriptor_computed(index))
-            newKp._descriptor = get_descriptor(index);
+        newKp._coordinates = get_keypoint(i);
+        if (is_descriptor_computed(i))
+            newKp._descriptor = get_descriptor(i);
         else
             newKp._descriptor = cv::Mat();
         return newKp;
@@ -188,16 +187,29 @@ class Keypoint_Handler
      *
      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
      */
-    const cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
-                                         const vectorb& isKeyPointMatchedContainer,
-                                         const uint searchSpaceCellRadius) const;
+    cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
+                                   const vectorb& isKeyPointMatchedContainer,
+                                   const uint searchSpaceCellRadius) const;
 
-    typedef std::pair<uint, uint> uint_pair;
+    using index_container = std::vector<uint>;
+    /**
+     * \brief Fill the keypoint mask with the an area around the given keypoints
+     * \param[in] pointToSearch The cooridnates of the point we want to match
+     * \param[in] keypointIndexContainer A container with all the keypoints to draw an area around
+     * \param[in] isKeyPointMatchedContainer If a keypoint is already matched, it's index will be true
+     * \param[in, out] keyPointMask The match mask for each keypoints
+     */
+    void fill_keypoint_mask(const utils::ScreenCoordinate2D& pointToSearch,
+                            const index_container& keypointIndexContainer,
+                            const vectorb& isKeyPointMatchedContainer,
+                            cv::Mat& keyPointMask) const;
+
+    using uint_pair = std::pair<uint, uint>;
     /**
      * \brief Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes
      * must be used with _searchSpaceIndexContainer
      */
-    const uint_pair get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const;
+    uint_pair get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const;
 
     /**
      * \brief Compute an 1D array index from a 2D array index.
@@ -216,7 +228,7 @@ class Keypoint_Handler
 
     // store current frame keypoints
     std::vector<utils::ScreenCoordinate> _keypoints;
-    typedef std::unordered_map<size_t, size_t> uintToUintContainer;
+    using uintToUintContainer = std::unordered_map<size_t, size_t>;
     uintToUintContainer _uniqueIdsToKeypointIndex;
     cv::Mat _descriptors;
 
@@ -225,12 +237,9 @@ class Keypoint_Handler
     uint _cellCountY;
 
     // Corresponds to a 2D box containing index of key points in those boxes
-    typedef std::vector<uint> index_container;
     std::vector<index_container> _searchSpaceIndexContainer;
 };
 
-} // namespace keypoints
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::keypoints
 
 #endif

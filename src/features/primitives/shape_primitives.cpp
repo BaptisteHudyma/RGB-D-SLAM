@@ -6,9 +6,7 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/VectorBlock.h>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 /*
  *
@@ -48,9 +46,8 @@ double IPrimitive::get_IOU(const cv::Mat& mask) const
  *      CYLINDER
  *
  */
-Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask) : IPrimitive(shapeMask)
+Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask) : IPrimitive(shapeMask), _radius(0)
 {
-    _radius = 0;
     for (uint i = 0; i < cylinderSeg.get_segment_count(); ++i)
     {
         _radius += cylinderSeg.get_radius(i);
@@ -96,6 +93,11 @@ Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
     _parametersMatrix(planeSeg.get_point_cloud_covariance()),
     _descriptor(compute_descriptor())
 {
+    // TODO: WIP
+    const vector3 absoluteCovariance = planeSeg.get_normal().cwiseAbs();
+    // distribute the variance on the normal coefficients
+    const vector3 distributedError = (absoluteCovariance * planeSeg.get_MSE()).cwiseAbs();
+    // std::cout << distributedError.transpose() << std::endl;
 }
 
 Plane::Plane(const Plane& plane) :
@@ -153,6 +155,4 @@ matrix44 Plane::compute_covariance(const matrix33& worldPositionCovariance) cons
             _parametersMatrix, get_normal(), get_centroid().base(), worldPositionCovariance);
 }
 
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::primitives

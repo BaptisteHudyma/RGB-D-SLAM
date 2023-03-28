@@ -1,10 +1,9 @@
 #ifndef RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 #define RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 
-#include "coordinates.hpp"
+#include <cmath>
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 /**
  * \brief compute a distance bewteen two angles in radian
@@ -16,7 +15,6 @@ double angle_distance(const double angleA, const double angleB)
     return atan2(sin(angleA - angleB), cos(angleA - angleB));
 }
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils
 
 #endif

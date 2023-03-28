@@ -4,8 +4,7 @@
 #include "../types.hpp"
 #include <ostream>
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 struct ScreenCoordinate2D;
 struct ScreenCoordinate;
@@ -30,8 +29,8 @@ bool is_depth_valid(const double depth);
 struct ScreenCoordinate2D : public vector2
 {
     ScreenCoordinate2D() : vector2(vector2::Zero()) {};
-    ScreenCoordinate2D(const vector2& other) : vector2(other) {};
     ScreenCoordinate2D(const double x, const double y) : vector2(x, y) {};
+    ScreenCoordinate2D(const vector2& other) : vector2(other) {};
     ScreenCoordinate2D(const ScreenCoordinate2D& other) : vector2(other.x(), other.y()) {};
 
     /**
@@ -78,8 +77,8 @@ struct ScreenCoordinate : public ScreenCoordinate2D
     double z() const { return _z; };
     double& z() { return _z; };
 
-    void operator=(const vector3& other);
-    void operator=(const ScreenCoordinate& other);
+    ScreenCoordinate& operator=(const vector3& other);
+    ScreenCoordinate& operator=(const ScreenCoordinate& other);
     void operator<<(const vector3& other);
     void operator<<(const ScreenCoordinate& other);
 
@@ -148,8 +147,8 @@ struct CameraCoordinate : public CameraCoordinate2D
 
     vector3 base() const { return vector3(x(), y(), z()); };
 
-    void operator=(const vector3& other);
-    void operator=(const CameraCoordinate& other);
+    CameraCoordinate& operator=(const vector3& other);
+    CameraCoordinate& operator=(const CameraCoordinate& other);
     void operator<<(const vector3& other);
     void operator<<(const CameraCoordinate& other);
 
@@ -170,6 +169,7 @@ struct WorldCoordinate : public vector3
      */
     WorldCoordinate() : vector3(vector3::Zero()) {};
     WorldCoordinate(const vector3& coords) : vector3(coords) {};
+    WorldCoordinate(const WorldCoordinate& other) : vector3(other.base()) {};
     WorldCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
 
     /**
@@ -229,6 +229,9 @@ struct WorldCoordinate : public vector3
     {
         return get_signed_distance(worldPoint).lpNorm<1>();
     };
+
+    WorldCoordinate& operator=(const WorldCoordinate& other);
+    WorldCoordinate& operator=(const vector3& other);
 };
 
 struct PlaneCameraCoordinates : vector4
@@ -269,7 +272,6 @@ struct PlaneWorldCoordinates : vector4
                                         const PlaneWorldToCameraMatrix& worldToCamera) const;
 };
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils
 
 #endif

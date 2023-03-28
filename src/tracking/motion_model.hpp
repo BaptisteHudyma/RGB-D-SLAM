@@ -4,8 +4,7 @@
 #include "../types.hpp"
 #include "../utils/pose.hpp"
 
-namespace rgbd_slam {
-namespace tracking {
+namespace rgbd_slam::tracking {
 
 /**
  * \brief Dead reckoning class: guess next pose using a motion model
@@ -22,7 +21,7 @@ class Motion_Model
      *
      * \param[in] currentPose Last frame pose
      */
-    const utils::Pose predict_next_pose(const utils::Pose& currentPose) const;
+    utils::Pose predict_next_pose(const utils::Pose& currentPose) const;
 
     /**
      * \brief Update the motion model using the refined pose
@@ -34,12 +33,12 @@ class Motion_Model
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   protected:
-    const quaternion get_rotational_velocity(const quaternion& lastRotation,
-                                             const quaternion& lastVelocity,
-                                             const quaternion& currentRotation) const;
-    const vector3 get_position_velocity(const vector3& lastPosition,
-                                        const vector3& lastVelocity,
-                                        const vector3& currentPosition) const;
+    quaternion get_rotational_velocity(const quaternion& lastRotation,
+                                       const quaternion& lastVelocity,
+                                       const quaternion& currentRotation) const;
+    vector3 get_position_velocity(const vector3& lastPosition,
+                                  const vector3& lastVelocity,
+                                  const vector3& currentPosition) const;
 
   private:
     // Last known rotation quaternion estimated by the motion model (set by update_model)
@@ -52,7 +51,6 @@ class Motion_Model
     vector3 _linearVelocity;
 };
 
-} // namespace tracking
-} // namespace rgbd_slam
+} // namespace rgbd_slam::tracking
 
 #endif

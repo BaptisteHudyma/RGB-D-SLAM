@@ -3,8 +3,7 @@
 
 #include "../../types.hpp"
 
-namespace rgbd_slam {
-namespace tracking {
+namespace rgbd_slam::tracking {
 
 /**
  * \brief Implement a Kalman filter that can be shared by multiple systems, if they share the same dimentions
@@ -31,12 +30,11 @@ class SharedKalmanFilter
      *
      * \return A pair of the new state and covariance matrix
      */
-    std::pair<vectorxd, matrixd> get_new_state(const vectorxd& currentState,
-                                               const matrixd& stateNoiseCovariance,
-                                               const vectorxd& newMeasurement,
-                                               const matrixd& measurementNoiseCovariance);
+    std::tuple<vectorxd, matrixd> get_new_state(const vectorxd& currentState,
+                                                const matrixd& stateNoiseCovariance,
+                                                const vectorxd& newMeasurement,
+                                                const matrixd& measurementNoiseCovariance);
 
-  protected:
     // Matrices for computation
     matrixd _systemDynamics;
     const matrixd _outputMatrix;
@@ -97,7 +95,7 @@ class KalmanFilter : public SharedKalmanFilter
     vectorxd _stateEstimate;
     matrixd _estimateErrorCovariance;
 };
-} // namespace tracking
-} // namespace rgbd_slam
+
+} // namespace rgbd_slam::tracking
 
 #endif

@@ -9,12 +9,12 @@
 #include "feature_map.hpp"
 #include "map_point.hpp"
 #include "map_primitive.hpp"
+#include <memory>
 #include <opencv2/opencv.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <vector>
 
-namespace rgbd_slam {
-namespace map_management {
+namespace rgbd_slam::map_management {
 
 /**
  * \brief Maintain a local (around the camera) map.
@@ -25,14 +25,13 @@ class Local_Map
 {
   public:
     Local_Map();
-    ~Local_Map();
 
     /**
      * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global
      * ids
      * \param[in] lastpose The last known pose of the observer
      */
-    const features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(const utils::Pose& lastpose) const;
+    features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(const utils::Pose& lastpose) const;
 
     /**
      * \brief Find all matches for the given detected features
@@ -126,35 +125,32 @@ class Local_Map
 
   private:
     // Define types
-    typedef Feature_Map<LocalMapPoint,
-                        StagedMapPoint,
-                        DetectedKeypointsObject,
-                        DetectedPointType,
-                        PointMatchType,
-                        TrackedPointsObject>
-            localPointMap;
-    typedef Feature_Map<LocalMapPlane,
-                        StagedMapPlane,
-                        DetectedPlaneObject,
-                        DetectedPlaneType,
-                        PlaneMatchType,
-                        TrackedPlaneObject>
-            localPlaneMap;
+    using localPointMap = Feature_Map<LocalMapPoint,
+                                      StagedMapPoint,
+                                      DetectedKeypointsObject,
+                                      DetectedPointType,
+                                      PointMatchType,
+                                      TrackedPointsObject>;
+    using localPlaneMap = Feature_Map<LocalMapPlane,
+                                      StagedMapPlane,
+                                      DetectedPlaneObject,
+                                      DetectedPlaneType,
+                                      PlaneMatchType,
+                                      TrackedPlaneObject>;
 
     localPointMap _localPointMap;
     localPlaneMap _localPlaneMap;
 
     // local shape plane map container
-    typedef std::unordered_map<size_t, MapPlane> plane_map_container;
+    using plane_map_container = std::unordered_map<size_t, MapPlane>;
 
-    outputs::XYZ_Map_Writer* _mapWriter;
+    std::unique_ptr<outputs::XYZ_Map_Writer> _mapWriter = nullptr;
 
     // Remove copy operators
     Local_Map(const Local_Map& map) = delete;
     void operator=(const Local_Map& map) = delete;
 };
 
-} // namespace map_management
-} // namespace rgbd_slam
+} // namespace rgbd_slam::map_management
 
 #endif

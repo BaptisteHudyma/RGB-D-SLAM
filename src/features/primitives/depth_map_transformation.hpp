@@ -4,9 +4,7 @@
 #include "../../types.hpp"
 #include <opencv2/opencv.hpp>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 /**
  * \brief Handles operations on the initial depth image, to transform it on a connected cloud points.
@@ -48,12 +46,6 @@ class Depth_Map_Transformation
      */
     bool is_ok() const { return _isOk; };
 
-  public: // getters
-    float get_rgb_fx() const { return _fxRgb; }
-    float get_rgb_fy() const { return _fyRgb; }
-    float get_rgb_cx() const { return _cxRgb; }
-    float get_rgb_cy() const { return _cyRgb; }
-
   protected:
     /**
      * \brief Loads the camera intrinsic parameters
@@ -72,15 +64,15 @@ class Depth_Map_Transformation
     bool _isOk;
 
     // cam parameters
-    float _fxIr;
-    float _fyIr;
-    float _cxIr;
-    float _cyIr;
+    double _fxIr;
+    double _fyIr;
+    double _cxIr;
+    double _cyIr;
 
-    float _fxRgb;
-    float _fyRgb;
-    float _cxRgb;
-    float _cyRgb;
+    double _fxRgb;
+    double _fyRgb;
+    double _cxRgb;
+    double _cyRgb;
 
     // camera parameters
     cv::Mat _Rstereo;
@@ -91,8 +83,7 @@ class Depth_Map_Transformation
     cv::Mat_<float> _Ypre;
     cv::Mat_<int> _cellMap;
 };
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+
+} // namespace rgbd_slam::features::primitives
 
 #endif

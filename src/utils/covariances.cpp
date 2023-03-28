@@ -6,8 +6,7 @@
 #include "types.hpp"
 #include <cmath>
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 double get_depth_quantization(const double depth)
 {
@@ -18,7 +17,7 @@ double get_depth_quantization(const double depth)
     return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0), 0.5);
 }
 
-const ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance)
+ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance)
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -32,39 +31,39 @@ const ScreenCoordinateCovariance get_screen_point_covariance(const vector3& poin
     return screenPointCovariance;
 }
 
-const ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
-                                                             const WorldCoordinateCovariance& pointCovariance)
+ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                       const WorldCoordinateCovariance& pointCovariance)
 {
     return get_screen_point_covariance(point.base(), pointCovariance.base());
 }
 
-const ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
-                                                             const CameraCoordinateCovariance& pointCovariance)
+ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
+                                                       const CameraCoordinateCovariance& pointCovariance)
 {
     return get_screen_point_covariance(point.base(), pointCovariance.base());
 }
 
-const WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
-                                                           const matrix33& poseCovariance)
+WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
+                                                     const matrix33& poseCovariance)
 {
     WorldCoordinateCovariance cov;
     cov.base() << cameraPointCovariance + poseCovariance;
     return cov;
 }
 
-const WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
-                                                           const matrix33& poseCovariance)
+WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                     const matrix33& poseCovariance)
 {
     return get_world_point_covariance(utils::get_camera_point_covariance(screenPoint), poseCovariance);
 }
 
-const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint)
+CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint)
 {
     return get_camera_point_covariance(screenPoint, screenPoint.get_covariance());
 }
 
-const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
-                                                             const ScreenCoordinateCovariance& screenPointCovariance)
+CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
+                                                       const ScreenCoordinateCovariance& screenPointCovariance)
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -81,10 +80,10 @@ const CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordin
     return cameraPointCovariance;
 }
 
-const matrix44 compute_plane_covariance(const matrix33& leastSquarePlaneParameters,
-                                        const vector3& normal,
-                                        const vector3& centroid,
-                                        const matrix33& centroidError)
+matrix44 compute_plane_covariance(const matrix33& leastSquarePlaneParameters,
+                                  const vector3& normal,
+                                  const vector3& centroid,
+                                  const matrix33& centroidError)
 {
     // assert parameters
     assert(normal.norm() >= 0.9999 and normal.norm() <= 1);
@@ -122,5 +121,4 @@ const matrix44 compute_plane_covariance(const matrix33& leastSquarePlaneParamete
     return matrix44::Identity();
 }
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils

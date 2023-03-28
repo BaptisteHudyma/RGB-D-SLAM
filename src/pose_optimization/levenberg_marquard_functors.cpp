@@ -4,8 +4,7 @@
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
 
-namespace rgbd_slam {
-namespace pose_optimization {
+namespace rgbd_slam::pose_optimization {
 
 vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
 {
@@ -117,7 +116,7 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
 /**
  * \brief Return a string corresponding to the end status of the optimization
  */
-const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status)
+std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status)
 {
     switch (status)
     {
@@ -151,5 +150,4 @@ const std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace:
     return std::string("");
 }
 
-} // namespace pose_optimization
-} // namespace rgbd_slam
+} // namespace rgbd_slam::pose_optimization

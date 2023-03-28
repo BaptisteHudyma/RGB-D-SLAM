@@ -1,8 +1,7 @@
 #include "triangulation.hpp"
 #include "../parameters.hpp"
 
-namespace rgbd_slam {
-namespace tracking {
+namespace rgbd_slam::tracking {
 
 utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const double baselinePoseSupposition)
 {
@@ -17,8 +16,7 @@ bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& world
                                              const double& maximumRetroprojectionError)
 {
     utils::ScreenCoordinate2D projectedScreenPoint;
-    const bool isRetroprojectionValid = worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint);
-    if (not isRetroprojectionValid)
+    if (not worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint))
     {
         return false;
     }
@@ -58,15 +56,13 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
         triangulatedPoint = worldPoint;
 
         // Check retroprojection of point in frame A
-        const bool isRetroprojectionPointAValid = Triangulation::is_retroprojection_valid(
-                worldPoint, point2Da, currentWorldToCamera, maximumRetroprojectionError);
-        if (not isRetroprojectionPointAValid)
+        if (not Triangulation::is_retroprojection_valid(
+                    worldPoint, point2Da, currentWorldToCamera, maximumRetroprojectionError))
             return false;
 
         // Check retroprojection of point in frame B
-        const bool isRetroprojectionPointBValid = Triangulation::is_retroprojection_valid(
-                worldPoint, point2Db, newWorldToCamera, maximumRetroprojectionError);
-        if (not isRetroprojectionPointBValid)
+        if (not Triangulation::is_retroprojection_valid(
+                    worldPoint, point2Db, newWorldToCamera, maximumRetroprojectionError))
             return false;
 
         // retroprojection is good enough
@@ -76,5 +72,4 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
     return false;
 }
 
-} // namespace tracking
-} // namespace rgbd_slam
+} // namespace rgbd_slam::tracking

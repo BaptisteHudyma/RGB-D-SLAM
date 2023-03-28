@@ -12,23 +12,23 @@ namespace rgbd_slam {
 
 const double EulerToRadian = M_PI / 180.0;
 
-typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> Matrixb;
-typedef Eigen::MatrixXf matrixf;
-typedef Eigen::MatrixXd matrixd;
-typedef Eigen::Vector2d vector2;
-typedef Eigen::VectorXd vectorxd;
-typedef Eigen::Vector<bool, Eigen::Dynamic> vectorb;
-typedef Eigen::Matrix<double, 3, 1> vector3;
-typedef Eigen::Vector4d vector4;
-typedef Eigen::Matrix2d matrix22;
-typedef Eigen::Matrix3d matrix33;
-typedef Eigen::Matrix<double, 3, 4> matrix34;
-typedef Eigen::Matrix<double, 4, 3> matrix43;
-typedef Eigen::Matrix4d matrix44;
-typedef Eigen::Quaternion<double> quaternion;
+using Matrixb = Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>;
+using matrixf = Eigen::MatrixXf;
+using matrixd = Eigen::MatrixXd;
+using vector2 = Eigen::Vector2d;
+using vectorxd = Eigen::VectorXd;
+using vectorb = Eigen::Vector<bool, Eigen::Dynamic>;
+using vector3 = Eigen::Matrix<double, 3, 1>;
+using vector4 = Eigen::Vector4d;
+using matrix22 = Eigen::Matrix2d;
+using matrix33 = Eigen::Matrix3d;
+using matrix34 = Eigen::Matrix<double, 3, 4>;
+using matrix43 = Eigen::Matrix<double, 4, 3>;
+using matrix44 = Eigen::Matrix4d;
+using quaternion = Eigen::Quaternion<double>;
 
-typedef Eigen::Matrix<double, 6, 1> vector6;
-typedef Eigen::Matrix<double, 6, 6> matrix66;
+using vector6 = Eigen::Matrix<double, 6, 1>;
+using matrix66 = Eigen::Matrix<double, 6, 6>;
 
 struct ScreenCoordinateCovariance : public matrix33
 {
@@ -65,7 +65,7 @@ struct EulerAngles
     EulerAngles(const double y, const double p, const double r) : yaw(y), pitch(p), roll(r) {};
 };
 
-typedef std::vector<vector3, Eigen::aligned_allocator<vector3>> vector3_vector;
+using vector3_vector = std::vector<vector3, Eigen::aligned_allocator<vector3>>;
 } // namespace rgbd_slam
 
 #endif

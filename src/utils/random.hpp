@@ -4,8 +4,7 @@
 #include <ctime>
 #include <random>
 
-namespace rgbd_slam {
-namespace utils {
+namespace rgbd_slam::utils {
 
 class Random
 {
@@ -16,7 +15,7 @@ class Random
     static double get_random_double()
     {
         thread_local std::mt19937 randomEngine(_seed);
-        thread_local std::uniform_real_distribution<double> distribution(0.0, 1.0);
+        thread_local std::uniform_real_distribution distribution(0.0, 1.0);
 
         return distribution(randomEngine);
     }
@@ -27,7 +26,7 @@ class Random
     static double get_normal_double()
     {
         thread_local std::mt19937 randomEngine(_seed);
-        thread_local std::normal_distribution<double> distribution(0.0, 1.0);
+        thread_local std::normal_distribution distribution(0.0, 1.0);
 
         return distribution(randomEngine);
     }
@@ -42,7 +41,6 @@ class Random
 #endif
 };
 
-} // namespace utils
-} // namespace rgbd_slam
+} // namespace rgbd_slam::utils
 
 #endif

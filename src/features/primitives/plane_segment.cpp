@@ -7,9 +7,7 @@
 #include "types.hpp"
 #include <cmath>
 
-namespace rgbd_slam {
-namespace features {
-namespace primitives {
+namespace rgbd_slam::features::primitives {
 
 Plane_Segment::Plane_Segment()
 {
@@ -116,7 +114,7 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     const matrixf& zMatrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
 
     // Check number of missing depth points
-    _pointCount = (zMatrix.array() > 0).count();
+    _pointCount = static_cast<uint>((zMatrix.array() > 0).count());
     if (_pointCount < _minZeroPointCount)
     {
         return;
@@ -125,8 +123,7 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     // Check for discontinuities using cross search
     // Search discontinuities only in a vertical line passing through the center, than an horizontal line passing
     // through the center.
-    const bool isContinuous = is_cell_horizontal_continuous(zMatrix) and is_cell_vertical_continuous(zMatrix);
-    if (not isContinuous)
+    if (not is_cell_horizontal_continuous(zMatrix) and is_cell_vertical_continuous(zMatrix))
     {
         // this segment is not continuous...
         return;
@@ -288,6 +285,4 @@ bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchD
     return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid().base()) < maxMatchDistance;
 }
 
-} // namespace primitives
-} // namespace features
-} // namespace rgbd_slam
+} // namespace rgbd_slam::features::primitives
