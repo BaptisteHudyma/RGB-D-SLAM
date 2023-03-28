@@ -10,6 +10,9 @@ add_executable(testPoseOptimization
 add_executable(testKalmanFiltering
     ${TESTS}/test_kalman_filtering.cpp
     )
+add_executable(testMotionModel
+    ${TESTS}/test_motion_model.cpp
+    )
 
 target_link_libraries(testCoordinateSystems
     gtest_main
@@ -23,7 +26,10 @@ target_link_libraries(testKalmanFiltering
     gtest_main
     ${PROJECT_NAME}
     )
-
+target_link_libraries(testMotionModel
+    gtest_main
+    ${PROJECT_NAME}
+    )
 
 include(GoogleTest)
 gtest_discover_tests(testCoordinateSystems)
