@@ -7,6 +7,7 @@
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <cmath>
+#include <iostream>
 
 namespace rgbd_slam::features::primitives {
 
@@ -185,10 +186,12 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
 
     // diagonal
-    // the max(1.0) on the diagonal handle the rare case when all the points have the same measure
-    const double xxCovariance = std::max(0.01, _Sxs - _Sx * _Sx * oneOverCount);
-    const double yyCovariance = std::max(0.01, _Sys - _Sy * _Sy * oneOverCount);
-    const double zzCovariance = std::max(0.01, _Szs - _Sz * _Sz * oneOverCount);
+    const double xxCovariance = _Sxs - _Sx * _Sx * oneOverCount;
+    const double yyCovariance = _Sys - _Sy * _Sy * oneOverCount;
+    const double zzCovariance = _Szs - _Sz * _Sz * oneOverCount;
+    assert(xxCovariance >= 0);
+    assert(yyCovariance >= 0);
+    assert(zzCovariance >= 0);
 
     // bottom/top half
     const double xyCovariance = _Sxy - _Sx * _Sy * oneOverCount;
@@ -210,9 +213,16 @@ void Plane_Segment::fit_plane()
     // get the centroid of the plane
     _centroid = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
+    const matrix33 pointCloudCov = get_point_cloud_covariance();
+    // special case:
+    if (utils::double_equal(pointCloudCov.determinant(), 0))
+    {
+        _isPlanar = false;
+        return;
+    }
     // no need to fill the upper part, the adjoint solver does not need it
-    Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(get_point_cloud_covariance());
-    // eigen values are the point variance along the eigen vectors
+    Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(pointCloudCov);
+    // eigen values are the point variance along the eigen vectors (sorted by ascending order)
     const vector3& eigenValues = eigenSolver.eigenvalues();
     // best eigen vector is the most reliable direction for this plane normal
     const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
@@ -233,13 +243,13 @@ void Plane_Segment::fit_plane()
     // variance of points in our plane divided by number of points in the plane
     _MSE = eigenValues(0) * oneOverCount;
     // second best variance divided by variance of this plane patch
-    _score = eigenValues(1) / eigenValues(0);
+    _score = eigenValues(1) / std::max(eigenValues(0), 1e-6);
     // const double curvature = eigenValues(0) / eigenValues.sum();
 
     // failure case: covariance matrix is hill formed
     if (_MSE < 0 or _score < 0)
     {
-        // TODO: check why this can happen
+        // TODO; find out why
         // outputs::log_warning("Plane patch covariance matrix is ill formed, rejecting it");
         _isPlanar = false;
         return;

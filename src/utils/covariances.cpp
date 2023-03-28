@@ -92,7 +92,6 @@ matrix44 compute_plane_covariance(const matrix33& leastSquarePlaneParameters,
            leastSquarePlaneParameters.diagonal()(2) >= 0);
     assert(centroidError.diagonal()(0) >= 0 and centroidError.diagonal()(1) >= 0 and centroidError.diagonal()(2) >= 0);
 
-    /*
     // project the covariance of centroid of the plane to world space
     utils::ScreenCoordinate projected;
     if (not CameraCoordinate(centroid).to_screen_coordinates(projected))
@@ -102,25 +101,23 @@ matrix44 compute_plane_covariance(const matrix33& leastSquarePlaneParameters,
         exit(-1);
     }
     // get the covariance of the centroid distance to origin
-    const double centroidCovariance = 1.0 / (utils::get_camera_point_covariance(projected) + centroidError).trace();
-    assert(not std::isnan(centroidCovariance) and centroidCovariance > 0);
+    const matrix33& centroidCovariance = utils::get_camera_point_covariance(projected) + centroidError;
+    assert(centroidCovariance.diagonal()(0) >= 0 and centroidCovariance.diagonal()(1) >= 0 and
+           centroidCovariance.diagonal()(2) >= 0);
 
-    // compute the hessian of the covariance
-    const double hessianOfDistance = -centroidCovariance;
-    const vector3 hessianDistanceNormal = centroidCovariance * centroid;
-    const matrix33 hessianOfNormal = -leastSquarePlaneParameters + hessianOfDistance * centroid * centroid.transpose() +
-                                     (normal.transpose() * leastSquarePlaneParameters * normal) * matrix33::Identity();
-    matrix44 hessian;
-    hessian << hessianOfNormal, hessianDistanceNormal, hessianDistanceNormal.transpose(), hessianOfDistance;
+    const vector3& absoluteCentroid = centroid.cwiseAbs();
+    const vector3& weightedCentroid = absoluteCentroid / absoluteCentroid.sum(); // sum of all components == 1
+    assert(double_equal(weightedCentroid.sum(), 1.0));
 
-    const matrix44& covariance = -hessian.completeOrthogonalDecomposition().pseudoInverse();
-    assert(covariance.diagonal()(0) >= 0 and covariance.diagonal()(1) >= 0 and covariance.diagonal()(2) >= 0 and
-           covariance.diagonal()(3) >= 0);
-    assert(not std::isnan(covariance.diagonal()(0)) and not std::isnan(covariance.diagonal()(1)) and
-           not std::isnan(covariance.diagonal()(2)) and not std::isnan(covariance.diagonal()(3)));
-    // TODO: return true covariance
-    return covariance;*/
-    return matrix44::Identity();
+    // TODO: hack. pondered sum od the centroid covariance
+    const double distanceCovariance = (weightedCentroid.cwiseProduct(centroidCovariance.diagonal())).sum();
+
+    assert(not std::isnan(distanceCovariance) and distanceCovariance >= 0);
+
+    // TODO: set normal uncertainty
+    matrix44 planeCovariance = matrix44::Identity();
+    planeCovariance(3, 3) = distanceCovariance;
+    return planeCovariance;
 }
 
 } // namespace rgbd_slam::utils

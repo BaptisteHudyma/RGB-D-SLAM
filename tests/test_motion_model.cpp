@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <iostream>
 #include "motion_model.hpp"
 #include "pose.hpp"
 #include "types.hpp"
