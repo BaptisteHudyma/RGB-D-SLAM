@@ -4,6 +4,7 @@
 #include "Eigen/Eigenvalues"
 #include "coordinates.hpp"
 #include "covariances.hpp"
+#include "distance_utils.hpp"
 #include "types.hpp"
 #include <cmath>
 
@@ -226,6 +227,8 @@ void Plane_Segment::fit_plane()
         _normal = -_normal;
         _d = -_d;
     }
+
+    assert(utils::double_equal(_normal.norm(), 1.0));
 
     // variance of points in our plane divided by number of points in the plane
     _MSE = eigenValues(0) * oneOverCount;

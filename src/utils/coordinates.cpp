@@ -276,10 +276,27 @@ PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const PlaneCa
 {
     return PlaneWorldCoordinates(cameraToWorld.base() * this->base());
 }
+PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates_renormalized(
+        const PlaneCameraToWorldMatrix& cameraToWorld) const
+{
+    const vector4& worldCoordinates = this->to_world_coordinates(cameraToWorld).base();
+    vector4 renormalized;
+    renormalized << worldCoordinates.head(3).normalized(), worldCoordinates(3);
+    return PlaneWorldCoordinates(renormalized);
+}
 
 PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const
 {
     return PlaneCameraCoordinates(worldToCamera.base() * this->base());
+}
+
+PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates_renormalized(
+        const PlaneWorldToCameraMatrix& worldToCamera) const
+{
+    const vector4& cameraCoordinates = this->to_camera_coordinates(worldToCamera).base();
+    vector4 renormalized;
+    renormalized << cameraCoordinates.head(3).normalized(), cameraCoordinates(3);
+    return PlaneCameraCoordinates(renormalized);
 }
 
 vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane,

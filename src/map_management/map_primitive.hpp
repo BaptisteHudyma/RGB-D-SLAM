@@ -8,6 +8,7 @@
 #include "../utils/coordinates.hpp"
 #include "../utils/matches_containers.hpp"
 #include "../utils/random.hpp"
+#include "distance_utils.hpp"
 #include "feature_map.hpp"
 #include <memory>
 #include <opencv2/highgui.hpp>
@@ -60,25 +61,21 @@ class Plane
     {
         assert(_kalmanFilter != nullptr);
 
-        vector4 newEstimatedParameters;
-        matrix44 newEstimatedCovariance;
-        std::tie(newEstimatedParameters, newEstimatedCovariance) = _kalmanFilter->get_new_state(
+        const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(
                 _parametrization, _covariance, newDetectionParameters, newDetectionCovariance);
-
+        const vector4& newEstimatedParameters = res.first;
+        const matrix44& newEstimatedCovariance = res.second;
         const double score = (_parametrization - newEstimatedParameters).norm();
 
         // source: Revisiting Uncertainty Analysis for Optimum Planes Extracted from 3D Range Sensor Point-Clouds
 
         // covariance update
-        /*Eigen::SelfAdjointEigenSolver<matrix44> covarianceSolver(newEstimatedCovariance);
-        const double smallestEigenValue = covarianceSolver.eigenvalues()(0);
-        const vector4& smallestEigenVector = covarianceSolver.eigenvectors().col(0).normalized();*/
         _covariance = newEstimatedCovariance;
-        // newEstimatedCovariance - smallestEigenValue * smallestEigenVector * smallestEigenVector.transpose();
 
         // parameters update
         vector4 renormalizedVector = newEstimatedParameters / sqrt(pow(newEstimatedParameters.head(3).norm(), 2.0) +
                                                                    pow(newEstimatedParameters(3), 2.0));
+        assert(utils::double_equal(renormalizedVector.norm(), 1.0));
         renormalizedVector /= sqrt(1.0 - pow(renormalizedVector(3), 2.0));
         _parametrization << renormalizedVector.head(3).normalized(), renormalizedVector(3);
 
@@ -90,6 +87,7 @@ class Plane
                _covariance.diagonal()(3) >= 0);
         assert(not std::isnan(_parametrization.x()) and not std::isnan(_parametrization.y()) and
                not std::isnan(_parametrization.z()) and not std::isnan(_parametrization.w()));
+        assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
         return score;
     }
 
@@ -263,7 +261,7 @@ class MapPlane :
 
         const matrix44 worldCovariance = matchedFeature.compute_covariance(poseCovariance);
 
-        track(matchedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld),
+        track(matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld),
               worldCovariance,
               matchedFeature.get_centroid().to_world_coordinates(cameraToWorld));
 
@@ -286,11 +284,12 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
         MapPlane()
     {
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
-        _parametrization = detectedFeature.get_parametrization().to_world_coordinates(planeCameraToWorld);
+        _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
         _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld);
         _shapeMask = detectedFeature.get_shape_mask();
-
         _covariance = detectedFeature.compute_covariance(poseCovariance);
+
+        assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
     }
 
     bool should_remove_from_staged() const override { return _failedTrackingCount >= 2; }
@@ -313,6 +312,8 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _centroid = stagedPlane.get_centroid();
         _shapeMask = stagedPlane.get_mask();
         _covariance = stagedPlane.get_covariance();
+
+        assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
     }
 
     bool is_lost() const override

@@ -2,6 +2,7 @@
 #include "../parameters.hpp"
 #include "camera_transformation.hpp"
 #include "coordinates.hpp"
+#include "distance_utils.hpp"
 #include "logger.hpp"
 #include "types.hpp"
 #include <cmath>
@@ -86,11 +87,12 @@ matrix44 compute_plane_covariance(const matrix33& leastSquarePlaneParameters,
                                   const matrix33& centroidError)
 {
     // assert parameters
-    assert(normal.norm() >= 0.9999 and normal.norm() <= 1);
+    assert(double_equal(normal.norm(), 1.0));
     assert(leastSquarePlaneParameters.diagonal()(0) >= 0 and leastSquarePlaneParameters.diagonal()(1) >= 0 and
            leastSquarePlaneParameters.diagonal()(2) >= 0);
     assert(centroidError.diagonal()(0) >= 0 and centroidError.diagonal()(1) >= 0 and centroidError.diagonal()(2) >= 0);
 
+    /*
     // project the covariance of centroid of the plane to world space
     utils::ScreenCoordinate projected;
     if (not CameraCoordinate(centroid).to_screen_coordinates(projected))
@@ -117,7 +119,7 @@ matrix44 compute_plane_covariance(const matrix33& leastSquarePlaneParameters,
     assert(not std::isnan(covariance.diagonal()(0)) and not std::isnan(covariance.diagonal()(1)) and
            not std::isnan(covariance.diagonal()(2)) and not std::isnan(covariance.diagonal()(3)));
     // TODO: return true covariance
-    // return covariance;
+    return covariance;*/
     return matrix44::Identity();
 }
 

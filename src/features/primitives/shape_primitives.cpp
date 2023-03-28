@@ -3,6 +3,7 @@
 #include "../../parameters.hpp"
 #include "covariances.hpp"
 #include "cylinder_segment.hpp"
+#include "distance_utils.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/VectorBlock.h>
 
@@ -93,6 +94,8 @@ Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
     _parametersMatrix(planeSeg.get_point_cloud_covariance()),
     _descriptor(compute_descriptor())
 {
+    assert(utils::double_equal(planeSeg.get_normal().norm(), 1.0));
+    assert(utils::double_equal(get_normal().norm(), 1.0));
     // TODO: WIP
     const vector3 absoluteCovariance = planeSeg.get_normal().cwiseAbs();
     // distribute the variance on the normal coefficients

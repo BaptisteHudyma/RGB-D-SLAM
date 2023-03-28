@@ -242,6 +242,11 @@ struct PlaneCameraCoordinates : vector4
     PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
     PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
+    /**
+     * \brief project to world coordinates, with a renormalization of the normal. This is necessary because of
+     * floatting point errors that accumulates
+     */
+    PlaneWorldCoordinates to_world_coordinates_renormalized(const PlaneCameraToWorldMatrix& cameraToWorld) const;
 };
 
 struct PlaneWorldCoordinates : vector4
@@ -251,6 +256,11 @@ struct PlaneWorldCoordinates : vector4
     PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
     PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
+    /**
+     * \brief project to camera coordinates, with a renormalization of the normal. This is necessary because of
+     * floatting point errors that accumulates
+     */
+    PlaneCameraCoordinates to_camera_coordinates_renormalized(const PlaneWorldToCameraMatrix& worldToCamera) const;
 
     /**
      * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space

@@ -30,10 +30,10 @@ class SharedKalmanFilter
      *
      * \return A pair of the new state and covariance matrix
      */
-    std::tuple<vectorxd, matrixd> get_new_state(const vectorxd& currentState,
-                                                const matrixd& stateNoiseCovariance,
-                                                const vectorxd& newMeasurement,
-                                                const matrixd& measurementNoiseCovariance);
+    std::pair<vectorxd, matrixd> get_new_state(const vectorxd& currentState,
+                                               const matrixd& stateNoiseCovariance,
+                                               const vectorxd& newMeasurement,
+                                               const matrixd& measurementNoiseCovariance);
 
     // Matrices for computation
     matrixd _systemDynamics;

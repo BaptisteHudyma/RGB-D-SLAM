@@ -178,9 +178,9 @@ void test_plane_set_camera_to_world_to_camera(const CameraToWorldMatrix& cameraT
         {
             for (double z = -1; z < 1.0; z += normalZIter)
             {
+                const vector3 planeNormal = vector3(x, y, z).normalized();
                 for (double d = 1; d < 100; d += 5.5)
                 {
-                    const vector3 planeNormal = vector3(x, y, z);
                     const PlaneCameraCoordinates originalCameraPlane(
                             vector4(planeNormal.x(), planeNormal.y(), planeNormal.z(), d));
                     const PlaneWorldCoordinates worldPlane =
