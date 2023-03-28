@@ -1,8 +1,6 @@
 // The dataset can be found here:
 // https://vision.in.tum.de/data/datasets/rgbd-dataset
 
-
-
 #include <iostream>
 #include <fstream>
 #include <ctime>
@@ -21,21 +19,21 @@
 #include "types.hpp"
 #include "TUM_parser.hpp"
 
-
-void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks) 
+void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks)
 {
-    switch(cv::waitKey(1)) {
-        //check pressed key
+    switch (cv::waitKey(1))
+    {
+        // check pressed key
         case 'l':
             useLineDetection = not useLineDetection;
             break;
         case 's':
             showPrimitiveMasks = not showPrimitiveMasks;
             break;
-        case 'p': //pause button
-            cv::waitKey(-1); //wait until any key is pressed
+        case 'p':            // pause button
+            cv::waitKey(-1); // wait until any key is pressed
             break;
-        case 'q': //quit button
+        case 'q': // quit button
             shouldRunLoop = false;
         default:
             break;
@@ -43,36 +41,46 @@ void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPr
 }
 
 /**
- * \brief checks the existence of a file (from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c)
+ * \brief checks the existence of a file (from
+ * https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c)
  */
-inline bool is_file_valid (const std::string& fileName) {
+inline bool is_file_valid(const std::string& fileName)
+{
     struct stat buffer;
-    return (stat (fileName.c_str(), &buffer) == 0);
+    return (stat(fileName.c_str(), &buffer) == 0);
 }
 
-
-bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPrimitiveMasks, bool& showStagedPoints, bool& useLineDetection, int& startIndex, unsigned int& jumpImages, unsigned int& fpsTarget, bool& shouldSavePoses) 
+bool parse_parameters(int argc,
+                      char** argv,
+                      std::string& dataset,
+                      bool& showPrimitiveMasks,
+                      bool& showStagedPoints,
+                      bool& useLineDetection,
+                      int& startIndex,
+                      unsigned int& jumpImages,
+                      unsigned int& fpsTarget,
+                      bool& shouldSavePoses)
 {
-    const cv::String keys = 
-        "{help h usage ?  |         | print this message     }"
-        "{@dataset        | fr1_xyz | The dataset to read}"
-        "{p primitive     |  1      | display primitive masks }"
-        "{d staged        |  0      | display points in staged container }"
-        "{l lines         |  0      | Detect lines }"
-        "{i index         |  0      | First image to parse   }"
-        "{j jump          |  0      | Only take every j image into consideration   }"
-        "{r fps           |  30     | Used to slow down the treatment to correspond to a certain frame rate }"
-        "{s save          |  0      | Should save all the pose to a file }"
-        ;
+    const cv::String keys =
+            "{help h usage ?  |         | print this message     }"
+            "{@dataset        | fr1_xyz | The dataset to read}"
+            "{p primitive     |  1      | display primitive masks }"
+            "{d staged        |  0      | display points in staged container }"
+            "{l lines         |  0      | Detect lines }"
+            "{i index         |  0      | First image to parse   }"
+            "{j jump          |  0      | Only take every j image into consideration   }"
+            "{r fps           |  30     | Used to slow down the treatment to correspond to a certain frame rate }"
+            "{s save          |  0      | Should save all the pose to a file }";
 
     cv::CommandLineParser parser(argc, argv, keys);
     parser.about("RGBD Slam v0");
 
-    if (parser.has("help")) {
+    if (parser.has("help"))
+    {
         parser.printMessage();
         return false;
     }
-    
+
     dataset = parser.get<std::string>("@dataset");
     showPrimitiveMasks = parser.get<bool>("p");
     showStagedPoints = parser.get<bool>("d");
@@ -82,7 +90,8 @@ bool parse_parameters(int argc, char** argv, std::string& dataset, bool& showPri
     fpsTarget = parser.get<unsigned int>("r");
     shouldSavePoses = parser.get<bool>("s");
 
-    if(not parser.check()) {
+    if (not parser.check())
+    {
         std::cout << "RGBD SLAM: Some parameters are missing: call with -h to get the list of parameters";
         parser.printErrors();
     }
@@ -98,23 +107,35 @@ rgbd_slam::utils::Pose get_ground_truth(const std::string& groundTruthLine)
     double timestamp = 0;
     rgbd_slam::vector3 groundTruthPosition;
     rgbd_slam::quaternion groundTruthRotation;
-    inputGroundTruth >> 
-        timestamp >>
-        groundTruthPosition.x() >> groundTruthPosition.y() >> groundTruthPosition.z() >>
-        groundTruthRotation.x() >> groundTruthRotation.y() >> groundTruthRotation.z() >> groundTruthRotation.w();
+    inputGroundTruth >> timestamp >> groundTruthPosition.x() >> groundTruthPosition.y() >> groundTruthPosition.z() >>
+            groundTruthRotation.x() >> groundTruthRotation.y() >> groundTruthRotation.z() >> groundTruthRotation.w();
 
     return rgbd_slam::utils::Pose(groundTruthPosition * 1000, groundTruthRotation);
 }
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
     std::string dataset;
-    bool showPrimitiveMasks, showStagedPoints, useLineDetection, shouldSavePoses;
+    bool showPrimitiveMasks;
+    bool showStagedPoints;
+    bool useLineDetection;
+    bool shouldSavePoses;
     int startIndex;
-    unsigned int jumpFrames = 0, fpsTarget;
+    uint jumpFrames = 0;
+    uint fpsTarget;
 
-    if (not parse_parameters(argc, argv, dataset, showPrimitiveMasks, showStagedPoints, useLineDetection, startIndex, jumpFrames, fpsTarget, shouldSavePoses)) {
-        return 0;   //could not parse parameters correctly 
+    if (not parse_parameters(argc,
+                             argv,
+                             dataset,
+                             showPrimitiveMasks,
+                             showStagedPoints,
+                             useLineDetection,
+                             startIndex,
+                             jumpFrames,
+                             fpsTarget,
+                             shouldSavePoses))
+    {
+        return 0; // could not parse parameters correctly
     }
     const std::stringstream dataPath("./data/TUM/" + dataset + "/");
 
@@ -123,17 +144,17 @@ int main(int argc, char* argv[])
     const std::string depthImageListPath = dataPath.str() + "depth.txt";
     const std::string groundTruthPath = dataPath.str() + "groundtruth.txt";
 
-    const std::vector<Data>& datasetContainer = DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath, groundTruthPath);
+    const std::vector<Data>& datasetContainer =
+            DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath, groundTruthPath);
 
-    if (datasetContainer.size() <= 0)
+    if (datasetContainer.empty())
     {
         std::cout << "Could not load any dataset elements at " << dataPath.str() << std::endl;
         return -1;
     }
 
     rgbd_slam::utils::Pose pose;
-    const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth;
-    if (initialGroundTruth.isValid)
+    if (const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth; initialGroundTruth.isValid)
     {
         pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
     }
@@ -141,14 +162,14 @@ int main(int argc, char* argv[])
     // Load a default set of parameters
     rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
 
-    const uint width  = rgbd_slam::Parameters::get_camera_1_size_x();  // 640
-    const uint height = rgbd_slam::Parameters::get_camera_1_size_y();  // 480
+    const uint width = rgbd_slam::Parameters::get_camera_1_size_x();  // 640
+    const uint height = rgbd_slam::Parameters::get_camera_1_size_y(); // 480
 
-    rgbd_slam::RGBD_SLAM RGBD_Slam (pose, width, height);
+    rgbd_slam::RGBD_SLAM RGBD_Slam(pose, width, height);
 
-    //frame counters
+    // frame counters
     unsigned int totalFrameTreated = 0;
-    unsigned int frameIndex = startIndex;   //current frame index count
+    unsigned int frameIndex = startIndex; // current frame index count
 
     double meanTreatmentDuration = 0;
 
@@ -157,13 +178,9 @@ int main(int argc, char* argv[])
     {
         std::time_t timeOfTheDay = std::time(0);
         std::tm* gmtTime = std::gmtime(&timeOfTheDay);
-        std::string dateAndTime = 
-            std::to_string(1900 + gmtTime->tm_year) + "-" + 
-            std::to_string(1 + gmtTime->tm_mon) + "-" + 
-            std::to_string(gmtTime->tm_mday) + "_" + 
-            std::to_string(1 + gmtTime->tm_hour) + ":" + 
-            std::to_string(1 + gmtTime->tm_min) + ":" +
-            std::to_string(1 + gmtTime->tm_sec);
+        std::string dateAndTime = std::to_string(1900 + gmtTime->tm_year) + "-" + std::to_string(1 + gmtTime->tm_mon) +
+                                  "-" + std::to_string(gmtTime->tm_mday) + "_" + std::to_string(1 + gmtTime->tm_hour) +
+                                  ":" + std::to_string(1 + gmtTime->tm_min) + ":" + std::to_string(1 + gmtTime->tm_sec);
         std::cout << dateAndTime << std::endl;
         trajectoryFile.open("traj_TUM_" + dataset + "_" + dateAndTime + ".txt");
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
@@ -172,17 +189,18 @@ int main(int argc, char* argv[])
     double positionError = 0;
     double rotationError = 0;
 
-    //stop condition
+    // stop condition
     bool shouldRunLoop = true;
     bool isGroundTruthAvailable = false;
-    for(const Data& imageData : datasetContainer) 
+    for (const Data& imageData: datasetContainer)
     {
         // out condition
         if (not shouldRunLoop)
             break;
 
-        if(jumpFrames > 0 and frameIndex % jumpFrames != 0) {
-            //do not treat this frame
+        if (jumpFrames > 0 and frameIndex % jumpFrames != 0)
+        {
+            // do not treat this frame
             ++frameIndex;
             continue;
         }
@@ -197,23 +215,25 @@ int main(int argc, char* argv[])
         if (rgbImage.empty())
         {
             if (imageData.rgbImage.isValid)
-                std::cerr << "Cannot load rgb image " << rgbImagePath<< std::endl;
+                std::cerr << "Cannot load rgb image " << rgbImagePath << std::endl;
             rgbImage = cv::Mat(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
         }
         if (depthImage.empty())
         {
             if (imageData.depthImage.isValid)
                 std::cerr << "Could not load depth image " << depthImagePath << std::endl;
-            depthImage = cv::Mat(rgbd_slam::Parameters::get_camera_2_size_y(), rgbd_slam::Parameters::get_camera_2_size_x(), CV_16UC1, cv::Scalar(0.0));
+            depthImage = cv::Mat(rgbd_slam::Parameters::get_camera_2_size_y(),
+                                 rgbd_slam::Parameters::get_camera_2_size_x(),
+                                 CV_16UC1,
+                                 cv::Scalar(0.0));
         }
         assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);
         assert(static_cast<uint>(depthImage.cols) == width and static_cast<uint>(depthImage.rows) == height);
 
         // convert to mm & float 32
-        depthImage.convertTo(depthImage, CV_32FC1, 1.0/5.0);
+        depthImage.convertTo(depthImage, CV_32FC1, 1.0 / 5.0);
 
-
-        //clean warp artefacts
+        // clean warp artefacts
 #if 0
         cv::Mat kernel = cv::Mat::ones(3, 3, CV_8U);
         cv::Mat newMat;
@@ -223,12 +243,13 @@ int main(int argc, char* argv[])
 #endif
 
         // rectify the depth image before next step (already rectified in TU%M datasets)
-        //RGBD_Slam.rectify_depth(depthImage);
+        // RGBD_Slam.rectify_depth(depthImage);
 
         // get optimized pose
-        const double trackingStartTime = cv::getTickCount();
+        const double trackingStartTime = static_cast<double>(cv::getTickCount());
         pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
-        const double trackingDuration = (cv::getTickCount() - trackingStartTime) / (double)cv::getTickFrequency();
+        const double trackingDuration =
+                (static_cast<double>(cv::getTickCount()) - trackingStartTime) / (double)cv::getTickFrequency();
         meanTreatmentDuration += trackingDuration;
 
         // estimate error to ground truth
@@ -241,11 +262,11 @@ int main(int argc, char* argv[])
         }
 
         // display masks on image
-        cv::Mat segRgb = rgbImage.clone();
-        RGBD_Slam.get_debug_image(pose, rgbImage, segRgb, trackingDuration, showStagedPoints, showPrimitiveMasks);
+        const cv::Mat& segRgb =
+                RGBD_Slam.get_debug_image(pose, rgbImage, trackingDuration, showStagedPoints, showPrimitiveMasks);
         cv::imshow("RGBD-SLAM", segRgb);
 
-        //check user inputs
+        // check user inputs
         check_user_inputs(shouldRunLoop, useLineDetection, showPrimitiveMasks);
 
         // counters
@@ -254,18 +275,17 @@ int main(int argc, char* argv[])
 
         if (shouldSavePoses)
         {
-            //std::cout << "\x1B[2J\x1B[H" << pose << std::endl;
             const rgbd_slam::vector3& position = pose.get_position();
             const rgbd_slam::quaternion& rotation = pose.get_orientation_quaternion();
             const rgbd_slam::EulerAngles& rotationEuler = rgbd_slam::utils::get_euler_angles_from_quaternion(rotation);
             trajectoryFile << position.x() << "," << position.y() << "," << position.z() << ",";
-            trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl; 
+            trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl;
         }
 
-        //wait to adjust framerate
+        // wait to adjust framerate
         if (trackingDuration < 1.0 / fpsTarget)
         {
-            usleep( (1.0 / static_cast<double>(fpsTarget) - trackingDuration) * 1e6);
+            usleep((1.0 / static_cast<double>(fpsTarget) - trackingDuration) * 1e6);
         }
     }
 
@@ -274,7 +294,7 @@ int main(int argc, char* argv[])
 
     std::cout << std::endl;
     if (isGroundTruthAvailable)
-        std::cout << "Pose error: " << positionError/10.0 << " cm | " << rotationError << " °" << std::endl;
+        std::cout << "Pose error: " << positionError / 10.0 << " cm | " << rotationError << " °" << std::endl;
     std::cout << "End pose : " << pose << std::endl;
     std::cout << "Process terminated at frame " << frameIndex << std::endl;
     std::cout << std::endl;

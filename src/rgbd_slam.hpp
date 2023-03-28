@@ -51,17 +51,15 @@ class RGBD_SLAM
      *
      * \param[in] camPose Current pose of the observer
      * \param[in] originalRGB Raw rgb image. Will be used as a base for the final image
-     * \param[out] debugImage Output image
      * \param[in] elapsedTime Time since the last call (used for FPS count)
      * \param[in] shouldDisplayStagedPoints Display the points that are not map points yet
      * \param[in] shouldDisplayPrimitiveMasks Display the detected primitive masks
      */
-    void get_debug_image(const utils::Pose& camPose,
-                         const cv::Mat& originalRGB,
-                         cv::Mat& debugImage,
-                         const double elapsedTime,
-                         const bool shouldDisplayStagedPoints = false,
-                         const bool shouldDisplayPrimitiveMasks = false) const;
+    cv::Mat get_debug_image(const utils::Pose& camPose,
+                            const cv::Mat& originalRGB,
+                            const double elapsedTime,
+                            const bool shouldDisplayStagedPoints = false,
+                            const bool shouldDisplayPrimitiveMasks = false) const;
 
     /**
      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
@@ -119,7 +117,6 @@ class RGBD_SLAM
     double _meanPoseOptimizationFromFeatures;
     double _meanLocalMapUpdateDuration;
 
-  private:
     // remove copy constructors as we have dynamically instantiated members
     RGBD_SLAM(const RGBD_SLAM& rgbdSlam) = delete;
     RGBD_SLAM& operator=(const RGBD_SLAM& rgbdSlam) = delete;
