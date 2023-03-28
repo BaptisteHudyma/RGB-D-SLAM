@@ -8,6 +8,7 @@
 #include "utils/coordinates.hpp"
 #include "utils/pose.hpp"
 #include <gtest/gtest.h>
+#include <iostream>
 #include <random>
 
 namespace rgbd_slam {
@@ -119,14 +120,14 @@ matches_containers::match_plane_container get_matched_planes(const utils::Pose& 
 
     matches_containers::match_plane_container matchedPlanes;
 
-    for (uint i = 0; i < 4; ++i)
-    {
-        vector3 planeNormal(
-                normalDistribution(randomEngine), normalDistribution(randomEngine), normalDistribution(randomEngine));
-        planeNormal.normalize();
-        const utils::PlaneWorldCoordinates worldPlane(
-                planeNormal.x(), planeNormal.y(), planeNormal.z(), abs(normalDistribution(randomEngine) * 100));
+    const std::vector<utils::PlaneWorldCoordinates> planes = {
+            utils::PlaneWorldCoordinates(0.452271, -0.419436, -0.787099, 10),
+            utils::PlaneWorldCoordinates(-0.585607, -0.43009, 0.687085, 30),
+            utils::PlaneWorldCoordinates(-0.498271, 0.767552, -0.403223, -20),
+            utils::PlaneWorldCoordinates(0.706067, -0.0741267, -0.704255, 150)};
 
+    for (const utils::PlaneWorldCoordinates& worldPlane: planes)
+    {
         const utils::PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
 
         matchedPlanes.emplace(matchedPlanes.cend(), cameraPlane, worldPlane, nullptr, nullptr, 0);
