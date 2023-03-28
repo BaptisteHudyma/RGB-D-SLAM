@@ -32,6 +32,9 @@ class Motion_Model
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
+    vector3 get_position_velocity() const { return _linearVelocity; };
+    quaternion get_angular_velocity() const { return _angularVelocity; };
+
   protected:
     quaternion get_rotational_velocity(const quaternion& lastRotation,
                                        const quaternion& lastVelocity,
