@@ -4,7 +4,7 @@
 #include "../features/keypoints/keypoint_handler.hpp"
 #include "../features/primitives/shape_primitives.hpp"
 #include "../outputs/map_writer.hpp"
-#include "../utils/matches_containers.hpp"
+#include "../matches_containers.hpp"
 #include "../utils/pose.hpp"
 #include "feature_map.hpp"
 #include "map_point.hpp"

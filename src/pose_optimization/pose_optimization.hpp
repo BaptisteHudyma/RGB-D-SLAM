@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_POSEOPTIMIZATION_POSEOPTIMIZATION_HPP
 #define RGBDSLAM_POSEOPTIMIZATION_POSEOPTIMIZATION_HPP
 
-#include "../utils/matches_containers.hpp"
+#include "../matches_containers.hpp"
 #include "../utils/pose.hpp"
 
 namespace rgbd_slam::pose_optimization {

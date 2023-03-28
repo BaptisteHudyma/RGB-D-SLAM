@@ -41,7 +41,7 @@ using match_point_container = std::list<PointMatch>;
 //      - the normal vector of the plane in camera space
 //      - the normal vector of the plane in world space
 //      - the covariance of the world plane projected in camera space
-using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, void*, void*>;
+using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, vector4, vector4>;
 using match_plane_container = std::list<PlaneMatch>;
 
 struct matchContainer

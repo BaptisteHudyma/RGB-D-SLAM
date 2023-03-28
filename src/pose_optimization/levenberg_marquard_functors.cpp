@@ -52,18 +52,18 @@ Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_poi
 {
     assert(not _points.empty() or not _planes.empty());
 
-    _dividers.reserve(_points.size() + _planes.size());
+    _dividers.reserve(_points.size() * 2 + _planes.size() * 3);
     for (const matches_containers::PointMatch& match: _points)
     {
-        _dividers.emplace(_dividers.end(), 1.0 / sqrt(match._projectedWorldfeatureCovariance.x()));
-        _dividers.emplace(_dividers.end(), 1.0 / sqrt(match._projectedWorldfeatureCovariance.y()));
+        _dividers.emplace_back(1.0); // / sqrt(match._projectedWorldfeatureCovariance.x()));
+        _dividers.emplace_back(1.0); // / sqrt(match._projectedWorldfeatureCovariance.y()));
     }
     for (const matches_containers::PlaneMatch& match: _planes)
     {
         // TODO: replace with a true covariance value
-        _dividers.emplace(_dividers.end(), 0.01);
-        _dividers.emplace(_dividers.end(), 0.01);
-        _dividers.emplace(_dividers.end(), 0.01);
+        _dividers.emplace_back(0.01);
+        _dividers.emplace_back(0.01);
+        _dividers.emplace_back(0.01);
     }
 }
 

@@ -2,7 +2,7 @@
 #define RGBDSLAM_POSEOPTIMIZATION_LMFUNCTORS_HPP
 
 #include "../types.hpp"
-#include "../utils/matches_containers.hpp"
+#include "../matches_containers.hpp"
 #include "../utils/pose.hpp"
 
 // types
