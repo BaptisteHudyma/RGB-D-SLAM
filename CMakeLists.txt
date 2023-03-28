@@ -136,6 +136,7 @@ add_library(utils SHARED
     ${UTILS}/camera_transformation.cpp
     ${UTILS}/pose.cpp
     ${UTILS}/coordinates.cpp
+    ${UTILS}/distance_utils.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED

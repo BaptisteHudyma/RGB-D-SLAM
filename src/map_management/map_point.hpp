@@ -50,10 +50,10 @@ struct Point
     {
         assert(_kalmanFilter != nullptr);
 
-        vector3 newCoordinates;
-        matrix33 newCovariance;
-        std::tie(newCoordinates, newCovariance) = _kalmanFilter->get_new_state(
+        const std::pair<vector3, matrix33>& res = _kalmanFilter->get_new_state(
                 _coordinates, _covariance.base(), newDetectionCoordinates, newDetectionCovariance);
+        const vector3& newCoordinates = res.first;
+        const matrix33& newCovariance = res.second;
 
         const double score = (_coordinates - newCoordinates).norm();
 
