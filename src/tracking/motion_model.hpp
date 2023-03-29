@@ -18,10 +18,10 @@ class Motion_Model
 
     /**
      * \brief Predicts next pose with motion model (dead reckoning)
-     *
      * \param[in] currentPose Last frame pose
+     * \param[in] shouldIncreaseVariance If true, an uncertainty will be added to variance of the predicted pose
      */
-    utils::Pose predict_next_pose(const utils::Pose& currentPose) const;
+    utils::Pose predict_next_pose(const utils::Pose& currentPose, const bool shouldIncreaseVariance = true) const;
 
     /**
      * \brief Update the motion model using the refined pose

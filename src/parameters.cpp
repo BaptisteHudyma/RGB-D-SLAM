@@ -114,7 +114,8 @@ void Parameters::set_parameters()
     _maximumRetroprojectionError = 3;
 
     // Local map
-    _pointUnmatchedCountToLoose = 60; // consecutive unmatched frames before removing from local map
+    _pointUnmatchedCountToLoose =
+            10; // consecutive unmatched frames before removing from local map (high is good, but consumes more perfs)
     _pointStagedAgeConfidence = 3;
     _pointMinimumConfidenceForMap = 0.9;
     _maximumPointPerFrame = 200;

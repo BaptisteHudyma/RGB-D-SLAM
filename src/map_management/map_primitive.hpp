@@ -27,7 +27,7 @@ class Plane
     Plane()
     {
         _parametrization.setZero();
-        _covariance.setIdentity();
+        _covariance.setZero();
         _centroid.setZero();
 
         build_kalman_filter();

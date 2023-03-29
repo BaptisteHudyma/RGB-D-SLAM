@@ -295,22 +295,21 @@ bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
                                                utils::Pose& optimizedPose,
                                                matches_containers::match_sets& featureSets)
 {
-    const bool isPoseValid = compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets);
-    if (isPoseValid)
+    if (compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets))
     {
-        matrix66 estimatedPoseCovariance;
         // Compute pose variance
-        if (compute_pose_variance(optimizedPose, featureSets, estimatedPoseCovariance))
+        if (matrix66 estimatedPoseCovariance;
+            compute_pose_variance(optimizedPose, featureSets, estimatedPoseCovariance))
         {
-            optimizedPose.set_position_variance(currentPose.get_pose_variance() + estimatedPoseCovariance);
+            optimizedPose.set_position_variance(estimatedPoseCovariance);
+            return true;
         }
         else
         {
             outputs::log_warning("Could not compute pose variance");
-            return false;
         }
     }
-    return isPoseValid;
+    return false;
 }
 
 bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& currentPose,
