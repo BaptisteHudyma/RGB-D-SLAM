@@ -168,15 +168,7 @@ class MapPoint :
 
         if (shouldAddToMatches)
         {
-            const rgbd_slam::ScreenCoordinateCovariance& screenCovariance =
-                    utils::get_screen_point_covariance(_coordinates, _covariance);
-            // consider only the diagonal part of the matrix: it is the 2D variance en x/y in screen space
-            const vector2& screenPointCovariance(screenCovariance.diagonal().head(2));
-            matches.emplace_back(detectedFeatures.get_keypoint(matchIndex),
-                                 _coordinates,
-                                 _covariance.diagonal(),
-                                 screenPointCovariance,
-                                 _id);
+            matches.emplace_back(detectedFeatures.get_keypoint(matchIndex), _coordinates, _covariance.diagonal(), _id);
         }
         return matchIndex;
     }

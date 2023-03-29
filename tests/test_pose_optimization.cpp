@@ -94,7 +94,6 @@ matches_containers::match_point_container get_matched_points(const utils::Pose& 
             matchedPoints.emplace_back(transformedPoint, // screenPoint
                                        worldPointStart,  // worldPoint
                                        vector3::Ones(),
-                                       vector2::Ones(),
                                        0 // uniq map id
             );
         }
@@ -128,7 +127,7 @@ matches_containers::match_plane_container get_matched_planes(const utils::Pose& 
     {
         const utils::PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
 
-        matchedPlanes.emplace(matchedPlanes.cend(), cameraPlane, worldPlane, vector4::Ones(), vector4::Ones(), 0);
+        matchedPlanes.emplace_back(cameraPlane, worldPlane, vector4::Ones(), 0);
     }
     return matchedPlanes;
 }

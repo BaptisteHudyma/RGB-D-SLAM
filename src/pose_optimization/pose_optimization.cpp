@@ -475,29 +475,26 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
         variatedCoordinates.z() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.z());
 
         // add to the new match set
-        variatedSet._pointSets._inliers.emplace_back(match._screenFeature,
-                                                     variatedCoordinates,
-                                                     match._worldFeatureCovariance,
-                                                     match._projectedWorldfeatureCovariance,
-                                                     match._idInMap);
+        variatedSet._pointSets._inliers.emplace_back(
+                match._screenFeature, variatedCoordinates, match._worldFeatureCovariance, match._idInMap);
     }
     for (const matches_containers::PlaneMatch& match: matchedFeatures._planeSets._inliers)
     {
         utils::PlaneWorldCoordinates variatedCoordinates = match._worldFeature;
 
         // TODO: use true covariance model when it will work
-        variatedCoordinates.x() += 0.1; // utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.x());
-        variatedCoordinates.y() += 0.1; // utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.y());
-        variatedCoordinates.z() += 0.1; // utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.z());
+        variatedCoordinates.x() +=
+                0.1 * utils::Random::get_normal_double(); // * sqrt(match._worldFeatureCovariance.x());
+        variatedCoordinates.y() +=
+                0.1 * utils::Random::get_normal_double(); // * sqrt(match._worldFeatureCovariance.y());
+        variatedCoordinates.z() +=
+                0.1 * utils::Random::get_normal_double(); // * sqrt(match._worldFeatureCovariance.z());
         variatedCoordinates.head(3).normalize();
 
         variatedCoordinates.w() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.w());
 
-        variatedSet._planeSets._inliers.emplace_back(match._screenFeature,
-                                                     variatedCoordinates,
-                                                     match._worldFeatureCovariance,
-                                                     match._projectedWorldfeatureCovariance,
-                                                     match._idInMap);
+        variatedSet._planeSets._inliers.emplace_back(
+                match._screenFeature, variatedCoordinates, match._worldFeatureCovariance, match._idInMap);
     }
 
     return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);
