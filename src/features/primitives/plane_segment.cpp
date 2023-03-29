@@ -7,6 +7,7 @@
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <cmath>
+#include <iostream>
 
 namespace rgbd_slam::features::primitives {
 
@@ -185,9 +186,10 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
 
     // diagonal
-    const double xxCovariance = _Sxs - _Sx * _Sx * oneOverCount;
-    const double yyCovariance = _Sys - _Sy * _Sy * oneOverCount;
-    const double zzCovariance = _Szs - _Sz * _Sz * oneOverCount;
+    // TODO: why do I have a zero sometimes ? floatting point error accumulation ?
+    const double xxCovariance = std::max(0.0, _Sxs - _Sx * _Sx * oneOverCount);
+    const double yyCovariance = std::max(0.0, _Sys - _Sy * _Sy * oneOverCount);
+    const double zzCovariance = std::max(0.0, _Szs - _Sz * _Sz * oneOverCount);
     assert(xxCovariance >= 0);
     assert(yyCovariance >= 0);
     assert(zzCovariance >= 0);
