@@ -41,7 +41,7 @@ vector3 Motion_Model::get_position_velocity(const vector3& lastPosition,
     return (newLinVelocity + lastVelocity) * 0.5;
 }
 
-utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose) const
+utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose, const bool shouldIncreaseVariance) const
 {
     const quaternion& currentRotation = currentPose.get_orientation_quaternion();
     const vector3& currentPosition = currentPose.get_position();
@@ -55,8 +55,14 @@ utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose) cons
     const vector3 integralPos = currentPosition + newLinVelocity;
     const quaternion integralQ = (currentRotation * newVelocity).normalized();
 
-    // TODO: predict variance instead of copying ?
-    return utils::Pose(integralPos, integralQ, currentPose.get_pose_variance());
+    matrix66 poseError = matrix66::Zero();
+    if (shouldIncreaseVariance)
+    {
+        // add some variance to the new covariance (mm, radians)
+        const vector6& stdToAdd = vector6(10, 10, 10, 0.1, 0.1, 0.1);
+        poseError.diagonal() = stdToAdd.cwiseProduct(stdToAdd);
+    }
+    return utils::Pose(integralPos, integralQ, currentPose.get_pose_variance() + poseError);
 }
 
 void Motion_Model::update_model(const utils::Pose& pose)

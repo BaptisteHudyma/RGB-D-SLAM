@@ -106,6 +106,8 @@ class RGBD_SLAM
     bool _isTrackingLost;      // True is the tracking of last frame failed
     uint _failedTrackingCount; // number of consecutive lost tracking
 
+    bool _isFirstTrackingCall = true; // first call to the tracking function (prevent erroneous error messages)
+
     // debug
     uint _totalFrameTreated;
     double _meanDepthMapTreatmentDuration;

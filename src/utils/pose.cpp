@@ -52,16 +52,17 @@ double PoseBase::get_rotation_error(const PoseBase& pose) const
  * Pose
  */
 
-Pose::Pose() : PoseBase() { _positionVariance.setZero(); }
+Pose::Pose() : PoseBase(), _poseVariance(matrix66::Zero()) {}
 
-Pose::Pose(const vector3& position, const quaternion& orientation) : PoseBase(position, orientation)
+Pose::Pose(const vector3& position, const quaternion& orientation) :
+    PoseBase(position, orientation),
+    _poseVariance(matrix66::Zero())
 {
-    _positionVariance.setZero();
 }
 
 Pose::Pose(const vector3& position, const quaternion& orientation, const matrix66& poseVariance) :
     PoseBase(position, orientation),
-    _positionVariance(poseVariance)
+    _poseVariance(poseVariance)
 {
 }
 
@@ -70,7 +71,7 @@ void Pose::display(std::ostream& os) const
     PoseBase::display(os);
     os << std::endl << "position standard dev (meters/degrees) : " << std::endl;
     os << "x\ty\tz\t|\troll\tpitch\tyaw" << std::endl;
-    vector6 poseStd = _positionVariance.diagonal().cwiseSqrt();
+    vector6 poseStd = _poseVariance.diagonal().cwiseSqrt();
     os << poseStd.head(3).transpose() / 1000.0 << "\t|\t" << poseStd.tail(3).transpose() * 180.0 / M_PI << std::endl;
 }
 

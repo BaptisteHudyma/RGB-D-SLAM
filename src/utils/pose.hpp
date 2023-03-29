@@ -67,9 +67,9 @@ class Pose : public PoseBase
 
     virtual ~Pose() = default;
 
-    void set_position_variance(const matrix66& variance) { _positionVariance = variance; };
-    matrix66 get_pose_variance() const { return _positionVariance; };
-    matrix33 get_position_variance() const { return _positionVariance.block(0, 0, 3, 3); };
+    void set_position_variance(const matrix66& variance) { _poseVariance = variance; };
+    matrix66 get_pose_variance() const { return _poseVariance; };
+    matrix33 get_position_variance() const { return _poseVariance.block(0, 0, 3, 3); };
 
     /**
      * \brief A display function, to avoid a friend operator function
@@ -77,7 +77,7 @@ class Pose : public PoseBase
     void display(std::ostream& os) const override;
 
   private:
-    matrix66 _positionVariance;
+    matrix66 _poseVariance;
 };
 
 std::ostream& operator<<(std::ostream& os, const PoseBase& pose);

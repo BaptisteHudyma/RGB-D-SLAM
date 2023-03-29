@@ -16,6 +16,7 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
     _height(imageHeight),
     _isTrackingLost(true),
     _failedTrackingCount(0),
+    _isFirstTrackingCall(true),
 
     _totalFrameTreated(0),
     _meanDepthMapTreatmentDuration(0.0),
@@ -198,12 +199,12 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
                                         const cv::Mat& depthImage,
                                         const matrixf& cloudArrayOrganized)
 {
-    // get a pose with the decaying motion model
-    const utils::Pose& predictedPose = _motionModel.predict_next_pose(_currentPose);
-
     // every now and then, restart the search of points even if we have enough features
     _computeKeypointCount = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) + 1;
     const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
+
+    // get a pose with the decaying motion model (do not add uncertainty if it's the first call)
+    const utils::Pose& predictedPose = _motionModel.predict_next_pose(_currentPose, not _isFirstTrackingCall);
 
     // Get map points that were tracked last call, and retroproject them to screen space using last pose (used for
     // optical flow)
@@ -228,15 +229,17 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     _meanFindMatchTime += (static_cast<double>(cv::getTickCount()) - findMatchesStartTime) / cv::getTickFrequency();
 
     // The new pose, after optimization
-    utils::Pose newPose;
+    utils::Pose newPose = predictedPose;
 
     // Optimize refined pose
     utils::Pose optimizedPose;
     matches_containers::match_sets matchSets;
 
+    // optimize the pose, but not if it is the first call (no pose to compute)
     const double optimizePoseStartTime = static_cast<double>(cv::getTickCount());
-    const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(
-            predictedPose, matchedFeatures, optimizedPose, matchSets);
+    const bool isPoseValid =
+            (not _isFirstTrackingCall) and pose_optimization::Pose_Optimization::compute_optimized_pose(
+                                                   predictedPose, matchedFeatures, optimizedPose, matchSets);
     _meanPoseOptimizationFromFeatures +=
             (static_cast<double>(cv::getTickCount()) - optimizePoseStartTime) / cv::getTickFrequency();
 
@@ -257,8 +260,6 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     // else the refined pose will follow the motion model
     else
     {
-        newPose = predictedPose;
-
         // no valid transformation
         _localMap->update_no_pose();
 
@@ -272,14 +273,20 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             _localMap->add_features_to_map(poseCovariance, cameraToWorld, keypointObject, detectedPlanes, true);
         }
 
-        // tracking is lost after some consecutive fails
-        // TODO add to parameters
-        _isTrackingLost = (++_failedTrackingCount) > 3;
+        if (not _isFirstTrackingCall)
+        {
+            // tracking is lost after some consecutive fails
+            // TODO add to parameters
+            _isTrackingLost = (++_failedTrackingCount) > 3;
 
-        outputs::log_error("Could not find an optimized pose");
+            outputs::log_error("Could not find an optimized pose");
+        }
     }
     _meanLocalMapUpdateDuration +=
             (static_cast<double>(cv::getTickCount()) - updateLocalMapStartTime) / cv::getTickFrequency();
+
+    // set firstCall to false after the first iteration
+    _isFirstTrackingCall = false;
 
     return newPose;
 }
