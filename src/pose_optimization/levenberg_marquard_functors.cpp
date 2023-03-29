@@ -51,20 +51,6 @@ Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_poi
     _planes(planes)
 {
     assert(not _points.empty() or not _planes.empty());
-
-    _dividers.reserve(_points.size() * 2 + _planes.size() * 3);
-    for (const matches_containers::PointMatch& match: _points)
-    {
-        _dividers.emplace_back(1.0); // / sqrt(match._projectedWorldfeatureCovariance.x()));
-        _dividers.emplace_back(1.0); // / sqrt(match._projectedWorldfeatureCovariance.y()));
-    }
-    for (const matches_containers::PlaneMatch& match: _planes)
-    {
-        // TODO: replace with a true covariance value
-        _dividers.emplace_back(0.01);
-        _dividers.emplace_back(0.01);
-        _dividers.emplace_back(0.01);
-    }
 }
 
 // Implementation of the objective function
@@ -72,7 +58,6 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
 {
     assert(not _points.empty() or not _planes.empty());
     assert(optimizedParameters.size() == 6);
-    assert(Eigen::Index(_dividers.size()) == outputScores.size());
     assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 3));
 
     // Get the new estimated pose
@@ -89,9 +74,9 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
         const vector2& distance =
                 match._worldFeature.get_signed_distance_2D(match._screenFeature, transformationMatrix);
 
-        outputScores(pointIndex) = distance.x() * _dividers[pointIndex];
+        outputScores(pointIndex) = distance.x();
         ++pointIndex;
-        outputScores(pointIndex) = distance.y() * _dividers[pointIndex];
+        outputScores(pointIndex) = distance.y();
         ++pointIndex;
     }
 
@@ -103,11 +88,11 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
         const vector3& planeProjectionError =
                 match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
 
-        outputScores(pointIndex) = planeProjectionError.x() * _dividers[pointIndex];
+        outputScores(pointIndex) = planeProjectionError.x() * 0.01;
         ++pointIndex;
-        outputScores(pointIndex) = planeProjectionError.y() * _dividers[pointIndex];
+        outputScores(pointIndex) = planeProjectionError.y() * 0.01;
         ++pointIndex;
-        outputScores(pointIndex) = planeProjectionError.z() * _dividers[pointIndex];
+        outputScores(pointIndex) = planeProjectionError.z() * 0.01;
         ++pointIndex;
     }
     return 0;

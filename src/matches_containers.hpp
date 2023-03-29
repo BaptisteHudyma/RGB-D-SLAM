@@ -6,42 +6,35 @@
 
 namespace rgbd_slam::matches_containers {
 
-template<class FeatureCameraSpace,
-         class FeatureWorldSpace,
-         class WorldFeatureCovariance,
-         class ProjectedWorldFeatureCovariance>
-struct MatchTemplate
+template<class FeatureCameraSpace, class FeatureWorldSpace, class WorldFeatureCovariance> struct MatchTemplate
 {
     MatchTemplate(const FeatureCameraSpace& screenfeature,
                   const FeatureWorldSpace& worldFeature,
                   const WorldFeatureCovariance& worldfeatureCovariance,
-                  const ProjectedWorldFeatureCovariance& projectedWorldfeatureCovariance,
                   const size_t mapId) :
         _screenFeature(screenfeature),
         _worldFeature(worldFeature),
         _worldFeatureCovariance(worldfeatureCovariance),
-        _projectedWorldfeatureCovariance(projectedWorldfeatureCovariance),
         _idInMap(mapId) {};
 
     FeatureCameraSpace _screenFeature;              // Coordinates of the detected screen point
     FeatureWorldSpace _worldFeature;                // coordinates of the local world point
-    WorldFeatureCovariance _worldFeatureCovariance; // projected to screen space
-    ProjectedWorldFeatureCovariance _projectedWorldfeatureCovariance;
-    size_t _idInMap; // Id of the world feature in the local map
+    WorldFeatureCovariance _worldFeatureCovariance; // Covariance of this feature in world space
+    size_t _idInMap;                                // Id of the world feature in the local map
 };
 
 // KeyPoint matching: contains :
 //      - the coordinates of the detected point in screen space
 //      - the coordinates of the matched point in world space
 //      - the covariance of the world plane projected in screen space
-using PointMatch = MatchTemplate<utils::ScreenCoordinate, utils::WorldCoordinate, vector3, vector2>;
+using PointMatch = MatchTemplate<utils::ScreenCoordinate, utils::WorldCoordinate, vector3>;
 using match_point_container = std::list<PointMatch>;
 
 // MapPlane matching: contains :
 //      - the normal vector of the plane in camera space
 //      - the normal vector of the plane in world space
 //      - the covariance of the world plane projected in camera space
-using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, vector4, vector4>;
+using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, vector4>;
 using match_plane_container = std::list<PlaneMatch>;
 
 struct matchContainer

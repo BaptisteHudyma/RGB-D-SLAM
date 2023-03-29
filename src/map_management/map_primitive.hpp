@@ -185,16 +185,9 @@ class MapPlane :
 
         if (shouldAddToMatches)
         {
-            // TODO: true screen variance model
-            vector4 screenCovariance = _covariance.diagonal();
-
             const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
             // TODO: replace nullptr by the plane covariance in camera space
-            matches.emplace_back(shapePlane.get_parametrization(),
-                                 get_parametrization(),
-                                 _covariance.diagonal(),
-                                 screenCovariance,
-                                 _id);
+            matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), _covariance.diagonal(), _id);
         }
 
         return selectedIndex;
