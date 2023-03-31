@@ -481,16 +481,11 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     {
         utils::PlaneWorldCoordinates variatedCoordinates = match._worldFeature;
 
-        // TODO: use true covariance model when it will work
-        variatedCoordinates.x() +=
-                0.1 * utils::Random::get_normal_double(); // * sqrt(match._worldFeatureCovariance.x());
-        variatedCoordinates.y() +=
-                0.1 * utils::Random::get_normal_double(); // * sqrt(match._worldFeatureCovariance.y());
-        variatedCoordinates.z() +=
-                0.1 * utils::Random::get_normal_double(); // * sqrt(match._worldFeatureCovariance.z());
+        variatedCoordinates(0) += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance(0));
+        variatedCoordinates(1) += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance(1));
+        variatedCoordinates(2) += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance(2));
+        variatedCoordinates(3) += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance(3));
         variatedCoordinates.head(3).normalize();
-
-        variatedCoordinates.w() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.w());
 
         variatedSet._planeSets._inliers.emplace_back(
                 match._screenFeature, variatedCoordinates, match._worldFeatureCovariance, match._idInMap);

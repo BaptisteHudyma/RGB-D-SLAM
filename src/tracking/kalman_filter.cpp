@@ -1,4 +1,5 @@
 #include "kalman_filter.hpp"
+#include "distance_utils.hpp"
 #include "types.hpp"
 #include <tuple>
 
@@ -20,20 +21,53 @@ std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& c
                                                                const vectorxd& newMeasurement,
                                                                const matrixd& measurementNoiseCovariance)
 {
+    // check parameters
+    for (uint i = 0; i < stateNoiseCovariance.diagonal().size(); ++i)
+        assert(stateNoiseCovariance.diagonal()(i) >= 0.0);
+    for (uint i = 0; i < measurementNoiseCovariance.diagonal().size(); ++i)
+        assert(measurementNoiseCovariance.diagonal()(i) >= 0.0);
+
     // Get new raw estimate
     const vectorxd& newStateEstimate = _systemDynamics * currentState;
     const matrixd& estimateErrorCovariance =
             _systemDynamics * stateNoiseCovariance * _systemDynamics.transpose() + _processNoiseCovariance;
 
+    // compute inovation covariance
+    const matrixd inovationCovariance =
+            _outputMatrix * estimateErrorCovariance * _outputMatrix.transpose() + measurementNoiseCovariance;
+
+    // cannot inverse the inovation covariance matrix, no gain to compute (gain too small)
+    if (utils::double_equal(inovationCovariance.determinant(), 0))
+    {
+        // do not update state or covariance
+        return std::make_pair(newStateEstimate, estimateErrorCovariance);
+    }
+
     // compute Kalman gain
-    const matrixd& kalmanGain =
-            estimateErrorCovariance * _outputMatrix.transpose() *
-            (_outputMatrix * estimateErrorCovariance * _outputMatrix.transpose() + measurementNoiseCovariance)
-                    .inverse();
+    const matrixd& kalmanGain = estimateErrorCovariance * _outputMatrix.transpose() * inovationCovariance.inverse();
+
+    const vectorxd& newState = newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate);
+
+    const matrixd& covUpdateMatrix = (_identity - kalmanGain * _outputMatrix);
+    matrixd newCovariance = (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance;
+
+    /*  // Alternative non Joseph form
+    const matrixd& temp = _identity - kalmanGain * _outputMatrix;
+    const matrixd& newCovariance = temp * estimateErrorCovariance * temp.transpose() +
+                                   kalmanGain * measurementNoiseCovariance * kalmanGain.transpose();
+    */
+
+    assert(newCovariance.cols() == newCovariance.rows());
+    // diagonal is positive
+    for (uint i = 0; i < newCovariance.diagonal().size(); ++i)
+        newCovariance.diagonal()(i) = std::max(0.0, newCovariance.diagonal()(i));
+    // ensure symetricity
+    for (uint i = 0; i < newCovariance.cols(); ++i)
+        for (uint j = i + 1; j < newCovariance.rows(); ++j)
+            newCovariance(i, j) = newCovariance(j, i);
 
     // return the covariance and state estimation
-    return std::make_pair(newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate),
-                          (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance);
+    return std::make_pair(newState, newCovariance);
 }
 
 KalmanFilter::KalmanFilter(const matrixd& systemDynamics,

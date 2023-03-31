@@ -61,20 +61,6 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
 CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
                                                        const ScreenCoordinateCovariance& screenPointCovariance);
 
-/**
- * \brief Compute the covariance of the plane parameters
- * Inspired by : revisiting uncertainty analysis for optimum planes extracted from 3d range sensor point-cloud
- * \param[in] parametersMatrix The matrix used to compute the plane parameters
- * \param[in] normal Normal vector of this plane
- * \param[in] centroid Centroid of this plane. Will be used as the base for the plane covariance
- * \param[in] centroidError optionnal. if given, will be added to the centroid error.
- * \return the covariance of the plane. If centroidError is not given, it is in camera space.
- */
-matrix44 compute_plane_covariance(const matrix33& parametersMatrix,
-                                  const vector3& normal,
-                                  const vector3& centroid,
-                                  const matrix33& centroidError = matrix33::Zero());
-
 } // namespace rgbd_slam::utils
 
 #endif

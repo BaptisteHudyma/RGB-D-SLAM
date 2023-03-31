@@ -244,12 +244,12 @@ struct PlaneCameraCoordinates : vector4
     PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
     /**
      * \brief project to world coordinates, with a renormalization of the normal. This is necessary because of
-     * floatting point errors that accumulates
+     * floating point errors that accumulates
      */
     PlaneWorldCoordinates to_world_coordinates_renormalized(const PlaneCameraToWorldMatrix& cameraToWorld) const;
 };
 
-struct PlaneWorldCoordinates : vector4
+struct PlaneWorldCoordinates : public vector4
 {
     PlaneWorldCoordinates() : vector4(vector4::Zero()) {};
     PlaneWorldCoordinates(const vector4& plane) : vector4(plane) {};
@@ -258,7 +258,7 @@ struct PlaneWorldCoordinates : vector4
     PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
     /**
      * \brief project to camera coordinates, with a renormalization of the normal. This is necessary because of
-     * floatting point errors that accumulates
+     * floating point errors that accumulates
      */
     PlaneCameraCoordinates to_camera_coordinates_renormalized(const PlaneWorldToCameraMatrix& worldToCamera) const;
 

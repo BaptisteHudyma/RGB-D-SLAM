@@ -140,7 +140,12 @@ class Plane : public IPrimitive
     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
 
-    matrix44 compute_covariance(const matrix33& worldPositionCovariance = matrix33::Zero()) const;
+    /**
+     * \brief Compute the covariance of this plane parameters
+     * \param[in] positionCovariance The covariance of the pose where this plane was observed
+     * \return The covariance of this plane parameters
+     */
+    matrix44 compute_covariance(const matrix33& positionCovariance = matrix33::Zero()) const;
 
     ~Plane() = default;
 
@@ -155,8 +160,8 @@ class Plane : public IPrimitive
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
     matrix33 _parametersMatrix; // the parameter matrix used to compute the plane parameters (used for covariance)
-
-    vector6 _descriptor;
+    matrix33 _pointCloudCovarianceHessian; // the hessian of the covariance of point cloud
+    vector6 _descriptor;                   // the descriptor of this plane
 
     // remove copy functions
     Plane() = delete;

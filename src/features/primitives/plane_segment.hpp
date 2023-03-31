@@ -83,6 +83,11 @@ class Plane_Segment
      */
     matrix33 get_point_cloud_covariance() const;
 
+    /**
+     * \brief return the pont could hessian matrix
+     */
+    matrix33 get_point_cloud_covariance_hessian() const;
+
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     double get_MSE() const { return _MSE; };
