@@ -7,7 +7,6 @@
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <cmath>
-#include <iostream>
 
 namespace rgbd_slam::features::primitives {
 
@@ -139,14 +138,13 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     _Sx = xMatrix.sum();
     _Sy = yMatrix.sum();
     _Sz = zMatrix.sum();
-    _Sxs = (xMatrix.array() * xMatrix.array()).sum();
-    _Sys = (yMatrix.array() * yMatrix.array()).sum();
-    _Szs = (zMatrix.array() * zMatrix.array()).sum();
-    _Sxy = (xMatrix.array() * yMatrix.array()).sum();
-    _Szx = (xMatrix.array() * zMatrix.array()).sum();
-    _Syz = (yMatrix.array() * zMatrix.array()).sum();
+    _Sxs = xMatrix.cwiseProduct(xMatrix).sum();
+    _Sys = yMatrix.cwiseProduct(yMatrix).sum();
+    _Szs = zMatrix.cwiseProduct(zMatrix).sum();
+    _Sxy = xMatrix.cwiseProduct(yMatrix).sum();
+    _Szx = xMatrix.cwiseProduct(zMatrix).sum();
+    _Syz = yMatrix.cwiseProduct(zMatrix).sum();
 
-    assert(_Sz > _pointCount);
     assert(_Sxs > 0);
     assert(_Sys > 0);
     assert(_Szs > 0);
@@ -180,13 +178,19 @@ void Plane_Segment::expand_segment(const Plane_Segment& planeSegment)
     _pointCount += planeSegment._pointCount;
 }
 
+matrix33 Plane_Segment::get_point_cloud_covariance_hessian() const
+{
+    return matrix33({{_Sxs, _Sxy, _Szx}, {_Sxy, _Sys, _Syz}, {_Szx, _Syz, _Szs}});
+}
+
 matrix33 Plane_Segment::get_point_cloud_covariance() const
 {
     assert(_pointCount > 0);
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
 
     // diagonal
-    // TODO: why do I have a zero sometimes ? floatting point error accumulation ?
+    // The diagonal should always be >= 0 (Cauchy Schwarz)
+    // Here it's not always the case because of floating point error accumulation
     const double xxCovariance = std::max(0.0, _Sxs - _Sx * _Sx * oneOverCount);
     const double yyCovariance = std::max(0.0, _Sys - _Sy * _Sy * oneOverCount);
     const double zzCovariance = std::max(0.0, _Szs - _Sz * _Sz * oneOverCount);
@@ -194,12 +198,12 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     assert(yyCovariance >= 0);
     assert(zzCovariance >= 0);
 
-    // bottom/top half
+    // bottom/top half. As above, this too will have floating point error accumulation but nothing we can do about it
     const double xyCovariance = _Sxy - _Sx * _Sy * oneOverCount;
     const double xzCovariance = _Szx - _Sx * _Sz * oneOverCount;
     const double yzCovariance = _Syz - _Sy * _Sz * oneOverCount;
 
-    // Expressing covariance as E[PP^t] + E[P]*E[P^T]
+    // Expressing covariance as E[PP^t] + E[P]*E[P^T]: König-Huygen formula
     matrix33 covariance({{xxCovariance, xyCovariance, xzCovariance},
                          {xyCovariance, yyCovariance, yzCovariance},
                          {xzCovariance, yzCovariance, zzCovariance}});
@@ -215,7 +219,7 @@ void Plane_Segment::fit_plane()
     _centroid = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
     const matrix33 pointCloudCov = get_point_cloud_covariance();
-    // special case:
+    // special case: degenerate covariance
     if (utils::double_equal(pointCloudCov.determinant(), 0))
     {
         _isPlanar = false;
@@ -228,7 +232,7 @@ void Plane_Segment::fit_plane()
     // best eigen vector is the most reliable direction for this plane normal
     const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
 
-    // some values have floatting points errors, renormalize
+    // some values have floating points errors, renormalize
     _normal = eigenVector.normalized();
     _d = -_normal.dot(_centroid.base());
 

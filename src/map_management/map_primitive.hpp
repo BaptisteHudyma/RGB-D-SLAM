@@ -59,7 +59,10 @@ class Plane
                  const matrix44& newDetectionCovariance,
                  const utils::WorldCoordinate& detectedCentroid)
     {
-        assert(_kalmanFilter != nullptr);
+        assert(newDetectionCovariance.diagonal()(0) >= 0 and newDetectionCovariance.diagonal()(1) >= 0 and
+               newDetectionCovariance.diagonal()(2) >= 0 and newDetectionCovariance.diagonal()(3) >= 0);
+        assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and
+               _covariance.diagonal()(3) >= 0);
 
         const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(
                 _parametrization, _covariance, newDetectionParameters, newDetectionCovariance);
@@ -71,7 +74,8 @@ class Plane
         _covariance = newEstimatedCovariance;
 
         // parameters update
-        _parametrization << newEstimatedParameters.head(3).normalized(), newEstimatedParameters(3);
+        _parametrization = newEstimatedParameters;
+        _parametrization.head(3).normalize();
 
         // update centroid
         _centroid = detectedCentroid;
@@ -81,7 +85,6 @@ class Plane
                _covariance.diagonal()(3) >= 0);
         assert(not std::isnan(_parametrization.x()) and not std::isnan(_parametrization.y()) and
                not std::isnan(_parametrization.z()) and not std::isnan(_parametrization.w()));
-        assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
         return score;
     }
 
@@ -186,7 +189,6 @@ class MapPlane :
         if (shouldAddToMatches)
         {
             const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
-            // TODO: replace nullptr by the plane covariance in camera space
             matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), _covariance.diagonal(), _id);
         }
 
@@ -253,7 +255,8 @@ class MapPlane :
 
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
-        const matrix44 worldCovariance = matchedFeature.compute_covariance(poseCovariance);
+        const matrix44 worldCovariance =
+                planeCameraToWorld * matchedFeature.compute_covariance(poseCovariance) * planeCameraToWorld.transpose();
 
         track(matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld),
               worldCovariance,
@@ -281,7 +284,8 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
         _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
         _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld);
         _shapeMask = detectedFeature.get_shape_mask();
-        _covariance = detectedFeature.compute_covariance(poseCovariance);
+        _covariance = planeCameraToWorld * detectedFeature.compute_covariance(poseCovariance) *
+                      planeCameraToWorld.transpose();
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
     }
@@ -308,6 +312,8 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _covariance = stagedPlane.get_covariance();
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
+        assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and
+               _covariance.diagonal()(3) >= 0);
     }
 
     bool is_lost() const override
