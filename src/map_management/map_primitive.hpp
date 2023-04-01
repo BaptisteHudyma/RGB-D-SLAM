@@ -190,8 +190,7 @@ class MapPlane :
         if (shouldAddToMatches)
         {
             const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
-            matches.emplace_back(
-                    shapePlane.get_parametrization(), get_parametrization(), get_covariance().diagonal(), _id);
+            matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), get_covariance(), _id);
         }
 
         return selectedIndex;

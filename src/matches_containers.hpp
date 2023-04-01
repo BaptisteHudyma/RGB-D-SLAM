@@ -26,15 +26,15 @@ template<class FeatureCameraSpace, class FeatureWorldSpace, class WorldFeatureCo
 // KeyPoint matching: contains :
 //      - the coordinates of the detected point in screen space
 //      - the coordinates of the matched point in world space
-//      - the covariance of the world plane projected in screen space
+//      - the diagonal of the covariance of the world point in world space
 using PointMatch = MatchTemplate<utils::ScreenCoordinate, utils::WorldCoordinate, vector3>;
 using match_point_container = std::list<PointMatch>;
 
 // MapPlane matching: contains :
 //      - the normal vector of the plane in camera space
 //      - the normal vector of the plane in world space
-//      - the covariance of the world plane projected in camera space
-using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, vector4>;
+//      - the covariance of the world plane in world space
+using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, matrix44>;
 using match_plane_container = std::list<PlaneMatch>;
 
 struct matchContainer
