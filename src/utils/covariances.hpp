@@ -61,6 +61,17 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
 CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
                                                        const ScreenCoordinateCovariance& screenPointCovariance);
 
+/**
+ * \brief Compute the covariance of a plane using it's point cloud hessian matrix
+ * \param[in] planeParameters The plane parameters to compute covariance for
+ * \param[in] pointCloudhessian The hessian of the point cloud that this plane was fitted from
+ * \param[in] positionCovariance optional covariance of position to add to the point cloud
+ * \return the plane parameter covariance
+ */
+matrix44 compute_plane_covariance(const vector4& planeParameters,
+                                  const matrix33& pointCloudhessian,
+                                  const matrix33& positionCovariance = matrix33::Zero());
+
 } // namespace rgbd_slam::utils
 
 #endif

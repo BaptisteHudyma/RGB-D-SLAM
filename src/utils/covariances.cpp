@@ -81,4 +81,47 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
     return cameraPointCovariance;
 }
 
+matrix44 compute_plane_covariance(const vector4& planeParameters,
+                                  const matrix33& pointCloudhessian,
+                                  const matrix33& positionCovariance)
+{
+    const vector3& normal = planeParameters.head(3);
+    const double d = planeParameters(3);
+    assert(not utils::double_equal(d, 0.0));
+    assert(utils::double_equal(normal.norm(), 1.0));
+
+    // 0 determinant cannot be inverted
+    assert(not utils::double_equal(pointCloudhessian.determinant(), 0.0));
+
+    // compute covariance with the addition of an eventual position covariance
+    const matrix33 covariance = pointCloudhessian.inverse() + positionCovariance;
+
+    // reduce the parametrization
+    const vector3 parameters = normal / d;
+    const double a = parameters.x();
+    const double b = parameters.y();
+    const double c = parameters.z();
+
+    const double aSquared = a * a;
+    const double bSquared = b * b;
+    const double cSquared = c * c;
+
+    // common divider of all partial derivatives
+    const double divider = pow(aSquared + bSquared + cSquared, 3.0 / 2.0);
+
+    // compute the jacobian of the transformation
+    matrix43 jacobian({
+            {bSquared + cSquared, -a * b, -a * c},
+            {-a * b, aSquared + cSquared, -b * c},
+            {-a * c, -b * c, aSquared + bSquared},
+            {-a, -b, -c},
+    });
+    jacobian /= divider;
+
+    const matrix44& planeParameterCovariance = jacobian * covariance * jacobian.transpose();
+    assert(planeParameterCovariance.diagonal()(0) >= 0 and planeParameterCovariance.diagonal()(1) >= 0 and
+           planeParameterCovariance.diagonal()(2) >= 0 and planeParameterCovariance.diagonal()(3) >= 0);
+    return planeParameterCovariance;
+}
+
 } // namespace rgbd_slam::utils
