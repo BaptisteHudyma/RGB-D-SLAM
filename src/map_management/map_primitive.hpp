@@ -258,7 +258,7 @@ class MapPlane :
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
-                matchedFeature.get_parametrization(), matchedFeature.get_point_cloud_hessian(), poseCovariance);
+                matchedFeature.get_parametrization(), matchedFeature.get_point_cloud_covariance(), poseCovariance);
         const matrix44 worldCovariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
 
         track(matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld),
@@ -289,7 +289,7 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
         _shapeMask = detectedFeature.get_shape_mask();
 
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
-                detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_hessian(), poseCovariance);
+                detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance(), poseCovariance);
         _covariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
