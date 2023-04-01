@@ -106,7 +106,7 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
     // common divider of all partial derivatives
     const double divider = pow(aSquared + bSquared + cSquared, 3.0 / 2.0);
 
-    // compute the jacobian of the 3 parameter plane to 4 parameters plane transformation
+    // compute the jacobian of the 3 parameter plane to 4 parameters plane transformation -> (vect, 1) / norm(vect)
     matrix43 jacobian({
             {bSquared + cSquared, -a * b, -a * c},
             {-a * b, aSquared + cSquared, -b * c},
