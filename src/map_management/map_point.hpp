@@ -243,9 +243,8 @@ class MapPoint :
             const utils::WorldCoordinate& worldPointCoordinates =
                     matchedScreenPoint.to_world_coordinates(cameraToWorld);
             // get a measure of the estimated variance of the new world point
-            const CameraCoordinateCovariance& cameraPointCovariance =
-                    utils::get_camera_point_covariance(matchedScreenPoint);
-            const matrix33& worldCovariance = poseCovariance + cameraPointCovariance.base();
+            const matrix33& worldCovariance =
+                    utils::get_world_point_covariance(matchedScreenPoint, cameraToWorld, poseCovariance);
             // update this map point errors & position
             track(worldPointCoordinates, worldCovariance);
 
@@ -278,7 +277,7 @@ class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointTy
                    const CameraToWorldMatrix& cameraToWorld,
                    const DetectedPointType& detectedFeature) :
         MapPoint(detectedFeature._coordinates.to_world_coordinates(cameraToWorld),
-                 utils::get_world_point_covariance(detectedFeature._coordinates, poseCovariance),
+                 utils::get_world_point_covariance(detectedFeature._coordinates, cameraToWorld, poseCovariance),
                  detectedFeature._descriptor)
     {
     }
