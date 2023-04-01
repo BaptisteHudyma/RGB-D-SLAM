@@ -82,7 +82,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
 }
 
 matrix44 compute_plane_covariance(const vector4& planeParameters,
-                                  const matrix33& pointCloudhessian,
+                                  const matrix33& pointCloudCovariance,
                                   const matrix33& positionCovariance)
 {
     const vector3& normal = planeParameters.head(3);
@@ -90,11 +90,8 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
     assert(not utils::double_equal(d, 0.0));
     assert(utils::double_equal(normal.norm(), 1.0));
 
-    // 0 determinant cannot be inverted
-    assert(not utils::double_equal(pointCloudhessian.determinant(), 0.0));
-
     // compute covariance with the addition of an eventual position covariance
-    const matrix33 covariance = pointCloudhessian.inverse() + positionCovariance;
+    const matrix33 covariance = pointCloudCovariance + positionCovariance;
 
     // reduce the parametrization
     const vector3 parameters = normal / d;
@@ -109,7 +106,7 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
     // common divider of all partial derivatives
     const double divider = pow(aSquared + bSquared + cSquared, 3.0 / 2.0);
 
-    // compute the jacobian of the transformation
+    // compute the jacobian of the 3 parameter plane to 4 parameters plane transformation
     matrix43 jacobian({
             {bSquared + cSquared, -a * b, -a * c},
             {-a * b, aSquared + cSquared, -b * c},

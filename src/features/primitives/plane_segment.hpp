@@ -83,11 +83,6 @@ class Plane_Segment
      */
     matrix33 get_point_cloud_covariance() const;
 
-    /**
-     * \brief return the pont could hessian matrix
-     */
-    matrix33 get_point_cloud_covariance_hessian() const;
-
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     double get_MSE() const { return _MSE; };
@@ -100,8 +95,22 @@ class Plane_Segment
     uint get_point_count() const { return _pointCount; };
 
   protected:
+    /**
+     * \brief Check that the point cloud for this plane patch is verticaly continuous
+     * \param[in] depthMatrix The depth representation of the image
+     */
     bool is_cell_vertical_continuous(const matrixf& depthMatrix) const;
+
+    /**
+     * \brief Check that the point cloud for this plane patch is horizontaly continuous
+     * \param[in] depthMatrix The depth representation of the image
+     */
     bool is_cell_horizontal_continuous(const matrixf& depthMatrix) const;
+
+    /**
+     * \brief return the covariance of this point cloud computed from König-Huygen formula
+     */
+    matrix33 get_point_cloud_Huygen_covariance() const;
 
   private:
     static inline uint _ptsPerCellCount;   // max nb of points per initial cell

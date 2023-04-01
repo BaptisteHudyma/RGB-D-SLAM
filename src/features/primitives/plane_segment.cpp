@@ -178,12 +178,17 @@ void Plane_Segment::expand_segment(const Plane_Segment& planeSegment)
     _pointCount += planeSegment._pointCount;
 }
 
-matrix33 Plane_Segment::get_point_cloud_covariance_hessian() const
+matrix33 Plane_Segment::get_point_cloud_covariance() const
 {
-    return matrix33({{_Sxs, _Sxy, _Szx}, {_Sxy, _Sys, _Syz}, {_Szx, _Syz, _Szs}});
+    const matrix33 pointCloudHessian({{_Sxs, _Sxy, _Szx}, {_Sxy, _Sys, _Syz}, {_Szx, _Syz, _Szs}});
+
+    // 0 determinant cannot be inverted
+    assert(not utils::double_equal(pointCloudHessian.determinant(), 0.0));
+
+    return pointCloudHessian.inverse();
 }
 
-matrix33 Plane_Segment::get_point_cloud_covariance() const
+matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const
 {
     assert(_pointCount > 0);
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
@@ -218,7 +223,7 @@ void Plane_Segment::fit_plane()
     // get the centroid of the plane
     _centroid = vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
-    const matrix33 pointCloudCov = get_point_cloud_covariance();
+    const matrix33 pointCloudCov = get_point_cloud_Huygen_covariance();
     // special case: degenerate covariance
     if (utils::double_equal(pointCloudCov.determinant(), 0))
     {

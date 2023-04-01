@@ -139,7 +139,7 @@ class Plane : public IPrimitive
     vector3 get_normal() const { return _parametrization.head(3); };
     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
-    matrix33 get_point_cloud_hessian() const { return _pointCloudCovarianceHessian; };
+    matrix33 get_point_cloud_covariance() const { return _pointCloudCovariance; };
 
     ~Plane() = default;
 
@@ -153,9 +153,8 @@ class Plane : public IPrimitive
 
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
-    matrix33 _parametersMatrix; // the parameter matrix used to compute the plane parameters (used for covariance)
-    matrix33 _pointCloudCovarianceHessian; // the hessian of the covariance of point cloud
-    vector6 _descriptor;                   // the descriptor of this plane
+    matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from
+    vector6 _descriptor;                            // the descriptor of this plane
 
     // remove copy functions
     Plane() = delete;

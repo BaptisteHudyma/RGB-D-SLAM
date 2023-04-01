@@ -91,8 +91,7 @@ Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
 
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
     _centroid(planeSeg.get_centroid()),
-    _parametersMatrix(planeSeg.get_point_cloud_covariance()),
-    _pointCloudCovarianceHessian(planeSeg.get_point_cloud_covariance_hessian()),
+    _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
     _descriptor(compute_descriptor())
 {
     assert(utils::double_equal(planeSeg.get_normal().norm(), 1.0));
@@ -103,8 +102,7 @@ Plane::Plane(const Plane& plane) :
     IPrimitive(plane._shapeMask),
     _parametrization(plane._parametrization),
     _centroid(plane._centroid),
-    _parametersMatrix(plane._parametersMatrix),
-    _pointCloudCovarianceHessian(plane._pointCloudCovarianceHessian),
+    _pointCloudCovariance(plane._pointCloudCovariance),
     _descriptor(plane._descriptor)
 {
 }
