@@ -37,11 +37,13 @@ ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& p
  * \brief Compute the covariance of a world point
  */
 WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
+                                                     const CameraToWorldMatrix& cameraToWorld,
                                                      const matrix33& poseCovariance);
 /**
  * \brief Compute covariance of a screen point in world state
  */
 WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                     const CameraToWorldMatrix& cameraToWorld,
                                                      const matrix33& poseCovariance);
 
 /**

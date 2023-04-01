@@ -23,7 +23,7 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
 
-    // Jacobian of the world to screen function. Use absolutes to prevent negative variances
+    // Jacobian of the camera to screen function
     const matrix33 jacobian {{cameraFX / point.z(), 0.0, -cameraFX * point.x() / pow(point.z(), 2.0)},
                              {0.0, cameraFY / point.z(), -cameraFY * point.y() / pow(point.z(), 2.0)},
                              {0.0, 0.0, 1.0}};
@@ -45,17 +45,21 @@ ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& p
 }
 
 WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
+                                                     const CameraToWorldMatrix& cameraToWorld,
                                                      const matrix33& poseCovariance)
 {
+    const matrix33& rotation = cameraToWorld.block(0, 0, 3, 3);
+
     WorldCoordinateCovariance cov;
-    cov.base() << cameraPointCovariance + poseCovariance;
+    cov.base() << rotation * cameraPointCovariance.base() * rotation.transpose() + poseCovariance;
     return cov;
 }
 
 WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                     const CameraToWorldMatrix& cameraToWorld,
                                                      const matrix33& poseCovariance)
 {
-    return get_world_point_covariance(utils::get_camera_point_covariance(screenPoint), poseCovariance);
+    return get_world_point_covariance(utils::get_camera_point_covariance(screenPoint), cameraToWorld, poseCovariance);
 }
 
 CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint)
