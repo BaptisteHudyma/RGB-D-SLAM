@@ -139,13 +139,7 @@ class Plane : public IPrimitive
     vector3 get_normal() const { return _parametrization.head(3); };
     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
-
-    /**
-     * \brief Compute the covariance of this plane parameters
-     * \param[in] positionCovariance The covariance of the pose where this plane was observed
-     * \return The covariance of this plane parameters
-     */
-    matrix44 compute_covariance(const matrix33& positionCovariance = matrix33::Zero()) const;
+    matrix33 get_point_cloud_hessian() const { return _pointCloudCovarianceHessian; };
 
     ~Plane() = default;
 

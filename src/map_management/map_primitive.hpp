@@ -8,6 +8,7 @@
 #include "../utils/coordinates.hpp"
 #include "../matches_containers.hpp"
 #include "../utils/random.hpp"
+#include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "feature_map.hpp"
 #include <memory>
@@ -189,7 +190,8 @@ class MapPlane :
         if (shouldAddToMatches)
         {
             const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
-            matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), _covariance.diagonal(), _id);
+            matches.emplace_back(
+                    shapePlane.get_parametrization(), get_parametrization(), get_covariance().diagonal(), _id);
         }
 
         return selectedIndex;
@@ -255,8 +257,9 @@ class MapPlane :
 
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
 
-        const matrix44 worldCovariance =
-                planeCameraToWorld * matchedFeature.compute_covariance(poseCovariance) * planeCameraToWorld.transpose();
+        const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
+                matchedFeature.get_parametrization(), matchedFeature.get_point_cloud_hessian(), poseCovariance);
+        const matrix44 worldCovariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
 
         track(matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld),
               worldCovariance,
@@ -284,8 +287,10 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
         _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
         _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld);
         _shapeMask = detectedFeature.get_shape_mask();
-        _covariance = planeCameraToWorld * detectedFeature.compute_covariance(poseCovariance) *
-                      planeCameraToWorld.transpose();
+
+        const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
+                detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_hessian(), poseCovariance);
+        _covariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
     }
