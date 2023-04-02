@@ -6,9 +6,11 @@
 namespace rgbd_slam::utils {
 
 /**
- * \brief Find the best fitting polygon to a set of points
+ * \brief Compute the convex hull for a set of points
+ * \param[in] points The points to compute a convex hull for
+ * \return The ordered points defining a convex hull of points
  */
-std::vector<vector2> get_best_fitting_polygon(const std::vector<vector2>& points);
+std::vector<vector2> compute_convex_hull(const std::vector<vector2>& points);
 
 } // namespace rgbd_slam::utils
 

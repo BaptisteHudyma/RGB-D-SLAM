@@ -12,6 +12,7 @@
 #include "distance_utils.hpp"
 #include "feature_map.hpp"
 #include <memory>
+#include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 
@@ -93,6 +94,7 @@ class Plane
     matrix44 _covariance;                          // covariance of this plane in world space
     utils::WorldCoordinate _centroid;              // centroid of the detected plane
     cv::Mat _shapeMask;                            // mask of the detected plane
+    std::vector<vector2> boundary;
 
   private:
     /**
@@ -209,9 +211,6 @@ class MapPlane :
 
     void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
     {
-        // silence unused parameter warning
-        (void)worldToCamMatrix;
-
         assert(not get_mask().empty());
 
         const double maskAlpha = 0.3;
@@ -238,6 +237,54 @@ class MapPlane :
         cv::addWeighted(maskedInput, (1 - maskAlpha), planeColorMask, maskAlpha, 0.0, maskedInput);
 
         debugImage = maskedInput + ImaskedInput;
+
+        // project plane in camera space
+        const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(
+                utils::compute_plane_world_to_camera_matrix(worldToCamMatrix));
+        const vector3& normal = projectedPlane.head(3).normalized();
+        const vector3& center = _centroid.to_camera_coordinates(worldToCamMatrix).base();
+
+        // find arbitrary othogonal vectors of the normal
+        const vector3 uVec = normal.cross(vector3(normal.y(), -normal.x(), normal.z()));
+        const vector3 vVec = normal.cross(uVec);
+
+        // display the boundary of the plane
+        cv::Point previousPoint;
+        bool isPreviousPointSet = false;
+        for (const vector2& point: boundary)
+        {
+            const utils::CameraCoordinate cameraPoint(
+                    utils::get_point_from_plane_coordinates(point, center, uVec, vVec));
+            utils::ScreenCoordinate screenPoint;
+            if (cameraPoint.to_screen_coordinates(screenPoint))
+            {
+                const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
+                if (isPreviousPointSet)
+                {
+                    cv::line(debugImage, previousPoint, newPoint, color, 2);
+                }
+                cv::circle(debugImage,
+                           cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
+                           3,
+                           color,
+                           -1);
+                previousPoint = newPoint;
+                isPreviousPointSet = true;
+            }
+        }
+
+        // close the shape
+        const utils::CameraCoordinate cameraPoint(
+                utils::get_point_from_plane_coordinates(boundary[0], center, uVec, vVec));
+        utils::ScreenCoordinate screenPoint;
+        if (cameraPoint.to_screen_coordinates(screenPoint))
+        {
+            cv::line(debugImage,
+                     previousPoint,
+                     cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
+                     color,
+                     2);
+        }
     }
 
     bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
@@ -265,6 +312,7 @@ class MapPlane :
               matchedFeature.get_centroid().to_world_coordinates(cameraToWorld));
 
         _shapeMask = matchedFeature.get_shape_mask().clone();
+        boundary = matchedFeature.get_boundary();
         return true;
     }
 
@@ -290,6 +338,7 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
                 detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance(), poseCovariance);
         _covariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
+        boundary = detectedFeature.get_boundary();
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
     }
@@ -314,6 +363,7 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _centroid = stagedPlane.get_centroid();
         _shapeMask = stagedPlane.get_mask();
         _covariance = stagedPlane.get_covariance();
+        boundary = stagedPlane.boundary;
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
         assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and

@@ -1,67 +1,59 @@
 #include "polygon.hpp"
+#include "types.hpp"
+#include <algorithm>
+#include <bits/ranges_algo.h>
+#include <tuple>
+#include "logger.hpp"
 
 namespace rgbd_slam::utils {
 
-std::vector<vector2> get_best_fitting_polygon(const std::vector<vector2>& points)
+/**
+ * \brief Rotate the given vetor by 90 degrees
+ */
+vector2 rotate90(const vector2& other) { return vector2(-other.y(), other.x()); }
+
+std::vector<vector2> compute_convex_hull(const std::vector<vector2>& pointsIn)
 {
-    const uint pointCount = points.size();
-
-    std::vector<uint> link(pointCount, 0); // link points indexes [point index] -> next point index
-
-    // first half of points
-    for (uint i = 0; i < pointCount - 1; ++i)
+    if (pointsIn.size() < 3)
     {
-        const vector2& pointA = points[i];
-        double closestDist1 = 1e10;
-        double closestDist2 = 1e10;
-        uint closestPoint1 = 0;
-        uint closestPoint2 = 0;
-        // second half of points
-        for (uint j = i + 1; j < pointCount; j++)
-        {
-            const vector2& pointB = points[j];
-            const double dist = (pointB - pointA).lpNorm<1>();
-            if (dist < closestDist1)
-            {
-                closestDist2 = closestDist1;
-                closestPoint2 = closestPoint1;
-
-                closestPoint1 = j;
-                closestDist1 = dist;
-            }
-            else if (dist < closestDist2)
-            {
-                closestPoint2 = j;
-                closestDist2 = dist;
-            }
-        }
-
-        // found the two closest points, link them
-        if (closestDist1 < 1e5)
-            link[i] = closestPoint1;
-        if (closestDist2 < 1e5)
-            link[closestPoint2] = i;
+        outputs::log_warning("Could not find boundary for plane patch");
+        return std::vector<vector2>();
     }
+    std::vector<vector2> sortedPoints(pointsIn);
 
-    std::vector<vector2> orderedPoints;
-    orderedPoints.reserve(pointCount);
-    uint highestIndex = 0;
-    for (uint i = 0, currentIndex = 0; i < pointCount; ++i)
+    const vector2 first_point(*std::ranges::min_element(sortedPoints, [](const vector2& left, const vector2& right) {
+        return std::make_tuple(left.y(), left.x()) < std::make_tuple(right.y(), right.x());
+    })); // Find the lowest and leftmost point
+
+    std::ranges::sort(sortedPoints, [&](const vector2& left, const vector2& right) {
+        if (left.isApprox(first_point))
+        {
+            return right != first_point;
+        }
+        else if (right.isApprox(first_point))
+        {
+            return false;
+        }
+        const double dir = (rotate90(left - first_point)).dot(right - first_point);
+        if (abs(dir) <= 0.01)
+        { // If the points are on a line with first point, sort by distance (manhattan is equivalent here)
+            return (left - first_point).lpNorm<2>() < (right - first_point).lpNorm<2>();
+        }
+        return dir > 0;
+    }); // Sort the points by angle to the chosen first point
+
+    std::vector<vector2> result;
+    for (const vector2& point: sortedPoints)
     {
-        orderedPoints.emplace_back(points[currentIndex]);
-        currentIndex = link[currentIndex];
-
-        // looped arround the polygon: maybe some points were not used
-        if (currentIndex == 0 or currentIndex == highestIndex)
+        // For as long as the last 3 points cause the hull to be non-convex, discard the middle one
+        while (result.size() >= 2 && (rotate90(result[result.size() - 1] - result[result.size() - 2]))
+                                                     .dot(point - result[result.size() - 1]) <= 0)
         {
-            /*outputs::log_warning("Polygon fit used only " + std::to_string(orderedPoints.size()) +
-                                 " on the available " + std::to_string(pointCount));*/
-            break;
+            result.pop_back();
         }
-        highestIndex = std::max(highestIndex, currentIndex);
+        result.push_back(point);
     }
-
-    return orderedPoints;
+    return result;
 }
 
 } // namespace rgbd_slam::utils

@@ -302,6 +302,7 @@ double Plane_Segment::get_cos_angle(const Plane_Segment& p) const
     return (_normal.dot(p._normal));
 }
 double Plane_Segment::get_point_distance(const vector3& point) const { return pow(_normal.dot(point) + _d, 2.0); }
+
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
 {
     const static double maximumMergeAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);

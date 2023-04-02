@@ -112,13 +112,12 @@ class Primitive_Detection
      * \param[in] xMatrix The x coordinates of the plane patch points
      * \param[in] yMatrix The y coordinates of the plane patch points
      * \param[in] zMatrix The z coordinates of the plane patch points
-     * \param[in] definingPoint The best boundary point candidate, if the function returned true
+     * \return The best boundary point candidates
      */
-    bool find_defining_point(const Plane_Segment& planeSegment,
-                             const Eigen::ArrayXf& xMatrix,
-                             const Eigen::ArrayXf& yMatrix,
-                             const Eigen::ArrayXf& zMatrix,
-                             vector3& definingPoint) const;
+    std::vector<vector3> find_defining_points(const Plane_Segment& planeSegment,
+                                              const Eigen::ArrayXf& xMatrix,
+                                              const Eigen::ArrayXf& yMatrix,
+                                              const Eigen::ArrayXf& zMatrix) const;
 
     /**
      * \brief Try to fit a plane to a cylinder

@@ -336,7 +336,8 @@ vector2 get_projected_plan_coordinates(const vector3& pointToProject,
                                        const vector3& u,
                                        const vector3& v)
 {
-    return vector2(u.dot(pointToProject - planeCenter), v.dot(pointToProject - planeCenter));
+    const vector3& reducedPoint = pointToProject - planeCenter;
+    return vector2(u.dot(reducedPoint), v.dot(reducedPoint));
 }
 
 vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
