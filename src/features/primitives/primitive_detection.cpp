@@ -8,9 +8,9 @@
 #include "shape_primitives.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/Array.h>
-#include <iostream>
 #include <limits>
 #include <opencv2/highgui.hpp>
+#include "polygon.hpp"
 
 namespace rgbd_slam::features::primitives {
 
@@ -540,7 +540,6 @@ std::vector<vector2> Primitive_Detection::compute_plane_segment_boundary(const P
                                                                          const matrixf& depthMatrix,
                                                                          const cv::Mat& boundaryMask) const
 {
-    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
     const vector3& normal = planeSegment.get_normal();
     const vector3& center = planeSegment.get_centroid().base();
 
@@ -574,25 +573,82 @@ std::vector<vector2> Primitive_Detection::compute_plane_segment_boundary(const P
             const Eigen::ArrayXf& zMatrix = depthMatrix.block(offset, 2, _pointsPerCellCount, 1).array();
             assert(xMatrix.size() == yMatrix.size() and xMatrix.size() == zMatrix.size());
 
-            // Assign points
-            for (uint i = 0; i < xMatrix.size(); i++)
-            {
-                if (zMatrix(i) <= 0) // ignore invalid depth
-                    continue;
-
-                const vector3 point(xMatrix(i), yMatrix(i), zMatrix(i));
-                // if distance of this point to the plane < threshold, this point is contained in the plane
-                if (planeSegment.get_point_distance(point) < maxBoundaryDistance)
-                {
-                    // project this point to plane space
-                    boundaryPoints.emplace_back(utils::get_projected_plan_coordinates(point, center, uVec, vVec));
-                }
-            }
+            if (vector3 definingPoint; find_defining_point(planeSegment, xMatrix, yMatrix, zMatrix, definingPoint))
+                boundaryPoints.emplace_back(utils::get_projected_plan_coordinates(definingPoint, center, uVec, vVec));
         }
     }
 
-    // TODO: find true boundaries
-    return boundaryPoints;
+    if (boundaryPoints.size() < 3)
+        outputs::log_warning("Could not find boundary for plane patch");
+
+    return utils::get_best_fitting_polygon(boundaryPoints);
+}
+
+bool Primitive_Detection::find_defining_point(const Plane_Segment& planeSegment,
+                                              const Eigen::ArrayXf& xMatrix,
+                                              const Eigen::ArrayXf& yMatrix,
+                                              const Eigen::ArrayXf& zMatrix,
+                                              vector3& definingPoint) const
+{
+    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
+
+    // Assign points
+    std::vector<vector3> planePoints;
+    planePoints.reserve(xMatrix.size());
+
+    // centroid of this plane patch
+    vector3 cFull = vector3::Zero();
+    uint cFullSize = 0;
+    // centroid of the points outside this plane
+    vector3 cEmpty = vector3::Zero();
+    uint cEmptySize = 0;
+    for (uint i = 0; i < xMatrix.size(); i++)
+    {
+        if (zMatrix(i) <= 0) // ignore invalid depth
+            continue;
+
+        const vector3 point(xMatrix(i), yMatrix(i), zMatrix(i));
+        // if distance of this point to the plane < threshold, this point is contained in the plane
+        if (planeSegment.get_point_distance(point) < maxBoundaryDistance)
+        {
+            planePoints.emplace_back(point);
+
+            cFull += point;
+            ++cFullSize;
+        }
+        else
+        {
+            cEmpty += point;
+            ++cEmptySize;
+        }
+    }
+
+    if (cFullSize == 0 or cEmptySize == 0)
+        return false;
+
+    // compute centroids
+    cFull /= cFullSize;
+    cEmpty /= cEmptySize;
+
+    // get point closest to plane centroid and out of plane centroid
+    double closestDist = std::numeric_limits<double>::max();
+    vector3 closestpoint = vector3::Zero();
+    for (const vector3& point: planePoints)
+    {
+        const double dist = point.dot(cFull) + point.dot(cEmpty);
+        if (dist < closestDist)
+        {
+            closestDist = dist;
+            closestpoint = point;
+        }
+    }
+    if (closestDist >= std::numeric_limits<double>::max())
+    {
+        return false;
+    }
+
+    definingPoint = closestpoint;
+    return true;
 }
 
 void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap,

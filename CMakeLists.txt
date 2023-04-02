@@ -137,6 +137,7 @@ add_library(utils SHARED
     ${UTILS}/pose.cpp
     ${UTILS}/coordinates.cpp
     ${UTILS}/distance_utils.cpp
+    ${UTILS}/polygon.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED
