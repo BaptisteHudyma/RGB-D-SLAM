@@ -86,13 +86,14 @@ double Cylinder::get_distance(const vector3& point) const
  *        PLANE
  *
  */
-Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask) :
+Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask, const std::vector<vector2>& boundaryPolygon) :
     IPrimitive(shapeMask),
 
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
     _centroid(planeSeg.get_centroid()),
     _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
-    _descriptor(compute_descriptor())
+    _descriptor(compute_descriptor()),
+    _boundaryPolygon(boundaryPolygon)
 {
     assert(utils::double_equal(planeSeg.get_normal().norm(), 1.0));
     assert(utils::double_equal(get_normal().norm(), 1.0));
