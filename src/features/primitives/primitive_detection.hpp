@@ -107,6 +107,20 @@ class Primitive_Detection
                                                         const cv::Mat& boundaryMask) const;
 
     /**
+     * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary
+     * \param[in] planeSegment The plane segment to find the boundary point for
+     * \param[in] xMatrix The x coordinates of the plane patch points
+     * \param[in] yMatrix The y coordinates of the plane patch points
+     * \param[in] zMatrix The z coordinates of the plane patch points
+     * \param[in] definingPoint The best boundary point candidate, if the function returned true
+     */
+    bool find_defining_point(const Plane_Segment& planeSegment,
+                             const Eigen::ArrayXf& xMatrix,
+                             const Eigen::ArrayXf& yMatrix,
+                             const Eigen::ArrayXf& zMatrix,
+                             vector3& definingPoint) const;
+
+    /**
      * \brief Try to fit a plane to a cylinder
      * \param[in] cylinderSegment The cylinder segment to fit
      * \param[in] cellActivatedCount Number of activated planar cells
