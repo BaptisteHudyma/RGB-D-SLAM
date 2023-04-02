@@ -96,6 +96,17 @@ class Primitive_Detection
     void add_plane_segment_to_features(const Plane_Segment& newPlaneSegment, const vectorb& isActivatedMap);
 
     /**
+     * \brief Compute the plane convex hull in plane coordinates
+     * \param[in] planeSegment The plane segment to get the boundary of
+     * \param[in] depthMatrix The depth image in matrix form
+     * \param[in] boundaryMask The mask of the boundary of this plane segment in image space
+     * \return A vector of 2D points in plane coordinates, representing this plane convex hull
+     */
+    std::vector<vector2> compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+                                                        const matrixf& depthMatrix,
+                                                        const cv::Mat& boundaryMask) const;
+
+    /**
      * \brief Try to fit a plane to a cylinder
      * \param[in] cylinderSegment The cylinder segment to fit
      * \param[in] cellActivatedCount Number of activated planar cells
@@ -146,9 +157,12 @@ class Primitive_Detection
      * \brief Add final plane to primitives, compute a mask for display
      *
      * \param[in] planeMergeLabels Container associating plane ID to global plane IDs
+     * \param[in] depthMatrix The depth image as a matrix
      * \param[out] planeContainer Container of planes detected in this depth image
      */
-    void add_planes_to_primitives(const uint_vector& planeMergeLabels, plane_container& planeContainer);
+    void add_planes_to_primitives(const uint_vector& planeMergeLabels,
+                                  const matrixf& depthMatrix,
+                                  plane_container& planeContainer);
 
     /**
      * \brief Add final cylinders to primitives, compute a mask for display
@@ -204,11 +218,14 @@ class Primitive_Detection
     vectorb _isUnassignedMask;
     std::vector<float> _cellDistanceTols;
 
-    // primitive cell mask
+    // primitive cell mask (preallocated)
     cv::Mat _mask;
     cv::Mat _maskEroded;
+    cv::Mat _maskDilated;
+    cv::Mat _maskBoundary;
     // kernel
     cv::Mat _maskCrossKernel;
+    cv::Mat _maskSquareKernel;
 
     // prevent backend copy
     Primitive_Detection(const Primitive_Detection&);

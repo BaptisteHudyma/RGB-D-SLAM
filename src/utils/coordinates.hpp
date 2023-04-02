@@ -282,6 +282,32 @@ struct PlaneWorldCoordinates : public vector4
                                         const PlaneWorldToCameraMatrix& worldToCamera) const;
 };
 
+/**
+ * \brief Compute the position of a point in the plane coordinate system
+ * \param[in] pointToProject The point to project to plane, in world coordinates
+ * \param[in] planeCenter The center point of the plane
+ * \param[in] u The unit vector of the plane, othogonal to the normal
+ * \param[in] v The unit vector of the plane, othogonal to the normal and u
+ * \return A 2D point corresponding to pointToProject, in plane coordinate system
+ */
+vector2 get_projected_plan_coordinates(const vector3& pointToProject,
+                                       const vector3& planeCenter,
+                                       const vector3& u,
+                                       const vector3& v);
+
+/**
+ * \brief Compute the projection of a point from the plane coordinate system to world
+ * \param[in] pointToProject The point to project to world, in plane coordinates
+ * \param[in] planeCenter The center point of the plane
+ * \param[in] u The unit vector of the plane, othogonal to the normal
+ * \param[in] v The unit vector of the plane, othogonal to the normal and u
+ * \return A 3D point corresponding to pointToProject, in world coordinate system
+ */
+vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
+                                         const vector3& planeCenter,
+                                         const vector3& u,
+                                         const vector3& v);
+
 } // namespace rgbd_slam::utils
 
 #endif

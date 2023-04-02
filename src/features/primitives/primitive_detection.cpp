@@ -1,10 +1,14 @@
 #include "primitive_detection.hpp"
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
+#include "coordinates.hpp"
 #include "cylinder_segment.hpp"
+#include "distance_utils.hpp"
 #include "plane_segment.hpp"
 #include "shape_primitives.hpp"
 #include "types.hpp"
+#include <Eigen/src/Core/Array.h>
+#include <iostream>
 #include <limits>
 #include <opencv2/highgui.hpp>
 
@@ -34,12 +38,16 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height, co
 
     _mask = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
     _maskEroded = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
+    _maskDilated = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
+    _maskBoundary = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
 
     _maskCrossKernel = cv::Mat::ones(3, 3, CV_8U);
     _maskCrossKernel.at<uchar>(0, 0) = 0;
     _maskCrossKernel.at<uchar>(2, 2) = 0;
     _maskCrossKernel.at<uchar>(0, 2) = 0;
     _maskCrossKernel.at<uchar>(2, 0) = 0;
+
+    _maskSquareKernel = cv::Mat::ones(3, 3, CV_8U);
 
     // set before anything related to planar cells
     Plane_Segment::set_static_members(blocSize, _pointsPerCellCount);
@@ -94,7 +102,7 @@ void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
 
     t1 = cv::getTickCount();
     // fill the final planes vector
-    add_planes_to_primitives(planeMergeLabels, planeContainer);
+    add_planes_to_primitives(planeMergeLabels, depthMatrix, planeContainer);
     td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     initTime += td;
     refineTime += td;
@@ -481,7 +489,9 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
     return planeMergeLabels;
 }
 
-void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels, plane_container& planeContainer)
+void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels,
+                                                   const matrixf& depthMatrix,
+                                                   plane_container& planeContainer)
 {
     const uint planeCount = static_cast<uint>(_planeSegments.size());
     planeContainer.clear();
@@ -494,7 +504,9 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         const uint planeMergeLabel = planeMergeLabels[planeIndex];
         if (planeIndex != planeMergeLabel)
             continue; // plane should be merged by another plane index
-        if (not _planeSegments[planeIndex].is_planar())
+
+        const Plane_Segment& planeSegment = _planeSegments[planeIndex];
+        if (not planeSegment.is_planar())
             continue; // not planar segment: TODO: remove ?
 
         _mask = cv::Scalar(0);
@@ -504,9 +516,7 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
             if (planeMergeLabels[j] == planeMergeLabel)
                 _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
         }
-        // Opening
-        cv::dilate(_mask, _mask, _maskCrossKernel);
-        cv::erode(_mask, _mask, _maskCrossKernel);
+
         cv::erode(_mask, _maskEroded, _maskCrossKernel);
         double min;
         double max;
@@ -515,9 +525,74 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         if (max <= 0 or min >= max) // completely eroded: irrelevant plane
             continue;
 
+        // dilate to get boundaries
+        cv::dilate(_mask, _maskDilated, _maskSquareKernel);
+        _maskBoundary = _maskDilated - _maskEroded;
+
+        compute_plane_segment_boundary(planeSegment, depthMatrix, _maskBoundary);
+
         // add new plane to final shapes
-        planeContainer.emplace_back(_planeSegments[planeIndex], _mask);
+        planeContainer.emplace_back(planeSegment, _mask);
     }
+}
+
+std::vector<vector2> Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+                                                                         const matrixf& depthMatrix,
+                                                                         const cv::Mat& boundaryMask) const
+{
+    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
+    const vector3& normal = planeSegment.get_normal();
+    const vector3& center = planeSegment.get_centroid().base();
+
+    // find any vector not parralel to the normal
+    const vector3 shiftedNormal(normal.y(), -normal.x(), normal.z());
+    // find arbitrary othogonal vectors of the normal
+    const vector3 uVec = normal.cross(shiftedNormal);
+    const vector3 vVec = normal.cross(uVec);
+
+    assert(utils::double_equal(uVec.dot(normal), 0.0));
+    assert(utils::double_equal(uVec.dot(vVec), 0.0));
+    assert(utils::double_equal(vVec.dot(normal), 0.0));
+
+    std::vector<vector2> boundaryPoints;
+
+    // Cell refinement
+    for (uint cellRow = 0, stackedCellId = 0; cellRow < _verticalCellsCount; ++cellRow)
+    {
+        const uchar* boundary = boundaryMask.ptr<uchar>(static_cast<int>(cellRow));
+        for (uint cellColum = 0; cellColum < _horizontalCellsCount; ++cellColum, ++stackedCellId)
+        {
+            if (boundary[cellColum] <= 0)
+            {
+                // not on plane boundary
+                continue;
+            }
+            // get points from this plane patch
+            const uint offset = stackedCellId * _pointsPerCellCount;
+            const Eigen::ArrayXf& xMatrix = depthMatrix.block(offset, 0, _pointsPerCellCount, 1).array();
+            const Eigen::ArrayXf& yMatrix = depthMatrix.block(offset, 1, _pointsPerCellCount, 1).array();
+            const Eigen::ArrayXf& zMatrix = depthMatrix.block(offset, 2, _pointsPerCellCount, 1).array();
+            assert(xMatrix.size() == yMatrix.size() and xMatrix.size() == zMatrix.size());
+
+            // Assign points
+            for (uint i = 0; i < xMatrix.size(); i++)
+            {
+                if (zMatrix(i) <= 0) // ignore invalid depth
+                    continue;
+
+                const vector3 point(xMatrix(i), yMatrix(i), zMatrix(i));
+                // if distance of this point to the plane < threshold, this point is contained in the plane
+                if (planeSegment.get_point_distance(point) < maxBoundaryDistance)
+                {
+                    // project this point to plane space
+                    boundaryPoints.emplace_back(utils::get_projected_plan_coordinates(point, center, uVec, vVec));
+                }
+            }
+        }
+    }
+
+    // TODO: find true boundaries
+    return boundaryPoints;
 }
 
 void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap,
