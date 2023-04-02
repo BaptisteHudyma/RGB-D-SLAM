@@ -331,4 +331,20 @@ vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoor
                    cameraPlaneSimplified.z() - worldPlaneSimplified.z());
 }
 
+vector2 get_projected_plan_coordinates(const vector3& pointToProject,
+                                       const vector3& planeCenter,
+                                       const vector3& u,
+                                       const vector3& v)
+{
+    return vector2(u.dot(pointToProject - planeCenter), v.dot(pointToProject - planeCenter));
+}
+
+vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
+                                         const vector3& planeCenter,
+                                         const vector3& u,
+                                         const vector3& v)
+{
+    return planeCenter + pointToProject.x() * u + pointToProject.y() * v;
+}
+
 } // namespace rgbd_slam::utils
