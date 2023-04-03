@@ -224,44 +224,6 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     _meanPrimitiveTreatmentDuration +=
             (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
 
-    cv::Mat debugImage = grayImage.clone();
-    for (const auto& plane: detectedPlanes)
-    {
-        const vector3& normal = plane.get_normal();
-        const vector3& center = plane.get_centroid().base();
-
-        // find arbitrary othogonal vectors of the normal
-        const vector3 uVec = normal.cross(vector3(normal.y(), -normal.x(), normal.z()));
-        const vector3 vVec = normal.cross(uVec);
-
-        // display the boundary of the plane
-        cv::Point previousPoint;
-        bool isPreviousPointSet = false;
-        for (const auto& point: plane.get_boundary())
-        {
-            const utils::CameraCoordinate cameraPoint(
-                    utils::get_point_from_plane_coordinates(point, center, uVec, vVec));
-            utils::ScreenCoordinate screenPoint;
-            if (cameraPoint.to_screen_coordinates(screenPoint))
-            {
-                const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
-                if (isPreviousPointSet)
-                {
-                    cv::line(debugImage, previousPoint, newPoint, cv::Scalar(0, 255, 255), 2);
-                }
-                cv::circle(debugImage,
-                           cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
-                           3,
-                           cv::Scalar(0, 255, 255),
-                           -1);
-                previousPoint = newPoint;
-                isPreviousPointSet = true;
-            }
-        }
-    }
-
-    cv::imshow("test", debugImage);
-
     // Find matches by the pose predicted by motion model
     const double findMatchesStartTime = static_cast<double>(cv::getTickCount());
     const matches_containers::matchContainer& matchedFeatures =

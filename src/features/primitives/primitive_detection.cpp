@@ -10,6 +10,7 @@
 #include <Eigen/src/Core/Array.h>
 #include <limits>
 #include <opencv2/core/base.hpp>
+#include <opencv2/core/hal/interface.h>
 #include <opencv2/highgui.hpp>
 #include "polygon.hpp"
 
@@ -545,8 +546,9 @@ std::vector<vector2> Primitive_Detection::compute_plane_segment_boundary(const P
     const vector3& center = planeSegment.get_centroid().base();
 
     // find arbitrary othogonal vectors of the normal
-    const vector3 uVec = normal.cross(vector3(normal.y(), -normal.x(), normal.z()));
-    const vector3 vVec = normal.cross(uVec);
+    const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
+    const vector3& uVec = res.first;
+    const vector3& vVec = res.second;
 
     assert(utils::double_equal(uVec.dot(normal), 0.0));
     assert(utils::double_equal(uVec.dot(vVec), 0.0));
@@ -586,7 +588,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segme
                                                                const Eigen::ArrayXf& zMatrix) const
 {
     // TODO: set in parameters
-    const double maxBoundaryDistance = 1000 * planeSegment.get_MSE();
+    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
     const vector3& center = planeSegment.get_centroid().base();
 
     std::vector<vector3> definingPoints;
@@ -597,7 +599,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segme
     for (uint i = 0; i < xMatrix.size(); i++)
     {
         const vector3 point(xMatrix(i), yMatrix(i), zMatrix(i));
-        if (point.isZero(0.1)) // ignore invalid depth
+        if (point.z() <= 0) // ignore invalid depth
             continue;
 
         // if distance of this point to the plane < threshold, this point is contained in the plane
