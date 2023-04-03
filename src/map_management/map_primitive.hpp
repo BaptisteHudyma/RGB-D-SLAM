@@ -11,6 +11,7 @@
 #include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "feature_map.hpp"
+#include "polygon.hpp"
 #include <memory>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
@@ -245,8 +246,9 @@ class MapPlane :
         const vector3& center = _centroid.to_camera_coordinates(worldToCamMatrix).base();
 
         // find arbitrary othogonal vectors of the normal
-        const vector3 uVec = normal.cross(vector3(normal.y(), -normal.x(), normal.z()));
-        const vector3 vVec = normal.cross(uVec);
+        const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
+        const vector3& uVec = res.first;
+        const vector3& vVec = res.second;
 
         // display the boundary of the plane
         cv::Point previousPoint;

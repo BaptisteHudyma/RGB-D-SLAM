@@ -114,13 +114,6 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     // get z of depth points
     const matrixf& zMatrix = depthCloudArray.block(offset, 2, _ptsPerCellCount, 1);
 
-    // Check number of missing depth points
-    _pointCount = static_cast<uint>((zMatrix.array() > 0).count());
-    if (_pointCount < _minZeroPointCount)
-    {
-        return;
-    }
-
     // Check for discontinuities using cross search
     // Search discontinuities only in a vertical line passing through the center, than an horizontal line passing
     // through the center.
@@ -134,16 +127,36 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     const matrixf& xMatrix = depthCloudArray.block(offset, 0, _ptsPerCellCount, 1);
     const matrixf& yMatrix = depthCloudArray.block(offset, 1, _ptsPerCellCount, 1);
 
-    // set PCA components
-    _Sx = xMatrix.sum();
-    _Sy = yMatrix.sum();
-    _Sz = zMatrix.sum();
-    _Sxs = xMatrix.cwiseProduct(xMatrix).sum();
-    _Sys = yMatrix.cwiseProduct(yMatrix).sum();
-    _Szs = zMatrix.cwiseProduct(zMatrix).sum();
-    _Sxy = xMatrix.cwiseProduct(yMatrix).sum();
-    _Szx = xMatrix.cwiseProduct(zMatrix).sum();
-    _Syz = yMatrix.cwiseProduct(zMatrix).sum();
+    _pointCount = 0;
+    const uint zSize = zMatrix.size();
+    for (uint i = 0; i < zSize; ++i)
+    {
+        const float z = zMatrix(i);
+        if (z > 0)
+        {
+            ++_pointCount;
+
+            const float x = xMatrix(i);
+            const float y = yMatrix(i);
+
+            // set PCA components
+            _Sx += x;
+            _Sy += y;
+            _Sz += z;
+            _Sxs += x * x;
+            _Sys += y * y;
+            _Szs += z * z;
+            _Sxy += x * y;
+            _Szx += x * z;
+            _Syz += y * z;
+        }
+    }
+
+    // Check number of missing depth points
+    if (_pointCount < _minZeroPointCount)
+    {
+        return;
+    }
 
     assert(_Sxs > 0);
     assert(_Sys > 0);
