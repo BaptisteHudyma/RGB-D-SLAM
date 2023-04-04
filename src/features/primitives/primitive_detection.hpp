@@ -6,6 +6,7 @@
 #include "histogram.hpp"
 #include "plane_segment.hpp"
 #include "shape_primitives.hpp"
+#include "polygon.hpp"
 #include <opencv2/opencv.hpp>
 #include <vector>
 
@@ -100,11 +101,11 @@ class Primitive_Detection
      * \param[in] planeSegment The plane segment to get the boundary of
      * \param[in] depthMatrix The depth image in matrix form
      * \param[in] boundaryMask The mask of the boundary of this plane segment in image space
-     * \return A vector of 2D points in plane coordinates, representing this plane convex hull
+     * \return A Polygon in plane coordinates, representing this plane boundary polygon
      */
-    std::vector<vector2> compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                        const matrixf& depthMatrix,
-                                                        const cv::Mat& boundaryMask) const;
+    utils::Polygon compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+                                                  const matrixf& depthMatrix,
+                                                  const cv::Mat& boundaryMask) const;
 
     /**
      * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary

@@ -12,7 +12,6 @@
 #include <opencv2/core/base.hpp>
 #include <opencv2/core/hal/interface.h>
 #include <opencv2/highgui.hpp>
-#include "polygon.hpp"
 
 namespace rgbd_slam::features::primitives {
 
@@ -538,9 +537,9 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
     }
 }
 
-std::vector<vector2> Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                                         const matrixf& depthMatrix,
-                                                                         const cv::Mat& boundaryMask) const
+utils::Polygon Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+                                                                   const matrixf& depthMatrix,
+                                                                   const cv::Mat& boundaryMask) const
 {
     const vector3& normal = planeSegment.get_normal();
     const vector3& center = planeSegment.get_centroid().base();
@@ -579,7 +578,7 @@ std::vector<vector2> Primitive_Detection::compute_plane_segment_boundary(const P
             }
         }
     }
-    return utils::compute_convex_hull(boundaryPoints);
+    return utils::Polygon::compute_convex_hull(boundaryPoints);
 }
 
 std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segment& planeSegment,

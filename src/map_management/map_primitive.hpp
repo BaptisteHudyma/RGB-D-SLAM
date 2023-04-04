@@ -50,6 +50,7 @@ class Plane
     utils::WorldCoordinate get_centroid() const { return _centroid; }
     cv::Mat get_mask() const { return _shapeMask; }
     matrix44 get_covariance() const { return _covariance; };
+    utils::Polygon get_boundary_polygon() const { return _boundaryPolygon; };
 
     /**
      * \brief Update this plane coordinates using a new detection
@@ -95,7 +96,7 @@ class Plane
     matrix44 _covariance;                          // covariance of this plane in world space
     utils::WorldCoordinate _centroid;              // centroid of the detected plane
     cv::Mat _shapeMask;                            // mask of the detected plane
-    std::vector<vector2> boundary;
+    utils::Polygon _boundaryPolygon;               // polygon describing the boundary of the plane, in plane space
 
   private:
     /**
@@ -253,7 +254,8 @@ class MapPlane :
         // display the boundary of the plane
         cv::Point previousPoint;
         bool isPreviousPointSet = false;
-        for (const vector2& point: boundary)
+        const std::vector<vector2> boundaryPoints = _boundaryPolygon.get_boundary_points();
+        for (const vector2& point: boundaryPoints)
         {
             const utils::CameraCoordinate cameraPoint(
                     utils::get_point_from_plane_coordinates(point, center, uVec, vVec));
@@ -277,7 +279,7 @@ class MapPlane :
 
         // close the shape
         const utils::CameraCoordinate cameraPoint(
-                utils::get_point_from_plane_coordinates(boundary[0], center, uVec, vVec));
+                utils::get_point_from_plane_coordinates(boundaryPoints[0], center, uVec, vVec));
         utils::ScreenCoordinate screenPoint;
         if (cameraPoint.to_screen_coordinates(screenPoint))
         {
@@ -314,7 +316,7 @@ class MapPlane :
               matchedFeature.get_centroid().to_world_coordinates(cameraToWorld));
 
         _shapeMask = matchedFeature.get_shape_mask().clone();
-        boundary = matchedFeature.get_boundary();
+        _boundaryPolygon = matchedFeature.get_boundary_polygon();
         return true;
     }
 
@@ -340,7 +342,7 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
                 detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance(), poseCovariance);
         _covariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
-        boundary = detectedFeature.get_boundary();
+        _boundaryPolygon = detectedFeature.get_boundary_polygon();
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
     }
@@ -365,7 +367,7 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _centroid = stagedPlane.get_centroid();
         _shapeMask = stagedPlane.get_mask();
         _covariance = stagedPlane.get_covariance();
-        boundary = stagedPlane.boundary;
+        _boundaryPolygon = stagedPlane._boundaryPolygon;
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
         assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and
