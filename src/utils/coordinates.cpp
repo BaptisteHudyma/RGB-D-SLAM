@@ -179,7 +179,7 @@ void CameraCoordinate::operator<<(const CameraCoordinate& other) { this->operato
 bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                             ScreenCoordinate& screenPoint) const
 {
-    assert(not std::isnan(x()) and not std::isnan(y()) and not std::isnan(z()));
+    assert(not this->base().hasNaN());
 
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates(worldToCamera);
     assert(cameraPoint.get_homogenous()[3] > 0);
@@ -205,8 +205,7 @@ vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screen
     if (ScreenCoordinate2D projectedScreenPoint; to_screen_coordinates(worldToCamera, projectedScreenPoint))
     {
         vector2 distance = screenPoint - projectedScreenPoint;
-        assert(not std::isnan(distance.x()));
-        assert(not std::isnan(distance.y()));
+        assert(not distance.hasNaN());
         return distance;
     }
     // high number

@@ -220,7 +220,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
     features::primitives::plane_container detectedPlanes;
     features::primitives::cylinder_container detectedCylinders; // TODO: handle detected cylinders in local map
-    _primitiveDetector->find_primitives(cloudArrayOrganized, detectedPlanes, detectedCylinders);
+    //_primitiveDetector->find_primitives(cloudArrayOrganized, detectedPlanes, detectedCylinders);
     _meanPrimitiveTreatmentDuration +=
             (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
 

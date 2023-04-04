@@ -2,11 +2,38 @@
 #define RGBDSLAM_UTILS_COVARIANCES_HPP
 
 #include "coordinates.hpp"
+#include "logger.hpp"
 #include "matches_containers.hpp"
 #include "pose.hpp"
 #include "types.hpp"
+#include <Eigen/src/Core/Matrix.h>
+#include <algorithm>
+#include <bits/ranges_algo.h>
 
 namespace rgbd_slam::utils {
+
+template<int N> bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance)
+{
+    // covariance should be symetrical
+    if (!covariance.isApprox(covariance.transpose()))
+    {
+        outputs::log_warning("Covariance is not symetrical");
+        return false;
+    }
+
+    // check that this covariance is positive semi definite
+    Eigen::SelfAdjointEigenSolver<const Eigen::Matrix<double, N, N>> solver(covariance);
+    // any value < 0 is an error
+    const bool isPositiveSemiDefinite = not std::ranges::any_of(solver.eigenvalues(), [](double value) {
+        return value < 0;
+    });
+
+    if (not isPositiveSemiDefinite)
+    {
+        outputs::log_warning("Covariance is not positive semi definte");
+    }
+    return isPositiveSemiDefinite;
+}
 
 /**
  * \brief Return the expected depth quantization at this depth value.

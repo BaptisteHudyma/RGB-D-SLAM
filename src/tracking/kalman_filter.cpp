@@ -1,4 +1,5 @@
 #include "kalman_filter.hpp"
+#include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <tuple>
@@ -22,10 +23,8 @@ std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& c
                                                                const matrixd& measurementNoiseCovariance)
 {
     // check parameters
-    for (uint i = 0; i < stateNoiseCovariance.diagonal().size(); ++i)
-        assert(stateNoiseCovariance.diagonal()(i) >= 0.0);
-    for (uint i = 0; i < measurementNoiseCovariance.diagonal().size(); ++i)
-        assert(measurementNoiseCovariance.diagonal()(i) >= 0.0);
+    assert(utils::is_covariance_valid(stateNoiseCovariance));
+    assert(utils::is_covariance_valid(measurementNoiseCovariance));
 
     // Get new raw estimate
     const vectorxd& newStateEstimate = _systemDynamics * currentState;
@@ -58,13 +57,7 @@ std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& c
     */
 
     assert(newCovariance.cols() == newCovariance.rows());
-    // diagonal is positive
-    for (uint i = 0; i < newCovariance.diagonal().size(); ++i)
-        newCovariance.diagonal()(i) = std::max(0.0, newCovariance.diagonal()(i));
-    // ensure symetricity
-    for (uint i = 0; i < newCovariance.cols(); ++i)
-        for (uint j = i + 1; j < newCovariance.rows(); ++j)
-            newCovariance(i, j) = newCovariance(j, i);
+    utils::is_covariance_valid(newCovariance);
 
     // return the covariance and state estimation
     return std::make_pair(newState, newCovariance);
