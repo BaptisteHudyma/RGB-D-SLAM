@@ -31,7 +31,6 @@ struct ScreenCoordinate2D : public vector2
     ScreenCoordinate2D() : vector2(vector2::Zero()) {};
     ScreenCoordinate2D(const double x, const double y) : vector2(x, y) {};
     ScreenCoordinate2D(const vector2& other) : vector2(other) {};
-    ScreenCoordinate2D(const ScreenCoordinate2D& other) : vector2(other.x(), other.y()) {};
 
     /**
      * \brief Transform a screen point with a depth value to a 3D camera point
@@ -49,12 +48,11 @@ struct ScreenCoordinate2D : public vector2
  * \brief Contains a single of coordinate in screen space.
  * Screen space is defined as (x, y) in pixels, and z in distance (millimeters)
  */
-struct ScreenCoordinate : public ScreenCoordinate2D
+struct ScreenCoordinate : public vector3
 {
-    ScreenCoordinate() : ScreenCoordinate2D(), _z(0.0) {};
-    ScreenCoordinate(const vector3& other) : ScreenCoordinate2D(other.head(2)), _z(other.z()) {};
-    ScreenCoordinate(const ScreenCoordinate& other) : ScreenCoordinate2D(other), _z(other.z()) {};
-    ScreenCoordinate(const double x, const double y, const double z) : ScreenCoordinate2D(x, y), _z(z) {};
+    ScreenCoordinate() : vector3(vector3::Zero()) {};
+    ScreenCoordinate(const vector3& other) : vector3(other) {};
+    ScreenCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
 
     /**
      * \brief Transform a screen point with a depth value to a 3D world point
@@ -74,18 +72,7 @@ struct ScreenCoordinate : public ScreenCoordinate2D
      */
     ScreenCoordinateCovariance get_covariance() const;
 
-    double z() const { return _z; };
-    double& z() { return _z; };
-
-    ScreenCoordinate& operator=(const vector3& other);
-    ScreenCoordinate& operator=(const ScreenCoordinate& other);
-    void operator<<(const vector3& other);
-    void operator<<(const ScreenCoordinate& other);
-
-    vector3 base() const { return vector3(x(), y(), z()); };
-
-  private:
-    double _z;
+    ScreenCoordinate2D get_2D() const { return ScreenCoordinate2D(x(), y()); }
 };
 
 /**
@@ -97,7 +84,6 @@ struct CameraCoordinate2D : public vector2
     CameraCoordinate2D() : vector2(vector2::Zero()) {};
     CameraCoordinate2D(const vector2& other) : vector2(other) {};
     CameraCoordinate2D(const double x, const double y) : vector2(x, y) {};
-    CameraCoordinate2D(const CameraCoordinate2D& other) : vector2(other) {};
 
     /**
      * \brief Transform a point from camera to screen coordinate system
@@ -111,20 +97,20 @@ struct CameraCoordinate2D : public vector2
  * \brief Contains a single of coordinate in camera space.
  * Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center
  */
-struct CameraCoordinate : public CameraCoordinate2D
+struct CameraCoordinate : public vector3
 {
     /**
      * \brief Scores a 3D coordinate in camera (x, y, depth). It can be projected to world space using a pose
      * transformation
      */
-    CameraCoordinate() : CameraCoordinate2D(), _z(0.0) {};
-    CameraCoordinate(const CameraCoordinate& other) : CameraCoordinate2D(other), _z(other._z) {};
-    CameraCoordinate(const vector3& coords) : CameraCoordinate2D(coords.head(2)), _z(coords.z()) {};
+    CameraCoordinate() : vector3(vector3::Zero()) {};
+    CameraCoordinate(const vector3& coords) : vector3(coords) {};
     CameraCoordinate(const vector4& homegenousCoordinates) :
-        CameraCoordinate2D(homegenousCoordinates.x() / homegenousCoordinates[3],
-                           homegenousCoordinates.y() / homegenousCoordinates[3]),
-        _z(homegenousCoordinates.z() / homegenousCoordinates[3]) {};
-    CameraCoordinate(const double x, const double y, const double z) : CameraCoordinate2D(x, y), _z(z) {};
+        vector3(homegenousCoordinates.x() / homegenousCoordinates[3],
+                homegenousCoordinates.y() / homegenousCoordinates[3],
+                homegenousCoordinates.z() / homegenousCoordinates[3]) {};
+    CameraCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
+    CameraCoordinate(const CameraCoordinate2D& other, const double z) : vector3(other.x(), other.y(), z) {};
     vector4 get_homogenous() const { return vector4(x(), y(), z(), 1); };
 
     /**
@@ -141,22 +127,7 @@ struct CameraCoordinate : public CameraCoordinate2D
      */
     bool to_screen_coordinates(ScreenCoordinate& screenPoint) const;
     bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const;
-
-    double& z() { return _z; };
-    double z() const { return _z; };
-
-    vector3 base() const { return vector3(x(), y(), z()); };
-
-    CameraCoordinate& operator=(const vector3& other);
-    CameraCoordinate& operator=(const CameraCoordinate& other);
-    void operator<<(const vector3& other);
-    void operator<<(const CameraCoordinate& other);
-
-  private:
-    double _z;
 };
-
-std::ostream& operator<<(std::ostream& os, const CameraCoordinate& coordinates);
 
 /**
  * \brief Contains a single of coordinate in world space.
@@ -169,7 +140,6 @@ struct WorldCoordinate : public vector3
      */
     WorldCoordinate() : vector3(vector3::Zero()) {};
     WorldCoordinate(const vector3& coords) : vector3(coords) {};
-    WorldCoordinate(const WorldCoordinate& other) : vector3(other.base()) {};
     WorldCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
 
     /**
@@ -229,9 +199,6 @@ struct WorldCoordinate : public vector3
     {
         return get_signed_distance(worldPoint).lpNorm<1>();
     };
-
-    WorldCoordinate& operator=(const WorldCoordinate& other);
-    WorldCoordinate& operator=(const vector3& other);
 };
 
 struct PlaneCameraCoordinates : vector4

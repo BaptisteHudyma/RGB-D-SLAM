@@ -37,7 +37,7 @@ TEST(PointCoordinateSystemTests, ScreenToCameraToScreen)
                 ScreenCoordinate newScreenCoordinates;
                 if (cameraCoordinates.to_screen_coordinates(newScreenCoordinates))
                 {
-                    estimate_point_error(originalScreenCoordinates.base(), newScreenCoordinates.base());
+                    estimate_point_error(originalScreenCoordinates, newScreenCoordinates);
                 }
                 else
                 {
@@ -52,7 +52,7 @@ TEST(PointCoordinateSystemTests, ScreenToCameraToScreen)
                 ScreenCoordinate newScreenCoordinates;
                 if (cameraCoordinates.to_screen_coordinates(newScreenCoordinates))
                 {
-                    estimate_point_error(originalScreenCoordinates.base(), newScreenCoordinates.base());
+                    estimate_point_error(originalScreenCoordinates, newScreenCoordinates);
                 }
                 else
                 {
@@ -84,7 +84,7 @@ void test_point_set_screen_to_world_to_screen(const CameraToWorldMatrix& cameraT
                 ScreenCoordinate newScreenCoordinates;
                 if (worldCoordinates.to_screen_coordinates(worldToCamera, newScreenCoordinates))
                 {
-                    estimate_point_error(originalScreenCoordinates.base(), newScreenCoordinates.base());
+                    estimate_point_error(originalScreenCoordinates, newScreenCoordinates);
                 }
                 else
                 {
@@ -188,7 +188,7 @@ void test_plane_set_camera_to_world_to_camera(const CameraToWorldMatrix& cameraT
                     const PlaneCameraCoordinates newCameraCoordinates =
                             worldPlane.to_camera_coordinates(planeWorldToCamera);
 
-                    estimate_plane_error(originalCameraPlane.base(), newCameraCoordinates.base());
+                    estimate_plane_error(originalCameraPlane, newCameraCoordinates);
                 }
             }
         }

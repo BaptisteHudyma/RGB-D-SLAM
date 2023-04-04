@@ -373,51 +373,6 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     return true;
 }
 
-bool Pose_Optimization::compute_p3p_pose(const utils::PoseBase& currentPose,
-                                         const matches_containers::match_point_container& matchedPoints,
-                                         utils::PoseBase& optimizedPose)
-{
-    assert(matchedPoints.size() == 3);
-    // Do all operations on meters, while this SLAM uses millimeters
-    const double multiplier = 1000.0;
-
-    std::vector<vector3> cameraPoints;
-    std::vector<vector3> worldPoints;
-
-    for (const matches_containers::PointMatch& match: matchedPoints)
-    {
-        const vector3& cameraPoint = match._screenFeature.to_camera_coordinates().base();
-
-        cameraPoints.emplace_back(cameraPoint.normalized());
-        worldPoints.emplace_back(match._worldFeature / multiplier);
-    }
-
-    const std::vector<lambdatwist::CameraPose>& finalCameraPoses = lambdatwist::p3p(cameraPoints, worldPoints);
-    assert(finalCameraPoses.size() <= 4);
-
-    const vector3& posePosition = currentPose.get_position();
-    const matrix33& poseRotation = currentPose.get_orientation_matrix();
-
-    double closestPoseDistance = std::numeric_limits<double>::max();
-    for (const lambdatwist::CameraPose& cameraPose: finalCameraPoses)
-    {
-        const double rotationDistance = (cameraPose.R - poseRotation).norm();
-        const double positionDistance = (cameraPose.t * multiplier - posePosition).norm();
-
-        assert(rotationDistance >= 0 and not std::isnan(rotationDistance));
-        assert(positionDistance >= 0 and not std::isnan(positionDistance));
-        const double distance = rotationDistance + positionDistance;
-
-        if (distance < closestPoseDistance)
-        {
-            closestPoseDistance = distance;
-            optimizedPose.set_parameters(cameraPose.t * multiplier, quaternion(cameraPose.R));
-        }
-    }
-    // At least one valid pose found
-    return closestPoseDistance < std::numeric_limits<double>::max();
-}
-
 bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPose,
                                               const matches_containers::match_sets& matchedFeatures,
                                               matrix66& poseCovariance,

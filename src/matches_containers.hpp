@@ -27,7 +27,7 @@ template<class FeatureCameraSpace, class FeatureWorldSpace, class WorldFeatureCo
 //      - the coordinates of the detected point in screen space
 //      - the coordinates of the matched point in world space
 //      - the diagonal of the covariance of the world point in world space
-using PointMatch = MatchTemplate<utils::ScreenCoordinate, utils::WorldCoordinate, vector3>;
+using PointMatch = MatchTemplate<utils::ScreenCoordinate2D, utils::WorldCoordinate, vector3>;
 using match_point_container = std::list<PointMatch>;
 
 // MapPlane matching: contains :

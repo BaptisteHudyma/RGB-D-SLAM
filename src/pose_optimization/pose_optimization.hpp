@@ -75,10 +75,6 @@ class Pose_Optimization
                                          utils::PoseBase& finalPose,
                                          matches_containers::match_sets& featureSets);
 
-    static bool compute_p3p_pose(const utils::PoseBase& currentPose,
-                                 const matches_containers::match_point_container& matchedPoints,
-                                 utils::PoseBase& optimizedPose);
-
     /**
      * \brief
      *

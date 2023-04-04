@@ -542,7 +542,7 @@ utils::Polygon Primitive_Detection::compute_plane_segment_boundary(const Plane_S
                                                                    const cv::Mat& boundaryMask) const
 {
     const vector3& normal = planeSegment.get_normal();
-    const vector3& center = planeSegment.get_centroid().base();
+    const vector3& center = planeSegment.get_centroid();
 
     // find arbitrary othogonal vectors of the normal
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
@@ -588,7 +588,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segme
 {
     // TODO: set in parameters
     const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
-    const vector3& center = planeSegment.get_centroid().base();
+    const vector3& center = planeSegment.get_centroid();
 
     std::vector<vector3> definingPoints;
 

@@ -236,7 +236,7 @@ void Plane_Segment::fit_plane()
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
 
     // get the centroid of the plane
-    _centroid = vector3(_Sx, _Sy, _Sz) * oneOverCount;
+    _centroid << vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
     const matrix33 pointCloudCov = get_point_cloud_Huygen_covariance();
     // special case: degenerate covariance
@@ -254,7 +254,7 @@ void Plane_Segment::fit_plane()
 
     // some values have floating points errors, renormalize
     _normal = eigenVector.normalized();
-    _d = -_normal.dot(_centroid.base());
+    _d = -_normal.dot(_centroid);
 
     // point normal toward the camera
     if (_d <= 0)
@@ -321,7 +321,7 @@ double Plane_Segment::get_point_distance(const vector3& point) const { return po
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
 {
     const static double maximumMergeAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
-    return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid().base()) < maxMatchDistance;
+    return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid()) < maxMatchDistance;
 }
 
 } // namespace rgbd_slam::features::primitives

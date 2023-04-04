@@ -240,7 +240,7 @@ class MapPlane :
         const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(
                 utils::compute_plane_world_to_camera_matrix(worldToCamMatrix));
         const vector3& normal = projectedPlane.head(3).normalized();
-        const vector3& center = _centroid.to_camera_coordinates(worldToCamMatrix).base();
+        const vector3& center = _centroid.to_camera_coordinates(worldToCamMatrix);
 
         // find arbitrary othogonal vectors of the normal
         const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);

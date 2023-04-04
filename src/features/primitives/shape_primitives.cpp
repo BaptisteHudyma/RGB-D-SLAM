@@ -146,6 +146,6 @@ bool Plane::is_similar(const Cylinder& cylinder) const
     return false;
 }
 
-double Plane::get_distance(const vector3& point) const { return get_normal().dot(point - _centroid.base()); }
+double Plane::get_distance(const vector3& point) const { return get_normal().dot(point - _centroid); }
 
 } // namespace rgbd_slam::features::primitives
