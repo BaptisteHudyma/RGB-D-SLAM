@@ -60,7 +60,7 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
             assert(j < _local2globalMap.size());
 
             const vector3& planeNormal = planeGrid[i].get_normal();
-            const vector3& planeCentroid = planeGrid[i].get_centroid().base();
+            const vector3& planeCentroid = planeGrid[i].get_centroid();
             planeNormals(0, j) = planeNormal.x();
             planeNormals(1, j) = planeNormal.y();
             planeNormals(2, j) = planeNormal.z();

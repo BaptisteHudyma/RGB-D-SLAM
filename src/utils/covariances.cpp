@@ -28,7 +28,7 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
                              {0.0, cameraFY / point.z(), -cameraFY * point.y() / pow(point.z(), 2.0)},
                              {0.0, 0.0, 1.0}};
     ScreenCoordinateCovariance screenPointCovariance;
-    screenPointCovariance.base() = (jacobian * pointCovariance * jacobian.transpose());
+    screenPointCovariance << (jacobian * pointCovariance * jacobian.transpose());
     return screenPointCovariance;
 }
 
@@ -51,7 +51,7 @@ WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovar
     const matrix33& rotation = cameraToWorld.block(0, 0, 3, 3);
 
     WorldCoordinateCovariance cov;
-    cov.base() << rotation * cameraPointCovariance.base() * rotation.transpose() + poseCovariance;
+    cov << rotation * cameraPointCovariance * rotation.transpose() + poseCovariance;
     return cov;
 }
 
@@ -81,7 +81,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
                              {0.0, 0.0, 1.0}};
 
     CameraCoordinateCovariance cameraPointCovariance;
-    cameraPointCovariance.base() = jacobian * screenPointCovariance * jacobian.transpose();
+    cameraPointCovariance << jacobian * screenPointCovariance * jacobian.transpose();
     return cameraPointCovariance;
 }
 

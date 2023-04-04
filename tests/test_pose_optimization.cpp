@@ -86,7 +86,7 @@ matches_containers::match_point_container get_matched_points(const utils::Pose& 
         // world coordinates
         const utils::WorldCoordinate worldPointStart(point.x, point.y, point.z);
         //
-        utils::ScreenCoordinate transformedPoint;
+        utils::ScreenCoordinate2D transformedPoint;
         const bool isScreenCoordinatesValid = worldPointStart.to_screen_coordinates(worldToCamera, transformedPoint);
         if (isScreenCoordinatesValid)
         {

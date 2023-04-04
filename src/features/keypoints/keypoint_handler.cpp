@@ -96,7 +96,7 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
 
         _keypoints[pointIndex] = vectorKeypoint;
 
-        const uint searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
+        const uint searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint.get_2D()));
         assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
 
         _searchSpaceIndexContainer[searchSpaceIndex].push_back(pointIndex);
@@ -195,7 +195,7 @@ void Keypoint_Handler::fill_keypoint_mask(const utils::ScreenCoordinate2D& point
         // ignore this point if it is already matched (prevent multiple matches of one point)
         if (not isKeyPointMatchedContainer[keypointIndex])
         {
-            const utils::ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex);
+            const utils::ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
             const double squarredDistance = (keypoint - pointToSearch).squaredNorm();
 
             // keypoint is in a circle around the target keypoints, allow a potential match

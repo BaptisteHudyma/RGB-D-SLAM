@@ -44,9 +44,10 @@ matrix22 ScreenCoordinate2D::get_covariance() const
 
 ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
 {
-    const matrix22& covariance2D = ScreenCoordinate2D::get_covariance();
+    const double xyVariance = 0.1 * 0.1;
+    const matrix22 covariance2D({{xyVariance, 0.0}, {0.0, xyVariance}});
 
-    const double depthQuantization = utils::is_depth_valid(_z) ? get_depth_quantization(_z) : 1000.0;
+    const double depthQuantization = utils::is_depth_valid(z()) ? get_depth_quantization(z()) : 1000.0;
     // a zero variance will break the kalman gain
     assert(depthQuantization > 0);
 
@@ -76,34 +77,6 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
 
     CameraCoordinate cameraPoint(x, y, z());
     return cameraPoint;
-}
-
-ScreenCoordinate& ScreenCoordinate::operator=(const vector3& other)
-{
-    this->x() = other.x();
-    this->y() = other.y();
-    this->z() = other.z();
-
-    return *this;
-}
-
-ScreenCoordinate& ScreenCoordinate::operator=(const ScreenCoordinate& other)
-{
-    if (this == &other)
-        return *this;
-
-    this->operator=(other.base());
-    return *this;
-}
-
-void ScreenCoordinate::operator<<(const vector3& other) { this->operator=(other); }
-
-void ScreenCoordinate::operator<<(const ScreenCoordinate& other) { this->operator<<(other.base()); }
-
-std::ostream& operator<<(std::ostream& os, const CameraCoordinate& coordinates)
-{
-    os << coordinates.base().transpose();
-    return os;
 }
 
 /**
@@ -151,27 +124,6 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
     return false;
 }
 
-CameraCoordinate& CameraCoordinate::operator=(const vector3& other)
-{
-    this->x() = other.x();
-    this->y() = other.y();
-    this->z() = other.z();
-    return *this;
-}
-
-CameraCoordinate& CameraCoordinate::operator=(const CameraCoordinate& other)
-{
-    if (this == &other)
-        return *this;
-
-    this->operator=(other.base());
-    return *this;
-}
-
-void CameraCoordinate::operator<<(const vector3& other) { this->operator=(other); }
-
-void CameraCoordinate::operator<<(const CameraCoordinate& other) { this->operator<<(other.base()); }
-
 /**
  *      WORLD COORDINATES
  */
@@ -179,7 +131,7 @@ void CameraCoordinate::operator<<(const CameraCoordinate& other) { this->operato
 bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                             ScreenCoordinate& screenPoint) const
 {
-    assert(not this->base().hasNaN());
+    assert(not this->hasNaN());
 
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates(worldToCamera);
     assert(cameraPoint.get_homogenous()[3] > 0);
@@ -234,23 +186,6 @@ double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
                                      const CameraToWorldMatrix& cameraToWorld) const
 {
     return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
-}
-
-WorldCoordinate& WorldCoordinate::operator=(const vector3& other)
-{
-    this->x() = other.x();
-    this->y() = other.y();
-    this->z() = other.z();
-    return *this;
-}
-
-WorldCoordinate& WorldCoordinate::operator=(const WorldCoordinate& other)
-{
-    if (this == &other)
-        return *this;
-
-    this->operator=(other.base());
-    return *this;
 }
 
 /**

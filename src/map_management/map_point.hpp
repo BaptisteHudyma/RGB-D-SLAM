@@ -50,13 +50,13 @@ struct Point
         assert(_kalmanFilter != nullptr);
 
         const std::pair<vector3, matrix33>& res = _kalmanFilter->get_new_state(
-                _coordinates, _covariance.base(), newDetectionCoordinates, newDetectionCovariance);
+                _coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
         const vector3& newCoordinates = res.first;
         const matrix33& newCovariance = res.second;
 
         const double score = (_coordinates - newCoordinates).norm();
 
-        _coordinates = newCoordinates.base();
+        _coordinates << newCoordinates;
         _covariance << newCovariance;
         assert(not _coordinates.hasNaN());
         return score;
@@ -166,7 +166,8 @@ class MapPoint :
 
         if (shouldAddToMatches)
         {
-            matches.emplace_back(detectedFeatures.get_keypoint(matchIndex), _coordinates, _covariance.diagonal(), _id);
+            matches.emplace_back(
+                    detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance.diagonal(), _id);
         }
         return matchIndex;
     }
