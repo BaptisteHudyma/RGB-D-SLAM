@@ -34,8 +34,7 @@ struct Point
         build_kalman_filter();
 
         assert(not _descriptor.empty() and _descriptor.cols > 0);
-        assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and
-               not std::isnan(_coordinates.z()));
+        assert(not _coordinates.hasNaN());
     };
 
     /**
@@ -58,9 +57,8 @@ struct Point
         const double score = (_coordinates - newCoordinates).norm();
 
         _coordinates = newCoordinates.base();
-        _covariance.base() = newCovariance;
-        assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and
-               not std::isnan(_coordinates.z()));
+        _covariance << newCovariance;
+        assert(not _coordinates.hasNaN());
         return score;
     }
 
@@ -179,8 +177,7 @@ class MapPoint :
     {
         const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
-        assert(not std::isnan(_coordinates.x()) and not std::isnan(_coordinates.y()) and
-               not std::isnan(_coordinates.z()));
+        assert(not _coordinates.hasNaN());
         if (shouldNotDropPoint)
         {
             utils::ScreenCoordinate2D screenCoordinates;

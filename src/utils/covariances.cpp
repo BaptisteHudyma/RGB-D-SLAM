@@ -89,6 +89,9 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
                                   const matrix33& pointCloudCovariance,
                                   const matrix33& positionCovariance)
 {
+    assert(is_covariance_valid(pointCloudCovariance));
+    assert(is_covariance_valid(positionCovariance));
+
     const vector3& normal = planeParameters.head(3);
     const double d = planeParameters(3);
     assert(not utils::double_equal(d, 0.0));
@@ -120,8 +123,7 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
     jacobian /= divider;
 
     const matrix44& planeParameterCovariance = jacobian * covariance * jacobian.transpose();
-    assert(planeParameterCovariance.diagonal()(0) >= 0 and planeParameterCovariance.diagonal()(1) >= 0 and
-           planeParameterCovariance.diagonal()(2) >= 0 and planeParameterCovariance.diagonal()(3) >= 0);
+    assert(is_covariance_valid(planeParameterCovariance));
     return planeParameterCovariance;
 }
 

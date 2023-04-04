@@ -198,7 +198,9 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     // 0 determinant cannot be inverted
     assert(not utils::double_equal(pointCloudHessian.determinant(), 0.0));
 
-    return pointCloudHessian.inverse();
+    const matrix33& covariance = pointCloudHessian.inverse();
+    assert(utils::is_covariance_valid(covariance));
+    return covariance;
 }
 
 matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const

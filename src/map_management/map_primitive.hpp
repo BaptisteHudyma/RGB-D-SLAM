@@ -63,10 +63,8 @@ class Plane
                  const matrix44& newDetectionCovariance,
                  const utils::WorldCoordinate& detectedCentroid)
     {
-        assert(newDetectionCovariance.diagonal()(0) >= 0 and newDetectionCovariance.diagonal()(1) >= 0 and
-               newDetectionCovariance.diagonal()(2) >= 0 and newDetectionCovariance.diagonal()(3) >= 0);
-        assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and
-               _covariance.diagonal()(3) >= 0);
+        assert(utils::is_covariance_valid(newDetectionCovariance));
+        assert(utils::is_covariance_valid(_covariance));
 
         const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(
                 _parametrization, _covariance, newDetectionParameters, newDetectionCovariance);
@@ -85,10 +83,8 @@ class Plane
         _centroid = detectedCentroid;
 
         // static sanity checks
-        assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and
-               _covariance.diagonal()(3) >= 0);
-        assert(not std::isnan(_parametrization.x()) and not std::isnan(_parametrization.y()) and
-               not std::isnan(_parametrization.z()) and not std::isnan(_parametrization.w()));
+        assert(utils::is_covariance_valid(_covariance));
+        assert(not _parametrization.hasNaN());
         return score;
     }
 
@@ -370,8 +366,7 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _boundaryPolygon = stagedPlane._boundaryPolygon;
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
-        assert(_covariance.diagonal()(0) >= 0 and _covariance.diagonal()(1) >= 0 and _covariance.diagonal()(2) >= 0 and
-               _covariance.diagonal()(3) >= 0);
+        assert(utils::is_covariance_valid(_covariance));
     }
 
     bool is_lost() const override
