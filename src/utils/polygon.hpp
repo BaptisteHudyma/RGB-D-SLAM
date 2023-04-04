@@ -18,7 +18,7 @@ class Polygon
 {
   public:
     Polygon() = default;
-    Polygon(const std::vector<vector2>& points);
+    Polygon(const std::vector<vector2>& points, const vector2& lowerLeftBoundary, const vector2& upperRightBoundary);
 
     /**
      * \brief Compute the convex hull for a set of points
@@ -26,6 +26,11 @@ class Polygon
      * \return The ordered points defining a convex hull of points
      */
     static Polygon compute_convex_hull(const std::vector<vector2>& points);
+
+    /**
+     * \brief Return true if this point is in the polygon boundaries
+     */
+    bool contains(const vector2& point) const;
 
     /**
      * merge the other polygon into this one
@@ -37,6 +42,10 @@ class Polygon
 
   private:
     std::vector<vector2> _boundaryPoints;
+
+    // represent the two sides of the rectangle englobing this polygon
+    vector2 _lowerLeftBoundary = vector2::Zero();
+    vector2 _upperRightBoundary = vector2::Zero();
 };
 
 } // namespace rgbd_slam::utils
