@@ -14,7 +14,7 @@ namespace rgbd_slam::utils {
 double angle_distance(const double angleA, const double angleB);
 
 /**
- * \brief Check an equality between two doubles, with an epsilon
+ * \brief Check an equality between two doubles, with an epsilon: TODO move this to a more sensible location
  * \param[in] epsilon
  */
 bool double_equal(const double a, const double b, const double epsilon = std::numeric_limits<double>::epsilon());

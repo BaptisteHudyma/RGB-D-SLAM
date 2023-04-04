@@ -86,7 +86,7 @@ double Cylinder::get_distance(const vector3& point) const
  *        PLANE
  *
  */
-Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask, const std::vector<vector2>& boundaryPolygon) :
+Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask, const utils::Polygon& boundaryPolygon) :
     IPrimitive(shapeMask),
 
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),

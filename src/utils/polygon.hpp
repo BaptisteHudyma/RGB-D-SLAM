@@ -12,11 +12,32 @@ namespace rgbd_slam::utils {
 std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal);
 
 /**
- * \brief Compute the convex hull for a set of points
- * \param[in] points The points to compute a convex hull for
- * \return The ordered points defining a convex hull of points
+ * \brief Describe a polygon by it's points in the polygon space
  */
-std::vector<vector2> compute_convex_hull(const std::vector<vector2>& points);
+class Polygon
+{
+  public:
+    Polygon() = default;
+    Polygon(const std::vector<vector2>& points);
+
+    /**
+     * \brief Compute the convex hull for a set of points
+     * \param[in] points The points to compute a convex hull for
+     * \return The ordered points defining a convex hull of points
+     */
+    static Polygon compute_convex_hull(const std::vector<vector2>& points);
+
+    /**
+     * merge the other polygon into this one
+     */
+    void merge(const Polygon& other);
+
+    size_t get_number_of_points() const { return _boundaryPoints.size(); };
+    std::vector<vector2> get_boundary_points() const { return _boundaryPoints; };
+
+  private:
+    std::vector<vector2> _boundaryPoints;
+};
 
 } // namespace rgbd_slam::utils
 

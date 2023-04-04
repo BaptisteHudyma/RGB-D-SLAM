@@ -6,6 +6,7 @@
 #include "../../utils/coordinates.hpp"
 #include "cylinder_segment.hpp"
 #include "plane_segment.hpp"
+#include "polygon.hpp"
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::features::primitives {
@@ -115,7 +116,7 @@ class Plane : public IPrimitive
      * \param[in] planeSeg Plane to copy
      * \param[in] shapeMask Mask of the shape in the reference image
      */
-    Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask, const std::vector<vector2>& boundaryPolygon);
+    Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask, const utils::Polygon& boundaryPolygon);
 
     Plane(const Plane& plane);
 
@@ -141,7 +142,7 @@ class Plane : public IPrimitive
     utils::CameraCoordinate get_centroid() const { return _centroid; };
     matrix33 get_point_cloud_covariance() const { return _pointCloudCovariance; };
 
-    std::vector<vector2> get_boundary() const { return _boundaryPolygon; };
+    utils::Polygon get_boundary_polygon() const { return _boundaryPolygon; };
 
     ~Plane() = default;
 
@@ -157,7 +158,7 @@ class Plane : public IPrimitive
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
     matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from
     vector6 _descriptor;                            // the descriptor of this plane
-    const std::vector<vector2> _boundaryPolygon;
+    const utils::Polygon _boundaryPolygon;
 
     // remove copy functions
     Plane() = delete;

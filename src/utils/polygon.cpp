@@ -25,17 +25,19 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
     return std::make_pair(u, v);
 }
 
+Polygon::Polygon(const std::vector<vector2>& points) : _boundaryPoints(points) {}
+
 /**
  * \brief Rotate the given vetor by 90 degrees
  */
 vector2 rotate90(const vector2& other) { return vector2(-other.y(), other.x()); }
 
-std::vector<vector2> compute_convex_hull(const std::vector<vector2>& pointsIn)
+Polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
 {
     if (pointsIn.size() < 3)
     {
         outputs::log_warning("Could not find boundary for plane patch");
-        return std::vector<vector2>();
+        return Polygon();
     }
     std::vector<vector2> sortedPoints(pointsIn);
 
@@ -71,7 +73,9 @@ std::vector<vector2> compute_convex_hull(const std::vector<vector2>& pointsIn)
         }
         result.push_back(point);
     }
-    return result;
+    return Polygon(result);
 }
+
+void Polygon::merge(const Polygon& other) {}
 
 } // namespace rgbd_slam::utils
