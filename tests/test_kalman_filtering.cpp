@@ -21,35 +21,30 @@ TEST(KalmanFilteringTests, BuildingHeightGuess)
     const int stateDimension = 1;       // Number of states
     const int measurementDimension = 1; // Number of measurements
 
-    matrixd systemDynamics(stateDimension, stateDimension);
-    matrixd outputMatrix(measurementDimension, stateDimension);
-    matrixd processNoiseCovariance(stateDimension, stateDimension);
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
-
-    // no dynamics
-    systemDynamics << 1;
-    // one data, one output
-    outputMatrix << 1;
-    // measurement noise covariance
-    measurementNoiseCovariance << measurementError * measurementError;
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics;
+    systemDynamics << 1; // no dynamics
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    outputMatrix << 1; // one data, one output
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance;
     processNoiseCovariance << 0;
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    measurementNoiseCovariance << measurementError * measurementError;
 
     // Only speed and position are related
-    matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
-    estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance;
+    estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty; // Estimate error covariance
 
     // Construct the filter
     KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
-    vectorxd x0(stateDimension);
-    x0 << originalState;
+    Eigen::Vector<double, stateDimension> x0 = Eigen::Vector<double, stateDimension>::Ones() * originalState;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: measurments)
     {
-        vectorxd y(measurementDimension);
-        y << measurement;
+        Eigen::Vector<double, measurementDimension> y =
+                Eigen::Vector<double, measurementDimension>::Ones() * measurement;
 
         // update the model
         kf.update(y, measurementNoiseCovariance);
@@ -73,34 +68,30 @@ TEST(KalmanFilteringTests, TemperatureInTank)
     const int stateDimension = 1;       // Number of states
     const int measurementDimension = 1; // Number of measurements
 
-    matrixd systemDynamics(stateDimension, stateDimension);
-    matrixd outputMatrix(measurementDimension, stateDimension);
-    matrixd processNoiseCovariance(stateDimension, stateDimension);
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
-
-    // no dynamics
-    systemDynamics << 1;
-    // one data, one output
-    outputMatrix << 1;
-    // measurement noise covariance
-    measurementNoiseCovariance << measurementError * measurementError;
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics;
+    systemDynamics << 1; // no dynamics
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    outputMatrix << 1; // one data, one output
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance;
     processNoiseCovariance << 0;
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    measurementNoiseCovariance << measurementError * measurementError;
 
     // Only speed and position are related
-    matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
-    estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance;
+    estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty; // Estimate error covariance
 
     // Construct the filter
     KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << originalState;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: measurments)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -125,10 +116,10 @@ TEST(KalmanFilteringTests, TemperatureInHeatingTank)
     const int stateDimension = 1;       // Number of states
     const int measurementDimension = 1; // Number of measurements
 
-    matrixd systemDynamics(stateDimension, stateDimension);
-    matrixd outputMatrix(measurementDimension, stateDimension);
-    matrixd processNoiseCovariance(stateDimension, stateDimension);
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics;
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance;
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
 
     // no dynamics
     systemDynamics << 1;
@@ -139,20 +130,20 @@ TEST(KalmanFilteringTests, TemperatureInHeatingTank)
     processNoiseCovariance << 0.15;
 
     // Only speed and position are related
-    matrixd estimateErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
     estimateErrorCovariance << originalStateUncertainty * originalStateUncertainty;
 
     // Construct the filter
     KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << originalState;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: measurments)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -172,10 +163,10 @@ TEST(KalmanFilteringTests, VehiculeLocationEstimation)
     const double accelerationStd = 0.2; // m/s²
     const double measurementError = 3;  // meters
 
-    matrixd systemDynamics(stateDimension, stateDimension);
-    matrixd outputMatrix(measurementDimension, stateDimension);
-    matrixd processNoiseCovariance(stateDimension, stateDimension);
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension);
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics;
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance;
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
 
     // no dynamics
     systemDynamics << 1, dt, 0.5 * dt * dt, 0, 0, 0, 0, 1, dt, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, dt, 0.5 * dt * dt,
@@ -193,8 +184,8 @@ TEST(KalmanFilteringTests, VehiculeLocationEstimation)
     // Construct the filter
     KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
-    vectorxd x0(stateDimension);
-    matrixd x0ErrorCovariance(stateDimension, stateDimension); // Estimate error covariance
+    Eigen::Vector<double, stateDimension> x0;
+    Eigen::Matrix<double, stateDimension, stateDimension> x0ErrorCovariance; // Estimate error covariance
     x0 << 0, 0, 0, 0, 0, 0;
     x0ErrorCovariance << 500, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, 0, 0, 0,
             500, 0, 0, 0, 0, 0, 0, 500;
@@ -212,7 +203,7 @@ TEST(KalmanFilteringTests, VehiculeLocationEstimation)
     // Feed measurements into filter, output estimated states
     for (const std::pair<double, double>& measurement: measurements)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement.first, measurement.second;
 
         // update the model
@@ -267,11 +258,12 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseNoVariance)
     const double measurementNoise = 0.0;
     const double expectedNoise = 0.0;
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance;
+    ; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -290,14 +282,14 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseNoVariance)
     std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << 0, 0, gravityConst;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: trajectoryPoints)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -319,11 +311,11 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseSmallVariance)
     const double measurementNoise = 0.0;
     const double expectedNoise = 0.001;
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -342,14 +334,14 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseSmallVariance)
     std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << 0, 0, gravityConst;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: trajectoryPoints)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -371,11 +363,11 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseMediumVariance)
     const double measurementNoise = 0.0;
     const double expectedNoise = 0.01;
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -394,14 +386,14 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseMediumVariance)
     std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << 0, 0, gravityConst;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: trajectoryPoints)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -423,11 +415,11 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseHighVariance)
     const double measurementNoise = 0.0;
     const double expectedNoise = 0.1;
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -446,14 +438,14 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseHighVariance)
     std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << 0, 0, gravityConst;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: trajectoryPoints)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -475,11 +467,11 @@ TEST(KalmanFilteringTests, 1DProjectileMotionSmallNoiseSmallVariance)
     const double measurementNoise = 0.001;
     const double expectedNoise = 0.001;
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -498,14 +490,14 @@ TEST(KalmanFilteringTests, 1DProjectileMotionSmallNoiseSmallVariance)
     std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << 0, 0, gravityConst;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: trajectoryPoints)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -527,11 +519,11 @@ TEST(KalmanFilteringTests, 1DProjectileMotionMediumNoiseMediumVariance)
     const double measurementNoise = 0.01;
     const double expectedNoise = 0.01;
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -550,14 +542,14 @@ TEST(KalmanFilteringTests, 1DProjectileMotionMediumNoiseMediumVariance)
     std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << 0, 0, gravityConst;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: trajectoryPoints)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -579,11 +571,11 @@ TEST(KalmanFilteringTests, 1DProjectileMotionHighNoiseHighVariance)
     const double measurementNoise = 0.1;
     const double expectedNoise = 0.1;
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -602,14 +594,14 @@ TEST(KalmanFilteringTests, 1DProjectileMotionHighNoiseHighVariance)
     std::list<double> trajectoryPoints = get_1D_free_fall(initialPosition, measurementNoise, numberOfMeasurements, dt);
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << 0, 0, gravityConst;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: trajectoryPoints)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model
@@ -627,11 +619,11 @@ TEST(KalmanFilteringTests, 1DProjectileParabolaWithNoise)
 
     const double dt = 1.0 / 30; // Time step
 
-    matrixd systemDynamics(stateDimension, stateDimension);                         // System dynamics matrix
-    matrixd outputMatrix(measurementDimension, stateDimension);                     // Output matrix
-    matrixd processNoiseCovariance(stateDimension, stateDimension);                 // Process noise covariance
-    matrixd measurementNoiseCovariance(measurementDimension, measurementDimension); // Measurement noise covariance
-    matrixd estimateErrorCovariance(stateDimension, stateDimension);                // Estimate error covariance
+    Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
+    Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
+    Eigen::Matrix<double, stateDimension, stateDimension> processNoiseCovariance; // Process noise covariance
+    Eigen::Matrix<double, measurementDimension, measurementDimension> measurementNoiseCovariance;
+    Eigen::Matrix<double, stateDimension, stateDimension> estimateErrorCovariance; // Estimate error covariance
 
     // Discrete LTI projectile motion, measuring position only
     systemDynamics << 1, dt, 0, 0, 1, dt, 0, 0, 1;
@@ -659,14 +651,14 @@ TEST(KalmanFilteringTests, 1DProjectileParabolaWithNoise)
             -0.155607486619, -0.287198661013, -0.602973173813};
 
     // Best guess of initial states
-    vectorxd x0(stateDimension);
+    Eigen::Vector<double, stateDimension> x0;
     x0 << measurements[0], 0, -9.81;
     kf.init(estimateErrorCovariance, x0);
 
     // Feed measurements into filter, output estimated states
     for (const double measurement: measurements)
     {
-        vectorxd y(measurementDimension);
+        Eigen::Vector<double, measurementDimension> y;
         y << measurement;
 
         // update the model

@@ -102,28 +102,19 @@ class Plane
     {
         if (_kalmanFilter == nullptr)
         {
+            const matrix44 systemDynamics = matrix44::Identity(); // planes are not supposed to move, so no dynamics
+            const matrix44 outputMatrix = matrix44::Identity();   // we need all positions
+
             const double parametersProcessNoise = 0; // TODO set in parameters
-            const size_t stateDimension = 4;         // nx, ny, nz, d
-            const size_t measurementDimension = 4;   // nx, ny, nz, d
+            const matrix44 processNoiseCovariance =
+                    matrix44::Identity() * parametersProcessNoise; // Process noise covariance
 
-            matrixd systemDynamics(stateDimension, stateDimension);         // System dynamics matrix
-            matrixd outputMatrix(measurementDimension, stateDimension);     // Output matrix
-            matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
-
-            // Points are not supposed to move, so no dynamics
-            systemDynamics.setIdentity();
-            // we need all positions
-            outputMatrix.setIdentity();
-
-            processNoiseCovariance.setIdentity();
-            processNoiseCovariance *= parametersProcessNoise;
-
-            _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter>(
+            _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter<4, 4>>(
                     systemDynamics, outputMatrix, processNoiseCovariance);
         }
     }
     // shared kalman filter, between all planes
-    inline static std::unique_ptr<tracking::SharedKalmanFilter> _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::SharedKalmanFilter<4, 4>> _kalmanFilter = nullptr;
 };
 
 class MapPlane :

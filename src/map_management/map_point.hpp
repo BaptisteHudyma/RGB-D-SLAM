@@ -70,29 +70,19 @@ struct Point
     {
         if (_kalmanFilter == nullptr)
         {
-            // gain 10mm of uncertainty at each iteration
-            const double pointProcessNoise = 0;    // TODO set in parameters
-            const size_t stateDimension = 3;       // x, y, z
-            const size_t measurementDimension = 3; // x, y, z
+            const matrix33 systemDynamics = matrix33::Identity(); // points are not supposed to move, so no dynamics
+            const matrix33 outputMatrix = matrix33::Identity();   // we need all positions
 
-            matrixd systemDynamics(stateDimension, stateDimension);         // System dynamics matrix
-            matrixd outputMatrix(measurementDimension, stateDimension);     // Output matrix
-            matrixd processNoiseCovariance(stateDimension, stateDimension); // Process noise covariance
+            const double parametersProcessNoise = 0; // TODO set in parameters
+            const matrix33 processNoiseCovariance =
+                    matrix33::Identity() * parametersProcessNoise; // Process noise covariance
 
-            // Points are not supposed to move, so no dynamics
-            systemDynamics.setIdentity();
-            // we need all positions
-            outputMatrix.setIdentity();
-
-            processNoiseCovariance.setIdentity();
-            processNoiseCovariance *= pointProcessNoise;
-
-            _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter>(
+            _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter<3, 3>>(
                     systemDynamics, outputMatrix, processNoiseCovariance);
         }
     }
     // shared kalman filter, between all points
-    inline static std::unique_ptr<tracking::SharedKalmanFilter> _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
 };
 
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
