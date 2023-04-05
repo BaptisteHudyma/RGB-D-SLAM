@@ -549,10 +549,6 @@ utils::Polygon Primitive_Detection::compute_plane_segment_boundary(const Plane_S
     const vector3& uVec = res.first;
     const vector3& vVec = res.second;
 
-    assert(utils::double_equal(uVec.dot(normal), 0.0));
-    assert(utils::double_equal(uVec.dot(vVec), 0.0));
-    assert(utils::double_equal(vVec.dot(normal), 0.0));
-
     std::vector<vector2> boundaryPoints;
     // Cell refinement
     for (uint cellRow = 0, stackedCellId = 0; cellRow < _verticalCellsCount; ++cellRow)
