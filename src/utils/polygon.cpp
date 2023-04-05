@@ -11,17 +11,12 @@ namespace rgbd_slam::utils {
 
 std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 {
-    // TODO: find a good" transformation for the normal, to obtain any vector non parralel to the normal
-    const vector3 r = vector3(-normal.z(), normal.x(), normal.y());
+    const vector3 r = vector3(-normal.z(), normal.x(), normal.y()).normalized();
     assert(abs(r.dot(normal)) > 0.00001);
+
     const vector3 u = normal.cross(r).normalized();
     const vector3 v = normal.cross(u).normalized();
 
-    assert(double_equal(u.norm(), 1.0));
-    assert(double_equal(v.norm(), 1.0));
-    assert(double_equal(normal.dot(u), 0.0));
-    assert(double_equal(normal.dot(v), 0.0));
-    assert(double_equal(u.dot(v), 0.0));
     return std::make_pair(u, v);
 }
 
@@ -119,6 +114,9 @@ bool Polygon::contains(const vector2& point) const
 void Polygon::merge(const Polygon& other)
 {
     // TODO
+    _boundaryPoints = other._boundaryPoints;
+    _lowerLeftBoundary = other._lowerLeftBoundary;
+    _upperRightBoundary = other._upperRightBoundary;
 }
 
 } // namespace rgbd_slam::utils
