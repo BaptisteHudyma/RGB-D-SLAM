@@ -236,6 +236,10 @@ class MapPlane :
 
         debugImage = maskedInput + ImaskedInput;
 
+        // cannot display shape if it as less than 3 points
+        if (_boundaryPolygon.get_boundary_points().size() < 3)
+            return;
+
         // project plane in camera space
         const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(
                 utils::compute_plane_world_to_camera_matrix(worldToCamMatrix));
