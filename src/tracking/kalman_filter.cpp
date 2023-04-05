@@ -39,6 +39,7 @@ std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& c
     if (utils::double_equal(inovationCovariance.determinant(), 0))
     {
         // do not update state or covariance
+        assert(utils::is_covariance_valid(estimateErrorCovariance));
         return std::make_pair(newStateEstimate, estimateErrorCovariance);
     }
 
@@ -48,7 +49,7 @@ std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& c
     const vectorxd& newState = newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate);
 
     const matrixd& covUpdateMatrix = (_identity - kalmanGain * _outputMatrix);
-    matrixd newCovariance = (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance;
+    const matrixd& newCovariance = (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance;
 
     /*  // Alternative non Joseph form
     const matrixd& temp = _identity - kalmanGain * _outputMatrix;
@@ -57,7 +58,7 @@ std::pair<vectorxd, matrixd> SharedKalmanFilter::get_new_state(const vectorxd& c
     */
 
     assert(newCovariance.cols() == newCovariance.rows());
-    utils::is_covariance_valid(newCovariance);
+    assert(utils::is_covariance_valid(newCovariance));
 
     // return the covariance and state estimation
     return std::make_pair(newState, newCovariance);

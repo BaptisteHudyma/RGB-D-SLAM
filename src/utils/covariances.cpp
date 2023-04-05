@@ -6,6 +6,7 @@
 #include "logger.hpp"
 #include "types.hpp"
 #include <cmath>
+#include <iostream>
 
 namespace rgbd_slam::utils {
 
@@ -98,7 +99,8 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
     assert(utils::double_equal(normal.norm(), 1.0));
 
     // compute covariance with the addition of an eventual position covariance
-    const matrix33 covariance = pointCloudCovariance + positionCovariance;
+    // TODO: check how to add the pose covariance, this causes an invalid covariance
+    const matrix33 covariance = pointCloudCovariance; // + positionCovariance;
 
     // reduce the parametrization
     const vector3 parameters = normal / d;
@@ -122,7 +124,9 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
     });
     jacobian /= divider;
 
-    const matrix44& planeParameterCovariance = jacobian * covariance * jacobian.transpose();
+    const matrix44& planeParameterCovariance =
+            // add a little bit of variance on the diagonal to counter floatting points errors
+            (jacobian * covariance * jacobian.transpose()) + matrix44::Identity() * 0.01;
     assert(is_covariance_valid(planeParameterCovariance));
     return planeParameterCovariance;
 }

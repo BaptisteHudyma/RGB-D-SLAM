@@ -240,6 +240,7 @@ void Plane_Segment::fit_plane()
 
     const matrix33 pointCloudCov = get_point_cloud_Huygen_covariance();
     // special case: degenerate covariance
+    // if (not utils::is_covariance_valid(pointCloudCov))
     if (utils::double_equal(pointCloudCov.determinant(), 0))
     {
         _isPlanar = false;
@@ -251,6 +252,14 @@ void Plane_Segment::fit_plane()
     const vector3& eigenValues = eigenSolver.eigenvalues();
     // best eigen vector is the most reliable direction for this plane normal
     const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
+
+    /** Alternative plane parameter computation
+    matrix33 pcc = get_point_cloud_covariance();
+    vector3 e(-_Sx, -_Sy, -_Sz);
+    const vector3 params = (pcc * e).transpose();
+    _normal = params / params.norm();
+    _d = 1.0 / params.norm();
+    */
 
     // some values have floating points errors, renormalize
     _normal = eigenVector.normalized();
