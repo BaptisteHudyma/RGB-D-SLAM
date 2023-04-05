@@ -122,7 +122,6 @@ add_library(poseOptimization SHARED
 add_library(tracking SHARED
     ${TRACKING}/motion_model.cpp
     ${TRACKING}/triangulation.cpp
-    ${TRACKING}/kalman_filter.cpp
 )
 
 add_library(outputs SHARED
