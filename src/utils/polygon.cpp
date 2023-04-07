@@ -82,6 +82,8 @@ Polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
         upperRightBoundary.x() = std::max(upperRightBoundary.x(), point.x());
         upperRightBoundary.y() = std::max(upperRightBoundary.y(), point.y());
     }
+    // close shape
+    boundary.emplace_back(boundary[0]);
     return Polygon(boundary, lowerLeftBoundary, upperRightBoundary);
 }
 
@@ -114,9 +116,12 @@ bool Polygon::contains(const vector2& point) const
 void Polygon::merge(const Polygon& other)
 {
     // TODO
-    _boundaryPoints = other._boundaryPoints;
-    _lowerLeftBoundary = other._lowerLeftBoundary;
-    _upperRightBoundary = other._upperRightBoundary;
+    _boundaryPoints.insert(_boundaryPoints.end(), other._boundaryPoints.begin(), other._boundaryPoints.end());
+
+    const auto& res = compute_convex_hull(_boundaryPoints);
+    _boundaryPoints = res._boundaryPoints;
+    _lowerLeftBoundary = res._lowerLeftBoundary;
+    _upperRightBoundary = res._upperRightBoundary;
 }
 
 } // namespace rgbd_slam::utils

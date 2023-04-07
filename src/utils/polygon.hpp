@@ -37,7 +37,11 @@ class Polygon
      */
     void merge(const Polygon& other);
 
-    size_t get_number_of_points() const { return _boundaryPoints.size(); };
+    size_t get_number_of_points() const
+    {
+        assert(_boundaryPoints.size() > 0);
+        return _boundaryPoints.size() - 1;
+    };
     std::vector<vector2> get_boundary_points() const { return _boundaryPoints; };
 
   private:

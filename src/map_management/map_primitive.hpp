@@ -275,7 +275,7 @@ class MapPlane :
         debugImage = maskedInput + ImaskedInput;
 
         // cannot display shape if it as less than 3 points
-        if (_boundaryPolygon.get_boundary_points().size() < 3)
+        if (_boundaryPolygon.get_number_of_points() < 3)
             return;
 
         // project plane in camera space
@@ -313,19 +313,6 @@ class MapPlane :
                 previousPoint = newPoint;
                 isPreviousPointSet = true;
             }
-        }
-
-        // close the shape
-        const utils::CameraCoordinate cameraPoint(
-                utils::get_point_from_plane_coordinates(boundaryPoints[0], center, uVec, vVec));
-        utils::ScreenCoordinate screenPoint;
-        if (cameraPoint.to_screen_coordinates(screenPoint))
-        {
-            cv::line(debugImage,
-                     previousPoint,
-                     cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
-                     color,
-                     2);
         }
     }
 
