@@ -85,6 +85,7 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
             utils::compute_plane_world_to_camera_matrix(transformationMatrix);
     for (const matches_containers::PlaneMatch& match: _planes)
     {
+        // TODO remove d from optimization, replace with boundary optimization
         const vector3& planeProjectionError =
                 match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
 

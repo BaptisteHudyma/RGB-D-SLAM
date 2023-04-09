@@ -16,11 +16,15 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 {
     // define a vector orthogonal to the normal (r.dot normal should be close to 1)
     const vector3 r = vector3(normal.z(), normal.x(), normal.y()).normalized();
-    assert(abs(r.dot(normal)) > 0.00001);
 
     // get two vectors that will span the plane
     const vector3 u = normal.cross(r).normalized();
     const vector3 v = normal.cross(u).normalized();
+
+    // check that angles between vectors is close to 0
+    assert(abs(u.dot(normal)) <= .01);
+    assert(abs(v.dot(u)) <= .01);
+    assert(abs(v.dot(normal)) <= .01);
 
     return std::make_pair(u, v);
 }
@@ -201,8 +205,7 @@ void Polygon::display(const vector3& center,
     {
         const utils::CameraCoordinate cameraPoint(
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), center, uVec, vVec));
-        utils::ScreenCoordinate screenPoint;
-        if (cameraPoint.to_screen_coordinates(screenPoint))
+        if (utils::ScreenCoordinate screenPoint; cameraPoint.to_screen_coordinates(screenPoint))
         {
             const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
             if (isPreviousPointSet)
@@ -226,6 +229,32 @@ void Polygon::simplify(const double distanceThreshold)
     polygon out;
     boost::geometry::simplify(_polygon, out, distanceThreshold);
     _polygon = out;
+}
+
+std::vector<vector2> Polygon::get_boundary() const
+{
+    std::vector<vector2> boundaryPoints;
+    boundaryPoints.reserve(_polygon.outer().size());
+    std::ranges::transform(_polygon.outer().rbegin(),
+                           _polygon.outer().rend(),
+                           std::back_inserter(boundaryPoints),
+                           [](const point_2d& c) {
+                               return vector2(c.x(), c.y());
+                           });
+    return boundaryPoints;
+}
+
+std::vector<vector2> Polygon::get_envelop() const
+{
+    box_2d box;
+    boost::geometry::envelope(_polygon, box);
+
+    std::vector<vector2> vectorBox;
+
+    vectorBox.emplace_back(vector2(box.min_corner().x(), box.min_corner().y()));
+    vectorBox.emplace_back(vector2(box.max_corner().x(), box.max_corner().y()));
+
+    return vectorBox;
 }
 
 } // namespace rgbd_slam::utils

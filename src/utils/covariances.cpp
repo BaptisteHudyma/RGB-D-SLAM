@@ -91,7 +91,6 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
                                   const matrix33& positionCovariance)
 {
     assert(is_covariance_valid(pointCloudCovariance));
-    assert(is_covariance_valid(positionCovariance));
 
     const vector3& normal = planeParameters.head(3);
     const double d = planeParameters(3);
