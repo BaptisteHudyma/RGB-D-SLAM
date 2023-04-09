@@ -36,19 +36,8 @@ class Plane
         build_kalman_filter();
     }
 
-    /**
-     * \brief Return the number of pixels in this plane mask
-     */
-    uint get_contained_pixels() const
-    {
-        const static uint cellSize = Parameters::get_depth_map_patch_size();
-        const static uint pixelPerCell = cellSize * cellSize;
-        return cv::countNonZero(_shapeMask) * pixelPerCell;
-    }
-
     utils::PlaneWorldCoordinates get_parametrization() const { return _parametrization; }
     utils::WorldCoordinate get_centroid() const { return _centroid; }
-    cv::Mat get_mask() const { return _shapeMask; }
     matrix44 get_covariance() const { return _covariance; };
     utils::Polygon get_boundary_polygon() const { return _boundaryPolygon; };
 
@@ -117,7 +106,6 @@ class Plane
     utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                          // covariance of this plane in world space
     utils::WorldCoordinate _centroid;              // centroid of the detected plane
-    cv::Mat _shapeMask;                            // mask of the detected plane
     utils::Polygon _boundaryPolygon;               // polygon describing the boundary of the plane, in plane space
 
   private:
@@ -173,8 +161,9 @@ class MapPlane :
         const utils::PlaneCameraCoordinates& projectedPlane =
                 get_parametrization().to_camera_coordinates(planeCameraToWorld);
         const utils::CameraCoordinate& planeCentroid = get_centroid().to_camera_coordinates(worldToCamera);
+        // TODO better descriptor
         const vector6& descriptor =
-                features::primitives::Plane::compute_descriptor(projectedPlane, planeCentroid, get_contained_pixels());
+                features::primitives::Plane::compute_descriptor(projectedPlane, planeCentroid, _boundaryPolygon.area());
         const double similarityThreshold = useAdvancedSearch ? 0.2 : 0.4;
 
         double smallestSimilarity = std::numeric_limits<double>::max();
@@ -226,33 +215,6 @@ class MapPlane :
 
     void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
     {
-        assert(not get_mask().empty());
-
-        const double maskAlpha = 0.3;
-        const cv::Size& debugImageSize = debugImage.size();
-
-        cv::Mat planeMask;
-        cv::Mat planeColorMask;
-        // Resize with no interpolation
-        cv::resize(get_mask() * 255, planeMask, debugImageSize, 0, 0, cv::INTER_NEAREST);
-        cv::cvtColor(planeMask, planeColorMask, cv::COLOR_GRAY2BGR);
-        assert(planeMask.size == debugImage.size);
-        assert(planeMask.size == debugImage.size);
-        assert(planeColorMask.type() == debugImage.type());
-
-        // merge with debug image
-        planeColorMask.setTo(color, planeMask);
-        cv::Mat maskedInput;
-        cv::Mat ImaskedInput;
-        // get masked original image, with the only visible part being the plane part
-        debugImage.copyTo(maskedInput, planeMask);
-        // get masked original image, with the only visible part being the non plane part
-        debugImage.copyTo(ImaskedInput, 255 - planeMask);
-
-        cv::addWeighted(maskedInput, (1 - maskAlpha), planeColorMask, maskAlpha, 0.0, maskedInput);
-
-        debugImage = maskedInput + ImaskedInput;
-
         // project plane in camera space
         const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(
                 utils::compute_plane_world_to_camera_matrix(worldToCamMatrix));
@@ -298,8 +260,6 @@ class MapPlane :
         track(projectedPlaneCoordinates, worldCovariance, projectedPlaneCenter);
         // merge the boundary polygon (after optimization)
         update_boundary_polygon(projectedPlaneCoordinates, projectedPlaneCenter, matchedFeature.get_boundary_polygon());
-
-        _shapeMask = matchedFeature.get_shape_mask().clone();
         return true;
     }
 
@@ -320,7 +280,6 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
         _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
         _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld);
-        _shapeMask = detectedFeature.get_shape_mask();
 
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
                 detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance(), poseCovariance);
@@ -348,7 +307,6 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
 
         _parametrization = stagedPlane.get_parametrization();
         _centroid = stagedPlane.get_centroid();
-        _shapeMask = stagedPlane.get_mask();
         _covariance = stagedPlane.get_covariance();
         _boundaryPolygon = stagedPlane._boundaryPolygon;
 

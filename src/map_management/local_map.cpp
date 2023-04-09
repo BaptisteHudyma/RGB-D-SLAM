@@ -66,11 +66,6 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
         _localPointMap.get_matches(detectedKeypointsObject, worldToCamera, true, matchSets._points);
     }
 
-    for (const features::primitives::Plane& p: detectedPlanes)
-    {
-        assert(not p.get_shape_mask().empty());
-    }
-
     // find plane matches
     _localPlaneMap.get_matches(detectedPlanes, worldToCamera, false, matchSets._planes);
     return matchSets;

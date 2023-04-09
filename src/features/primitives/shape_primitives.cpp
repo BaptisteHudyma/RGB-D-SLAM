@@ -4,6 +4,7 @@
 #include "covariances.hpp"
 #include "cylinder_segment.hpp"
 #include "distance_utils.hpp"
+#include "polygon.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/VectorBlock.h>
 
@@ -14,40 +15,13 @@ namespace rgbd_slam::features::primitives {
  *      PRIMITIVE
  *
  */
-IPrimitive::IPrimitive(const cv::Mat& shapeMask) : _shapeMask(shapeMask.clone()) { assert(not shapeMask.empty()); }
-
-double IPrimitive::get_IOU(const IPrimitive& prim) const
-{
-    assert(not _shapeMask.empty());
-    assert(not prim._shapeMask.empty());
-    assert(_shapeMask.size == prim._shapeMask.size);
-
-    return get_IOU(prim._shapeMask);
-}
-
-double IPrimitive::get_IOU(const cv::Mat& mask) const
-{
-    assert(not mask.empty());
-    assert(not _shapeMask.empty());
-
-    // get union of masks
-    const cv::Mat unionMat = (_shapeMask | mask);
-    const int IOU = cv::countNonZero(unionMat);
-    if (IOU <= 0)
-        // Union is empty, quit
-        return 0;
-
-    // get inter of masks
-    const cv::Mat interMat = (_shapeMask & mask);
-    return static_cast<double>(cv::countNonZero(interMat)) / static_cast<double>(IOU);
-}
 
 /*
  *
  *      CYLINDER
  *
  */
-Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask) : IPrimitive(shapeMask), _radius(0)
+Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg) : _radius(0)
 {
     for (uint i = 0; i < cylinderSeg.get_segment_count(); ++i)
     {
@@ -57,20 +31,11 @@ Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask
     _normal = cylinderSeg.get_normal();
 }
 
-Cylinder::Cylinder(const Cylinder& cylinder) :
-    IPrimitive(cylinder._shapeMask),
-    _normal(cylinder._normal),
-    _radius(cylinder._radius)
-{
-}
+Cylinder::Cylinder(const Cylinder& cylinder) : _normal(cylinder._normal), _radius(cylinder._radius) {}
 
 bool Cylinder::is_similar(const Cylinder& cylinder) const
 {
-    const static double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
     const static double minimumNormalDotDiff = Parameters::get_maximum_plane_normals_angle_for_match();
-    if (get_IOU(cylinder) < minimumIOUForMatch)
-        return false;
-
     return std::abs(_normal.dot(cylinder._normal)) > minimumNormalDotDiff;
 }
 
@@ -86,24 +51,22 @@ double Cylinder::get_distance(const vector3& point) const
  *        PLANE
  *
  */
-Plane::Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask, const utils::Polygon& boundaryPolygon) :
-    IPrimitive(shapeMask),
-
+Plane::Plane(const Plane_Segment& planeSeg, const utils::Polygon& boundaryPolygon) :
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
     _centroid(planeSeg.get_centroid()),
     _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
-    _descriptor(compute_descriptor()),
-    _boundaryPolygon(boundaryPolygon)
+    _boundaryPolygon(boundaryPolygon),
+    _descriptor(compute_descriptor())
 {
     assert(utils::double_equal(planeSeg.get_normal().norm(), 1.0));
     assert(utils::double_equal(get_normal().norm(), 1.0));
 }
 
 Plane::Plane(const Plane& plane) :
-    IPrimitive(plane._shapeMask),
     _parametrization(plane._parametrization),
     _centroid(plane._centroid),
     _pointCloudCovariance(plane._pointCloudCovariance),
+    _boundaryPolygon(plane._boundaryPolygon),
     _descriptor(plane._descriptor)
 {
 }
@@ -124,17 +87,18 @@ vector6 Plane::compute_descriptor(const utils::PlaneCameraCoordinates& parametri
 
 vector6 Plane::compute_descriptor() const
 {
-    return compute_descriptor(get_parametrization(), get_centroid(), get_contained_pixels());
+    return compute_descriptor(get_parametrization(), get_centroid(), _boundaryPolygon.area());
 }
 
-bool Plane::is_similar(const Plane& plane) const { return is_similar(plane._shapeMask, plane._parametrization); }
+bool Plane::is_similar(const Plane& plane) const { return is_similar(plane._boundaryPolygon, plane._parametrization); }
 
-bool Plane::is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const
+bool Plane::is_similar(const utils::Polygon& planePolygon,
+                       const utils::PlaneCameraCoordinates& planeParametrization) const
 {
     const static double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
     const static double minimumNormalDotDiff =
             cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0);
-    if (get_IOU(mask) < minimumIOUForMatch)
+    if (_boundaryPolygon.inter_over_union(planePolygon) < minimumIOUForMatch)
         return false;
     return abs(get_normal().dot(planeParametrization.head(3))) > minimumNormalDotDiff;
 }

@@ -532,8 +532,8 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         _maskBoundary = _maskDilated - _maskEroded;
 
         // add new plane to final shapes
-        planeContainer.emplace_back(
-                planeSegment, _mask, compute_plane_segment_boundary(planeSegment, depthMatrix, _maskBoundary));
+        planeContainer.emplace_back(planeSegment,
+                                    compute_plane_segment_boundary(planeSegment, depthMatrix, _maskBoundary));
     }
 }
 
@@ -641,7 +641,7 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
         const uint regId = cylinderToRegionMap[cylinderIndex].first;
 
         // add new cylinder to final shapes
-        cylinderContainer.emplace_back(_cylinderSegments[regId], _mask);
+        cylinderContainer.emplace_back(_cylinderSegments[regId]);
     }
 }
 
