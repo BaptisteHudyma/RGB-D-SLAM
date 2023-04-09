@@ -28,6 +28,11 @@ find_package(Eigen3 REQUIRED)
 list(APPEND INC_DIRS ${EIGEN3_INCLUDE_DIR} )
 list(APPEND LINK_LIBS ${Eigen_LIBRARIES})
 
+#Find boost
+find_package(Boost REQUIRED)
+list(APPEND INC_DIRS ${Boost_INCLUDE_DIRS} )
+list(APPEND LINK_LIBS ${Boost_LIBS})
+
 #Find g2o
 # Find the header files
 # FIND_PATH(G2O_INCLUDE_DIR g2o/core/base_vertex.h)

@@ -2,6 +2,8 @@
 #define RGBDSLAM_UTILS_POLYGON_UTILS_HPP
 
 #include "../types.hpp"
+#include <boost/geometry/geometry.hpp>
+#include <opencv2/core/mat.hpp>
 
 namespace rgbd_slam::utils {
 
@@ -17,8 +19,14 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal);
 class Polygon
 {
   public:
+    using point_2d = boost::geometry::model::d2::point_xy<double>;
+    using polygon = boost::geometry::model::polygon<point_2d>;
+    using multi_polygon = boost::geometry::model::multi_polygon<polygon>;
+    using box_2d = boost::geometry::model::box<point_2d>;
+
     Polygon() = default;
-    Polygon(const std::vector<vector2>& points, const vector2& lowerLeftBoundary, const vector2& upperRightBoundary);
+    Polygon(const std::vector<vector2>& points);
+    Polygon(const std::vector<point_2d>& boundaryPoints);
 
     /**
      * \brief Compute the convex hull for a set of points
@@ -37,19 +45,46 @@ class Polygon
      */
     void merge(const Polygon& other);
 
-    size_t get_number_of_points() const
-    {
-        assert(_boundaryPoints.size() > 0);
-        return _boundaryPoints.size() - 1;
-    };
-    std::vector<vector2> get_boundary_points() const { return _boundaryPoints; };
+    /**
+     * \brief Project a polygon to another space
+     * \param[in] currentCenter Center of this polygon
+     * \param[in] currentUVec Vector to project the points in the polygon
+     * \param[in] currentVVec Vector to project the points in the polygon
+     * \param[in] nextCenter Next center of this polygon
+     * \param[in] nextUVec Next vector to project the points in the polygon
+     * \param[in] nextVVec Next vector to project the points in the polygon
+     * \return a new polygon, with it's projection in the new space
+     */
+    Polygon project(const vector3& currentCenter,
+                    const vector3& currentUVec,
+                    const vector3& currentVVec,
+                    const vector3& nextCenter,
+                    const vector3& nextUVec,
+                    const vector3& nextVVec) const;
+
+    /**
+     * \brief display the polygon in screen space on the given image
+     * \param[in] center Center of this polygon, in world space
+     * \param[in] uVec Vector to project the points out of the polygon space
+     * \param[in] vVec Vector to project the points out of the polygon space
+     * \param[in] color Color to draw this polygon with
+     * \param[out] debugImage Image on which the polygon will be displayed
+     */
+    void display(const vector3& center,
+                 const vector3& uVec,
+                 const vector3& vVec,
+                 const cv::Scalar& color,
+                 cv::Mat& debugImage) const;
+
+  protected:
+    /**
+     * \brief Simplify the boundary of the current polygon
+     * \param[in] distanceThreshold max lateral distance between points to simplify (mm)
+     */
+    void simplify(const double distanceThreshold = 50);
 
   private:
-    std::vector<vector2> _boundaryPoints;
-
-    // represent the two sides of the rectangle englobing this polygon
-    vector2 _lowerLeftBoundary = vector2::Zero();
-    vector2 _upperRightBoundary = vector2::Zero();
+    polygon _polygon;
 };
 
 } // namespace rgbd_slam::utils

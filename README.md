@@ -29,7 +29,7 @@ The RGB and depth images must be synchronised by the user. The example program g
 ```
 opencv
 Eigen
-g2o
+boost
 pugixml
 ```
 

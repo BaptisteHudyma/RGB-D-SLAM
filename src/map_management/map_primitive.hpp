@@ -96,7 +96,7 @@ class Plane
      */
     void update_boundary_polygon(const utils::PlaneWorldCoordinates& detectedFeatureParameters,
                                  const utils::WorldCoordinate& detectedFeatureCenter,
-                                 const std::vector<vector2>& detectedPolygon)
+                                 const utils::Polygon& detectedPolygon)
     {
         const std::pair<vector3, vector3>& detectedPlaneVectors =
                 utils::get_plane_coordinate_system(detectedFeatureParameters.head(3));
@@ -110,29 +110,8 @@ class Plane
         const vector3& uVecNext = nextPlaneVectors.first;
         const vector3& vVecNext = nextPlaneVectors.second;
 
-        std::vector<vector2> newPolygonBoundary;
-        newPolygonBoundary.reserve(detectedPolygon.size());
-
-        vector2 lowerLeftBoundary = vector2::Zero();
-        vector2 upperRightBoundary = vector2::Zero();
-        for (const vector2& point: detectedPolygon)
-        {
-            // project to world
-            const vector3& worldPoint =
-                    utils::get_point_from_plane_coordinates(point, detectedPlaneCenter, uVecDetection, vVecDetection);
-
-            // project back to plane space
-            const vector2& projected =
-                    utils::get_projected_plan_coordinates(worldPoint, nextPlaneCenter, uVecNext, vVecNext);
-            lowerLeftBoundary.x() = std::min(lowerLeftBoundary.x(), projected.x());
-            lowerLeftBoundary.y() = std::min(lowerLeftBoundary.y(), projected.y());
-            upperRightBoundary.x() = std::max(upperRightBoundary.x(), projected.x());
-            upperRightBoundary.y() = std::max(upperRightBoundary.y(), projected.y());
-
-            newPolygonBoundary.emplace_back(projected);
-        }
-
-        _boundaryPolygon.merge(utils::Polygon(newPolygonBoundary, lowerLeftBoundary, upperRightBoundary));
+        _boundaryPolygon.merge(detectedPolygon.project(
+                detectedPlaneCenter, uVecDetection, vVecDetection, nextPlaneCenter, uVecNext, vVecNext));
     }
 
     utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
@@ -274,10 +253,6 @@ class MapPlane :
 
         debugImage = maskedInput + ImaskedInput;
 
-        // cannot display shape if it as less than 3 points
-        if (_boundaryPolygon.get_number_of_points() < 3)
-            return;
-
         // project plane in camera space
         const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(
                 utils::compute_plane_world_to_camera_matrix(worldToCamMatrix));
@@ -290,30 +265,7 @@ class MapPlane :
         const vector3& vVec = res.second;
 
         // display the boundary of the plane
-        cv::Point previousPoint;
-        bool isPreviousPointSet = false;
-        const std::vector<vector2> boundaryPoints = _boundaryPolygon.get_boundary_points();
-        for (const vector2& point: boundaryPoints)
-        {
-            const utils::CameraCoordinate cameraPoint(
-                    utils::get_point_from_plane_coordinates(point, center, uVec, vVec));
-            utils::ScreenCoordinate screenPoint;
-            if (cameraPoint.to_screen_coordinates(screenPoint))
-            {
-                const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
-                if (isPreviousPointSet)
-                {
-                    cv::line(debugImage, previousPoint, newPoint, color, 2);
-                }
-                cv::circle(debugImage,
-                           cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
-                           3,
-                           color,
-                           -1);
-                previousPoint = newPoint;
-                isPreviousPointSet = true;
-            }
-        }
+        _boundaryPolygon.display(center, uVec, vVec, color, debugImage);
     }
 
     bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
@@ -345,9 +297,7 @@ class MapPlane :
         // update this plane with the other one parameters
         track(projectedPlaneCoordinates, worldCovariance, projectedPlaneCenter);
         // merge the boundary polygon (after optimization)
-        update_boundary_polygon(projectedPlaneCoordinates,
-                                projectedPlaneCenter,
-                                matchedFeature.get_boundary_polygon().get_boundary_points());
+        update_boundary_polygon(projectedPlaneCoordinates, projectedPlaneCenter, matchedFeature.get_boundary_polygon());
 
         _shapeMask = matchedFeature.get_shape_mask().clone();
         return true;
