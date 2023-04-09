@@ -56,6 +56,11 @@ class Polygon
     double inter_over_union(const Polygon& other) const;
 
     /**
+     * \brief compute the area of the intersection of two polygons
+     */
+    double inter_area(const Polygon& other) const;
+
+    /**
      * \brief Project a polygon to another space
      * \param[in] currentCenter Center of this polygon
      * \param[in] currentUVec Vector to project the points in the polygon

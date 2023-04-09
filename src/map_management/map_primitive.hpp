@@ -12,9 +12,6 @@
 #include "distance_utils.hpp"
 #include "feature_map.hpp"
 #include "polygon.hpp"
-#include <memory>
-#include <opencv2/core/types.hpp>
-#include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::map_management {
@@ -68,12 +65,13 @@ class Plane
         _parametrization = newEstimatedParameters;
         _parametrization.head(3).normalize();
 
-        // update centroid
-        _centroid = detectedCentroid;
+        // update centroid (low pass filter)
+        _centroid << (_centroid * 0.9 + detectedCentroid * 0.1);
 
         // static sanity checks
         assert(utils::is_covariance_valid(_covariance));
         assert(not _parametrization.hasNaN());
+        assert(not _centroid.hasNaN());
         return score;
     }
 
@@ -161,12 +159,17 @@ class MapPlane :
         const utils::PlaneCameraCoordinates& projectedPlane =
                 get_parametrization().to_camera_coordinates(planeCameraToWorld);
         const utils::CameraCoordinate& planeCentroid = get_centroid().to_camera_coordinates(worldToCamera);
-        // TODO better descriptor
-        const vector6& descriptor =
-                features::primitives::Plane::compute_descriptor(projectedPlane, planeCentroid, _boundaryPolygon.area());
-        const double similarityThreshold = useAdvancedSearch ? 0.2 : 0.4;
 
-        double smallestSimilarity = std::numeric_limits<double>::max();
+        // get the plane cooridnate system
+        const std::pair<vector3, vector3>& detectedPlaneVectors =
+                utils::get_plane_coordinate_system(projectedPlane.head(3));
+        const vector3& detectedPlaneCenter = planeCentroid;
+        const vector3& uVecDetection = detectedPlaneVectors.first;
+        const vector3& vVecDetection = detectedPlaneVectors.second;
+
+        const double similarityThreshold = (useAdvancedSearch ? 0.6 : 0.8);
+
+        double greatestSimilarity = 0.0;
         int selectedIndex = UNMATCHED_FEATURE_INDEX;
 
         // search best match score
@@ -181,16 +184,31 @@ class MapPlane :
             assert(planeIndex >= 0 and planeIndex < detectedPlaneSize);
             const features::primitives::Plane& shapePlane = detectedFeatures[planeIndex];
 
+            // if angle between normals is further than a threshold, reject match
+            if (not shapePlane.is_normal_similar(projectedPlane))
+                continue;
+
+            // project the plane boundary to detected plane space
+            const std::pair<vector3, vector3>& nextPlaneVectors =
+                    utils::get_plane_coordinate_system(shapePlane.get_normal());
+            const vector3& nextPlaneCenter = shapePlane.get_centroid();
+            const vector3& uVecNext = nextPlaneVectors.first;
+            const vector3& vVecNext = nextPlaneVectors.second;
+
+            const utils::Polygon& projectedBoundary = _boundaryPolygon.project(
+                    detectedPlaneCenter, uVecDetection, vVecDetection, nextPlaneCenter, uVecNext, vVecNext);
+
             // compute a similarity score
-            const double descriptorSimilarity = shapePlane.get_similarity(descriptor);
-            if (descriptorSimilarity < smallestSimilarity)
+            const double descriptorSimilarity = shapePlane.get_boundary_polygon().inter_area(projectedBoundary) /
+                                                shapePlane.get_boundary_polygon().area();
+            if (descriptorSimilarity > greatestSimilarity)
             {
                 selectedIndex = planeIndex;
-                smallestSimilarity = descriptorSimilarity;
+                greatestSimilarity = descriptorSimilarity;
             }
         }
 
-        if (selectedIndex == UNMATCHED_FEATURE_INDEX or smallestSimilarity >= similarityThreshold)
+        if (selectedIndex == UNMATCHED_FEATURE_INDEX or greatestSimilarity < similarityThreshold)
             return UNMATCHED_FEATURE_INDEX;
 
         if (shouldAddToMatches)

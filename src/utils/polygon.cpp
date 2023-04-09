@@ -14,9 +14,11 @@ namespace rgbd_slam::utils {
 
 std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 {
-    const vector3 r = vector3(-normal.z(), normal.x(), normal.y()).normalized();
+    // define a vector orthogonal to the normal (r.dot normal should be close to 1)
+    const vector3 r = vector3(normal.z(), normal.x(), normal.y()).normalized();
     assert(abs(r.dot(normal)) > 0.00001);
 
+    // get two vectors that will span the plane
     const vector3 u = normal.cross(r).normalized();
     const vector3 v = normal.cross(u).normalized();
 
@@ -29,7 +31,7 @@ Polygon::Polygon(const std::vector<vector2>& points)
     std::vector<point_2d> boundaryPoints;
     boundaryPoints.reserve(points.size());
     std::ranges::transform(points.rbegin(), points.rend(), std::back_inserter(boundaryPoints), [](const vector2& c) {
-        return point_2d(c.x(), c.y());
+        return boost::geometry::make<point_2d>(c.x(), c.y());
     });
 
     boost::geometry::assign_points(_polygon, boundaryPoints);
@@ -155,6 +157,14 @@ double Polygon::inter_over_union(const Polygon& other) const
     return finalInter / finalUnion;
 }
 
+double Polygon::inter_area(const Polygon& other) const
+{
+    const polygon& inter = inter_one(other);
+    if (inter.outer().size() < 3)
+        return 0.0;
+    return boost::geometry::area(inter);
+}
+
 Polygon Polygon::project(const vector3& currentCenter,
                          const vector3& currentUVec,
                          const vector3& currentVVec,
@@ -174,7 +184,7 @@ Polygon Polygon::project(const vector3& currentCenter,
         // project back to plane space
         const vector2& projected = utils::get_projected_plan_coordinates(worldPoint, nextCenter, nextUVec, nextVVec);
 
-        newPolygonBoundary.emplace_back(point_2d(projected.x(), projected.y()));
+        newPolygonBoundary.emplace_back(boost::geometry::make<point_2d>(projected.x(), projected.y()));
     }
     return Polygon(newPolygonBoundary);
 }

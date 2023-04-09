@@ -89,12 +89,6 @@ class Plane : public IPrimitive
 
     Plane(const Plane& plane);
 
-    static vector6 compute_descriptor(const utils::PlaneCameraCoordinates& parametrization,
-                                      const utils::CameraCoordinate& planeCentroid,
-                                      const uint pixelCount);
-
-    double get_similarity(const vector6& descriptor) const { return (_descriptor - descriptor).norm(); };
-
     /**
      * \brief Get the similarity of two planes, based on normal direction
      *
@@ -102,9 +96,8 @@ class Plane : public IPrimitive
      *
      * \return A true if those shapes are similar
      */
-    bool is_similar(const Plane& prim) const;
-    bool is_similar(const utils::Polygon& planePolygon,
-                    const utils::PlaneCameraCoordinates& planeParametrization) const;
+    bool is_normal_similar(const Plane& prim) const;
+    bool is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const;
     bool is_similar(const Cylinder& prim) const;
 
     vector3 get_normal() const { return _parametrization.head(3); };
@@ -117,8 +110,6 @@ class Plane : public IPrimitive
     ~Plane() = default;
 
   private:
-    vector6 compute_descriptor() const;
-
     /**
      * Return the distance of this primitive to a point
      */
@@ -128,9 +119,6 @@ class Plane : public IPrimitive
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
     matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from
     const utils::Polygon _boundaryPolygon;
-
-    // always declare descriptor last
-    vector6 _descriptor; // the descriptor of this plane
 
     // remove copy functions
     Plane() = delete;
