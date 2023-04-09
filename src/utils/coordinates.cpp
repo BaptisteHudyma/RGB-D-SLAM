@@ -124,6 +124,23 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
     return false;
 }
 
+bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const
+{
+    const static double cameraFX = Parameters::get_camera_1_focal_x();
+    const static double cameraFY = Parameters::get_camera_1_focal_y();
+    const static double cameraCX = Parameters::get_camera_1_center_x();
+    const static double cameraCY = Parameters::get_camera_1_center_y();
+
+    const double screenX = cameraFX * x() / z() + cameraCX;
+    const double screenY = cameraFY * y() / z() + cameraCY;
+    if (not std::isnan(screenX) and not std::isnan(screenY))
+    {
+        screenPoint = ScreenCoordinate2D(screenX, screenY);
+        return true;
+    }
+    return false;
+}
+
 /**
  *      WORLD COORDINATES
  */

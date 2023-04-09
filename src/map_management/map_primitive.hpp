@@ -12,6 +12,8 @@
 #include "distance_utils.hpp"
 #include "feature_map.hpp"
 #include "polygon.hpp"
+#include "types.hpp"
+#include <bits/ranges_algo.h>
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::map_management {
@@ -167,7 +169,7 @@ class MapPlane :
         const vector3& uVecDetection = detectedPlaneVectors.first;
         const vector3& vVecDetection = detectedPlaneVectors.second;
 
-        const double similarityThreshold = (useAdvancedSearch ? 0.6 : 0.8);
+        const double areaSimilarityThreshold = (useAdvancedSearch ? 0.6 : 0.8);
 
         double greatestSimilarity = 0.0;
         int selectedIndex = UNMATCHED_FEATURE_INDEX;
@@ -198,17 +200,19 @@ class MapPlane :
             const utils::Polygon& projectedBoundary = _boundaryPolygon.project(
                     detectedPlaneCenter, uVecDetection, vVecDetection, nextPlaneCenter, uVecNext, vVecNext);
 
-            // compute a similarity score
-            const double descriptorSimilarity = shapePlane.get_boundary_polygon().inter_area(projectedBoundary) /
-                                                shapePlane.get_boundary_polygon().area();
-            if (descriptorSimilarity > greatestSimilarity)
+            // compute a similarity score: compute the inter area of the map plane and the detected plane, divide it by
+            // the detected plane area. Considers that the detected plane area should be lower than the map plane area
+            const double detectedPlaneArea = shapePlane.get_boundary_polygon().area();
+            const double interArea = shapePlane.get_boundary_polygon().inter_area(projectedBoundary);
+            // similarity is greater than the greatest similarity, and overlap is greater than threshold
+            if (interArea > greatestSimilarity and interArea / detectedPlaneArea > areaSimilarityThreshold)
             {
                 selectedIndex = planeIndex;
-                greatestSimilarity = descriptorSimilarity;
+                greatestSimilarity = interArea;
             }
         }
 
-        if (selectedIndex == UNMATCHED_FEATURE_INDEX or greatestSimilarity < similarityThreshold)
+        if (selectedIndex == UNMATCHED_FEATURE_INDEX)
             return UNMATCHED_FEATURE_INDEX;
 
         if (shouldAddToMatches)
@@ -250,9 +254,33 @@ class MapPlane :
 
     bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
-        // TODO
-        (void)worldToCamMatrix;
-        return true;
+        static const uint screenSizeX = Parameters::get_camera_1_size_x();
+        static const uint screenSizeY = Parameters::get_camera_1_size_y();
+
+        // project plane to camera space
+        const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(
+                utils::compute_plane_world_to_camera_matrix(worldToCamMatrix));
+        const vector3& normal = projectedPlane.head(3).normalized();
+        const vector3& center = _centroid.to_camera_coordinates(worldToCamMatrix);
+
+        // get plane coordinate system
+        const std::pair<vector3, vector3>& planeVectors = utils::get_plane_coordinate_system(normal);
+        const vector3& uVec = planeVectors.first;
+        const vector3& vVec = planeVectors.second;
+
+        // if any point of the boundary is in the camera frame, return true
+        return std::ranges::any_of(_boundaryPolygon.get_boundary(), [center, uVec, vVec](const vector2& p) {
+            // project to camera coordinates
+            const utils::CameraCoordinate& cameraPoint = utils::get_point_from_plane_coordinates(p, center, uVec, vVec);
+            // project to screen coordinates
+            if (utils::ScreenCoordinate2D projection; cameraPoint.to_screen_coordinates(projection))
+            {
+                // at least one boundary point is visible
+                return (projection.x() >= 0 and projection.x() <= screenSizeX and projection.y() >= 0 and
+                        projection.y() <= screenSizeY);
+            }
+            return false;
+        });
     }
 
   protected:

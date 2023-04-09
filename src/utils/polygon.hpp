@@ -91,6 +91,16 @@ class Polygon
                  const cv::Scalar& color,
                  cv::Mat& debugImage) const;
 
+    /**
+     * \brief Return the boundary as an ordered vector
+     */
+    std::vector<vector2> get_boundary() const;
+
+    /**
+     * \brief Compute the box envelop of this polygon
+     */
+    std::vector<vector2> get_envelop() const;
+
   protected:
     /**
      * \brief Simplify the boundary of the current polygon
