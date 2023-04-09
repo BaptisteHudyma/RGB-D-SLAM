@@ -55,8 +55,7 @@ Plane::Plane(const Plane_Segment& planeSeg, const utils::Polygon& boundaryPolygo
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
     _centroid(planeSeg.get_centroid()),
     _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
-    _boundaryPolygon(boundaryPolygon),
-    _descriptor(compute_descriptor())
+    _boundaryPolygon(boundaryPolygon)
 {
     assert(utils::double_equal(planeSeg.get_normal().norm(), 1.0));
     assert(utils::double_equal(get_normal().norm(), 1.0));
@@ -66,40 +65,16 @@ Plane::Plane(const Plane& plane) :
     _parametrization(plane._parametrization),
     _centroid(plane._centroid),
     _pointCloudCovariance(plane._pointCloudCovariance),
-    _boundaryPolygon(plane._boundaryPolygon),
-    _descriptor(plane._descriptor)
+    _boundaryPolygon(plane._boundaryPolygon)
 {
 }
 
-vector6 Plane::compute_descriptor(const utils::PlaneCameraCoordinates& parametrization,
-                                  const utils::CameraCoordinate& planeCentroid,
-                                  const uint pixelCount)
-{
-    const vector3& normal = parametrization.head(3);
-    vector6 descriptor({normal.x(),
-                        normal.y(),
-                        normal.z(),
-                        abs(planeCentroid.x() / pixelCount),
-                        abs(planeCentroid.y() / pixelCount),
-                        abs(planeCentroid.z() / pixelCount)});
-    return descriptor;
-};
+bool Plane::is_normal_similar(const Plane& plane) const { return is_normal_similar(plane._parametrization); }
 
-vector6 Plane::compute_descriptor() const
+bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const
 {
-    return compute_descriptor(get_parametrization(), get_centroid(), _boundaryPolygon.area());
-}
-
-bool Plane::is_similar(const Plane& plane) const { return is_similar(plane._boundaryPolygon, plane._parametrization); }
-
-bool Plane::is_similar(const utils::Polygon& planePolygon,
-                       const utils::PlaneCameraCoordinates& planeParametrization) const
-{
-    const static double minimumIOUForMatch = Parameters::get_minimum_iou_for_match();
     const static double minimumNormalDotDiff =
             cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0);
-    if (_boundaryPolygon.inter_over_union(planePolygon) < minimumIOUForMatch)
-        return false;
     return abs(get_normal().dot(planeParametrization.head(3))) > minimumNormalDotDiff;
 }
 
