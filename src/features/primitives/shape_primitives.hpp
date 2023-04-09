@@ -18,18 +18,7 @@ namespace rgbd_slam::features::primitives {
 class IPrimitive
 {
   public:
-    cv::Mat get_shape_mask() const { return _shapeMask; };
-    void set_shape_mask(const cv::Mat& mask) { _shapeMask = mask.clone(); };
-
-    /**
-     * \brief Return the number of pixels in this plane mask
-     */
-    uint get_contained_pixels() const
-    {
-        const static uint cellSize = Parameters::get_depth_map_patch_size();
-        const static uint pixelPerCell = cellSize * cellSize;
-        return cv::countNonZero(_shapeMask) * pixelPerCell;
-    }
+    IPrimitive() = default;
 
     bool can_add_to_map() const
     {
@@ -37,28 +26,9 @@ class IPrimitive
         return true;
     }
 
-    /**
-     * \brief Hidden constructor, to set shape
-     */
-    IPrimitive(const cv::Mat& shapeMask);
-
-    /**
-     * \brief Compute the Inter over Union factor of two masks
-     *
-     * \param[in] prim Another primitive object
-     *
-     * \return A number between 0 and 1, indicating the IoU
-     */
-    double get_IOU(const IPrimitive& prim) const;
-    double get_IOU(const cv::Mat& mask) const;
-
-    // members
-    cv::Mat _shapeMask;
-
   private:
     // remove copy functions
     IPrimitive& operator=(const IPrimitive&) = delete;
-    IPrimitive() = delete;
 };
 
 /**
@@ -71,9 +41,8 @@ class Cylinder : public IPrimitive
      * \brief Construct a cylinder object
      *
      * \param[in] cylinderSeg Cylinder segment to copy
-     * \param[in] shapeMask Mask of the shape in the reference image
      */
-    Cylinder(const Cylinder_Segment& cylinderSeg, const cv::Mat& shapeMask);
+    Cylinder(const Cylinder_Segment& cylinderSeg);
     Cylinder(const Cylinder& cylinder);
 
     /**
@@ -114,9 +83,9 @@ class Plane : public IPrimitive
      * \brief Construct a plane object
      *
      * \param[in] planeSeg Plane to copy
-     * \param[in] shapeMask Mask of the shape in the reference image
+     * \param[in] boundaryPolygon Polygon describing the boundary of the plane, in plane coordiates
      */
-    Plane(const Plane_Segment& planeSeg, const cv::Mat& shapeMask, const utils::Polygon& boundaryPolygon);
+    Plane(const Plane_Segment& planeSeg, const utils::Polygon& boundaryPolygon);
 
     Plane(const Plane& plane);
 
@@ -134,7 +103,8 @@ class Plane : public IPrimitive
      * \return A true if those shapes are similar
      */
     bool is_similar(const Plane& prim) const;
-    bool is_similar(const cv::Mat& mask, const utils::PlaneCameraCoordinates& planeParametrization) const;
+    bool is_similar(const utils::Polygon& planePolygon,
+                    const utils::PlaneCameraCoordinates& planeParametrization) const;
     bool is_similar(const Cylinder& prim) const;
 
     vector3 get_normal() const { return _parametrization.head(3); };
@@ -157,8 +127,10 @@ class Plane : public IPrimitive
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
     matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from
-    vector6 _descriptor;                            // the descriptor of this plane
     const utils::Polygon _boundaryPolygon;
+
+    // always declare descriptor last
+    vector6 _descriptor; // the descriptor of this plane
 
     // remove copy functions
     Plane() = delete;

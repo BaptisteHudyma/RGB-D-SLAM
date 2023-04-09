@@ -4,6 +4,7 @@
 #include "types.hpp"
 #include <algorithm>
 #include <bits/ranges_algo.h>
+#include <boost/geometry/algorithms/area.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
@@ -101,14 +102,57 @@ bool Polygon::contains(const vector2& point) const
 
 void Polygon::merge(const Polygon& other)
 {
-    multi_polygon res;
-    boost::geometry::union_(_polygon, other._polygon, res);
-    if (res.size() > 1)
-        std::cout << "Union produces " << res.size() << " polygons" << std::endl;
-    _polygon = res.front();
-
+    const polygon& res = union_one(other);
+    if (res.outer().empty())
+    {
+        outputs::log_warning("Merge of two polygons produces no overlaps, returning without merge operation");
+        return;
+    }
+    _polygon = res;
     // simplify the final mesh
     simplify();
+}
+
+double Polygon::area() const
+{
+    if (_polygon.outer().size() < 3)
+    {
+        outputs::log_error("Cannot compute the area of an empty polygon");
+        return 0;
+    }
+    return boost::geometry::area(_polygon);
+}
+
+Polygon::polygon Polygon::union_one(const Polygon& other) const
+{
+    multi_polygon res;
+    boost::geometry::union_(_polygon, other._polygon, res);
+    if (res.empty() or res.size() > 1)
+        return polygon(); // empty polygon : union produces more than one poly
+    return res.front();
+}
+
+Polygon::polygon Polygon::inter_one(const Polygon& other) const
+{
+    multi_polygon res;
+    boost::geometry::intersection(_polygon, other._polygon, res);
+    if (res.empty() or res.size() > 1)
+        return polygon(); // empty polygon : union produces more than one poly
+    return res.front();
+}
+
+double Polygon::inter_over_union(const Polygon& other) const
+{
+    const polygon& un = union_one(other);
+    if (un.outer().size() < 3)
+        return 0.0;
+
+    const double finalUnion = boost::geometry::area(un);
+    const double finalInter = boost::geometry::area(inter_one(other));
+
+    if (finalInter <= 0 or finalUnion <= 0)
+        return 0.0;
+    return finalInter / finalUnion;
 }
 
 Polygon Polygon::project(const vector3& currentCenter,

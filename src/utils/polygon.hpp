@@ -41,9 +41,19 @@ class Polygon
     bool contains(const vector2& point) const;
 
     /**
-     * merge the other polygon into this one
+     * \brief merge the other polygon into this one
      */
     void merge(const Polygon& other);
+
+    /**
+     * \brief Compute this polygon area
+     */
+    double area() const;
+
+    /**
+     * \brief Compute the inter/over of the two polygons
+     */
+    double inter_over_union(const Polygon& other) const;
 
     /**
      * \brief Project a polygon to another space
@@ -82,6 +92,18 @@ class Polygon
      * \param[in] distanceThreshold max lateral distance between points to simplify (mm)
      */
     void simplify(const double distanceThreshold = 50);
+
+    /**
+     * \brief Compute the union of this polygon and another one.
+     * \return The union if it exists, or an empty polygon
+     */
+    polygon union_one(const Polygon& other) const;
+
+    /**
+     * \brief Compute the inter of this polygon and another one.
+     * \return The inter if it exists, or an empty polygon
+     */
+    polygon inter_one(const Polygon& other) const;
 
   private:
     polygon _polygon;
