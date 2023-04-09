@@ -1,10 +1,12 @@
 #include "polygon.hpp"
+#include "coordinates.hpp"
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <algorithm>
 #include <bits/ranges_algo.h>
-#include <tuple>
-#include <utility>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core/types.hpp>
+#include <opencv2/imgproc.hpp>
 #include "logger.hpp"
 
 namespace rgbd_slam::utils {
@@ -20,13 +22,25 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
     return std::make_pair(u, v);
 }
 
-Polygon::Polygon(const std::vector<vector2>& points,
-                 const vector2& lowerLeftBoundary,
-                 const vector2& upperRightBoundary) :
-    _boundaryPoints(points),
-    _lowerLeftBoundary(lowerLeftBoundary),
-    _upperRightBoundary(upperRightBoundary)
+Polygon::Polygon(const std::vector<vector2>& points)
 {
+    // set boundary in reverse (clockwise)
+    std::vector<point_2d> boundaryPoints;
+    boundaryPoints.reserve(points.size());
+    std::ranges::transform(points.rbegin(), points.rend(), std::back_inserter(boundaryPoints), [](const vector2& c) {
+        return point_2d(c.x(), c.y());
+    });
+
+    boost::geometry::assign_points(_polygon, boundaryPoints);
+    boost::geometry::correct(_polygon);
+    // simplify the input mesh
+    simplify();
+}
+Polygon::Polygon(const std::vector<point_2d>& boundaryPoints)
+{
+    // set boundary in reverse (clockwise)
+    boost::geometry::assign_points(_polygon, boundaryPoints);
+    boost::geometry::correct(_polygon);
 }
 
 /**
@@ -64,8 +78,6 @@ Polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
         return dir > 0;
     }); // Sort the points by angle to the chosen first point
 
-    vector2 lowerLeftBoundary = vector2::Zero();
-    vector2 upperRightBoundary = vector2::Zero();
     std::vector<vector2> boundary;
     for (const vector2& point: sortedPoints)
     {
@@ -76,52 +88,90 @@ Polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
             boundary.pop_back();
         }
         boundary.push_back(point);
-
-        lowerLeftBoundary.x() = std::min(lowerLeftBoundary.x(), point.x());
-        lowerLeftBoundary.y() = std::min(lowerLeftBoundary.y(), point.y());
-        upperRightBoundary.x() = std::max(upperRightBoundary.x(), point.x());
-        upperRightBoundary.y() = std::max(upperRightBoundary.y(), point.y());
     }
     // close shape
     boundary.emplace_back(boundary[0]);
-    return Polygon(boundary, lowerLeftBoundary, upperRightBoundary);
+    return Polygon(boundary);
 }
 
 bool Polygon::contains(const vector2& point) const
 {
-    // Source: Wm. Randolph Franklin
-
-    const double pointX = point.x();
-    const double pointY = point.y();
-
-    // Check that the point is inside the coarse boundary for efficiency
-    /*if (p.x() < _Xmin or p.x() > _Xmax or p.y() < _Ymin or p.y() > _Ymax)
-        return false;
-    */
-
-    bool res = false;
-    // i form 0 to n-1, j = i-1
-    for (uint i = 0, j = _boundaryPoints.size() - 1; i < _boundaryPoints.size(); j = i++)
-    {
-        const vector2& vertex1 = _boundaryPoints[i];
-        const vector2& vertex2 = _boundaryPoints[j];
-
-        if (((vertex1.y() > pointY) != (vertex2.y() > pointY)) and
-            (pointX < (vertex2.x() - vertex1.x()) * (pointY - vertex1.y()) / (vertex2.y() - vertex1.y()) + vertex1.x()))
-            res = !res;
-    }
-    return res;
+    return boost::geometry::within(boost::geometry::make<point_2d>(point.x(), point.y()), _polygon);
 }
 
 void Polygon::merge(const Polygon& other)
 {
-    // TODO
-    _boundaryPoints.insert(_boundaryPoints.end(), other._boundaryPoints.begin(), other._boundaryPoints.end());
+    multi_polygon res;
+    boost::geometry::union_(_polygon, other._polygon, res);
+    if (res.size() > 1)
+        std::cout << "Union produces " << res.size() << " polygons" << std::endl;
+    _polygon = res.front();
 
-    const auto& res = compute_convex_hull(_boundaryPoints);
-    _boundaryPoints = res._boundaryPoints;
-    _lowerLeftBoundary = res._lowerLeftBoundary;
-    _upperRightBoundary = res._upperRightBoundary;
+    // simplify the final mesh
+    simplify();
+}
+
+Polygon Polygon::project(const vector3& currentCenter,
+                         const vector3& currentUVec,
+                         const vector3& currentVVec,
+                         const vector3& nextCenter,
+                         const vector3& nextUVec,
+                         const vector3& nextVVec) const
+{
+    std::vector<point_2d> newPolygonBoundary;
+    newPolygonBoundary.reserve(_polygon.outer().size());
+
+    for (const point_2d& point: _polygon.outer())
+    {
+        // project to world
+        const vector3& worldPoint = utils::get_point_from_plane_coordinates(
+                vector2(point.x(), point.y()), currentCenter, currentUVec, currentVVec);
+
+        // project back to plane space
+        const vector2& projected = utils::get_projected_plan_coordinates(worldPoint, nextCenter, nextUVec, nextVVec);
+
+        newPolygonBoundary.emplace_back(point_2d(projected.x(), projected.y()));
+    }
+    return Polygon(newPolygonBoundary);
+}
+
+void Polygon::display(const vector3& center,
+                      const vector3& uVec,
+                      const vector3& vVec,
+                      const cv::Scalar& color,
+                      cv::Mat& debugImage) const
+{
+    cv::Point previousPoint;
+    bool isPreviousPointSet = false;
+    for (const point_2d& p: _polygon.outer())
+    {
+        const utils::CameraCoordinate cameraPoint(
+                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), center, uVec, vVec));
+        utils::ScreenCoordinate screenPoint;
+        if (cameraPoint.to_screen_coordinates(screenPoint))
+        {
+            const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
+            if (isPreviousPointSet)
+            {
+                cv::line(debugImage, previousPoint, newPoint, color, 2);
+            }
+            cv::circle(debugImage,
+                       cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
+                       3,
+                       color,
+                       -1);
+            previousPoint = newPoint;
+            isPreviousPointSet = true;
+        }
+    }
+}
+
+void Polygon::simplify(const double distanceThreshold)
+{
+    // use temporary object to prevent segfault
+    polygon out;
+    boost::geometry::simplify(_polygon, out, distanceThreshold);
+    _polygon = out;
 }
 
 } // namespace rgbd_slam::utils
