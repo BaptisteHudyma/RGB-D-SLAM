@@ -266,7 +266,9 @@ vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates&
  */
 vector3 get_plane_transformation(const vector4& plane)
 {
-    return vector3(atan(plane.y() / plane.x()), asin(plane.z()), plane.w());
+    const vector3& normal = plane.head(3);
+    const double d = plane(3);
+    return vector3(atan(normal.y() / normal.x()), asin(normal.z()), d);
 }
 
 vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
@@ -277,8 +279,8 @@ vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoor
     const vector3& cameraPlaneSimplified = get_plane_transformation(cameraPlane);
     const vector3& worldPlaneSimplified = get_plane_transformation(projectedWorldPlane);
 
-    return vector3(angle_distance(cameraPlaneSimplified.x(), worldPlaneSimplified.x()),
-                   angle_distance(cameraPlaneSimplified.y(), worldPlaneSimplified.y()),
+    return vector3((cameraPlaneSimplified.x() - worldPlaneSimplified.x()),
+                   (cameraPlaneSimplified.y() - worldPlaneSimplified.y()),
                    cameraPlaneSimplified.z() - worldPlaneSimplified.z());
 }
 
