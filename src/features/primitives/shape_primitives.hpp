@@ -85,7 +85,7 @@ class Plane : public IPrimitive
      * \param[in] planeSeg Plane to copy
      * \param[in] boundaryPolygon Polygon describing the boundary of the plane, in plane coordiates
      */
-    Plane(const Plane_Segment& planeSeg, const utils::Polygon& boundaryPolygon);
+    Plane(const Plane_Segment& planeSeg, const utils::CameraPolygon& boundaryPolygon);
 
     Plane(const Plane& plane);
 
@@ -105,7 +105,7 @@ class Plane : public IPrimitive
     utils::CameraCoordinate get_centroid() const { return _centroid; };
     matrix33 get_point_cloud_covariance() const { return _pointCloudCovariance; };
 
-    utils::Polygon get_boundary_polygon() const { return _boundaryPolygon; };
+    utils::CameraPolygon get_boundary_polygon() const { return _boundaryPolygon; };
 
     ~Plane() = default;
 
@@ -118,7 +118,7 @@ class Plane : public IPrimitive
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
     utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
     matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from
-    const utils::Polygon _boundaryPolygon;
+    const utils::CameraPolygon _boundaryPolygon;
 
     // remove copy functions
     Plane() = delete;

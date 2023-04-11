@@ -103,9 +103,9 @@ class Primitive_Detection
      * \param[in] boundaryMask The mask of the boundary of this plane segment in image space
      * \return A Polygon in plane coordinates, representing this plane boundary polygon
      */
-    utils::Polygon compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                  const matrixf& depthMatrix,
-                                                  const cv::Mat& boundaryMask) const;
+    utils::CameraPolygon compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+                                                        const matrixf& depthMatrix,
+                                                        const cv::Mat& boundaryMask) const;
 
     /**
      * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary
