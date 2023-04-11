@@ -201,18 +201,10 @@ class MapPoint :
 
     bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
-        static const uint screenSizeX = Parameters::get_camera_1_size_x();
-        static const uint screenSizeY = Parameters::get_camera_1_size_y();
-
         if (utils::ScreenCoordinate projectedScreenCoordinates;
             _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates))
         {
-            return
-                    // in screen space
-                    projectedScreenCoordinates.x() >= 0 and projectedScreenCoordinates.x() <= screenSizeX and
-                    projectedScreenCoordinates.y() >= 0 and projectedScreenCoordinates.y() <= screenSizeY and
-                    // in front of the camera
-                    projectedScreenCoordinates.z() >= 0;
+            return projectedScreenCoordinates.is_in_screen_boundaries();
         }
         return false;
     }

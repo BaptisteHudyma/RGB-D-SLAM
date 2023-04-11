@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <bits/ranges_algo.h>
 #include <boost/geometry/algorithms/area.hpp>
-#include <iostream>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
@@ -68,12 +67,12 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
  */
 vector2 rotate90(const vector2& other) { return vector2(-other.y(), other.x()); }
 
-std::vector<Polygon::point_2d> Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
+std::vector<vector2> Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
 {
     if (pointsIn.size() < 3)
     {
         outputs::log_warning("Cannot compute a polygon with less than 3 sides");
-        return std::vector<point_2d>();
+        return std::vector<vector2>();
     }
     std::vector<vector2> sortedPoints(pointsIn);
 
@@ -111,15 +110,7 @@ std::vector<Polygon::point_2d> Polygon::compute_convex_hull(const std::vector<ve
     }
     // close shape
     boundary.emplace_back(boundary[0]);
-
-    std::vector<point_2d> res;
-    res.reserve(boundary.size());
-    for (const vector2& point: boundary)
-    {
-        res.emplace_back(point.x(), point.y());
-    }
-
-    return res;
+    return boundary;
 }
 
 bool Polygon::contains(const vector2& point) const
@@ -142,6 +133,10 @@ void Polygon::merge(const Polygon& other)
 
 Polygon Polygon::project(const vector3& nextCenter, const vector3& nextXAxis, const vector3& nextYAxis) const
 {
+    // if the projection is the same as this one, do not project
+    if (_center.isApprox(nextCenter) and _xAxis.isApprox(nextXAxis) and _yAxis.isApprox(nextYAxis))
+        return *this;
+
     std::vector<point_2d> newBoundary;
     newBoundary.reserve(_polygon.outer().size());
 
@@ -237,8 +232,8 @@ std::vector<vector2> Polygon::get_envelop() const
 
     std::vector<vector2> vectorBox;
 
-    vectorBox.emplace_back(vector2(box.min_corner().x(), box.min_corner().y()));
-    vectorBox.emplace_back(vector2(box.max_corner().x(), box.max_corner().y()));
+    vectorBox.emplace_back(box.min_corner().x(), box.min_corner().y());
+    vectorBox.emplace_back(box.max_corner().x(), box.max_corner().y());
 
     return vectorBox;
 }
@@ -251,31 +246,33 @@ std::vector<vector2> Polygon::get_envelop() const
 
 void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const
 {
-    cv::Point previousPoint;
+    ScreenCoordinate previousPoint;
     bool isPreviousPointSet = false;
     for (const ScreenCoordinate& screenPoint: get_screen_points())
     {
         const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
-        if (isPreviousPointSet)
+        // only draw lines if one of the end points are in boundaries
+        if (isPreviousPointSet and (screenPoint.is_in_screen_boundaries() or previousPoint.is_in_screen_boundaries()))
         {
-            cv::line(debugImage, previousPoint, newPoint, color, 2);
+            cv::line(debugImage,
+                     cv::Point(static_cast<int>(previousPoint.x()), static_cast<int>(previousPoint.y())),
+                     newPoint,
+                     color,
+                     2);
         }
-        cv::circle(debugImage,
-                   cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
-                   3,
-                   color,
-                   -1);
-        previousPoint = newPoint;
+
+        // set the previous point for the new line
+        previousPoint = screenPoint;
         isPreviousPointSet = true;
     }
 }
 
-WorldPolygon CameraPolygon::project(const CameraToWorldMatrix& c2w) const
+WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWorld) const
 {
-    const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(c2w);
+    const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(cameraToWorld);
 
     // rotate axis
-    const matrix33& rotationMatrix = c2w.block(0, 0, 3, 3);
+    const matrix33& rotationMatrix = cameraToWorld.block(0, 0, 3, 3);
     const vector3 newXAxis = rotationMatrix * _xAxis;
     const vector3 newYAxis = rotationMatrix * _yAxis;
 
@@ -286,12 +283,14 @@ WorldPolygon CameraPolygon::project(const CameraToWorldMatrix& c2w) const
 
     for (const point_2d& p: _polygon.outer())
     {
+        // project to camera space
         const CameraCoordinate cameraPoint(
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis));
-        const WorldCoordinate& w = cameraPoint.to_world_coordinates(c2w);
-
+        // project to world space
+        const WorldCoordinate& w = cameraPoint.to_world_coordinates(cameraToWorld);
+        // project back to world polygon coordinate
         const vector2& newPolygonPoint = utils::get_projected_plan_coordinates(w, newCenter, newXAxis, newYAxis);
-        newBoundary.emplace_back(point_2d(newPolygonPoint.x(), newPolygonPoint.y()));
+        newBoundary.emplace_back(newPolygonPoint.x(), newPolygonPoint.y());
     }
 
     return WorldPolygon(newBoundary, newCenter, newXAxis, newYAxis);
@@ -307,11 +306,17 @@ std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
         const CameraCoordinate& projectedPoint =
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
 
-        ScreenCoordinate s;
-        if (not projectedPoint.to_screen_coordinates(s))
-            std::cout << "Could not transform plane to screen coordinates" << std::endl;
+        ScreenCoordinate screenpoint;
+        if (not projectedPoint.to_screen_coordinates(screenpoint))
+        {
+            // happens onmy if the projection center z coordinate is 0
+            outputs::log_warning("Could not transform polygon boundary to screen coordinates");
+            return std::vector<ScreenCoordinate>();
+        }
         else
-            screenBoundary.emplace_back(s);
+        {
+            screenBoundary.emplace_back(screenpoint);
+        }
     }
     return screenBoundary;
 }
@@ -322,12 +327,12 @@ std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
  *
  */
 
-CameraPolygon WorldPolygon::project(const WorldToCameraMatrix& w2c) const
+CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCamera) const
 {
-    const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(w2c);
+    const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(worldToCamera);
 
     // rotate axis
-    const matrix33& rotationMatrix = w2c.block(0, 0, 3, 3);
+    const matrix33& rotationMatrix = worldToCamera.block(0, 0, 3, 3);
     const vector3 newXAxis = rotationMatrix * _xAxis;
     const vector3 newYAxis = rotationMatrix * _yAxis;
 
@@ -340,10 +345,10 @@ CameraPolygon WorldPolygon::project(const WorldToCameraMatrix& w2c) const
     {
         const WorldCoordinate& worldPoint =
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
-        const CameraCoordinate& c = worldPoint.to_camera_coordinates(w2c);
+        const CameraCoordinate& c = worldPoint.to_camera_coordinates(worldToCamera);
 
         const vector2& newPolygonPoint = utils::get_projected_plan_coordinates(c, newCenter, newXAxis, newYAxis);
-        newBoundary.emplace_back(point_2d(newPolygonPoint.x(), newPolygonPoint.y()));
+        newBoundary.emplace_back(newPolygonPoint.x(), newPolygonPoint.y());
     }
 
     return CameraPolygon(newBoundary, newCenter, newXAxis, newYAxis);
@@ -353,5 +358,10 @@ void WorldPolygon::merge(const WorldPolygon& other)
 {
     Polygon::merge(other.Polygon::project(_center, _xAxis, _yAxis));
 };
+
+void WorldPolygon::display(const WorldToCameraMatrix& worldToCamera, const cv::Scalar& color, cv::Mat& debugImage) const
+{
+    this->to_camera_space(worldToCamera).display(color, debugImage);
+}
 
 } // namespace rgbd_slam::utils

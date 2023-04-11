@@ -574,8 +574,8 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
             }
         }
     }
-    const auto& p = utils::Polygon::compute_convex_hull(boundaryPoints);
-    return utils::CameraPolygon(p, center, uVec, vVec);
+    const std::vector<vector2>& boundary = utils::Polygon::compute_convex_hull(boundaryPoints);
+    return utils::CameraPolygon(boundary, center, uVec, vVec);
 }
 
 std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segment& planeSegment,
