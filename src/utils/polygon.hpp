@@ -40,10 +40,12 @@ class Polygon
      * \param[in] points The points to compute a convex hull for
      * \return The ordered points defining a convex hull of points
      */
-    static std::vector<point_2d> compute_convex_hull(const std::vector<vector2>& points);
+    static std::vector<vector2> compute_convex_hull(const std::vector<vector2>& points);
 
     /**
      * \brief Return true if this point is in the polygon boundaries
+     * \param[in] point The point to test, in the polygon space
+     * \return true if the point is inside the polygon
      */
     bool contains(const vector2& point) const;
 
@@ -59,6 +61,7 @@ class Polygon
 
     /**
      * \brief Compute this polygon area
+     * \return the area of the polygon, or 0.0 if not set
      */
     double area() const;
 
@@ -67,15 +70,24 @@ class Polygon
      */
     void merge(const Polygon& other);
 
+    /**
+     * \brief project this polygon to the next polygon space
+     * \param[in] nextCenter The center to project to
+     * \param[in] nextXAxis The x axis to project to
+     * \param[in] nextYAxis The y axis to project to
+     * \return A polygon projected to the new space
+     */
     Polygon project(const vector3& nextCenter, const vector3& nextXAxis, const vector3& nextYAxis) const;
 
     /**
      * \brief Compute the inter/over of the two polygons
+     * \return Inter of Union of the two polygons, or 0 if they do not overlap
      */
     double inter_over_union(const Polygon& other) const;
 
     /**
      * \brief compute the area of the intersection of two polygons
+     * \return the inter polygon area, or 0 if they do not overlap
      */
     double inter_area(const Polygon& other) const;
 
@@ -105,51 +117,62 @@ class Polygon
     vector3 _yAxis;
 };
 
+/**
+ * \brief Describe a polygon in camera coordinates
+ */
 class CameraPolygon : public Polygon
 {
   public:
-    CameraPolygon() = default;
-    CameraPolygon(const std::vector<vector2>& points,
-                  const vector3& center,
-                  const vector3& xAxis,
-                  const vector3& yAxis) :
-        Polygon(points, center, xAxis, yAxis) {};
-    CameraPolygon(const std::vector<point_2d>& boundaryPoints,
-                  const vector3& center,
-                  const vector3& xAxis,
-                  const vector3& yAxis) :
-        Polygon(boundaryPoints, center, xAxis, yAxis) {};
+    using Polygon::Polygon;
 
     /**
      * \brief display the polygon in screen space on the given image
      * \param[in] color Color to draw this polygon with
-     * \param[out] debugImage Image on which the polygon will be displayed
+     * \param[in, out] debugImage Image on which the polygon will be displayed
      */
     void display(const cv::Scalar& color, cv::Mat& debugImage) const;
 
-    WorldPolygon project(const CameraToWorldMatrix& c2w) const;
+    /**
+     * \brief Project this polygon to the world space
+     * \param[in] cameraToWorld Matrix to go from camera to world space
+     * \return The polygon in world coordinates
+     */
+    WorldPolygon to_world_space(const CameraToWorldMatrix& cameraToWorld) const;
 
+    /**
+     * \brief Compute the boundary points in screen coordinates
+     */
     std::vector<ScreenCoordinate> get_screen_points() const;
 };
 
+/**
+ * \brief Describe a polygon in world coordinates
+ */
 class WorldPolygon : public Polygon
 {
   public:
-    WorldPolygon() = default;
-    WorldPolygon(const std::vector<vector2>& points,
-                 const vector3& center,
-                 const vector3& xAxis,
-                 const vector3& yAxis) :
-        Polygon(points, center, xAxis, yAxis) {};
-    WorldPolygon(const std::vector<point_2d>& boundaryPoints,
-                 const vector3& center,
-                 const vector3& xAxis,
-                 const vector3& yAxis) :
-        Polygon(boundaryPoints, center, xAxis, yAxis) {};
+    using Polygon::Polygon;
 
-    CameraPolygon project(const WorldToCameraMatrix& w2c) const;
+    /**
+     * \brief project this polygon to camera space
+     * \param[in] worldToCamera A matrix to convert from world to camera view
+     / \return This polygon in camera space
+     */
+    CameraPolygon to_camera_space(const WorldToCameraMatrix& worldToCamera) const;
 
+    /**
+     * \brief Merge the other polygon into this one
+     * \param[in] other The other polygon to merge into this one
+     */
     void merge(const WorldPolygon& other);
+
+    /**
+     * \brief display the polygon in screen space on the given image
+     * \param[in] worldToCamera A matrix tp convert from world to camera space
+     * \param[in] color Color to draw this polygon with
+     * \param[in, out] debugImage Image on which the polygon will be displayed
+     */
+    void display(const WorldToCameraMatrix& worldToCamera, const cv::Scalar& color, cv::Mat& debugImage) const;
 };
 
 } // namespace rgbd_slam::utils

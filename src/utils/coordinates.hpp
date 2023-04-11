@@ -73,6 +73,11 @@ struct ScreenCoordinate : public vector3
     ScreenCoordinateCovariance get_covariance() const;
 
     ScreenCoordinate2D get_2D() const { return ScreenCoordinate2D(x(), y()); }
+
+    /**
+     * \return true if this point is in the visible screen space
+     */
+    bool is_in_screen_boundaries() const;
 };
 
 /**

@@ -79,6 +79,18 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
     return cameraPoint;
 }
 
+bool ScreenCoordinate::is_in_screen_boundaries() const
+{
+    static const uint screenSizeX = Parameters::get_camera_1_size_x();
+    static const uint screenSizeY = Parameters::get_camera_1_size_y();
+
+    return
+            // in screen space
+            x() >= 0 and x() <= screenSizeX and y() >= 0 and y() <= screenSizeY and
+            // in front of the camera
+            z() > 0;
+}
+
 /**
  *      CAMERA COORDINATES
  */

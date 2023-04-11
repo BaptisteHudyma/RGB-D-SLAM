@@ -31,13 +31,11 @@ class Plane
     {
         _parametrization.setZero();
         _covariance.setZero();
-        _centroid.setZero();
 
         build_kalman_filter();
     }
 
     utils::PlaneWorldCoordinates get_parametrization() const { return _parametrization; }
-    utils::WorldCoordinate get_centroid() const { return _centroid; }
     matrix44 get_covariance() const { return _covariance; };
     utils::WorldPolygon get_boundary_polygon() const { return _boundaryPolygon; };
 
@@ -45,7 +43,6 @@ class Plane
      * \brief Update this plane coordinates using a new detection
      * \param[in] newDetectionParameters The detected plane parameters
      * \param[in] newDetectionCovariance The covariance of the newly detected feature
-     * \param[in] detectedCentroid The centroid of the detected plane
      * \return The update score (distance between old and new parametrization)
      */
     double track(const utils::PlaneWorldCoordinates& newDetectionParameters, const matrix44& newDetectionCovariance)
@@ -70,23 +67,21 @@ class Plane
         assert(not _covariance.hasNaN());
         assert(utils::is_covariance_valid(_covariance));
         assert(not _parametrization.hasNaN());
-        assert(not _centroid.hasNaN());
         return score;
     }
 
     /**
      * \brief Update the current boundary polygon with the one from the detected plane
-     * \param[in] detectedFeatureCenter the matched feature centroid, projected to world coordinates
+     * \param[in] cameraToWorld The matrix to convert from caera to world space
      * \param[in] detectedPolygon The boundary polygon of the matched feature, to project to this plane space
      */
-    void update_boundary_polygon(const CameraToWorldMatrix& c2w, const utils::CameraPolygon& detectedPolygon)
+    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld, const utils::CameraPolygon& detectedPolygon)
     {
-        _boundaryPolygon.merge(detectedPolygon.project(c2w));
+        _boundaryPolygon.merge(detectedPolygon.to_world_space(cameraToWorld));
     }
 
     utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                          // covariance of this plane in world space
-    utils::WorldCoordinate _centroid;              // centroid of the detected plane
     utils::WorldPolygon _boundaryPolygon;          // polygon describing the boundary of the plane, in plane space
 
   private:
@@ -142,7 +137,7 @@ class MapPlane :
         const utils::PlaneCameraCoordinates& projectedPlane =
                 get_parametrization().to_camera_coordinates(planeCameraToWorld);
 
-        const utils::CameraPolygon& projectedPolygon = _boundaryPolygon.project(worldToCamera);
+        const utils::CameraPolygon& projectedPolygon = _boundaryPolygon.to_camera_space(worldToCamera);
 
         // minimum plane overlap: 20% for advanced search, 40% for normal mode
         static double planeMinimalOverlap = Parameters::get_minimum_plane_overlap_for_match();
@@ -205,37 +200,18 @@ class MapPlane :
     void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
     {
         // display the boundary of the plane
-        _boundaryPolygon.project(worldToCamMatrix).display(color, debugImage);
+        _boundaryPolygon.display(worldToCamMatrix, color, debugImage);
     }
 
     bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
-        static const uint screenSizeX = Parameters::get_camera_1_size_x();
-        static const uint screenSizeY = Parameters::get_camera_1_size_y();
-
-        // project plane to camera space
-        const utils::PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(
-                utils::compute_plane_world_to_camera_matrix(worldToCamMatrix));
-        const vector3& normal = projectedPlane.head(3).normalized();
-        const vector3& center = _centroid.to_camera_coordinates(worldToCamMatrix);
-
-        // get plane coordinate system
-        const std::pair<vector3, vector3>& planeVectors = utils::get_plane_coordinate_system(normal);
-        const vector3& uVec = planeVectors.first;
-        const vector3& vVec = planeVectors.second;
+        const std::vector<utils::ScreenCoordinate> projectedToScreen =
+                _boundaryPolygon.to_camera_space(worldToCamMatrix).get_screen_points();
 
         // if any point of the boundary is in the camera frame, return true
-        return std::ranges::any_of(_boundaryPolygon.get_boundary(), [center, uVec, vVec](const vector2& p) {
-            // project to camera coordinates
-            const utils::CameraCoordinate& cameraPoint = utils::get_point_from_plane_coordinates(p, center, uVec, vVec);
-            // project to screen coordinates
-            if (utils::ScreenCoordinate2D projection; cameraPoint.to_screen_coordinates(projection))
-            {
-                // at least one boundary point is visible
-                return (projection.x() >= 0 and projection.x() <= screenSizeX and projection.y() >= 0 and
-                        projection.y() <= screenSizeY);
-            }
-            return false;
+        return std::ranges::any_of(projectedToScreen, [](const utils::ScreenCoordinate& p) {
+            // at least one boundary point is visible
+            return p.is_in_screen_boundaries();
         });
     }
 
@@ -279,12 +255,11 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
     {
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
         _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
-        _centroid = detectedFeature.get_centroid().to_world_coordinates(cameraToWorld);
 
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
                 detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance(), poseCovariance);
         _covariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
-        _boundaryPolygon = detectedFeature.get_boundary_polygon().project(cameraToWorld);
+        _boundaryPolygon = detectedFeature.get_boundary_polygon().to_world_space(cameraToWorld);
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
     }
@@ -306,7 +281,6 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _successivMatchedCount = stagedPlane._successivMatchedCount;
 
         _parametrization = stagedPlane.get_parametrization();
-        _centroid = stagedPlane.get_centroid();
         _covariance = stagedPlane.get_covariance();
         _boundaryPolygon = stagedPlane._boundaryPolygon;
 
