@@ -56,7 +56,7 @@ class Parameters
     static double get_camera_2_rotation_z() { return _camera2RotationZ; };
 
     // Primitives matching
-    static double get_minimum_iou_for_match() { return _minimumIOUToConsiderMatch; };
+    static double get_minimum_plane_overlap_for_match() { return _minimumOverlapToConsiderMatch; };
     static double get_maximum_plane_normals_angle_for_match() { return _maximumAngleForPlaneMatch; };
 
     // Optimisation parameters
@@ -150,7 +150,7 @@ class Parameters
 
     // primitive matching
     inline static double
-            _minimumIOUToConsiderMatch; // Inter over Union of the two primitive masks, to consider a primitive match
+            _minimumOverlapToConsiderMatch; // Inter over area of the two primitive masks, to consider a primitive match
     inline static double _maximumAngleForPlaneMatch; // Maximum angle between two primitives to consider a match
 
     // Position optimization

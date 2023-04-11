@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <bits/ranges_algo.h>
 #include <boost/geometry/algorithms/area.hpp>
+#include <iostream>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
@@ -29,7 +30,13 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
     return std::make_pair(u, v);
 }
 
-Polygon::Polygon(const std::vector<vector2>& points)
+Polygon::Polygon(const std::vector<vector2>& points,
+                 const vector3& center,
+                 const vector3& xAxis,
+                 const vector3& yAxis) :
+    _center(center),
+    _xAxis(xAxis),
+    _yAxis(yAxis)
 {
     // set boundary in reverse (clockwise)
     std::vector<point_2d> boundaryPoints;
@@ -43,7 +50,13 @@ Polygon::Polygon(const std::vector<vector2>& points)
     // simplify the input mesh
     simplify();
 }
-Polygon::Polygon(const std::vector<point_2d>& boundaryPoints)
+Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
+                 const vector3& center,
+                 const vector3& xAxis,
+                 const vector3& yAxis) :
+    _center(center),
+    _xAxis(xAxis),
+    _yAxis(yAxis)
 {
     // set boundary in reverse (clockwise)
     boost::geometry::assign_points(_polygon, boundaryPoints);
@@ -55,12 +68,12 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints)
  */
 vector2 rotate90(const vector2& other) { return vector2(-other.y(), other.x()); }
 
-Polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
+std::vector<Polygon::point_2d> Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
 {
     if (pointsIn.size() < 3)
     {
         outputs::log_warning("Cannot compute a polygon with less than 3 sides");
-        return Polygon();
+        return std::vector<point_2d>();
     }
     std::vector<vector2> sortedPoints(pointsIn);
 
@@ -98,7 +111,15 @@ Polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
     }
     // close shape
     boundary.emplace_back(boundary[0]);
-    return Polygon(boundary);
+
+    std::vector<point_2d> res;
+    res.reserve(boundary.size());
+    for (const vector2& point: boundary)
+    {
+        res.emplace_back(point.x(), point.y());
+    }
+
+    return res;
 }
 
 bool Polygon::contains(const vector2& point) const
@@ -108,7 +129,7 @@ bool Polygon::contains(const vector2& point) const
 
 void Polygon::merge(const Polygon& other)
 {
-    const polygon& res = union_one(other);
+    const polygon& res = union_one(other.project(_center, _xAxis, _yAxis));
     if (res.outer().empty())
     {
         outputs::log_warning("Merge of two polygons produces no overlaps, returning without merge operation");
@@ -117,6 +138,24 @@ void Polygon::merge(const Polygon& other)
     _polygon = res;
     // simplify the final mesh
     simplify();
+}
+
+Polygon Polygon::project(const vector3& nextCenter, const vector3& nextXAxis, const vector3& nextYAxis) const
+{
+    std::vector<point_2d> newBoundary;
+    newBoundary.reserve(_polygon.outer().size());
+
+    for (const auto& p: _polygon.outer())
+    {
+        const vector3& retroProjected =
+                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
+
+        const vector2& projected =
+                utils::get_projected_plan_coordinates(retroProjected, nextCenter, nextXAxis, nextYAxis);
+        newBoundary.emplace_back(projected.x(), projected.y());
+    }
+
+    return Polygon(newBoundary, nextCenter, nextXAxis, nextYAxis);
 }
 
 double Polygon::area() const
@@ -132,7 +171,7 @@ double Polygon::area() const
 Polygon::polygon Polygon::union_one(const Polygon& other) const
 {
     multi_polygon res;
-    boost::geometry::union_(_polygon, other._polygon, res);
+    boost::geometry::union_(_polygon, other.project(_center, _xAxis, _yAxis)._polygon, res);
     if (res.empty() or res.size() > 1)
         return polygon(); // empty polygon : union produces more than one poly
     return res.front();
@@ -141,7 +180,7 @@ Polygon::polygon Polygon::union_one(const Polygon& other) const
 Polygon::polygon Polygon::inter_one(const Polygon& other) const
 {
     multi_polygon res;
-    boost::geometry::intersection(_polygon, other._polygon, res);
+    boost::geometry::intersection(_polygon, other.project(_center, _xAxis, _yAxis)._polygon, res);
     if (res.empty() or res.size() > 1)
         return polygon(); // empty polygon : union produces more than one poly
     return res.front();
@@ -149,12 +188,13 @@ Polygon::polygon Polygon::inter_one(const Polygon& other) const
 
 double Polygon::inter_over_union(const Polygon& other) const
 {
-    const polygon& un = union_one(other);
+    const Polygon& projectedOther = other.project(_center, _xAxis, _yAxis);
+    const polygon& un = union_one(projectedOther);
     if (un.outer().size() < 3)
         return 0.0;
 
     const double finalUnion = boost::geometry::area(un);
-    const double finalInter = boost::geometry::area(inter_one(other));
+    const double finalInter = boost::geometry::area(inter_one(projectedOther));
 
     if (finalInter <= 0 or finalUnion <= 0)
         return 0.0;
@@ -163,64 +203,10 @@ double Polygon::inter_over_union(const Polygon& other) const
 
 double Polygon::inter_area(const Polygon& other) const
 {
-    const polygon& inter = inter_one(other);
+    const polygon& inter = inter_one(other.project(_center, _xAxis, _yAxis));
     if (inter.outer().size() < 3)
         return 0.0;
     return boost::geometry::area(inter);
-}
-
-Polygon Polygon::project(const vector3& currentCenter,
-                         const vector3& currentUVec,
-                         const vector3& currentVVec,
-                         const vector3& nextCenter,
-                         const vector3& nextUVec,
-                         const vector3& nextVVec) const
-{
-    std::vector<point_2d> newPolygonBoundary;
-    newPolygonBoundary.reserve(_polygon.outer().size());
-
-    for (const point_2d& point: _polygon.outer())
-    {
-        // project to world
-        const vector3& worldPoint = utils::get_point_from_plane_coordinates(
-                vector2(point.x(), point.y()), currentCenter, currentUVec, currentVVec);
-
-        // project back to plane space
-        const vector2& projected = utils::get_projected_plan_coordinates(worldPoint, nextCenter, nextUVec, nextVVec);
-
-        newPolygonBoundary.emplace_back(boost::geometry::make<point_2d>(projected.x(), projected.y()));
-    }
-    return Polygon(newPolygonBoundary);
-}
-
-void Polygon::display(const vector3& center,
-                      const vector3& uVec,
-                      const vector3& vVec,
-                      const cv::Scalar& color,
-                      cv::Mat& debugImage) const
-{
-    cv::Point previousPoint;
-    bool isPreviousPointSet = false;
-    for (const point_2d& p: _polygon.outer())
-    {
-        const utils::CameraCoordinate cameraPoint(
-                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), center, uVec, vVec));
-        if (utils::ScreenCoordinate screenPoint; cameraPoint.to_screen_coordinates(screenPoint))
-        {
-            const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
-            if (isPreviousPointSet)
-            {
-                cv::line(debugImage, previousPoint, newPoint, color, 2);
-            }
-            cv::circle(debugImage,
-                       cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
-                       3,
-                       color,
-                       -1);
-            previousPoint = newPoint;
-            isPreviousPointSet = true;
-        }
-    }
 }
 
 void Polygon::simplify(const double distanceThreshold)
@@ -256,5 +242,116 @@ std::vector<vector2> Polygon::get_envelop() const
 
     return vectorBox;
 }
+
+/**
+ *
+ * CAMERA POLYGON
+ *
+ */
+
+void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const
+{
+    cv::Point previousPoint;
+    bool isPreviousPointSet = false;
+    for (const ScreenCoordinate& screenPoint: get_screen_points())
+    {
+        const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
+        if (isPreviousPointSet)
+        {
+            cv::line(debugImage, previousPoint, newPoint, color, 2);
+        }
+        cv::circle(debugImage,
+                   cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
+                   3,
+                   color,
+                   -1);
+        previousPoint = newPoint;
+        isPreviousPointSet = true;
+    }
+}
+
+WorldPolygon CameraPolygon::project(const CameraToWorldMatrix& c2w) const
+{
+    const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(c2w);
+
+    // rotate axis
+    const matrix33& rotationMatrix = c2w.block(0, 0, 3, 3);
+    const vector3 newXAxis = rotationMatrix * _xAxis;
+    const vector3 newYAxis = rotationMatrix * _yAxis;
+
+    assert(abs(newXAxis.dot(newYAxis)) <= .01);
+
+    std::vector<point_2d> newBoundary;
+    newBoundary.reserve(_polygon.outer().size());
+
+    for (const point_2d& p: _polygon.outer())
+    {
+        const CameraCoordinate cameraPoint(
+                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis));
+        const WorldCoordinate& w = cameraPoint.to_world_coordinates(c2w);
+
+        const vector2& newPolygonPoint = utils::get_projected_plan_coordinates(w, newCenter, newXAxis, newYAxis);
+        newBoundary.emplace_back(point_2d(newPolygonPoint.x(), newPolygonPoint.y()));
+    }
+
+    return WorldPolygon(newBoundary, newCenter, newXAxis, newYAxis);
+}
+
+std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
+{
+    std::vector<ScreenCoordinate> screenBoundary;
+    screenBoundary.reserve(_polygon.outer().size());
+
+    for (const point_2d& p: _polygon.outer())
+    {
+        const CameraCoordinate& projectedPoint =
+                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
+
+        ScreenCoordinate s;
+        if (not projectedPoint.to_screen_coordinates(s))
+            std::cout << "Could not transform plane to screen coordinates" << std::endl;
+        else
+            screenBoundary.emplace_back(s);
+    }
+    return screenBoundary;
+}
+
+/**
+ *
+ * WORLD POLYGON
+ *
+ */
+
+CameraPolygon WorldPolygon::project(const WorldToCameraMatrix& w2c) const
+{
+    const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(w2c);
+
+    // rotate axis
+    const matrix33& rotationMatrix = w2c.block(0, 0, 3, 3);
+    const vector3 newXAxis = rotationMatrix * _xAxis;
+    const vector3 newYAxis = rotationMatrix * _yAxis;
+
+    assert(abs(newXAxis.dot(newYAxis)) <= .01);
+
+    std::vector<point_2d> newBoundary;
+    newBoundary.reserve(_polygon.outer().size());
+
+    for (const point_2d& p: _polygon.outer())
+    {
+        const WorldCoordinate& worldPoint =
+                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
+        const CameraCoordinate& c = worldPoint.to_camera_coordinates(w2c);
+
+        const vector2& newPolygonPoint = utils::get_projected_plan_coordinates(c, newCenter, newXAxis, newYAxis);
+        newBoundary.emplace_back(point_2d(newPolygonPoint.x(), newPolygonPoint.y()));
+    }
+
+    return CameraPolygon(newBoundary, newCenter, newXAxis, newYAxis);
+}
+
+void WorldPolygon::merge(const WorldPolygon& other)
+{
+    Polygon::merge(other.Polygon::project(_center, _xAxis, _yAxis));
+};
 
 } // namespace rgbd_slam::utils

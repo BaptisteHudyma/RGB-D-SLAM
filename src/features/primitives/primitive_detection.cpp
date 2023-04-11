@@ -537,12 +537,12 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
     }
 }
 
-utils::Polygon Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                                   const matrixf& depthMatrix,
-                                                                   const cv::Mat& boundaryMask) const
+utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+                                                                         const matrixf& depthMatrix,
+                                                                         const cv::Mat& boundaryMask) const
 {
     const vector3& normal = planeSegment.get_normal();
-    const vector3& center = planeSegment.get_centroid();
+    const utils::CameraCoordinate& center = planeSegment.get_centroid();
 
     // find arbitrary othogonal vectors of the normal
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
@@ -574,7 +574,8 @@ utils::Polygon Primitive_Detection::compute_plane_segment_boundary(const Plane_S
             }
         }
     }
-    return utils::Polygon::compute_convex_hull(boundaryPoints);
+    const auto& p = utils::Polygon::compute_convex_hull(boundaryPoints);
+    return utils::CameraPolygon(p, center, uVec, vVec);
 }
 
 std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segment& planeSegment,

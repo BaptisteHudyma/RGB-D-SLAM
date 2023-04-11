@@ -121,11 +121,8 @@ void Parameters::set_parameters()
     _maximumPointPerFrame = 200;
 
     // Primitive extraction
-    _minimumIOUToConsiderMatch = 0.7;  // Inter Over Union of planes
-    _maximumAngleForPlaneMatch = 60.0; // Plane segments could be merged below this angle
-    _maximumPlaneAngleForMerge = 18.0; // plane segments can be merged if their normals angle is below this angle
+    _maximumPlaneAngleForMerge = 18.0; // plane patches can be merged if their normals angle is below this angle
     _depthMapPatchSize = 20;           // Divide the depth image in patches of this size (pixels) to detect primitives
-
     _minimumPlaneSeedProportion =
             0.8 / 100.0; // grow planes only if we have more than this proportion of planes patch in this seed
     _minimumCellActivatedProportion =
@@ -145,6 +142,10 @@ void Parameters::set_parameters()
     _cylinderRansacMinimumScore = 75;
     _cylinderRansacProbabilityOfSuccess = 0.8f;
     _cylinderRansacInlierProportions = 0.33f;
+
+    // primitive matching
+    _minimumOverlapToConsiderMatch = 0.4; // Inter Over Union of planes
+    _maximumAngleForPlaneMatch = 20.0;    // Plane segments could be merged below this angle
 }
 
 void Parameters::check_parameters_validity()
@@ -269,9 +270,9 @@ void Parameters::check_parameters_validity()
         _isValid = false;
     }
 
-    if (_minimumIOUToConsiderMatch <= 0)
+    if (_minimumOverlapToConsiderMatch <= 0)
     {
-        outputs::log_error("Minimum InterOverUnion must be > 0");
+        outputs::log_error("Minimum InterOverArea must be > 0");
         _isValid = false;
     }
     if (_maximumAngleForPlaneMatch < 0 or _maximumAngleForPlaneMatch > 180)

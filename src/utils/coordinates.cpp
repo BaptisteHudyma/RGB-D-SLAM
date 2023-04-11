@@ -279,26 +279,26 @@ vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoor
     const vector3& cameraPlaneSimplified = get_plane_transformation(cameraPlane);
     const vector3& worldPlaneSimplified = get_plane_transformation(projectedWorldPlane);
 
-    return vector3((cameraPlaneSimplified.x() - worldPlaneSimplified.x()),
-                   (cameraPlaneSimplified.y() - worldPlaneSimplified.y()),
+    return vector3(cameraPlaneSimplified.x() - worldPlaneSimplified.x(),
+                   cameraPlaneSimplified.y() - worldPlaneSimplified.y(),
                    cameraPlaneSimplified.z() - worldPlaneSimplified.z());
 }
 
 vector2 get_projected_plan_coordinates(const vector3& pointToProject,
                                        const vector3& planeCenter,
-                                       const vector3& u,
-                                       const vector3& v)
+                                       const vector3& xAxis,
+                                       const vector3& yAxis)
 {
     const vector3& reducedPoint = pointToProject - planeCenter;
-    return vector2(u.dot(reducedPoint), v.dot(reducedPoint));
+    return vector2(xAxis.dot(reducedPoint), yAxis.dot(reducedPoint));
 }
 
 vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
                                          const vector3& planeCenter,
-                                         const vector3& u,
-                                         const vector3& v)
+                                         const vector3& xAxis,
+                                         const vector3& yAxis)
 {
-    return planeCenter + pointToProject.x() * u + pointToProject.y() * v;
+    return planeCenter + pointToProject.x() * xAxis + pointToProject.y() * yAxis;
 }
 
 } // namespace rgbd_slam::utils
