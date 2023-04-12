@@ -71,13 +71,14 @@ template<int N, int M> class SharedKalmanFilter
 
         // compute Kalman gain
         const Eigen::Matrix<double, N, M>& kalmanGain =
-                estimateErrorCovariance * _outputMatrix.transpose() * inovationCovariance.inverse();
+                (estimateErrorCovariance.template selfadjointView<Eigen::Lower>()) * _outputMatrix.transpose() *
+                inovationCovariance.inverse();
 
         const Eigen::Vector<double, N>& newState =
                 newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate);
 
-        const Eigen::Matrix<double, N, N>& newCovariance =
-                (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance;
+        Eigen::Matrix<double, N, N> newCovariance = (_identity - kalmanGain * _outputMatrix) *
+                                                    (estimateErrorCovariance.template selfadjointView<Eigen::Lower>());
 
         /*  // Alternative non Joseph form
         const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * _outputMatrix;

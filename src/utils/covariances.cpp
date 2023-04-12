@@ -29,7 +29,7 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
                              {0.0, cameraFY / point.z(), -cameraFY * point.y() / pow(point.z(), 2.0)},
                              {0.0, 0.0, 1.0}};
     ScreenCoordinateCovariance screenPointCovariance;
-    screenPointCovariance << (jacobian * pointCovariance * jacobian.transpose());
+    screenPointCovariance << (jacobian * pointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose());
     return screenPointCovariance;
 }
 
@@ -52,7 +52,7 @@ WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovar
     const matrix33& rotation = cameraToWorld.block(0, 0, 3, 3);
 
     WorldCoordinateCovariance cov;
-    cov << rotation * cameraPointCovariance * rotation.transpose() + poseCovariance;
+    cov << rotation * cameraPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
     return cov;
 }
 
@@ -82,7 +82,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
                              {0.0, 0.0, 1.0}};
 
     CameraCoordinateCovariance cameraPointCovariance;
-    cameraPointCovariance << jacobian * screenPointCovariance * jacobian.transpose();
+    cameraPointCovariance << jacobian * screenPointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose();
     return cameraPointCovariance;
 }
 
@@ -119,7 +119,8 @@ matrix44 compute_plane_covariance(const vector4& planeParameters, const matrix33
 
     const matrix44& planeParameterCovariance =
             // add a little bit of variance on the diagonal to counter floatting points errors
-            (jacobian * pointCloudCovariance * jacobian.transpose()) + matrix44::Identity() * 0.01;
+            (jacobian * pointCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
+            matrix44::Identity() * 0.01;
     assert(is_covariance_valid(planeParameterCovariance));
     return planeParameterCovariance;
 }
@@ -128,8 +129,9 @@ matrix44 get_world_plane_covariance(const PlaneCameraToWorldMatrix& cameraToWorl
                                     const matrix44& planeCovariance,
                                     const matrix33& worldPoseCovariance)
 {
-    // TODO: add the pose covariance
-    return cameraToWorldMatrix.transpose() * planeCovariance * cameraToWorldMatrix;
+    // TODO: add the pose covariance:
+    // return cameraToWorldMatrix * planeCovariance.selfadjointView<Eigen::Lower>() * cameraToWorldMatrix.transpose();
+    return planeCovariance;
 }
 
 } // namespace rgbd_slam::utils
