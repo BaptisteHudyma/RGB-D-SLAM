@@ -28,9 +28,9 @@ bool is_depth_valid(const double depth);
  */
 struct ScreenCoordinate2D : public vector2
 {
+    using vector2::vector2;
+
     ScreenCoordinate2D() : vector2(vector2::Zero()) {};
-    ScreenCoordinate2D(const double x, const double y) : vector2(x, y) {};
-    ScreenCoordinate2D(const vector2& other) : vector2(other) {};
 
     /**
      * \brief Transform a screen point with a depth value to a 3D camera point
@@ -55,9 +55,9 @@ struct ScreenCoordinate2D : public vector2
  */
 struct ScreenCoordinate : public vector3
 {
+    using vector3::vector3;
+
     ScreenCoordinate() : vector3(vector3::Zero()) {};
-    ScreenCoordinate(const vector3& other) : vector3(other) {};
-    ScreenCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
 
     /**
      * \brief Transform a screen point with a depth value to a 3D world point
@@ -91,9 +91,9 @@ struct ScreenCoordinate : public vector3
  */
 struct CameraCoordinate2D : public vector2
 {
+    using vector2::vector2;
+
     CameraCoordinate2D() : vector2(vector2::Zero()) {};
-    CameraCoordinate2D(const vector2& other) : vector2(other) {};
-    CameraCoordinate2D(const double x, const double y) : vector2(x, y) {};
 
     /**
      * \brief Transform a point from camera to screen coordinate system
@@ -109,18 +109,15 @@ struct CameraCoordinate2D : public vector2
  */
 struct CameraCoordinate : public vector3
 {
-    /**
-     * \brief Scores a 3D coordinate in camera (x, y, depth). It can be projected to world space using a pose
-     * transformation
-     */
+    using vector3::vector3;
+
     CameraCoordinate() : vector3(vector3::Zero()) {};
-    CameraCoordinate(const vector3& coords) : vector3(coords) {};
     CameraCoordinate(const vector4& homegenousCoordinates) :
         vector3(homegenousCoordinates.x() / homegenousCoordinates[3],
                 homegenousCoordinates.y() / homegenousCoordinates[3],
                 homegenousCoordinates.z() / homegenousCoordinates[3]) {};
-    CameraCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
     CameraCoordinate(const CameraCoordinate2D& other, const double z) : vector3(other.x(), other.y(), z) {};
+
     vector4 get_homogenous() const { return vector4(x(), y(), z(), 1); };
 
     /**
@@ -145,12 +142,9 @@ struct CameraCoordinate : public vector3
  */
 struct WorldCoordinate : public vector3
 {
-    /**
-     * \brief Scores a 3D coordinate in world space (x, y, depth).
-     */
+    using vector3::vector3;
+
     WorldCoordinate() : vector3(vector3::Zero()) {};
-    WorldCoordinate(const vector3& coords) : vector3(coords) {};
-    WorldCoordinate(const double x, const double y, const double z) : vector3(x, y, z) {};
 
     /**
      * \brief Transform a point from world to screen coordinate system
@@ -213,10 +207,10 @@ struct WorldCoordinate : public vector3
 
 struct PlaneCameraCoordinates : vector4
 {
+    using vector4::vector4;
+
     PlaneCameraCoordinates() : vector4(vector4::Zero()) {};
-    PlaneCameraCoordinates(const vector4& plane) : vector4(plane) {};
     PlaneCameraCoordinates(const vector3& normal, const double d) : vector4(normal.x(), normal.y(), normal.z(), d) {};
-    PlaneCameraCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
     PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
     /**
@@ -228,9 +222,9 @@ struct PlaneCameraCoordinates : vector4
 
 struct PlaneWorldCoordinates : public vector4
 {
+    using vector4::vector4;
+
     PlaneWorldCoordinates() : vector4(vector4::Zero()) {};
-    PlaneWorldCoordinates(const vector4& plane) : vector4(plane) {};
-    PlaneWorldCoordinates(const double x, const double y, const double z, const double d) : vector4(x, y, z, d) {};
 
     PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
     /**
