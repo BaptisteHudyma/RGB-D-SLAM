@@ -42,6 +42,16 @@ matrix22 ScreenCoordinate2D::get_covariance() const
     return matrix22({{xyVariance, 0.0}, {0.0, xyVariance}});
 }
 
+bool ScreenCoordinate2D::is_in_screen_boundaries() const
+{
+    static const uint screenSizeX = Parameters::get_camera_1_size_x();
+    static const uint screenSizeY = Parameters::get_camera_1_size_y();
+
+    return
+            // in screen space
+            x() >= 0 and x() <= screenSizeX and y() >= 0 and y() <= screenSizeY;
+}
+
 ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
 {
     const double xyVariance = 0.1 * 0.1;

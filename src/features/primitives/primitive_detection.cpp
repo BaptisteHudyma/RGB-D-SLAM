@@ -575,6 +575,7 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
         }
     }
     const std::vector<vector2>& boundary = utils::Polygon::compute_convex_hull(boundaryPoints);
+    assert(boundary.size() >= 3);
     return utils::CameraPolygon(boundary, center, uVec, vVec);
 }
 

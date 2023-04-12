@@ -205,14 +205,7 @@ class MapPlane :
 
     bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override
     {
-        const std::vector<utils::ScreenCoordinate> projectedToScreen =
-                _boundaryPolygon.to_camera_space(worldToCamMatrix).get_screen_points();
-
-        // if any point of the boundary is in the camera frame, return true
-        return std::ranges::any_of(projectedToScreen, [](const utils::ScreenCoordinate& p) {
-            // at least one boundary point is visible
-            return p.is_in_screen_boundaries();
-        });
+        return _boundaryPolygon.to_camera_space(worldToCamMatrix).is_visible_in_screen_space();
     }
 
   protected:

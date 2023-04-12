@@ -23,7 +23,7 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal);
 class Polygon
 {
   public:
-    using point_2d = boost::geometry::model::d2::point_xy<double>;
+    using point_2d = boost::geometry::model::d2::point_xy<int>;
     using polygon = boost::geometry::model::polygon<point_2d>;
     using multi_polygon = boost::geometry::model::multi_polygon<polygon>;
     using box_2d = boost::geometry::model::box<point_2d>;
@@ -48,6 +48,11 @@ class Polygon
      * \return true if the point is inside the polygon
      */
     bool contains(const vector2& point) const;
+
+    /**
+     * \brief get number of points in boundary
+     */
+    uint boundary_lentgh() const { return _polygon.outer().size(); };
 
     /**
      * \brief Return the boundary as an ordered vector
@@ -143,6 +148,17 @@ class CameraPolygon : public Polygon
      * \brief Compute the boundary points in screen coordinates
      */
     std::vector<ScreenCoordinate> get_screen_points() const;
+
+    /**
+     * \brief Project this polygon to screen space
+     */
+    polygon to_screen_space() const;
+
+    /**
+     * \brief Check that this polygon is visible in screen space
+     * \return true if the polygon is visible from the camera 1
+     */
+    bool is_visible_in_screen_space() const;
 };
 
 /**
