@@ -186,10 +186,11 @@ class MapPoint :
 
     void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override
     {
-        utils::ScreenCoordinate2D screenPoint;
+        utils::ScreenCoordinate screenPoint;
         const bool isCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint);
 
-        if (isCoordinatesValid)
+        // do not display points behind the camera
+        if (isCoordinatesValid and screenPoint.z() > 0)
         {
             cv::circle(debugImage,
                        cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
