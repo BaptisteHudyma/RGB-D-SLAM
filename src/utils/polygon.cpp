@@ -66,9 +66,16 @@ Polygon::Polygon(const std::vector<vector2>& points,
 
     boost::geometry::assign_points(_polygon, boundaryPoints);
     boost::geometry::correct(_polygon);
+
     // simplify the input mesh
     simplify();
+
+    if (_polygon.outer().size() < 3)
+    {
+        outputs::log_warning("Polygon does not contain any edges after correction and simplification");
+    }
 }
+
 Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
                  const vector3& center,
                  const vector3& xAxis,
@@ -80,6 +87,11 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     // set boundary in reverse (clockwise)
     boost::geometry::assign_points(_polygon, boundaryPoints);
     boost::geometry::correct(_polygon);
+
+    if (_polygon.outer().size() < 3)
+    {
+        outputs::log_warning("Polygon does not contain any edges after correction");
+    }
 }
 
 /**
@@ -229,7 +241,11 @@ void Polygon::simplify(const double distanceThreshold)
     // use temporary object to prevent segfault
     polygon out;
     boost::geometry::simplify(_polygon, out, distanceThreshold);
-    _polygon = out;
+
+    if (out.outer().size() < 3)
+        outputs::log_warning("Could not optimize polygon boundary cause it would have been reduced to a non shape");
+    else
+        _polygon = out;
 }
 
 std::vector<vector2> Polygon::get_boundary() const
