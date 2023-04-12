@@ -210,7 +210,25 @@ Polygon::polygon Polygon::inter_one(const Polygon& other) const
     boost::geometry::intersection(_polygon, other.project(_center, _xAxis, _yAxis)._polygon, res);
     if (res.empty())
         return polygon(); // empty polygon, no intersection
-    return res.front();   // TODO: check that the first intersection is sufficient for our purpose
+
+    // only one residual, return it
+    if (res.size() == 1)
+        return res.front();
+
+    // more than one, return the biggest overlap (rare case, so it's ok to be a bit inneficient)
+    double biggestArea = 0;
+    polygon& biggestPol = res.front();
+    for (const polygon& p: res)
+    {
+        const double pArea = boost::geometry::area(p);
+        if (pArea > biggestArea)
+        {
+            biggestArea = pArea;
+            biggestPol = p;
+        }
+    }
+    assert(biggestArea > 0);
+    return biggestPol;
 }
 
 double Polygon::inter_over_union(const Polygon& other) const
@@ -362,6 +380,7 @@ Polygon::polygon CameraPolygon::to_screen_space() const
     std::vector<point_2d> boundary;
     boundary.reserve(t.size());
 
+    // convert to point_2d vector, inneficient but rare use
     std::ranges::transform(t.cbegin(), t.cend(), std::back_inserter(boundary), [](const ScreenCoordinate& s) {
         return boost::geometry::make<point_2d>(s.x(), s.y());
     });
@@ -376,6 +395,7 @@ bool CameraPolygon::is_visible_in_screen_space() const
 {
     // intersecton of this polygon in screen space, and the screen limits; if it exists, the polygon is visible
     multi_polygon res;
+    // TODO: can this be a problem  when the polygon is behind the camera ?
     boost::geometry::intersection(to_screen_space(), get_static_screen_boundary_polygon(), res);
     return not res.empty(); // intersection exists, polygon is visible
 }
