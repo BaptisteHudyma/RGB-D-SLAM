@@ -57,8 +57,9 @@ Plane::Plane(const Plane_Segment& planeSeg, const utils::CameraPolygon& boundary
     _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
     _boundaryPolygon(boundaryPolygon)
 {
-    assert(utils::double_equal(planeSeg.get_normal().norm(), 1.0));
     assert(utils::double_equal(get_normal().norm(), 1.0));
+    assert(utils::is_covariance_valid(_pointCloudCovariance));
+    assert(_boundaryPolygon.boundary_lentgh() >= 3);
 }
 
 Plane::Plane(const Plane& plane) :
@@ -67,6 +68,9 @@ Plane::Plane(const Plane& plane) :
     _pointCloudCovariance(plane._pointCloudCovariance),
     _boundaryPolygon(plane._boundaryPolygon)
 {
+    assert(utils::double_equal(get_normal().norm(), 1.0));
+    assert(utils::is_covariance_valid(_pointCloudCovariance));
+    assert(_boundaryPolygon.boundary_lentgh() >= 3);
 }
 
 bool Plane::is_normal_similar(const Plane& plane) const { return is_normal_similar(plane._parametrization); }

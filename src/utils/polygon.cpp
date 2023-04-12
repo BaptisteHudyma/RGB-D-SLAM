@@ -1,6 +1,7 @@
 #include "polygon.hpp"
 #include "coordinates.hpp"
 #include "distance_utils.hpp"
+#include "parameters.hpp"
 #include "types.hpp"
 #include <algorithm>
 #include <bits/ranges_algo.h>
@@ -27,6 +28,25 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
     assert(abs(v.dot(normal)) <= .01);
 
     return std::make_pair(u, v);
+}
+
+Polygon::polygon get_static_screen_boundary_polygon()
+{
+    // define a polygon that span the screen space
+    static const uint screenSizeX = Parameters::get_camera_1_size_x();
+    static const uint screenSizeY = Parameters::get_camera_1_size_y();
+    static const std::array<Polygon::point_2d, 5> screenBoundaryPoints({Polygon::point_2d(0, 0),
+                                                                        Polygon::point_2d(screenSizeX, 0),
+                                                                        Polygon::point_2d(screenSizeX, screenSizeY),
+                                                                        Polygon::point_2d(0, screenSizeY),
+                                                                        Polygon::point_2d(0, 0)});
+    static Polygon::polygon boundary;
+    if (boundary.outer().size() <= 0)
+    {
+        boost::geometry::assign_points(boundary, screenBoundaryPoints);
+        boost::geometry::correct(boundary);
+    }
+    return boundary;
 }
 
 Polygon::Polygon(const std::vector<vector2>& points,
@@ -168,7 +188,7 @@ Polygon::polygon Polygon::union_one(const Polygon& other) const
     multi_polygon res;
     boost::geometry::union_(_polygon, other.project(_center, _xAxis, _yAxis)._polygon, res);
     if (res.empty() or res.size() > 1)
-        return polygon(); // empty polygon : union produces more than one poly
+        return polygon(); // empty polygon or union produces more than one poly
     return res.front();
 }
 
@@ -176,9 +196,9 @@ Polygon::polygon Polygon::inter_one(const Polygon& other) const
 {
     multi_polygon res;
     boost::geometry::intersection(_polygon, other.project(_center, _xAxis, _yAxis)._polygon, res);
-    if (res.empty() or res.size() > 1)
-        return polygon(); // empty polygon : union produces more than one poly
-    return res.front();
+    if (res.empty())
+        return polygon(); // empty polygon, no intersection
+    return res.front();   // TODO: check that the first intersection is sufficient for our purpose
 }
 
 double Polygon::inter_over_union(const Polygon& other) const
@@ -250,13 +270,11 @@ void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const
     bool isPreviousPointSet = false;
     for (const ScreenCoordinate& screenPoint: get_screen_points())
     {
-        const cv::Point newPoint(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y()));
-        // only draw lines if one of the end points are in boundaries
-        if (isPreviousPointSet and (screenPoint.is_in_screen_boundaries() or previousPoint.is_in_screen_boundaries()))
+        if (isPreviousPointSet)
         {
             cv::line(debugImage,
+                     cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
                      cv::Point(static_cast<int>(previousPoint.x()), static_cast<int>(previousPoint.y())),
-                     newPoint,
                      color,
                      2);
         }
@@ -321,6 +339,31 @@ std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
     return screenBoundary;
 }
 
+Polygon::polygon CameraPolygon::to_screen_space() const
+{
+    const auto& t = get_screen_points();
+
+    std::vector<point_2d> boundary;
+    boundary.reserve(t.size());
+
+    std::ranges::transform(t.cbegin(), t.cend(), std::back_inserter(boundary), [](const ScreenCoordinate& s) {
+        return boost::geometry::make<point_2d>(s.x(), s.y());
+    });
+
+    polygon pol;
+    boost::geometry::assign_points(pol, boundary);
+    boost::geometry::correct(pol);
+    return pol;
+}
+
+bool CameraPolygon::is_visible_in_screen_space() const
+{
+    // intersecton of this polygon in screen space, and the screen limits; if it exists, the polygon is visible
+    multi_polygon res;
+    boost::geometry::intersection(to_screen_space(), get_static_screen_boundary_polygon(), res);
+    return not res.empty(); // intersection exists, polygon is visible
+}
+
 /**
  *
  * WORLD POLYGON
@@ -357,6 +400,7 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
 void WorldPolygon::merge(const WorldPolygon& other)
 {
     Polygon::merge(other.Polygon::project(_center, _xAxis, _yAxis));
+    // no need to correct to polygon
 };
 
 void WorldPolygon::display(const WorldToCameraMatrix& worldToCamera, const cv::Scalar& color, cv::Mat& debugImage) const

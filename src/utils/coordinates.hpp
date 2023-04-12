@@ -42,6 +42,11 @@ struct ScreenCoordinate2D : public vector2
      * \brief Compute a covariance in screen space
      */
     matrix22 get_covariance() const;
+
+    /**
+     * \return true if this point is in the visible screen space
+     */
+    bool is_in_screen_boundaries() const;
 };
 
 /**
