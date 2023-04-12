@@ -215,18 +215,20 @@ class MapPlane :
     {
         assert(_matchIndex >= 0);
 
+        // compute projection matrices
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
-
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
-                matchedFeature.get_parametrization(), matchedFeature.get_point_cloud_covariance(), poseCovariance);
-        const matrix44 worldCovariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
+                matchedFeature.get_parametrization(), matchedFeature.get_point_cloud_covariance());
 
         // project to world coordinates
+        const matrix44 worldCovariance =
+                utils::get_world_plane_covariance(planeCameraToWorld, planeParameterCovariance, poseCovariance);
         const utils::PlaneWorldCoordinates& projectedPlaneCoordinates =
                 matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
 
-        // update this plane with the other one parameters
+        // update this plane with the other one's parameters
         track(projectedPlaneCoordinates, worldCovariance);
+
         // merge the boundary polygon (after optimization)
         update_boundary_polygon(cameraToWorld, matchedFeature.get_boundary_polygon());
         return true;
@@ -246,12 +248,14 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
                    const DetectedPlaneType& detectedFeature) :
         MapPlane()
     {
+        // compute plane transition matrix and plane parameter covariance
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
-        _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
-
         const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
-                detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance(), poseCovariance);
-        _covariance = planeCameraToWorld * planeParameterCovariance * planeCameraToWorld.transpose();
+                detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance());
+
+        // set parameters in world coordinates
+        _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
+        _covariance = utils::get_world_plane_covariance(planeCameraToWorld, planeParameterCovariance, poseCovariance);
         _boundaryPolygon = detectedFeature.get_boundary_polygon().to_world_space(cameraToWorld);
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));

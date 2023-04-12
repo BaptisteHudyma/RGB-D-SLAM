@@ -86,9 +86,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
     return cameraPointCovariance;
 }
 
-matrix44 compute_plane_covariance(const vector4& planeParameters,
-                                  const matrix33& pointCloudCovariance,
-                                  const matrix33& positionCovariance)
+matrix44 compute_plane_covariance(const vector4& planeParameters, const matrix33& pointCloudCovariance)
 {
     assert(is_covariance_valid(pointCloudCovariance));
 
@@ -96,10 +94,6 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
     const double d = planeParameters(3);
     assert(not utils::double_equal(d, 0.0));
     assert(utils::double_equal(normal.norm(), 1.0));
-
-    // compute covariance with the addition of an eventual position covariance
-    // TODO: check how to add the pose covariance, this causes an invalid covariance
-    const matrix33 covariance = pointCloudCovariance; // + positionCovariance;
 
     // reduce the parametrization
     const vector3 parameters = normal / d;
@@ -125,9 +119,17 @@ matrix44 compute_plane_covariance(const vector4& planeParameters,
 
     const matrix44& planeParameterCovariance =
             // add a little bit of variance on the diagonal to counter floatting points errors
-            (jacobian * covariance * jacobian.transpose()) + matrix44::Identity() * 0.01;
+            (jacobian * pointCloudCovariance * jacobian.transpose()) + matrix44::Identity() * 0.01;
     assert(is_covariance_valid(planeParameterCovariance));
     return planeParameterCovariance;
+}
+
+matrix44 get_world_plane_covariance(const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
+                                    const matrix44& planeCovariance,
+                                    const matrix33& worldPoseCovariance)
+{
+    // TODO: add the pose covariance
+    return cameraToWorldMatrix.transpose() * planeCovariance * cameraToWorldMatrix;
 }
 
 } // namespace rgbd_slam::utils
