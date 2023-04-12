@@ -55,16 +55,6 @@ class Polygon
     uint boundary_lentgh() const { return _polygon.outer().size(); };
 
     /**
-     * \brief Return the boundary as an ordered vector
-     */
-    std::vector<vector2> get_boundary() const;
-
-    /**
-     * \brief Compute the box envelop of this polygon
-     */
-    std::vector<vector2> get_envelop() const;
-
-    /**
      * \brief Compute this polygon area
      * \return the area of the polygon, or 0.0 if not set
      */

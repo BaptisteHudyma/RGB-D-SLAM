@@ -94,11 +94,6 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     }
 }
 
-/**
- * \brief Rotate the given vetor by 90 degrees
- */
-vector2 rotate90(const vector2& other) { return vector2(-other.y(), other.x()); }
-
 std::vector<vector2> Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
 {
     if (pointsIn.size() < 3)
@@ -106,6 +101,11 @@ std::vector<vector2> Polygon::compute_convex_hull(const std::vector<vector2>& po
         outputs::log_warning("Cannot compute a polygon with less than 3 sides");
         return std::vector<vector2>();
     }
+
+    static auto rotate90 = [](const vector2& other) {
+        return vector2(-other.y(), other.x());
+    };
+
     std::vector<vector2> sortedPoints(pointsIn);
 
     const vector2 first_point(*std::ranges::min_element(sortedPoints, [](const vector2& left, const vector2& right) {
@@ -239,9 +239,11 @@ double Polygon::inter_over_union(const Polygon& other) const
         return 0.0;
 
     const double finalUnion = boost::geometry::area(un);
-    const double finalInter = boost::geometry::area(inter_one(projectedOther));
+    if (finalUnion <= 0)
+        return 0.0;
 
-    if (finalInter <= 0 or finalUnion <= 0)
+    const double finalInter = boost::geometry::area(inter_one(projectedOther));
+    if (finalInter <= 0)
         return 0.0;
     return finalInter / finalUnion;
 }
@@ -266,32 +268,6 @@ void Polygon::simplify(const double distanceThreshold)
         _polygon = out;
 }
 
-std::vector<vector2> Polygon::get_boundary() const
-{
-    std::vector<vector2> boundaryPoints;
-    boundaryPoints.reserve(_polygon.outer().size());
-    std::ranges::transform(_polygon.outer().rbegin(),
-                           _polygon.outer().rend(),
-                           std::back_inserter(boundaryPoints),
-                           [](const point_2d& c) {
-                               return vector2(c.x(), c.y());
-                           });
-    return boundaryPoints;
-}
-
-std::vector<vector2> Polygon::get_envelop() const
-{
-    box_2d box;
-    boost::geometry::envelope(_polygon, box);
-
-    std::vector<vector2> vectorBox;
-
-    vectorBox.emplace_back(box.min_corner().x(), box.min_corner().y());
-    vectorBox.emplace_back(box.max_corner().x(), box.max_corner().y());
-
-    return vectorBox;
-}
-
 /**
  *
  * CAMERA POLYGON
@@ -304,11 +280,11 @@ void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const
     bool isPreviousPointSet = false;
     for (const ScreenCoordinate& screenPoint: get_screen_points())
     {
-        if (isPreviousPointSet)
+        if (isPreviousPointSet and previousPoint.z() > 0 and screenPoint.z() > 0)
         {
             cv::line(debugImage,
-                     cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
                      cv::Point(static_cast<int>(previousPoint.x()), static_cast<int>(previousPoint.y())),
+                     cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
                      color,
                      2);
         }
