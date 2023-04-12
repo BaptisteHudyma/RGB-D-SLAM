@@ -79,6 +79,8 @@ template<int N, int M> class SharedKalmanFilter
 
         Eigen::Matrix<double, N, N> newCovariance = (_identity - kalmanGain * _outputMatrix) *
                                                     (estimateErrorCovariance.template selfadjointView<Eigen::Lower>());
+        // force symetrie for covariance
+        newCovariance = newCovariance.template selfadjointView<Eigen::Lower>();
 
         /*  // Alternative non Joseph form
         const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * _outputMatrix;
