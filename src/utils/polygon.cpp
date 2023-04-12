@@ -35,11 +35,12 @@ Polygon::polygon get_static_screen_boundary_polygon()
     // define a polygon that span the screen space
     static const uint screenSizeX = Parameters::get_camera_1_size_x();
     static const uint screenSizeY = Parameters::get_camera_1_size_y();
-    static const std::array<Polygon::point_2d, 5> screenBoundaryPoints({Polygon::point_2d(0, 0),
-                                                                        Polygon::point_2d(screenSizeX, 0),
-                                                                        Polygon::point_2d(screenSizeX, screenSizeY),
-                                                                        Polygon::point_2d(0, screenSizeY),
-                                                                        Polygon::point_2d(0, 0)});
+    static const std::array<Polygon::point_2d, 5> screenBoundaryPoints(
+            {Polygon::point_2d(0, 0),
+             Polygon::point_2d(static_cast<int>(round(screenSizeX)), 0),
+             Polygon::point_2d(static_cast<int>(round(screenSizeX)), static_cast<int>(round(screenSizeY))),
+             Polygon::point_2d(0, static_cast<int>(round(screenSizeY))),
+             Polygon::point_2d(0, 0)});
     static Polygon::polygon boundary;
     if (boundary.outer().size() <= 0)
     {
@@ -150,7 +151,7 @@ bool Polygon::contains(const vector2& point) const
     return boost::geometry::within(boost::geometry::make<point_2d>(point.x(), point.y()), _polygon);
 }
 
-void Polygon::merge(const Polygon& other)
+void Polygon::merge_union(const Polygon& other)
 {
     const polygon& res = union_one(other.project(_center, _xAxis, _yAxis));
     if (res.outer().empty())
@@ -411,7 +412,7 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
 
 void WorldPolygon::merge(const WorldPolygon& other)
 {
-    Polygon::merge(other.Polygon::project(_center, _xAxis, _yAxis));
+    Polygon::merge_union(other.Polygon::project(_center, _xAxis, _yAxis));
     // no need to correct to polygon
 };
 

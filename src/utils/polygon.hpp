@@ -52,7 +52,7 @@ class Polygon
     /**
      * \brief get number of points in boundary
      */
-    uint boundary_lentgh() const { return _polygon.outer().size(); };
+    size_t boundary_lentgh() const { return _polygon.outer().size(); };
 
     /**
      * \brief Compute this polygon area
@@ -61,9 +61,9 @@ class Polygon
     double area() const;
 
     /**
-     * \brief merge the other polygon into this one
+     * \brief merge the other polygon into this one using the union of both polygons
      */
-    void merge(const Polygon& other);
+    void merge_union(const Polygon& other);
 
     /**
      * \brief project this polygon to the next polygon space
@@ -98,13 +98,13 @@ class Polygon
      */
     polygon inter_one(const Polygon& other) const;
 
-  protected:
     /**
      * \brief Simplify the boundary of the current polygon
      * \param[in] distanceThreshold max lateral distance between points to simplify (mm)
      */
     void simplify(const double distanceThreshold = 50);
 
+  protected:
     polygon _polygon;
 
     vector3 _center;
