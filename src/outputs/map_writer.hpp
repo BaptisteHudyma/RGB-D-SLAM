@@ -51,6 +51,20 @@ class PCD_Map_Writer : public IMap_Writer
     void add_polygon(const std::vector<vector3>& coordinates) override;
 };
 
+/**
+ * Writes .obg file formats.
+ * Object file Format
+ */
+class OBJ_Map_Writer : public IMap_Writer
+{
+  public:
+    OBJ_Map_Writer(const std::string& filename);
+
+    void add_point(const vector3& pointCoordinates) override;
+
+    void add_polygon(const std::vector<vector3>& coordinates) override;
+};
+
 } // namespace rgbd_slam::outputs
 
 #endif

@@ -318,6 +318,21 @@ void Polygon::simplify(const double distanceThreshold)
         _polygon = out;
 }
 
+std::vector<vector3> Polygon::get_unprojected_boundary() const
+{
+    std::vector<vector3> projectedBoundary;
+    projectedBoundary.reserve(_polygon.outer().size());
+
+    for (const auto& p: _polygon.outer())
+    {
+        const vector3& retroProjected =
+                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
+        projectedBoundary.emplace_back(retroProjected);
+    }
+
+    return projectedBoundary;
+}
+
 /**
  *
  * CAMERA POLYGON

@@ -208,6 +208,11 @@ class MapPlane :
         return _boundaryPolygon.to_camera_space(worldToCamMatrix).is_visible_in_screen_space();
     }
 
+    void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const override
+    {
+        mapWriter->add_polygon(_boundaryPolygon.get_unprojected_boundary());
+    }
+
   protected:
     bool update_with_match(const DetectedPlaneType& matchedFeature,
                            const matrix33& poseCovariance,

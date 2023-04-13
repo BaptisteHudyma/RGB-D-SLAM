@@ -210,6 +210,11 @@ class MapPoint :
         return false;
     }
 
+    void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const override
+    {
+        mapWriter->add_point(_coordinates);
+    }
+
   protected:
     bool update_with_match(const DetectedPointType& matchedFeature,
                            const matrix33& poseCovariance,

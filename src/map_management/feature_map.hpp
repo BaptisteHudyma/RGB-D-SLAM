@@ -5,11 +5,13 @@
 #include "camera_transformation.hpp"
 #include "coordinates.hpp"
 #include "covariances.hpp"
+#include "map_writer.hpp"
 #include "parameters.hpp"
 #include "pose.hpp"
 #include "random.hpp"
 #include "types.hpp"
 #include <list>
+#include <memory>
 #include <opencv2/core/matx.hpp>
 #include <opencv2/core/types.hpp>
 #include <unordered_map>
@@ -96,6 +98,11 @@ class IMapFeature
         ++_failedTrackingCount;
         _successivMatchedCount -= 1;
     };
+
+    /**
+     * \brief should write this feature to a file, using the provided mapWriter
+     */
+    virtual void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const = 0;
 
     /**
      * \brief Add the current feature to the trackedFeatures object
@@ -197,6 +204,18 @@ class Feature_Map
 
         _localMap.clear();
         _stagedMap.clear();
+    }
+
+    void destroy(std::shared_ptr<outputs::IMap_Writer> mapWriter) const
+    {
+        if (not _isActivated)
+            return;
+
+        // write map features to file
+        for (const auto& mapFeatureIterator: _localMap)
+        {
+            mapFeatureIterator.second.write_to_file(mapWriter);
+        }
     }
 
     /**
@@ -302,27 +321,32 @@ class Feature_Map
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \param[in] poseCovariance Covariance of the pose after tracking
      * \param[in] detectedFeatureObject The object containing the detected features used for the tracking
+     * \param[in] mapWriter A pointer to the map writer object
      */
     void update_map(const CameraToWorldMatrix& cameraToWorld,
                     const matrix33& poseCovariance,
-                    const DetectedFeaturesObject& detectedFeatureObject)
+                    const DetectedFeaturesObject& detectedFeatureObject,
+                    std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
         if (not _isActivated)
             return;
+        assert(mapWriter != nullptr);
 
-        update_local_map(cameraToWorld, poseCovariance, detectedFeatureObject);
+        update_local_map(cameraToWorld, poseCovariance, detectedFeatureObject, mapWriter);
         update_staged_map(cameraToWorld, poseCovariance, detectedFeatureObject);
     }
 
     /**
      * \brief Update this local map with a failed tracking
+     * \param[in] mapWriter A pointer to the map writer object
      */
-    void update_with_no_tracking()
+    void update_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
         if (not _isActivated)
             return;
+        assert(mapWriter != nullptr);
 
-        update_local_map_with_no_tracking();
+        update_local_map_with_no_tracking(mapWriter);
         update_staged_map_with_no_tracking();
     }
 
@@ -460,7 +484,8 @@ class Feature_Map
   protected:
     void update_local_map(const CameraToWorldMatrix& cameraToWorld,
                           const matrix33& poseCovariance,
-                          const DetectedFeaturesObject& detectedFeatureObject)
+                          const DetectedFeaturesObject& detectedFeatureObject,
+                          std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
         typename localMapType::iterator featureMapIterator = _localMap.begin();
         while (featureMapIterator != _localMap.end())
@@ -486,8 +511,8 @@ class Feature_Map
 
             if (mapFeature.is_lost())
             {
-                // TODO: write to file
-                //_mapWriter->add_point(mapFeature._coordinates);
+                // write to file
+                mapFeature.write_to_file(mapWriter);
 
                 // Remove useless point
                 featureMapIterator = _localMap.erase(featureMapIterator);
@@ -545,7 +570,7 @@ class Feature_Map
         }
     }
 
-    void update_local_map_with_no_tracking()
+    void update_local_map_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
         // update the local map with no matchs
         typename localMapType::iterator featureMapIterator = _localMap.begin();
@@ -559,7 +584,7 @@ class Feature_Map
             if (mapFeature.is_lost())
             {
                 // write to file
-                //_mapWriter->add_point(mapPoint._coordinates);
+                mapFeature.write_to_file(mapWriter);
 
                 // Remove useless point
                 featureMapIterator = _localMap.erase(featureMapIterator);
