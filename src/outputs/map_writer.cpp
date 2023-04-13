@@ -35,6 +35,12 @@ void XYZ_Map_Writer::add_point(const vector3& pointCoordinates)
     _file << pointCoordinates.x() << " " << pointCoordinates.y() << " " << pointCoordinates.z() << "\n";
 }
 
+void XYZ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
+{
+    (void)coordinates;
+    // not implemented for xyz
+}
+
 /**
  *     PCD format
  */
@@ -69,6 +75,12 @@ void PCD_Map_Writer::add_point(const vector3& pointCoordinates)
         }
     }*/
     _file << pointCoordinates.x() << " " << pointCoordinates.y() << " " << pointCoordinates.z() << "\n";
+}
+
+void PCD_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
+{
+    (void)coordinates;
+    // not implemented for pcd
 }
 
 } // namespace rgbd_slam::outputs

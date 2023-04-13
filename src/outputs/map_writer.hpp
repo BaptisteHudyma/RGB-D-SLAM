@@ -17,6 +17,8 @@ class IMap_Writer
 
     virtual void add_point(const vector3& pointCoordinates) = 0;
 
+    virtual void add_polygon(const std::vector<vector3>& coordinates) = 0;
+
   protected:
     std::ofstream _file;
 };
@@ -31,6 +33,8 @@ class XYZ_Map_Writer : public IMap_Writer
     XYZ_Map_Writer(const std::string& filename);
 
     void add_point(const vector3& pointCoordinates) override;
+
+    void add_polygon(const std::vector<vector3>& coordinates) override;
 };
 
 /**
@@ -43,6 +47,8 @@ class PCD_Map_Writer : public IMap_Writer
     PCD_Map_Writer(const std::string& filename);
 
     void add_point(const vector3& pointCoordinates) override;
+
+    void add_polygon(const std::vector<vector3>& coordinates) override;
 };
 
 } // namespace rgbd_slam::outputs
