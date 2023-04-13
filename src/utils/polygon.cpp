@@ -13,21 +13,58 @@
 
 namespace rgbd_slam::utils {
 
+/**
+ * \brief Compute the two vectors that span the plane
+ * \return a pair of vector u and v, normal to the plane normal
+ */
 std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 {
     // define a vector orthogonal to the normal (r.dot normal should be close to 1)
     const vector3 r = vector3(normal.z(), normal.x(), normal.y()).normalized();
 
     // get two vectors that will span the plane
-    const vector3 u = normal.cross(r).normalized();
-    const vector3 v = normal.cross(u).normalized();
+    const vector3 xAxis = normal.cross(r).normalized();
+    const vector3 yAxis = normal.cross(xAxis).normalized();
 
     // check that angles between vectors is close to 0
-    assert(abs(u.dot(normal)) <= .01);
-    assert(abs(v.dot(u)) <= .01);
-    assert(abs(v.dot(normal)) <= .01);
+    assert(abs(xAxis.dot(normal)) <= .01);
+    assert(abs(yAxis.dot(xAxis)) <= .01);
+    assert(abs(yAxis.dot(normal)) <= .01);
 
-    return std::make_pair(u, v);
+    return std::make_pair(xAxis, yAxis);
+}
+
+/**
+ * \brief Compute the position of a point in the plane coordinate system
+ * \param[in] pointToProject The point to project to plane, in world coordinates
+ * \param[in] planeCenter The center point of the plane
+ * \param[in] xAxis The unit y vector of the plane, othogonal to the normal
+ * \param[in] yAxis The unit x vector of the plane, othogonal to the normal and u
+ * \return A 2D point corresponding to pointToProject, in plane coordinate system
+ */
+vector2 get_projected_plan_coordinates(const vector3& pointToProject,
+                                       const vector3& planeCenter,
+                                       const vector3& xAxis,
+                                       const vector3& yAxis)
+{
+    const vector3& reducedPoint = pointToProject - planeCenter;
+    return vector2(xAxis.dot(reducedPoint), yAxis.dot(reducedPoint));
+}
+
+/**
+ * \brief Compute the projection of a point from the plane coordinate system to world
+ * \param[in] pointToProject The point to project to world, in plane coordinates
+ * \param[in] planeCenter The center point of the plane
+ * \param[in] xAxis The unit x vector of the plane, othogonal to the normal
+ * \param[in] yAxis The unit y vector of the plane, othogonal to the normal and u
+ * \return A 3D point corresponding to pointToProject, in world coordinate system
+ */
+vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
+                                         const vector3& planeCenter,
+                                         const vector3& xAxis,
+                                         const vector3& yAxis)
+{
+    return planeCenter + pointToProject.x() * xAxis + pointToProject.y() * yAxis;
 }
 
 Polygon::polygon get_static_screen_boundary_polygon()
@@ -50,22 +87,34 @@ Polygon::polygon get_static_screen_boundary_polygon()
     return boundary;
 }
 
-Polygon::Polygon(const std::vector<vector2>& points,
-                 const vector3& center,
-                 const vector3& xAxis,
-                 const vector3& yAxis) :
-    _center(center),
-    _xAxis(xAxis),
-    _yAxis(yAxis)
+Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, const vector3& center) : _center(center)
 {
-    // set boundary in reverse (clockwise)
-    std::vector<point_2d> boundaryPoints;
-    boundaryPoints.reserve(points.size());
-    std::ranges::transform(points.rbegin(), points.rend(), std::back_inserter(boundaryPoints), [](const vector2& c) {
-        return boost::geometry::make<point_2d>(c.x(), c.y());
-    });
+    // find arbitrary othogonal vectors of the normal : they will be the polygon axis
+    const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
+    _xAxis = res.first;
+    _yAxis = res.second;
 
-    boost::geometry::assign_points(_polygon, boundaryPoints);
+    // project to polygon space
+    std::vector<vector2> boundaryPoints;
+    boundaryPoints.reserve(points.size());
+    std::ranges::transform(
+            points.rbegin(), points.rend(), std::back_inserter(boundaryPoints), [this](const vector3& point) {
+                return utils::get_projected_plan_coordinates(point, this->_center, this->_xAxis, this->_yAxis);
+            });
+
+    // compute convex boundary
+    const std::vector<vector2>& boundary = utils::Polygon::compute_convex_hull(boundaryPoints);
+    assert(boundary.size() >= 3);
+
+    // set boundary in reverse (clockwise), convert to point_2d
+    std::vector<point_2d> finalBoundaryPoints;
+    finalBoundaryPoints.reserve(boundary.size());
+    std::ranges::transform(
+            boundary.rbegin(), boundary.rend(), std::back_inserter(finalBoundaryPoints), [](const vector2& c) {
+                return boost::geometry::make<point_2d>(c.x(), c.y());
+            });
+
+    boost::geometry::assign_points(_polygon, finalBoundaryPoints);
     boost::geometry::correct(_polygon);
 
     // simplify the input mesh
