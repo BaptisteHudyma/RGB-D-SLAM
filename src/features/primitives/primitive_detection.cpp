@@ -232,9 +232,8 @@ Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinde
         {
             const double candidateMSE = _planeGrid[seedCandidate].get_MSE();
             if (candidateMSE >= minMSE)
-            {
                 continue;
-            }
+
             seedId = seedCandidate;
             minMSE = candidateMSE;
             if (minMSE <= 0)
@@ -243,8 +242,8 @@ Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinde
         if (minMSE >= std::numeric_limits<double>::max())
         {
             // seedId is invalid
-            outputs::log_error("Could not find a single plane segment: invalid seed");
-            exit(-1);
+            outputs::log_warning("Could not find a single plane segment: invalid seed");
+            break;
         }
 
         // try to grow the selected plane at seedId
