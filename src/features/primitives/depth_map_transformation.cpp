@@ -16,6 +16,8 @@ Depth_Map_Transformation::Depth_Map_Transformation(const uint width, const uint 
     _Ypre(static_cast<int>(height), static_cast<int>(width)),
     _cellMap(static_cast<int>(height), static_cast<int>(width))
 {
+    assert(height > 0 and width > 0);
+
     _isOk = false;
     _isOk = load_parameters();
     if (this->is_ok())
@@ -127,6 +129,8 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat& depthIma
                               {
                                   // set convertion matrix
                                   const int id = _cellMap.at<int>(static_cast<int>(row), static_cast<int>(column));
+                                  assert(id >= 0 and id < organizedCloudArray.rows());
+
                                   // undistord depth
                                   organizedCloudArray(id, 0) = static_cast<float>((column - _cxRgb) * z / _fxRgb);
                                   organizedCloudArray(id, 1) = static_cast<float>((row - _cyRgb) * z / _fyRgb);
