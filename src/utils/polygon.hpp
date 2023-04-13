@@ -108,6 +108,11 @@ class Polygon
      */
     void simplify(const double distanceThreshold = 50);
 
+    /**
+     * \brief compute and return the polygon boundary, in the unprojected space
+     */
+    std::vector<vector3> get_unprojected_boundary() const;
+
   protected:
     polygon _polygon;
 

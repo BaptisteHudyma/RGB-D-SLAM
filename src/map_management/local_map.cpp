@@ -21,11 +21,17 @@ Local_Map::Local_Map()
     // Check constants
     assert(features::keypoints::INVALID_MAP_POINT_ID == INVALID_POINT_UNIQ_ID);
 
-    _mapWriter = std::make_unique<outputs::XYZ_Map_Writer>("out");
+    _mapWriter = std::make_unique<outputs::OBJ_Map_Writer>("out");
 
     // For testing purposes, one can deactivate those maps
     //_localPointMap.deactivate();
     //_localPlaneMap.deactivate();
+}
+
+Local_Map::~Local_Map()
+{
+    _localPointMap.destroy(_mapWriter);
+    _localPlaneMap.destroy(_mapWriter);
 }
 
 features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& lastPose) const
@@ -89,8 +95,8 @@ void Local_Map::update(const utils::Pose& optimizedPose,
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
     // update all local maps
-    _localPointMap.update_map(cameraToWorld, poseCovariance, keypointObject);
-    _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedPlanes);
+    _localPointMap.update_map(cameraToWorld, poseCovariance, keypointObject, _mapWriter);
+    _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedPlanes, _mapWriter);
 
     const bool addAllFeatures = false; // only add unmatched features
     add_features_to_map(poseCovariance, cameraToWorld, keypointObject, detectedPlanes, addAllFeatures);
@@ -119,10 +125,10 @@ void Local_Map::update_local_to_global()
 void Local_Map::update_no_pose()
 {
     // add local map points
-    _localPointMap.update_with_no_tracking();
+    _localPointMap.update_with_no_tracking(_mapWriter);
 
     // add planes to local map
-    _localPlaneMap.update_with_no_tracking();
+    _localPlaneMap.update_with_no_tracking(_mapWriter);
 }
 
 void Local_Map::reset()

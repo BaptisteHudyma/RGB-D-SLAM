@@ -25,6 +25,7 @@ class Local_Map
 {
   public:
     Local_Map();
+    ~Local_Map();
 
     /**
      * \brief Return an object containing the tracked keypoint features in screen space (2D), with the associated global
@@ -144,7 +145,7 @@ class Local_Map
     // local shape plane map container
     using plane_map_container = std::unordered_map<size_t, MapPlane>;
 
-    std::unique_ptr<outputs::XYZ_Map_Writer> _mapWriter = nullptr;
+    std::shared_ptr<outputs::IMap_Writer> _mapWriter = nullptr;
 
     // Remove copy operators
     Local_Map(const Local_Map& map) = delete;

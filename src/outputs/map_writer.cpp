@@ -1,5 +1,6 @@
 #include "map_writer.hpp"
 #include "logger.hpp"
+#include <string>
 
 namespace rgbd_slam::outputs {
 
@@ -81,6 +82,44 @@ void PCD_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
 {
     (void)coordinates;
     // not implemented for pcd
+}
+
+/**
+ *     OBJ format
+ */
+
+OBJ_Map_Writer::OBJ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".obj") {}
+
+void OBJ_Map_Writer::add_point(const vector3& pointCoordinates)
+{
+    if (not _file.is_open())
+    {
+        log_error("File is not opened");
+        exit(-1);
+    }
+
+    // points are not really visible
+    _file << "v " << pointCoordinates.transpose() << "\n";
+    _file << "p -1\n";
+}
+
+void OBJ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
+{
+    if (not _file.is_open())
+    {
+        log_error("File is not opened");
+        exit(-1);
+    }
+
+    // not implemented for pcd
+    std::string vertices = "";
+    for (uint i = 0; i < coordinates.size(); ++i)
+    {
+        const vector3& point = coordinates[i];
+        _file << "v " << point.transpose() << "\n";
+        vertices += " -" + std::to_string(i + 1);
+    }
+    _file << "f" << vertices << "\n";
 }
 
 } // namespace rgbd_slam::outputs
