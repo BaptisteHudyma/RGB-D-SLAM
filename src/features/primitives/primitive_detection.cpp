@@ -544,12 +544,7 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
     const vector3& normal = planeSegment.get_normal();
     const utils::CameraCoordinate& center = planeSegment.get_centroid();
 
-    // find arbitrary othogonal vectors of the normal
-    const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
-    const vector3& uVec = res.first;
-    const vector3& vVec = res.second;
-
-    std::vector<vector2> boundaryPoints;
+    std::vector<vector3> boundaryPoints;
     // Cell refinement
     for (uint cellRow = 0, stackedCellId = 0; cellRow < _verticalCellsCount; ++cellRow)
     {
@@ -568,15 +563,13 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
             assert(xMatrix.size() == yMatrix.size() and xMatrix.size() == zMatrix.size());
 
             const std::vector<vector3>& definingPoints = find_defining_points(planeSegment, xMatrix, yMatrix, zMatrix);
-            for (const vector3& point: definingPoints)
-            {
-                boundaryPoints.push_back(utils::get_projected_plan_coordinates(point, center, uVec, vVec));
-            }
+            // add to boundary points
+            boundaryPoints.insert(boundaryPoints.cend(), definingPoints.cbegin(), definingPoints.cend());
         }
     }
-    const std::vector<vector2>& boundary = utils::Polygon::compute_convex_hull(boundaryPoints);
-    assert(boundary.size() >= 3);
-    return utils::CameraPolygon(boundary, center, uVec, vVec);
+
+    // construct a polygon from those points
+    return utils::CameraPolygon(boundaryPoints, normal, center);
 }
 
 std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segment& planeSegment,

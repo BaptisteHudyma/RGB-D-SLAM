@@ -12,12 +12,6 @@ class WorldPolygon;
 class CameraPolygon;
 
 /**
- * \brief Compute the two vectors that span the plane
- * \return a pair of vector u and v, normal to the plane normal
- */
-std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal);
-
-/**
  * \brief Describe a polygon by it's points in the polygon space
  */
 class Polygon
@@ -29,7 +23,17 @@ class Polygon
     using box_2d = boost::geometry::model::box<point_2d>;
 
     Polygon() = default;
-    Polygon(const std::vector<vector2>& points, const vector3& center, const vector3& xAxis, const vector3& yAxis);
+    /**
+     * \brief Build constructor
+     * \param[in] points The points to put in the polygon. They will be projected to the polygon space
+     * \param[in] normal The normal of the plane that contains those points
+     * \param[in] center The center of the plane that contains those points
+     */
+    Polygon(const std::vector<vector3>& points, const vector3& normal, const vector3& center);
+
+    /**
+     * \brief copy constructor for the project functions
+     */
     Polygon(const std::vector<point_2d>& boundaryPoints,
             const vector3& center,
             const vector3& xAxis,
