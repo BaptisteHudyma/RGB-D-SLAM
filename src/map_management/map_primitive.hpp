@@ -248,8 +248,8 @@ class MapPlane :
                 matchedFeature.get_parametrization(), matchedFeature.get_point_cloud_covariance());
 
         // project to world coordinates
-        const matrix44 worldCovariance =
-                utils::get_world_plane_covariance(planeCameraToWorld, planeParameterCovariance, poseCovariance);
+        const matrix44 worldCovariance = utils::get_world_plane_covariance(
+                matchedFeature.get_parametrization(), planeCameraToWorld, planeParameterCovariance, poseCovariance);
         const utils::PlaneWorldCoordinates& projectedPlaneCoordinates =
                 matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
 
@@ -279,7 +279,8 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
 
         // set parameters in world coordinates
         _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
-        _covariance = utils::get_world_plane_covariance(planeCameraToWorld, planeParameterCovariance, poseCovariance);
+        _covariance = utils::get_world_plane_covariance(
+                detectedFeature.get_parametrization(), planeCameraToWorld, planeParameterCovariance, poseCovariance);
         _boundaryPolygon = detectedFeature.get_boundary_polygon().to_world_space(cameraToWorld);
 
         assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));

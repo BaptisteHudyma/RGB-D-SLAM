@@ -125,13 +125,23 @@ matrix44 compute_plane_covariance(const vector4& planeParameters, const matrix33
     return planeParameterCovariance;
 }
 
-matrix44 get_world_plane_covariance(const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
+matrix44 get_world_plane_covariance(const PlaneWorldCoordinates& planeCoordinates,
+                                    const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
                                     const matrix44& planeCovariance,
                                     const matrix33& worldPoseCovariance)
 {
     // TODO: add the pose covariance:
     // return cameraToWorldMatrix * planeCovariance.selfadjointView<Eigen::Lower>() * cameraToWorldMatrix.transpose();
-    return planeCovariance;
+    // compite the variance of the centroid of the plan
+    const vector3 repartitedVariances =
+            worldPoseCovariance.diagonal().cwiseSqrt().cwiseProduct(planeCoordinates.head(3).cwiseAbs().normalized());
+    const double dVariance = pow(repartitedVariances.sum(), 2.0);
+
+    // add some variance on the d distance
+    matrix44 planeWorldCovariance = planeCovariance;
+    planeWorldCovariance(3, 3) += dVariance;
+
+    return planeWorldCovariance;
 }
 
 } // namespace rgbd_slam::utils
