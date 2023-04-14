@@ -541,6 +541,8 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
                                                                          const cv::Mat& boundaryMask) const
 {
     const vector3& normal = planeSegment.get_normal();
+    // TODO: To reactivate with the TODO in update_boundary_polygon is resolved
+    // const utils::CameraCoordinate& center = -(planeSegment.get_normal() * planeSegment.get_plane_d());
     const utils::CameraCoordinate& center = planeSegment.get_centroid();
 
     std::vector<vector3> boundaryPoints;
