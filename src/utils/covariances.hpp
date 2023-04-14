@@ -98,7 +98,8 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
  */
 matrix44 compute_plane_covariance(const vector4& planeParameters, const matrix33& pointCloudCovariance);
 
-matrix44 get_world_plane_covariance(const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
+matrix44 get_world_plane_covariance(const PlaneWorldCoordinates& planeCoordinates,
+                                    const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
                                     const matrix44& planeCovariance,
                                     const matrix33& worldPoseCovariance);
 
