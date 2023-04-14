@@ -126,6 +126,15 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
     }
 }
 
+Polygon::Polygon(const Polygon& otherPolygon, const vector3& normal, const vector3& center)
+{
+    const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
+    _xAxis = res.first;
+    _yAxis = res.second;
+
+    *this = otherPolygon.project(center, _xAxis, _yAxis);
+}
+
 Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
                  const vector3& center,
                  const vector3& xAxis,

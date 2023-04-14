@@ -45,7 +45,10 @@ class Plane
      * \param[in] newDetectionCovariance The covariance of the newly detected feature
      * \return The update score (distance between old and new parametrization)
      */
-    double track(const utils::PlaneWorldCoordinates& newDetectionParameters, const matrix44& newDetectionCovariance)
+    double track(const CameraToWorldMatrix& cameraToWorld,
+                 const DetectedPlaneType& matchedFeature,
+                 const utils::PlaneWorldCoordinates& newDetectionParameters,
+                 const matrix44& newDetectionCovariance)
     {
         assert(utils::is_covariance_valid(newDetectionCovariance));
         assert(utils::is_covariance_valid(_covariance));
@@ -63,6 +66,14 @@ class Plane
         _parametrization = newEstimatedParameters;
         _parametrization.head(3).normalize();
 
+        // retroproject the world plane coordinates to camera coordinates
+        const PlaneWorldToCameraMatrix& planeWorldToCamera =
+                utils::compute_plane_world_to_camera_matrix(utils::compute_world_to_camera_transform(cameraToWorld));
+        const utils::PlaneCameraCoordinates& retroprojectedCoordinates =
+                _parametrization.to_camera_coordinates(planeWorldToCamera);
+        // merge the boundary polygon (after optimization)
+        update_boundary_polygon(cameraToWorld, retroprojectedCoordinates, matchedFeature.get_boundary_polygon());
+
         // static sanity checks
         assert(not _covariance.hasNaN());
         assert(utils::is_covariance_valid(_covariance));
@@ -70,21 +81,32 @@ class Plane
         return score;
     }
 
-    /**
-     * \brief Update the current boundary polygon with the one from the detected plane
-     * \param[in] cameraToWorld The matrix to convert from caera to world space
-     * \param[in] detectedPolygon The boundary polygon of the matched feature, to project to this plane space
-     */
-    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld, const utils::CameraPolygon& detectedPolygon)
-    {
-        _boundaryPolygon.merge(detectedPolygon.to_world_space(cameraToWorld));
-    }
-
     utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                          // covariance of this plane in world space
     utils::WorldPolygon _boundaryPolygon;          // polygon describing the boundary of the plane, in plane space
 
   private:
+    /**
+     * \brief Update the current boundary polygon with the one from the detected plane
+     * \param[in] cameraToWorld The matrix to convert from caera to world space
+     * \param[in] retroprojectedPlaneCoordinates this plane world coordinates retroprojected to world
+     * \param[in] detectedPolygon The boundary polygon of the matched feature, to project to this plane space
+     */
+    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
+                                 const utils::PlaneCameraCoordinates& projectedPlaneCoordinates,
+                                 const utils::CameraPolygon& detectedPolygon)
+    {
+        // project polygon to optimized plane location
+        const vector3& normal = projectedPlaneCoordinates.head(3);
+        const utils::CameraCoordinate center = -(normal * projectedPlaneCoordinates(3));
+        // correct the polygon to the correct normal and center in camera space
+        const utils::CameraPolygon correctedPolygon(detectedPolygon, normal, center);
+
+        // TODO: reactivate this when the optimization process will be more stable
+        //_boundaryPolygon.merge(correctedPolygon.to_world_space(cameraToWorld));
+        _boundaryPolygon.merge(detectedPolygon.to_world_space(cameraToWorld));
+    }
+
     /**
      * \brief Build the parameter kalman filter
      */
@@ -232,10 +254,7 @@ class MapPlane :
                 matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
 
         // update this plane with the other one's parameters
-        track(projectedPlaneCoordinates, worldCovariance);
-
-        // merge the boundary polygon (after optimization)
-        update_boundary_polygon(cameraToWorld, matchedFeature.get_boundary_polygon());
+        track(cameraToWorld, matchedFeature, projectedPlaneCoordinates, worldCovariance);
         return true;
     }
 

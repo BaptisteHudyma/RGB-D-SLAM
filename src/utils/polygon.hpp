@@ -32,6 +32,14 @@ class Polygon
     Polygon(const std::vector<vector3>& points, const vector3& normal, const vector3& center);
 
     /**
+     * \brief transform constructor
+     * \param[in] otherPolygon The polygon to project to a new space
+     * \param[in] normal The normal of the plane that contains those points
+     * \param[in] center The center of the plane that contains those points
+     */
+    Polygon(const Polygon& otherPolygon, const vector3& normal, const vector3& center);
+
+    /**
      * \brief copy constructor for the project functions
      */
     Polygon(const std::vector<point_2d>& boundaryPoints,
