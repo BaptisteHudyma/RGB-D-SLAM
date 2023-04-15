@@ -58,6 +58,7 @@ class Parameters
     // Primitives matching
     static double get_minimum_plane_overlap_for_match() { return _minimumOverlapToConsiderMatch; };
     static double get_maximum_plane_normals_angle_for_match() { return _maximumAngleForPlaneMatch; };
+    static double get_maximum_plane_distance_for_match() { return _maximumDistanceForPlaneMatch; };
 
     // Optimisation parameters
     static double get_ransac_maximum_retroprojection_error_for_point_inliers()
@@ -152,6 +153,8 @@ class Parameters
     inline static double
             _minimumOverlapToConsiderMatch; // Inter over area of the two primitive masks, to consider a primitive match
     inline static double _maximumAngleForPlaneMatch; // Maximum angle between two primitives to consider a match
+    inline static double
+            _maximumDistanceForPlaneMatch; // Maximum distance between two plane d component to consider a match
 
     // Position optimization
     inline static uint _minimumPointForOptimization;  // Minimum points to launch optimization

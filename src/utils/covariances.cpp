@@ -5,6 +5,7 @@
 #include "distance_utils.hpp"
 #include "logger.hpp"
 #include "types.hpp"
+#include <Eigen/src/Core/util/Constants.h>
 #include <cmath>
 #include <iostream>
 
@@ -138,7 +139,10 @@ matrix44 get_world_plane_covariance(const PlaneWorldCoordinates& planeCoordinate
     const double dVariance = pow(repartitedVariances.sum(), 2.0);
 
     // add some variance on the d distance
-    matrix44 planeWorldCovariance = planeCovariance;
+    matrix44 planeWorldCovariance = planeCovariance.selfadjointView<Eigen::Lower>();
+    // add a proportional error on the normal
+    planeWorldCovariance.diagonal().head(3) += vector3::Ones() * (dVariance / 1e4);
+    // add a total error on the distance
     planeWorldCovariance(3, 3) += dVariance;
 
     return planeWorldCovariance;

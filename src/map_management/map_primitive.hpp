@@ -180,8 +180,8 @@ class MapPlane :
             assert(planeIndex >= 0 and planeIndex < detectedPlaneSize);
             const features::primitives::Plane& shapePlane = detectedFeatures[planeIndex];
 
-            // if angle between normals is further than a threshold, reject match
-            if (not shapePlane.is_normal_similar(projectedPlane))
+            // if distance between planes is too great or angle between normals is further than a threshold, reject
+            if (not shapePlane.is_distance_similar(projectedPlane) or not shapePlane.is_normal_similar(projectedPlane))
                 continue;
 
             // compute a similarity score: compute the inter area of the map plane and the detected plane, divide it by
