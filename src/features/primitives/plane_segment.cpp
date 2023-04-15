@@ -162,9 +162,8 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     assert(_Sys > 0);
     assert(_Szs > 0);
 
-    _isPlanar = true;
     // fit a plane to those points
-    fit_plane();
+    _isPlanar = fit_plane();
     // plane variance should be less than depth quantization, plus a tolerance factor
     _isPlanar = _isPlanar and _MSE <= pow(2 * utils::get_depth_quantization(_centroid.z()), 2.0);
 }
@@ -230,7 +229,7 @@ matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const
     return covariance;
 }
 
-void Plane_Segment::fit_plane()
+bool Plane_Segment::fit_plane()
 {
     assert(_pointCount > 0);
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
@@ -244,8 +243,9 @@ void Plane_Segment::fit_plane()
     if (utils::double_equal(pointCloudCov.determinant(), 0))
     {
         _isPlanar = false;
-        return;
+        return false;
     }
+
     // no need to fill the upper part, the adjoint solver does not need it
     Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(pointCloudCov);
     // eigen values are the point variance along the eigen vectors (sorted by ascending order)
@@ -286,11 +286,12 @@ void Plane_Segment::fit_plane()
         // TODO; find out why
         // outputs::log_warning("Plane patch covariance matrix is ill formed, rejecting it");
         _isPlanar = false;
-        return;
+        return false;
     }
 
     // set segment as planar
     _isPlanar = true;
+    return true;
 }
 
 /*

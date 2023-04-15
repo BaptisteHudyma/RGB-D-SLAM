@@ -311,7 +311,12 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
     }
 
     // fit plane to merged data
-    newPlaneSegment.fit_plane();
+    const bool isPlanar = newPlaneSegment.fit_plane();
+    if (not isPlanar)
+    {
+        outputs::log("Plane segment is not planar after merge");
+        return;
+    }
 
     // set it as plane or cylinder
     // TODO: why 100 ? seems random
@@ -430,7 +435,9 @@ void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount,
         if (not find_plane_segment_in_cylinder(cylinderSegment, cellActivatedCount, segId, newMergedPlane))
             continue;
 
-        newMergedPlane.fit_plane();
+        const bool isPlanar = newMergedPlane.fit_plane();
+        if (not isPlanar)
+            outputs::log("Plane segment is not planar after merge");
 
         add_cylinder_to_features(cylinderSegment, cellActivatedCount, segId, newMergedPlane, cylinder2regionMap);
     }
@@ -483,7 +490,11 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
             }
         }
         if (wasPlaneExpanded) // plane was merged with other planes
-            planeToExpand.fit_plane();
+        {
+            const bool isPlanar = planeToExpand.fit_plane();
+            if (not isPlanar)
+                outputs::log("Plane segment is not planar after merge");
+        }
     }
 
     return planeMergeLabels;
