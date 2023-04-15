@@ -69,8 +69,9 @@ class Plane_Segment
 
     /**
      * \brief Fit a plane to the contained points using PCA
+     * \return true if this plane is planar
      */
-    void fit_plane();
+    bool fit_plane();
 
     /**
      * \brief Clears this segment parameters to restart analysis
