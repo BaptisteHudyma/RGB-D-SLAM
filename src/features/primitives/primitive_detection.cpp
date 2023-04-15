@@ -579,7 +579,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segme
                                                                const Eigen::ArrayXf& zMatrix) const
 {
     // TODO: set in parameters
-    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
+    const double maxBoundaryDistance = 3 * sqrt(planeSegment.get_MSE());
     const vector3& center = planeSegment.get_centroid();
 
     std::vector<vector3> definingPoints;

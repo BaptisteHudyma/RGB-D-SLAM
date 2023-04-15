@@ -325,7 +325,7 @@ double Plane_Segment::get_cos_angle(const Plane_Segment& p) const
     assert(_isPlanar);
     return (_normal.dot(p._normal));
 }
-double Plane_Segment::get_point_distance(const vector3& point) const { return pow(_normal.dot(point) + _d, 2.0); }
+double Plane_Segment::get_point_distance(const vector3& point) const { return abs(_normal.transpose() * point + _d); }
 
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
 {
