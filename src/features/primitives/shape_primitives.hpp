@@ -91,13 +91,19 @@ class Plane : public IPrimitive
 
     /**
      * \brief Get the similarity of two planes, based on normal direction
-     *
      * \param[in] prim Another primitive to compare to
-     *
      * \return A true if those shapes are similar
      */
     bool is_normal_similar(const Plane& prim) const;
     bool is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const;
+
+    /**
+     * \brief Check that the distance between the two plane d component is less than a threshold
+     * \param[in] prim Another primitive to compare to
+     */
+    bool is_distance_similar(const Plane& prim) const;
+    bool is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const;
+
     bool is_similar(const Cylinder& prim) const;
 
     vector3 get_normal() const { return _parametrization.head(3); };

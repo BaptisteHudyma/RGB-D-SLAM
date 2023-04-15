@@ -145,7 +145,8 @@ void Parameters::set_parameters()
 
     // primitive matching
     _minimumOverlapToConsiderMatch = 0.4; // Inter Over Union of planes
-    _maximumAngleForPlaneMatch = 20.0;    // Plane segments could be merged below this angle
+    _maximumAngleForPlaneMatch = 20.0;    // Plane segments could be matched below this angle (degrees)
+    _maximumDistanceForPlaneMatch = 100;  // Plane distance to consider match (millimiters)
 }
 
 void Parameters::check_parameters_validity()
@@ -278,6 +279,11 @@ void Parameters::check_parameters_validity()
     if (_maximumAngleForPlaneMatch < 0 or _maximumAngleForPlaneMatch > 180)
     {
         outputs::log_error("Maximum plane match angle must be between 0 and 180");
+        _isValid = false;
+    }
+    if (_maximumDistanceForPlaneMatch < 0)
+    {
+        outputs::log_error("Maximum plane match distance must be greater than zero");
         _isValid = false;
     }
     if (_maximumPlaneAngleForMerge < 0 or _maximumPlaneAngleForMerge > 180)
