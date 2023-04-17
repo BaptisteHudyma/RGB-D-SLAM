@@ -9,7 +9,6 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <algorithm>
 #include <bits/ranges_algo.h>
-#include <iostream>
 
 namespace rgbd_slam::utils {
 
@@ -31,8 +30,6 @@ template<int N> bool is_covariance_valid(const Eigen::Matrix<double, N, N>& cova
 
     if (not isPositiveSemiDefinite)
     {
-        std::cout << covariance << std::endl;
-        std::cout << solver.eigenvalues().transpose() << std::endl;
         outputs::log_warning("Covariance is not positive semi definte");
     }
     return isPositiveSemiDefinite;
