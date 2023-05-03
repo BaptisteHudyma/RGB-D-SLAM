@@ -79,7 +79,7 @@ bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametr
 {
     const static double minimumNormalDotDiff =
             cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0);
-    return abs(get_normal().dot(planeParametrization.head(3))) > minimumNormalDotDiff;
+    return abs(get_normal().dot(planeParametrization.get_normal())) > minimumNormalDotDiff;
 }
 
 bool Plane::is_distance_similar(const Plane& plane) const { return is_distance_similar(plane._parametrization); }
@@ -87,7 +87,7 @@ bool Plane::is_distance_similar(const Plane& plane) const { return is_distance_s
 bool Plane::is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const
 {
     const static double maximumPlanMatchDistance = Parameters::get_maximum_plane_distance_for_match();
-    return abs(_parametrization(3) - planeParametrization(3)) < maximumPlanMatchDistance;
+    return abs(_parametrization.get_d() - planeParametrization.get_d()) < maximumPlanMatchDistance;
 }
 
 bool Plane::is_similar(const Cylinder& cylinder) const

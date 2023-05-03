@@ -87,12 +87,12 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
     return cameraPointCovariance;
 }
 
-matrix44 compute_plane_covariance(const vector4& planeParameters, const matrix33& pointCloudCovariance)
+matrix44 compute_plane_covariance(const PlaneCameraCoordinates& planeParameters, const matrix33& pointCloudCovariance)
 {
     assert(is_covariance_valid(pointCloudCovariance));
 
-    const vector3& normal = planeParameters.head(3);
-    const double d = planeParameters(3);
+    const vector3& normal = planeParameters.get_normal();
+    const double d = planeParameters.get_d();
     assert(not utils::double_equal(d, 0.0));
     assert(utils::double_equal(normal.norm(), 1.0));
 
@@ -134,8 +134,8 @@ matrix44 get_world_plane_covariance(const PlaneWorldCoordinates& planeCoordinate
     // TODO: add the pose covariance:
     // return cameraToWorldMatrix * planeCovariance.selfadjointView<Eigen::Lower>() * cameraToWorldMatrix.transpose();
     // compite the variance of the centroid of the plan
-    const vector3 repartitedVariances =
-            worldPoseCovariance.diagonal().cwiseSqrt().cwiseProduct(planeCoordinates.head(3).cwiseAbs().normalized());
+    const vector3 repartitedVariances = worldPoseCovariance.diagonal().cwiseSqrt().cwiseProduct(
+            planeCoordinates.get_normal().cwiseAbs().normalized());
     const double dVariance = pow(repartitedVariances.sum(), 2.0);
 
     // add some variance on the d distance

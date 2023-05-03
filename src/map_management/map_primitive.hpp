@@ -55,7 +55,7 @@ class Plane
 
         const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(
                 _parametrization, _covariance, newDetectionParameters, newDetectionCovariance);
-        const vector4& newEstimatedParameters = res.first;
+        const utils::PlaneWorldCoordinates& newEstimatedParameters = res.first;
         const matrix44& newEstimatedCovariance = res.second;
         const double score = (_parametrization - newEstimatedParameters).norm();
 
@@ -63,7 +63,7 @@ class Plane
         _covariance = newEstimatedCovariance;
 
         // parameters update
-        _parametrization << newEstimatedParameters.head(3).normalized(), newEstimatedParameters(3);
+        _parametrization << newEstimatedParameters.get_normal().normalized(), newEstimatedParameters.get_d();
 
         // retroproject the world plane coordinates to camera coordinates
         const PlaneWorldToCameraMatrix& planeWorldToCamera =
@@ -96,11 +96,11 @@ class Plane
                                  const utils::CameraPolygon& detectedPolygon)
     {
         // optimized normal of the world polygon in camera space
-        const vector3& normal = projectedPlaneCoordinates.head(3);
+        const vector3& normal = projectedPlaneCoordinates.get_normal();
         assert(utils::double_equal(normal.norm(), 1.0));
 
         // project optimized polygon center to camera optimized polygon center
-        const utils::CameraCoordinate center = -(normal * projectedPlaneCoordinates(3));
+        const utils::CameraCoordinate center = -(normal * projectedPlaneCoordinates.get_d());
 
         // correct the polygon to the correct normal and center in camera space
         const utils::CameraPolygon correctedPolygon(detectedPolygon, normal, center);
@@ -285,7 +285,7 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
                 detectedFeature.get_parametrization(), planeCameraToWorld, planeParameterCovariance, poseCovariance);
         _boundaryPolygon = detectedFeature.get_boundary_polygon().to_world_space(cameraToWorld);
 
-        assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
+        assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
     }
 
     bool should_remove_from_staged() const override { return _failedTrackingCount >= 2; }
@@ -308,7 +308,7 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
         _covariance = stagedPlane.get_covariance();
         _boundaryPolygon = stagedPlane._boundaryPolygon;
 
-        assert(utils::double_equal(_parametrization.head(3).norm(), 1.0));
+        assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
         assert(utils::is_covariance_valid(_covariance));
     }
 

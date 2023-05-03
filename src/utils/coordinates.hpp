@@ -218,6 +218,9 @@ struct PlaneCameraCoordinates : vector4
      * floating point errors that accumulates
      */
     PlaneWorldCoordinates to_world_coordinates_renormalized(const PlaneCameraToWorldMatrix& cameraToWorld) const;
+
+    vector3 get_normal() const { return this->head(3); };
+    double get_d() const { return this->w(); };
 };
 
 struct PlaneWorldCoordinates : public vector4
@@ -251,6 +254,9 @@ struct PlaneWorldCoordinates : public vector4
      */
     vector3 get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
                                         const PlaneWorldToCameraMatrix& worldToCamera) const;
+
+    vector3 get_normal() const { return this->head(3); };
+    double get_d() const { return this->w(); };
 };
 
 } // namespace rgbd_slam::utils
