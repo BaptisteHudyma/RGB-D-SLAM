@@ -252,9 +252,9 @@ PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const PlaneCa
 PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates_renormalized(
         const PlaneCameraToWorldMatrix& cameraToWorld) const
 {
-    const vector4& worldCoordinates = this->to_world_coordinates(cameraToWorld).base();
+    const PlaneWorldCoordinates& worldCoordinates = this->to_world_coordinates(cameraToWorld).base();
     vector4 renormalized;
-    renormalized << worldCoordinates.head(3).normalized(), worldCoordinates(3);
+    renormalized << worldCoordinates.get_normal().normalized(), worldCoordinates.get_d();
     return PlaneWorldCoordinates(renormalized);
 }
 
@@ -266,9 +266,9 @@ PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const PlaneW
 PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates_renormalized(
         const PlaneWorldToCameraMatrix& worldToCamera) const
 {
-    const vector4& cameraCoordinates = this->to_camera_coordinates(worldToCamera).base();
+    const PlaneCameraCoordinates& cameraCoordinates = this->to_camera_coordinates(worldToCamera).base();
     vector4 renormalized;
-    renormalized << cameraCoordinates.head(3).normalized(), cameraCoordinates(3);
+    renormalized << cameraCoordinates.get_normal().normalized(), cameraCoordinates.get_d();
     return PlaneCameraCoordinates(renormalized);
 }
 

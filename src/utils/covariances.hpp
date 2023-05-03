@@ -96,7 +96,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
  * \param[in] pointCloudCovariance The covariance of the point cloud that this plane was fitted from
  * \return the plane parameter covariance
  */
-matrix44 compute_plane_covariance(const vector4& planeParameters, const matrix33& pointCloudCovariance);
+matrix44 compute_plane_covariance(const PlaneCameraCoordinates& planeParameters, const matrix33& pointCloudCovariance);
 
 matrix44 get_world_plane_covariance(const PlaneWorldCoordinates& planeCoordinates,
                                     const PlaneCameraToWorldMatrix& cameraToWorldMatrix,

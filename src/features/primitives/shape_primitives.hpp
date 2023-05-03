@@ -106,7 +106,7 @@ class Plane : public IPrimitive
 
     bool is_similar(const Cylinder& prim) const;
 
-    vector3 get_normal() const { return _parametrization.head(3); };
+    vector3 get_normal() const { return _parametrization.get_normal(); };
     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
     matrix33 get_point_cloud_covariance() const { return _pointCloudCovariance; };
