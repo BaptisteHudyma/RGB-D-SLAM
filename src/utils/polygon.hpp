@@ -43,9 +43,9 @@ class Polygon
      * \brief copy constructor for the project functions
      */
     Polygon(const std::vector<point_2d>& boundaryPoints,
-            const vector3& center,
             const vector3& xAxis,
-            const vector3& yAxis);
+            const vector3& yAxis,
+            const vector3& center);
 
     /**
      * \brief Compute the convex hull for a set of points
@@ -79,12 +79,20 @@ class Polygon
 
     /**
      * \brief project this polygon to the next polygon space
+     * \param[in] nextNormal The normal to project to
      * \param[in] nextCenter The center to project to
-     * \param[in] nextXAxis The x axis to project to
-     * \param[in] nextYAxis The y axis to project to
      * \return A polygon projected to the new space
      */
-    Polygon project(const vector3& nextCenter, const vector3& nextXAxis, const vector3& nextYAxis) const;
+    Polygon project(const vector3& nextNormal, const vector3& nextCenter) const;
+
+    /**
+     * \brief project this polygon to the next polygon space
+     * \param[in] nextXAxis The x axis to project to
+     * \param[in] nextYAxis The y axis to project to
+     * \param[in] nextCenter The center to project to
+     * \return A polygon projected to the new space
+     */
+    Polygon project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const;
 
     /**
      * \brief Compute the inter/over of the two polygons
