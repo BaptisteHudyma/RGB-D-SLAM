@@ -19,6 +19,8 @@ namespace rgbd_slam::utils {
  */
 std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 {
+    assert(double_equal(normal.norm(), 1.0));
+
     // define a vector orthogonal to the normal (r.dot normal should be close to 1)
     const vector3 r = vector3(normal.z(), normal.x(), normal.y()).normalized();
 
@@ -27,6 +29,8 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
     const vector3 yAxis = normal.cross(xAxis).normalized();
 
     // check that angles between vectors is close to 0
+    assert(double_equal(xAxis.norm(), 1.0));
+    assert(double_equal(yAxis.norm(), 1.0));
     assert(abs(xAxis.dot(normal)) <= .01);
     assert(abs(yAxis.dot(xAxis)) <= .01);
     assert(abs(yAxis.dot(normal)) <= .01);
@@ -47,6 +51,10 @@ vector2 get_projected_plan_coordinates(const vector3& pointToProject,
                                        const vector3& xAxis,
                                        const vector3& yAxis)
 {
+    assert(double_equal(xAxis.norm(), 1.0));
+    assert(double_equal(yAxis.norm(), 1.0));
+    assert(abs(xAxis.dot(yAxis)) <= .01);
+
     const vector3& reducedPoint = pointToProject - planeCenter;
     return vector2(xAxis.dot(reducedPoint), yAxis.dot(reducedPoint));
 }
@@ -64,6 +72,10 @@ vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
                                          const vector3& xAxis,
                                          const vector3& yAxis)
 {
+    assert(double_equal(xAxis.norm(), 1.0));
+    assert(double_equal(yAxis.norm(), 1.0));
+    assert(abs(xAxis.dot(yAxis)) <= .01);
+
     return planeCenter + pointToProject.x() * xAxis + pointToProject.y() * yAxis;
 }
 
@@ -89,6 +101,8 @@ Polygon::polygon get_static_screen_boundary_polygon()
 
 Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, const vector3& center) : _center(center)
 {
+    assert(double_equal(normal.norm(), 1.0));
+
     // find arbitrary othogonal vectors of the normal : they will be the polygon axis
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
     _xAxis = res.first;
@@ -128,21 +142,21 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
 
 Polygon::Polygon(const Polygon& otherPolygon, const vector3& normal, const vector3& center)
 {
-    const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
-    _xAxis = res.first;
-    _yAxis = res.second;
-
-    *this = otherPolygon.project(center, _xAxis, _yAxis);
+    *this = otherPolygon.project(normal, center);
 }
 
 Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
-                 const vector3& center,
                  const vector3& xAxis,
-                 const vector3& yAxis) :
+                 const vector3& yAxis,
+                 const vector3& center) :
     _center(center),
     _xAxis(xAxis),
     _yAxis(yAxis)
 {
+    assert(double_equal(_xAxis.norm(), 1.0));
+    assert(double_equal(_yAxis.norm(), 1.0));
+    assert(abs(_xAxis.dot(_yAxis)) <= .01);
+
     // set boundary in reverse (clockwise)
     boost::geometry::assign_points(_polygon, boundaryPoints);
     boost::geometry::correct(_polygon);
@@ -211,7 +225,7 @@ bool Polygon::contains(const vector2& point) const
 
 void Polygon::merge_union(const Polygon& other)
 {
-    const polygon& res = union_one(other.project(_center, _xAxis, _yAxis));
+    const polygon& res = union_one(other.project(_xAxis, _yAxis, _center));
     if (res.outer().empty())
     {
         outputs::log_warning("Merge of two polygons produces no overlaps, returning without merge operation");
@@ -222,8 +236,20 @@ void Polygon::merge_union(const Polygon& other)
     simplify();
 }
 
-Polygon Polygon::project(const vector3& nextCenter, const vector3& nextXAxis, const vector3& nextYAxis) const
+Polygon Polygon::project(const vector3& nextNormal, const vector3& nextCenter) const
 {
+    assert(double_equal(nextNormal.norm(), 1.0));
+    const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(nextNormal);
+
+    return project(res.first, res.second, nextCenter);
+}
+
+Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const
+{
+    assert(double_equal(nextXAxis.norm(), 1.0));
+    assert(double_equal(nextYAxis.norm(), 1.0));
+    assert(abs(nextXAxis.dot(nextYAxis)) <= .01);
+
     // if the projection is the same as this one, do not project
     if (_center.isApprox(nextCenter) and _xAxis.isApprox(nextXAxis) and _yAxis.isApprox(nextYAxis))
         return *this;
@@ -241,7 +267,7 @@ Polygon Polygon::project(const vector3& nextCenter, const vector3& nextXAxis, co
         newBoundary.emplace_back(projected.x(), projected.y());
     }
 
-    return Polygon(newBoundary, nextCenter, nextXAxis, nextYAxis);
+    return Polygon(newBoundary, nextXAxis, nextYAxis, nextCenter);
 }
 
 double Polygon::area() const
@@ -257,7 +283,7 @@ double Polygon::area() const
 Polygon::polygon Polygon::union_one(const Polygon& other) const
 {
     multi_polygon res;
-    boost::geometry::union_(_polygon, other.project(_center, _xAxis, _yAxis)._polygon, res);
+    boost::geometry::union_(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
     if (res.empty() or res.size() > 1)
         return polygon(); // empty polygon or union produces more than one poly
     return res.front();
@@ -266,7 +292,7 @@ Polygon::polygon Polygon::union_one(const Polygon& other) const
 Polygon::polygon Polygon::inter_one(const Polygon& other) const
 {
     multi_polygon res;
-    boost::geometry::intersection(_polygon, other.project(_center, _xAxis, _yAxis)._polygon, res);
+    boost::geometry::intersection(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
     if (res.empty())
         return polygon(); // empty polygon, no intersection
 
@@ -292,7 +318,7 @@ Polygon::polygon Polygon::inter_one(const Polygon& other) const
 
 double Polygon::inter_over_union(const Polygon& other) const
 {
-    const Polygon& projectedOther = other.project(_center, _xAxis, _yAxis);
+    const Polygon& projectedOther = other.project(_xAxis, _yAxis, _center);
     const polygon& un = union_one(projectedOther);
     if (un.outer().size() < 3)
         return 0.0;
@@ -309,7 +335,7 @@ double Polygon::inter_over_union(const Polygon& other) const
 
 double Polygon::inter_area(const Polygon& other) const
 {
-    const polygon& inter = inter_one(other.project(_center, _xAxis, _yAxis));
+    const polygon& inter = inter_one(other.project(_xAxis, _yAxis, _center));
     if (inter.outer().size() < 3)
         return 0.0;
     return boost::geometry::area(inter);
@@ -375,9 +401,11 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
 
     // rotate axis
     const matrix33& rotationMatrix = cameraToWorld.block(0, 0, 3, 3);
-    const vector3 newXAxis = rotationMatrix * _xAxis;
-    const vector3 newYAxis = rotationMatrix * _yAxis;
+    const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
+    const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 
+    assert(double_equal(newXAxis.norm(), 1.0));
+    assert(double_equal(newYAxis.norm(), 1.0));
     assert(abs(newXAxis.dot(newYAxis)) <= .01);
 
     std::vector<point_2d> newBoundary;
@@ -395,7 +423,7 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
         newBoundary.emplace_back(newPolygonPoint.x(), newPolygonPoint.y());
     }
 
-    return WorldPolygon(newBoundary, newCenter, newXAxis, newYAxis);
+    return WorldPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
 std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
@@ -462,9 +490,11 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
 
     // rotate axis
     const matrix33& rotationMatrix = worldToCamera.block(0, 0, 3, 3);
-    const vector3 newXAxis = rotationMatrix * _xAxis;
-    const vector3 newYAxis = rotationMatrix * _yAxis;
+    const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
+    const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 
+    assert(double_equal(newXAxis.norm(), 1.0));
+    assert(double_equal(newYAxis.norm(), 1.0));
     assert(abs(newXAxis.dot(newYAxis)) <= .01);
 
     std::vector<point_2d> newBoundary;
@@ -480,12 +510,12 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
         newBoundary.emplace_back(newPolygonPoint.x(), newPolygonPoint.y());
     }
 
-    return CameraPolygon(newBoundary, newCenter, newXAxis, newYAxis);
+    return CameraPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
 void WorldPolygon::merge(const WorldPolygon& other)
 {
-    Polygon::merge_union(other.Polygon::project(_center, _xAxis, _yAxis));
+    Polygon::merge_union(other.Polygon::project(_xAxis, _yAxis, _center));
     // no need to correct to polygon
 };
 
