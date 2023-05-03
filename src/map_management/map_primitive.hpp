@@ -63,17 +63,24 @@ class Plane
         _covariance = newEstimatedCovariance;
 
         // parameters update
-        _parametrization << newEstimatedParameters.get_normal().normalized(), newEstimatedParameters.get_d();
+        _parametrization =
+                utils::PlaneWorldCoordinates(newEstimatedParameters.get_normal(), newEstimatedParameters.get_d());
+        assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
 
         // retroproject the world plane coordinates to camera coordinates
         const PlaneWorldToCameraMatrix& planeWorldToCamera =
                 utils::compute_plane_world_to_camera_matrix(utils::compute_world_to_camera_transform(cameraToWorld));
         const utils::PlaneCameraCoordinates& retroprojectedCoordinates =
                 _parametrization.to_camera_coordinates_renormalized(planeWorldToCamera);
-        // merge the boundary polygon (after optimization)
+
+        // correct the projection of the boundary polygon
+        _boundaryPolygon =
+                utils::WorldPolygon(_boundaryPolygon, _parametrization.get_normal(), _boundaryPolygon.get_center());
+        // merge the boundary polygon (after optimization) with the observed polygon
         update_boundary_polygon(cameraToWorld, retroprojectedCoordinates, matchedFeature.get_boundary_polygon());
 
         // static sanity checks
+        assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
         assert(not _covariance.hasNaN());
         assert(utils::is_covariance_valid(_covariance));
         assert(not _parametrization.hasNaN());
@@ -159,7 +166,7 @@ class MapPlane :
         const PlaneWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
         // project plane in camera space
         const utils::PlaneCameraCoordinates& projectedPlane =
-                get_parametrization().to_camera_coordinates(planeCameraToWorld);
+                get_parametrization().to_camera_coordinates_renormalized(planeCameraToWorld);
 
         const utils::CameraPolygon& projectedPolygon = _boundaryPolygon.to_camera_space(worldToCamera);
 

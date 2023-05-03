@@ -129,6 +129,8 @@ class Polygon
      */
     std::vector<vector3> get_unprojected_boundary() const;
 
+    vector3 get_center() const { return _center; };
+
   protected:
     polygon _polygon;
 

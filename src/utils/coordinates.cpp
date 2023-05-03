@@ -253,9 +253,7 @@ PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates_renormalized(
         const PlaneCameraToWorldMatrix& cameraToWorld) const
 {
     const PlaneWorldCoordinates& worldCoordinates = this->to_world_coordinates(cameraToWorld).base();
-    vector4 renormalized;
-    renormalized << worldCoordinates.get_normal().normalized(), worldCoordinates.get_d();
-    return PlaneWorldCoordinates(renormalized);
+    return PlaneWorldCoordinates(worldCoordinates.get_normal(), worldCoordinates.get_d());
 }
 
 PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const
@@ -267,9 +265,7 @@ PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates_renormalized
         const PlaneWorldToCameraMatrix& worldToCamera) const
 {
     const PlaneCameraCoordinates& cameraCoordinates = this->to_camera_coordinates(worldToCamera).base();
-    vector4 renormalized;
-    renormalized << cameraCoordinates.get_normal().normalized(), cameraCoordinates.get_d();
-    return PlaneCameraCoordinates(renormalized);
+    return PlaneCameraCoordinates(cameraCoordinates.get_normal(), cameraCoordinates.get_d());
 }
 
 vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
