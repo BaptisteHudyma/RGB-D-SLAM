@@ -210,7 +210,10 @@ struct PlaneCameraCoordinates : vector4
     using vector4::vector4;
 
     PlaneCameraCoordinates() : vector4(vector4::Zero()) {};
-    PlaneCameraCoordinates(const vector3& normal, const double d) : vector4(normal.x(), normal.y(), normal.z(), d) {};
+    PlaneCameraCoordinates(const vector3& normal, const double d) : vector4(normal.x(), normal.y(), normal.z(), d)
+    {
+        this->head(3).normalize();
+    };
 
     PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
     /**
@@ -228,6 +231,10 @@ struct PlaneWorldCoordinates : public vector4
     using vector4::vector4;
 
     PlaneWorldCoordinates() : vector4(vector4::Zero()) {};
+    PlaneWorldCoordinates(const vector3& normal, const double d) : vector4(normal.x(), normal.y(), normal.z(), d)
+    {
+        this->head(3).normalize();
+    };
 
     PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
     /**

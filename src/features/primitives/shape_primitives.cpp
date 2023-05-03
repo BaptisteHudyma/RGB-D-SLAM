@@ -35,7 +35,8 @@ Cylinder::Cylinder(const Cylinder& cylinder) : _normal(cylinder._normal), _radiu
 
 bool Cylinder::is_similar(const Cylinder& cylinder) const
 {
-    const static double minimumNormalDotDiff = Parameters::get_maximum_plane_normals_angle_for_match();
+    const static double minimumNormalDotDiff =
+            abs(cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0));
     return std::abs(_normal.dot(cylinder._normal)) > minimumNormalDotDiff;
 }
 
@@ -78,7 +79,7 @@ bool Plane::is_normal_similar(const Plane& plane) const { return is_normal_simil
 bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const
 {
     const static double minimumNormalDotDiff =
-            cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0);
+            abs(cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0));
     return abs(get_normal().dot(planeParametrization.get_normal())) > minimumNormalDotDiff;
 }
 
