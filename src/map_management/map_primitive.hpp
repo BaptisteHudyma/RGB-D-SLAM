@@ -75,6 +75,7 @@ class Plane
 
         // correct the projection of the boundary polygon
         _boundaryPolygon =
+                // utils::WorldPolygon(_boundaryPolygon, _parametrization.get_normal(), _parametrization.get_center());
                 utils::WorldPolygon(_boundaryPolygon, _parametrization.get_normal(), _boundaryPolygon.get_center());
         // merge the boundary polygon (after optimization) with the observed polygon
         update_boundary_polygon(cameraToWorld, retroprojectedCoordinates, matchedFeature.get_boundary_polygon());
@@ -107,7 +108,7 @@ class Plane
         assert(utils::double_equal(normal.norm(), 1.0));
 
         // project optimized polygon center to camera optimized polygon center
-        const utils::CameraCoordinate center = -(normal * projectedPlaneCoordinates.get_d());
+        const utils::CameraCoordinate& center = projectedPlaneCoordinates.get_center();
 
         // correct the polygon to the correct normal and center in camera space
         const utils::CameraPolygon correctedPolygon(detectedPolygon, normal, center);
@@ -170,7 +171,7 @@ class MapPlane :
 
         const utils::CameraPolygon& projectedPolygon = _boundaryPolygon.to_camera_space(worldToCamera);
 
-        // minimum plane overlap: 20% for advanced search, 40% for normal mode
+        // minimum plane overlap
         static double planeMinimalOverlap = Parameters::get_minimum_plane_overlap_for_match();
         const double areaSimilarityThreshold = (useAdvancedSearch ? planeMinimalOverlap / 2 : planeMinimalOverlap);
 

@@ -78,7 +78,7 @@ class Polygon
     void merge_union(const Polygon& other);
 
     /**
-     * \brief project this polygon to the next polygon space
+     * \brief project this polygon to the next polygon space. Considers that the two polygons have very close normals
      * \param[in] nextNormal The normal to project to
      * \param[in] nextCenter The center to project to
      * \return A polygon projected to the new space
@@ -86,13 +86,30 @@ class Polygon
     Polygon project(const vector3& nextNormal, const vector3& nextCenter) const;
 
     /**
-     * \brief project this polygon to the next polygon space
+     * \brief project this polygon to the next polygon space. Considers that the two polygons have very close normals
      * \param[in] nextXAxis The x axis to project to
      * \param[in] nextYAxis The y axis to project to
      * \param[in] nextCenter The center to project to
      * \return A polygon projected to the new space
      */
     Polygon project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const;
+
+    /**
+     * \brief Transform a polygon to a new space
+     * \param[in] nextNormal The normal of polygon in the target space
+     * \param[in] nextCenter The center of the polygon in th target space
+     * \return A new polygon in the target space
+     */
+    Polygon transform(const vector3& nextNormal, const vector3& nextCenter) const;
+
+    /**
+     * \brief Transform a polygon to a new space
+     * \param[in] nextXAxis The x axis of polygon in the target space
+     * \param[in] nextYAxis The y axis of polygon in the target space
+     * \param[in] nextCenter The center of the polygon in th target space
+     * \return A new polygon in the target space
+     */
+    Polygon transform(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const;
 
     /**
      * \brief Compute the inter/over of the two polygons
@@ -137,6 +154,19 @@ class Polygon
     vector3 _center;
     vector3 _xAxis;
     vector3 _yAxis;
+
+    /**
+     * \brief Transform boundary points to the new space
+     * \param[in] transformationMatrix The matrix to transform between the spaces
+     * \param[in] nextXAxis The x axis of polygon in the target space
+     * \param[in] nextYAxis The y axis of polygon in the target space
+     * \param[in] nextCenter The center of the polygon in th target space
+     * \return The boundary in the target space
+     */
+    std::vector<point_2d> transform_boundary(const matrix44& transformationMatrix,
+                                             const vector3& nextXAxis,
+                                             const vector3& nextYAxis,
+                                             const vector3& nextCenter) const;
 };
 
 /**
