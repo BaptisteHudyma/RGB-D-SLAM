@@ -276,9 +276,9 @@ void Parameters::check_parameters_validity()
         outputs::log_error("Minimum InterOverArea must be > 0");
         _isValid = false;
     }
-    if (_maximumAngleForPlaneMatch < 0 or _maximumAngleForPlaneMatch > 180)
+    if (_maximumAngleForPlaneMatch < 0 or _maximumAngleForPlaneMatch > 90)
     {
-        outputs::log_error("Maximum plane match angle must be between 0 and 180");
+        outputs::log_error("Maximum plane match angle must be between 0 and 90 degrees");
         _isValid = false;
     }
     if (_maximumDistanceForPlaneMatch < 0)

@@ -3,6 +3,7 @@
 #include "utils/camera_transformation.hpp"
 #include "utils/coordinates.hpp"
 #include <gtest/gtest.h>
+#include <iostream>
 
 namespace rgbd_slam::utils {
 
@@ -11,6 +12,125 @@ void estimate_point_error(const vector3& pointA, const vector3& pointB)
     EXPECT_NEAR(pointA.x(), pointB.x(), 0.001);
     EXPECT_NEAR(pointA.y(), pointB.y(), 0.001);
     EXPECT_NEAR(pointA.z(), pointB.z(), 0.001);
+}
+
+TEST(CoordinateSystemChangeTests, CameraToWorldAtOrigin)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion::Identity(), vector3(0, 0, 0));
+
+    const matrix44& tr = utils::get_transformation_matrix(
+            vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero());
+
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
+}
+
+TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOrigin)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion::Identity(), vector3(-100, 100, 200));
+
+    const matrix44& tr = utils::get_transformation_matrix(vector3(1, 0, 0),
+                                                          vector3(0, 1, 0),
+                                                          vector3::Zero(),
+                                                          vector3(1, 0, 0),
+                                                          vector3(0, 1, 0),
+                                                          vector3(-100, 100, 200));
+
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
+}
+
+TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotation)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion(0.0, 1.0, 0.0, 0.0), vector3(0, 0, 0));
+
+    const matrix44& tr = utils::get_transformation_matrix(
+            vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(1, 0, 0), vector3(0, -1, 0), vector3::Zero());
+
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
+}
+
+TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotation2)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion(0.0, 0.0, 1.0, 0.0), vector3(0, 0, 0));
+
+    const matrix44& tr = utils::get_transformation_matrix(
+            vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(-1, 0, 0), vector3(0, 1, 0), vector3::Zero());
+
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
+}
+
+TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotation3)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion(0.0, 0, 0, 1.0), vector3(0, 0, 0));
+
+    const matrix44& tr = utils::get_transformation_matrix(
+            vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(-1, 0, 0), vector3(0, -1, 0), vector3::Zero());
+
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
+}
+
+TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotationCombined)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion(0.5, 0.5, 0.5, 0.5), vector3(0, 0, 0));
+
+    const matrix44& tr = utils::get_transformation_matrix(
+            vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(0, 1, 0), vector3(0, 0, 1), vector3::Zero());
+
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
+}
+
+TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOriginWithRotation)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion(0.0, 1.0, 0.0, 0.0), vector3(-100, 100, 200));
+
+    const matrix44& tr = utils::get_transformation_matrix(vector3(1, 0, 0),
+                                                          vector3(0, 1, 0),
+                                                          vector3::Zero(),
+                                                          vector3(1, 0, 0),
+                                                          vector3(0, -1, 0),
+                                                          vector3(-100, 100, 200));
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
 }
 
 TEST(PointCoordinateSystemTests, ScreenToCameraToScreen)
@@ -103,7 +223,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenAtOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(0, 0, 0));
+            compute_camera_to_world_transform(quaternion::Identity(), vector3(0, 0, 0));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
@@ -115,7 +235,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenFarFromOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(-100, 1000, 100));
+            compute_camera_to_world_transform(quaternion::Identity(), vector3(-100, 1000, 100));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
@@ -203,7 +323,7 @@ TEST(PlaneCoordinateSystemTests, ScreenToWorldToScreenAtOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(0, 0, 0));
+            compute_camera_to_world_transform(quaternion::Identity(), vector3(0, 0, 0));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
 
@@ -215,7 +335,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraFarFromOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0, 0, 0, 1), vector3(-100, 1000, 100));
+            compute_camera_to_world_transform(quaternion::Identity(), vector3(-100, 1000, 100));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
 

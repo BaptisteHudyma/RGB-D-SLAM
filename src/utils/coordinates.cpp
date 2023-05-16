@@ -15,6 +15,34 @@ const double MAX_DEPTH_DISTANCE = 6000; // (millimeters) is the depth camera max
 
 bool is_depth_valid(const double depth) { return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE); }
 
+matrix44 get_transformation_matrix(const vector3& xFrom,
+                                   const vector3& yFrom,
+                                   const vector3& centerFrom,
+                                   const vector3& xTo,
+                                   const vector3& yTo,
+                                   const vector3& centerTo)
+{
+    // sanity checks
+    assert(double_equal(xFrom.norm(), 1.0));
+    assert(double_equal(yFrom.norm(), 1.0));
+    assert(abs(yFrom.dot(xFrom)) <= .01);
+
+    assert(double_equal(xTo.norm(), 1.0));
+    assert(double_equal(yTo.norm(), 1.0));
+    assert(abs(yTo.dot(xTo)) <= .01);
+
+    Eigen::Affine3d T1 = Eigen::Affine3d::Identity();
+    T1.linear() << xFrom, yFrom, xFrom.cross(yFrom); // get coordinate system
+    T1.translation() << centerFrom;
+
+    Eigen::Affine3d T2 = Eigen::Affine3d::Identity();
+    T2.linear() << xTo, yTo, xTo.cross(yTo); // get next coordinate system
+    T2.translation() << centerTo;
+
+    // T = transform to CS2 to CS3
+    return T2.matrix() * T1.matrix().inverse();
+}
+
 /**
  *      SCREEN COORDINATES
  */

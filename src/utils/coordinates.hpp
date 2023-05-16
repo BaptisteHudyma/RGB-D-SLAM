@@ -23,6 +23,23 @@ struct PlaneWorldCoordinates;
 bool is_depth_valid(const double depth);
 
 /**
+ * \brief Compute the transformation matrix between two coordinate systems
+ * \param[in] xFrom The x axis of the original coordinate system
+ * \param[in] yFrom The y axis of the original coordinate system
+ * \param[in] centerFrom  The center of the original coordinate system
+ * \param[in] xTo The x axis of the next coordinate system
+ * \param[in] yTo The y axis of the next coordinate system
+ * \param[in] centerTo The center of the next coordinate system
+ * \return The transformation matrix between those coordinate systems
+ */
+matrix44 get_transformation_matrix(const vector3& xFrom,
+                                   const vector3& yFrom,
+                                   const vector3& centerFrom,
+                                   const vector3& xTo,
+                                   const vector3& yTo,
+                                   const vector3& centerTo);
+
+/**
  * \brief Contains a single of coordinate in screen space.
  * Screen space is defined as (x, y) in pixels
  */
@@ -224,6 +241,7 @@ struct PlaneCameraCoordinates : vector4
 
     vector3 get_normal() const { return this->head(3); };
     double get_d() const { return this->w(); };
+    CameraCoordinate get_center() const { return CameraCoordinate(get_normal() * (-get_d())); };
 };
 
 struct PlaneWorldCoordinates : public vector4
@@ -264,6 +282,7 @@ struct PlaneWorldCoordinates : public vector4
 
     vector3 get_normal() const { return this->head(3); };
     double get_d() const { return this->w(); };
+    WorldCoordinate get_center() const { return WorldCoordinate(get_normal() * (-get_d())); };
 };
 
 } // namespace rgbd_slam::utils

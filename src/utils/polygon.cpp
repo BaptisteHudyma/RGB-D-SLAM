@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <bits/ranges_algo.h>
 #include <boost/geometry/algorithms/area.hpp>
+#include <boost/qvm/mat_operations.hpp>
+#include <iostream>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
@@ -270,6 +272,68 @@ Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, con
     return Polygon(newBoundary, nextXAxis, nextYAxis, nextCenter);
 }
 
+Polygon Polygon::transform(const vector3& nextNormal, const vector3& nextCenter) const
+{
+    assert(double_equal(nextNormal.norm(), 1.0));
+    const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(nextNormal);
+    const vector3& nextXAxis = res.first;
+    const vector3& nextYAxis = res.second;
+
+    assert(double_equal(nextXAxis.norm(), 1.0));
+    assert(double_equal(nextYAxis.norm(), 1.0));
+    assert(abs(nextXAxis.dot(nextYAxis)) <= .01);
+
+    // if the projection is the same as this one, do not project
+    if (_center.isApprox(nextCenter) and _xAxis.isApprox(nextXAxis) and _yAxis.isApprox(nextYAxis))
+        return *this;
+
+    return transform(nextXAxis, nextYAxis, nextCenter);
+}
+
+Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const
+{
+    assert(double_equal(nextXAxis.norm(), 1.0));
+    assert(double_equal(nextYAxis.norm(), 1.0));
+    assert(abs(nextXAxis.dot(nextYAxis)) <= .01);
+
+    // if the projection is the same as this one, do not project
+    if (_center.isApprox(nextCenter) and _xAxis.isApprox(nextXAxis) and _yAxis.isApprox(nextYAxis))
+        return *this;
+
+    // compute transformation matrix between the two spaces
+    const matrix44& transfoMatrix =
+            utils::get_transformation_matrix(_xAxis, _yAxis, _center, nextXAxis, nextYAxis, nextCenter);
+    // project the boundary to the new space
+    const std::vector<point_2d>& newBoundary = transform_boundary(transfoMatrix, nextXAxis, nextYAxis, nextCenter);
+
+    // compute new polygon
+    return Polygon(newBoundary, nextXAxis, nextYAxis, nextCenter);
+}
+
+std::vector<Polygon::point_2d> Polygon::transform_boundary(const matrix44& transformationMatrix,
+                                                           const vector3& nextXAxis,
+                                                           const vector3& nextYAxis,
+                                                           const vector3& nextCenter) const
+{
+    std::vector<point_2d> newBoundary;
+    newBoundary.reserve(_polygon.outer().size());
+
+    // transform each boundary points
+    for (const auto& p: _polygon.outer())
+    {
+        const vector3& retroProjected =
+                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
+
+        const vector4 homogenous(retroProjected.x(), retroProjected.y(), retroProjected.z(), 1.0);
+        const vector3 transformed = (transformationMatrix * homogenous).head(3);
+
+        const vector2& projected = utils::get_projected_plan_coordinates(transformed, nextCenter, nextXAxis, nextYAxis);
+        newBoundary.emplace_back(projected.x(), projected.y());
+    }
+
+    return newBoundary;
+}
+
 double Polygon::area() const
 {
     if (_polygon.outer().size() < 3)
@@ -408,21 +472,10 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
     assert(double_equal(newYAxis.norm(), 1.0));
     assert(abs(newXAxis.dot(newYAxis)) <= .01);
 
-    std::vector<point_2d> newBoundary;
-    newBoundary.reserve(_polygon.outer().size());
+    // project the boundary to the new space
+    const std::vector<point_2d>& newBoundary = transform_boundary(cameraToWorld, newXAxis, newYAxis, newCenter);
 
-    for (const point_2d& p: _polygon.outer())
-    {
-        // project to camera space
-        const CameraCoordinate cameraPoint(
-                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis));
-        // project to world space
-        const WorldCoordinate& w = cameraPoint.to_world_coordinates(cameraToWorld);
-        // project back to world polygon coordinate
-        const vector2& newPolygonPoint = utils::get_projected_plan_coordinates(w, newCenter, newXAxis, newYAxis);
-        newBoundary.emplace_back(newPolygonPoint.x(), newPolygonPoint.y());
-    }
-
+    // compute new polygon
     return WorldPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
@@ -497,19 +550,10 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
     assert(double_equal(newYAxis.norm(), 1.0));
     assert(abs(newXAxis.dot(newYAxis)) <= .01);
 
-    std::vector<point_2d> newBoundary;
-    newBoundary.reserve(_polygon.outer().size());
+    // project the boundary to the new space
+    const std::vector<point_2d>& newBoundary = transform_boundary(worldToCamera, newXAxis, newYAxis, newCenter);
 
-    for (const point_2d& p: _polygon.outer())
-    {
-        const WorldCoordinate& worldPoint =
-                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
-        const CameraCoordinate& c = worldPoint.to_camera_coordinates(worldToCamera);
-
-        const vector2& newPolygonPoint = utils::get_projected_plan_coordinates(c, newCenter, newXAxis, newYAxis);
-        newBoundary.emplace_back(newPolygonPoint.x(), newPolygonPoint.y());
-    }
-
+    // compute new polygon
     return CameraPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
