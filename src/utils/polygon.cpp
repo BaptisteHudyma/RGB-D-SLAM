@@ -16,6 +16,28 @@
 namespace rgbd_slam::utils {
 
 /**
+ * \brief Select the transform vector furthest from the normal
+ */
+vector3 select_correct_transform(const vector3& normal)
+{
+    /* const double distX = abs(normal.dot(vector3::UnitX()));
+     const double distY = abs(normal.dot(vector3::UnitY()));
+     const double distZ = abs(normal.dot(vector3::UnitZ()));
+
+     const double res = std::min(distX, std::min(distY, distZ));
+     if (double_equal(res, distX, 0.1))
+         return vector3::UnitX();
+     if (double_equal(res, distY, 0.1))
+         return vector3::UnitY();
+     if (double_equal(res, distZ, 0.1))
+         return vector3::UnitZ();
+
+     // return a random variation of the normal
+     outputs::log_error("Could not find the furthest base vector");*/
+    return vector3(normal.z(), normal.x(), normal.y()).normalized();
+}
+
+/**
  * \brief Compute the two vectors that span the plane
  * \return a pair of vector u and v, normal to the plane normal
  */
@@ -23,8 +45,9 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 {
     assert(double_equal(normal.norm(), 1.0));
 
-    // define a vector orthogonal to the normal (r.dot normal should be close to 1)
-    const vector3 r = vector3(normal.z(), normal.x(), normal.y()).normalized();
+    // define a vector orthogonal to the normal (r.dot normal should be close to 0)
+    const vector3& r = select_correct_transform(normal);
+    assert(double_equal(r.norm(), 1.0));
 
     // get two vectors that will span the plane
     const vector3 xAxis = normal.cross(r).normalized();

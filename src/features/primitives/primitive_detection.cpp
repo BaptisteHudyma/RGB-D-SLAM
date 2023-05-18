@@ -575,13 +575,8 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
         }
     }
 
-    const vector3& normal = planeSegment.get_normal();
-    // TODO: This breaks the polygons somehow
-    // const utils::CameraCoordinate& center = normal * (-planeSegment.get_plane_d());
-    const utils::CameraCoordinate& center = planeSegment.get_centroid();
-
     // construct a polygon from those points
-    return utils::CameraPolygon(boundaryPoints, normal, center);
+    return utils::CameraPolygon(boundaryPoints, planeSegment.get_normal(), planeSegment.get_center());
 }
 
 std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segment& planeSegment,

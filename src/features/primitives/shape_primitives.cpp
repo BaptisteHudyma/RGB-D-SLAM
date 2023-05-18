@@ -54,7 +54,7 @@ double Cylinder::get_distance(const vector3& point) const
  */
 Plane::Plane(const Plane_Segment& planeSeg, const utils::CameraPolygon& boundaryPolygon) :
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
-    _centroid(planeSeg.get_centroid()),
+    _centroid(planeSeg.get_center()),
     _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
     _boundaryPolygon(boundaryPolygon)
 {

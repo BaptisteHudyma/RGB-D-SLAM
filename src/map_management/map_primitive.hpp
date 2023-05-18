@@ -67,18 +67,8 @@ class Plane
                 utils::PlaneWorldCoordinates(newEstimatedParameters.get_normal(), newEstimatedParameters.get_d());
         assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
 
-        // retroproject the world plane coordinates to camera coordinates
-        const PlaneWorldToCameraMatrix& planeWorldToCamera =
-                utils::compute_plane_world_to_camera_matrix(utils::compute_world_to_camera_transform(cameraToWorld));
-        const utils::PlaneCameraCoordinates& retroprojectedCoordinates =
-                _parametrization.to_camera_coordinates_renormalized(planeWorldToCamera);
-
-        // correct the projection of the boundary polygon
-        _boundaryPolygon =
-                // utils::WorldPolygon(_boundaryPolygon, _parametrization.get_normal(), _parametrization.get_center());
-                utils::WorldPolygon(_boundaryPolygon, _parametrization.get_normal(), _boundaryPolygon.get_center());
         // merge the boundary polygon (after optimization) with the observed polygon
-        update_boundary_polygon(cameraToWorld, retroprojectedCoordinates, matchedFeature.get_boundary_polygon());
+        update_boundary_polygon(cameraToWorld, matchedFeature.get_boundary_polygon());
 
         // static sanity checks
         assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
@@ -96,25 +86,21 @@ class Plane
     /**
      * \brief Update the current boundary polygon with the one from the detected plane
      * \param[in] cameraToWorld The matrix to convert from caera to world space
-     * \param[in] projectedPlaneCoordinates this plane world coordinates retroprojected to camera space
      * \param[in] detectedPolygon The boundary polygon of the matched feature, to project to this plane space
      */
-    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
-                                 const utils::PlaneCameraCoordinates& projectedPlaneCoordinates,
-                                 const utils::CameraPolygon& detectedPolygon)
+    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld, const utils::CameraPolygon& detectedPolygon)
     {
-        // optimized normal of the world polygon in camera space
-        const vector3& normal = projectedPlaneCoordinates.get_normal();
-        assert(utils::double_equal(normal.norm(), 1.0));
+        // correct the projection of the boundary polygon to correspond to the parametrization
+        const vector3& worldPolygonNormal = _parametrization.get_normal();
+        const vector3& worldPolygonCenter = _parametrization.get_center();
+        _boundaryPolygon = _boundaryPolygon.project(worldPolygonNormal, worldPolygonCenter);
+        assert(_boundaryPolygon.get_center().isApprox(worldPolygonCenter));
 
-        // project optimized polygon center to camera optimized polygon center
-        const utils::CameraCoordinate& center = projectedPlaneCoordinates.get_center();
-
-        // correct the polygon to the correct normal and center in camera space
-        const utils::CameraPolygon correctedPolygon(detectedPolygon, normal, center);
+        // convert detected polygon to world space, it is supposed to be aligned with the world polygon
+        const utils::WorldPolygon& projectedPolygon = detectedPolygon.to_world_space(cameraToWorld);
 
         // merge the projected observed polygon with optimized parameters with the current world polygon
-        _boundaryPolygon.merge(correctedPolygon.to_world_space(cameraToWorld));
+        _boundaryPolygon.merge(projectedPolygon);
     }
 
     /**
