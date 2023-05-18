@@ -107,8 +107,9 @@ class Plane : public IPrimitive
     bool is_similar(const Cylinder& prim) const;
 
     vector3 get_normal() const { return _parametrization.get_normal(); };
+    double get_d() const { return _parametrization.w(); };
     utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
-    utils::CameraCoordinate get_centroid() const { return _centroid; };
+    utils::CameraCoordinate get_center() const { return get_normal() * (-get_d()); };
     matrix33 get_point_cloud_covariance() const { return _pointCloudCovariance; };
 
     utils::CameraPolygon get_boundary_polygon() const { return _boundaryPolygon; };
@@ -122,7 +123,6 @@ class Plane : public IPrimitive
     double get_distance(const vector3& point) const;
 
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
-    utils::CameraCoordinate _centroid;              // mean center point of the plane; in camera coordinates
     matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from
     const utils::CameraPolygon _boundaryPolygon;
 
