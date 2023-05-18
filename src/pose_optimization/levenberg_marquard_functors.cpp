@@ -89,12 +89,9 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
         const vector3& planeProjectionError =
                 match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
 
-        outputScores(pointIndex) = planeProjectionError.x() * 0.01;
-        ++pointIndex;
-        outputScores(pointIndex) = planeProjectionError.y() * 0.01;
-        ++pointIndex;
-        outputScores(pointIndex) = planeProjectionError.z() * 0.01;
-        ++pointIndex;
+        outputScores(pointIndex++) = planeProjectionError.x() * 0.1;
+        outputScores(pointIndex++) = planeProjectionError.y() * 0.1;
+        outputScores(pointIndex++) = planeProjectionError.z() * 0.1;
     }
     return 0;
 }

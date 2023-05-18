@@ -91,9 +91,8 @@ class Plane
     void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld, const utils::CameraPolygon& detectedPolygon)
     {
         // correct the projection of the boundary polygon to correspond to the parametrization
-        const vector3& worldPolygonNormal = _parametrization.get_normal();
         const vector3& worldPolygonCenter = _parametrization.get_center();
-        _boundaryPolygon = _boundaryPolygon.project(worldPolygonNormal, worldPolygonCenter);
+        _boundaryPolygon = _boundaryPolygon.project(_parametrization.get_normal(), worldPolygonCenter);
         assert(_boundaryPolygon.get_center().isApprox(worldPolygonCenter));
 
         // convert detected polygon to world space, it is supposed to be aligned with the world polygon

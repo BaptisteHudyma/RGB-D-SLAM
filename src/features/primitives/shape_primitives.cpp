@@ -54,7 +54,6 @@ double Cylinder::get_distance(const vector3& point) const
  */
 Plane::Plane(const Plane_Segment& planeSeg, const utils::CameraPolygon& boundaryPolygon) :
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
-    _centroid(planeSeg.get_center()),
     _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
     _boundaryPolygon(boundaryPolygon)
 {
@@ -65,7 +64,6 @@ Plane::Plane(const Plane_Segment& planeSeg, const utils::CameraPolygon& boundary
 
 Plane::Plane(const Plane& plane) :
     _parametrization(plane._parametrization),
-    _centroid(plane._centroid),
     _pointCloudCovariance(plane._pointCloudCovariance),
     _boundaryPolygon(plane._boundaryPolygon)
 {
@@ -98,6 +96,6 @@ bool Plane::is_similar(const Cylinder& cylinder) const
     return false;
 }
 
-double Plane::get_distance(const vector3& point) const { return get_normal().dot(point - _centroid); }
+double Plane::get_distance(const vector3& point) const { return get_normal().dot(point - get_center()); }
 
 } // namespace rgbd_slam::features::primitives
