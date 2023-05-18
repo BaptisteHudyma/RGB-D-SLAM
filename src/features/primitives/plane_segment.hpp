@@ -89,6 +89,7 @@ class Plane_Segment
     double get_MSE() const { return _MSE; };
     vector3 get_normal() const { return _normal; };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
+    utils::CameraCoordinate get_center() const { return _normal * (-_d); };
     double get_plane_d() const { return _d; };
     vector4 get_parametrization() const { return vector4(_normal.x(), _normal.y(), _normal.z(), _d); };
     bool is_planar() const { return _isPlanar; };

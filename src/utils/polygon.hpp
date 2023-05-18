@@ -147,6 +147,8 @@ class Polygon
     std::vector<vector3> get_unprojected_boundary() const;
 
     vector3 get_center() const { return _center; };
+    vector3 get_x_axis() const { return _xAxis; };
+    vector3 get_y_axis() const { return _yAxis; };
 
   protected:
     polygon _polygon;
@@ -176,6 +178,7 @@ class CameraPolygon : public Polygon
 {
   public:
     using Polygon::Polygon;
+    CameraPolygon(const Polygon& other) : Polygon(other) {};
 
     /**
      * \brief display the polygon in screen space on the given image
@@ -215,6 +218,7 @@ class WorldPolygon : public Polygon
 {
   public:
     using Polygon::Polygon;
+    WorldPolygon(const Polygon& other) : Polygon(other) {};
 
     /**
      * \brief project this polygon to camera space
