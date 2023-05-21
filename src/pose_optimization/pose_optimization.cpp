@@ -437,11 +437,12 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
         utils::PlaneWorldCoordinates variatedCoordinates = match._worldFeature;
 
         const vector4& diagonal = match._worldFeatureCovariance.diagonal();
-        variatedCoordinates(0) += utils::Random::get_normal_double() * sqrt(diagonal(0));
-        variatedCoordinates(1) += utils::Random::get_normal_double() * sqrt(diagonal(1));
-        variatedCoordinates(2) += utils::Random::get_normal_double() * sqrt(diagonal(2));
-        variatedCoordinates(3) += utils::Random::get_normal_double() * sqrt(diagonal(3));
-        variatedCoordinates.head(3).normalize();
+        variatedCoordinates.normal()(0) += utils::Random::get_normal_double() * sqrt(diagonal(0));
+        variatedCoordinates.normal()(1) += utils::Random::get_normal_double() * sqrt(diagonal(1));
+        variatedCoordinates.normal()(2) += utils::Random::get_normal_double() * sqrt(diagonal(2));
+        variatedCoordinates.normal().normalize();
+
+        variatedCoordinates.d() += utils::Random::get_normal_double() * sqrt(diagonal(3));
 
         variatedSet._planeSets._inliers.emplace_back(
                 match._screenFeature, variatedCoordinates, match._worldFeatureCovariance, match._idInMap);

@@ -2,6 +2,7 @@
 #define RGBDSLAM_UTILS_COORDINATES_HPP
 
 #include "../types.hpp"
+#include <cmath>
 #include <ostream>
 
 namespace rgbd_slam::utils {
@@ -222,15 +223,39 @@ struct WorldCoordinate : public vector3
     };
 };
 
-struct PlaneCameraCoordinates : vector4
+/**
+ * \brief Base class to handle plane coordinates
+ */
+struct PlaneCoordinates
 {
-    using vector4::vector4;
+    PlaneCoordinates() : _normal(vector3::Zero()), _d(0.0) {};
+    PlaneCoordinates(const vector4& parametrization) : _normal(parametrization.head(3)), _d(parametrization(3)) {};
+    PlaneCoordinates(const vector3& normal, const double d) : _normal(normal), _d(d) {};
 
-    PlaneCameraCoordinates() : vector4(vector4::Zero()) {};
-    PlaneCameraCoordinates(const vector3& normal, const double d) : vector4(normal.x(), normal.y(), normal.z(), d)
-    {
-        this->head(3).normalize();
-    };
+    void normalize() { _normal.normalize(); }
+
+    vector4 get_parametrization() const { return vector4(_normal.x(), _normal.y(), _normal.z(), _d); };
+    vector3 get_normal() const { return _normal; };
+    vector3& normal() { return _normal; };
+
+    double get_d() const { return _d; };
+    double& d() { return _d; };
+
+    WorldCoordinate get_center() const { return WorldCoordinate(_normal * (-_d)); };
+
+    bool hasNaN() const { return std::isnan(_d) or _normal.hasNaN(); };
+
+  private:
+    vector3 _normal;
+    double _d;
+};
+
+/**
+ * \brief The parametrization of a plane in camera coordinates
+ */
+struct PlaneCameraCoordinates : public PlaneCoordinates
+{
+    using PlaneCoordinates::PlaneCoordinates;
 
     PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
     /**
@@ -238,21 +263,14 @@ struct PlaneCameraCoordinates : vector4
      * floating point errors that accumulates
      */
     PlaneWorldCoordinates to_world_coordinates_renormalized(const PlaneCameraToWorldMatrix& cameraToWorld) const;
-
-    vector3 get_normal() const { return this->head(3); };
-    double get_d() const { return this->w(); };
-    CameraCoordinate get_center() const { return CameraCoordinate(get_normal() * (-get_d())); };
 };
 
-struct PlaneWorldCoordinates : public vector4
+/**
+ * \brief The parametrization of a plane in world coordinates
+ */
+struct PlaneWorldCoordinates : public PlaneCoordinates
 {
-    using vector4::vector4;
-
-    PlaneWorldCoordinates() : vector4(vector4::Zero()) {};
-    PlaneWorldCoordinates(const vector3& normal, const double d) : vector4(normal.x(), normal.y(), normal.z(), d)
-    {
-        this->head(3).normalize();
-    };
+    using PlaneCoordinates::PlaneCoordinates;
 
     PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
     /**
@@ -279,10 +297,6 @@ struct PlaneWorldCoordinates : public vector4
      */
     vector3 get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
                                         const PlaneWorldToCameraMatrix& worldToCamera) const;
-
-    vector3 get_normal() const { return this->head(3); };
-    double get_d() const { return this->w(); };
-    WorldCoordinate get_center() const { return WorldCoordinate(get_normal() * (-get_d())); };
 };
 
 } // namespace rgbd_slam::utils

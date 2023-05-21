@@ -8,7 +8,6 @@ namespace rgbd_slam::map_management {
 
 Plane::Plane()
 {
-    _parametrization.setZero();
     _covariance.setZero();
 
     build_kalman_filter();
@@ -22,20 +21,20 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
     assert(utils::is_covariance_valid(newDetectionCovariance));
     assert(utils::is_covariance_valid(_covariance));
 
-    const std::pair<vector4, matrix44>& res =
-            _kalmanFilter->get_new_state(_parametrization, _covariance, newDetectionParameters, newDetectionCovariance);
-    const utils::PlaneWorldCoordinates& newEstimatedParameters = res.first;
+    const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(_parametrization.get_parametrization(),
+                                                                           _covariance,
+                                                                           newDetectionParameters.get_parametrization(),
+                                                                           newDetectionCovariance);
+    const utils::PlaneWorldCoordinates newEstimatedParameters(res.first);
     const matrix44& newEstimatedCovariance = res.second;
-    const double score = (_parametrization - newEstimatedParameters).norm();
+    const double score = (_parametrization.get_parametrization() - newEstimatedParameters.get_parametrization()).norm();
 
     // covariance update
     _covariance = newEstimatedCovariance;
 
     // parameters update
-    _parametrization =
-            utils::PlaneWorldCoordinates(newEstimatedParameters.get_normal(), newEstimatedParameters.get_d());
-    _parametrization.head(3).normalize();
-    assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
+    _parametrization = utils::PlaneWorldCoordinates(newEstimatedParameters.get_normal().normalized(),
+                                                    newEstimatedParameters.get_d());
 
     // merge the boundary polygon (after optimization) with the observed polygon
     update_boundary_polygon(cameraToWorld, matchedFeature.get_boundary_polygon());
@@ -179,15 +178,16 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
     assert(_matchIndex >= 0);
 
     // compute projection matrices
+    const utils::PlaneCameraCoordinates& matchedFeatureParams = matchedFeature.get_parametrization();
     const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
-    const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
-            matchedFeature.get_parametrization(), matchedFeature.get_point_cloud_covariance());
+    const matrix44& planeParameterCovariance =
+            utils::compute_plane_covariance(matchedFeatureParams, matchedFeature.get_point_cloud_covariance());
 
     // project to world coordinates
     const matrix44 worldCovariance = utils::get_world_plane_covariance(
-            matchedFeature.get_parametrization(), planeCameraToWorld, planeParameterCovariance, poseCovariance);
+            matchedFeatureParams, planeCameraToWorld, planeParameterCovariance, poseCovariance);
     const utils::PlaneWorldCoordinates& projectedPlaneCoordinates =
-            matchedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
+            matchedFeatureParams.to_world_coordinates_renormalized(planeCameraToWorld);
 
     // update this plane with the other one's parameters
     track(cameraToWorld, matchedFeature, projectedPlaneCoordinates, worldCovariance);
@@ -209,14 +209,15 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
     MapPlane()
 {
     // compute plane transition matrix and plane parameter covariance
+    const utils::PlaneCameraCoordinates& detectedFeatureParams = detectedFeature.get_parametrization();
     const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
-    const matrix44& planeParameterCovariance = utils::compute_plane_covariance(
-            detectedFeature.get_parametrization(), detectedFeature.get_point_cloud_covariance());
+    const matrix44& planeParameterCovariance =
+            utils::compute_plane_covariance(detectedFeatureParams, detectedFeature.get_point_cloud_covariance());
 
     // set parameters in world coordinates
-    _parametrization = detectedFeature.get_parametrization().to_world_coordinates_renormalized(planeCameraToWorld);
+    _parametrization = detectedFeatureParams.to_world_coordinates_renormalized(planeCameraToWorld);
     _covariance = utils::get_world_plane_covariance(
-            detectedFeature.get_parametrization(), planeCameraToWorld, planeParameterCovariance, poseCovariance);
+            detectedFeatureParams, planeCameraToWorld, planeParameterCovariance, poseCovariance);
     _boundaryPolygon = detectedFeature.get_boundary_polygon().to_world_space(cameraToWorld);
 
     assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));

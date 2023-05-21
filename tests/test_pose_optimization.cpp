@@ -118,10 +118,10 @@ matches_containers::match_plane_container get_matched_planes(const utils::Pose& 
     matches_containers::match_plane_container matchedPlanes;
 
     const std::vector<utils::PlaneWorldCoordinates> planes = {
-            utils::PlaneWorldCoordinates(0.452271, -0.419436, -0.787099, 10),
-            utils::PlaneWorldCoordinates(-0.585607, -0.43009, 0.687085, 30),
-            utils::PlaneWorldCoordinates(-0.498271, 0.767552, -0.403223, -20),
-            utils::PlaneWorldCoordinates(0.706067, -0.0741267, -0.704255, 150)};
+            utils::PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 10),
+            utils::PlaneWorldCoordinates(vector3(-0.585607, -0.43009, 0.687085), 30),
+            utils::PlaneWorldCoordinates(vector3(-0.498271, 0.767552, -0.403223), -20),
+            utils::PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 150)};
 
     for (const utils::PlaneWorldCoordinates& worldPlane: planes)
     {

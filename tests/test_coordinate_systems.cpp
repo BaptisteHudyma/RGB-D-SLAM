@@ -294,12 +294,15 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation3)
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
-void estimate_plane_error(const vector4& pointA, const vector4& pointB)
+void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates& planeB)
 {
-    EXPECT_NEAR(pointA.x(), pointB.x(), 0.001);
-    EXPECT_NEAR(pointA.y(), pointB.y(), 0.001);
-    EXPECT_NEAR(pointA.z(), pointB.z(), 0.001);
-    EXPECT_NEAR(pointA.w(), pointB.w(), 0.001);
+    const vector3& normalA = planeA.get_normal();
+    const vector3& normalB = planeB.get_normal();
+
+    EXPECT_NEAR(normalA.x(), normalB.x(), 0.001);
+    EXPECT_NEAR(normalA.y(), normalB.y(), 0.001);
+    EXPECT_NEAR(normalA.z(), normalB.z(), 0.001);
+    EXPECT_NEAR(planeA.get_d(), planeB.get_d(), 0.001);
 }
 
 void test_plane_set_camera_to_world_to_camera(const CameraToWorldMatrix& cameraToWorld)
@@ -320,8 +323,7 @@ void test_plane_set_camera_to_world_to_camera(const CameraToWorldMatrix& cameraT
                 const vector3 planeNormal = vector3(x, y, z).normalized();
                 for (double d = 1; d < 100; d += 5.5)
                 {
-                    const PlaneCameraCoordinates originalCameraPlane(
-                            vector4(planeNormal.x(), planeNormal.y(), planeNormal.z(), d));
+                    const PlaneCameraCoordinates originalCameraPlane(planeNormal, d);
                     const PlaneWorldCoordinates worldPlane =
                             originalCameraPlane.to_world_coordinates(planeCameraToWorld);
                     const PlaneCameraCoordinates newCameraCoordinates =

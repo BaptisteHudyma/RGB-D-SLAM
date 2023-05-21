@@ -98,7 +98,15 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
  */
 matrix44 compute_plane_covariance(const PlaneCameraCoordinates& planeParameters, const matrix33& pointCloudCovariance);
 
-matrix44 get_world_plane_covariance(const PlaneWorldCoordinates& planeCoordinates,
+/**
+ * \brief Compute the covariance of the world plane
+ * \param[in] planeCoordinates The coordinates of the camera plane to compute the covariance of
+ * \param[in] cameraToWorldMatrix Matrix to convert from camera to world planes
+ * \param[in] planeCovariance The covariance of the pkance in camera space
+ * \param[in] worldPoseCovariance The covariance of the observer pose
+ * \return The covariance of the plane parameters in world space
+ */
+matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinates,
                                     const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
                                     const matrix44& planeCovariance,
                                     const matrix33& worldPoseCovariance);
