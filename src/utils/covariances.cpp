@@ -126,7 +126,7 @@ matrix44 compute_plane_covariance(const PlaneCameraCoordinates& planeParameters,
     return planeParameterCovariance;
 }
 
-matrix44 get_world_plane_covariance(const PlaneWorldCoordinates& planeCoordinates,
+matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinates,
                                     const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
                                     const matrix44& planeCovariance,
                                     const matrix33& worldPoseCovariance)

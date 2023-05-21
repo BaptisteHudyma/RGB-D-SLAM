@@ -277,45 +277,49 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
 
 PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const
 {
-    return PlaneWorldCoordinates(cameraToWorld.base() * this->base());
+    return PlaneWorldCoordinates(cameraToWorld.base() * this->get_parametrization());
 }
 PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates_renormalized(
         const PlaneCameraToWorldMatrix& cameraToWorld) const
 {
-    const PlaneWorldCoordinates& worldCoordinates = this->to_world_coordinates(cameraToWorld).base();
-    return PlaneWorldCoordinates(worldCoordinates.get_normal(), worldCoordinates.get_d());
+    PlaneWorldCoordinates plane(this->to_world_coordinates(cameraToWorld).get_parametrization());
+    plane.normalize();
+    return plane;
 }
 
 PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const
 {
-    return PlaneCameraCoordinates(worldToCamera.base() * this->base());
+    return PlaneCameraCoordinates(worldToCamera.base() * this->get_parametrization());
 }
 
 PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates_renormalized(
         const PlaneWorldToCameraMatrix& worldToCamera) const
 {
-    const PlaneCameraCoordinates& cameraCoordinates = this->to_camera_coordinates(worldToCamera).base();
-    return PlaneCameraCoordinates(cameraCoordinates.get_normal(), cameraCoordinates.get_d());
+    PlaneCameraCoordinates plane(this->to_camera_coordinates(worldToCamera).get_parametrization());
+    plane.normalize();
+    return plane;
 }
 
 vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
                                                    const PlaneWorldToCameraMatrix& worldToCamera) const
 {
     const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
+    const vector3& cameraNormal = cameraPlane.get_normal();
+    const vector3& projectedNormal = projectedWorldPlane.get_normal();
 
-    return vector4(angle_distance(cameraPlane.x(), projectedWorldPlane.x()),
-                   angle_distance(cameraPlane.y(), projectedWorldPlane.y()),
-                   angle_distance(cameraPlane.z(), projectedWorldPlane.z()),
-                   cameraPlane.w() - projectedWorldPlane.w());
+    return vector4(angle_distance(cameraNormal.x(), projectedNormal.x()),
+                   angle_distance(cameraNormal.y(), projectedNormal.y()),
+                   angle_distance(cameraNormal.z(), projectedNormal.z()),
+                   cameraPlane.get_d() - projectedWorldPlane.get_d());
 }
 
 /**
  * \brief Compute a reduced plane form, allowing for better optimization
  */
-vector3 get_plane_transformation(const vector4& plane)
+vector3 get_plane_transformation(const PlaneCoordinates& plane)
 {
-    const vector3& normal = plane.head(3);
-    const double d = plane(3);
+    const vector3& normal = plane.get_normal();
+    const double d = plane.get_d();
     return vector3(atan(normal.y() / normal.x()), asin(normal.z()), d);
 }
 
