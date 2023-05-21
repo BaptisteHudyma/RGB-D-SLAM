@@ -37,8 +37,8 @@ class Plane
      * \brief Update this plane coordinates using a new detection
      * \param[in] cameraToWorld The matrix to go from camera to world space
      * \param[in] matchedFeature The feature matched to this world feature
-     * \param[in] newDetectionParameters The detected plane parameters
-     * \param[in] newDetectionCovariance The covariance of the newly detected feature
+     * \param[in] newDetectionParameters The detected plane parameters, projected to world
+     * \param[in] newDetectionCovariance The covariance of the newly detected feature; in world coordinates
      * \return The update score (distance between old and new parametrization)
      */
     double track(const CameraToWorldMatrix& cameraToWorld,
