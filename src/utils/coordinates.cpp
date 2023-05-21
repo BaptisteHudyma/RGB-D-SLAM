@@ -39,8 +39,10 @@ matrix44 get_transformation_matrix(const vector3& xFrom,
     T2.linear() << xTo, yTo, xTo.cross(yTo); // get next coordinate system
     T2.translation() << centerTo;
 
-    // T = transform to CS2 to CS3
-    return T2.matrix() * T1.matrix().inverse();
+    matrix44 res = matrix44::Identity(); // make bottom row of Matrix 0,0,0,1
+    res.block<3, 3>(0, 0) = T2.rotation() * T1.rotation().inverse();
+    res.block<3, 1>(0, 3) = T2.translation() - T1.translation();
+    return res;
 }
 
 /**

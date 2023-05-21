@@ -133,6 +133,25 @@ TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOriginWithRotation)
     EXPECT_TRUE(cameraToWorld.isApprox(tr));
 }
 
+TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOriginSameWithRotation)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    const CameraToWorldMatrix& cameraToWorld =
+            compute_camera_to_world_transform(quaternion(0.0, 1.0, 0.0, 0.0), vector3(0, 0, 0));
+
+    const matrix44& tr = utils::get_transformation_matrix(vector3(1, 0, 0),
+                                                          vector3(0, 1, 0),
+                                                          vector3(-100, 100, 200),
+                                                          vector3(1, 0, 0),
+                                                          vector3(0, -1, 0),
+                                                          vector3(-100, 100, 200));
+    EXPECT_TRUE(cameraToWorld.isApprox(tr));
+}
+
 TEST(PointCoordinateSystemTests, ScreenToCameraToScreen)
 {
     if (not Parameters::is_valid())

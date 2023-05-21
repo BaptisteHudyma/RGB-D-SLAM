@@ -65,6 +65,7 @@ class Plane
         // parameters update
         _parametrization =
                 utils::PlaneWorldCoordinates(newEstimatedParameters.get_normal(), newEstimatedParameters.get_d());
+        _parametrization.head(3).normalize();
         assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
 
         // merge the boundary polygon (after optimization) with the observed polygon
@@ -91,8 +92,9 @@ class Plane
     void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld, const utils::CameraPolygon& detectedPolygon)
     {
         // correct the projection of the boundary polygon to correspond to the parametrization
+        const vector3& worldPolygonNormal = _parametrization.get_normal();
         const vector3& worldPolygonCenter = _parametrization.get_center();
-        _boundaryPolygon = _boundaryPolygon.project(_parametrization.get_normal(), worldPolygonCenter);
+        _boundaryPolygon = _boundaryPolygon.project(worldPolygonNormal, worldPolygonCenter);
         assert(_boundaryPolygon.get_center().isApprox(worldPolygonCenter));
 
         // convert detected polygon to world space, it is supposed to be aligned with the world polygon
