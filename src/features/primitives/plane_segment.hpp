@@ -87,11 +87,11 @@ class Plane_Segment
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     double get_MSE() const { return _MSE; };
-    vector3 get_normal() const { return _normal; };
+    vector3 get_normal() const { return _parametrization.get_normal(); };
     utils::CameraCoordinate get_centroid() const { return _centroid; };
-    utils::CameraCoordinate get_center() const { return _normal * (-_d); };
-    double get_plane_d() const { return _d; };
-    vector4 get_parametrization() const { return vector4(_normal.x(), _normal.y(), _normal.z(), _d); };
+    utils::CameraCoordinate get_center() const { return _parametrization.get_center(); };
+    double get_plane_d() const { return _parametrization.get_d(); };
+    vector4 get_parametrization() const { return _parametrization.get_parametrization(); };
     bool is_planar() const { return _isPlanar; };
     double get_score() const { return _score; };
     uint get_point_count() const { return _pointCount; };
@@ -127,8 +127,7 @@ class Plane_Segment
     bool _isPlanar;   // true if node represent a correct node, false: ignore node while mapping
 
     utils::CameraCoordinate _centroid; // mean point of all points in node
-    vector3 _normal;                   // fitted plane normal
-    double _d;                         // fitted plane d param (ax + by + xz + d)
+    utils::PlaneCoordinates _parametrization;
 
     // PCA stored coeffs: efficient calculations of point cloud characteristics
     double _Sx;  // sum of x

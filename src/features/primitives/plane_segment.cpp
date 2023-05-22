@@ -24,8 +24,7 @@ Plane_Segment::Plane_Segment(const Plane_Segment& seg) :
     _MSE(seg._MSE),
     _isPlanar(seg._isPlanar),
     _centroid(seg._centroid),
-    _normal(seg._normal.normalized()),
-    _d(seg._d),
+    _parametrization(seg._parametrization),
     _Sx(seg._Sx),
     _Sy(seg._Sy),
     _Sz(seg._Sz),
@@ -254,25 +253,23 @@ bool Plane_Segment::fit_plane()
     const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
 
     /** Alternative plane parameter computation
-    matrix33 pcc = get_point_cloud_covariance();
-    vector3 e(-_Sx, -_Sy, -_Sz);
+    const matrix33& pcc = get_point_cloud_covariance();
+    const vector3 e(-_Sx, -_Sy, -_Sz);
     const vector3 params = (pcc * e).transpose();
-    _normal = params / params.norm();
-    _d = 1.0 / params.norm();
+    const vector3 normal = params / params.norm();
+    const double d = 1.0 / params.norm();
     */
 
     // some values have floating points errors, renormalize
-    _normal = eigenVector.normalized();
-    _d = -_normal.dot(_centroid);
+    const vector3& normal = eigenVector.normalized();
+    const double d = -normal.dot(_centroid);
 
     // point normal toward the camera
-    if (_d <= 0)
-    {
-        _normal = -_normal;
-        _d = -_d;
-    }
-
-    assert(utils::double_equal(_normal.norm(), 1.0));
+    if (d <= 0)
+        _parametrization = utils::PlaneCoordinates(-normal, -d);
+    else
+        _parametrization = utils::PlaneCoordinates(normal, d);
+    assert(utils::double_equal(normal.norm(), 1.0));
 
     // variance of points in our plane divided by number of points in the plane
     _MSE = eigenValues(0) * oneOverCount;
@@ -306,8 +303,7 @@ void Plane_Segment::clear_plane_parameters()
     _MSE = 0;
 
     _centroid.setZero();
-    _normal.setZero();
-    _d = 0;
+    _parametrization = utils::PlaneCoordinates();
 
     // Clear saved plane parameters
     _Sx = 0;
@@ -324,9 +320,12 @@ void Plane_Segment::clear_plane_parameters()
 double Plane_Segment::get_cos_angle(const Plane_Segment& p) const
 {
     assert(_isPlanar);
-    return (_normal.dot(p._normal));
+    return _parametrization.get_cos_angle(p._parametrization);
 }
-double Plane_Segment::get_point_distance(const vector3& point) const { return abs(_normal.transpose() * point + _d); }
+double Plane_Segment::get_point_distance(const vector3& point) const
+{
+    return _parametrization.get_point_distance(point);
+}
 
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
 {
