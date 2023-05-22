@@ -78,7 +78,7 @@ bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametr
 {
     const static double minimumNormalDotDiff =
             abs(cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0));
-    return abs(get_normal().dot(planeParametrization.get_normal())) > minimumNormalDotDiff;
+    return abs(_parametrization.get_cos_angle(planeParametrization)) > minimumNormalDotDiff;
 }
 
 bool Plane::is_distance_similar(const Plane& plane) const { return is_distance_similar(plane._parametrization); }

@@ -279,25 +279,10 @@ PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const PlaneCa
 {
     return PlaneWorldCoordinates(cameraToWorld.base() * this->get_parametrization());
 }
-PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates_renormalized(
-        const PlaneCameraToWorldMatrix& cameraToWorld) const
-{
-    PlaneWorldCoordinates plane(this->to_world_coordinates(cameraToWorld).get_parametrization());
-    plane.normalize();
-    return plane;
-}
 
 PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const
 {
     return PlaneCameraCoordinates(worldToCamera.base() * this->get_parametrization());
-}
-
-PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates_renormalized(
-        const PlaneWorldToCameraMatrix& worldToCamera) const
-{
-    PlaneCameraCoordinates plane(this->to_camera_coordinates(worldToCamera).get_parametrization());
-    plane.normalize();
-    return plane;
 }
 
 vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane,

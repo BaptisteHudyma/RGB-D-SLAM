@@ -229,10 +229,28 @@ struct WorldCoordinate : public vector3
 struct PlaneCoordinates
 {
     PlaneCoordinates() : _normal(vector3::Zero()), _d(0.0) {};
-    PlaneCoordinates(const vector4& parametrization) : _normal(parametrization.head(3)), _d(parametrization(3)) {};
-    PlaneCoordinates(const vector3& normal, const double d) : _normal(normal), _d(d) {};
+    PlaneCoordinates(const vector4& parametrization) : _normal(parametrization.head(3)), _d(parametrization(3))
+    {
+        _normal.normalize();
+    };
+    PlaneCoordinates(const vector3& normal, const double d) : _normal(normal), _d(d) { _normal.normalize(); };
+    PlaneCoordinates(const PlaneCoordinates& other) : _normal(other.get_normal()), _d(other.get_d())
+    {
+        _normal.normalize();
+    }
 
-    void normalize() { _normal.normalize(); }
+    PlaneCoordinates& operator=(const PlaneCoordinates& other)
+    {
+        // Guard self assignment
+        if (this == &other)
+            return *this;
+
+        _normal = other._normal;
+        _normal.normalize();
+
+        _d = other._d;
+        return *this;
+    }
 
     vector4 get_parametrization() const { return vector4(_normal.x(), _normal.y(), _normal.z(), _d); };
     vector3 get_normal() const { return _normal; };
@@ -242,6 +260,8 @@ struct PlaneCoordinates
     double& d() { return _d; };
 
     WorldCoordinate get_center() const { return WorldCoordinate(_normal * (-_d)); };
+    double get_point_distance(const vector3& point) const { return abs(_normal.transpose() * point + _d); }
+    double get_cos_angle(const PlaneCoordinates& other) const { return _normal.dot(other._normal); };
 
     bool hasNaN() const { return std::isnan(_d) or _normal.hasNaN(); };
 
@@ -257,12 +277,10 @@ struct PlaneCameraCoordinates : public PlaneCoordinates
 {
     using PlaneCoordinates::PlaneCoordinates;
 
-    PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
     /**
-     * \brief project to world coordinates, with a renormalization of the normal. This is necessary because of
-     * floating point errors that accumulates
+     * \brief project to world coordinates
      */
-    PlaneWorldCoordinates to_world_coordinates_renormalized(const PlaneCameraToWorldMatrix& cameraToWorld) const;
+    PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
 };
 
 /**
@@ -272,12 +290,10 @@ struct PlaneWorldCoordinates : public PlaneCoordinates
 {
     using PlaneCoordinates::PlaneCoordinates;
 
-    PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
     /**
-     * \brief project to camera coordinates, with a renormalization of the normal. This is necessary because of
-     * floating point errors that accumulates
+     * \brief project to camera coordinates
      */
-    PlaneCameraCoordinates to_camera_coordinates_renormalized(const PlaneWorldToCameraMatrix& worldToCamera) const;
+    PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
 
     /**
      * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space

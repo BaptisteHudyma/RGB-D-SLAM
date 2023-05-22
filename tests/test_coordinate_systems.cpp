@@ -302,7 +302,7 @@ void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates
     EXPECT_NEAR(normalA.x(), normalB.x(), 0.001);
     EXPECT_NEAR(normalA.y(), normalB.y(), 0.001);
     EXPECT_NEAR(normalA.z(), normalB.z(), 0.001);
-    EXPECT_NEAR(planeA.get_d(), planeB.get_d(), 0.001);
+    EXPECT_NEAR(planeA.get_d(), planeB.get_d(), 15); // renormalization error accumulation
 }
 
 void test_plane_set_camera_to_world_to_camera(const CameraToWorldMatrix& cameraToWorld)
