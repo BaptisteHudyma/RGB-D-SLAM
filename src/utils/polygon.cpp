@@ -263,7 +263,7 @@ std::vector<Polygon::point_2d> Polygon::compute_concave_hull(const std::vector<v
         newPointVector.back().id = id++;
     }
 
-    const ::polygon::PointVector& resultBoundary = ::polygon::ConcaveHull(newPointVector, 4);
+    const ::polygon::PointVector& resultBoundary = ::polygon::computeConcaveHull(newPointVector, 4);
 
     boundary.reserve(resultBoundary.size());
     std::ranges::transform(resultBoundary, std::back_inserter(boundary), [](const ::polygon::Point& point) {

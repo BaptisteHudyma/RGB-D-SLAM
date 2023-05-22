@@ -28,51 +28,49 @@ using std::uint64_t;
 static const size_t stride = 24; // size in bytes of x, y, id
 
 // Floating point comparisons
-bool Equal(double a, double b);
-bool Zero(double a);
-bool LessThan(double a, double b);
-bool LessThanOrEqual(double a, double b);
-bool GreaterThan(double a, double b);
+bool isEqual(double a, double b);
+bool isZero(double a);
+bool isLessThan(double a, double b);
+bool isLessThanOrEqual(double a, double b);
+bool isGreaterThan(double a, double b);
 
 // Algorithm-specific
 PointValueVector NearestNeighboursFlann(flann::Index<flann::L2<double>>& index, const Point& p, size_t k);
-PointVector ConcaveHull(PointVector& dataset, size_t k, bool iterate);
-bool ConcaveHull(PointVector& dataset, size_t k, PointVector& hull);
+bool isConcaveHull(PointVector& dataset, size_t k, PointVector& hull);
 PointVector SortByAngle(PointValueVector& values, const Point& p, double prevAngle);
-void AddPoint(PointVector& points, const Point& p);
 
 // General maths
-bool PointsEqual(const Point& a, const Point& b);
+bool arePointsEqual(const Point& a, const Point& b);
 double Angle(const Point& a, const Point& b);
 double NormaliseAngle(double radians);
-bool PointInPolygon(const Point& p, const PointVector& list);
-bool Intersects(const LineSegment& a, const LineSegment& b);
+bool isPointInPolygon(const Point& p, const PointVector& list);
+bool isIntersecting(const LineSegment& a, const LineSegment& b);
 
 // Point list utilities
 Point FindMinYPoint(const PointVector& points);
 void RemoveDuplicates(PointVector& points);
 void IdentifyPoints(PointVector& points);
 PointVector::iterator RemoveHull(PointVector& points, const PointVector& hull);
-bool MultiplePointInPolygon(PointVector::const_iterator begin,
-                            PointVector::const_iterator end,
-                            const PointVector& hull);
+bool areMultiplePointInPolygon(PointVector::const_iterator begin,
+                               PointVector::const_iterator end,
+                               const PointVector& hull);
 
 // Unit tests
 void TestAngle();
 void TestIntersects();
 void TestSplit();
 
-PointVector ConcaveHull(PointVector& dataset, const size_t k, const uint8_t maxIterations)
+PointVector computeConcaveHull(PointVector& dataset, const size_t k, const uint8_t maxIterations)
 {
-    assert(k > 0);
+    assert(k >= 1);
     assert(dataset.size() >= 3);
 
-    size_t nearestNeigbors = k;
+    size_t nearestNeigbors = std::min((uint)k, (uint)dataset.size() - 1);
     uint8_t iteration = 1;
     while (nearestNeigbors < dataset.size())
     {
         PointVector hull;
-        if (ConcaveHull(dataset, nearestNeigbors, hull) || iteration >= maxIterations)
+        if (isConcaveHull(dataset, nearestNeigbors, hull) || iteration >= maxIterations)
         {
             return hull;
         }
@@ -89,7 +87,7 @@ PointVector ConcaveHull(PointVector& dataset, const size_t k, const uint8_t maxI
  * \param[in] k the number of nearest neigbors to consider
  * \param[out] hull The concave hull found by the algorithm
  */
-bool ConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
+bool isConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
 {
     hull.clear();
 
@@ -111,7 +109,7 @@ bool ConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
 
     // Initialise hull with the min-y point
     Point firstPoint = FindMinYPoint(pointList);
-    AddPoint(hull, firstPoint);
+    hull.emplace_back(firstPoint);
 
     // Until the hull is of size > 3 we want to ignore the first point from nearest neighbour searches
     Point currentPoint = firstPoint;
@@ -121,7 +119,7 @@ bool ConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
     int step = 1;
 
     // Iterate until we reach the start, or until there's no points left to process
-    while ((!PointsEqual(currentPoint, firstPoint) || step == 1) && hull.size() != pointList.size())
+    while ((!arePointsEqual(currentPoint, firstPoint) || step == 1) && hull.size() != pointList.size())
     {
         if (step == 4)
         {
@@ -132,7 +130,7 @@ bool ConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
         }
 
         PointValueVector kNearestNeighbours = NearestNeighboursFlann(flannIndex, currentPoint, k);
-        PointVector cPoints = SortByAngle(kNearestNeighbours, currentPoint, prevAngle);
+        const PointVector& cPoints = SortByAngle(kNearestNeighbours, currentPoint, prevAngle);
 
         bool its = true;
         size_t i = 0;
@@ -140,7 +138,7 @@ bool ConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
         while (its && i < cPoints.size())
         {
             size_t lastPoint = 0;
-            if (PointsEqual(cPoints[i], firstPoint))
+            if (arePointsEqual(cPoints[i], firstPoint))
                 lastPoint = 1;
 
             size_t j = 2;
@@ -150,7 +148,7 @@ bool ConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
             {
                 const LineSegment& line1 = std::make_pair(hull[step - 1], cPoints[i]);
                 const LineSegment& line2 = std::make_pair(hull[step - j - 1], hull[step - j]);
-                its = Intersects(line1, line2);
+                its = isIntersecting(line1, line2);
                 j++;
             }
 
@@ -163,41 +161,41 @@ bool ConcaveHull(PointVector& pointList, size_t k, PointVector& hull)
 
         currentPoint = cPoints[i];
 
-        AddPoint(hull, currentPoint);
+        hull.emplace_back(currentPoint);
 
         prevAngle = Angle(hull[step], hull[step - 1]);
 
         flannIndex.removePoint(currentPoint.id);
 
-        step++;
+        ++step;
     }
 
     // The original points less the points belonging to the hull need to be fully enclosed by the hull in order to
     // return true.
     PointVector dataset = pointList;
     const PointVector::iterator newEnd = RemoveHull(dataset, hull);
-    const bool allEnclosed = MultiplePointInPolygon(dataset.begin(), newEnd, hull);
+    const bool allEnclosed = areMultiplePointInPolygon(dataset.begin(), newEnd, hull);
 
     return allEnclosed;
 }
 
 // Compare a and b for equality
-bool Equal(double a, double b) { return fabs(a - b) <= DBL_EPSILON; }
+bool isEqual(double a, double b) { return fabs(a - b) <= DBL_EPSILON; }
 
 // Compare value to zero
-bool Zero(double a) { return fabs(a) <= DBL_EPSILON; }
+bool isZero(double a) { return fabs(a) <= DBL_EPSILON; }
 
 // Compare for a < b
-bool LessThan(double a, double b) { return a < (b - DBL_EPSILON); }
+bool isLessThan(double a, double b) { return a < (b - DBL_EPSILON); }
 
 // Compare for a <= b
-bool LessThanOrEqual(double a, double b) { return a <= (b + DBL_EPSILON); }
+bool isLessThanOrEqual(double a, double b) { return a <= (b + DBL_EPSILON); }
 
 // Compare for a > b
-bool GreaterThan(double a, double b) { return a > (b + DBL_EPSILON); }
+bool isGreaterThan(double a, double b) { return a > (b + DBL_EPSILON); }
 
 // Compare whether two points have the same x and y
-bool PointsEqual(const Point& a, const Point& b) { return Equal(a.x, b.x) && Equal(a.y, b.y); }
+bool arePointsEqual(const Point& a, const Point& b) { return isEqual(a.x, b.x) && isEqual(a.y, b.y); }
 
 /**
  * \brief Remove duplicates in a list of point
@@ -206,14 +204,14 @@ bool PointsEqual(const Point& a, const Point& b) { return Equal(a.x, b.x) && Equ
 void RemoveDuplicates(PointVector& points)
 {
     std::ranges::sort(points, [](const Point& a, const Point& b) {
-        if (Equal(a.x, b.x))
-            return LessThan(a.y, b.y);
+        if (isEqual(a.x, b.x))
+            return isLessThan(a.y, b.y);
         else
-            return LessThan(a.x, b.x);
+            return isLessThan(a.x, b.x);
     });
 
     const PointVector::const_iterator newEnd = std::ranges::unique(points, [](const Point& a, const Point& b) {
-                                                   return PointsEqual(a, b);
+                                                   return arePointsEqual(a, b);
                                                }).end();
 
     points.erase(newEnd, points.end());
@@ -243,10 +241,10 @@ Point FindMinYPoint(const PointVector& points)
     assert(!points.empty());
 
     const PointVector::const_iterator itr = std::ranges::min_element(points, [](const Point& a, const Point& b) {
-        if (Equal(a.y, b.y))
-            return GreaterThan(a.x, b.x);
+        if (isEqual(a.y, b.y))
+            return isGreaterThan(a.x, b.x);
         else
-            return LessThan(a.y, b.y);
+            return isLessThan(a.y, b.y);
     });
 
     return *itr;
@@ -268,13 +266,6 @@ void RemovePoint(PointVector& list, const Point& p)
     if (itr != list.end())
         list.erase(itr);
 }
-
-/**
- * \brief Add a point to a list of points
- * \param[in, out] points
- * \param[in] p The point to add
- */
-void AddPoint(PointVector& points, const Point& p) { points.emplace_back(p); }
 
 /**
  * \brief Return the k-nearest points in a list of points from the given point p (uses Flann library).
@@ -325,7 +316,7 @@ PointVector SortByAngle(PointValueVector& values, const Point& from, const doubl
     });
 
     std::ranges::sort(values, [](const PointValue& a, const PointValue& b) {
-        return GreaterThan(a.angle, b.angle);
+        return isGreaterThan(a.angle, b.angle);
     });
 
     PointVector angled(values.size());
@@ -344,7 +335,7 @@ PointVector SortByAngle(PointValueVector& values, const Point& from, const doubl
  */
 double Angle(const Point& a, const Point& b)
 {
-    double angle = -atan2(b.y - a.y, b.x - a.x);
+    const double angle = -atan2(b.y - a.y, b.x - a.x);
 
     return NormaliseAngle(angle);
 }
@@ -357,9 +348,21 @@ double Angle(const Point& a, const Point& b)
 double NormaliseAngle(const double radians)
 {
     if (radians < 0.0)
-        return radians + M_PI + M_PI;
+    {
+        // prevent "wrap around" bugs around 0
+        if (fabs(radians) < 0.02) // Approx 1 degree
+        {
+            return 0.0L;
+        }
+        else
+        {
+            return radians + M_PI + M_PI;
+        }
+    }
     else
+    {
         return radians;
+    }
 }
 
 /**
@@ -418,72 +421,40 @@ template<class InIt, class Predicate> bool omp_parallel_any_of(InIt first, InIt 
  * \param[in] hull The polygon boundary
  * \return true if all the points are in the polygon
  */
-bool MultiplePointInPolygon(PointVector::const_iterator begin, PointVector::const_iterator end, const PointVector& hull)
+bool areMultiplePointInPolygon(PointVector::const_iterator begin,
+                               PointVector::const_iterator end,
+                               const PointVector& hull)
 {
     if (begin == end)
         return false;
 
     auto test = [&hull](const Point& p) {
-        return !PointInPolygon(p, hull);
+        return !isPointInPolygon(p, hull);
     };
 
-    bool anyOutside = true;
-
-#if defined USE_OPENMP
-
-    anyOutside = omp_parallel_any_of(begin, end, test); // multi-threaded
-
-#else
-
-    anyOutside = std::any_of(begin, end, test); // single-threaded
-
-#endif
-
-    return !anyOutside;
+    return not std::any_of(begin, end, test); // single-threaded
 }
 
 /**
- * \brief Check that a point is in a polygon
+ * \brief Check that a point is in a polygon. Source: Randolph Franklin
  * \param[in] p The point to test
  * \param[in] list The polygon boundary
  * \return true if the point is in the polygon
  */
-bool PointInPolygon(const Point& p, const PointVector& list)
+bool isPointInPolygon(const Point& p, const PointVector& list)
 {
-    if (list.size() <= 2)
-        return false;
+    const size_t listSize = list.size();
+    const double testx = p.x;
+    const double testy = p.y;
 
-    const double& x = p.x;
-    const double& y = p.y;
-
-    int inout = 0;
-    PointVector::const_iterator v0 = list.begin();
-    PointVector::const_iterator v1 = v0 + 1;
-
-    while (v1 != list.end())
+    bool c = false;
+    for (size_t i = 0, j = listSize - 1; i < listSize; j = i++)
     {
-        if ((LessThanOrEqual(v0->y, y) && LessThan(y, v1->y)) || (LessThanOrEqual(v1->y, y) && LessThan(y, v0->y)))
-        {
-            if (!Zero(v1->y - v0->y))
-            {
-                double tdbl1 = (y - v0->y) / (v1->y - v0->y);
-                double tdbl2 = v1->x - v0->x;
-
-                if (LessThan(x, v0->x + (tdbl2 * tdbl1)))
-                    inout++;
-            }
-        }
-
-        v0 = v1;
-        ++v1;
+        if (((list[i].y > testy) != (list[j].y > testy)) &&
+            (testx < (list[j].x - list[i].x) * (testy - list[i].y) / (list[j].y - list[i].y) + list[i].x))
+            c = !c;
     }
-
-    if (inout == 0)
-        return false;
-    else if (inout % 2 == 0)
-        return false;
-    else
-        return true;
+    return c;
 }
 
 /**
@@ -492,7 +463,7 @@ bool PointInPolygon(const Point& p, const PointVector& list)
  * \param[in] b the second line segment
  * \return true if the line segment intersects
  */
-bool Intersects(const LineSegment& a, const LineSegment& b)
+bool isIntersecting(const LineSegment& a, const LineSegment& b)
 {
     // https://www.topcoder.com/community/data-science/data-science-tutorials/geometry-concepts-line-intersection-and-its-applications/
 
@@ -513,7 +484,7 @@ bool Intersects(const LineSegment& a, const LineSegment& b)
     double c2 = a2 * bx1 + b2 * by1;
     double det = a1 * b2 - a2 * b1;
 
-    if (Zero(det))
+    if (isZero(det))
     {
         return false;
     }
@@ -523,10 +494,10 @@ bool Intersects(const LineSegment& a, const LineSegment& b)
         double y = (a1 * c2 - a2 * c1) / det;
 
         bool on_both = true;
-        on_both = on_both && LessThanOrEqual(std::min(ax1, ax2), x) && LessThanOrEqual(x, std::max(ax1, ax2));
-        on_both = on_both && LessThanOrEqual(std::min(ay1, ay2), y) && LessThanOrEqual(y, std::max(ay1, ay2));
-        on_both = on_both && LessThanOrEqual(std::min(bx1, bx2), x) && LessThanOrEqual(x, std::max(bx1, bx2));
-        on_both = on_both && LessThanOrEqual(std::min(by1, by2), y) && LessThanOrEqual(y, std::max(by1, by2));
+        on_both = on_both && isLessThanOrEqual(std::min(ax1, ax2), x) && isLessThanOrEqual(x, std::max(ax1, ax2));
+        on_both = on_both && isLessThanOrEqual(std::min(ay1, ay2), y) && isLessThanOrEqual(y, std::max(ay1, ay2));
+        on_both = on_both && isLessThanOrEqual(std::min(bx1, bx2), x) && isLessThanOrEqual(x, std::max(bx1, bx2));
+        on_both = on_both && isLessThanOrEqual(std::min(by1, by2), y) && isLessThanOrEqual(y, std::max(by1, by2));
         return on_both;
     }
 }
@@ -542,7 +513,7 @@ void TestAngle()
 
     auto Test = [&](const Point& p, double expected) {
         double actual = ToDegrees(Angle({0.0, 0.0}, p));
-        assert(Equal(actual, expected));
+        assert(isEqual(actual, expected));
     };
 
     double value = ToDegrees(atan(3.0 / 4.0));
@@ -562,7 +533,7 @@ void TestAngle()
 }
 
 /**
- * \brief Unit test the Intersects() function
+ * \brief Unit test the isIntersecting() function
  */
 void TestIntersects()
 {
@@ -587,10 +558,10 @@ void TestIntersects()
     values['P'] = {-5.0, 2.0};
 
     auto Test = [&values](const char a1, const char a2, const char b1, const char b2, bool expected) {
-        assert(Intersects(make_pair(values[a1], values[a2]), make_pair(values[b1], values[b2])) == expected);
-        assert(Intersects(make_pair(values[a2], values[a1]), make_pair(values[b1], values[b2])) == expected);
-        assert(Intersects(make_pair(values[a1], values[a2]), make_pair(values[b2], values[b1])) == expected);
-        assert(Intersects(make_pair(values[a2], values[a1]), make_pair(values[b2], values[b1])) == expected);
+        assert(isIntersecting(make_pair(values[a1], values[a2]), make_pair(values[b1], values[b2])) == expected);
+        assert(isIntersecting(make_pair(values[a2], values[a1]), make_pair(values[b1], values[b2])) == expected);
+        assert(isIntersecting(make_pair(values[a1], values[a2]), make_pair(values[b2], values[b1])) == expected);
+        assert(isIntersecting(make_pair(values[a2], values[a1]), make_pair(values[b2], values[b1])) == expected);
     };
 
     Test('B', 'D', 'A', 'C', false);
