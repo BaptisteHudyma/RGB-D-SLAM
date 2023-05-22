@@ -252,7 +252,9 @@ int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projected
                                       const vectorb& isKeyPointMatchedContainer,
                                       const double searchSpaceRadius) const
 {
+    assert(_featuresMatcher != nullptr);
     assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
+
     // cannot compute matches without a match or descriptors
     if (_keypoints.empty() or _descriptors.rows <= 0)
         return INVALID_MATCH_INDEX;

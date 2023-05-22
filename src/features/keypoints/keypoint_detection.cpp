@@ -187,6 +187,7 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
             // Caution: the frameKeypoints list is mutable by this function
             //          The bad points will be removed by the compute descriptor function
             cv::Mat detectedKeypointDescriptors;
+            assert(_featureDetector != nullptr);
             _featureDetector->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
 
             // convert back to keypoint list
@@ -335,6 +336,7 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
                                                       const cv::Ptr<cv::FeatureDetector>& featureDetector,
                                                       std::vector<cv::KeyPoint>& frameKeypoints) const
 {
+    assert(featureDetector != nullptr);
     assert(not featureDetector.empty());
     assert(grayImage.size() == mask.size());
     static const uint maxKeypointToDetect = Parameters::get_maximum_number_of_detectable_features();

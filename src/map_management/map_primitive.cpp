@@ -18,6 +18,7 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
                     const utils::PlaneWorldCoordinates& newDetectionParameters,
                     const matrix44& newDetectionCovariance)
 {
+    assert(_kalmanFilter != nullptr);
     assert(utils::is_covariance_valid(newDetectionCovariance));
     assert(utils::is_covariance_valid(_covariance));
 
@@ -167,6 +168,7 @@ bool MapPlane::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const
 
 void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const
 {
+    assert(mapWriter != nullptr);
     mapWriter->add_polygon(_boundaryPolygon.get_unprojected_boundary());
 }
 
