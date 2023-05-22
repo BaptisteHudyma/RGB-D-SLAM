@@ -38,9 +38,10 @@ using LineSegment = std::pair<Point, Point>;
  * \brief Compute the concave hull of a set of points
  * \param[in] dataset
  * \param[in] k Nearest neigtbors to consider (>= 1)
- * \param[in] iterate If set to true, will perform some iterqtions to find the best fitting polygon
+ * \param[in] maxIterations Maximum iterations of the algorithm
+ * \return The ordered boundary of the concave polygon
  */
-PointVector ConcaveHull(PointVector& dataset, size_t k = 4, const bool iterate = false);
+PointVector ConcaveHull(PointVector& dataset, size_t k = 4, const uint8_t maxIterations = 1);
 
 } // namespace polygon
 

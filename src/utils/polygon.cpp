@@ -12,6 +12,7 @@
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
 #include "logger.hpp"
+#include "concave_fitting.hpp"
 
 namespace rgbd_slam::utils {
 
@@ -142,7 +143,7 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
             });
 
     // compute convex boundary
-    const std::vector<vector2>& boundary = utils::Polygon::compute_convex_hull(boundaryPoints);
+    const std::vector<vector2>& boundary = utils::Polygon::compute_concave_hull(boundaryPoints);
     assert(boundary.size() >= 3);
 
     // set boundary in reverse (clockwise), convert to point_2d
@@ -241,6 +242,34 @@ std::vector<vector2> Polygon::compute_convex_hull(const std::vector<vector2>& po
     // close shape
     boundary.emplace_back(boundary[0]);
     return boundary;
+}
+
+std::vector<vector2> Polygon::compute_concave_hull(const std::vector<vector2>& pointsIn)
+{
+    if (pointsIn.size() < 3)
+    {
+        outputs::log_warning("Cannot compute a polygon with less than 3 sides");
+        return std::vector<vector2>();
+    }
+
+    ::polygon::PointVector newPointVector;
+    newPointVector.reserve(pointsIn.size());
+
+    uint64_t id = 0;
+    for (const auto& point: pointsIn)
+    {
+        newPointVector.emplace_back(point.x(), point.y());
+        newPointVector.back().id = id++;
+    }
+
+    const ::polygon::PointVector& resultBoundary = ::polygon::ConcaveHull(newPointVector, 4);
+    std::vector<vector2> res;
+    res.reserve(resultBoundary.size());
+    std::ranges::transform(
+            resultBoundary.cbegin(), resultBoundary.cend(), std::back_inserter(res), [](const auto& point) {
+                return vector2(point.x, point.y);
+            });
+    return res;
 }
 
 bool Polygon::contains(const vector2& point) const
@@ -434,10 +463,10 @@ void Polygon::simplify(const double distanceThreshold)
     polygon out;
     boost::geometry::simplify(_polygon, out, distanceThreshold);
 
-    if (out.outer().size() < 3)
-        outputs::log("Could not optimize polygon boundary cause it would have been reduced to a non shape");
-    else
+    if (out.outer().size() > 3)
         _polygon = out;
+    // else: Could not optimize polygon boundary cause it would have been reduced to a non shape
+    // dont change the polygon
 }
 
 std::vector<vector3> Polygon::get_unprojected_boundary() const

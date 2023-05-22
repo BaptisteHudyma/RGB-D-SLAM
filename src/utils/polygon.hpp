@@ -53,6 +53,7 @@ class Polygon
      * \return The ordered points defining a convex hull of points
      */
     static std::vector<vector2> compute_convex_hull(const std::vector<vector2>& points);
+    static std::vector<vector2> compute_concave_hull(const std::vector<vector2>& points);
 
     /**
      * \brief Return true if this point is in the polygon boundaries
