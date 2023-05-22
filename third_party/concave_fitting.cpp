@@ -60,22 +60,22 @@ auto TestAngle() -> void;
 auto TestIntersects() -> void;
 auto TestSplit() -> void;
 
-PointVector ConcaveHull(PointVector& dataset, size_t k, const bool iterate)
+PointVector ConcaveHull(PointVector& dataset, const size_t k, const uint8_t maxIterations)
 {
     assert(k > 0);
     assert(dataset.size() >= 3);
 
-    // TODO: id points BEFORE
-    IdentifyPoints(dataset);
-
-    while (k < dataset.size())
+    size_t nearestNeigbors = k;
+    uint8_t iteration = 1;
+    while (nearestNeigbors < dataset.size())
     {
         PointVector hull;
-        if (ConcaveHull(dataset, k, hull) || !iterate)
+        if (ConcaveHull(dataset, nearestNeigbors, hull) || iteration >= maxIterations)
         {
             return hull;
         }
-        k++;
+        ++nearestNeigbors;
+        ++iteration;
     }
 
     return {};
