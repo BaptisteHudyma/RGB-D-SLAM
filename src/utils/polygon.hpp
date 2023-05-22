@@ -52,8 +52,14 @@ class Polygon
      * \param[in] points The points to compute a convex hull for
      * \return The ordered points defining a convex hull of points
      */
-    static std::vector<vector2> compute_convex_hull(const std::vector<vector2>& points);
-    static std::vector<vector2> compute_concave_hull(const std::vector<vector2>& points);
+    static std::vector<point_2d> compute_convex_hull(const std::vector<vector2>& points);
+
+    /**
+     * \brief Compute the concave hull for a set of points
+     * \param[in] points The points to compute a concave hull for
+     * \return The ordered points defining a concave hull of points
+     */
+    static std::vector<point_2d> compute_concave_hull(const std::vector<vector2>& points);
 
     /**
      * \brief Return true if this point is in the polygon boundaries
@@ -140,7 +146,7 @@ class Polygon
      * \brief Simplify the boundary of the current polygon
      * \param[in] distanceThreshold max lateral distance between points to simplify (mm)
      */
-    void simplify(const double distanceThreshold = 50);
+    void simplify(const double distanceThreshold = 20);
 
     /**
      * \brief compute and return the polygon boundary, in the unprojected space
