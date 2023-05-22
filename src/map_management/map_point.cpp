@@ -22,6 +22,8 @@ Point::Point(const utils::WorldCoordinate& coordinates,
 double Point::track(const utils::WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance)
 {
     assert(_kalmanFilter != nullptr);
+    assert(utils::is_covariance_valid(newDetectionCovariance));
+    assert(utils::is_covariance_valid(_covariance));
 
     const std::pair<vector3, matrix33>& res =
             _kalmanFilter->get_new_state(_coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
@@ -154,6 +156,7 @@ bool MapPoint::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const
 
 void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const
 {
+    assert(mapWriter != nullptr);
     mapWriter->add_point(_coordinates);
 }
 

@@ -23,6 +23,8 @@ Line_Detection::Line_Detection(const double scale, const double sigmaScale)
 
 line_container Line_Detection::detect_lines(const cv::Mat& grayImage, const cv::Mat& depthImage)
 {
+    assert(_lineDetector != nullptr);
+
     // get lines
     line_container rawLines;
     _lineDetector->detect(grayImage, rawLines);

@@ -83,9 +83,6 @@ void Local_Map::update(const utils::Pose& optimizedPose,
                        const matches_containers::match_point_container& outlierMatchedPoints,
                        const matches_containers::match_plane_container& outlierMatchedPlanes)
 {
-    // TODO find a better way to display trajectory than just a new map point
-    // _mapWriter->add_point(optimizedPose.get_position());
-
     // Unmatch detected outliers
     mark_outliers_as_unmatched(outlierMatchedPoints);
     mark_outliers_as_unmatched(outlierMatchedPlanes);
