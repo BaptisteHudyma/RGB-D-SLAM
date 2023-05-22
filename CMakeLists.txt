@@ -8,7 +8,7 @@ ENDIF()
 
 set(CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
-set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal -DCMAKE_EXPORT_COMPILE_COMMANDS=1")# -Wconversion -Wsign-conversion")
+set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal -lflann_cpp -DCMAKE_EXPORT_COMPILE_COMMANDS=1")# -Wconversion -Wsign-conversion")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 # if this is set, the progam will be deterministic, and loose some perfs
 add_compile_definitions(MAKE_DETERMINISTIC)
@@ -33,13 +33,8 @@ find_package(Boost REQUIRED)
 list(APPEND INC_DIRS ${Boost_INCLUDE_DIRS} )
 list(APPEND LINK_LIBS ${Boost_LIBS})
 
-#Find g2o
-# Find the header files
-# FIND_PATH(G2O_INCLUDE_DIR g2o/core/base_vertex.h)
-# find_package(G2O REQUIRED)
-# set(G2O_LIBRARIES ${G2O_CORE_LIBRARY} ${G2O_STUFF_LIBRARY} ${G2O_TYPES_SBA} ${G2O_TYPES_SLAM3D} ${G2O_SOLVER_PCG})
-# list(APPEND INC_DIRS ${G2O_INCLUDE_DIR})
-# list(APPEND LINK_LIBS ${G2O_LIBRARIES})
+find_package(flann REQUIRED)
+list(APPEND INC_DIRS "/usr/include/flann" )
 
 # Load GTEST
 include(FetchContent)
@@ -116,6 +111,7 @@ add_library(mapManagement SHARED
     )
 
 add_library(thirdParty SHARED
+    ${THIRD_PARTY}/concave_fitting.cpp
     ${THIRD_PARTY}/line_segment_detector.cpp
     ${THIRD_PARTY}/geodesic_operations.cpp
     ${THIRD_PARTY}/p3p.cpp
@@ -177,7 +173,6 @@ target_link_libraries(slam_TUM ${PROJECT_NAME})
 add_executable(test_p3p
     ${THIRD_PARTY}/p3p_test.cpp)
 target_link_libraries(test_p3p ${PROJECT_NAME})
-
 
 # Include test dir
 include(${CMAKE_MODULE_PATH}/runTests.cmake) 
