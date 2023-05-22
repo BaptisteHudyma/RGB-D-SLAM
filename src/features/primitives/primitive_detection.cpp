@@ -585,8 +585,8 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segme
     std::vector<vector3> definingPoints;
 
     // get point farthest to plane centroid and out of plane centroid
-    double farthestDist = 0;
-    vector3 farthestPoint = vector3::Zero();
+    double closestDist = 10000;
+    vector3 closestPoint = vector3::Zero();
     for (uint i = 0; i < xMatrix.size(); ++i)
     {
         const vector3 point(xMatrix(i), yMatrix(i), zMatrix(i));
@@ -597,15 +597,15 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segme
         if (planeSegment.get_point_distance(point) < maxBoundaryDistance)
         {
             const double dist = (point - center).lpNorm<2>();
-            if (dist > farthestDist)
+            if (dist < closestDist)
             {
-                farthestDist = dist;
-                farthestPoint = point;
+                closestDist = dist;
+                closestPoint = point;
             }
         }
     }
-    if (farthestDist > 0 and not farthestPoint.isZero())
-        definingPoints.push_back(farthestPoint);
+    if (not closestPoint.isZero())
+        definingPoints.push_back(closestPoint);
 
     return definingPoints;
 }
