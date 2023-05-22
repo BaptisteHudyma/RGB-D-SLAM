@@ -128,8 +128,9 @@ Polygon::polygon get_static_screen_boundary_polygon()
 Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, const vector3& center) : _center(center)
 {
     assert(double_equal(normal.norm(), 1.0));
+    assert(points.size() >= 3);
 
-    // find arbitrary othogonal vectors of the normal : they will be the polygon axis
+    // find the polygon axis
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
     _xAxis = res.first;
     _yAxis = res.second;
@@ -143,18 +144,10 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
             });
 
     // compute convex boundary
-    const std::vector<vector2>& boundary = utils::Polygon::compute_concave_hull(boundaryPoints);
+    const std::vector<point_2d>& boundary = utils::Polygon::compute_concave_hull(boundaryPoints);
     assert(boundary.size() >= 3);
 
-    // set boundary in reverse (clockwise), convert to point_2d
-    std::vector<point_2d> finalBoundaryPoints;
-    finalBoundaryPoints.reserve(boundary.size());
-    std::ranges::transform(
-            boundary.rbegin(), boundary.rend(), std::back_inserter(finalBoundaryPoints), [](const vector2& c) {
-                return boost::geometry::make<point_2d>(c.x(), c.y());
-            });
-
-    boost::geometry::assign_points(_polygon, finalBoundaryPoints);
+    boost::geometry::assign_points(_polygon, boundary);
     boost::geometry::correct(_polygon);
 
     // simplify the input mesh
@@ -193,12 +186,14 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     }
 }
 
-std::vector<vector2> Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
+std::vector<Polygon::point_2d> Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
 {
+    std::vector<point_2d> finalBoundary;
+
     if (pointsIn.size() < 3)
     {
         outputs::log_warning("Cannot compute a polygon with less than 3 sides");
-        return std::vector<vector2>();
+        return finalBoundary;
     }
 
     static auto rotate90 = [](const vector2& other) {
@@ -241,15 +236,21 @@ std::vector<vector2> Polygon::compute_convex_hull(const std::vector<vector2>& po
     }
     // close shape
     boundary.emplace_back(boundary[0]);
-    return boundary;
+
+    finalBoundary.reserve(boundary.size());
+    std::ranges::transform(boundary, std::back_inserter(finalBoundary), [](const vector2& point) {
+        return boost::geometry::make<point_2d>(point.x(), point.y());
+    });
+    return finalBoundary;
 }
 
-std::vector<vector2> Polygon::compute_concave_hull(const std::vector<vector2>& pointsIn)
+std::vector<Polygon::point_2d> Polygon::compute_concave_hull(const std::vector<vector2>& pointsIn)
 {
+    std::vector<point_2d> boundary;
     if (pointsIn.size() < 3)
     {
         outputs::log_warning("Cannot compute a polygon with less than 3 sides");
-        return std::vector<vector2>();
+        return boundary;
     }
 
     ::polygon::PointVector newPointVector;
@@ -263,13 +264,12 @@ std::vector<vector2> Polygon::compute_concave_hull(const std::vector<vector2>& p
     }
 
     const ::polygon::PointVector& resultBoundary = ::polygon::ConcaveHull(newPointVector, 4);
-    std::vector<vector2> res;
-    res.reserve(resultBoundary.size());
-    std::ranges::transform(
-            resultBoundary.cbegin(), resultBoundary.cend(), std::back_inserter(res), [](const auto& point) {
-                return vector2(point.x, point.y);
-            });
-    return res;
+
+    boundary.reserve(resultBoundary.size());
+    std::ranges::transform(resultBoundary, std::back_inserter(boundary), [](const ::polygon::Point& point) {
+        return boost::geometry::make<point_2d>(point.x, point.y);
+    });
+    return boundary;
 }
 
 bool Polygon::contains(const vector2& point) const
@@ -464,7 +464,11 @@ void Polygon::simplify(const double distanceThreshold)
     boost::geometry::simplify(_polygon, out, distanceThreshold);
 
     if (out.outer().size() > 3)
+    {
         _polygon = out;
+        // correct in case of self intersecting geometry
+        boost::geometry::correct(_polygon);
+    }
     // else: Could not optimize polygon boundary cause it would have been reduced to a non shape
     // dont change the polygon
 }
