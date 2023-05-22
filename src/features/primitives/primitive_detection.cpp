@@ -530,12 +530,6 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
 
         // erode considering the border as an obstacle
         cv::erode(_mask, _maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
-        double min;
-        double max;
-        cv::minMaxLoc(_maskEroded, &min, &max);
-
-        if (max <= 0 or min >= max) // completely eroded: irrelevant plane
-            continue;
 
         // dilate to get boundaries
         cv::dilate(_mask, _maskDilated, _maskSquareKernel);
@@ -593,7 +587,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segme
     // get point farthest to plane centroid and out of plane centroid
     double farthestDist = 0;
     vector3 farthestPoint = vector3::Zero();
-    for (uint i = 0; i < xMatrix.size(); i++)
+    for (uint i = 0; i < xMatrix.size(); ++i)
     {
         const vector3 point(xMatrix(i), yMatrix(i), zMatrix(i));
         if (point.z() <= 0) // ignore invalid depth

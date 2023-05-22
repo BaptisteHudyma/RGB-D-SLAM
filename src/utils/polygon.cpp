@@ -20,20 +20,20 @@ namespace rgbd_slam::utils {
  */
 vector3 select_correct_transform(const vector3& normal)
 {
-    /* const double distX = abs(normal.dot(vector3::UnitX()));
-     const double distY = abs(normal.dot(vector3::UnitY()));
-     const double distZ = abs(normal.dot(vector3::UnitZ()));
+    const double distX = abs(normal.dot(vector3::UnitX()));
+    const double distY = abs(normal.dot(vector3::UnitY()));
+    const double distZ = abs(normal.dot(vector3::UnitZ()));
 
-     const double res = std::min(distX, std::min(distY, distZ));
-     if (double_equal(res, distX, 0.1))
-         return vector3::UnitX();
-     if (double_equal(res, distY, 0.1))
-         return vector3::UnitY();
-     if (double_equal(res, distZ, 0.1))
-         return vector3::UnitZ();
+    const double res = std::min(distX, std::min(distY, distZ));
+    if (double_equal(res, distX, 0.1))
+        return vector3::UnitX();
+    if (double_equal(res, distY, 0.1))
+        return vector3::UnitY();
+    if (double_equal(res, distZ, 0.1))
+        return vector3::UnitZ();
 
-     // return a random variation of the normal
-     outputs::log_error("Could not find the furthest base vector");*/
+    // return a random variation of the normal
+    outputs::log_error("Could not find the furthest base vector");
     return vector3(normal.z(), normal.x(), normal.y()).normalized();
 }
 
@@ -435,7 +435,7 @@ void Polygon::simplify(const double distanceThreshold)
     boost::geometry::simplify(_polygon, out, distanceThreshold);
 
     if (out.outer().size() < 3)
-        outputs::log_warning("Could not optimize polygon boundary cause it would have been reduced to a non shape");
+        outputs::log("Could not optimize polygon boundary cause it would have been reduced to a non shape");
     else
         _polygon = out;
 }
