@@ -78,6 +78,7 @@ class Polygon
      * \return the area of the polygon, or 0.0 if not set
      */
     double area() const;
+    double get_area() const { return _area; };
 
     /**
      * \brief merge the other polygon into this one using the union of both polygons
@@ -146,7 +147,7 @@ class Polygon
      * \brief Simplify the boundary of the current polygon
      * \param[in] distanceThreshold max lateral distance between points to simplify (mm)
      */
-    void simplify(const double distanceThreshold = 20);
+    void simplify(const double distanceThreshold = 10);
 
     /**
      * \brief compute and return the polygon boundary, in the unprojected space
@@ -163,6 +164,8 @@ class Polygon
     vector3 _center;
     vector3 _xAxis;
     vector3 _yAxis;
+
+    double _area; // this polygon area: computation savings
 
     /**
      * \brief Transform boundary points to the new space

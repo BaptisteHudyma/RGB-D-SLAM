@@ -149,6 +149,7 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
 
     boost::geometry::assign_points(_polygon, boundary);
     boost::geometry::correct(_polygon);
+    _area = area();
 
     // simplify the input mesh
     simplify();
@@ -179,6 +180,7 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     // set boundary in reverse (clockwise)
     boost::geometry::assign_points(_polygon, boundaryPoints);
     boost::geometry::correct(_polygon);
+    _area = area();
 
     if (_polygon.outer().size() < 3)
     {
@@ -459,9 +461,15 @@ double Polygon::inter_area(const Polygon& other) const
 
 void Polygon::simplify(const double distanceThreshold)
 {
+    // pre compute the area
+    _area = area();
+    // compute a simplification distance threshold: it depends on the area.
+    // the bigger the area, the higer the threshold. A lower limit is fixed by the distanceThreshold parameter
+    const double distanceThres = std::max(_area / 1e5, distanceThreshold);
+
     // use temporary object to prevent segfault
     polygon out;
-    boost::geometry::simplify(_polygon, out, distanceThreshold);
+    boost::geometry::simplify(_polygon, out, distanceThres);
 
     if (out.outer().size() > 3)
     {
