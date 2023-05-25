@@ -265,7 +265,14 @@ std::vector<Polygon::point_2d> Polygon::compute_concave_hull(const std::vector<v
         newPointVector.back().id = id++;
     }
 
-    const ::polygon::PointVector& resultBoundary = ::polygon::computeConcaveHull(newPointVector, 4);
+    ::polygon::PointVector resultBoundary;
+    // max iterations before computing the convex hull and calling it a day !
+    // each iteration takes more time than the last, so do not increase this too much
+    if (not ::polygon::compute_concave_hull(newPointVector, resultBoundary, 8))
+    {
+        outputs::log("Could not find a polygon fitting those points, computing convex hull instead");
+        return compute_convex_hull(pointsIn);
+    }
 
     boundary.reserve(resultBoundary.size());
     std::ranges::transform(resultBoundary, std::back_inserter(boundary), [](const ::polygon::Point& point) {
@@ -355,6 +362,7 @@ Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, c
         return *this;
 
     // compute transformation matrix between the two spaces
+    // TODO: the coordinates system is XZY for the world, and should be changed to XYZ for this to work
     const matrix44& transfoMatrix =
             utils::get_transformation_matrix(_xAxis, _yAxis, _center, nextXAxis, nextYAxis, nextCenter);
     // project the boundary to the new space
@@ -556,7 +564,7 @@ std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
         ScreenCoordinate screenpoint;
         if (not projectedPoint.to_screen_coordinates(screenpoint))
         {
-            // happens onmy if the projection center z coordinate is 0
+            // happens only if the projection center z coordinate is 0
             outputs::log_warning("Could not transform polygon boundary to screen coordinates");
             return std::vector<ScreenCoordinate>();
         }
