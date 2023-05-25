@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <bits/ranges_algo.h>
 #include <boost/geometry/algorithms/area.hpp>
+#include <boost/geometry/algorithms/union.hpp>
 #include <boost/qvm/mat_operations.hpp>
 #include <iostream>
 #include <opencv2/core/mat.hpp>
@@ -410,9 +411,28 @@ Polygon::polygon Polygon::union_one(const Polygon& other) const
 {
     multi_polygon res;
     boost::geometry::union_(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
-    if (res.empty() or res.size() > 1)
-        return polygon(); // empty polygon or union produces more than one poly
-    return res.front();
+    if (res.empty())
+        return polygon(); // empty polygon
+
+    // only one residual, return it
+    if (res.size() == 1)
+        return res.front();
+
+    // TODO: find a better way: create hole ?
+    // more than one, return the biggest overlap
+    double biggestArea = 0;
+    polygon& biggestPol = res.front();
+    for (const polygon& p: res)
+    {
+        const double pArea = boost::geometry::area(p);
+        if (pArea > biggestArea)
+        {
+            biggestArea = pArea;
+            biggestPol = p;
+        }
+    }
+    assert(biggestArea > 0);
+    return biggestPol;
 }
 
 Polygon::polygon Polygon::inter_one(const Polygon& other) const
@@ -426,7 +446,7 @@ Polygon::polygon Polygon::inter_one(const Polygon& other) const
     if (res.size() == 1)
         return res.front();
 
-    // more than one, return the biggest overlap (rare case, so it's ok to be a bit inneficient)
+    // more than one, return the biggest overlap
     double biggestArea = 0;
     polygon& biggestPol = res.front();
     for (const polygon& p: res)
@@ -461,10 +481,32 @@ double Polygon::inter_over_union(const Polygon& other) const
 
 double Polygon::inter_area(const Polygon& other) const
 {
-    const polygon& inter = inter_one(other.project(_xAxis, _yAxis, _center));
-    if (inter.outer().size() < 3)
-        return 0.0;
-    return boost::geometry::area(inter);
+    multi_polygon res;
+    boost::geometry::intersection(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
+
+    // compute the sum of area of the inter
+    double areaSum = 0;
+    for (const polygon& p: res)
+    {
+        const double pArea = boost::geometry::area(p);
+        areaSum += pArea;
+    }
+    return areaSum;
+}
+
+double Polygon::union_area(const Polygon& other) const
+{
+    multi_polygon res;
+    boost::geometry::union_(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
+
+    // compute the sum of area of the union
+    double areaSum = 0;
+    for (const polygon& p: res)
+    {
+        const double pArea = boost::geometry::area(p);
+        areaSum += pArea;
+    }
+    return areaSum;
 }
 
 void Polygon::simplify(const double distanceThreshold)

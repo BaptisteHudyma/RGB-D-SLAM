@@ -132,6 +132,12 @@ class Polygon
     double inter_area(const Polygon& other) const;
 
     /**
+     * \brief compute the area of the union of two polygons
+     * \return the inter polygon area, or 0 if they do not overlap
+     */
+    double union_area(const Polygon& other) const;
+
+    /**
      * \brief Compute the union of this polygon and another one.
      * \return The union if it exists, or an empty polygon
      */
