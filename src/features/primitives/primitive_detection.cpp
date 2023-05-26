@@ -38,9 +38,6 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height, co
             cv::Mat_<int>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), 0);
 
     _mask = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
-    _maskEroded = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
-    _maskDilated = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
-    _maskBoundary = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
 
     _maskCrossKernel = cv::Mat::ones(3, 3, CV_8U);
     _maskCrossKernel.at<uchar>(0, 0) = 0;
@@ -528,28 +525,29 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
                 _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
         }
 
-        // erode considering the border as an obstacle
-        cv::erode(_mask, _maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
-
-        // dilate to get boundaries
-        cv::dilate(_mask, _maskDilated, _maskSquareKernel);
-        _maskBoundary = _maskDilated - _maskEroded;
-
         // add new plane to final shapes
-        planeContainer.emplace_back(planeSegment,
-                                    compute_plane_segment_boundary(planeSegment, depthMatrix, _maskBoundary));
+        planeContainer.emplace_back(planeSegment, compute_plane_segment_boundary(planeSegment, depthMatrix, _mask));
     }
 }
 
 utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
                                                                          const matrixf& depthMatrix,
-                                                                         const cv::Mat& boundaryMask) const
+                                                                         const cv::Mat& mask) const
 {
+    // erode considering the border as an obstacle
+    cv::Mat maskEroded;
+    cv::erode(mask, maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
+
+    // dilate to get boundaries
+    cv::Mat maskBoundary;
+    cv::dilate(mask, maskBoundary, _maskSquareKernel);
+    maskBoundary = maskBoundary - maskEroded;
+
     std::vector<vector3> boundaryPoints;
     // Cell refinement
     for (uint cellRow = 0, stackedCellId = 0; cellRow < _verticalCellsCount; ++cellRow)
     {
-        const uchar* boundary = boundaryMask.ptr<uchar>(static_cast<int>(cellRow));
+        const uchar* boundary = maskBoundary.ptr<uchar>(static_cast<int>(cellRow));
         for (uint cellColum = 0; cellColum < _horizontalCellsCount; ++cellColum, ++stackedCellId)
         {
             // not on plane boundary
@@ -563,6 +561,7 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
             const Eigen::ArrayXf& zMatrix = depthMatrix.block(offset, 2, _pointsPerCellCount, 1).array();
             assert(xMatrix.size() == yMatrix.size() and xMatrix.size() == zMatrix.size());
 
+            // boundary patch
             const std::vector<vector3>& definingPoints = find_defining_points(planeSegment, xMatrix, yMatrix, zMatrix);
             // add to boundary points
             boundaryPoints.insert(boundaryPoints.cend(), definingPoints.cbegin(), definingPoints.cend());
@@ -624,12 +623,13 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
         _mask.setTo(1, _gridCylinderSegMap == (cylinderIndex + 1));
 
         // Opening
+        cv::Mat maskEroded;
         cv::dilate(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, _mask, _maskCrossKernel);
-        cv::erode(_mask, _maskEroded, _maskCrossKernel);
+        cv::erode(_mask, maskEroded, _maskCrossKernel);
         double min;
         double max;
-        cv::minMaxLoc(_maskEroded, &min, &max);
+        cv::minMaxLoc(maskEroded, &min, &max);
 
         if (max <= 0 or min >= max) // completely eroded: irrelevant cylinder
             continue;

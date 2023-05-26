@@ -100,12 +100,12 @@ class Primitive_Detection
      * \brief Compute the plane convex hull in plane coordinates
      * \param[in] planeSegment The plane segment to get the boundary of
      * \param[in] depthMatrix The depth image in matrix form
-     * \param[in] boundaryMask The mask of the boundary of this plane segment in image space
+     * \param[in] mask The mask of this plane segment in image space
      * \return A Polygon in plane coordinates, representing this plane boundary polygon
      */
     utils::CameraPolygon compute_plane_segment_boundary(const Plane_Segment& planeSegment,
                                                         const matrixf& depthMatrix,
-                                                        const cv::Mat& boundaryMask) const;
+                                                        const cv::Mat& mask) const;
 
     /**
      * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary
@@ -234,9 +234,6 @@ class Primitive_Detection
 
     // primitive cell mask (preallocated)
     cv::Mat _mask;
-    cv::Mat _maskEroded;
-    cv::Mat _maskDilated;
-    cv::Mat _maskBoundary;
     // kernel
     cv::Mat _maskCrossKernel;
     cv::Mat _maskSquareKernel;
