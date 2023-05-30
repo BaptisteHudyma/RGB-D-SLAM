@@ -37,10 +37,12 @@ class Primitive_Detection
     /**
      * \brief Main compute function: computes the primitives in the depth imahe
      * \param[in] depthMatrix Organized cloud of points, constructed from depth map
+     * \param[in] depthImage The depth map used to construct depthMatrix
      * \param[out] planeContainer Container of detected planes in depth image
      * \param[out] primitiveContainer Container of detected cylinders in depth image
      */
     void find_primitives(const matrixf& depthMatrix,
+                         const cv::Mat& depthImage,
                          plane_container& planeContainer,
                          cylinder_container& primitiveContainer);
 
@@ -98,27 +100,25 @@ class Primitive_Detection
 
     /**
      * \brief Compute the plane convex hull in plane coordinates
-     * \param[in] planeSegment The plane segment to get the boundary of
      * \param[in] depthMatrix The depth image in matrix form
+     * \param[in] depthImage The depth image used to create depthMatrix
      * \param[in] mask The mask of this plane segment in image space
      * \return A Polygon in plane coordinates, representing this plane boundary polygon
      */
     utils::CameraPolygon compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                        const matrixf& depthMatrix,
+                                                        const cv::Mat& depthImage,
                                                         const cv::Mat& mask) const;
 
     /**
      * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary
-     * \param[in] planeSegment The plane segment to find the boundary point for
-     * \param[in] xMatrix The x coordinates of the plane patch points
-     * \param[in] yMatrix The y coordinates of the plane patch points
-     * \param[in] zMatrix The z coordinates of the plane patch points
      * \return The best boundary point candidates
      */
-    std::vector<vector3> find_defining_points(const Plane_Segment& planeSegment,
-                                              const Eigen::ArrayXf& xMatrix,
-                                              const Eigen::ArrayXf& yMatrix,
-                                              const Eigen::ArrayXf& zMatrix) const;
+    std::vector<vector3> find_defining_points(const cv::Mat& depthImage,
+                                              const int xStart,
+                                              const int yStart,
+                                              const int xEnd,
+                                              const int yEnd,
+                                              auto is_point_in_plane) const;
 
     /**
      * \brief Try to fit a plane to a cylinder
@@ -171,11 +171,11 @@ class Primitive_Detection
      * \brief Add final plane to primitives, compute a mask for display
      *
      * \param[in] planeMergeLabels Container associating plane ID to global plane IDs
-     * \param[in] depthMatrix The depth image as a matrix
+     * \param[in] depthImage The depth image used to construct the depthImage
      * \param[out] planeContainer Container of planes detected in this depth image
      */
     void add_planes_to_primitives(const uint_vector& planeMergeLabels,
-                                  const matrixf& depthMatrix,
+                                  const cv::Mat& depthImage,
                                   plane_container& planeContainer);
 
     /**
