@@ -8,7 +8,12 @@
 #include "shape_primitives.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/Array.h>
+#include <algorithm>
+#include <atomic>
+#include <cstddef>
 #include <limits>
+#include <mutex>
+#include <opencv2/core.hpp>
 #include <opencv2/core/base.hpp>
 #include <opencv2/core/hal/interface.h>
 #include <opencv2/highgui.hpp>
@@ -68,6 +73,7 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height, co
 }
 
 void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
+                                          const cv::Mat& depthImage,
                                           plane_container& planeContainer,
                                           cylinder_container& primitiveContainer)
 {
@@ -100,7 +106,7 @@ void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
 
     t1 = cv::getTickCount();
     // fill the final planes vector
-    add_planes_to_primitives(planeMergeLabels, depthMatrix, planeContainer);
+    add_planes_to_primitives(planeMergeLabels, depthImage, planeContainer);
     td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
     initTime += td;
     refineTime += td;
@@ -498,7 +504,7 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
 }
 
 void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels,
-                                                   const matrixf& depthMatrix,
+                                                   const cv::Mat& depthImage,
                                                    plane_container& planeContainer)
 {
     const uint planeCount = static_cast<uint>(_planeSegments.size());
@@ -526,12 +532,12 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         }
 
         // add new plane to final shapes
-        planeContainer.emplace_back(planeSegment, compute_plane_segment_boundary(planeSegment, depthMatrix, _mask));
+        planeContainer.emplace_back(planeSegment, compute_plane_segment_boundary(planeSegment, depthImage, _mask));
     }
 }
 
 utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                                         const matrixf& depthMatrix,
+                                                                         const cv::Mat& depthImage,
                                                                          const cv::Mat& mask) const
 {
     // erode considering the border as an obstacle
@@ -542,6 +548,13 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
     cv::Mat maskBoundary;
     cv::dilate(mask, maskBoundary, _maskSquareKernel);
     maskBoundary = maskBoundary - maskEroded;
+
+    const double maxBoundaryDistance = 3 * sqrt(planeSegment.get_MSE());
+    auto is_point_in_plane = [&planeSegment, &maxBoundaryDistance](const utils::ScreenCoordinate& point) {
+        // if distance of this point to the plane < threshold, this point is contained in the plane
+        return point.z() > 0 and planeSegment.get_point_distance(point.to_camera_coordinates()) < maxBoundaryDistance;
+    };
+    const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(_pointsPerCellCount)));
 
     std::vector<vector3> boundaryPoints;
     // Cell refinement
@@ -554,16 +567,16 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
             if (boundary[cellColum] <= 0)
                 continue;
 
-            // get points from this plane patch
-            const uint offset = stackedCellId * _pointsPerCellCount;
-            const Eigen::ArrayXf& xMatrix = depthMatrix.block(offset, 0, _pointsPerCellCount, 1).array();
-            const Eigen::ArrayXf& yMatrix = depthMatrix.block(offset, 1, _pointsPerCellCount, 1).array();
-            const Eigen::ArrayXf& zMatrix = depthMatrix.block(offset, 2, _pointsPerCellCount, 1).array();
-            assert(xMatrix.size() == yMatrix.size() and xMatrix.size() == zMatrix.size());
+            // get the pixels in image space (+-1 for neigbors)
+            const int yStart = static_cast<int>(cellRow * pixelPerCellSide);
+            const int xStart = static_cast<int>(cellColum * pixelPerCellSide);
+            const int yEnd = static_cast<int>((cellRow + 1) * pixelPerCellSide);
+            const int xEnd = static_cast<int>((cellColum + 1) * pixelPerCellSide);
 
-            // boundary patch
-            const std::vector<vector3>& definingPoints = find_defining_points(planeSegment, xMatrix, yMatrix, zMatrix);
-            // add to boundary points
+            // get the defining points of this cell area
+            const std::vector<vector3>& definingPoints =
+                    find_defining_points(depthImage, xStart, yStart, xEnd, yEnd, is_point_in_plane);
+
             boundaryPoints.insert(boundaryPoints.cend(), definingPoints.cbegin(), definingPoints.cend());
         }
     }
@@ -572,39 +585,66 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
     return utils::CameraPolygon(boundaryPoints, planeSegment.get_normal(), planeSegment.get_center());
 }
 
-std::vector<vector3> Primitive_Detection::find_defining_points(const Plane_Segment& planeSegment,
-                                                               const Eigen::ArrayXf& xMatrix,
-                                                               const Eigen::ArrayXf& yMatrix,
-                                                               const Eigen::ArrayXf& zMatrix) const
+std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat& depthImage,
+                                                               const int xStart,
+                                                               const int yStart,
+                                                               const int xEnd,
+                                                               const int yEnd,
+                                                               auto is_point_in_plane) const
 {
-    // TODO: set in parameters
-    const double maxBoundaryDistance = 3 * sqrt(planeSegment.get_MSE());
-    const vector3& center = planeSegment.get_centroid();
-
     std::vector<vector3> definingPoints;
 
-    // get point farthest to plane centroid and out of plane centroid
-    double closestDist = 10000;
-    vector3 closestPoint = vector3::Zero();
-    for (uint i = 0; i < xMatrix.size(); ++i)
-    {
-        const vector3 point(xMatrix(i), yMatrix(i), zMatrix(i));
-        if (point.z() <= 0) // ignore invalid depth
-            continue;
+    const cv::Rect cellRoiRect(cv::Point(xStart, yStart), cv::Point(xEnd, yEnd));
+    const cv::Mat& cellRoi = depthImage(cellRoiRect);
 
-        // if distance of this point to the plane < threshold, this point is contained in the plane
-        if (planeSegment.get_point_distance(point) < maxBoundaryDistance)
+    std::mutex mut;
+    // iterate over all pixels of this cell
+    cellRoi.forEach<float>([&depthImage, &is_point_in_plane, &definingPoints, &mut, xStart, yStart](
+                                   const float value, const int position[]) {
+        const int x = xStart + position[1];
+        const int y = yStart + position[0];
+
+        const utils::ScreenCoordinate point(x, y, value);
+        if (is_point_in_plane(point))
         {
-            const double dist = (point - center).lpNorm<2>();
-            if (dist < closestDist)
+            // create a neigbor boundary
+            cv::Rect neighboursRect(cv::Point(x - 1, y - 1), cv::Size(3, 3));
+            neighboursRect = neighboursRect & cv::Rect(0, 0, 640, 480);
+            // get the neigtbors, the center point will be in it at least
+            const cv::Mat& neigtbors = depthImage(neighboursRect);
+            assert(not neigtbors.empty());
+
+            // check number of neigbors in the plane
+            std::atomic<uint> planeNeigborsCount = 0;
+            neigtbors.forEach<float>([&planeNeigborsCount, &is_point_in_plane, x, y](const float neigtborsValue,
+                                                                                     const int neightborPosition[]) {
+                planeNeigborsCount += is_point_in_plane(
+                        utils::ScreenCoordinate(neightborPosition[1] + x, neightborPosition[0] + y, neigtborsValue));
+            });
+
+            // Check that most of the neigtbors are not in the plane
+            if (planeNeigborsCount > 2 and planeNeigborsCount < static_cast<uint>(neighboursRect.area()) - 2)
             {
-                closestDist = dist;
-                closestPoint = point;
+                std::scoped_lock<std::mutex> lock(mut);
+                bool isFarEnough = true;
+                const vector3& candidate = point.to_camera_coordinates();
+                // do not add this point if it's too close to a point already in this cell
+                for (const vector3& bPoint: definingPoints)
+                {
+                    if ((bPoint - candidate).lpNorm<1>() < 100)
+                    {
+                        isFarEnough = false;
+                        break;
+                    }
+                }
+                // this point is far enough from the others and can be added to the boundary
+                if (isFarEnough)
+                {
+                    definingPoints.emplace_back(candidate);
+                }
             }
         }
-    }
-    if (not closestPoint.isZero())
-        definingPoints.push_back(closestPoint);
+    });
 
     return definingPoints;
 }

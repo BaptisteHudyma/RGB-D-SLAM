@@ -482,7 +482,13 @@ double Polygon::inter_over_union(const Polygon& other) const
 double Polygon::inter_area(const Polygon& other) const
 {
     multi_polygon res;
-    boost::geometry::intersection(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
+    const bool processSuccess =
+            boost::geometry::intersection(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
+    if (!processSuccess)
+    {
+        outputs::log_error("Polygon intersection returned error");
+        return 0;
+    }
 
     // compute the sum of area of the inter
     double areaSum = 0;
