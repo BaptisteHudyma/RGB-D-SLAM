@@ -99,13 +99,13 @@ class Primitive_Detection
     void add_plane_segment_to_features(const Plane_Segment& newPlaneSegment, const vectorb& isActivatedMap);
 
     /**
-     * \brief Compute the plane convex hull in plane coordinates
+     * \brief Compute the plane hull in plane coordinates
      * \param[in] depthMatrix The depth image in matrix form
      * \param[in] depthImage The depth image used to create depthMatrix
      * \param[in] mask The mask of this plane segment in image space
-     * \return A Polygon in plane coordinates, representing this plane boundary polygon
+     * \return The boundary point of the polygon
      */
-    utils::CameraPolygon compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+    std::vector<vector3> compute_plane_segment_boundary(const Plane_Segment& planeSegment,
                                                         const cv::Mat& depthImage,
                                                         const cv::Mat& mask) const;
 

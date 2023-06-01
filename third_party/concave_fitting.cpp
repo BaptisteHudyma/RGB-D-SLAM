@@ -69,18 +69,23 @@ bool compute_concave_hull(const PointVector& points, PointVector& hull, const ui
 
 bool compute_concave_hull(PointVector& points, PointVector& hull, const uint8_t maxIterations)
 {
-    assert(maxIterations >= 1);
+    // use prime numbers because why not ??
+    static const std::vector<uint> possibleNeigborsValues = {3,  5,  7,  11, 13, 17, 21, 23, 29, 31, 37, 41,
+                                                             43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
     assert(points.size() >= 3);
 
-    size_t nearestNeigbors = std::min((uint)4, (uint)points.size() - 1);
-    for (uint8_t iteration = 0; iteration < maxIterations and nearestNeigbors < points.size();
-         ++iteration, ++nearestNeigbors)
+    const uint8_t trueMaxIteration = std::min(maxIterations, (uint8_t)possibleNeigborsValues.size());
+
+    uint nearestNeigbors = possibleNeigborsValues[0];
+    for (uint8_t iteration = 0; iteration < trueMaxIteration; ++iteration)
     {
         hull.clear();
         if (ConcaveHull(points, nearestNeigbors, hull))
-        {
             return true;
-        }
+
+        nearestNeigbors = possibleNeigborsValues[iteration];
+        if (nearestNeigbors > points.size())
+            break;
     }
     return false;
 }

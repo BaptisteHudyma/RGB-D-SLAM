@@ -272,6 +272,7 @@ std::vector<Polygon::point_2d> Polygon::compute_concave_hull(const std::vector<v
     if (not ::polygon::compute_concave_hull(newPointVector, resultBoundary, 8))
     {
         outputs::log("Could not find a polygon fitting those points, computing convex hull instead");
+        // convex hull never fails but erase a lot of the nuances
         return compute_convex_hull(pointsIn);
     }
 

@@ -17,6 +17,7 @@
 #include <opencv2/core/base.hpp>
 #include <opencv2/core/hal/interface.h>
 #include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
 namespace rgbd_slam::features::primitives {
 
@@ -531,12 +532,22 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
                 _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
         }
 
+        // get the ordered boundary points
+        const std::vector<vector3>& orderedBoundary = compute_plane_segment_boundary(planeSegment, depthImage, _mask);
+        if (orderedBoundary.size() < 3)
+        {
+            outputs::log_warning("Could not find a correct boundary polygon, rejecting plane segment");
+            continue; // ignore this polygon
+        }
+
         // add new plane to final shapes
-        planeContainer.emplace_back(planeSegment, compute_plane_segment_boundary(planeSegment, depthImage, _mask));
+        planeContainer.emplace_back(
+                planeSegment,
+                utils::CameraPolygon(orderedBoundary, planeSegment.get_normal(), planeSegment.get_center()));
     }
 }
 
-utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
                                                                          const cv::Mat& depthImage,
                                                                          const cv::Mat& mask) const
 {
@@ -551,8 +562,10 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
 
     const double maxBoundaryDistance = 3 * sqrt(planeSegment.get_MSE());
     auto is_point_in_plane = [&planeSegment, &maxBoundaryDistance](const utils::ScreenCoordinate& point) {
-        // if distance of this point to the plane < threshold, this point is contained in the plane
-        return point.z() > 0 and planeSegment.get_point_distance(point.to_camera_coordinates()) < maxBoundaryDistance;
+        // Check that the point is inside the screen
+        return (point.z() > 0 and point.x() >= 0 and point.y() >= 0) and
+               // if distance of this point to the plane < threshold, this point is contained in the plane
+               planeSegment.get_point_distance(point.to_camera_coordinates()) < maxBoundaryDistance;
     };
     const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(_pointsPerCellCount)));
 
@@ -568,10 +581,10 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
                 continue;
 
             // get the pixels in image space (+-1 for neigbors)
-            const int yStart = static_cast<int>(cellRow * pixelPerCellSide);
             const int xStart = static_cast<int>(cellColum * pixelPerCellSide);
-            const int yEnd = static_cast<int>((cellRow + 1) * pixelPerCellSide);
+            const int yStart = static_cast<int>(cellRow * pixelPerCellSide);
             const int xEnd = static_cast<int>((cellColum + 1) * pixelPerCellSide);
+            const int yEnd = static_cast<int>((cellRow + 1) * pixelPerCellSide);
 
             // get the defining points of this cell area
             const std::vector<vector3>& definingPoints =
@@ -581,8 +594,7 @@ utils::CameraPolygon Primitive_Detection::compute_plane_segment_boundary(const P
         }
     }
 
-    // construct a polygon from those points
-    return utils::CameraPolygon(boundaryPoints, planeSegment.get_normal(), planeSegment.get_center());
+    return boundaryPoints;
 }
 
 std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat& depthImage,
@@ -607,23 +619,23 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat& de
         const utils::ScreenCoordinate point(x, y, value);
         if (is_point_in_plane(point))
         {
-            // create a neigbor boundary
-            cv::Rect neighboursRect(cv::Point(x - 1, y - 1), cv::Size(3, 3));
-            neighboursRect = neighboursRect & cv::Rect(0, 0, 640, 480);
             // get the neigtbors, the center point will be in it at least
-            const cv::Mat& neigtbors = depthImage(neighboursRect);
+            cv::Mat neigtbors;
+            // getRectSubPix can get values out of the image
+            cv::getRectSubPix(depthImage, cv::Size(3, 3), cv::Point(x, y), neigtbors);
             assert(not neigtbors.empty());
 
             // check number of neigbors in the plane
             std::atomic<uint> planeNeigborsCount = 0;
             neigtbors.forEach<float>([&planeNeigborsCount, &is_point_in_plane, x, y](const float neigtborsValue,
                                                                                      const int neightborPosition[]) {
-                planeNeigborsCount += is_point_in_plane(
-                        utils::ScreenCoordinate(neightborPosition[1] + x, neightborPosition[0] + y, neigtborsValue));
+                planeNeigborsCount += is_point_in_plane(utils::ScreenCoordinate(
+                        neightborPosition[1] + x - 1, neightborPosition[0] + y - 1, neigtborsValue));
             });
 
             // Check that most of the neigtbors are not in the plane
-            if (planeNeigborsCount > 2 and planeNeigborsCount < static_cast<uint>(neighboursRect.area()) - 2)
+            // and there is at least some neigbors (not a noise value)
+            if (planeNeigborsCount > 2 and planeNeigborsCount < static_cast<uint>(neigtbors.rows * neigtbors.cols) - 2)
             {
                 std::scoped_lock<std::mutex> lock(mut);
                 bool isFarEnough = true;
@@ -631,7 +643,8 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat& de
                 // do not add this point if it's too close to a point already in this cell
                 for (const vector3& bPoint: definingPoints)
                 {
-                    if ((bPoint - candidate).lpNorm<1>() < 100)
+                    // This distance allow to reduce the number of points but seems not flexible enough
+                    if ((bPoint - candidate).lpNorm<1>() < 1000)
                     {
                         isFarEnough = false;
                         break;
