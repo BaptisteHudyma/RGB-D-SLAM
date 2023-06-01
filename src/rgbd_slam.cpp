@@ -97,9 +97,9 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
     _motionModel.reset(_currentPose.get_position(), _currentPose.get_orientation_quaternion());
 }
 
-void RGBD_SLAM::rectify_depth(cv::Mat& depthImage)
+void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage)
 {
-    cv::Mat rectifiedDepth;
+    cv::Mat_<float> rectifiedDepth;
     if (_depthOps->rectify_depth(depthImage, rectifiedDepth))
     {
         assert(depthImage.size == rectifiedDepth.size);
@@ -111,7 +111,9 @@ void RGBD_SLAM::rectify_depth(cv::Mat& depthImage)
     }
 }
 
-utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat& inputDepthImage, const bool shouldDetectLines)
+utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
+                             const cv::Mat_<float>& inputDepthImage,
+                             const bool shouldDetectLines)
 {
     assert(static_cast<size_t>(inputDepthImage.rows) == _height);
     assert(static_cast<size_t>(inputDepthImage.cols) == _width);
@@ -198,7 +200,7 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
 }
 
 utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
-                                        const cv::Mat& depthImage,
+                                        const cv::Mat_<float>& depthImage,
                                         const matrixf& cloudArrayOrganized)
 {
     // every now and then, restart the search of points even if we have enough features

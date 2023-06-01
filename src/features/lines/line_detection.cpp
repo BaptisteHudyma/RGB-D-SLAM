@@ -18,10 +18,10 @@ Line_Detection::Line_Detection(const double scale, const double sigmaScale)
         exit(-1);
     }
 
-    _kernel = cv::Mat::ones(3, 3, CV_8U);
+    _kernel = cv::Mat_<uchar>::ones(3, 3);
 }
 
-line_container Line_Detection::detect_lines(const cv::Mat& grayImage, const cv::Mat& depthImage)
+line_container Line_Detection::detect_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage)
 {
     assert(_lineDetector != nullptr);
 
@@ -32,7 +32,7 @@ line_container Line_Detection::detect_lines(const cv::Mat& grayImage, const cv::
 }
 
 void Line_Detection::get_image_with_lines(const line_container& linesToDisplay,
-                                          const cv::Mat& depthImage,
+                                          const cv::Mat_<float>& depthImage,
                                           cv::Mat& outImage) const
 {
     // draw lines with associated depth data
@@ -41,7 +41,7 @@ void Line_Detection::get_image_with_lines(const line_container& linesToDisplay,
         return;
     }
     // binarize depth map, fill holes
-    const cv::Mat mask = depthImage > 0;
+    const cv::Mat_<uchar> mask = depthImage > 0;
     cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, _kernel);
 
     for (const cv::Vec4f& pts: linesToDisplay)

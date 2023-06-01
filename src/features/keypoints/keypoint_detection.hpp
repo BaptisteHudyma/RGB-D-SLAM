@@ -26,7 +26,7 @@ class Key_Point_Extraction
      * \return An object that contains the detected keypoints
      */
     Keypoint_Handler compute_keypoints(const cv::Mat& grayImage,
-                                       const cv::Mat& depthImage,
+                                       const cv::Mat_<float>& depthImage,
                                        const KeypointsWithIdStruct& lastKeypointsWithIds,
                                        const bool forceKeypointDetection = false);
 
@@ -67,7 +67,7 @@ class Key_Point_Extraction
      * detector \return An array of points in the input image
      */
     std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage,
-                                              const cv::Mat& mask,
+                                              const cv::Mat_<uchar>& mask,
                                               const uint minimumPointsForValidity) const;
 
     /**
@@ -78,11 +78,12 @@ class Key_Point_Extraction
      * keypoints in the image
      */
     void perform_keypoint_detection(const cv::Mat& grayImage,
-                                    const cv::Mat& mask,
+                                    const cv::Mat_<uchar>& mask,
                                     const cv::Ptr<cv::FeatureDetector>& featureDetector,
                                     std::vector<cv::KeyPoint>& frameKeypoints) const;
 
-    cv::Mat compute_key_point_mask(const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const;
+    cv::Mat_<uchar> compute_key_point_mask(const cv::Size imageSize,
+                                           const std::vector<cv::Point2f>& keypointContainer) const;
 
   private:
     cv::Ptr<cv::FeatureDetector> _featureDetector;
