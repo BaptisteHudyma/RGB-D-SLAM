@@ -571,29 +571,34 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
     const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(_pointsPerCellCount)));
 
     std::vector<vector3> boundaryPoints;
+    std::mutex mut;
+
     // Cell refinement
-    for (uint cellRow = 0, stackedCellId = 0; cellRow < _verticalCellsCount; ++cellRow)
-    {
-        const uchar* boundary = maskBoundary.ptr<uchar>(static_cast<int>(cellRow));
-        for (uint cellColum = 0; cellColum < _horizontalCellsCount; ++cellColum, ++stackedCellId)
-        {
-            // not on plane boundary
-            if (boundary[cellColum] <= 0)
-                continue;
+    maskBoundary.forEach([this, &depthImage, &boundaryPoints, &mut, &is_point_in_plane, pixelPerCellSide](
+                                 const uchar value, const int position[]) {
+        // cell is not in boundary, pass
+        if (value <= 0)
+            return;
 
-            // get the pixels in image space (+-1 for neigbors)
-            const int xStart = static_cast<int>(cellColum * pixelPerCellSide);
-            const int yStart = static_cast<int>(cellRow * pixelPerCellSide);
-            const int xEnd = static_cast<int>((cellColum + 1) * pixelPerCellSide);
-            const int yEnd = static_cast<int>((cellRow + 1) * pixelPerCellSide);
+        const uint cellColum = position[1];
+        const uint cellRow = position[0];
 
-            // get the defining points of this cell area
-            const std::vector<vector3>& definingPoints =
-                    find_defining_points(depthImage, xStart, yStart, xEnd, yEnd, is_point_in_plane);
+        // get the pixels in image space (+-1 for neigbors)
+        const int xStart = static_cast<int>(cellColum * pixelPerCellSide);
+        const int yStart = static_cast<int>(cellRow * pixelPerCellSide);
+        const int xEnd = static_cast<int>((cellColum + 1) * pixelPerCellSide);
+        const int yEnd = static_cast<int>((cellRow + 1) * pixelPerCellSide);
 
-            boundaryPoints.insert(boundaryPoints.cend(), definingPoints.cbegin(), definingPoints.cend());
-        }
-    }
+        // get the defining points of this cell area
+        const std::vector<vector3>& definingPoints =
+                find_defining_points(depthImage, xStart, yStart, xEnd, yEnd, is_point_in_plane);
+        if (definingPoints.empty())
+            return;
+
+        // add boundary points to the total of boundaries
+        std::scoped_lock<std::mutex> lock(mut);
+        boundaryPoints.insert(boundaryPoints.cend(), definingPoints.cbegin(), definingPoints.cend());
+    });
 
     return boundaryPoints;
 }
