@@ -42,7 +42,7 @@ class Primitive_Detection
      * \param[out] primitiveContainer Container of detected cylinders in depth image
      */
     void find_primitives(const matrixf& depthMatrix,
-                         const cv::Mat& depthImage,
+                         const cv::Mat_<float>& depthImage,
                          plane_container& planeContainer,
                          cylinder_container& primitiveContainer);
 
@@ -106,14 +106,14 @@ class Primitive_Detection
      * \return The boundary point of the polygon
      */
     std::vector<vector3> compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                        const cv::Mat& depthImage,
-                                                        const cv::Mat& mask) const;
+                                                        const cv::Mat_<float>& depthImage,
+                                                        const cv::Mat_<uchar>& mask) const;
 
     /**
      * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary
      * \return The best boundary point candidates
      */
-    std::vector<vector3> find_defining_points(const cv::Mat& depthImage,
+    std::vector<vector3> find_defining_points(const cv::Mat_<float>& depthImage,
                                               const int xStart,
                                               const int yStart,
                                               const int xEnd,
@@ -175,7 +175,7 @@ class Primitive_Detection
      * \param[out] planeContainer Container of planes detected in this depth image
      */
     void add_planes_to_primitives(const uint_vector& planeMergeLabels,
-                                  const cv::Mat& depthImage,
+                                  const cv::Mat_<float>& depthImage,
                                   plane_container& planeContainer);
 
     /**
@@ -204,7 +204,7 @@ class Primitive_Detection
      *
      * \return A symmetrical boolean matrix, indicating if a plane segment is connected to another plane segment
      */
-    Matrixb get_connected_components_matrix(const cv::Mat& segmentMap, const size_t numberOfPlanes) const;
+    Matrixb get_connected_components_matrix(const cv::Mat_<int>& segmentMap, const size_t numberOfPlanes) const;
 
   private:
     Histogram _histogram;
@@ -233,10 +233,10 @@ class Primitive_Detection
     std::vector<float> _cellDistanceTols;
 
     // primitive cell mask (preallocated)
-    cv::Mat _mask;
+    cv::Mat_<uchar> _mask;
     // kernel
-    cv::Mat _maskCrossKernel;
-    cv::Mat _maskSquareKernel;
+    cv::Mat_<uchar> _maskCrossKernel;
+    cv::Mat_<uchar> _maskSquareKernel;
 
     // prevent backend copy
     Primitive_Detection(const Primitive_Detection&);

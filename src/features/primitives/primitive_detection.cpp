@@ -43,15 +43,15 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height, co
     _gridCylinderSegMap =
             cv::Mat_<int>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), 0);
 
-    _mask = cv::Mat(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), CV_8U);
+    _mask = cv::Mat_<uchar>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount));
 
-    _maskCrossKernel = cv::Mat::ones(3, 3, CV_8U);
+    _maskCrossKernel = cv::Mat_<uchar>::ones(3, 3);
     _maskCrossKernel.at<uchar>(0, 0) = 0;
     _maskCrossKernel.at<uchar>(2, 2) = 0;
     _maskCrossKernel.at<uchar>(0, 2) = 0;
     _maskCrossKernel.at<uchar>(2, 0) = 0;
 
-    _maskSquareKernel = cv::Mat::ones(3, 3, CV_8U);
+    _maskSquareKernel = cv::Mat_<uchar>::ones(3, 3);
 
     // set before anything related to planar cells
     Plane_Segment::set_static_members(blocSize, _pointsPerCellCount);
@@ -74,7 +74,7 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height, co
 }
 
 void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
-                                          const cv::Mat& depthImage,
+                                          const cv::Mat_<float>& depthImage,
                                           plane_container& planeContainer,
                                           cylinder_container& primitiveContainer)
 {
@@ -222,9 +222,9 @@ Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinde
     {
         // get seed candidates
         const std::vector<uint>& seedCandidates = _histogram.get_points_from_most_frequent_bin();
-        if (const static uint planeSeedCount =
-                    static_cast<uint>(Parameters::get_minimum_plane_seed_proportion() * _totalCellCount);
-            seedCandidates.size() < planeSeedCount)
+        const static uint planeSeedCount =
+                static_cast<uint>(Parameters::get_minimum_plane_seed_proportion() * _totalCellCount);
+        if (seedCandidates.size() < planeSeedCount)
         {
             break;
         }
@@ -306,9 +306,9 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
         }
     }
 
-    if (const static uint minimumCellActivated =
-                static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * _totalCellCount);
-        not isPlaneFitable or cellActivatedCount < minimumCellActivated)
+    const static uint minimumCellActivated =
+            static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * _totalCellCount);
+    if (not isPlaneFitable or cellActivatedCount < minimumCellActivated)
     {
         _histogram.remove_point(seedId);
         return;
@@ -370,7 +370,8 @@ bool Primitive_Detection::find_plane_segment_in_cylinder(const Cylinder_Segment&
             const uint localMapIndex = cylinderSegment.get_local_to_global_mapping(col);
             assert(localMapIndex < _planeGrid.size());
 
-            if (const Plane_Segment& planeSegment = _planeGrid[localMapIndex]; planeSegment.is_planar())
+            const Plane_Segment& planeSegment = _planeGrid[localMapIndex];
+            if (planeSegment.is_planar())
             {
                 newMergedPlane.expand_segment(planeSegment);
                 isPlaneSegmentFitable = true;
@@ -505,7 +506,7 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
 }
 
 void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels,
-                                                   const cv::Mat& depthImage,
+                                                   const cv::Mat_<float>& depthImage,
                                                    plane_container& planeContainer)
 {
     const uint planeCount = static_cast<uint>(_planeSegments.size());
@@ -524,7 +525,7 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         if (not planeSegment.is_planar())
             continue; // not planar segment: TODO: remove ?
 
-        _mask = cv::Scalar(0);
+        _mask = 0;
         // add all merged planes to the mask
         for (uint j = planeIndex; j < planeCount; ++j)
         {
@@ -548,15 +549,15 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
 }
 
 std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                                         const cv::Mat& depthImage,
-                                                                         const cv::Mat& mask) const
+                                                                         const cv::Mat_<float>& depthImage,
+                                                                         const cv::Mat_<uchar>& mask) const
 {
     // erode considering the border as an obstacle
-    cv::Mat maskEroded;
+    cv::Mat_<uchar> maskEroded;
     cv::erode(mask, maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
 
     // dilate to get boundaries
-    cv::Mat maskBoundary;
+    cv::Mat_<uchar> maskBoundary;
     cv::dilate(mask, maskBoundary, _maskSquareKernel);
     maskBoundary = maskBoundary - maskEroded;
 
@@ -597,7 +598,7 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
     return boundaryPoints;
 }
 
-std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat& depthImage,
+std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<float>& depthImage,
                                                                const int xStart,
                                                                const int yStart,
                                                                const int xEnd,
@@ -607,12 +608,12 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat& de
     std::vector<vector3> definingPoints;
 
     const cv::Rect cellRoiRect(cv::Point(xStart, yStart), cv::Point(xEnd, yEnd));
-    const cv::Mat& cellRoi = depthImage(cellRoiRect);
+    const cv::Mat_<float>& cellRoi = depthImage(cellRoiRect);
 
     std::mutex mut;
     // iterate over all pixels of this cell
-    cellRoi.forEach<float>([&depthImage, &is_point_in_plane, &definingPoints, &mut, xStart, yStart](
-                                   const float value, const int position[]) {
+    cellRoi.forEach([&depthImage, &is_point_in_plane, &definingPoints, &mut, xStart, yStart](const float value,
+                                                                                             const int position[]) {
         const int x = xStart + position[1];
         const int y = yStart + position[0];
 
@@ -620,15 +621,15 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat& de
         if (is_point_in_plane(point))
         {
             // get the neigtbors, the center point will be in it at least
-            cv::Mat neigtbors;
+            cv::Mat_<float> neigtbors;
             // getRectSubPix can get values out of the image
             cv::getRectSubPix(depthImage, cv::Size(3, 3), cv::Point(x, y), neigtbors);
             assert(not neigtbors.empty());
 
             // check number of neigbors in the plane
             std::atomic<uint> planeNeigborsCount = 0;
-            neigtbors.forEach<float>([&planeNeigborsCount, &is_point_in_plane, x, y](const float neigtborsValue,
-                                                                                     const int neightborPosition[]) {
+            neigtbors.forEach([&planeNeigborsCount, &is_point_in_plane, x, y](const float neigtborsValue,
+                                                                              const int neightborPosition[]) {
                 planeNeigborsCount += is_point_in_plane(utils::ScreenCoordinate(
                         neightborPosition[1] + x - 1, neightborPosition[0] + y - 1, neigtborsValue));
             });
@@ -672,11 +673,11 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
     for (uint cylinderIndex = 0; cylinderIndex < numberOfCylinder; ++cylinderIndex)
     {
         // Build mask
-        _mask = cv::Scalar(0);
+        _mask = 0;
         _mask.setTo(1, _gridCylinderSegMap == (cylinderIndex + 1));
 
         // Opening
-        cv::Mat maskEroded;
+        cv::Mat_<uchar> maskEroded;
         cv::dilate(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, maskEroded, _maskCrossKernel);
@@ -694,7 +695,7 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
     }
 }
 
-Matrixb Primitive_Detection::get_connected_components_matrix(const cv::Mat& segmentMap,
+Matrixb Primitive_Detection::get_connected_components_matrix(const cv::Mat_<int>& segmentMap,
                                                              const size_t numberOfPlanes) const
 {
     assert(segmentMap.rows > 0);
