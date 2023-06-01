@@ -178,7 +178,7 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
                     for(uint col = 0; col < _horizontalCellsCount; ++col, ++activationIndex)
                         _mask.at<uchar>(row, col) = _planeGrid[activationIndex].is_planar();
                 }
-                cv::Mat planeMask;
+                cv::Mat_<uchar> planeMask;
                 cv::resize(_mask * 255, planeMask, cv::Size(640, 480), 0, 0, cv::INTER_NEAREST);
                 cv::imshow("is_depth_continuous", planeMask);
 #endif

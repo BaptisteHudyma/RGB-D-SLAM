@@ -35,7 +35,7 @@ bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderS
  * \brief Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth
  * with the surrounding points to prevent invalid depth on edges
  */
-double get_depth_approximation(const cv::Mat& depthImage, const cv::Point2f& depthCoordinates);
+double get_depth_approximation(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoordinates);
 
 /**
  * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the
@@ -119,7 +119,7 @@ class Keypoint_Handler
     void set(std::vector<cv::Point2f>& inKeypoints,
              const cv::Mat& inDescriptors,
              const KeypointsWithIdStruct& lastKeypointsWithIds,
-             const cv::Mat& depthImage);
+             const cv::Mat_<float>& depthImage);
 
     /**
      * \brief Get a tracking index if it exist, or -1.
@@ -187,9 +187,9 @@ class Keypoint_Handler
      *
      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
      */
-    cv::Mat compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
-                                   const vectorb& isKeyPointMatchedContainer,
-                                   const uint searchSpaceCellRadius) const;
+    cv::Mat_<uchar> compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
+                                           const vectorb& isKeyPointMatchedContainer,
+                                           const uint searchSpaceCellRadius) const;
 
     using index_container = std::vector<uint>;
     /**
@@ -202,7 +202,7 @@ class Keypoint_Handler
     void fill_keypoint_mask(const utils::ScreenCoordinate2D& pointToSearch,
                             const index_container& keypointIndexContainer,
                             const vectorb& isKeyPointMatchedContainer,
-                            cv::Mat& keyPointMask) const;
+                            cv::Mat_<uchar>& keyPointMask) const;
 
     using uint_pair = std::pair<uint, uint>;
     /**

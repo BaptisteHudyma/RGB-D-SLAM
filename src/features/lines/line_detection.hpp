@@ -25,7 +25,7 @@ class Line_Detection
      *
      * \return A container with the detected lines (2D start and end point)
      */
-    line_container detect_lines(const cv::Mat& grayImage, const cv::Mat& depthImage);
+    line_container detect_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage);
 
     /**
      * \brief display the given lines on an image
@@ -34,14 +34,16 @@ class Line_Detection
      * \param[in] depthImage The measured depth of the image in which the lines were detected
      * \param[in, out] outImage The image on which to display the lines
      */
-    void get_image_with_lines(const line_container& linesToDisplay, const cv::Mat& depthImage, cv::Mat& outImage) const;
+    void get_image_with_lines(const line_container& linesToDisplay,
+                              const cv::Mat_<float>& depthImage,
+                              cv::Mat& outImage) const;
 
   private:
     // LineSegmentDetector
     std::unique_ptr<cv::LSD> _lineDetector;
 
     // kernel for morphological operations
-    cv::Mat _kernel;
+    cv::Mat_<uchar> _kernel;
 
     // remove copy constructors as we have dynamically instantiated members
     Line_Detection(const Line_Detection& lineDetector) = delete;

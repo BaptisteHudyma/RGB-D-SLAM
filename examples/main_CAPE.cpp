@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
 
         // read images
         cv::Mat rgbImage;
-        cv::Mat depthImage;
+        cv::Mat_<float> depthImage;
         if (not load_images(dataPath, frameIndex, rgbImage, depthImage))
             break;
         assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);

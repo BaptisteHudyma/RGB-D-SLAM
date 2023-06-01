@@ -28,7 +28,7 @@ class Depth_Map_Transformation
      * \param[in] rectifiedDepth The depth image, transformed to align with the rgb image
      * \return True if the transformation was successful
      */
-    bool rectify_depth(const cv::Mat& depthImage, cv::Mat& rectifiedDepth);
+    bool rectify_depth(const cv::Mat_<float>& depthImage, cv::Mat_<float>& rectifiedDepth);
 
     /**
      * \brief Create an point cloud organized by cells of cellSize*cellSize pixels
@@ -37,7 +37,7 @@ class Depth_Map_Transformation
      * \param[out] organizedCloudArray A cloud point divided in blocs of cellSize * cellSize
      * \return True if the process succeeded
      */
-    bool get_organized_cloud_array(const cv::Mat& depthImage, matrixf& organizedCloudArray);
+    bool get_organized_cloud_array(const cv::Mat_<float>& depthImage, matrixf& organizedCloudArray);
 
     /**
      * \brief Controls the state of this class.
@@ -64,19 +64,19 @@ class Depth_Map_Transformation
     bool _isOk;
 
     // cam parameters
-    double _fxIr;
-    double _fyIr;
-    double _cxIr;
-    double _cyIr;
+    float _fxIr;
+    float _fyIr;
+    float _cxIr;
+    float _cyIr;
 
-    double _fxRgb;
-    double _fyRgb;
-    double _cxRgb;
-    double _cyRgb;
+    float _fxRgb;
+    float _fyRgb;
+    float _cxRgb;
+    float _cyRgb;
 
     // camera parameters
-    cv::Mat _Rstereo;
-    cv::Mat _Tstereo;
+    cv::Mat_<float> _Rstereo;
+    cv::Mat_<float> _Tstereo;
 
     // pre computation matrix
     cv::Mat_<float> _Xpre;

@@ -57,7 +57,7 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 }
 
 std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage,
-                                                                const cv::Mat& mask,
+                                                                const cv::Mat_<uchar>& mask,
                                                                 const uint minimumPointsForValidity) const
 {
     assert(grayImage.size() == mask.size());
@@ -89,12 +89,12 @@ std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& g
     return framePoints;
 }
 
-cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize,
-                                                     const std::vector<cv::Point2f>& keypointContainer) const
+cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize,
+                                                             const std::vector<cv::Point2f>& keypointContainer) const
 {
     const static int radiusOfAreaAroundPoint = static_cast<int>(Parameters::get_search_matches_distance()); // in pixels
     const static cv::Scalar fillColor(0);
-    cv::Mat mask = cv::Mat(imageSize, CV_8UC1, cv::Scalar::all(255));
+    cv::Mat_<uchar> mask(imageSize, 255);
     for (const cv::Point2f& point: keypointContainer)
     {
 #if 1
@@ -111,7 +111,7 @@ cv::Mat Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize,
 }
 
 Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage,
-                                                         const cv::Mat& depthImage,
+                                                         const cv::Mat_<float>& depthImage,
                                                          const KeypointsWithIdStruct& lastKeypointsWithIds,
                                                          const bool forceKeypointDetection)
 {
@@ -170,7 +170,8 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
                                    opticalFlowTrackedPointCount < maximumPointsForLocalMap))
     {
         // create a mask at current keypoint location
-        const cv::Mat& keypointMask = compute_key_point_mask(grayImage.size(), newKeypointsObject.get_keypoints());
+        const cv::Mat_<uchar>& keypointMask =
+                compute_key_point_mask(grayImage.size(), newKeypointsObject.get_keypoints());
 
         // get new keypoints
         detectedKeypoints = detect_keypoints(grayImage, keypointMask, minimumPointsForOptimization);
@@ -332,7 +333,7 @@ void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDurati
 }
 
 void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
-                                                      const cv::Mat& mask,
+                                                      const cv::Mat_<uchar>& mask,
                                                       const cv::Ptr<cv::FeatureDetector>& featureDetector,
                                                       std::vector<cv::KeyPoint>& frameKeypoints) const
 {
@@ -348,7 +349,7 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
     for (const cv::Rect& detectionWindow: _detectionWindows)
     {
         const cv::Mat& subImg = grayImage(detectionWindow);
-        const cv::Mat& subMask = mask(detectionWindow);
+        const cv::Mat_<uchar>& subMask = mask(detectionWindow);
 
         std::vector<cv::KeyPoint> keypoints;
         keypoints.reserve(maxKeypointToDetectByCell);
