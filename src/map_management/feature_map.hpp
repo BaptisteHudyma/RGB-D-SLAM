@@ -403,8 +403,8 @@ class Feature_Map
             return false;
         }
         // Check if id is in local map
-        if (typename localMapType::iterator featureMapIterator = _localMap.find(featureId);
-            featureMapIterator != _localMap.end())
+        typename localMapType::iterator featureMapIterator = _localMap.find(featureId);
+        if (featureMapIterator != _localMap.end())
         {
             MapFeatureType& mapFeature = featureMapIterator->second;
             assert(mapFeature._id == featureId);
@@ -420,8 +420,8 @@ class Feature_Map
         }
 
         // Check if it is in staged map
-        if (typename stagedMapType::iterator stagedMapIterator = _stagedMap.find(featureId);
-            stagedMapIterator != _stagedMap.end())
+        typename stagedMapType::iterator stagedMapIterator = _stagedMap.find(featureId);
+        if (stagedMapIterator != _stagedMap.end())
         {
             StagedFeatureType& mapFeature = stagedMapIterator->second;
             assert(mapFeature._id == featureId);
