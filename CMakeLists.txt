@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 project(rgbSLAM)
 
@@ -8,8 +8,8 @@ ENDIF()
 
 set(CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
-set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal -lflann_cpp -DCMAKE_EXPORT_COMPILE_COMMANDS=1")# -Wconversion -Wsign-conversion")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
+set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal -lflann_cpp -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DGLEW_STATIC")# -Wconversion -Wsign-conversion")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 # if this is set, the progam will be deterministic, and loose some perfs
 add_compile_definitions(MAKE_DETERMINISTIC)
 
