@@ -32,6 +32,8 @@ Eigen
 boost
 flann
 pugixml
+vtk
+fmt
 ```
 
 ## Build and Run
