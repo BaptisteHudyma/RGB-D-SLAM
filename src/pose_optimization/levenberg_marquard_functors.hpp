@@ -77,7 +77,7 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
      * \param[in] optimizedParameters The vector of parameters to optimize (Size M)
      * \param[out] outputScores The vector of errors, of size N (N the number of points)
      */
-    int operator()(const vectorxd& optimizedParameters, vectorxd& outputScores) const;
+    int operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const;
 
   private:
     const matches_containers::match_point_container& _points;

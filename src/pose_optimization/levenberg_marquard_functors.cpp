@@ -42,10 +42,12 @@ quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizati
 /**
  * GLOBAL POSE ESTIMATOR members
  */
+constexpr uint scoreCountPerPoints = 2;
+constexpr uint scoreCountPerPlanes = 3;
 
 Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point_container& points,
                                              const matches_containers::match_plane_container& planes) :
-    Levenberg_Marquardt_Functor<double>(6, points.size() * 2 + planes.size() * 3),
+    Levenberg_Marquardt_Functor<double>(6, points.size() * scoreCountPerPoints + planes.size() * scoreCountPerPlanes),
     // TODO: optimize below: we copy the containers instead of referencing them
     _points(points),
     _planes(planes)
@@ -54,11 +56,11 @@ Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_poi
 }
 
 // Implementation of the objective function
-int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vectorxd& outputScores) const
+int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const
 {
     assert(not _points.empty() or not _planes.empty());
-    assert(optimizedParameters.size() == 6);
-    assert(static_cast<size_t>(outputScores.size()) == (_points.size() * 2 + _planes.size() * 3));
+    assert(static_cast<size_t>(outputScores.size()) ==
+           (_points.size() * scoreCountPerPoints + _planes.size() * scoreCountPerPlanes));
 
     // Get the new estimated pose
     const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
@@ -73,11 +75,11 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
     for (const matches_containers::PointMatch& match: _points)
     {
         // Compute retroprojected distance
-        const vector2& distance =
+        const Eigen::Vector<double, scoreCountPerPoints>& distance =
                 match._worldFeature.get_signed_distance_2D(match._screenFeature, transformationMatrix);
 
-        outputScores.block<vector2::SizeAtCompileTime, 1>(featureScoreIndex, 0) = distance * pointAlphaReduction;
-        featureScoreIndex += distance.SizeAtCompileTime;
+        outputScores.block<scoreCountPerPoints, 1>(featureScoreIndex, 0) = distance * pointAlphaReduction;
+        featureScoreIndex += scoreCountPerPoints;
     }
 
     // add plane optimization vectors
@@ -87,12 +89,11 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
     for (const matches_containers::PlaneMatch& match: _planes)
     {
         // TODO remove d from optimization, replace with boundary optimization
-        const vector3& planeProjectionError =
+        const Eigen::Vector<double, scoreCountPerPlanes>& planeProjectionError =
                 match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
 
-        outputScores.block<vector3::SizeAtCompileTime, 1>(featureScoreIndex, 0) =
-                planeProjectionError * planeAlphaReduction;
-        featureScoreIndex += planeProjectionError.SizeAtCompileTime;
+        outputScores.block<scoreCountPerPlanes, 1>(featureScoreIndex, 0) = planeProjectionError * planeAlphaReduction;
+        featureScoreIndex += scoreCountPerPlanes;
     }
     return 0;
 }

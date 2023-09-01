@@ -20,9 +20,12 @@ Container<T> get_random_subset(const Container<T>& inContainer, const uint numbe
 {
     assert(numberOfElementsToChoose <= inContainer.size());
 
+    // get a local random engine
+    thread_local std::mt19937 randomEngine(0);
+
     // get a vector of references and shuffle it
     std::vector<std::reference_wrapper<const T>> copyVector(inContainer.cbegin(), inContainer.cend());
-    std::random_shuffle(copyVector.begin(), copyVector.end());
+    std::ranges::shuffle(copyVector, randomEngine);
     assert(copyVector.size() == inContainer.size());
 
     // copy the first matches, they will be randoms
