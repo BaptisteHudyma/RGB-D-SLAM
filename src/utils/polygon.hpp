@@ -71,7 +71,11 @@ class Polygon
     /**
      * \brief get number of points in boundary
      */
-    size_t boundary_lentgh() const { return _polygon.outer().size(); };
+    size_t boundary_length() const
+    {
+        size_t boundarylength = _polygon.outer().size();
+        return boundarylength == 0 ? 0 : boundarylength - 1;
+    };
 
     /**
      * \brief Compute this polygon area
@@ -86,7 +90,8 @@ class Polygon
     void merge_union(const Polygon& other);
 
     /**
-     * \brief project this polygon to the next polygon space. Considers that the two polygons have very close normals
+     * \brief project this polygon on the next polygon plane.
+     * This projection may be reduced to a line or a point.
      * \param[in] nextNormal The normal to project to
      * \param[in] nextCenter The center to project to
      * \return A polygon projected to the new space
@@ -94,7 +99,8 @@ class Polygon
     Polygon project(const vector3& nextNormal, const vector3& nextCenter) const;
 
     /**
-     * \brief project this polygon to the next polygon space. Considers that the two polygons have very close normals
+     * \brief project this polygon on the next polygon plane.
+     * This projection may be reduced to a line or a point.
      * \param[in] nextXAxis The x axis to project to
      * \param[in] nextYAxis The y axis to project to
      * \param[in] nextCenter The center to project to
@@ -103,7 +109,7 @@ class Polygon
     Polygon project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const;
 
     /**
-     * \brief Transform a polygon to a new space
+     * \brief Transform a polygon to a new space, keeping the same polygon shape, area and shuch.
      * \param[in] nextNormal The normal of polygon in the target space
      * \param[in] nextCenter The center of the polygon in th target space
      * \return A new polygon in the target space
@@ -111,7 +117,7 @@ class Polygon
     Polygon transform(const vector3& nextNormal, const vector3& nextCenter) const;
 
     /**
-     * \brief Transform a polygon to a new space
+     * \brief Transform a polygon to a new space, keeping the same polygon shape, area and shuch.
      * \param[in] nextXAxis The x axis of polygon in the target space
      * \param[in] nextYAxis The y axis of polygon in the target space
      * \param[in] nextCenter The center of the polygon in th target space
@@ -163,6 +169,7 @@ class Polygon
     vector3 get_center() const { return _center; };
     vector3 get_x_axis() const { return _xAxis; };
     vector3 get_y_axis() const { return _yAxis; };
+    vector3 get_normal() const { return _xAxis.cross(_yAxis); };
 
   protected:
     polygon _polygon;

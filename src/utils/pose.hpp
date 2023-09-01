@@ -69,7 +69,7 @@ class Pose : public PoseBase
 
     void set_position_variance(const matrix66& variance) { _poseVariance = variance; };
     matrix66 get_pose_variance() const { return _poseVariance; };
-    matrix33 get_position_variance() const { return _poseVariance.block(0, 0, 3, 3); };
+    matrix33 get_position_variance() const { return _poseVariance.block<3, 3>(0, 0); };
 
     /**
      * \brief A display function, to avoid a friend operator function

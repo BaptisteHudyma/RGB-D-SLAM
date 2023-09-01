@@ -159,9 +159,9 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
             // cell diameter, in millimeters
             const float cellDiameter = (
                                                // right down corner (x, y, z)
-                                               depthCloudArray.block(offset + _pointsPerCellCount - 1, 0, 1, 3) -
+                                               depthCloudArray.block<1, 3>(offset + _pointsPerCellCount - 1, 0) -
                                                // left up corner (x, y, z)
-                                               depthCloudArray.block(offset, 0, 1, 3))
+                                               depthCloudArray.block<1, 3>(offset, 0))
                                                .norm();
             // merge distance threshold (from "2021 - Real Time Plane Detection with Consistency from Point Cloud
             // Sequences") use the plane diameter as a merge threshold, with a small error (1.5)

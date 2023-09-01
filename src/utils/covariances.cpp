@@ -50,7 +50,7 @@ WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovar
                                                      const CameraToWorldMatrix& cameraToWorld,
                                                      const matrix33& poseCovariance)
 {
-    const matrix33& rotation = cameraToWorld.block(0, 0, 3, 3);
+    const matrix33& rotation = cameraToWorld.block<3, 3>(0, 0);
 
     WorldCoordinateCovariance cov;
     cov << rotation * cameraPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
@@ -141,7 +141,7 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
     // add some variance on the d distance
     matrix44 planeWorldCovariance = planeCovariance.selfadjointView<Eigen::Lower>();
     // add a proportional error on the normal
-    planeWorldCovariance.diagonal().head(3) += vector3::Ones() * (dVariance / 1e4);
+    planeWorldCovariance.diagonal().head<3>() += vector3::Ones() * (dVariance / 1e4);
     // add a total error on the distance
     planeWorldCovariance(3, 3) += dVariance;
 

@@ -11,6 +11,9 @@ Transforms camera to world planes and back.
 This file launches a set of unit tests for the Kalman filtering process.
 Those examples include basic free falling objects, vehicule position tracking, etc
 
+## test_polygons
+Test the polygon fitting, containing points, projections and merging.
+
 ## test_pose_optimization
 This file launches a set of unit tests for the frame by frame pose optimization process.
 We generate a point cloud, apply random translations and rotations, with some noise, and feed the original and transformed clouds to the optimization process.

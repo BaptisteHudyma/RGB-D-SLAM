@@ -229,7 +229,7 @@ struct WorldCoordinate : public vector3
 struct PlaneCoordinates
 {
     PlaneCoordinates() : _normal(vector3::Zero()), _d(0.0) {};
-    PlaneCoordinates(const vector4& parametrization) : _normal(parametrization.head(3)), _d(parametrization(3))
+    PlaneCoordinates(const vector4& parametrization) : _normal(parametrization.head<3>()), _d(parametrization(3))
     {
         _normal.normalize();
     };
