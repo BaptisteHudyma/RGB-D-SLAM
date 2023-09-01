@@ -530,9 +530,14 @@ void Polygon::simplify(const double distanceThreshold)
 
     if (out.outer().size() > 3)
     {
-        _polygon = out;
-        // correct in case of self intersecting geometry
-        boost::geometry::correct(_polygon);
+        const double newArea = boost::geometry::area(out);
+        // check that the area is not too reduced
+        if (newArea > _area * 0.75)
+        {
+            _polygon = out;
+            // correct in case of self intersecting geometry
+            boost::geometry::correct(_polygon);
+        }
     }
     // else: Could not optimize polygon boundary cause it would have been reduced to a non shape
     // dont change the polygon
