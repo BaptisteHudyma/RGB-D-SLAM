@@ -58,17 +58,17 @@ void Parameters::load_defaut()
     // Camera intrinsic parameters
     _camera1SizeX = 640; // pixels
     _camera1SizeY = 480; // pixels
-    _camera1FocalX = 548.86723733696215;
-    _camera1FocalY = 549.58402532237187;
-    _camera1CenterX = 316.49655835885483;
-    _camera1CenterY = 229.23873484682150;
+    _camera1FocalX = 550;
+    _camera1FocalY = 550;
+    _camera1CenterX = 320;
+    _camera1CenterY = 440;
 
     _camera2SizeX = 640; // pixels
     _camera2SizeY = 480; // pixels
-    _camera2FocalX = 575.92685448804468;
-    _camera2FocalY = 576.40791601093247;
-    _camera2CenterX = 315.15026356388171;
-    _camera2CenterY = 230.58580662101753;
+    _camera2FocalX = 550;
+    _camera2FocalY = 550;
+    _camera2CenterX = 320;
+    _camera2CenterY = 440;
 
     // Camera 2 position & rotation
     _camera2TranslationX = 0;
@@ -349,12 +349,12 @@ void Parameters::check_parameters_validity()
         outputs::log_error("Camera 1 size Y must be > 0");
         _isValid = false;
     }
-    if (_camera1FocalX <= 0)
+    if (_camera1FocalX == 0)
     {
         outputs::log_error("Camera 1 focal X distance must be > 0");
         _isValid = false;
     }
-    if (_camera1FocalY <= 0)
+    if (_camera1FocalY == 0)
     {
         outputs::log_error("Camera 1 focal Y distance must be > 0");
         _isValid = false;
@@ -380,12 +380,12 @@ void Parameters::check_parameters_validity()
         outputs::log_error("Camera 2 size Y must be > 0");
         _isValid = false;
     }
-    if (_camera2FocalX <= 0)
+    if (_camera2FocalX == 0)
     {
         outputs::log_error("Camera 2 focal X distance must be > 0");
         _isValid = false;
     }
-    if (_camera2FocalY <= 0)
+    if (_camera2FocalY == 0)
     {
         outputs::log_error("Camera 2 focal Y distance must be > 0");
         _isValid = false;

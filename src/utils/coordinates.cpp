@@ -305,7 +305,7 @@ vector3 get_plane_transformation(const PlaneCoordinates& plane)
 {
     const vector3& normal = plane.get_normal();
     const double d = plane.get_d();
-    return vector3(atan(normal.y() / normal.x()), asin(normal.z()), d);
+    return vector3(atan2(normal.y(), normal.x()), asin(normal.z()), d);
 }
 
 vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
