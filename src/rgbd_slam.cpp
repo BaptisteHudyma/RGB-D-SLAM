@@ -31,7 +31,7 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
 {
     // set random seed
     const uint seed = utils::Random::_seed;
-    outputs::log("Constructed using seed " + std::to_string(seed));
+    outputs::log(std::format("Constructed using seed {}", seed));
     std::srand(seed);
     cv::theRNG().state = seed;
 

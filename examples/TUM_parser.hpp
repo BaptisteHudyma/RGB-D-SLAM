@@ -98,9 +98,11 @@ class DatasetParser
                 const auto& groundTruthElement = groundTruth.find(rgbTimestamp);
                 if (groundTruthElement != groundTruth.end())
                 {
-                    newData.groundTruth = groundTruth.at(rgbTimestamp);
+                    newData.groundTruth = groundTruthElement->second;
                     newData.groundTruth.isValid = true;
                 }
+                else
+                    newData.groundTruth.isValid = false;
 
                 data.emplace_back(newData);
             }

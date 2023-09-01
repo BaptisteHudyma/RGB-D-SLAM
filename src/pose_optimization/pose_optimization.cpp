@@ -159,9 +159,9 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     if (initialFeatureScore < 1.0)
     {
         // if there is not enough potential inliers to optimize a pose
-        outputs::log_warning("Not enough features to optimize a pose (" +
-                             std::to_string(static_cast<int>(matchedPointSize)) + " points, " +
-                             std::to_string(static_cast<int>(matchedPlaneSize)) + " planes)");
+        outputs::log_warning(std::format("Not enough features to optimize a pose ({} points, {} planes)",
+                                         static_cast<int>(matchedPointSize),
+                                         static_cast<int>(matchedPlaneSize)));
         return false;
     }
 
@@ -217,23 +217,25 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                 numberOfPointsToSample * pointFeatureScore + numberOfPlanesToSample * planeFeatureScore;
         if (subsetScore < 1.0)
         {
-            outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points and " +
-                                 std::to_string(numberOfPlanesToSample) +
-                                 " planes, not enough for optimization (score: " + std::to_string(subsetScore) + ")");
+            outputs::log_warning(
+                    std::format("Selected {} points and {} planes, not enough for optimization (score: {})",
+                                numberOfPointsToSample,
+                                numberOfPlanesToSample,
+                                subsetScore));
             continue;
         }
         if (numberOfPlanesToSample < minNumberOfPlanes or numberOfPlanesToSample > maxNumberOfPlanes or
             numberOfPlanesToSample > matchedPlaneSize)
         {
-            outputs::log_warning("Selected " + std::to_string(numberOfPlanesToSample) + " planes but we have " +
-                                 std::to_string(matchedPointSize) + " available");
+            outputs::log_warning(std::format(
+                    "Selected {} planes but we have {} available", numberOfPlanesToSample, matchedPointSize));
             continue;
         }
         if (numberOfPointsToSample < minNumberOfPoints or numberOfPointsToSample > maxNumberOfPoints or
             numberOfPointsToSample > matchedPointSize)
         {
-            outputs::log_warning("Selected " + std::to_string(numberOfPointsToSample) + " points but we have " +
-                                 std::to_string(matchedPlaneSize) + " available");
+            outputs::log_warning(std::format(
+                    "Selected {} points but we have {} available", numberOfPointsToSample, matchedPlaneSize));
             continue;
         }
 
@@ -362,9 +364,9 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     if (endStatus <= 0)
     {
         // Error while optimizing
-        const std::string message = get_human_readable_end_message(endStatus);
-        outputs::log("Failed to converge with " + std::to_string(matchedFeatures._pointSets._inliers.size()) +
-                     " points | Status " + message);
+        outputs::log(std::format("Failed to converge with {} points | Status {}",
+                                 matchedFeatures._pointSets._inliers.size(),
+                                 get_human_readable_end_message(endStatus)));
         return false;
     }
 
@@ -395,7 +397,7 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
         }
         else
         {
-            outputs::log_warning("fail iteration " + std::to_string(i) + ": rejected pose optimization");
+            outputs::log_warning(std::format("fail iteration {}: rejected pose optimization", i));
         }
     }
     if (poses.size() < iterations / 2)

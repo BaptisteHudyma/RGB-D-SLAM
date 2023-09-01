@@ -349,16 +349,6 @@ void Parameters::check_parameters_validity()
         outputs::log_error("Camera 1 size Y must be > 0");
         _isValid = false;
     }
-    if (_camera1FocalX == 0)
-    {
-        outputs::log_error("Camera 1 focal X distance must be > 0");
-        _isValid = false;
-    }
-    if (_camera1FocalY == 0)
-    {
-        outputs::log_error("Camera 1 focal Y distance must be > 0");
-        _isValid = false;
-    }
     if (_camera1CenterX < 0)
     {
         outputs::log_error("Camera 1 center X distance must be >= 0");
@@ -378,16 +368,6 @@ void Parameters::check_parameters_validity()
     if (_camera2SizeY <= 0)
     {
         outputs::log_error("Camera 2 size Y must be > 0");
-        _isValid = false;
-    }
-    if (_camera2FocalX == 0)
-    {
-        outputs::log_error("Camera 2 focal X distance must be > 0");
-        _isValid = false;
-    }
-    if (_camera2FocalY == 0)
-    {
-        outputs::log_error("Camera 2 focal Y distance must be > 0");
         _isValid = false;
     }
     if (_camera2CenterX < 0)

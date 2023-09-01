@@ -172,7 +172,7 @@ int main(int argc, char* argv[])
     }
 
     rgbd_slam::utils::Pose pose;
-    if (const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth; initialGroundTruth.isValid)
+    if (const GroundTruth& initialGroundTruth = datasetContainer[1].groundTruth; initialGroundTruth.isValid)
     {
         pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
     }
