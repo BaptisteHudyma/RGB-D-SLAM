@@ -206,7 +206,7 @@ void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point
         // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
         if (not isOutlierRemoved)
         {
-            outputs::log_error("Could not find the target point with id " + std::to_string(match._idInMap));
+            outputs::log_error(std::format("Could not find the target point with id {}", match._idInMap));
         }
     }
 }
@@ -220,7 +220,7 @@ void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_plane
         // If no plane were found, this is bad. A match marked as outliers must be in the local map or staged planes
         if (not isOutlierRemoved)
         {
-            outputs::log_error("Could not find the target point with id " + std::to_string(match._idInMap));
+            outputs::log_error(std::format("Could not find the target point with id {}", match._idInMap));
         }
     }
 }

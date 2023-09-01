@@ -88,7 +88,7 @@ void Histogram::remove_point(const uint pointId)
 {
     if (pointId >= _B.size())
     {
-        outputs::log_error("Histogram: remove_point called on invalid ID");
+        outputs::log_error(std::format("Histogram: remove_point called on invalid ID {}", pointId));
         exit(-1);
     }
     if (_H[_B[pointId]] != 0)
