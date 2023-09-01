@@ -48,6 +48,7 @@ class DatasetParser
   public:
     using dataMap = std::map<double, std::string>;
     using groundTruthMap = std::map<double, GroundTruth>;
+
     static std::vector<Data> parse_dataset(const std::string& rgbImageListPath,
                                            const std::string& depthImageListPath,
                                            const std::string& groundTruthListPath)
@@ -59,7 +60,75 @@ class DatasetParser
         return associate_data(rgbFile, depthFile, groundTruth);
     }
 
+    static std::vector<Data> parse_association_file(const std::string& dataPath, const std::string& groundTruthListPath)
+    {
+        std::vector<Data> data;
+        std::ifstream associationFile(dataPath + "associations.txt");
+        if (not associationFile.is_open())
+        {
+            return data;
+        }
+
+        const groundTruthMap& groundTruth = DatasetParser::parse_ground_truth(groundTruthListPath);
+
+        for (std::string line; std::getline(associationFile, line);)
+        {
+            if (line[0] == '#')
+                continue; // comment in the file
+
+            std::istringstream inputString(line);
+
+            double depthTimestamp;
+            double rgbTimestamp;
+            std::string depthPath;
+            std::string rgbPath;
+            inputString >> depthTimestamp >> depthPath >> rgbTimestamp >> rgbPath;
+
+            if (depthPath != "" and rgbPath != "")
+            {
+                Data newData;
+                newData.depthImage.imagePath = depthPath;
+                newData.depthImage.isValid = true;
+                newData.depthImage.imageTimeStamp = depthTimestamp;
+
+                newData.rgbImage.imagePath = rgbPath;
+                newData.rgbImage.isValid = true;
+                newData.rgbImage.imageTimeStamp = rgbTimestamp;
+
+                const auto& groundTruthElement = groundTruth.find(rgbTimestamp);
+                if (groundTruthElement != groundTruth.end())
+                {
+                    newData.groundTruth = groundTruth.at(rgbTimestamp);
+                    newData.groundTruth.isValid = true;
+                }
+
+                data.emplace_back(newData);
+            }
+        }
+        return data;
+    }
+
   protected:
+    static groundTruthMap parse_ground_truth(const std::string& groundTruthListPath)
+    {
+        std::ifstream groundTruthFile(groundTruthListPath);
+
+        groundTruthMap res;
+        for (std::string line; std::getline(groundTruthFile, line);)
+        {
+            if (line[0] == '#')
+                continue; // comment in the file
+            std::istringstream inputString(line);
+
+            GroundTruth gt;
+            inputString >> gt.timeStamp >> gt.position.x() >> gt.position.y() >> gt.position.z() >> gt.rotation.x() >>
+                    gt.rotation.y() >> gt.rotation.z() >> gt.rotation.w();
+
+            res.try_emplace(gt.timeStamp, gt);
+        }
+        return res;
+    }
+
     static dataMap parse_file(const std::string& filePath)
     {
         std::ifstream imagesFile(filePath);
@@ -79,26 +148,6 @@ class DatasetParser
             {
                 res.try_emplace(timeStamp, imagePath);
             }
-        }
-        return res;
-    }
-
-    static groundTruthMap parse_ground_truth(const std::string& groundTruthListPath)
-    {
-        std::ifstream groundTruthFile(groundTruthListPath);
-
-        groundTruthMap res;
-        for (std::string line; std::getline(groundTruthFile, line);)
-        {
-            if (line[0] == '#')
-                continue; // comment in the file
-            std::istringstream inputString(line);
-
-            GroundTruth gt;
-            inputString >> gt.timeStamp >> gt.position.x() >> gt.position.y() >> gt.position.z() >> gt.rotation.x() >>
-                    gt.rotation.y() >> gt.rotation.z() >> gt.rotation.w();
-
-            res.try_emplace(gt.timeStamp, gt);
         }
         return res;
     }

@@ -113,6 +113,30 @@ rgbd_slam::utils::Pose get_ground_truth(const std::string& groundTruthLine)
     return rgbd_slam::utils::Pose(groundTruthPosition * 1000, groundTruthRotation);
 }
 
+std::vector<Data> get_data_association(const std::string& dataPath)
+{
+    const std::string groundTruthPath = dataPath + "groundtruth.txt";
+    std::ifstream associationFile(dataPath + "associations.txt");
+    if (associationFile.is_open())
+    {
+        // an association file already exists
+        std::cout << "Using association file" << std::endl;
+
+        return DatasetParser::parse_association_file(dataPath, groundTruthPath);
+    }
+    else
+    {
+        // parse the folder myself...
+        std::cout << "Generate association data" << std::endl;
+
+        // Get file & folder names
+        const std::string rgbImageListPath = dataPath + "rgb.txt";
+        const std::string depthImageListPath = dataPath + "depth.txt";
+
+        return DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath, groundTruthPath);
+    }
+}
+
 int main(int argc, char* argv[])
 {
     std::string dataset;
@@ -139,13 +163,7 @@ int main(int argc, char* argv[])
     }
     const std::stringstream dataPath("./data/TUM/" + dataset + "/");
 
-    // Get file & folder names
-    const std::string rgbImageListPath = dataPath.str() + "rgb.txt";
-    const std::string depthImageListPath = dataPath.str() + "depth.txt";
-    const std::string groundTruthPath = dataPath.str() + "groundtruth.txt";
-
-    const std::vector<Data>& datasetContainer =
-            DatasetParser::parse_dataset(rgbImageListPath, depthImageListPath, groundTruthPath);
+    const std::vector<Data>& datasetContainer = get_data_association(dataPath.str());
 
     if (datasetContainer.empty())
     {
