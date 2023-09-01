@@ -426,9 +426,8 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     {
         // make random variation
         utils::WorldCoordinate variatedCoordinates = match._worldFeature;
-        variatedCoordinates.x() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.x());
-        variatedCoordinates.y() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.y());
-        variatedCoordinates.z() += utils::Random::get_normal_double() * sqrt(match._worldFeatureCovariance.z());
+        variatedCoordinates +=
+                utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.cwiseSqrt());
 
         // add to the new match set
         variatedSet._pointSets._inliers.emplace_back(
@@ -439,9 +438,8 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
         utils::PlaneWorldCoordinates variatedCoordinates = match._worldFeature;
 
         const vector4& diagonal = match._worldFeatureCovariance.diagonal();
-        variatedCoordinates.normal()(0) += utils::Random::get_normal_double() * sqrt(diagonal(0));
-        variatedCoordinates.normal()(1) += utils::Random::get_normal_double() * sqrt(diagonal(1));
-        variatedCoordinates.normal()(2) += utils::Random::get_normal_double() * sqrt(diagonal(2));
+        variatedCoordinates.normal() +=
+                utils::Random::get_normal_doubles<3>().cwiseProduct(diagonal.head<3>().cwiseSqrt());
         variatedCoordinates.normal().normalize();
 
         variatedCoordinates.d() += utils::Random::get_normal_double() * sqrt(diagonal(3));
