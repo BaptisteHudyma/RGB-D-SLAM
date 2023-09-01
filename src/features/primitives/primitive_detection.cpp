@@ -592,8 +592,6 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
         // get the defining points of this cell area
         const std::vector<vector3>& definingPoints =
                 find_defining_points(depthImage, xStart, yStart, xEnd, yEnd, is_point_in_plane);
-        if (definingPoints.empty())
-            return;
 
         // add boundary points to the total of boundaries
         std::scoped_lock<std::mutex> lock(mut);
