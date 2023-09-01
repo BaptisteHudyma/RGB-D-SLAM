@@ -30,8 +30,8 @@ CameraToWorldMatrix compute_camera_to_world_transform(const WorldToCameraMatrix&
 
 PlaneCameraToWorldMatrix compute_plane_camera_to_world_matrix(const CameraToWorldMatrix& cameraToWorld)
 {
-    const matrix33& rotationMatrix = cameraToWorld.block(0, 0, 3, 3);
-    const vector3& position = cameraToWorld.col(3).head(3);
+    const matrix33& rotationMatrix = cameraToWorld.block<3, 3>(0, 0);
+    const vector3& position = cameraToWorld.col(3).head<3>();
 
     PlaneCameraToWorldMatrix planeCameraToWorld;
     planeCameraToWorld << rotationMatrix, vector3::Zero(), -position.transpose() * rotationMatrix, 1;

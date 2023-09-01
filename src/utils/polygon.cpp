@@ -389,7 +389,7 @@ std::vector<Polygon::point_2d> Polygon::transform_boundary(const matrix44& trans
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
 
         const vector4 homogenous(retroProjected.x(), retroProjected.y(), retroProjected.z(), 1.0);
-        const vector3 transformed = (transformationMatrix * homogenous).head(3);
+        const vector3 transformed = (transformationMatrix * homogenous).head<3>();
 
         const vector2& projected = utils::get_projected_plan_coordinates(transformed, nextCenter, nextXAxis, nextYAxis);
         newBoundary.emplace_back(projected.x(), projected.y());
@@ -585,7 +585,7 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
     const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(cameraToWorld);
 
     // rotate axis
-    const matrix33& rotationMatrix = cameraToWorld.block(0, 0, 3, 3);
+    const matrix33& rotationMatrix = cameraToWorld.block<3, 3>(0, 0);
     const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
     const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 
@@ -663,7 +663,7 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
     const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(worldToCamera);
 
     // rotate axis
-    const matrix33& rotationMatrix = worldToCamera.block(0, 0, 3, 3);
+    const matrix33& rotationMatrix = worldToCamera.block<3, 3>(0, 0);
     const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
     const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 
