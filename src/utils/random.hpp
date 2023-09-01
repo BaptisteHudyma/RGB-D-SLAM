@@ -1,8 +1,10 @@
 #ifndef RGBDSLAM_UTILS_RANDOM_HPP
 #define RGBDSLAM_UTILS_RANDOM_HPP
 
+#include <Eigen/src/Core/Matrix.h>
 #include <ctime>
 #include <random>
+#include "types.hpp"
 
 namespace rgbd_slam::utils {
 
@@ -29,6 +31,14 @@ class Random
         thread_local std::normal_distribution distribution(0.0, 1.0);
 
         return distribution(randomEngine);
+    }
+
+    template<int Size> static Eigen::Vector<double, Size> get_normal_doubles()
+    {
+        Eigen::Vector<double, Size> vec;
+        for (uint i = 0; i < Size; ++i)
+            vec(i) = get_normal_double();
+        return vec;
     }
 
     static uint get_random_uint(const uint maxValue) { return static_cast<uint>(maxValue * get_random_double()); }
