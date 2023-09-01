@@ -66,21 +66,22 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
     const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
 
     const WorldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
-    Eigen::Index pointIndex = 0; // index of the match being treated
+    int featureScoreIndex = 0; // index of the match being treated
+
     // Compute retroprojection distances
+    static constexpr double pointAlphaReduction = 1.0; // multiplier for points parameters in the equation
     for (const matches_containers::PointMatch& match: _points)
     {
         // Compute retroprojected distance
         const vector2& distance =
                 match._worldFeature.get_signed_distance_2D(match._screenFeature, transformationMatrix);
 
-        outputScores(pointIndex) = distance.x();
-        ++pointIndex;
-        outputScores(pointIndex) = distance.y();
-        ++pointIndex;
+        outputScores.block<vector2::SizeAtCompileTime, 1>(featureScoreIndex, 0) = distance * pointAlphaReduction;
+        featureScoreIndex += distance.SizeAtCompileTime;
     }
 
     // add plane optimization vectors
+    static constexpr double planeAlphaReduction = 0.1; // multiplier for plane parameters in the equation
     const PlaneWorldToCameraMatrix& planeTransformationMatrix =
             utils::compute_plane_world_to_camera_matrix(transformationMatrix);
     for (const matches_containers::PlaneMatch& match: _planes)
@@ -89,9 +90,9 @@ int Global_Pose_Estimator::operator()(const vectorxd& optimizedParameters, vecto
         const vector3& planeProjectionError =
                 match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
 
-        outputScores(pointIndex++) = planeProjectionError.x() * 0.1;
-        outputScores(pointIndex++) = planeProjectionError.y() * 0.1;
-        outputScores(pointIndex++) = planeProjectionError.z() * 0.1;
+        outputScores.block<vector3::SizeAtCompileTime, 1>(featureScoreIndex, 0) =
+                planeProjectionError * planeAlphaReduction;
+        featureScoreIndex += planeProjectionError.SizeAtCompileTime;
     }
     return 0;
 }

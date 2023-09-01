@@ -313,12 +313,8 @@ vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoor
 {
     const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
 
-    const vector3& cameraPlaneSimplified = get_plane_transformation(cameraPlane);
-    const vector3& worldPlaneSimplified = get_plane_transformation(projectedWorldPlane);
-
-    return vector3(cameraPlaneSimplified.x() - worldPlaneSimplified.x(),
-                   cameraPlaneSimplified.y() - worldPlaneSimplified.y(),
-                   cameraPlaneSimplified.z() - worldPlaneSimplified.z());
+    return cameraPlane.get_d() * cameraPlane.get_normal() -
+           projectedWorldPlane.get_d() * projectedWorldPlane.get_normal();
 }
 
 } // namespace rgbd_slam::utils

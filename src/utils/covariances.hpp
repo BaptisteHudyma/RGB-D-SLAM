@@ -30,7 +30,7 @@ template<int N> bool is_covariance_valid(const Eigen::Matrix<double, N, N>& cova
 
     if (not isPositiveSemiDefinite)
     {
-        outputs::log_warning("Covariance is not positive semi definte");
+        outputs::log_warning("Covariance is not positive semi definite");
     }
     return isPositiveSemiDefinite;
 }
