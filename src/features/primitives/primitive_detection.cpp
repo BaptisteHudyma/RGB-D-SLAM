@@ -10,6 +10,7 @@
 #include <Eigen/src/Core/Array.h>
 #include <algorithm>
 #include <atomic>
+#include <bits/ranges_algo.h>
 #include <cstddef>
 #include <limits>
 #include <mutex>
@@ -541,10 +542,12 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
             continue; // ignore this polygon
         }
 
-        // add new plane to final shapes
-        planeContainer.emplace_back(
-                planeSegment,
-                utils::CameraPolygon(orderedBoundary, planeSegment.get_normal(), planeSegment.get_center()));
+        const utils::CameraPolygon polygon(orderedBoundary, planeSegment.get_normal(), planeSegment.get_center());
+        if (polygon.boundary_length() >= 3)
+        {
+            // add new plane to final shapes
+            planeContainer.emplace_back(planeSegment, polygon);
+        }
     }
 }
 
@@ -553,11 +556,11 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
                                                                          const cv::Mat_<uchar>& mask) const
 {
     // erode considering the border as an obstacle
-    cv::Mat_<uchar> maskEroded;
+    cv::Mat_<uchar> maskEroded(mask.size());
     cv::erode(mask, maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
 
     // dilate to get boundaries
-    cv::Mat_<uchar> maskBoundary;
+    cv::Mat_<uchar> maskBoundary(mask.size());
     cv::dilate(mask, maskBoundary, _maskSquareKernel);
     maskBoundary = maskBoundary - maskEroded;
 
@@ -624,9 +627,9 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<fl
         if (is_point_in_plane(point))
         {
             // get the neigtbors, the center point will be in it at least
-            cv::Mat_<float> neigtbors;
+            cv::Mat_<float> neigtbors(3, 3);
             // getRectSubPix can get values out of the image
-            cv::getRectSubPix(depthImage, cv::Size(3, 3), cv::Point(x, y), neigtbors);
+            cv::getRectSubPix(depthImage, neigtbors.size(), cv::Point(x, y), neigtbors);
             assert(not neigtbors.empty());
 
             // check number of neigbors in the plane
@@ -639,21 +642,20 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<fl
 
             // Check that most of the neigtbors are not in the plane
             // and there is at least some neigbors (not a noise value)
-            if (planeNeigborsCount > 2 and planeNeigborsCount < static_cast<uint>(neigtbors.rows * neigtbors.cols) - 2)
+            static constexpr uint minNeigborsCount = 2;
+            if (planeNeigborsCount > minNeigborsCount and
+                planeNeigborsCount < static_cast<uint>(neigtbors.rows * neigtbors.cols) - minNeigborsCount)
             {
+                // mutex for definingPoints
                 std::scoped_lock<std::mutex> lock(mut);
-                bool isFarEnough = true;
+
                 const vector3& candidate = point.to_camera_coordinates();
                 // do not add this point if it's too close to a point already in this cell
-                for (const vector3& bPoint: definingPoints)
-                {
-                    // This distance allow to reduce the number of points but seems not flexible enough
-                    if ((bPoint - candidate).lpNorm<1>() < 1000)
-                    {
-                        isFarEnough = false;
-                        break;
-                    }
-                }
+                const bool isFarEnough = std::ranges::none_of(definingPoints, [&candidate](const vector3& bPoint) {
+                    static constexpr double minSetDistance = 1000.0;
+                    return (bPoint - candidate).lpNorm<1>() < minSetDistance;
+                });
+
                 // this point is far enough from the others and can be added to the boundary
                 if (isFarEnough)
                 {

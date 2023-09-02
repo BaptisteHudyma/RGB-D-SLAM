@@ -155,7 +155,7 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
     // simplify the input mesh
     simplify();
 
-    if (_polygon.outer().size() < 3)
+    if (boundary_length() < 3)
     {
         outputs::log_warning("Polygon does not contain any edges after correction and simplification");
     }
@@ -183,7 +183,7 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     boost::geometry::correct(_polygon);
     _area = area();
 
-    if (_polygon.outer().size() < 3)
+    if (_polygon.outer().size() <= 3)
     {
         outputs::log_warning("Polygon does not contain any edges after correction");
     }
@@ -528,7 +528,7 @@ void Polygon::simplify(const double distanceThreshold)
     polygon out;
     boost::geometry::simplify(_polygon, out, distanceThres);
 
-    if (out.outer().size() > 3)
+    if (out.outer().size() >= 4)
     {
         const double newArea = boost::geometry::area(out);
         // check that the area is not too reduced
