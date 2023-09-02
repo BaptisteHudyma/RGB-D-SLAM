@@ -248,7 +248,7 @@ bool Plane_Segment::fit_plane()
     // no need to fill the upper part, the adjoint solver does not need it
     Eigen::SelfAdjointEigenSolver<matrix33> eigenSolver(pointCloudCov);
     // eigen values are the point variance along the eigen vectors (sorted by ascending order)
-    const vector3& eigenValues = eigenSolver.eigenvalues();
+    const vector3& eigenValues = eigenSolver.eigenvalues().cwiseAbs();
     // best eigen vector is the most reliable direction for this plane normal
     const vector3& eigenVector = eigenSolver.eigenvectors().col(0);
 
@@ -276,15 +276,6 @@ bool Plane_Segment::fit_plane()
     // second best variance divided by variance of this plane patch
     _score = eigenValues(1) / std::max(eigenValues(0), 1e-6);
     // const double curvature = eigenValues(0) / eigenValues.sum();
-
-    // failure case: covariance matrix is hill formed
-    if (_MSE < 0 or _score < 0)
-    {
-        // TODO; find out why
-        // outputs::log_warning("Plane patch covariance matrix is ill formed, rejecting it");
-        _isPlanar = false;
-        return false;
-    }
 
     // set segment as planar
     _isPlanar = true;
