@@ -49,9 +49,8 @@ bool is_continuous(const float pixelDepth, float& lastPixelDepth)
     // ignore empty depth values
     if (pixelDepth > 0)
     {
-        // check for suddent jumps in the depth values, that are superior to the expected quantization for this
-        // depth
-        if (abs(pixelDepth - lastPixelDepth) <= pow(2 * utils::get_depth_quantization(pixelDepth), 2.0))
+        // check for suddent jumps in the depth values, that are superior to the expected quantization for this depth
+        if (abs(pixelDepth - lastPixelDepth) <= utils::get_depth_quantization(pixelDepth))
         {
             // no suddent jump
             lastPixelDepth = pixelDepth;
@@ -75,8 +74,7 @@ bool Plane_Segment::is_cell_vertical_continuous(const matrixf& depthMatrix) cons
     // Scan vertically through the middle
     for (uint i = startValue + _cellWidth; i < endValue; i += _cellWidth)
     {
-        const float pixelDepth = depthMatrix(i);
-        if (not is_continuous(pixelDepth, lastPixelDepth))
+        if (not is_continuous(depthMatrix(i), lastPixelDepth))
             return false;
     }
     // continuous
@@ -96,8 +94,7 @@ bool Plane_Segment::is_cell_horizontal_continuous(const matrixf& depthMatrix) co
     // Scan horizontally through the middle
     for (uint i = startValue + 1; i < endValue; ++i)
     {
-        const float pixelDepth = depthMatrix(i);
-        if (not is_continuous(pixelDepth, lastPixelDepth))
+        if (not is_continuous(depthMatrix(i), lastPixelDepth))
             return false;
     }
     // continuous
