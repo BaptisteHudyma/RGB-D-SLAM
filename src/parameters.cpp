@@ -122,7 +122,7 @@ void Parameters::set_parameters()
 
     // Primitive extraction
     _maximumPlaneAngleForMerge = 18.0; // plane patches can be merged if their normals angle is below this angle
-    _depthMapPatchSize = 20;           // Divide the depth image in patches of this size (pixels) to detect primitives
+    _depthMapPatchSize = 30;           // Divide the depth image in patches of this size (pixels) to detect primitives
     _minimumPlaneSeedProportion =
             0.8 / 100.0; // grow planes only if we have more than this proportion of planes patch in this seed
     _minimumCellActivatedProportion =

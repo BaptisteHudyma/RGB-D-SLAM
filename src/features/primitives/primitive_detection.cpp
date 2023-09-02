@@ -5,6 +5,7 @@
 #include "cylinder_segment.hpp"
 #include "distance_utils.hpp"
 #include "plane_segment.hpp"
+#include "random.hpp"
 #include "shape_primitives.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/Array.h>
@@ -171,17 +172,19 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
         }
     }
 #if 0
-// use this to debug the initial is_planar function
-                // Resize with no interpolation
-                _mask = cv::Scalar(0);
-                for(uint row = 0, activationIndex = 0; row < _verticalCellsCount; ++row) 
-                {
-                    for(uint col = 0; col < _horizontalCellsCount; ++col, ++activationIndex)
-                        _mask.at<uchar>(row, col) = _planeGrid[activationIndex].is_planar();
-                }
-                cv::Mat_<uchar> planeMask;
-                cv::resize(_mask * 255, planeMask, cv::Size(640, 480), 0, 0, cv::INTER_NEAREST);
-                cv::imshow("is_depth_continuous", planeMask);
+    // use this to debug the initial is_planar function
+    // Resize with no interpolation
+    _mask = 0;
+    for (uint row = 0, activationIndex = 0; row < _verticalCellsCount; ++row)
+    {
+        for (uint col = 0; col < _horizontalCellsCount; ++col, ++activationIndex)
+        {
+            _mask.at<uchar>(row, col) = _planeGrid[activationIndex].is_planar() * 255;
+        }
+    }
+    cv::Mat_<uchar> planeMask;
+    cv::resize(_mask, planeMask, cv::Size(640, 480), 0, 0, cv::INTER_NEAREST);
+    cv::imshow("is_depth_continuous", planeMask);
 #endif
 }
 
@@ -514,6 +517,10 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
     planeContainer.clear();
     planeContainer.reserve(planeCount);
 
+#ifdef DEBUG_DETECTED_POLYGONS
+    cv::Mat debugImage(depthImage.size(), CV_8UC3, cv::Scalar(255, 255, 255));
+#endif
+
     // refine the coarse planes boundaries to smoother versions
     for (uint planeIndex = 0; planeIndex < planeCount; ++planeIndex)
     {
@@ -547,8 +554,18 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         {
             // add new plane to final shapes
             planeContainer.emplace_back(planeSegment, polygon);
+#ifdef DEBUG_DETECTED_POLYGONS
+            polygon.display(cv::Scalar(utils::Random::get_random_uint(255),
+                                       utils::Random::get_random_uint(255),
+                                       utils::Random::get_random_uint(255)),
+                            debugImage);
+#endif
         }
     }
+
+#ifdef DEBUG_DETECTED_POLYGONS
+    cv::imshow("temp", debugImage);
+#endif
 }
 
 std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
@@ -626,33 +643,35 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<fl
         const utils::ScreenCoordinate point(x, y, value);
         if (is_point_in_plane(point))
         {
-            // get the neigtbors, the center point will be in it at least (should always be impair)
-            constexpr uint numberOfNeigbor = 3; // x*x neigtbors
+            constexpr uint numberOfNeigbor = 3;                           // neigboring points (3x3 here)
+            constexpr uint centerCoordinates = (numberOfNeigbor - 1) / 2; // coordinates of the center in the neigbors
+            static_assert(numberOfNeigbor % 2 == 1);
+
+            // the neigbors will contain the center point ! needs to be culled out
             cv::Mat_<float> neigtbors(numberOfNeigbor, numberOfNeigbor);
             // getRectSubPix can get values out of the image
             cv::getRectSubPix(depthImage, neigtbors.size(), cv::Point(x, y), neigtbors);
             assert(not neigtbors.empty());
 
-            constexpr uint centerCoordinates = numberOfNeigbor - 1 / 2; // coordinates of the center in the neigbors
             // check number of neigbors in the plane
-            std::atomic<uint> planeNeigborsCount = 0;
-            neigtbors.forEach([&planeNeigborsCount, &is_point_in_plane, x, y](const float neigtborsValue,
-                                                                              const int neightborPosition[]) {
+            std::atomic<uint> inPlaneNeigborsCount = 0;
+            neigtbors.forEach([&inPlaneNeigborsCount, &is_point_in_plane, x, y](const float neigtborsValue,
+                                                                                const int neightborPosition[]) {
                 // Do not add the center cell in neigbor treatment
                 if (neightborPosition[1] != centerCoordinates && neightborPosition[0] != centerCoordinates &&
                     is_point_in_plane(utils::ScreenCoordinate(
                             neightborPosition[1] + x - 1, neightborPosition[0] + y - 1, neigtborsValue)))
                 {
-                    planeNeigborsCount += 1;
+                    inPlaneNeigborsCount += 1;
                 }
             });
 
             // Check that most of the neigtbors are not in the plane (edge)
             // and there is at least some neigbors (not a noise value)
             constexpr uint minExistingNeigborCount = 2; // number of valid neigtbors to accept
-            constexpr uint minEmptyNeigborCount =
-                    (numberOfNeigbor * numberOfNeigbor - 1) - 1; // number of empty neigbors to accept
-            if (planeNeigborsCount >= minExistingNeigborCount and planeNeigborsCount < minEmptyNeigborCount)
+            constexpr uint maxEmptyNeigborCount =
+                    (numberOfNeigbor * numberOfNeigbor - 1) - 0; // number of empty neigbors to accept
+            if (inPlaneNeigborsCount >= minExistingNeigborCount and inPlaneNeigborsCount < maxEmptyNeigborCount)
             {
                 // mutex for definingPoints
                 std::scoped_lock<std::mutex> lock(mut);
