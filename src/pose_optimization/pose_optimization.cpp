@@ -83,7 +83,7 @@ double get_plane_inliers_outliers(const matches_containers::match_plane_containe
     {
         // Retroproject world point to screen, and compute screen distance
         const double distance =
-                match._worldFeature.get_reduced_signed_distance(match._screenFeature, worldToCamera).norm() / 10.0;
+                match._worldFeature.get_reduced_signed_distance(match._screenFeature, worldToCamera).norm();
         assert(distance >= 0 and not std::isnan(distance));
         // inlier
         if (distance < planeMaxRetroprojectionError)
@@ -169,7 +169,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
             Parameters::get_ransac_maximum_retroprojection_error_for_point_inliers(); // maximum inlier threshold, in
                                                                                       // pixels
     const static double planeMaxRetroprojectionError =
-            Parameters::get_ransac_maximum_retroprojection_error_for_plane_inliers();
+            Parameters::get_ransac_maximum_retroprojection_error_for_plane_inliers(); // millimeters
     assert(pointMaxRetroprojectionError > 0);
     assert(planeMaxRetroprojectionError > 0);
     const uint acceptablePointInliersForEarlyStop = static_cast<uint>(

@@ -96,9 +96,9 @@ void Parameters::set_parameters()
 
     // Pose Optimization
     _ransacMaximumRetroprojectionErrorForPointInliers =
-            10; // Max retroprojection error between two screen points, in pixels, before rejecting the match
+            10.0; // Max retroprojection error between two screen points, in pixels, before rejecting the match
     _ransacMaximumRetroprojectionErrorForPlaneInliers =
-            15; // Max retroprojection error between two screen points, in meters, before rejecting the match
+            50.0; // Max retroprojection error between two screen planes, in millimeters, before rejecting the match
     _ransacMinimumInliersProportionForEarlyStop = 0.90; // proportion of inliers in total set, to stop RANSAC early
     _ransacProbabilityOfSuccess = 0.8;                  // probability of having at least one correct transformation
     _ransacInlierProportion = 0.6;                      // number of inliers in data / number of points in data
