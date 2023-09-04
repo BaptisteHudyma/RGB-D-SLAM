@@ -143,7 +143,9 @@ auto ConcaveHull(PointVector& pointList, size_t k, PointVector& hull) -> bool
         {
             size_t lastPoint = 0;
             if (PointsEqual(cPoints[i], firstPoint))
+            {
                 lastPoint = 1;
+            }
 
             size_t j = 2;
             its = false;
@@ -157,12 +159,15 @@ auto ConcaveHull(PointVector& pointList, size_t k, PointVector& hull) -> bool
             }
 
             if (its)
+            {
                 i++;
+            }
         }
 
         if (its)
+        {
             return false;
-
+        }
         currentPoint = cPoints[i];
 
         AddPoint(hull, currentPoint);
@@ -178,9 +183,8 @@ auto ConcaveHull(PointVector& pointList, size_t k, PointVector& hull) -> bool
     // return true.
     PointVector dataset = pointList;
     auto newEnd = RemoveHull(dataset, hull);
-    bool allEnclosed = MultiplePointInPolygon(begin(dataset), newEnd, hull);
-
-    return allEnclosed;
+    const bool isAllEnclosed = MultiplePointInPolygon(begin(dataset), newEnd, hull);
+    return isAllEnclosed;
 }
 
 // Compare a and b for equality
@@ -373,8 +377,10 @@ template<class InIt, class Predicate> bool omp_parallel_any_of(InIt first, InIt 
 auto MultiplePointInPolygon(PointVector::iterator begin, PointVector::iterator end, const PointVector& hull) -> bool
 {
     if (begin == end)
-        return false;
-
+    {
+        // if begin == end, all points should be in hull
+        return true;
+    }
     auto test = [&hull](const Point& p) {
         return !PointInPolygon(p, hull);
     };
@@ -400,8 +406,8 @@ auto PointInPolygon(const Point& p, const PointVector& list) -> bool
     if (list.size() <= 2)
         return false;
 
-    const double& x = p.x;
-    const double& y = p.y;
+    const double x = p.x;
+    const double y = p.y;
 
     int inout = 0;
     auto v0 = list.begin();
@@ -409,28 +415,23 @@ auto PointInPolygon(const Point& p, const PointVector& list) -> bool
 
     while (v1 != list.end())
     {
-        if ((LessThanOrEqual(v0->y, y) && LessThan(y, v1->y)) || (LessThanOrEqual(v1->y, y) && LessThan(y, v0->y)))
+        if (((LessThanOrEqual(v0->y, y) and LessThan(y, v1->y)) or
+             (LessThanOrEqual(v1->y, y) and LessThan(y, v0->y))) and
+            !Zero(v1->y - v0->y) and LessThan(x, v0->x + ((v1->x - v0->x) * (y - v0->y) / (v1->y - v0->y))))
         {
-            if (!Zero(v1->y - v0->y))
-            {
-                double tdbl1 = (y - v0->y) / (v1->y - v0->y);
-                double tdbl2 = v1->x - v0->x;
-
-                if (LessThan(x, v0->x + (tdbl2 * tdbl1)))
-                    inout++;
-            }
+            inout++;
         }
-
         v0 = v1;
         v1++;
     }
 
     if (inout == 0)
+        return true;         // no iteration, point is good
+    else if (inout % 2 == 0) // par: point is outside of polygon
         return false;
-    else if (inout % 2 == 0)
-        return false;
-    else
-        return true;
+
+    // point is in the polygon
+    return true;
 }
 
 // Test whether two line segments intersect each other
