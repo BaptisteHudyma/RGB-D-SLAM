@@ -1,9 +1,11 @@
 # Third party programs
 
-## eig33sym
-Very fast symetric 3x3 matrix Eigen values computations.
+## concave_fitting
+Computes the concave hull of a point set using the Moreira-Santos algorithm.
+Shady implementation that often returns invalid hulls with multiple intersections
 
-It uses the dsyevh3.hpp to compute eigen values/vectors.
+## correct_boost_polygon
+Implementation to correct the wrong polygon hulls. Used to compensate the shady concave hull fitting.
 
 ## geodesic_operations
 Geodesic erosion and dilation, with optional masking

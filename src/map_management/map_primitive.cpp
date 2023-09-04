@@ -134,8 +134,6 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
         // similarity is greater than the greatest similarity, and overlap is greater than threshold
         if (interArea > greatestSimilarity and interArea / maxPlaneArea >= areaSimilarityThreshold)
         {
-            if (shapePlane.get_normal().dot(vector3::UnitZ()) >= 0.80)
-                continue;
             selectedIndex = planeIndex;
             greatestSimilarity = interArea;
         }
