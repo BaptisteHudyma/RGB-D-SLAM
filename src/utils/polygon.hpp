@@ -57,7 +57,7 @@ class Polygon
     /**
      * \brief Compute the concave hull for a set of points
      * \param[in] points The points to compute a concave hull for
-     * \return The ordered points defining a concave hull of points
+     * \return The ordered points defining a concave hull of points, or empty is no concave hull was found
      */
     static std::vector<point_2d> compute_concave_hull(const std::vector<vector2>& points);
 
