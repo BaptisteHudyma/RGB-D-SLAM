@@ -550,7 +550,7 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         }
 
         const utils::CameraPolygon polygon(orderedBoundary, planeSegment.get_normal(), planeSegment.get_center());
-        if (polygon.boundary_length() >= 3)
+        if (polygon.is_valid() and polygon.boundary_length() >= 3)
         {
             // add new plane to final shapes
             planeContainer.emplace_back(planeSegment, polygon);

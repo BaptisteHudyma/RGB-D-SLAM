@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <bits/ranges_algo.h>
 #include <boost/geometry/algorithms/area.hpp>
+#include <boost/geometry/algorithms/detail/is_simple/interface.hpp>
 #include <boost/geometry/algorithms/union.hpp>
 #include <boost/qvm/mat_operations.hpp>
 #include <iostream>
