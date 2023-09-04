@@ -145,12 +145,37 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
                 return utils::get_projected_plan_coordinates(point, this->_center, this->_xAxis, this->_yAxis);
             });
 
-    // compute convex boundary
+    // compute boundary
     const std::vector<point_2d>& boundary = utils::Polygon::compute_concave_hull(boundaryPoints);
-    assert(boundary.size() >= 3);
+    if (boundary.empty())
+    {
+        // outputs::log_warning("Could not find concave hull, trying with convex hull algorithm");
+        boost::geometry::assign_points(_polygon, utils::Polygon::compute_convex_hull(boundaryPoints));
+        boost::geometry::correct(_polygon);
 
-    boost::geometry::assign_points(_polygon, boundary);
-    boost::geometry::correct(_polygon);
+        if (!is_valid())
+        {
+            outputs::log_error("Invalid convex polygon fit detected, fitting failed");
+        }
+    }
+    else
+    {
+        boost::geometry::assign_points(_polygon, boundary);
+        boost::geometry::correct(_polygon);
+
+        if (!is_valid())
+        {
+            outputs::log_warning("Invalid concave polygon fit detected, trying to use convex hull algorithm");
+            boost::geometry::assign_points(_polygon, utils::Polygon::compute_convex_hull(boundaryPoints));
+            boost::geometry::correct(_polygon);
+
+            if (!is_valid())
+            {
+                outputs::log_error("Invalid convex and concave polygon fit detected, fitting failed");
+            }
+        }
+    }
+
     _area = area();
 
     // simplify the input mesh
@@ -268,13 +293,11 @@ std::vector<Polygon::point_2d> Polygon::compute_concave_hull(const std::vector<v
     }
 
     ::polygon::PointVector resultBoundary;
-    // max iterations before computing the convex hull and calling it a day !
     // each iteration takes more time than the last, so do not increase this too much
     if (not ::polygon::compute_concave_hull(newPointVector, resultBoundary, 8))
     {
-        outputs::log("Could not find a polygon fitting those points, computing convex hull instead");
-        // convex hull never fails but erase a lot of the nuances
-        return compute_convex_hull(pointsIn);
+        // empty vector, failure
+        return boundary;
     }
 
     boundary.reserve(resultBoundary.size());
@@ -529,12 +552,13 @@ void Polygon::simplify(const double distanceThreshold)
     polygon out;
     boost::geometry::simplify(_polygon, out, distanceThres);
 
-    if (out.outer().size() >= 4)
+    if (boost::geometry::is_valid(out))
     {
         const double newArea = boost::geometry::area(out);
         // check that the area is not too reduced
         if (newArea > _area * 0.75)
         {
+            _area = newArea;
             _polygon = out;
             // correct in case of self intersecting geometry
             boost::geometry::correct(_polygon);

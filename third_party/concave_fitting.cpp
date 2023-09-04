@@ -141,8 +141,9 @@ auto ConcaveHull(PointVector& pointList, size_t k, PointVector& hull) -> bool
 
         while (its && i < cPoints.size())
         {
+            i++;
             size_t lastPoint = 0;
-            if (PointsEqual(cPoints[i], firstPoint))
+            if (PointsEqual(cPoints[i - 1], firstPoint))
             {
                 lastPoint = 1;
             }
@@ -152,15 +153,10 @@ auto ConcaveHull(PointVector& pointList, size_t k, PointVector& hull) -> bool
 
             while (!its && j < hull.size() - lastPoint)
             {
-                auto line1 = std::make_pair(hull[step - 1], cPoints[i]);
+                auto line1 = std::make_pair(hull[step - 1], cPoints[i - 1]);
                 auto line2 = std::make_pair(hull[step - j - 1], hull[step - j]);
                 its = Intersects(line1, line2);
                 j++;
-            }
-
-            if (its)
-            {
-                i++;
             }
         }
 
@@ -168,7 +164,7 @@ auto ConcaveHull(PointVector& pointList, size_t k, PointVector& hull) -> bool
         {
             return false;
         }
-        currentPoint = cPoints[i];
+        currentPoint = cPoints[i - 1];
 
         AddPoint(hull, currentPoint);
 

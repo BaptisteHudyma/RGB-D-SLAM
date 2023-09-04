@@ -550,7 +550,8 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         }
 
         const utils::CameraPolygon polygon(orderedBoundary, planeSegment.get_normal(), planeSegment.get_center());
-        if (polygon.is_valid() and polygon.boundary_length() >= 3)
+        std::string debug;
+        if (polygon.is_valid(debug) and polygon.boundary_length() >= 3)
         {
             // add new plane to final shapes
             planeContainer.emplace_back(planeSegment, polygon);
@@ -560,6 +561,10 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
                                        utils::Random::get_random_uint(255)),
                             debugImage);
 #endif
+        }
+        else
+        {
+            std::cout << "Polyfit error: " << debug << std::endl;
         }
     }
 
