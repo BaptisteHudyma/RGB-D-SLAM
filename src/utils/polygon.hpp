@@ -69,6 +69,16 @@ class Polygon
     bool contains(const vector2& point) const;
 
     /**
+     * \brief Return true if this polygon is valid
+     */
+    bool is_valid() const { return boost::geometry::is_valid(_polygon); }
+    /**
+     * \brief Return true if this polygon is valid
+     * \param[out] reason The failure reason
+     */
+    bool is_valid(std::string& reason) const { return boost::geometry::is_valid(_polygon, reason); }
+
+    /**
      * \brief get number of points in boundary
      */
     size_t boundary_length() const

@@ -97,6 +97,7 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
             get_parametrization().to_camera_coordinates(planeCameraToWorld);
 
     const utils::CameraPolygon& projectedPolygon = _boundaryPolygon.to_camera_space(worldToCamera);
+    const double projectedArea = projectedPolygon.get_area();
 
     // minimum plane overlap
     static double planeMinimalOverlap = Parameters::get_minimum_plane_overlap_for_match();
@@ -104,6 +105,9 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
     double greatestSimilarity = 0.0;
     int selectedIndex = UNMATCHED_FEATURE_INDEX;
+
+    if (projectedArea <= 0.0)
+        return selectedIndex;
 
     // search best match score
     const int detectedPlaneSize = static_cast<int>(detectedFeatures.size());
@@ -124,11 +128,14 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
         // compute a similarity score: compute the inter area of the map plane and the detected plane, divide it by
         // the detected plane area. Considers that the detected plane area should be lower than the map plane area
         const utils::CameraPolygon& detectedPolygon = shapePlane.get_boundary_polygon();
-        const double detectedPlaneArea = detectedPolygon.get_area();
+        const double maxPlaneArea =
+                std::max(detectedPolygon.get_area(), projectedArea); // max area of the two potential planes
         const double interArea = detectedPolygon.inter_area(projectedPolygon);
         // similarity is greater than the greatest similarity, and overlap is greater than threshold
-        if (interArea > greatestSimilarity and interArea / detectedPlaneArea >= areaSimilarityThreshold)
+        if (interArea > greatestSimilarity and interArea / maxPlaneArea >= areaSimilarityThreshold)
         {
+            if (shapePlane.get_normal().dot(vector3::UnitZ()) >= 0.80)
+                continue;
             selectedIndex = planeIndex;
             greatestSimilarity = interArea;
         }
