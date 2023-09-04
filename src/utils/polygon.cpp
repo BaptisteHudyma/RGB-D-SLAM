@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <bits/ranges_algo.h>
 #include <boost/geometry/algorithms/area.hpp>
-#include <boost/geometry/algorithms/detail/is_simple/interface.hpp>
+#include <boost/geometry/algorithms/detail/convex_hull/interface.hpp>
 #include <boost/geometry/algorithms/union.hpp>
 #include <boost/qvm/mat_operations.hpp>
 #include <iostream>
@@ -15,6 +15,7 @@
 #include <opencv2/imgproc.hpp>
 #include "logger.hpp"
 #include "concave_fitting.hpp"
+#include "correct_boost_polygon.hpp"
 
 namespace rgbd_slam::utils {
 
@@ -146,32 +147,30 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
             });
 
     // compute boundary
-    const std::vector<point_2d>& boundary = utils::Polygon::compute_concave_hull(boundaryPoints);
-    if (boundary.empty())
+    _polygon = utils::Polygon::compute_concave_hull(boundaryPoints);
+    if (!is_valid())
     {
-        // outputs::log_warning("Could not find concave hull, trying with convex hull algorithm");
-        boost::geometry::assign_points(_polygon, utils::Polygon::compute_convex_hull(boundaryPoints));
-        boost::geometry::correct(_polygon);
-
-        if (!is_valid())
-        {
-            outputs::log_error("Invalid convex polygon fit detected, fitting failed");
-        }
-    }
-    else
-    {
-        boost::geometry::assign_points(_polygon, boundary);
-        boost::geometry::correct(_polygon);
-
-        if (!is_valid())
+        // try to correct it using special third party method (bad solution to a bad problem)
+        multi_polygon result;
+        geometry::correct(_polygon, result);
+        if (result.empty())
         {
             outputs::log_warning("Invalid concave polygon fit detected, trying to use convex hull algorithm");
-            boost::geometry::assign_points(_polygon, utils::Polygon::compute_convex_hull(boundaryPoints));
-            boost::geometry::correct(_polygon);
+            _polygon = utils::Polygon::compute_convex_hull(boundaryPoints);
 
             if (!is_valid())
             {
                 outputs::log_error("Invalid convex and concave polygon fit detected, fitting failed");
+            }
+        }
+        else
+        {
+            // TODO: should select the greatest area ?
+            _polygon = result[0];
+
+            if (!is_valid())
+            {
+                outputs::log_error("Invalid concave polygon fit after correction step, fitting failed");
             }
         }
     }
@@ -180,11 +179,6 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
 
     // simplify the input mesh
     simplify();
-
-    if (boundary_length() < 3)
-    {
-        outputs::log_warning("Polygon does not contain any edges after correction and simplification");
-    }
 }
 
 Polygon::Polygon(const Polygon& otherPolygon, const vector3& normal, const vector3& center)
@@ -215,71 +209,28 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     }
 }
 
-std::vector<Polygon::point_2d> Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
+Polygon::polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
 {
-    std::vector<point_2d> finalBoundary;
+    boost::geometry::model::multi_point<point_2d> hull;
+    boost::geometry::model::multi_point<point_2d> input;
 
-    if (pointsIn.size() < 3)
-    {
-        outputs::log_warning("Cannot compute a polygon with less than 3 sides");
-        return finalBoundary;
-    }
-
-    static auto rotate90 = [](const vector2& other) {
-        return vector2(-other.y(), other.x());
-    };
-
-    std::vector<vector2> sortedPoints(pointsIn);
-
-    const vector2 first_point(*std::ranges::min_element(sortedPoints, [](const vector2& left, const vector2& right) {
-        return std::make_tuple(left.y(), left.x()) < std::make_tuple(right.y(), right.x());
-    })); // Find the lowest and leftmost point
-
-    std::ranges::sort(sortedPoints, [&](const vector2& left, const vector2& right) {
-        if (left.isApprox(first_point))
-        {
-            return right != first_point;
-        }
-        else if (right.isApprox(first_point))
-        {
-            return false;
-        }
-        const double dir = (rotate90(left - first_point)).dot(right - first_point);
-        if (abs(dir) <= 0.01)
-        { // If the points are on a line with first point, sort by distance (manhattan is equivalent here)
-            return (left - first_point).lpNorm<2>() < (right - first_point).lpNorm<2>();
-        }
-        return dir > 0;
-    }); // Sort the points by angle to the chosen first point
-
-    std::vector<vector2> boundary;
-    for (const vector2& point: sortedPoints)
-    {
-        // For as long as the last 3 points cause the hull to be non-convex, discard the middle one
-        while (boundary.size() >= 2 && (rotate90(boundary[boundary.size() - 1] - boundary[boundary.size() - 2]))
-                                                       .dot(point - boundary[boundary.size() - 1]) <= 0)
-        {
-            boundary.pop_back();
-        }
-        boundary.push_back(point);
-    }
-    // close shape
-    boundary.emplace_back(boundary[0]);
-
-    finalBoundary.reserve(boundary.size());
-    std::ranges::transform(boundary, std::back_inserter(finalBoundary), [](const vector2& point) {
-        return boost::geometry::make<point_2d>(point.x(), point.y());
+    input.reserve(pointsIn.size());
+    std::ranges::transform(pointsIn.rbegin(), pointsIn.rend(), std::back_inserter(input), [](const vector2& point) {
+        return point_2d(point.x(), point.y());
     });
-    return finalBoundary;
+
+    polygon pol;
+    boost::geometry::convex_hull(input, pol);
+    return pol;
 }
 
-std::vector<Polygon::point_2d> Polygon::compute_concave_hull(const std::vector<vector2>& pointsIn)
+Polygon::polygon Polygon::compute_concave_hull(const std::vector<vector2>& pointsIn)
 {
-    std::vector<point_2d> boundary;
+    polygon poly;
     if (pointsIn.size() < 3)
     {
         outputs::log_warning("Cannot compute a polygon with less than 3 sides");
-        return boundary;
+        return poly;
     }
 
     ::polygon::PointVector newPointVector;
@@ -297,14 +248,17 @@ std::vector<Polygon::point_2d> Polygon::compute_concave_hull(const std::vector<v
     if (not ::polygon::compute_concave_hull(newPointVector, resultBoundary, 8))
     {
         // empty vector, failure
-        return boundary;
+        return poly;
     }
 
+    std::vector<point_2d> boundary;
     boundary.reserve(resultBoundary.size());
     std::ranges::transform(resultBoundary, std::back_inserter(boundary), [](const ::polygon::Point& point) {
         return boost::geometry::make<point_2d>(point.x, point.y);
     });
-    return boundary;
+
+    boost::geometry::assign_points(poly, boundary);
+    return poly;
 }
 
 bool Polygon::contains(const vector2& point) const
@@ -560,8 +514,6 @@ void Polygon::simplify(const double distanceThreshold)
         {
             _area = newArea;
             _polygon = out;
-            // correct in case of self intersecting geometry
-            boost::geometry::correct(_polygon);
         }
     }
     // else: Could not optimize polygon boundary cause it would have been reduced to a non shape

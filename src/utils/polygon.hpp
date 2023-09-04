@@ -17,7 +17,7 @@ class CameraPolygon;
 class Polygon
 {
   public:
-    using point_2d = boost::geometry::model::d2::point_xy<int>;
+    using point_2d = boost::geometry::model::d2::point_xy<double>;
     using polygon = boost::geometry::model::polygon<point_2d>;
     using multi_polygon = boost::geometry::model::multi_polygon<polygon>;
     using box_2d = boost::geometry::model::box<point_2d>;
@@ -50,16 +50,16 @@ class Polygon
     /**
      * \brief Compute the convex hull for a set of points
      * \param[in] points The points to compute a convex hull for
-     * \return The ordered points defining a convex hull of points
+     * \return The corresponding polygon. Can be empty if the process failed
      */
-    static std::vector<point_2d> compute_convex_hull(const std::vector<vector2>& points);
+    static polygon compute_convex_hull(const std::vector<vector2>& points);
 
     /**
      * \brief Compute the concave hull for a set of points
      * \param[in] points The points to compute a concave hull for
-     * \return The ordered points defining a concave hull of points, or empty is no concave hull was found
+     * \return The corresponding polygon. Can be empty if the process failed
      */
-    static std::vector<point_2d> compute_concave_hull(const std::vector<vector2>& points);
+    static polygon compute_concave_hull(const std::vector<vector2>& points);
 
     /**
      * \brief Return true if this point is in the polygon boundaries
