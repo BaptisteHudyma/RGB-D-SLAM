@@ -128,11 +128,11 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
         // compute a similarity score: compute the inter area of the map plane and the detected plane, divide it by
         // the detected plane area. Considers that the detected plane area should be lower than the map plane area
         const utils::CameraPolygon& detectedPolygon = shapePlane.get_boundary_polygon();
-        const double maxPlaneArea =
-                std::max(detectedPolygon.get_area(), projectedArea); // max area of the two potential planes
+        // TODO: this metric fails as the plane becomes bigger
+        const double newPlaneArea = detectedPolygon.get_area(); // max area of the two potential planes
         const double interArea = detectedPolygon.inter_area(projectedPolygon);
         // similarity is greater than the greatest similarity, and overlap is greater than threshold
-        if (interArea > greatestSimilarity and interArea / maxPlaneArea >= areaSimilarityThreshold)
+        if (interArea > greatestSimilarity and interArea / newPlaneArea >= areaSimilarityThreshold)
         {
             selectedIndex = planeIndex;
             greatestSimilarity = interArea;
