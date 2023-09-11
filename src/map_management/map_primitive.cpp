@@ -193,7 +193,7 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
 
     // project to world coordinates
     const matrix44 worldCovariance = utils::get_world_plane_covariance(
-            matchedFeatureParams, planeCameraToWorld, planeParameterCovariance, poseCovariance);
+            matchedFeatureParams, cameraToWorld, planeCameraToWorld, planeParameterCovariance, poseCovariance);
     const utils::PlaneWorldCoordinates& projectedPlaneCoordinates =
             matchedFeatureParams.to_world_coordinates(planeCameraToWorld);
 
@@ -226,7 +226,7 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
     _parametrization = detectedFeatureParams.to_world_coordinates(planeCameraToWorld);
 
     _covariance = utils::get_world_plane_covariance(
-            detectedFeatureParams, planeCameraToWorld, planeParameterCovariance, poseCovariance);
+            detectedFeatureParams, cameraToWorld, planeCameraToWorld, planeParameterCovariance, poseCovariance);
     _boundaryPolygon = detectedFeature.get_boundary_polygon().to_world_space(cameraToWorld);
 
     assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
@@ -234,7 +234,7 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
 
 bool StagedMapPlane::should_remove_from_staged() const { return _failedTrackingCount >= 2; }
 
-bool StagedMapPlane::should_add_to_local_map() const { return _successivMatchedCount >= 1; }
+bool StagedMapPlane::should_add_to_local_map() const { return _successivMatchedCount >= 2; }
 
 /**
  *  LocalMapPlane

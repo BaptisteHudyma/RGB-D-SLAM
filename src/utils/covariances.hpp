@@ -96,18 +96,22 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
  * \param[in] pointCloudCovariance The covariance of the point cloud that this plane was fitted from
  * \return the plane parameter covariance
  */
-matrix44 compute_plane_covariance(const PlaneCameraCoordinates& planeParameters, const matrix33& pointCloudCovariance);
+matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const matrix33& pointCloudCovariance);
+matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& planeParameters,
+                                                      const matrix44& planeCloudCovariance);
 
 /**
  * \brief Compute the covariance of the world plane
  * \param[in] planeCoordinates The coordinates of the camera plane to compute the covariance of
- * \param[in] cameraToWorldMatrix Matrix to convert from camera to world planes
+ * \param[in] cameraToWorldMatrix Matrix to convert from camera to world points
+ * \param[in] planeCameraToWorldMatrix Matrix to convert from camera to world planes
  * \param[in] planeCovariance The covariance of the pkance in camera space
  * \param[in] worldPoseCovariance The covariance of the observer pose
  * \return The covariance of the plane parameters in world space
  */
 matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinates,
-                                    const PlaneCameraToWorldMatrix& cameraToWorldMatrix,
+                                    const CameraToWorldMatrix& cameraToWorldMatrix,
+                                    const PlaneCameraToWorldMatrix& planeCameraToWorldMatrix,
                                     const matrix44& planeCovariance,
                                     const matrix33& worldPoseCovariance);
 
