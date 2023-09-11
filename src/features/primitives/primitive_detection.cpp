@@ -2,6 +2,7 @@
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
 #include "coordinates.hpp"
+#include "covariances.hpp"
 #include "cylinder_segment.hpp"
 #include "distance_utils.hpp"
 #include "plane_segment.hpp"
@@ -136,7 +137,6 @@ void Primitive_Detection::reset_data()
     // reset stacked distances
     // activation map do not need to be cleared
     _isUnassignedMask = vectorb::Zero(_isUnassignedMask.size());
-    std::fill_n(_cellDistanceTols.begin(), _cellDistanceTols.size(), 0.0f);
 
     // mat masks do not need to be cleared
     // kernels should not be cleared
@@ -146,6 +146,7 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
 {
     const static float sinAngleForMerge =
             sinf(static_cast<float>(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0));
+    const static float planeMergeDistanceThreshold = Parameters::get_maximum_plane_merge_distance();
 
     // for each planeGrid cell
     const size_t planeGridSize = _planeGrid.size();
@@ -167,8 +168,13 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
                                                .norm();
             // merge distance threshold (from "2021 - Real Time Plane Detection with Consistency from Point Cloud
             // Sequences") use the plane diameter as a merge threshold, with a small error (1.5)
-            _cellDistanceTols[stackedCellId] =
-                    1.5f * cellDiameter * sinAngleForMerge * sqrtf(static_cast<float>(planeSegment.get_point_count()));
+            _cellDistanceTols[stackedCellId] = std::min(
+                    planeMergeDistanceThreshold,
+                    cellDiameter * sinAngleForMerge * sqrtf(static_cast<float>(planeSegment.get_point_count())));
+        }
+        else
+        {
+            _cellDistanceTols[stackedCellId] = 0;
         }
     }
 #if 0
@@ -319,8 +325,8 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
     }
 
     // fit plane to merged data
-    const bool isPlanar = newPlaneSegment.fit_plane();
-    if (not isPlanar)
+    newPlaneSegment.fit_plane();
+    if (not newPlaneSegment.is_planar())
     {
         outputs::log("Plane segment is not planar after merge");
         return;
@@ -444,8 +450,8 @@ void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount,
         if (not find_plane_segment_in_cylinder(cylinderSegment, cellActivatedCount, segId, newMergedPlane))
             continue;
 
-        const bool isPlanar = newMergedPlane.fit_plane();
-        if (not isPlanar)
+        newMergedPlane.fit_plane();
+        if (not newMergedPlane.is_planar())
             outputs::log("Plane segment is not planar after merge");
 
         add_cylinder_to_features(cylinderSegment, cellActivatedCount, segId, newMergedPlane, cylinder2regionMap);
@@ -462,8 +468,10 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
     uint_vector planeMergeLabels;
     planeMergeLabels.reserve(planeCount);
     for (uint planeIndex = 0; planeIndex < planeCount; ++planeIndex)
+    {
         // We use planes indexes as ids
-        planeMergeLabels.push_back(planeIndex);
+        planeMergeLabels.emplace_back(planeIndex);
+    }
 
     const uint isPlanesConnectedMatrixRows = static_cast<uint>(isPlanesConnectedMatrix.rows());
     const uint isPlanesConnectedMatrixCols = static_cast<uint>(isPlanesConnectedMatrix.cols());
@@ -485,7 +493,8 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
                 continue;
 
             // normals are close enough, distance is small enough
-            if (planeToExpand.can_be_merged(mergePlane, _cellDistanceTols[col]))
+            const static float planeMergeDistanceThreshold = Parameters::get_maximum_plane_merge_distance();
+            if (planeToExpand.can_be_merged(mergePlane, planeMergeDistanceThreshold))
             {
                 // merge plane segments
                 planeToExpand.expand_segment(mergePlane);
@@ -500,8 +509,8 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
         }
         if (wasPlaneExpanded) // plane was merged with other planes
         {
-            const bool isPlanar = planeToExpand.fit_plane();
-            if (not isPlanar)
+            planeToExpand.fit_plane();
+            if (not planeToExpand.is_planar())
                 outputs::log("Plane segment is not planar after merge");
         }
     }
@@ -540,7 +549,20 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
             if (planeMergeLabels[j] == planeMergeLabel)
                 _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
         }
-
+#ifdef DEBUG_DETECTED_POLYGONS
+        const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(_pointsPerCellCount)));
+        cv::Scalar color(utils::Random::get_random_uint(255),
+                         utils::Random::get_random_uint(255),
+                         utils::Random::get_random_uint(255));
+        _mask.forEach([&debugImage, &color, &pixelPerCellSide](const uchar value, const int position[]) {
+            if (value > 0)
+                cv::rectangle(debugImage,
+                              cv::Point(position[1] * pixelPerCellSide, position[0] * pixelPerCellSide),
+                              cv::Point((position[1] + 1) * pixelPerCellSide, (position[0] + 1) * pixelPerCellSide),
+                              color,
+                              -1);
+        });
+#endif
         // get the ordered boundary points
         const std::vector<vector3>& orderedBoundary = compute_plane_segment_boundary(planeSegment, depthImage, _mask);
         if (orderedBoundary.size() < 3)
@@ -556,10 +578,10 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
             // add new plane to final shapes
             planeContainer.emplace_back(planeSegment, polygon);
 #ifdef DEBUG_DETECTED_POLYGONS
-            polygon.display(cv::Scalar(utils::Random::get_random_uint(255),
+            /*polygon.display(cv::Scalar(utils::Random::get_random_uint(255),
                                        utils::Random::get_random_uint(255),
                                        utils::Random::get_random_uint(255)),
-                            debugImage);
+                            debugImage);*/
 #endif
         }
         else

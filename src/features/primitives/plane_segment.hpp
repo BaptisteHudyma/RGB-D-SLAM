@@ -58,6 +58,7 @@ class Plane_Segment
      * \brief Return the distance from a plane to the given point
      */
     double get_point_distance(const vector3& point) const;
+    double get_point_distance_squared(const vector3& point) const;
 
     /**
      * \brief Check if this plane segment and another onsatisfy the mertge conditions
@@ -69,9 +70,8 @@ class Plane_Segment
 
     /**
      * \brief Fit a plane to the contained points using PCA
-     * \return true if this plane is planar
      */
-    bool fit_plane();
+    void fit_plane();
 
     /**
      * \brief Clears this segment parameters to restart analysis
@@ -121,24 +121,24 @@ class Plane_Segment
     static inline uint _cellHeight;
     static inline bool _isStaticSet = false;
 
-    uint _pointCount; // point count
-    double _score;    // plane fitting score
-    double _MSE;      // plane fitting mean square error
-    bool _isPlanar;   // true if node represent a correct node, false: ignore node while mapping
+    uint _pointCount = 0;                             // point count
+    double _score = 0.0;                              // plane fitting score
+    double _MSE = std::numeric_limits<double>::max(); // plane fitting mean square error
+    bool _isPlanar = false; // true if node represent a correct node, false: ignore node while mapping
 
     utils::CameraCoordinate _centroid; // mean point of all points in node
     utils::PlaneCoordinates _parametrization;
 
     // PCA stored coeffs: efficient calculations of point cloud characteristics
-    double _Sx;  // sum of x
-    double _Sy;  // sum of y
-    double _Sz;  // sum of z
-    double _Sxs; // sum of x squared
-    double _Sys; // sum of y squared
-    double _Szs; // sum of z squared
-    double _Sxy; // sum of x*y
-    double _Syz; // sum of y*z
-    double _Szx; // sum of z*x
+    double _Sx = 0.0;  // sum of x
+    double _Sy = 0.0;  // sum of y
+    double _Sz = 0.0;  // sum of z
+    double _Sxs = 0.0; // sum of x squared
+    double _Sys = 0.0; // sum of y squared
+    double _Szs = 0.0; // sum of z squared
+    double _Sxy = 0.0; // sum of x*y
+    double _Syz = 0.0; // sum of y*z
+    double _Szx = 0.0; // sum of z*x
 
     // prevent backend copy
     Plane_Segment& operator=(const Plane_Segment& seg);
