@@ -83,7 +83,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
     }
 
     // add plane optimization vectors
-    static constexpr double planeAlphaReduction = 0.1; // multiplier for plane parameters in the equation
+    static constexpr double planeAlphaReduction = 1.0; // multiplier for plane parameters in the equation
     const PlaneWorldToCameraMatrix& planeTransformationMatrix =
             utils::compute_plane_world_to_camera_matrix(transformationMatrix);
     for (const matches_containers::PlaneMatch& match: _planes)

@@ -606,12 +606,12 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
     cv::dilate(mask, maskBoundary, _maskSquareKernel);
     maskBoundary = maskBoundary - maskEroded;
 
-    const double maxBoundaryDistance = 3 * sqrt(planeSegment.get_MSE());
+    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
     auto is_point_in_plane = [&planeSegment, &maxBoundaryDistance](const utils::ScreenCoordinate& point) {
         // Check that the point is inside the screen
         return (point.z() > 0 and point.x() >= 0 and point.y() >= 0) and
                // if distance of this point to the plane < threshold, this point is contained in the plane
-               planeSegment.get_point_distance(point.to_camera_coordinates()) < maxBoundaryDistance;
+               planeSegment.get_point_distance_squared(point.to_camera_coordinates()) < maxBoundaryDistance;
     };
     const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(_pointsPerCellCount)));
 
@@ -695,7 +695,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<fl
             // and there is at least some neigbors (not a noise value)
             constexpr uint minExistingNeigborCount = 2; // number of valid neigtbors to accept
             constexpr uint maxEmptyNeigborCount =
-                    (numberOfNeigbor * numberOfNeigbor - 1) - 0; // number of empty neigbors to accept
+                    (numberOfNeigbor * numberOfNeigbor - 1) - 2; // number of empty neigbors to accept
             if (inPlaneNeigborsCount >= minExistingNeigborCount and inPlaneNeigborsCount < maxEmptyNeigborCount)
             {
                 // mutex for definingPoints
