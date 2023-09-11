@@ -96,6 +96,7 @@ class Parameters
     static uint get_optical_flow_pyramid_window_size() { return _opticalFlowPyramidWindowSize; };
 
     static float get_maximum_plane_merge_angle() { return _maximumPlaneAngleForMerge; };
+    static float get_maximum_plane_merge_distance() { return _maximumPlaneDistanceForMerge; };
     static uint get_depth_map_patch_size() { return _depthMapPatchSize; };
 
     static double get_minimum_plane_seed_proportion() { return _minimumPlaneSeedProportion; };
@@ -197,8 +198,9 @@ class Parameters
     inline static uint _keypointMaskRadius;     // radius around optical flow points in which we cont detect new points
 
     // Primitive extraction parameters
-    inline static float _maximumPlaneAngleForMerge; // Maximum angle between two planes patches to consider merging
-    inline static uint _depthMapPatchSize;          // Size of the minimum search area
+    inline static float _maximumPlaneAngleForMerge;    // Maximum angle between two planes patches to consider merging
+    inline static float _maximumPlaneDistanceForMerge; // Maximum distance between two planes to consider merging (mm)
+    inline static uint _depthMapPatchSize;             // Size of the minimum search area
 
     inline static double _minimumPlaneSeedProportion;     // Minimum plane patches proportion (of th total of planar
                                                           // patches) in a set to consider merging

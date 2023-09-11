@@ -260,7 +260,16 @@ struct PlaneCoordinates
     double& d() { return _d; };
 
     WorldCoordinate get_center() const { return WorldCoordinate(_normal * (-_d)); };
-    double get_point_distance(const vector3& point) const { return abs(_normal.transpose() * point + _d); }
+    double get_point_distance(const vector3& point) const
+    {
+        // distance can be negative depending on the plane
+        return abs(_normal.transpose() * point + _d);
+    }
+    double get_point_distance_squared(const vector3& point) const
+    {
+        // distance can be negative depending on the plane
+        return pow(_normal.transpose() * point + _d, 2.0);
+    }
     double get_cos_angle(const PlaneCoordinates& other) const { return _normal.dot(other._normal); };
 
     bool hasNaN() const { return std::isnan(_d) or _normal.hasNaN(); };

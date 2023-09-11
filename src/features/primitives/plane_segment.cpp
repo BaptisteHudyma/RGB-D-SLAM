@@ -15,7 +15,6 @@ Plane_Segment::Plane_Segment()
     assert(_isStaticSet);
 
     clear_plane_parameters();
-    _isPlanar = false;
 }
 
 Plane_Segment::Plane_Segment(const Plane_Segment& seg) :
@@ -50,7 +49,8 @@ bool is_continuous(const float pixelDepth, float& lastPixelDepth)
     if (pixelDepth > 0)
     {
         // check for suddent jumps in the depth values, that are superior to the expected quantization for this depth
-        if (abs(pixelDepth - lastPixelDepth) <= utils::get_depth_quantization(pixelDepth))
+        // TODO: this 4.0 x is weird
+        if (abs(pixelDepth - lastPixelDepth) <= 4.0 * utils::get_depth_quantization(pixelDepth))
         {
             // no suddent jump
             lastPixelDepth = pixelDepth;
@@ -113,9 +113,14 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     // Check for discontinuities using cross search
     // Search discontinuities only in a vertical line passing through the center, than an horizontal line passing
     // through the center.
-    if (not is_cell_horizontal_continuous(zMatrix) and is_cell_vertical_continuous(zMatrix))
+    if (not is_cell_horizontal_continuous(zMatrix) or not is_cell_vertical_continuous(zMatrix))
     {
-        // this segment is not continuous...
+        // this segment is not continuous
+        return;
+    }
+    // remove cells with too much empty values
+    if ((zMatrix.array() > 0).count() < _ptsPerCellCount / 2)
+    {
         return;
     }
 
@@ -159,9 +164,9 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     assert(_Szs > 0);
 
     // fit a plane to those points
-    _isPlanar = fit_plane();
+    fit_plane();
     // plane variance should be less than depth quantization, plus a tolerance factor
-    _isPlanar = _isPlanar and _MSE <= pow(2 * utils::get_depth_quantization(_centroid.z()), 2.0);
+    _isPlanar = _MSE <= pow(utils::get_depth_quantization(_centroid.z()), 2.0);
 }
 
 void Plane_Segment::expand_segment(const Plane_Segment& planeSegment)
@@ -225,8 +230,10 @@ matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const
     return covariance;
 }
 
-bool Plane_Segment::fit_plane()
+void Plane_Segment::fit_plane()
 {
+    _isPlanar = false;
+
     assert(_pointCount > 0);
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
 
@@ -238,8 +245,7 @@ bool Plane_Segment::fit_plane()
     // if (not utils::is_covariance_valid(pointCloudCov))
     if (utils::double_equal(pointCloudCov.determinant(), 0))
     {
-        _isPlanar = false;
-        return false;
+        return;
     }
 
     // no need to fill the upper part, the adjoint solver does not need it
@@ -276,7 +282,6 @@ bool Plane_Segment::fit_plane()
 
     // set segment as planar
     _isPlanar = true;
-    return true;
 }
 
 /*
@@ -288,7 +293,7 @@ void Plane_Segment::clear_plane_parameters()
 
     _pointCount = 0;
     _score = 0;
-    _MSE = 0;
+    _MSE = std::numeric_limits<double>::max();
 
     _centroid.setZero();
     _parametrization = utils::PlaneCoordinates();
@@ -313,6 +318,10 @@ double Plane_Segment::get_cos_angle(const Plane_Segment& p) const
 double Plane_Segment::get_point_distance(const vector3& point) const
 {
     return _parametrization.get_point_distance(point);
+}
+double Plane_Segment::get_point_distance_squared(const vector3& point) const
+{
+    return _parametrization.get_point_distance_squared(point);
 }
 
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
