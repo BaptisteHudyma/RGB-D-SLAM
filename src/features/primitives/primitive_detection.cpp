@@ -26,11 +26,9 @@ namespace rgbd_slam::features::primitives {
 
 Primitive_Detection::Primitive_Detection(const uint width, const uint height, const uint blocSize) :
     _histogram(blocSize),
-    _width(width),
-    _height(height),
     _pointsPerCellCount(blocSize * blocSize),
-    _horizontalCellsCount(_width / blocSize),
-    _verticalCellsCount(_height / blocSize),
+    _horizontalCellsCount(width / blocSize),
+    _verticalCellsCount(height / blocSize),
     _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
 {
     assert(blocSize > 0);
@@ -136,7 +134,7 @@ void Primitive_Detection::reset_data()
 
     // reset stacked distances
     // activation map do not need to be cleared
-    _isUnassignedMask = vectorb::Zero(_isUnassignedMask.size());
+    _isUnassignedMask = vectorb::Constant(_isUnassignedMask.size(), false);
 
     // mat masks do not need to be cleared
     // kernels should not be cleared
@@ -286,7 +284,7 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
     const uint x = seedId % _horizontalCellsCount;
 
     // activationMap set to false (will have bits at true when a plane segment will be merged to this one)
-    vectorb isActivatedMap = vectorb::Zero(_totalCellCount);
+    vectorb isActivatedMap = vectorb::Constant(_totalCellCount, false);
     const size_t activationMapSize = isActivatedMap.size();
     // grow plane region, fill isActivatedMap
     region_growing(x, y, newPlaneSegment, isActivatedMap);
@@ -806,7 +804,10 @@ void Primitive_Detection::region_growing(const uint x,
 
     const int index = static_cast<int>(x + _horizontalCellsCount * y);
     if (static_cast<size_t>(index) >= _totalCellCount)
+    {
+        outputs::log_error("Reached onvalid index while parsingf neigthbors");
         return;
+    }
 
     assert(index < isActivatedMap.size());
     assert(index < _isUnassignedMask.size());
@@ -825,11 +826,11 @@ void Primitive_Detection::region_growing(const uint x,
         // Now label the 4 neighbours:
         if (x > 0)
             region_growing(x - 1, y, planePatch, isActivatedMap); // left  pixel
-        if (x < _width - 1)
+        if (x < _horizontalCellsCount - 1)
             region_growing(x + 1, y, planePatch, isActivatedMap); // right pixel
         if (y > 0)
             region_growing(x, y - 1, planePatch, isActivatedMap); // upper pixel
-        if (y < _height - 1)
+        if (y < _verticalCellsCount - 1)
             region_growing(x, y + 1, planePatch, isActivatedMap); // lower pixel
     }
     // else: do not merge this plane segment

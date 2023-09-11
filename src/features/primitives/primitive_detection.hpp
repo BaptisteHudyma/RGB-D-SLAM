@@ -209,8 +209,6 @@ class Primitive_Detection
   private:
     Histogram _histogram;
 
-    const uint _width;
-    const uint _height;
     const uint _pointsPerCellCount;
 
     const uint _horizontalCellsCount;
