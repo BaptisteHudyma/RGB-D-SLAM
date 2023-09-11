@@ -153,10 +153,11 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
             (static_cast<double>(cv::getTickCount()) - computePoseStartTime) / cv::getTickFrequency();
 
     // update motion model with refined pose
-    _motionModel.update_model(refinedPose);
+    _motionModel.update_model(_currentPose);
 
-    // Update current pose
-    _currentPose = refinedPose;
+    // Update current pose if tracking is ongoing
+    if (_failedTrackingCount == 0)
+        _currentPose = refinedPose;
 
     _totalFrameTreated += 1;
     return refinedPose;
