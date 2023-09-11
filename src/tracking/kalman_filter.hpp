@@ -4,7 +4,9 @@
 #include "../../types.hpp"
 #include "covariances.hpp"
 #include "distance_utils.hpp"
+#include "logger.hpp"
 #include <Eigen/src/Core/Matrix.h>
+#include <iostream>
 
 namespace rgbd_slam::tracking {
 
@@ -82,14 +84,20 @@ template<int N, int M> class SharedKalmanFilter
         // force symetrie for covariance
         newCovariance = newCovariance.template selfadjointView<Eigen::Lower>();
 
-        /*  // Alternative non Joseph form
-        const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * _outputMatrix;
-        const Eigen::Matrix<double, N, N>& newCovariance = temp * estimateErrorCovariance * temp.transpose() +
-                                       kalmanGain * measurementNoiseCovariance * kalmanGain.transpose();
-        */
+        // Alternative non Joseph form
+        /*const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * _outputMatrix;
+        const Eigen::Matrix<double, N, N>& newCovariance =
+                temp * estimateErrorCovariance * temp.transpose() +
+                kalmanGain * measurementNoiseCovariance * kalmanGain.transpose();*/
 
-        assert(utils::is_covariance_valid(newCovariance));
-
+        if (not utils::is_covariance_valid(newCovariance))
+        {
+            std::cerr << newCovariance << std::endl;
+            outputs::log_error(
+                    "Kalman filter produced and invalid covariance, returning estimated state and covariance");
+            assert(utils::is_covariance_valid(estimateErrorCovariance));
+            return std::make_pair(newStateEstimate, estimateErrorCovariance);
+        }
         // return the covariance and state estimation
         return std::make_pair(newState, newCovariance);
     }
