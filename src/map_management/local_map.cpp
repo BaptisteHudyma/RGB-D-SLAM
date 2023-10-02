@@ -48,7 +48,7 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
     // TODO: check the efficiency gain of those reserve calls
     keypointsWithIds.reserve(numberOfNewKeypoints);
 
-    const static uint refreshFrequency = Parameters::get_keypoint_refresh_frequency() * 2;
+    constexpr uint refreshFrequency = parameters::detection::keypointRefreshFrequency * 2;
     _localPointMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
     return keypointsWithIds;
 }
@@ -64,9 +64,8 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
     matches_containers::matchContainer matchSets;
 
     // find point matches
-    static const size_t minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
     _localPointMap.get_matches(detectedKeypointsObject, worldToCamera, false, matchSets._points);
-    if (matchSets._points.size() < minimumPointsForOptimization or
+    if (matchSets._points.size() < parameters::optimization::minimumPointForOptimization or
         matchSets._points.size() < std::min(detectedKeypointsObject.size(), _localPointMap.get_local_map_size()) / 2)
     {
         // if the process as not enough matches, retry matches with a greater margin

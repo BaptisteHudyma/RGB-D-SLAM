@@ -261,8 +261,8 @@ class Feature_Map
         // TODO Remove this limit or make it type dependent
         // if we have enough points from local map to run the optimization, no need to add the staged points
         // Still, we need to try and match them to insure tracking and new map points
-        const static uint minimumPointsForOptimization =
-                Parameters::get_minimum_point_count_for_optimization() *
+        constexpr uint minimumPointsForOptimization =
+                parameters::optimization::minimumPointForOptimization *
                 3; // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process...
         const bool shouldUseStagedPoints = matches.size() < minimumPointsForOptimization;
 

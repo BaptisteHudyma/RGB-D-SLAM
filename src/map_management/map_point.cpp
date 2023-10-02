@@ -1,4 +1,5 @@
 #include "map_point.hpp"
+#include "parameters.hpp"
 
 namespace rgbd_slam::map_management {
 
@@ -66,8 +67,8 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
                          const bool shouldAddToMatches,
                          const bool useAdvancedSearch) const noexcept
 {
-    static const double searchSpaceRadius = Parameters::get_search_matches_distance();
-    static const double advancedSearchSpaceRadius = Parameters::get_search_matches_distance() * 2;
+    constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
+    constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;
     const double searchRadius = useAdvancedSearch ? advancedSearchSpaceRadius : searchSpaceRadius;
 
     // try to match with tracking
@@ -215,14 +216,15 @@ bool StagedMapPoint::should_remove_from_staged() const noexcept { return get_con
 
 bool StagedMapPoint::should_add_to_local_map() const noexcept
 {
-    const static double minimumConfidenceForLocalMap = Parameters::get_minimum_confidence_for_local_map();
+    constexpr double minimumConfidenceForLocalMap = parameters::mapping::pointMinimumConfidenceForMap;
     return (get_confidence() > minimumConfidenceForLocalMap);
 }
 
 double StagedMapPoint::get_confidence() const noexcept
 {
-    const static double stagedPointconfidence = static_cast<double>(Parameters::get_point_staged_age_confidence());
-    const double confidence = static_cast<double>(_successivMatchedCount) / stagedPointconfidence;
+    constexpr double oneOverStagedPointconfidence =
+            1.0 / static_cast<double>(parameters::mapping::pointStagedAgeConfidence);
+    const double confidence = static_cast<double>(_successivMatchedCount) * oneOverStagedPointconfidence;
     return std::clamp(confidence, -1.0, 1.0);
 }
 
@@ -242,8 +244,7 @@ LocalMapPoint::LocalMapPoint(const StagedMapPoint& stagedPoint) :
 
 bool LocalMapPoint::is_lost() const noexcept
 {
-    const static uint maximumUnmatchBeforeRemoval = Parameters::get_maximum_unmatched_before_removal();
-    return (_failedTrackingCount > maximumUnmatchBeforeRemoval);
+    return (_failedTrackingCount > parameters::mapping::pointUnmatchedCountToLoose);
 }
 
 } // namespace rgbd_slam::map_management

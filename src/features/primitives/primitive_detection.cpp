@@ -142,9 +142,9 @@ void Primitive_Detection::reset_data() noexcept
 
 void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) noexcept
 {
-    const static float sinAngleForMerge =
-            sinf(static_cast<float>(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0));
-    const static float planeMergeDistanceThreshold = Parameters::get_maximum_plane_merge_distance();
+    constexpr float sinAngleForMerge =
+            sinf(static_cast<float>(parameters::detection::maximumPlaneAngleForMerge_d * M_PI / 180.0));
+    constexpr float planeMergeDistanceThreshold = parameters::detection::maximumPlaneDistanceForMerge_mm;
 
     // for each planeGrid cell
     const size_t planeGridSize = _planeGrid.size();
@@ -231,8 +231,8 @@ Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinde
     {
         // get seed candidates
         const std::vector<uint>& seedCandidates = _histogram.get_points_from_most_frequent_bin();
-        const static uint planeSeedCount =
-                static_cast<uint>(Parameters::get_minimum_plane_seed_proportion() * _totalCellCount);
+        const uint planeSeedCount =
+                static_cast<uint>(parameters::detection::minimumPlaneSeedProportion * _totalCellCount);
         if (seedCandidates.size() < planeSeedCount)
         {
             break;
@@ -315,8 +315,8 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
         }
     }
 
-    const static uint minimumCellActivated =
-            static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * _totalCellCount);
+    const uint minimumCellActivated =
+            static_cast<uint>(parameters::detection::minimumCellActivatedProportion * _totalCellCount);
     if (not isPlaneFitable or cellActivatedCount < minimumCellActivated)
     {
         _histogram.remove_point(seedId);
@@ -492,8 +492,7 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes() noexcept
                 continue;
 
             // normals are close enough, distance is small enough
-            const static float planeMergeDistanceThreshold = Parameters::get_maximum_plane_merge_distance();
-            if (planeToExpand.can_be_merged(mergePlane, planeMergeDistanceThreshold))
+            if (planeToExpand.can_be_merged(mergePlane, parameters::detection::maximumPlaneDistanceForMerge_mm))
             {
                 // merge plane segments
                 planeToExpand.expand_segment(mergePlane);

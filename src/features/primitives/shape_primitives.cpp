@@ -35,8 +35,8 @@ Cylinder::Cylinder(const Cylinder& cylinder) : _normal(cylinder._normal), _radiu
 
 bool Cylinder::is_similar(const Cylinder& cylinder) const noexcept
 {
-    const static double minimumNormalDotDiff =
-            abs(cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0));
+    static const double minimumNormalDotDiff =
+            abs(cos(parameters::matching::maximumAngleForPlaneMatch_d * M_PI / 180.0));
     return std::abs(_normal.dot(cylinder._normal)) > minimumNormalDotDiff;
 }
 
@@ -76,8 +76,8 @@ bool Plane::is_normal_similar(const Plane& plane) const noexcept { return is_nor
 
 bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept
 {
-    const static double minimumNormalDotDiff =
-            abs(cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0));
+    static const double minimumNormalDotDiff =
+            abs(cos(parameters::matching::maximumAngleForPlaneMatch_d * M_PI / 180.0));
     return abs(_parametrization.get_cos_angle(planeParametrization)) > minimumNormalDotDiff;
 }
 
@@ -88,7 +88,7 @@ bool Plane::is_distance_similar(const Plane& plane) const noexcept
 
 bool Plane::is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept
 {
-    const static double maximumPlanMatchDistance = Parameters::get_maximum_plane_distance_for_match();
+    constexpr double maximumPlanMatchDistance = parameters::matching::maximumDistanceForPlaneMatch_mm;
     return abs(_parametrization.get_d() - planeParametrization.get_d()) < maximumPlanMatchDistance;
 }
 

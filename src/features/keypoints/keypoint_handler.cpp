@@ -44,8 +44,8 @@ Keypoint_Handler::Keypoint_Handler(const uint depthImageCols,
     // knn matcher
     _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
 
-    const static double cellSize = Parameters::get_search_matches_distance() + 1.0;
-    assert(cellSize > 0);
+    constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
+    static_assert(cellSize > 0);
 
     _cellCountX = static_cast<uint>(std::ceil(depthImageCols / cellSize));
     _cellCountY = static_cast<uint>(std::ceil(depthImageRows / cellSize));
@@ -147,7 +147,7 @@ uint Keypoint_Handler::get_search_space_index(const uint x, const uint y) const 
 Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(
         const utils::ScreenCoordinate2D& pointToPlace) const noexcept
 {
-    const static double cellSize = Parameters::get_search_matches_distance() + 1.0;
+    constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     const uint_pair cellCoordinates(std::clamp(floor(pointToPlace.y() / cellSize), 0.0, _cellCountY - 1.0),
                                     std::clamp(floor(pointToPlace.x() / cellSize), 0.0, _cellCountX - 1.0));
     return cellCoordinates;
@@ -189,7 +189,7 @@ void Keypoint_Handler::fill_keypoint_mask(const utils::ScreenCoordinate2D& point
                                           cv::Mat_<uchar>& keyPointMask) const noexcept
 {
     // Squared search diameter, to compare distance without sqrt
-    const static float squaredSearchDiameter = static_cast<float>(pow(Parameters::get_search_matches_distance(), 2.0));
+    constexpr float squaredSearchDiameter = static_cast<float>(pow(parameters::matching::matchSearchRadius_px, 2.0));
     for (const uint keypointIndex: keypointIndexContainer)
     {
         // ignore this point if it is already matched (prevent multiple matches of one point)
@@ -260,8 +260,8 @@ int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projected
     if (_keypoints.empty() or _descriptors.rows <= 0)
         return INVALID_MATCH_INDEX;
 
-    static const double cellSize = Parameters::get_search_matches_distance() + 1.0;
-    assert(cellSize > 0);
+    constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
+    static_assert(cellSize > 0);
     const uint searchSpaceCellRadius = static_cast<uint>(std::ceil(searchSpaceRadius / cellSize));
     assert(searchSpaceCellRadius > 0);
 

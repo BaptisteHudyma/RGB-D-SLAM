@@ -19,8 +19,8 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     const size_t imageHeight = Parameters::get_camera_1_size_y();
     const size_t imageWidth = Parameters::get_camera_1_size_x();
 
-    const uint maxKeypointToDetect = Parameters::get_maximum_number_of_detectable_features();
-    const size_t cellSize = Parameters::get_keypoint_detection_cell_size();
+    constexpr uint maxKeypointToDetect = parameters::detection::maxNumberOfPointsToDetect;
+    constexpr size_t cellSize = parameters::detection::keypointCellDetectionSize_px;
     const size_t numCellsY = 1 + ((imageHeight - 1) / cellSize);
     const size_t numCellsX = 1 + ((imageWidth - 1) / cellSize);
 
@@ -92,7 +92,7 @@ std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& g
 cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(
         const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept
 {
-    const static int radiusOfAreaAroundPoint = static_cast<int>(Parameters::get_search_matches_distance()); // in pixels
+    constexpr int radiusOfAreaAroundPoint = static_cast<int>(parameters::matching::matchSearchRadius_px); // in pixels
     const static cv::Scalar fillColor(0);
     cv::Mat_<uchar> mask(imageSize, 255);
     for (const cv::Point2f& point: keypointContainer)
@@ -125,14 +125,14 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
      */
 
     // load parameters
-    const static int pyramidWindowSize = static_cast<int>(Parameters::get_optical_flow_pyramid_window_size());
-    const static int pyramidDepth = static_cast<int>(Parameters::get_optical_flow_pyramid_depth());
-    const static double maxDistance = Parameters::get_search_matches_distance();
-    const static uint minimumPointsForOptimization = Parameters::get_minimum_point_count_for_optimization();
-    const static uint maximumPointsForLocalMap = Parameters::get_maximum_point_count_per_frame();
-    const static double maximumMatchDistance = Parameters::get_maximum_match_distance();
+    constexpr int pyramidWindowSize = static_cast<int>(parameters::detection::opticalFlowPyramidWindowSize_px);
+    constexpr int pyramidDepth = static_cast<int>(parameters::detection::opticalFlowPyramidDepth);
+    constexpr double maxDistance = parameters::matching::matchSearchRadius_px;
+    constexpr uint minimumPointsForOptimization = parameters::optimization::minimumPointForOptimization;
+    constexpr uint maximumPointsForLocalMap = parameters::detection::maximumPointPerFrame;
+    constexpr double maximumMatchDistance = parameters::matching::maximumMatchDistance;
 
-    const static cv::Size pyramidSize(pyramidWindowSize,
+    static const cv::Size pyramidSize(pyramidWindowSize,
                                       pyramidWindowSize); // must be >= than the size used in calcOpticalFlow
 
     // build pyramid
@@ -341,8 +341,8 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
     assert(featureDetector != nullptr);
     assert(not featureDetector.empty());
     assert(grayImage.size() == mask.size());
-    static const uint maxKeypointToDetect = Parameters::get_maximum_number_of_detectable_features();
-    static const uint maxKeypointToDetectByCell = maxKeypointToDetect / _detectionWindows.size();
+    constexpr uint maxKeypointToDetect = parameters::detection::maxNumberOfPointsToDetect;
+    const uint maxKeypointToDetectByCell = maxKeypointToDetect / _detectionWindows.size();
 
     frameKeypoints.clear();
     frameKeypoints.reserve(maxKeypointToDetect);
