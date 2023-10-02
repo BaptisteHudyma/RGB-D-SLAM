@@ -282,7 +282,7 @@ class DatasetParser
             GroundTruth closestGT;
             double closestScore = std::numeric_limits<double>::max();
             bool readyToBreak = false; // save a lot of processing power when frames are organized
-            for (const std::pair<double, GroundTruth> groundTruth: groundTruthData)
+            for (const auto& groundTruth: groundTruthData)
             {
                 const double gtTimeStamp = groundTruth.first;
 
@@ -299,6 +299,7 @@ class DatasetParser
                         closestGT.timeStamp = groundTruth.second.timeStamp;
                     }
                 }
+                // opti: quit when we get far away from the timestamp
                 else if (readyToBreak)
                     break;
             }

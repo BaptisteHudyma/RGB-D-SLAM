@@ -6,7 +6,6 @@
 #include "distance_utils.hpp"
 #include "logger.hpp"
 #include <Eigen/src/Core/Matrix.h>
-#include <iostream>
 
 namespace rgbd_slam::tracking {
 
@@ -92,7 +91,6 @@ template<int N, int M> class SharedKalmanFilter
 
         if (not utils::is_covariance_valid(newCovariance))
         {
-            std::cerr << newCovariance << std::endl;
             outputs::log_error(
                     "Kalman filter produced and invalid covariance, returning estimated state and covariance");
             assert(utils::is_covariance_valid(estimateErrorCovariance));

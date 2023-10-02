@@ -9,7 +9,6 @@
 #include <boost/geometry/algorithms/detail/convex_hull/interface.hpp>
 #include <boost/geometry/algorithms/union.hpp>
 #include <boost/qvm/mat_operations.hpp>
-#include <iostream>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>

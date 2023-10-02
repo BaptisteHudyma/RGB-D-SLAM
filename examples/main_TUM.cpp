@@ -110,7 +110,7 @@ rgbd_slam::utils::Pose get_ground_truth(const std::string& groundTruthLine)
     inputGroundTruth >> timestamp >> groundTruthPosition.x() >> groundTruthPosition.y() >> groundTruthPosition.z() >>
             groundTruthRotation.x() >> groundTruthRotation.y() >> groundTruthRotation.z() >> groundTruthRotation.w();
 
-    return rgbd_slam::utils::Pose(groundTruthPosition * 1000, groundTruthRotation);
+    return rgbd_slam::utils::Pose(groundTruthPosition * 1000.0, groundTruthRotation);
 }
 
 std::vector<Data> get_data_association(const std::string& dataPath)
@@ -172,7 +172,7 @@ int main(int argc, char* argv[])
     }
 
     rgbd_slam::utils::Pose pose;
-    if (const GroundTruth& initialGroundTruth = datasetContainer[1].groundTruth; initialGroundTruth.isValid)
+    if (const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth; initialGroundTruth.isValid)
     {
         pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
     }

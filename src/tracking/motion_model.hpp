@@ -22,14 +22,7 @@ class Motion_Model
      * \param[in] shouldIncreaseVariance If true, an uncertainty will be added to variance of the predicted pose
      */
     [[nodiscard]] utils::Pose predict_next_pose(const utils::Pose& currentPose,
-                                                const bool shouldIncreaseVariance = true) const noexcept;
-
-    /**
-     * \brief Update the motion model using the refined pose
-     *
-     * \param[in] pose Refined pose estimation
-     */
-    void update_model(const utils::Pose& pose) noexcept;
+                                                const bool shouldIncreaseVariance = true) noexcept;
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -53,6 +46,8 @@ class Motion_Model
     vector3 _lastPosition;
     // Last computed linear velocity
     vector3 _linearVelocity;
+
+    bool _isLastPositionSet = false;
 };
 
 } // namespace rgbd_slam::tracking

@@ -3,7 +3,6 @@
 #include "../../parameters.hpp"
 #include "../../utils/random.hpp"
 #include "Eigen/Eigenvalues"
-#include <iostream>
 
 namespace rgbd_slam::features::primitives {
 
