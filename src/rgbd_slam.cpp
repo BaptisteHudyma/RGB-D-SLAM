@@ -124,7 +124,9 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
     const double depthImageTreatmentStartTime = static_cast<double>(cv::getTickCount());
     // organized 3D depth image
     matrixf cloudArrayOrganized;
-    _depthOps->get_organized_cloud_array(inputDepthImage, cloudArrayOrganized);
+    const bool didOrganizedCloudArraySucceded =
+            _depthOps->get_organized_cloud_array(inputDepthImage, cloudArrayOrganized);
+    assert(didOrganizedCloudArraySucceded);
     _meanDepthMapTreatmentDuration +=
             (static_cast<double>(cv::getTickCount()) - depthImageTreatmentStartTime) / cv::getTickFrequency();
 

@@ -23,24 +23,24 @@ class Histogram
      * \param[in] points Points to put directly in the histogram bins
      * \param[in] isUnasignedMask Array of size points.rows(), indicating which point is in a planar segment
      */
-    void init_histogram(const matrixd& points, const vectorb& isUnasignedMask);
+    void init_histogram(const matrixd& points, const vectorb& isUnasignedMask) noexcept;
 
     /**
      * \brief Return the points in the bin containing the most points
      *
      * \return Container storing the points in the biggest bin
      */
-    std::vector<uint> get_points_from_most_frequent_bin() const;
+    [[nodiscard]] std::vector<uint> get_points_from_most_frequent_bin() const noexcept;
 
     /**
      * \brief Remove all points from a bin
      */
-    void remove_point(const uint pointId);
+    void remove_point(const uint pointId) noexcept;
 
     /**
      * \brief Empty bins and clear content
      */
-    void reset();
+    void reset() noexcept;
 
   private:
     std::vector<uint> _H;

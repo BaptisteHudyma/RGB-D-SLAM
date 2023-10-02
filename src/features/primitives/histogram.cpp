@@ -17,13 +17,13 @@ Histogram::Histogram(const uint binPerCoordCount) :
     reset();
 }
 
-void Histogram::reset()
+void Histogram::reset() noexcept
 {
     std::fill_n(_H.begin(), _H.size(), 0);
     _B.clear();
 }
 
-void Histogram::init_histogram(const matrixd& points, const vectorb& isUnasignedMask)
+void Histogram::init_histogram(const matrixd& points, const vectorb& isUnasignedMask) noexcept
 {
     //_reset();
     _pointCount = static_cast<uint>(points.rows());
@@ -52,7 +52,7 @@ void Histogram::init_histogram(const matrixd& points, const vectorb& isUnasigned
     }
 }
 
-std::vector<uint> Histogram::get_points_from_most_frequent_bin() const
+std::vector<uint> Histogram::get_points_from_most_frequent_bin() const noexcept
 {
     int mostFrequentBin = -1;
     uint maxOccurencesCount = 0;
@@ -84,7 +84,7 @@ std::vector<uint> Histogram::get_points_from_most_frequent_bin() const
     return pointsIds;
 }
 
-void Histogram::remove_point(const uint pointId)
+void Histogram::remove_point(const uint pointId) noexcept
 {
     if (pointId >= _B.size())
     {

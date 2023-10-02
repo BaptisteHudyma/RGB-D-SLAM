@@ -77,7 +77,7 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height, co
 void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
                                           const cv::Mat_<float>& depthImage,
                                           plane_container& planeContainer,
-                                          cylinder_container& primitiveContainer)
+                                          cylinder_container& primitiveContainer) noexcept
 {
     // reset used data structures
     reset_data();
@@ -121,7 +121,7 @@ void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
     refineTime += td;
 }
 
-void Primitive_Detection::reset_data()
+void Primitive_Detection::reset_data() noexcept
 {
     _histogram.reset();
 
@@ -140,7 +140,7 @@ void Primitive_Detection::reset_data()
     // kernels should not be cleared
 }
 
-void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray)
+void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) noexcept
 {
     const static float sinAngleForMerge =
             sinf(static_cast<float>(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0));
@@ -192,7 +192,7 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
 #endif
 }
 
-uint Primitive_Detection::init_histogram()
+uint Primitive_Detection::init_histogram() noexcept
 {
     uint remainingPlanarCells = 0;
     matrixd histBins(_totalCellCount, 2);
@@ -220,7 +220,8 @@ uint Primitive_Detection::init_histogram()
     return remainingPlanarCells;
 }
 
-Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinders(const uint remainingPlanarCells)
+Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinders(
+        const uint remainingPlanarCells) noexcept
 {
     intpair_vector cylinder2regionMap;
 
@@ -266,7 +267,7 @@ Primitive_Detection::intpair_vector Primitive_Detection::grow_planes_and_cylinde
 
 void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
                                                      uint& untriedPlanarCellsCount,
-                                                     intpair_vector& cylinder2regionMap)
+                                                     intpair_vector& cylinder2regionMap) noexcept
 {
     assert(seedId < _planeGrid.size());
     const Plane_Segment& planeToGrow = _planeGrid[seedId];
@@ -344,7 +345,7 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
 }
 
 void Primitive_Detection::add_plane_segment_to_features(const Plane_Segment& newPlaneSegment,
-                                                        const vectorb& isActivatedMap)
+                                                        const vectorb& isActivatedMap) noexcept
 {
     const size_t activationMapSize = isActivatedMap.size();
 
@@ -368,7 +369,7 @@ void Primitive_Detection::add_plane_segment_to_features(const Plane_Segment& new
 bool Primitive_Detection::find_plane_segment_in_cylinder(const Cylinder_Segment& cylinderSegment,
                                                          const uint cellActivatedCount,
                                                          const uint segId,
-                                                         Plane_Segment& newMergedPlane)
+                                                         Plane_Segment& newMergedPlane) noexcept
 {
     bool isPlaneSegmentFitable = false;
     for (uint col = 0; col < cellActivatedCount; ++col)
@@ -393,7 +394,7 @@ void Primitive_Detection::add_cylinder_to_features(const Cylinder_Segment& cylin
                                                    const uint cellActivatedCount,
                                                    const uint segId,
                                                    const Plane_Segment& newMergedPlane,
-                                                   intpair_vector& cylinder2regionMap)
+                                                   intpair_vector& cylinder2regionMap) noexcept
 {
     // Model selection based on MSE
     if (newMergedPlane.get_MSE() < cylinderSegment.get_MSE_at(segId))
@@ -432,7 +433,7 @@ void Primitive_Detection::add_cylinder_to_features(const Cylinder_Segment& cylin
 
 void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount,
                                            const vectorb& isActivatedMap,
-                                           intpair_vector& cylinder2regionMap)
+                                           intpair_vector& cylinder2regionMap) noexcept
 {
     // try cylinder fitting on the activated planes
     const Cylinder_Segment& cylinderSegment = Cylinder_Segment(_planeGrid, isActivatedMap, cellActivatedCount);
@@ -456,7 +457,7 @@ void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount,
     }
 }
 
-Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
+Primitive_Detection::uint_vector Primitive_Detection::merge_planes() noexcept
 {
     const uint planeCount = static_cast<uint>(_planeSegments.size());
 
@@ -518,7 +519,7 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes()
 
 void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMergeLabels,
                                                    const cv::Mat_<float>& depthImage,
-                                                   plane_container& planeContainer)
+                                                   plane_container& planeContainer) noexcept
 {
     const uint planeCount = static_cast<uint>(_planeSegments.size());
     planeContainer.clear();
@@ -595,7 +596,7 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
 
 std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const Plane_Segment& planeSegment,
                                                                          const cv::Mat_<float>& depthImage,
-                                                                         const cv::Mat_<uchar>& mask) const
+                                                                         const cv::Mat_<uchar>& mask) const noexcept
 {
     // erode considering the border as an obstacle
     cv::Mat_<uchar> maskEroded(mask.size());
@@ -651,7 +652,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<fl
                                                                const int yStart,
                                                                const int xEnd,
                                                                const int yEnd,
-                                                               auto is_point_in_plane) const
+                                                               auto is_point_in_plane) const noexcept
 {
     std::vector<vector3> definingPoints;
 
@@ -721,7 +722,7 @@ std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<fl
 }
 
 void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap,
-                                                      cylinder_container& cylinderContainer)
+                                                      cylinder_container& cylinderContainer) noexcept
 {
     const size_t numberOfCylinder = cylinderToRegionMap.size();
     cylinderContainer.clear();
@@ -753,7 +754,7 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
 }
 
 Matrixb Primitive_Detection::get_connected_components_matrix(const cv::Mat_<int>& segmentMap,
-                                                             const size_t numberOfPlanes) const
+                                                             const size_t numberOfPlanes) const noexcept
 {
     assert(segmentMap.rows > 0);
     assert(segmentMap.cols > 0);
@@ -797,7 +798,7 @@ Matrixb Primitive_Detection::get_connected_components_matrix(const cv::Mat_<int>
 void Primitive_Detection::region_growing(const uint x,
                                          const uint y,
                                          const Plane_Segment& planeToExpand,
-                                         vectorb& isActivatedMap)
+                                         vectorb& isActivatedMap) noexcept
 {
     assert(isActivatedMap.size() == _isUnassignedMask.size());
     assert(_horizontalCellsCount > 0);

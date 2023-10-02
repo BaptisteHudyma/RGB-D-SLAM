@@ -20,7 +20,7 @@ class IPrimitive
   public:
     IPrimitive() = default;
 
-    bool can_add_to_map() const
+    bool can_add_to_map() const noexcept
     {
         // TODO
         return true;
@@ -52,7 +52,7 @@ class Cylinder : public IPrimitive
      *
      * \return A double between 0 and 1, with 1 indicating identical cylinders
      */
-    bool is_similar(const Cylinder& prim) const;
+    [[nodiscard]] bool is_similar(const Cylinder& prim) const noexcept;
 
     /**
      * \brief Get the distance of a point to the surface of the cylinder
@@ -60,7 +60,7 @@ class Cylinder : public IPrimitive
      * \return The signed distance of the point to the surface, 0 if the point is on the surface, and < 0 if the point
      * is inside the cylinder
      */
-    double get_distance(const vector3& point) const;
+    [[nodiscard]] double get_distance(const vector3& point) const noexcept;
 
     vector3 _normal;
     double _radius;
@@ -94,25 +94,25 @@ class Plane : public IPrimitive
      * \param[in] prim Another primitive to compare to
      * \return A true if those shapes are similar
      */
-    bool is_normal_similar(const Plane& prim) const;
-    bool is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const;
+    [[nodiscard]] bool is_normal_similar(const Plane& prim) const noexcept;
+    [[nodiscard]] bool is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept;
 
     /**
      * \brief Check that the distance between the two plane d component is less than a threshold
      * \param[in] prim Another primitive to compare to
      */
-    bool is_distance_similar(const Plane& prim) const;
-    bool is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const;
+    [[nodiscard]] bool is_distance_similar(const Plane& prim) const noexcept;
+    [[nodiscard]] bool is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept;
 
-    bool is_similar(const Cylinder& prim) const;
+    [[nodiscard]] bool is_similar(const Cylinder& prim) const noexcept;
 
-    vector3 get_normal() const { return _parametrization.get_normal(); };
-    double get_d() const { return _parametrization.get_d(); };
-    utils::PlaneCameraCoordinates get_parametrization() const { return _parametrization; };
-    utils::CameraCoordinate get_center() const { return get_normal() * (-get_d()); };
-    matrix33 get_point_cloud_covariance() const { return _pointCloudCovariance; };
+    [[nodiscard]] vector3 get_normal() const noexcept { return _parametrization.get_normal(); };
+    [[nodiscard]] double get_d() const noexcept { return _parametrization.get_d(); };
+    [[nodiscard]] utils::PlaneCameraCoordinates get_parametrization() const noexcept { return _parametrization; };
+    [[nodiscard]] utils::CameraCoordinate get_center() const noexcept { return get_normal() * (-get_d()); };
+    [[nodiscard]] matrix33 get_point_cloud_covariance() const noexcept { return _pointCloudCovariance; };
 
-    utils::CameraPolygon get_boundary_polygon() const { return _boundaryPolygon; };
+    [[nodiscard]] utils::CameraPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
 
     ~Plane() = default;
 
@@ -120,7 +120,7 @@ class Plane : public IPrimitive
     /**
      * Return the distance of this primitive to a point
      */
-    double get_distance(const vector3& point) const;
+    [[nodiscard]] double get_distance(const vector3& point) const noexcept;
 
     utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
     matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from

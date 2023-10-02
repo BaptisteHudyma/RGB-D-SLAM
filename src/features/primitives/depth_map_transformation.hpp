@@ -28,7 +28,7 @@ class Depth_Map_Transformation
      * \param[in] rectifiedDepth The depth image, transformed to align with the rgb image
      * \return True if the transformation was successful
      */
-    bool rectify_depth(const cv::Mat_<float>& depthImage, cv::Mat_<float>& rectifiedDepth);
+    [[nodiscard]] bool rectify_depth(const cv::Mat_<float>& depthImage, cv::Mat_<float>& rectifiedDepth) noexcept;
 
     /**
      * \brief Create an point cloud organized by cells of cellSize*cellSize pixels
@@ -37,25 +37,26 @@ class Depth_Map_Transformation
      * \param[out] organizedCloudArray A cloud point divided in blocs of cellSize * cellSize
      * \return True if the process succeeded
      */
-    bool get_organized_cloud_array(const cv::Mat_<float>& depthImage, matrixf& organizedCloudArray);
+    [[nodiscard]] bool get_organized_cloud_array(const cv::Mat_<float>& depthImage,
+                                                 matrixf& organizedCloudArray) noexcept;
 
     /**
      * \brief Controls the state of this class.
      *
      * \return False if the camera parameters could not be loaded
      */
-    bool is_ok() const { return _isOk; };
+    [[nodiscard]] bool is_ok() const noexcept { return _isOk; };
 
   protected:
     /**
      * \brief Loads the camera intrinsic parameters
      */
-    bool load_parameters();
+    [[nodiscard]] bool load_parameters() noexcept;
 
     /**
      * \brief Must be called after load_parameters. Fills the computation matrices
      */
-    void init_matrices();
+    void init_matrices() noexcept;
 
   private:
     uint _width;

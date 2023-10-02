@@ -43,7 +43,7 @@ class Cylinder_Segment
      * \param[in] point The point to compute distance to
      * \return The signed distance between the point and cylinder surface
      */
-    double get_distance(const vector3& point) const;
+    [[nodiscard]] double get_distance(const vector3& point) const noexcept;
 
     ~Cylinder_Segment();
 
@@ -53,58 +53,58 @@ class Cylinder_Segment
      * \brief
      * \return The number of plane segments fitted in this cylinder surface
      */
-    uint get_segment_count() const;
+    [[nodiscard]] uint get_segment_count() const noexcept;
 
     /**
      * \brief
      * \param[in] index The index of the cylinder part to search
      * \return the Mean Sqared Error of the fitting process
      */
-    double get_MSE_at(const uint index) const;
+    [[nodiscard]] double get_MSE_at(const uint index) const noexcept;
 
     /**
      * \brief
      */
-    bool is_inlier_at(const uint indexA, const uint indexB) const;
-
-    /**
-     * \brief
-     * \param[in] index The index of the cylinder part to search
-     */
-    uint get_local_to_global_mapping(const uint index) const;
+    [[nodiscard]] bool is_inlier_at(const uint indexA, const uint indexB) const noexcept;
 
     /**
      * \brief
      * \param[in] index The index of the cylinder part to search
      */
-    const vector3& get_axis1_point(const uint index) const;
+    [[nodiscard]] uint get_local_to_global_mapping(const uint index) const noexcept;
+
+    /**
+     * \brief
+     * \param[in] index The index of the cylinder part to search
+     */
+    [[nodiscard]] const vector3& get_axis1_point(const uint index) const noexcept;
 
     /**
      * \param[in] index The index of the cylinder part to search
      */
-    const vector3& get_axis2_point(const uint index) const;
+    [[nodiscard]] const vector3& get_axis2_point(const uint index) const noexcept;
 
     /**
      * \brief Return the normal of a portion of this cylinder segement
      *
      * \param[in] index The index of the portion to return, between 0 and _normalsAxis1Axis2.size()
      */
-    double get_axis_normal(const uint index) const;
+    [[nodiscard]] double get_axis_normal(const uint index) const noexcept;
 
     /**
      * \brief Return the radius of this cylinder segment
      * \return The radius of the cylinder segment, in frame units
      */
-    double get_radius(const uint index) const;
+    [[nodiscard]] double get_radius(const uint index) const noexcept;
 
     /**
      * \brief Return the absolute result of the dot product of the two normals
      * \param[in] other The cyclinder segment to compare normal with
      * \return A double between 0 and 1, 0 when the normals are orthogonal, 1 il they are parallels.
      */
-    double get_normal_similarity(const Cylinder_Segment& other) const;
+    [[nodiscard]] double get_normal_similarity(const Cylinder_Segment& other) const noexcept;
 
-    const vector3 get_normal() const;
+    [[nodiscard]] vector3 get_normal() const noexcept;
 
   protected:
     /**
@@ -123,9 +123,9 @@ class Cylinder_Segment
                            const matrixd& planeNormals,
                            const matrixd& projectedCentroids,
                            const Matrixb& idsLeftMask,
-                           Matrixb& IFinal) const;
+                           Matrixb& IFinal) const noexcept;
 
-    double get_distance(const vector3& point, const size_t segmentId) const;
+    [[nodiscard]] double get_distance(const vector3& point, const size_t segmentId) const noexcept;
 
   private:
     vector3 _axis;

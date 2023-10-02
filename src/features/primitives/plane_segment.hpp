@@ -23,7 +23,7 @@ class Plane_Segment
      */
     Plane_Segment(const Plane_Segment& seg);
 
-    static void set_static_members(const uint cellWidth, const uint pointPerCellCount)
+    static void set_static_members(const uint cellWidth, const uint pointPerCellCount) noexcept
     {
         assert(pointPerCellCount > 0);
         assert(cellWidth > 0);
@@ -37,7 +37,7 @@ class Plane_Segment
         _isStaticSet = true;
     }
 
-    void init_plane_segment(const matrixf& depthCloudArray, const uint cellId);
+    void init_plane_segment(const matrixf& depthCloudArray, const uint cellId) noexcept;
 
     /**
      * \brief Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane
@@ -45,20 +45,20 @@ class Plane_Segment
      *
      * \param[in] planeSegment Another plane segment
      */
-    void expand_segment(const Plane_Segment& planeSegment);
+    void expand_segment(const Plane_Segment& planeSegment) noexcept;
 
     /**
      * \brief Compute the dot product of two plane normals, It is thecos of the angle between those normals
      * \param[in] p The other plane segment to check the angle to
      * \return A number between -1 and 1
      */
-    double get_cos_angle(const Plane_Segment& p) const;
+    [[nodiscard]] double get_cos_angle(const Plane_Segment& p) const noexcept;
 
     /**
      * \brief Return the distance from a plane to the given point
      */
-    double get_point_distance(const vector3& point) const;
-    double get_point_distance_squared(const vector3& point) const;
+    [[nodiscard]] double get_point_distance(const vector3& point) const noexcept;
+    [[nodiscard]] double get_point_distance_squared(const vector3& point) const noexcept;
 
     /**
      * \brief Check if this plane segment and another onsatisfy the mertge conditions
@@ -66,53 +66,53 @@ class Plane_Segment
      * \param[in] maxMatchDistance Maximum distance after which two planes wont be merged
      * \return True if the planes could be merged. It is based on the normal angles and center distances
      */
-    bool can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const;
+    [[nodiscard]] bool can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const noexcept;
 
     /**
      * \brief Fit a plane to the contained points using PCA
      */
-    void fit_plane();
+    void fit_plane() noexcept;
 
     /**
      * \brief Clears this segment parameters to restart analysis
      */
-    void clear_plane_parameters(); // clear node plane parameters
+    void clear_plane_parameters() noexcept; // clear node plane parameters
 
     /**
      * \brief Compute the covariance of the points in the plane
      * \return the filled covariance matrix of the point cloud
      */
-    matrix33 get_point_cloud_covariance() const;
+    [[nodiscard]] matrix33 get_point_cloud_covariance() const noexcept;
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-    double get_MSE() const { return _MSE; };
-    vector3 get_normal() const { return _parametrization.get_normal(); };
-    utils::CameraCoordinate get_centroid() const { return _centroid; };
-    utils::CameraCoordinate get_center() const { return _parametrization.get_center(); };
-    double get_plane_d() const { return _parametrization.get_d(); };
-    vector4 get_parametrization() const { return _parametrization.get_parametrization(); };
-    bool is_planar() const { return _isPlanar; };
-    double get_score() const { return _score; };
-    uint get_point_count() const { return _pointCount; };
+    [[nodiscard]] double get_MSE() const noexcept { return _MSE; };
+    [[nodiscard]] vector3 get_normal() const noexcept { return _parametrization.get_normal(); };
+    [[nodiscard]] utils::CameraCoordinate get_centroid() const noexcept { return _centroid; };
+    [[nodiscard]] utils::CameraCoordinate get_center() const noexcept { return _parametrization.get_center(); };
+    [[nodiscard]] double get_plane_d() const noexcept { return _parametrization.get_d(); };
+    [[nodiscard]] vector4 get_parametrization() const noexcept { return _parametrization.get_parametrization(); };
+    [[nodiscard]] bool is_planar() const noexcept { return _isPlanar; };
+    [[nodiscard]] double get_score() const noexcept { return _score; };
+    [[nodiscard]] uint get_point_count() const noexcept { return _pointCount; };
 
   protected:
     /**
      * \brief Check that the point cloud for this plane patch is verticaly continuous
      * \param[in] depthMatrix The depth representation of the image
      */
-    bool is_cell_vertical_continuous(const matrixf& depthMatrix) const;
+    [[nodiscard]] bool is_cell_vertical_continuous(const matrixf& depthMatrix) const noexcept;
 
     /**
      * \brief Check that the point cloud for this plane patch is horizontaly continuous
      * \param[in] depthMatrix The depth representation of the image
      */
-    bool is_cell_horizontal_continuous(const matrixf& depthMatrix) const;
+    [[nodiscard]] bool is_cell_horizontal_continuous(const matrixf& depthMatrix) const noexcept;
 
     /**
      * \brief return the covariance of this point cloud computed from König-Huygen formula
      */
-    matrix33 get_point_cloud_Huygen_covariance() const;
+    [[nodiscard]] matrix33 get_point_cloud_Huygen_covariance() const noexcept;
 
   private:
     static inline uint _ptsPerCellCount;   // max nb of points per initial cell

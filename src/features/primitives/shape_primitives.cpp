@@ -33,14 +33,14 @@ Cylinder::Cylinder(const Cylinder_Segment& cylinderSeg) : _radius(0)
 
 Cylinder::Cylinder(const Cylinder& cylinder) : _normal(cylinder._normal), _radius(cylinder._radius) {}
 
-bool Cylinder::is_similar(const Cylinder& cylinder) const
+bool Cylinder::is_similar(const Cylinder& cylinder) const noexcept
 {
     const static double minimumNormalDotDiff =
             abs(cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0));
     return std::abs(_normal.dot(cylinder._normal)) > minimumNormalDotDiff;
 }
 
-double Cylinder::get_distance(const vector3& point) const
+double Cylinder::get_distance(const vector3& point) const noexcept
 {
     // TODO implement
     outputs::log_error("Error: get_point_distance is not implemented for Cylinder objects");
@@ -72,30 +72,33 @@ Plane::Plane(const Plane& plane) :
     assert(_boundaryPolygon.boundary_length() >= 3);
 }
 
-bool Plane::is_normal_similar(const Plane& plane) const { return is_normal_similar(plane._parametrization); }
+bool Plane::is_normal_similar(const Plane& plane) const noexcept { return is_normal_similar(plane._parametrization); }
 
-bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const
+bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept
 {
     const static double minimumNormalDotDiff =
             abs(cos(Parameters::get_maximum_plane_normals_angle_for_match() * M_PI / 180.0));
     return abs(_parametrization.get_cos_angle(planeParametrization)) > minimumNormalDotDiff;
 }
 
-bool Plane::is_distance_similar(const Plane& plane) const { return is_distance_similar(plane._parametrization); }
+bool Plane::is_distance_similar(const Plane& plane) const noexcept
+{
+    return is_distance_similar(plane._parametrization);
+}
 
-bool Plane::is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const
+bool Plane::is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept
 {
     const static double maximumPlanMatchDistance = Parameters::get_maximum_plane_distance_for_match();
     return abs(_parametrization.get_d() - planeParametrization.get_d()) < maximumPlanMatchDistance;
 }
 
-bool Plane::is_similar(const Cylinder& cylinder) const
+bool Plane::is_similar(const Cylinder& cylinder) const noexcept
 {
     // TODO: not implemented
     outputs::log_error("is_similar is not implemented between plane and cylinder");
     return false;
 }
 
-double Plane::get_distance(const vector3& point) const { return get_normal().dot(point - get_center()); }
+double Plane::get_distance(const vector3& point) const noexcept { return get_normal().dot(point - get_center()); }
 
 } // namespace rgbd_slam::features::primitives

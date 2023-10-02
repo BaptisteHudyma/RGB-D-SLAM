@@ -44,7 +44,7 @@ class Primitive_Detection
     void find_primitives(const matrixf& depthMatrix,
                          const cv::Mat_<float>& depthImage,
                          plane_container& planeContainer,
-                         cylinder_container& primitiveContainer);
+                         cylinder_container& primitiveContainer) noexcept;
 
     // perf measurments
     double resetTime;
@@ -57,26 +57,26 @@ class Primitive_Detection
     /**
      * \brief Reset the stored data in prevision of another analysis
      */
-    void reset_data();
+    void reset_data() noexcept;
 
     /**
      * \brief Init planeGrid and cellDistanceTols
      * \param[in] depthCloudArray Organized point cloud extracted from depth images
      */
-    void init_planar_cell_fitting(const matrixf& depthCloudArray);
+    void init_planar_cell_fitting(const matrixf& depthCloudArray) noexcept;
 
     /**
      * \brief Initialize and fill the histogram bins
      * \return  Number of initial planar surfaces
      */
-    uint init_histogram();
+    [[nodiscard]] uint init_histogram() noexcept;
 
     /**
      * \brief grow planes and find cylinders from those planes
      * \param[in] remainingPlanarCells Unmatched plane count
      * \return A container that associates a cylinder ID with all the planes IDs that composes it
      */
-    intpair_vector grow_planes_and_cylinders(const uint remainingPlanarCells);
+    [[nodiscard]] intpair_vector grow_planes_and_cylinders(const uint remainingPlanarCells) noexcept;
 
     /**
      * \brief When given a plan seed, try to make it grow with it's neighboring cells. Try to fit a cylinder to those
@@ -88,7 +88,7 @@ class Primitive_Detection
      */
     void grow_plane_segment_at_seed(const uint seedId,
                                     uint& untriedPlanarCellsCount,
-                                    intpair_vector& cylinder2regionMap);
+                                    intpair_vector& cylinder2regionMap) noexcept;
 
     /**
      * \brief Add the given plane segment to the tracked features
@@ -96,7 +96,7 @@ class Primitive_Detection
      * \param[in] isActivatedMap container of the patches to add to this plane. A value at true means that the
      * associated patch index is part of this plane
      */
-    void add_plane_segment_to_features(const Plane_Segment& newPlaneSegment, const vectorb& isActivatedMap);
+    void add_plane_segment_to_features(const Plane_Segment& newPlaneSegment, const vectorb& isActivatedMap) noexcept;
 
     /**
      * \brief Compute the plane hull in plane coordinates
@@ -105,20 +105,20 @@ class Primitive_Detection
      * \param[in] mask The mask of this plane segment in image space
      * \return The boundary point of the polygon
      */
-    std::vector<vector3> compute_plane_segment_boundary(const Plane_Segment& planeSegment,
-                                                        const cv::Mat_<float>& depthImage,
-                                                        const cv::Mat_<uchar>& mask) const;
+    [[nodiscard]] std::vector<vector3> compute_plane_segment_boundary(const Plane_Segment& planeSegment,
+                                                                      const cv::Mat_<float>& depthImage,
+                                                                      const cv::Mat_<uchar>& mask) const noexcept;
 
     /**
      * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary
      * \return The best boundary point candidates
      */
-    std::vector<vector3> find_defining_points(const cv::Mat_<float>& depthImage,
-                                              const int xStart,
-                                              const int yStart,
-                                              const int xEnd,
-                                              const int yEnd,
-                                              auto is_point_in_plane) const;
+    [[nodiscard]] std::vector<vector3> find_defining_points(const cv::Mat_<float>& depthImage,
+                                                            const int xStart,
+                                                            const int yStart,
+                                                            const int xEnd,
+                                                            const int yEnd,
+                                                            auto is_point_in_plane) const noexcept;
 
     /**
      * \brief Try to fit a plane to a cylinder
@@ -129,10 +129,10 @@ class Primitive_Detection
      * false
      * \return True if a plane fitting was found
      */
-    bool find_plane_segment_in_cylinder(const Cylinder_Segment& cylinderSegment,
-                                        const uint cellActivatedCount,
-                                        const uint segId,
-                                        Plane_Segment& newMergedPlane);
+    [[nodiscard]] bool find_plane_segment_in_cylinder(const Cylinder_Segment& cylinderSegment,
+                                                      const uint cellActivatedCount,
+                                                      const uint segId,
+                                                      Plane_Segment& newMergedPlane) noexcept;
 
     /**
      * \param[in] cylinderSegment The cylinder segment to fit
@@ -146,7 +146,7 @@ class Primitive_Detection
                                   const uint cellActivatedCount,
                                   const uint segId,
                                   const Plane_Segment& newMergedPlane,
-                                  intpair_vector& cylinder2regionMap);
+                                  intpair_vector& cylinder2regionMap) noexcept;
 
     /**
      * \brief
@@ -158,14 +158,14 @@ class Primitive_Detection
      */
     void cylinder_fitting(const uint cellActivatedCount,
                           const vectorb& isActivatedMap,
-                          intpair_vector& cylinder2regionMap);
+                          intpair_vector& cylinder2regionMap) noexcept;
 
     /**
      * \brief Merge close planes by comparing normals and MSE
      *
      * \return Container of merged indexes: associates plane index to other plane index
      */
-    uint_vector merge_planes();
+    [[nodiscard]] uint_vector merge_planes() noexcept;
 
     /**
      * \brief Add final plane to primitives, compute a mask for display
@@ -176,7 +176,7 @@ class Primitive_Detection
      */
     void add_planes_to_primitives(const uint_vector& planeMergeLabels,
                                   const cv::Mat_<float>& depthImage,
-                                  plane_container& planeContainer);
+                                  plane_container& planeContainer) noexcept;
 
     /**
      * \brief Add final cylinders to primitives, compute a mask for display
@@ -184,7 +184,8 @@ class Primitive_Detection
      * \param[in] cylinderToRegionMap Associate a cylinder ID with all the planes IDs that composes it
      * \param[out] cylinderContainer Container of cylinders detected in this depth image
      */
-    void add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap, cylinder_container& cylinderContainer);
+    void add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap,
+                                     cylinder_container& cylinderContainer) noexcept;
 
     /**
      * \brief Recursively Grow a plane seed and merge it with it's neighbors
@@ -194,7 +195,10 @@ class Primitive_Detection
      * \param[in] planeToExpand The plane to grow
      * \param[in, out] isActivatedMap map of flags, indicating which plane segment were merged
      */
-    void region_growing(const uint x, const uint y, const Plane_Segment& planeToExpand, vectorb& isActivatedMap);
+    void region_growing(const uint x,
+                        const uint y,
+                        const Plane_Segment& planeToExpand,
+                        vectorb& isActivatedMap) noexcept;
 
     /**
      * \brief Fill an association matrix that links connected plane components
@@ -204,7 +208,8 @@ class Primitive_Detection
      *
      * \return A symmetrical boolean matrix, indicating if a plane segment is connected to another plane segment
      */
-    Matrixb get_connected_components_matrix(const cv::Mat_<int>& segmentMap, const size_t numberOfPlanes) const;
+    [[nodiscard]] Matrixb get_connected_components_matrix(const cv::Mat_<int>& segmentMap,
+                                                          const size_t numberOfPlanes) const noexcept;
 
   private:
     Histogram _histogram;
