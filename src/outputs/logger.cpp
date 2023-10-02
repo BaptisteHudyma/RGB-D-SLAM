@@ -4,7 +4,7 @@
 
 namespace rgbd_slam::outputs {
 
-void log(const std::string_view& message, const std::source_location& location)
+void log(const std::string_view& message, const std::source_location& location) noexcept
 {
     std::cout << "[INF] " << std::filesystem::path(location.file_name()).filename().string() << "(" << location.line()
               << ":" << location.column()
@@ -12,7 +12,7 @@ void log(const std::string_view& message, const std::source_location& location)
               //<< location.function_name() << " | "
               << message << std::endl;
 }
-void log_warning(const std::string_view& message, const std::source_location& location)
+void log_warning(const std::string_view& message, const std::source_location& location) noexcept
 {
     std::cerr << "[WARN] " << std::filesystem::path(location.file_name()).filename().string() << "(" << location.line()
               << ":" << location.column()
@@ -20,7 +20,7 @@ void log_warning(const std::string_view& message, const std::source_location& lo
               //<< location.function_name() << " | "
               << message << std::endl;
 }
-void log_error(const std::string_view& message, const std::source_location& location)
+void log_error(const std::string_view& message, const std::source_location& location) noexcept
 {
     std::cerr << "[ERR] " << std::filesystem::path(location.file_name()).filename().string() << "(" << location.line()
               << ":" << location.column()

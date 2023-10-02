@@ -101,7 +101,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 /**
  * \brief Return a string corresponding to the end status of the optimization
  */
-std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status)
+std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) noexcept
 {
     switch (status)
     {

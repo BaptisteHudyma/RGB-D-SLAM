@@ -25,7 +25,7 @@ IMap_Writer::~IMap_Writer()
  */
 XYZ_Map_Writer::XYZ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".xyz") {}
 
-void XYZ_Map_Writer::add_point(const vector3& pointCoordinates)
+void XYZ_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
 {
     if (not _file.is_open())
     {
@@ -36,7 +36,7 @@ void XYZ_Map_Writer::add_point(const vector3& pointCoordinates)
     _file << pointCoordinates.x() << " " << pointCoordinates.y() << " " << pointCoordinates.z() << "\n";
 }
 
-void XYZ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
+void XYZ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates) noexcept
 {
     (void)coordinates;
     // not implemented for xyz
@@ -57,7 +57,7 @@ PCD_Map_Writer::PCD_Map_Writer(const std::string& filename) : IMap_Writer(filena
     _file << "DATA ascii\n";
 }
 
-void PCD_Map_Writer::add_point(const vector3& pointCoordinates)
+void PCD_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
 {
     if (not _file.is_open())
     {
@@ -78,7 +78,7 @@ void PCD_Map_Writer::add_point(const vector3& pointCoordinates)
     _file << pointCoordinates.x() << " " << pointCoordinates.y() << " " << pointCoordinates.z() << "\n";
 }
 
-void PCD_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
+void PCD_Map_Writer::add_polygon(const std::vector<vector3>& coordinates) noexcept
 {
     (void)coordinates;
     // not implemented for pcd
@@ -90,7 +90,7 @@ void PCD_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
 
 OBJ_Map_Writer::OBJ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".obj") {}
 
-void OBJ_Map_Writer::add_point(const vector3& pointCoordinates)
+void OBJ_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
 {
     if (not _file.is_open())
     {
@@ -103,7 +103,7 @@ void OBJ_Map_Writer::add_point(const vector3& pointCoordinates)
     _file << "p -1\n";
 }
 
-void OBJ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates)
+void OBJ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates) noexcept
 {
     if (not _file.is_open())
     {

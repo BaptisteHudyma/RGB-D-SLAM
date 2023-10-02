@@ -15,9 +15,9 @@ class IMap_Writer
     IMap_Writer(const std::string& filename);
     virtual ~IMap_Writer();
 
-    virtual void add_point(const vector3& pointCoordinates) = 0;
+    virtual void add_point(const vector3& pointCoordinates) noexcept = 0;
 
-    virtual void add_polygon(const std::vector<vector3>& coordinates) = 0;
+    virtual void add_polygon(const std::vector<vector3>& coordinates) noexcept = 0;
 
   protected:
     std::ofstream _file;
@@ -32,9 +32,9 @@ class XYZ_Map_Writer : public IMap_Writer
   public:
     XYZ_Map_Writer(const std::string& filename);
 
-    void add_point(const vector3& pointCoordinates) override;
+    void add_point(const vector3& pointCoordinates) noexcept override;
 
-    void add_polygon(const std::vector<vector3>& coordinates) override;
+    void add_polygon(const std::vector<vector3>& coordinates) noexcept override;
 };
 
 /**
@@ -46,9 +46,9 @@ class PCD_Map_Writer : public IMap_Writer
   public:
     PCD_Map_Writer(const std::string& filename);
 
-    void add_point(const vector3& pointCoordinates) override;
+    void add_point(const vector3& pointCoordinates) noexcept override;
 
-    void add_polygon(const std::vector<vector3>& coordinates) override;
+    void add_polygon(const std::vector<vector3>& coordinates) noexcept override;
 };
 
 /**
@@ -60,9 +60,9 @@ class OBJ_Map_Writer : public IMap_Writer
   public:
     OBJ_Map_Writer(const std::string& filename);
 
-    void add_point(const vector3& pointCoordinates) override;
+    void add_point(const vector3& pointCoordinates) noexcept override;
 
-    void add_polygon(const std::vector<vector3>& coordinates) override;
+    void add_polygon(const std::vector<vector3>& coordinates) noexcept override;
 };
 
 } // namespace rgbd_slam::outputs

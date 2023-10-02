@@ -16,7 +16,7 @@
 #include <boost/geometry/geometries/polygon.hpp>
 #include <boost/geometry/geometries/multi_polygon.hpp>
 #include <boost/geometry/index/rtree.hpp>
-#include <boost/function_output_iterator.hpp>
+#include <boost/iterator/function_output_iterator.hpp>
 
 #include <boost/geometry/algorithms/detail/overlay/self_turn_points.hpp>
 #include <boost/geometry/policies/robustness/get_rescale_policy.hpp>
@@ -285,12 +285,6 @@ static inline std::vector<std::pair<ring_t, double>> dissolve_generate_rings(
 
             // Store the point in output polygon
             push_point(value.p);
-
-            // Remove the key from the starting keys list
-            auto compare_key = [&key](pseudo_vertice_key const& i) {
-                return (key.index_1 == i.index_1 && key.index_2 == i.index_2 && key.scale == i.scale &&
-                        key.reroute == i.reroute);
-            };
 
             start_keys.erase(key);
 

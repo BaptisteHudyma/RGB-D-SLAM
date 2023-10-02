@@ -25,10 +25,10 @@ namespace rgbd_slam::pose_optimization {
  * \param[out] pointMatcheSets The set of inliers/outliers of this transformation
  * \return The transformation score (sum of retroprojection distances)
  */
-double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate,
-                                  const double pointMaxRetroprojectionError,
-                                  const utils::PoseBase& transformationPose,
-                                  matches_containers::point_match_sets& pointMatcheSets)
+[[nodiscard]] double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate,
+                                                const double pointMaxRetroprojectionError,
+                                                const utils::PoseBase& transformationPose,
+                                                matches_containers::point_match_sets& pointMatcheSets) noexcept
 {
     pointMatcheSets.clear();
 
@@ -66,10 +66,10 @@ double get_point_inliers_outliers(const matches_containers::match_point_containe
  * \param[out] planeMatchSets The set of inliers/outliers of this transformation
  * \return The transformation score
  */
-double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate,
-                                  const double planeMaxRetroprojectionError,
-                                  const utils::PoseBase& transformationPose,
-                                  matches_containers::plane_match_sets& planeMatchSets)
+[[nodiscard]] double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate,
+                                                const double planeMaxRetroprojectionError,
+                                                const utils::PoseBase& transformationPose,
+                                                matches_containers::plane_match_sets& planeMatchSets) noexcept
 {
     planeMatchSets.clear();
 
@@ -100,11 +100,11 @@ double get_plane_inliers_outliers(const matches_containers::match_plane_containe
     return retroprojectionScore;
 }
 
-double get_features_inliers_outliers(const matches_containers::matchContainer& featuresToEvaluate,
-                                     const double pointMaxRetroprojectionError,
-                                     const double planeMaxRetroprojectionError,
-                                     const utils::PoseBase& transformationPose,
-                                     matches_containers::match_sets& featureSet)
+[[nodiscard]] double get_features_inliers_outliers(const matches_containers::matchContainer& featuresToEvaluate,
+                                                   const double pointMaxRetroprojectionError,
+                                                   const double planeMaxRetroprojectionError,
+                                                   const utils::PoseBase& transformationPose,
+                                                   matches_containers::match_sets& featureSet) noexcept
 {
     return get_point_inliers_outliers(featuresToEvaluate._points,
                                       pointMaxRetroprojectionError,
@@ -117,9 +117,10 @@ double get_features_inliers_outliers(const matches_containers::matchContainer& f
 /**
  * \brief Return a subset of a given inlier set
  */
-matches_containers::match_sets get_random_subset(const uint numberOfPointsToSample,
-                                                 const uint numberOfPlanesToSample,
-                                                 const matches_containers::matchContainer& matchedFeatures)
+[[nodiscard]] matches_containers::match_sets get_random_subset(
+        const uint numberOfPointsToSample,
+        const uint numberOfPlanesToSample,
+        const matches_containers::matchContainer& matchedFeatures) noexcept
 {
     matches_containers::match_sets matchSubset;
     // we can have a lot of points, so use a more efficient but with potential duplicates subset
@@ -136,7 +137,7 @@ matches_containers::match_sets get_random_subset(const uint numberOfPointsToSamp
 bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentPose,
                                                  const matches_containers::matchContainer& matchedFeatures,
                                                  utils::PoseBase& finalPose,
-                                                 matches_containers::match_sets& featureSets)
+                                                 matches_containers::match_sets& featureSets) noexcept
 {
     featureSets.clear();
 
@@ -295,7 +296,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
 bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
                                                const matches_containers::matchContainer& matchedFeatures,
                                                utils::Pose& optimizedPose,
-                                               matches_containers::match_sets& featureSets)
+                                               matches_containers::match_sets& featureSets) noexcept
 {
     if (compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets))
     {
@@ -316,7 +317,7 @@ bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
 
 bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& currentPose,
                                                       const matches_containers::match_sets& matchedFeatures,
-                                                      utils::PoseBase& optimizedPose)
+                                                      utils::PoseBase& optimizedPose) noexcept
 {
     const vector3& position = currentPose.get_position(); // Work in millimeters
     const quaternion& rotation = currentPose.get_orientation_quaternion();
@@ -378,7 +379,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
 bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPose,
                                               const matches_containers::match_sets& matchedFeatures,
                                               matrix66& poseCovariance,
-                                              const uint iterations)
+                                              const uint iterations) noexcept
 {
     assert(iterations > 0);
     poseCovariance.setZero();
@@ -419,7 +420,7 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
 
 bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& currentPose,
                                                          const matches_containers::match_sets& matchedFeatures,
-                                                         utils::PoseBase& optimizedPose)
+                                                         utils::PoseBase& optimizedPose) noexcept
 {
     matches_containers::match_sets variatedSet;
     for (const matches_containers::PointMatch& match: matchedFeatures._pointSets._inliers)

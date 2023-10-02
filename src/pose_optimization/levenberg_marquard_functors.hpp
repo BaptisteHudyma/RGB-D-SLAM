@@ -93,7 +93,7 @@ struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator>
  * \param[in] status The status to converto string
  * \return Returns a string with the human readable version of Eigen LevenbergMarquardt output status
  */
-std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status);
+[[nodiscard]] std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Status status) noexcept;
 
 } // namespace rgbd_slam::pose_optimization
 

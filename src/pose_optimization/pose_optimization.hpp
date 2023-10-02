@@ -24,10 +24,10 @@ class Pose_Optimization
      *
      * \return True if a valid pose was computed
      */
-    static bool compute_optimized_pose(const utils::Pose& currentPose,
-                                       const matches_containers::matchContainer& matchedFeatures,
-                                       utils::Pose& optimizedPose,
-                                       matches_containers::match_sets& featureSets);
+    [[nodiscard]] static bool compute_optimized_pose(const utils::Pose& currentPose,
+                                                     const matches_containers::matchContainer& matchedFeatures,
+                                                     utils::Pose& optimizedPose,
+                                                     matches_containers::match_sets& featureSets) noexcept;
 
     /**
      * \brief Compute the variance of a given pose, using multiple iterations of the optimization process
@@ -40,10 +40,10 @@ class Pose_Optimization
      *
      * \return True if the process succeded, or False
      */
-    static bool compute_pose_variance(const utils::PoseBase& optimizedPose,
-                                      const matches_containers::match_sets& matchedFeatures,
-                                      matrix66& poseCovariance,
-                                      const uint iterations = 100);
+    [[nodiscard]] static bool compute_pose_variance(const utils::PoseBase& optimizedPose,
+                                                    const matches_containers::match_sets& matchedFeatures,
+                                                    matrix66& poseCovariance,
+                                                    const uint iterations = 100) noexcept;
 
   private:
     /**
@@ -56,9 +56,9 @@ class Pose_Optimization
      *
      * \return True if a valid pose was computed
      */
-    static bool compute_optimized_global_pose(const utils::PoseBase& currentPose,
-                                              const matches_containers::match_sets& matchedFeatures,
-                                              utils::PoseBase& optimizedPose);
+    [[nodiscard]] static bool compute_optimized_global_pose(const utils::PoseBase& currentPose,
+                                                            const matches_containers::match_sets& matchedFeatures,
+                                                            utils::PoseBase& optimizedPose) noexcept;
 
     /**
      * \brief Compute an optimized pose, using a RANSAC methodology
@@ -70,10 +70,10 @@ class Pose_Optimization
      *
      * \return True if a valid pose and inliers were found
      */
-    static bool compute_pose_with_ransac(const utils::PoseBase& currentPose,
-                                         const matches_containers::matchContainer& matchedFeatures,
-                                         utils::PoseBase& finalPose,
-                                         matches_containers::match_sets& featureSets);
+    [[nodiscard]] static bool compute_pose_with_ransac(const utils::PoseBase& currentPose,
+                                                       const matches_containers::matchContainer& matchedFeatures,
+                                                       utils::PoseBase& finalPose,
+                                                       matches_containers::match_sets& featureSets) noexcept;
 
     /**
      * \brief
@@ -84,9 +84,9 @@ class Pose_Optimization
      *
      * \return True if the new pose optimization is succesful, or False
      */
-    static bool compute_random_variation_of_pose(const utils::PoseBase& currentPose,
-                                                 const matches_containers::match_sets& matchedFeatures,
-                                                 utils::PoseBase& optimizedPose);
+    [[nodiscard]] static bool compute_random_variation_of_pose(const utils::PoseBase& currentPose,
+                                                               const matches_containers::match_sets& matchedFeatures,
+                                                               utils::PoseBase& optimizedPose) noexcept;
 };
 
 } // namespace rgbd_slam::pose_optimization
