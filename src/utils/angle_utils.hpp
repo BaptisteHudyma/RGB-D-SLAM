@@ -8,17 +8,17 @@ namespace rgbd_slam::utils {
 /**
  * \brief Compute a quaternion from the given euler angles, in radians
  */
-quaternion get_quaternion_from_euler_angles(const EulerAngles& eulerAngles);
+[[nodiscard]] quaternion get_quaternion_from_euler_angles(const EulerAngles& eulerAngles) noexcept;
 
 /**
  * \brief Compute euler angles from a given quaternion
  */
-EulerAngles get_euler_angles_from_quaternion(const quaternion& quat);
+[[nodiscard]] EulerAngles get_euler_angles_from_quaternion(const quaternion& quat) noexcept;
 
 /**
  * \brief Compute a rotation matrix from a euler angle container
  */
-matrix33 get_rotation_matrix_from_euler_angles(const EulerAngles& eulerAngles);
+[[nodiscard]] matrix33 get_rotation_matrix_from_euler_angles(const EulerAngles& eulerAngles) noexcept;
 
 } // namespace rgbd_slam::utils
 

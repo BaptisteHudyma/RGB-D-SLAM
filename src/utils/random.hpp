@@ -14,7 +14,7 @@ class Random
     /**
      * \brief Return a seeded random double between 0 and 1, around a uniform distribution
      */
-    static double get_random_double()
+    [[nodiscard]] static double get_random_double()
     {
         thread_local std::mt19937 randomEngine(_seed);
         thread_local std::uniform_real_distribution distribution(0.0, 1.0);
@@ -25,7 +25,7 @@ class Random
     /**
      * \brief Return a seeded random double between -1 and 1, around a normal distribution
      */
-    static double get_normal_double()
+    [[nodiscard]] static double get_normal_double()
     {
         thread_local std::mt19937 randomEngine(_seed);
         thread_local std::normal_distribution distribution(0.0, 1.0);
@@ -33,7 +33,7 @@ class Random
         return distribution(randomEngine);
     }
 
-    template<int Size> static Eigen::Vector<double, Size> get_normal_doubles()
+    template<int Size> [[nodiscard]] static Eigen::Vector<double, Size> get_normal_doubles()
     {
         Eigen::Vector<double, Size> vec;
         for (uint i = 0; i < Size; ++i)
@@ -41,7 +41,10 @@ class Random
         return vec;
     }
 
-    static uint get_random_uint(const uint maxValue) { return static_cast<uint>(maxValue * get_random_double()); }
+    [[nodiscard]] static uint get_random_uint(const uint maxValue)
+    {
+        return static_cast<uint>(maxValue * get_random_double());
+    }
 
 #ifndef MAKE_DETERMINISTIC
     inline static const uint _seed = std::time(0);

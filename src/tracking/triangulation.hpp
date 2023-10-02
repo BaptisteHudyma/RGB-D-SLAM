@@ -24,16 +24,17 @@ class Triangulation
      *
      * \return True is the triangulation was successful
      */
-    static bool triangulate(const WorldToCameraMatrix& currentWorldToCamera,
-                            const WorldToCameraMatrix& newWorldToCamera,
-                            const utils::ScreenCoordinate2D& point2Da,
-                            const utils::ScreenCoordinate2D& point2Db,
-                            utils::WorldCoordinate& triangulatedPoint);
+    [[nodiscard]] static bool triangulate(const WorldToCameraMatrix& currentWorldToCamera,
+                                          const WorldToCameraMatrix& newWorldToCamera,
+                                          const utils::ScreenCoordinate2D& point2Da,
+                                          const utils::ScreenCoordinate2D& point2Db,
+                                          utils::WorldCoordinate& triangulatedPoint) noexcept;
 
     /**
      * \brief Return a weak supposition of a new pose, from an optimized pose
      */
-    static utils::Pose get_supposed_pose(const utils::Pose& pose, const double baselinePoseSupposition);
+    [[nodiscard]] static utils::Pose get_supposed_pose(const utils::Pose& pose,
+                                                       const double baselinePoseSupposition) noexcept;
 
   private:
     /**
@@ -41,10 +42,10 @@ class Triangulation
      *
      * \return True if the retroprojection is valid
      */
-    static bool is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
-                                         const utils::ScreenCoordinate2D& screenPoint,
-                                         const WorldToCameraMatrix& worldToCamera,
-                                         const double& maximumRetroprojectionError);
+    [[nodiscard]] static bool is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
+                                                       const utils::ScreenCoordinate2D& screenPoint,
+                                                       const WorldToCameraMatrix& worldToCamera,
+                                                       const double& maximumRetroprojectionError) noexcept;
 };
 
 } // namespace rgbd_slam::tracking

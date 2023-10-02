@@ -22,7 +22,7 @@ namespace rgbd_slam::utils {
 /**
  * \brief Select the transform vector furthest from the normal
  */
-vector3 select_correct_transform(const vector3& normal)
+vector3 select_correct_transform(const vector3& normal) noexcept
 {
     const double distX = abs(normal.dot(vector3::UnitX()));
     const double distY = abs(normal.dot(vector3::UnitY()));
@@ -45,7 +45,7 @@ vector3 select_correct_transform(const vector3& normal)
  * \brief Compute the two vectors that span the plane
  * \return a pair of vector u and v, normal to the plane normal
  */
-std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
+std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal) noexcept
 {
     assert(double_equal(normal.norm(), 1.0));
 
@@ -78,7 +78,7 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 vector2 get_projected_plan_coordinates(const vector3& pointToProject,
                                        const vector3& planeCenter,
                                        const vector3& xAxis,
-                                       const vector3& yAxis)
+                                       const vector3& yAxis) noexcept
 {
     assert(double_equal(xAxis.norm(), 1.0));
     assert(double_equal(yAxis.norm(), 1.0));
@@ -99,7 +99,7 @@ vector2 get_projected_plan_coordinates(const vector3& pointToProject,
 vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
                                          const vector3& planeCenter,
                                          const vector3& xAxis,
-                                         const vector3& yAxis)
+                                         const vector3& yAxis) noexcept
 {
     assert(double_equal(xAxis.norm(), 1.0));
     assert(double_equal(yAxis.norm(), 1.0));
@@ -108,7 +108,7 @@ vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
     return planeCenter + pointToProject.x() * xAxis + pointToProject.y() * yAxis;
 }
 
-Polygon::polygon get_static_screen_boundary_polygon()
+Polygon::polygon get_static_screen_boundary_polygon() noexcept
 {
     // define a polygon that span the screen space
     static const uint screenSizeX = Parameters::get_camera_1_size_x();
@@ -209,7 +209,7 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     }
 }
 
-Polygon::polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn)
+Polygon::polygon Polygon::compute_convex_hull(const std::vector<vector2>& pointsIn) noexcept
 {
     boost::geometry::model::multi_point<point_2d> hull;
     boost::geometry::model::multi_point<point_2d> input;
@@ -224,7 +224,7 @@ Polygon::polygon Polygon::compute_convex_hull(const std::vector<vector2>& points
     return pol;
 }
 
-Polygon::polygon Polygon::compute_concave_hull(const std::vector<vector2>& pointsIn)
+Polygon::polygon Polygon::compute_concave_hull(const std::vector<vector2>& pointsIn) noexcept
 {
     polygon poly;
     if (pointsIn.size() < 3)
@@ -261,12 +261,12 @@ Polygon::polygon Polygon::compute_concave_hull(const std::vector<vector2>& point
     return poly;
 }
 
-bool Polygon::contains(const vector2& point) const
+bool Polygon::contains(const vector2& point) const noexcept
 {
     return boost::geometry::within(boost::geometry::make<point_2d>(point.x(), point.y()), _polygon);
 }
 
-void Polygon::merge_union(const Polygon& other)
+void Polygon::merge_union(const Polygon& other) noexcept
 {
     const polygon& res = union_one(other.project(_xAxis, _yAxis, _center));
     if (res.outer().empty())
@@ -279,7 +279,7 @@ void Polygon::merge_union(const Polygon& other)
     simplify();
 }
 
-Polygon Polygon::project(const vector3& nextNormal, const vector3& nextCenter) const
+Polygon Polygon::project(const vector3& nextNormal, const vector3& nextCenter) const noexcept
 {
     assert(double_equal(nextNormal.norm(), 1.0));
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(nextNormal);
@@ -287,7 +287,7 @@ Polygon Polygon::project(const vector3& nextNormal, const vector3& nextCenter) c
     return project(res.first, res.second, nextCenter);
 }
 
-Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const
+Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const noexcept
 {
     assert(double_equal(nextXAxis.norm(), 1.0));
     assert(double_equal(nextYAxis.norm(), 1.0));
@@ -313,7 +313,7 @@ Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, con
     return Polygon(newBoundary, nextXAxis, nextYAxis, nextCenter);
 }
 
-Polygon Polygon::transform(const vector3& nextNormal, const vector3& nextCenter) const
+Polygon Polygon::transform(const vector3& nextNormal, const vector3& nextCenter) const noexcept
 {
     assert(double_equal(nextNormal.norm(), 1.0));
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(nextNormal);
@@ -331,7 +331,7 @@ Polygon Polygon::transform(const vector3& nextNormal, const vector3& nextCenter)
     return transform(nextXAxis, nextYAxis, nextCenter);
 }
 
-Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const
+Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const noexcept
 {
     assert(double_equal(nextXAxis.norm(), 1.0));
     assert(double_equal(nextYAxis.norm(), 1.0));
@@ -355,7 +355,7 @@ Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, c
 std::vector<Polygon::point_2d> Polygon::transform_boundary(const matrix44& transformationMatrix,
                                                            const vector3& nextXAxis,
                                                            const vector3& nextYAxis,
-                                                           const vector3& nextCenter) const
+                                                           const vector3& nextCenter) const noexcept
 {
     std::vector<point_2d> newBoundary;
     newBoundary.reserve(_polygon.outer().size());
@@ -376,7 +376,7 @@ std::vector<Polygon::point_2d> Polygon::transform_boundary(const matrix44& trans
     return newBoundary;
 }
 
-double Polygon::area() const
+double Polygon::area() const noexcept
 {
     if (_polygon.outer().size() < 3)
     {
@@ -386,7 +386,7 @@ double Polygon::area() const
     return boost::geometry::area(_polygon);
 }
 
-Polygon::polygon Polygon::union_one(const Polygon& other) const
+Polygon::polygon Polygon::union_one(const Polygon& other) const noexcept
 {
     multi_polygon res;
     boost::geometry::union_(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
@@ -414,7 +414,7 @@ Polygon::polygon Polygon::union_one(const Polygon& other) const
     return biggestPol;
 }
 
-Polygon::polygon Polygon::inter_one(const Polygon& other) const
+Polygon::polygon Polygon::inter_one(const Polygon& other) const noexcept
 {
     multi_polygon res;
     boost::geometry::intersection(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
@@ -441,7 +441,7 @@ Polygon::polygon Polygon::inter_one(const Polygon& other) const
     return biggestPol;
 }
 
-double Polygon::inter_over_union(const Polygon& other) const
+double Polygon::inter_over_union(const Polygon& other) const noexcept
 {
     const Polygon& projectedOther = other.project(_xAxis, _yAxis, _center);
     const polygon& un = union_one(projectedOther);
@@ -458,7 +458,7 @@ double Polygon::inter_over_union(const Polygon& other) const
     return finalInter / finalUnion;
 }
 
-double Polygon::inter_area(const Polygon& other) const
+double Polygon::inter_area(const Polygon& other) const noexcept
 {
     multi_polygon res;
     const bool processSuccess =
@@ -479,7 +479,7 @@ double Polygon::inter_area(const Polygon& other) const
     return areaSum;
 }
 
-double Polygon::union_area(const Polygon& other) const
+double Polygon::union_area(const Polygon& other) const noexcept
 {
     multi_polygon res;
     boost::geometry::union_(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
@@ -494,7 +494,7 @@ double Polygon::union_area(const Polygon& other) const
     return areaSum;
 }
 
-void Polygon::simplify(const double distanceThreshold)
+void Polygon::simplify(const double distanceThreshold) noexcept
 {
     // pre compute the area
     _area = area();
@@ -520,7 +520,7 @@ void Polygon::simplify(const double distanceThreshold)
     // dont change the polygon
 }
 
-std::vector<vector3> Polygon::get_unprojected_boundary() const
+std::vector<vector3> Polygon::get_unprojected_boundary() const noexcept
 {
     std::vector<vector3> projectedBoundary;
     projectedBoundary.reserve(_polygon.outer().size());
@@ -541,7 +541,7 @@ std::vector<vector3> Polygon::get_unprojected_boundary() const
  *
  */
 
-void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const
+void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const noexcept
 {
     ScreenCoordinate previousPoint;
     bool isPreviousPointSet = false;
@@ -562,7 +562,7 @@ void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const
     }
 }
 
-WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWorld) const
+WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(cameraToWorld);
 
@@ -582,7 +582,7 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
     return WorldPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
-std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
+std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const noexcept
 {
     std::vector<ScreenCoordinate> screenBoundary;
     screenBoundary.reserve(_polygon.outer().size());
@@ -607,7 +607,7 @@ std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
     return screenBoundary;
 }
 
-Polygon::polygon CameraPolygon::to_screen_space() const
+Polygon::polygon CameraPolygon::to_screen_space() const noexcept
 {
     const auto& t = get_screen_points();
 
@@ -625,7 +625,7 @@ Polygon::polygon CameraPolygon::to_screen_space() const
     return pol;
 }
 
-bool CameraPolygon::is_visible_in_screen_space() const
+bool CameraPolygon::is_visible_in_screen_space() const noexcept
 {
     // intersecton of this polygon in screen space, and the screen limits; if it exists, the polygon is visible
     multi_polygon res;
@@ -640,7 +640,7 @@ bool CameraPolygon::is_visible_in_screen_space() const
  *
  */
 
-CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCamera) const
+CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(worldToCamera);
 
@@ -660,13 +660,15 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
     return CameraPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
-void WorldPolygon::merge(const WorldPolygon& other)
+void WorldPolygon::merge(const WorldPolygon& other) noexcept
 {
     Polygon::merge_union(other.Polygon::project(_xAxis, _yAxis, _center));
     // no need to correct to polygon
 };
 
-void WorldPolygon::display(const WorldToCameraMatrix& worldToCamera, const cv::Scalar& color, cv::Mat& debugImage) const
+void WorldPolygon::display(const WorldToCameraMatrix& worldToCamera,
+                           const cv::Scalar& color,
+                           cv::Mat& debugImage) const noexcept
 {
     this->to_camera_space(worldToCamera).display(color, debugImage);
 }

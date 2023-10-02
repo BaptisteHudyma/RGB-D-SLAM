@@ -6,7 +6,7 @@
 
 namespace rgbd_slam {
 
-bool Parameters::parse_file(const std::string& fileName)
+bool Parameters::parse_file(const std::string& fileName) noexcept
 {
     // set the global parameters
     set_parameters();
@@ -50,7 +50,7 @@ bool Parameters::parse_file(const std::string& fileName)
     return _isValid;
 }
 
-void Parameters::load_defaut()
+void Parameters::load_defaut() noexcept
 {
     // set the global parameters
     set_parameters();
@@ -80,7 +80,7 @@ void Parameters::load_defaut()
     _camera2RotationZ = 0;
 }
 
-void Parameters::set_parameters()
+void Parameters::set_parameters() noexcept
 {
     // available core on this computer, 1 disables threads
     _coreNumber = 8;
@@ -150,7 +150,7 @@ void Parameters::set_parameters()
     _maximumDistanceForPlaneMatch = 100;  // Plane distance to consider match (millimiters)
 }
 
-void Parameters::check_parameters_validity()
+void Parameters::check_parameters_validity() noexcept
 {
     _isValid = true;
     if (_matchSearchRadius <= 0)

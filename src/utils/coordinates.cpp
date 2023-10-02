@@ -13,14 +13,17 @@ namespace rgbd_slam::utils {
 const double MIN_DEPTH_DISTANCE = 40;   // (millimeters) is the depth camera minimum reliable distance
 const double MAX_DEPTH_DISTANCE = 6000; // (millimeters) is the depth camera maximum reliable distance
 
-bool is_depth_valid(const double depth) { return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE); }
+bool is_depth_valid(const double depth) noexcept
+{
+    return (depth > MIN_DEPTH_DISTANCE and depth <= MAX_DEPTH_DISTANCE);
+}
 
 matrix44 get_transformation_matrix(const vector3& xFrom,
                                    const vector3& yFrom,
                                    const vector3& centerFrom,
                                    const vector3& xTo,
                                    const vector3& yTo,
-                                   const vector3& centerTo)
+                                   const vector3& centerTo) noexcept
 {
     // sanity checks
     assert(double_equal(xFrom.norm(), 1.0));
@@ -49,7 +52,7 @@ matrix44 get_transformation_matrix(const vector3& xFrom,
  *      SCREEN COORDINATES
  */
 
-CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
+CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const noexcept
 {
     assert(x() >= 0 and y() >= 0);
 
@@ -65,14 +68,14 @@ CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
     return cameraPoint;
 }
 
-matrix22 ScreenCoordinate2D::get_covariance() const
+matrix22 ScreenCoordinate2D::get_covariance() const noexcept
 {
     // TODO xy variance should also depend on the placement of the pixel in x and y
     const double xyVariance = 0.1 * 0.1;
     return matrix22({{xyVariance, 0.0}, {0.0, xyVariance}});
 }
 
-bool ScreenCoordinate2D::is_in_screen_boundaries() const
+bool ScreenCoordinate2D::is_in_screen_boundaries() const noexcept
 {
     static const uint screenSizeX = Parameters::get_camera_1_size_x();
     static const uint screenSizeY = Parameters::get_camera_1_size_y();
@@ -82,7 +85,7 @@ bool ScreenCoordinate2D::is_in_screen_boundaries() const
             x() >= 0 and x() <= screenSizeX and y() >= 0 and y() <= screenSizeY;
 }
 
-ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
+ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const noexcept
 {
     const double xyVariance = 0.1 * 0.1;
     const matrix22 covariance2D({{xyVariance, 0.0}, {0.0, xyVariance}});
@@ -96,13 +99,13 @@ ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
     return cov;
 }
 
-WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const
+WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates();
     return cameraPoint.to_world_coordinates(cameraToWorld);
 }
 
-CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
+CameraCoordinate ScreenCoordinate::to_camera_coordinates() const noexcept
 {
     assert(x() >= 0 and y() >= 0);
     assert(not double_equal(z(), 0.0));
@@ -119,7 +122,7 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
     return cameraPoint;
 }
 
-bool ScreenCoordinate::is_in_screen_boundaries() const
+bool ScreenCoordinate::is_in_screen_boundaries() const noexcept
 {
     static const uint screenSizeX = Parameters::get_camera_1_size_x();
     static const uint screenSizeY = Parameters::get_camera_1_size_y();
@@ -135,7 +138,7 @@ bool ScreenCoordinate::is_in_screen_boundaries() const
  *      CAMERA COORDINATES
  */
 
-bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const
+bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -153,13 +156,13 @@ bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) 
     return false;
 }
 
-WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const
+WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     const vector4 homogenousWorldCoords = cameraToWorld * this->get_homogenous();
     return WorldCoordinate(homogenousWorldCoords.head<3>());
 }
 
-bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const
+bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const noexcept
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -176,7 +179,7 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
     return false;
 }
 
-bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const
+bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept
 {
     const static double cameraFX = Parameters::get_camera_1_focal_x();
     const static double cameraFY = Parameters::get_camera_1_focal_y();
@@ -198,7 +201,7 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) co
  */
 
 bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
-                                            ScreenCoordinate& screenPoint) const
+                                            ScreenCoordinate& screenPoint) const noexcept
 {
     assert(not this->hasNaN());
 
@@ -209,7 +212,7 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
 }
 
 bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
-                                            ScreenCoordinate2D& screenPoint) const
+                                            ScreenCoordinate2D& screenPoint) const noexcept
 {
     if (ScreenCoordinate screenCoordinates; to_screen_coordinates(worldToCamera, screenCoordinates))
     {
@@ -221,7 +224,7 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
 }
 
 vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screenPoint,
-                                                const WorldToCameraMatrix& worldToCamera) const
+                                                const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     if (ScreenCoordinate2D projectedScreenPoint; to_screen_coordinates(worldToCamera, projectedScreenPoint))
     {
@@ -234,7 +237,7 @@ vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screen
 }
 
 double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint,
-                                     const WorldToCameraMatrix& worldToCamera) const
+                                     const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     const vector2& distance2D = get_signed_distance_2D(screenPoint, worldToCamera);
     if (distance2D.x() >= std::numeric_limits<double>::max() or distance2D.y() >= std::numeric_limits<double>::max())
@@ -245,14 +248,14 @@ double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint,
 }
 
 vector3 WorldCoordinate::get_signed_distance(const ScreenCoordinate& screenPoint,
-                                             const CameraToWorldMatrix& cameraToWorld) const
+                                             const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     const WorldCoordinate& projectedScreenPoint = screenPoint.to_world_coordinates(cameraToWorld);
     return this->base() - projectedScreenPoint;
 }
 
 double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
-                                     const CameraToWorldMatrix& cameraToWorld) const
+                                     const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
 }
@@ -261,7 +264,7 @@ double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
  *      CAMERA COORDINATES
  */
 
-CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const
+CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     // WorldCoordinate
     vector4 homogenousWorldCoordinates;
@@ -275,18 +278,20 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
  *      PLANE COORDINATES
  */
 
-PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const
+PlaneWorldCoordinates PlaneCameraCoordinates::to_world_coordinates(
+        const PlaneCameraToWorldMatrix& cameraToWorld) const noexcept
 {
     return PlaneWorldCoordinates(cameraToWorld.base() * this->get_parametrization());
 }
 
-PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const
+PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(
+        const PlaneWorldToCameraMatrix& worldToCamera) const noexcept
 {
     return PlaneCameraCoordinates(worldToCamera.base() * this->get_parametrization());
 }
 
 vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                                   const PlaneWorldToCameraMatrix& worldToCamera) const
+                                                   const PlaneWorldToCameraMatrix& worldToCamera) const noexcept
 {
     const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
     const vector3& cameraNormal = cameraPlane.get_normal();
@@ -301,7 +306,7 @@ vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates&
 /**
  * \brief Compute a reduced plane form, allowing for better optimization
  */
-vector3 get_plane_transformation(const PlaneCoordinates& plane)
+vector3 get_plane_transformation(const PlaneCoordinates& plane) noexcept
 {
     const vector3& normal = plane.get_normal();
     const double d = plane.get_d();
@@ -309,7 +314,7 @@ vector3 get_plane_transformation(const PlaneCoordinates& plane)
 }
 
 vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                                           const PlaneWorldToCameraMatrix& worldToCamera) const
+                                                           const PlaneWorldToCameraMatrix& worldToCamera) const noexcept
 {
     const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
 

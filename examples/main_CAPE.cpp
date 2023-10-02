@@ -145,7 +145,13 @@ int main(int argc, char* argv[])
     const std::stringstream dataPath("./data/CAPE/" + dataset + "/");
 
     // Load a default set of parameters
-    rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
+    const bool isParsingSuccesfull = rgbd_slam::Parameters::parse_file(dataPath.str() + "configuration.yaml");
+    if (not isParsingSuccesfull)
+    {
+        std::cout << "Could not parse the parameter file at  " << (dataPath.str() + "configuration.yaml") << std::endl;
+        return -1;
+    }
+
     const uint width = rgbd_slam::Parameters::get_camera_1_size_x();  // 640
     const uint height = rgbd_slam::Parameters::get_camera_1_size_y(); // 480
 

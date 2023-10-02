@@ -97,7 +97,7 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
     _motionModel.reset(_currentPose.get_position(), _currentPose.get_orientation_quaternion());
 }
 
-void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage)
+void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage) noexcept
 {
     cv::Mat_<float> rectifiedDepth;
     if (_depthOps->rectify_depth(depthImage, rectifiedDepth))
@@ -113,7 +113,7 @@ void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage)
 
 utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
                              const cv::Mat_<float>& inputDepthImage,
-                             const bool shouldDetectLines)
+                             const bool shouldDetectLines) noexcept
 {
     assert(static_cast<size_t>(inputDepthImage.rows) == _height);
     assert(static_cast<size_t>(inputDepthImage.cols) == _width);
@@ -169,7 +169,7 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
                                    const cv::Mat& originalRGB,
                                    const double elapsedTime,
                                    const bool shouldDisplayStagedPoints,
-                                   const bool shouldDisplayPrimitiveMasks) const
+                                   const bool shouldDisplayPrimitiveMasks) const noexcept
 {
     cv::Mat debugImage = originalRGB.clone();
 
@@ -204,7 +204,7 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
 
 utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
                                         const cv::Mat_<float>& depthImage,
-                                        const matrixf& cloudArrayOrganized)
+                                        const matrixf& cloudArrayOrganized) noexcept
 {
     // every now and then, restart the search of points even if we have enough features
     _computeKeypointCount = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) + 1;
@@ -298,14 +298,14 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     return newPose;
 }
 
-double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed)
+double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) noexcept
 {
     if (totalTimeElapsed <= 0)
         return 0;
     return std::round(treatmentTime / totalTimeElapsed * 10000) / 100;
 }
 
-void RGBD_SLAM::show_statistics(const double meanFrameTreatmentDuration) const
+void RGBD_SLAM::show_statistics(const double meanFrameTreatmentDuration) const noexcept
 {
     if (_totalFrameTreated > 0)
     {
