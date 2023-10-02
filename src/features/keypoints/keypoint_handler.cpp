@@ -6,14 +6,14 @@
 
 namespace rgbd_slam::features::keypoints {
 
-bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderSize)
+bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderSize) noexcept
 {
     assert(borderSize >= 0);
     return borderSize <= pt.x and borderSize <= pt.y and pt.x < static_cast<double>(im.cols) - borderSize and
            pt.y < static_cast<double>(im.rows) - borderSize;
 }
 
-double get_depth_approximation(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoordinates)
+double get_depth_approximation(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoordinates) noexcept
 {
     const double border = BORDER_SIZE;
     assert(border > 0);
@@ -58,7 +58,7 @@ Keypoint_Handler::Keypoint_Handler(const uint depthImageCols,
     }
 }
 
-void Keypoint_Handler::clear()
+void Keypoint_Handler::clear() noexcept
 {
     _keypoints.clear();
     _uniqueIdsToKeypointIndex.clear();
@@ -74,7 +74,7 @@ void Keypoint_Handler::clear()
 void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
                            const cv::Mat& inDescriptors,
                            const KeypointsWithIdStruct& lastKeypointsWithIds,
-                           const cv::Mat_<float>& depthImage)
+                           const cv::Mat_<float>& depthImage) noexcept
 {
     // clear last state
     clear();
@@ -138,14 +138,14 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
     }
 }
 
-uint Keypoint_Handler::get_search_space_index(const uint_pair& searchSpaceIndex) const
+uint Keypoint_Handler::get_search_space_index(const uint_pair& searchSpaceIndex) const noexcept
 {
     return get_search_space_index(searchSpaceIndex.second, searchSpaceIndex.first);
 }
-uint Keypoint_Handler::get_search_space_index(const uint x, const uint y) const { return y * _cellCountY + x; }
+uint Keypoint_Handler::get_search_space_index(const uint x, const uint y) const noexcept { return y * _cellCountY + x; }
 
 Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(
-        const utils::ScreenCoordinate2D& pointToPlace) const
+        const utils::ScreenCoordinate2D& pointToPlace) const noexcept
 {
     const static double cellSize = Parameters::get_search_matches_distance() + 1.0;
     const uint_pair cellCoordinates(std::clamp(floor(pointToPlace.y() / cellSize), 0.0, _cellCountY - 1.0),
@@ -155,7 +155,7 @@ Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(
 
 cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
                                                          const vectorb& isKeyPointMatchedContainer,
-                                                         const uint searchSpaceCellRadius) const
+                                                         const uint searchSpaceCellRadius) const noexcept
 {
     const auto [searchSpaceCoordinatesY, searchSpaceCoordinatesX] = get_search_space_coordinates(pointToSearch);
     // compute a search zone for the potential matches of this point
@@ -186,7 +186,7 @@ cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoor
 void Keypoint_Handler::fill_keypoint_mask(const utils::ScreenCoordinate2D& pointToSearch,
                                           const index_container& keypointIndexContainer,
                                           const vectorb& isKeyPointMatchedContainer,
-                                          cv::Mat_<uchar>& keyPointMask) const
+                                          cv::Mat_<uchar>& keyPointMask) const noexcept
 {
     // Squared search diameter, to compare distance without sqrt
     const static float squaredSearchDiameter = static_cast<float>(pow(Parameters::get_search_matches_distance(), 2.0));
@@ -205,7 +205,7 @@ void Keypoint_Handler::fill_keypoint_mask(const utils::ScreenCoordinate2D& point
     }
 }
 
-int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const
+int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const noexcept
 {
     if (_keypoints.empty())
         return INVALID_MATCH_INDEX;
@@ -223,7 +223,8 @@ int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const
     return INVALID_MATCH_INDEX;
 }
 
-int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId, const vectorb& isKeyPointMatchedContainer) const
+int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId,
+                                               const vectorb& isKeyPointMatchedContainer) const noexcept
 {
     assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
 
@@ -250,7 +251,7 @@ int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId, const ve
 int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint,
                                       const cv::Mat& mapPointDescriptor,
                                       const vectorb& isKeyPointMatchedContainer,
-                                      const double searchSpaceRadius) const
+                                      const double searchSpaceRadius) const noexcept
 {
     assert(_featuresMatcher != nullptr);
     assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());

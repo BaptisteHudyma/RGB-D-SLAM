@@ -58,7 +58,7 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 
 std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage,
                                                                 const cv::Mat_<uchar>& mask,
-                                                                const uint minimumPointsForValidity) const
+                                                                const uint minimumPointsForValidity) const noexcept
 {
     assert(grayImage.size() == mask.size());
     // search keypoints, using an advanced detector if not enough features are found
@@ -89,8 +89,8 @@ std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& g
     return framePoints;
 }
 
-cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(const cv::Size imageSize,
-                                                             const std::vector<cv::Point2f>& keypointContainer) const
+cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(
+        const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept
 {
     const static int radiusOfAreaAroundPoint = static_cast<int>(Parameters::get_search_matches_distance()); // in pixels
     const static cv::Scalar fillColor(0);
@@ -113,7 +113,7 @@ cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(const cv::Size imag
 Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImage,
                                                          const cv::Mat_<float>& depthImage,
                                                          const KeypointsWithIdStruct& lastKeypointsWithIds,
-                                                         const bool forceKeypointDetection)
+                                                         const bool forceKeypointDetection) noexcept
 {
     KeypointsWithIdStruct newKeypointsObject;
 
@@ -218,7 +218,7 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
                                                            const uint pyramidDepth,
                                                            const uint windowSize,
                                                            const double maxDistanceThreshold,
-                                                           KeypointsWithIdStruct& keypointStruct)
+                                                           KeypointsWithIdStruct& keypointStruct) noexcept
 {
     // START of optical flow
     if (imagePreviousPyramide.empty() or imageCurrentPyramide.empty() or lastKeypointsWithIds.empty())
@@ -314,14 +314,15 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
     }
 }
 
-double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed)
+double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) noexcept
 {
     if (totalTimeElapsed <= 0)
         return 0;
     return std::round(treatmentTime / totalTimeElapsed * 10000.0) / 100.0;
 }
 
-void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const
+void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDuration,
+                                           const uint frameCount) const noexcept
 {
     if (frameCount > 0)
     {
@@ -335,7 +336,7 @@ void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDurati
 void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
                                                       const cv::Mat_<uchar>& mask,
                                                       const cv::Ptr<cv::FeatureDetector>& featureDetector,
-                                                      std::vector<cv::KeyPoint>& frameKeypoints) const
+                                                      std::vector<cv::KeyPoint>& frameKeypoints) const noexcept
 {
     assert(featureDetector != nullptr);
     assert(not featureDetector.empty());
