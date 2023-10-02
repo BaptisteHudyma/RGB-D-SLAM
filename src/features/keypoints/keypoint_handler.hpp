@@ -19,7 +19,7 @@ struct DetectedKeyPoint
     utils::ScreenCoordinate _coordinates;
     cv::Mat _descriptor;
 
-    bool can_add_to_map() const
+    [[nodiscard]] bool can_add_to_map() const noexcept
     {
         // descriptor is not empty, depth is valid
         return (not _descriptor.empty()) and (utils::is_depth_valid(_coordinates.z()));
@@ -29,13 +29,14 @@ struct DetectedKeyPoint
 /**
  * \brief checks if a point is in an image, a with border
  */
-bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderSize = 0);
+[[nodiscard]] bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderSize = 0) noexcept;
 
 /**
  * \brief Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth
  * with the surrounding points to prevent invalid depth on edges
  */
-double get_depth_approximation(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoordinates);
+[[nodiscard]] double get_depth_approximation(const cv::Mat_<float>& depthImage,
+                                             const cv::Point2f& depthCoordinates) noexcept;
 
 /**
  * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the
@@ -51,44 +52,44 @@ struct KeypointsWithIdStruct
         keypointWithId(const size_t id, const cv::Point2f& point) : _id(id), _point(point) {};
     };
 
-    void clear()
+    void clear() noexcept
     {
         _keypoints.clear();
         _ids.clear();
     }
 
-    void reserve(const size_t numberOfNewKeypoints)
+    void reserve(const size_t numberOfNewKeypoints) noexcept
     {
         _keypoints.reserve(numberOfNewKeypoints);
         _ids.reserve(numberOfNewKeypoints);
     }
 
-    size_t size() const
+    [[nodiscard]] size_t size() const noexcept
     {
         assert(_keypoints.size() == _ids.size());
         return _keypoints.size();
     }
 
-    bool empty() const { return _keypoints.empty(); }
+    [[nodiscard]] bool empty() const noexcept { return _keypoints.empty(); }
 
-    keypointWithId at(const size_t index) const
+    [[nodiscard]] keypointWithId at(const size_t index) const noexcept
     {
         assert(index < size());
         return keypointWithId(_ids[index], _keypoints[index]);
     }
 
-    void add(const size_t id, const double pointX, const double pointY)
+    void add(const size_t id, const double pointX, const double pointY) noexcept
     {
         add(id, cv::Point2f(static_cast<float>(pointX), static_cast<float>(pointY)));
     }
-    void add(const size_t id, const cv::Point2f point)
+    void add(const size_t id, const cv::Point2f point) noexcept
     {
         _keypoints.push_back(point);
         _ids.emplace_back(id);
     }
 
-    const std::vector<cv::Point2f>& get_keypoints() const { return _keypoints; }
-    const std::vector<size_t>& get_ids() const { return _ids; }
+    const std::vector<cv::Point2f>& get_keypoints() const noexcept { return _keypoints; }
+    const std::vector<size_t>& get_ids() const noexcept { return _ids; }
 
   private:
     std::vector<cv::Point2f> _keypoints;
@@ -119,7 +120,7 @@ class Keypoint_Handler
     void set(std::vector<cv::Point2f>& inKeypoints,
              const cv::Mat& inDescriptors,
              const KeypointsWithIdStruct& lastKeypointsWithIds,
-             const cv::Mat_<float>& depthImage);
+             const cv::Mat_<float>& depthImage) noexcept;
 
     /**
      * \brief Get a tracking index if it exist, or -1.
@@ -127,8 +128,9 @@ class Keypoint_Handler
      * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched
      * \return the index of the tracked point in _keypoints, or -1 if no match was found
      */
-    int get_tracking_match_index(const size_t mapPointId, const vectorb& isKeyPointMatchedContainer) const;
-    int get_tracking_match_index(const size_t mapPointId) const;
+    [[nodiscard]] int get_tracking_match_index(const size_t mapPointId,
+                                               const vectorb& isKeyPointMatchedContainer) const noexcept;
+    [[nodiscard]] int get_tracking_match_index(const size_t mapPointId) const noexcept;
 
     /**
      * \brief get an index corresponding to the index of the point matches.
@@ -138,34 +140,37 @@ class Keypoint_Handler
      * \param[in] searchSpaceRadius The radius of the search space for potential matches, in pixels
      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
      */
-    int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint,
-                        const cv::Mat& mapPointDescriptor,
-                        const vectorb& isKeyPointMatchedContainer,
-                        const double searchSpaceRadius) const;
+    [[nodiscard]] int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint,
+                                      const cv::Mat& mapPointDescriptor,
+                                      const vectorb& isKeyPointMatchedContainer,
+                                      const double searchSpaceRadius) const noexcept;
 
     /**
      * \brief return the keypoint associated with the index
      */
-    utils::ScreenCoordinate get_keypoint(const uint index) const
+    [[nodiscard]] utils::ScreenCoordinate get_keypoint(const uint index) const noexcept
     {
         assert(index < _keypoints.size());
         return _keypoints[index];
     }
 
-    bool is_descriptor_computed(const uint index) const { return index < static_cast<uint>(_descriptors.rows); }
+    [[nodiscard]] bool is_descriptor_computed(const uint index) const noexcept
+    {
+        return index < static_cast<uint>(_descriptors.rows);
+    }
 
-    cv::Mat get_descriptor(const uint index) const
+    [[nodiscard]] cv::Mat get_descriptor(const uint index) const noexcept
     {
         assert(index < static_cast<uint>(_descriptors.rows));
 
         return _descriptors.row(static_cast<int>(index));
     }
 
-    size_t get_keypoint_count() const { return _keypoints.size(); }
+    [[nodiscard]] size_t get_keypoint_count() const noexcept { return _keypoints.size(); }
 
-    size_t size() const { return _keypoints.size(); };
+    [[nodiscard]] size_t size() const noexcept { return _keypoints.size(); };
 
-    DetectedKeyPoint at(const size_t index) const
+    [[nodiscard]] DetectedKeyPoint at(const size_t index) const noexcept
     {
         const uint i = static_cast<uint>(index);
         DetectedKeyPoint newKp;
@@ -187,9 +192,9 @@ class Keypoint_Handler
      *
      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
      */
-    cv::Mat_<uchar> compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
-                                           const vectorb& isKeyPointMatchedContainer,
-                                           const uint searchSpaceCellRadius) const;
+    [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
+                                                         const vectorb& isKeyPointMatchedContainer,
+                                                         const uint searchSpaceCellRadius) const noexcept;
 
     using index_container = std::vector<uint>;
     /**
@@ -202,24 +207,24 @@ class Keypoint_Handler
     void fill_keypoint_mask(const utils::ScreenCoordinate2D& pointToSearch,
                             const index_container& keypointIndexContainer,
                             const vectorb& isKeyPointMatchedContainer,
-                            cv::Mat_<uchar>& keyPointMask) const;
+                            cv::Mat_<uchar>& keyPointMask) const noexcept;
 
     using uint_pair = std::pair<uint, uint>;
     /**
      * \brief Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes
      * must be used with _searchSpaceIndexContainer
      */
-    uint_pair get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const;
+    [[nodiscard]] uint_pair get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const noexcept;
 
     /**
      * \brief Compute an 1D array index from a 2D array index.
      *
      * \param[in] searchSpaceIndex The 2D array index (y, x)
      */
-    uint get_search_space_index(const uint_pair& searchSpaceIndex) const;
-    uint get_search_space_index(const uint x, const uint y) const;
+    [[nodiscard]] uint get_search_space_index(const uint_pair& searchSpaceIndex) const noexcept;
+    [[nodiscard]] uint get_search_space_index(const uint x, const uint y) const noexcept;
 
-    void clear();
+    void clear() noexcept;
 
   private:
     cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;

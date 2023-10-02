@@ -21,7 +21,7 @@ Line_Detection::Line_Detection(const double scale, const double sigmaScale)
     _kernel = cv::Mat_<uchar>::ones(3, 3);
 }
 
-line_container Line_Detection::detect_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage)
+line_container Line_Detection::detect_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage) noexcept
 {
     assert(_lineDetector != nullptr);
 
@@ -33,7 +33,7 @@ line_container Line_Detection::detect_lines(const cv::Mat& grayImage, const cv::
 
 void Line_Detection::get_image_with_lines(const line_container& linesToDisplay,
                                           const cv::Mat_<float>& depthImage,
-                                          cv::Mat& outImage) const
+                                          cv::Mat& outImage) const noexcept
 {
     // draw lines with associated depth data
     if (linesToDisplay.empty())

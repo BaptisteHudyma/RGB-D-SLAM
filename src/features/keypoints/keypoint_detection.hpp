@@ -25,10 +25,10 @@ class Key_Point_Extraction
      *
      * \return An object that contains the detected keypoints
      */
-    Keypoint_Handler compute_keypoints(const cv::Mat& grayImage,
-                                       const cv::Mat_<float>& depthImage,
-                                       const KeypointsWithIdStruct& lastKeypointsWithIds,
-                                       const bool forceKeypointDetection = false);
+    [[nodiscard]] Keypoint_Handler compute_keypoints(const cv::Mat& grayImage,
+                                                     const cv::Mat_<float>& depthImage,
+                                                     const KeypointsWithIdStruct& lastKeypointsWithIds,
+                                                     const bool forceKeypointDetection = false) noexcept;
 
     /**
      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
@@ -36,7 +36,7 @@ class Key_Point_Extraction
      * \param[in] meanFrameTreatmentDuration The mean duration in seconds that this program used to treat
      * one frame \param[in] frameCount Total of frame treated by the program
      */
-    void show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const;
+    void show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const noexcept;
 
   protected:
     /**
@@ -57,7 +57,7 @@ class Key_Point_Extraction
                                                 const uint pyramidDepth,
                                                 const uint windowSize,
                                                 const double maxDistanceThreshold,
-                                                KeypointsWithIdStruct& keypointStruct);
+                                                KeypointsWithIdStruct& keypointStruct) noexcept;
 
     /**
      * \brief Compute new key point, with an optional mask to exclude detection zones
@@ -66,9 +66,9 @@ class Key_Point_Extraction
      * \param[in] minimumPointsForValidity The minimum number of points under which we will use the precise
      * detector \return An array of points in the input image
      */
-    std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage,
-                                              const cv::Mat_<uchar>& mask,
-                                              const uint minimumPointsForValidity) const;
+    [[nodiscard]] std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage,
+                                                            const cv::Mat_<uchar>& mask,
+                                                            const uint minimumPointsForValidity) const noexcept;
 
     /**
      * \brief Perform keypoint detection on the image, divided in smaller patches.
@@ -80,10 +80,10 @@ class Key_Point_Extraction
     void perform_keypoint_detection(const cv::Mat& grayImage,
                                     const cv::Mat_<uchar>& mask,
                                     const cv::Ptr<cv::FeatureDetector>& featureDetector,
-                                    std::vector<cv::KeyPoint>& frameKeypoints) const;
+                                    std::vector<cv::KeyPoint>& frameKeypoints) const noexcept;
 
-    cv::Mat_<uchar> compute_key_point_mask(const cv::Size imageSize,
-                                           const std::vector<cv::Point2f>& keypointContainer) const;
+    [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(
+            const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept;
 
   private:
     cv::Ptr<cv::FeatureDetector> _featureDetector;

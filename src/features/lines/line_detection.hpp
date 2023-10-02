@@ -25,7 +25,7 @@ class Line_Detection
      *
      * \return A container with the detected lines (2D start and end point)
      */
-    line_container detect_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage);
+    [[nodiscard]] line_container detect_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage) noexcept;
 
     /**
      * \brief display the given lines on an image
@@ -36,7 +36,7 @@ class Line_Detection
      */
     void get_image_with_lines(const line_container& linesToDisplay,
                               const cv::Mat_<float>& depthImage,
-                              cv::Mat& outImage) const;
+                              cv::Mat& outImage) const noexcept;
 
   private:
     // LineSegmentDetector
