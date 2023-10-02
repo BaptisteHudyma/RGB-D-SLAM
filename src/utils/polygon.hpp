@@ -52,36 +52,39 @@ class Polygon
      * \param[in] points The points to compute a convex hull for
      * \return The corresponding polygon. Can be empty if the process failed
      */
-    static polygon compute_convex_hull(const std::vector<vector2>& points);
+    [[nodiscard]] static polygon compute_convex_hull(const std::vector<vector2>& points) noexcept;
 
     /**
      * \brief Compute the concave hull for a set of points
      * \param[in] points The points to compute a concave hull for
      * \return The corresponding polygon. Can be empty if the process failed
      */
-    static polygon compute_concave_hull(const std::vector<vector2>& points);
+    [[nodiscard]] static polygon compute_concave_hull(const std::vector<vector2>& points) noexcept;
 
     /**
      * \brief Return true if this point is in the polygon boundaries
      * \param[in] point The point to test, in the polygon space
      * \return true if the point is inside the polygon
      */
-    bool contains(const vector2& point) const;
+    [[nodiscard]] bool contains(const vector2& point) const noexcept;
 
     /**
      * \brief Return true if this polygon is valid
      */
-    bool is_valid() const { return boost::geometry::is_valid(_polygon); }
+    [[nodiscard]] bool is_valid() const noexcept { return boost::geometry::is_valid(_polygon); }
     /**
      * \brief Return true if this polygon is valid
      * \param[out] reason The failure reason
      */
-    bool is_valid(std::string& reason) const { return boost::geometry::is_valid(_polygon, reason); }
+    [[nodiscard]] bool is_valid(std::string& reason) const noexcept
+    {
+        return boost::geometry::is_valid(_polygon, reason);
+    }
 
     /**
      * \brief get number of points in boundary
      */
-    size_t boundary_length() const
+    [[nodiscard]] size_t boundary_length() const noexcept
     {
         size_t boundarylength = _polygon.outer().size();
         return boundarylength == 0 ? 0 : boundarylength - 1;
@@ -91,13 +94,13 @@ class Polygon
      * \brief Compute this polygon area
      * \return the area of the polygon, or 0.0 if not set
      */
-    double area() const;
-    double get_area() const { return _area; };
+    [[nodiscard]] double area() const noexcept;
+    [[nodiscard]] double get_area() const noexcept { return _area; };
 
     /**
      * \brief merge the other polygon into this one using the union of both polygons
      */
-    void merge_union(const Polygon& other);
+    void merge_union(const Polygon& other) noexcept;
 
     /**
      * \brief project this polygon on the next polygon plane.
@@ -106,7 +109,7 @@ class Polygon
      * \param[in] nextCenter The center to project to
      * \return A polygon projected to the new space
      */
-    Polygon project(const vector3& nextNormal, const vector3& nextCenter) const;
+    [[nodiscard]] Polygon project(const vector3& nextNormal, const vector3& nextCenter) const noexcept;
 
     /**
      * \brief project this polygon on the next polygon plane.
@@ -116,7 +119,9 @@ class Polygon
      * \param[in] nextCenter The center to project to
      * \return A polygon projected to the new space
      */
-    Polygon project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const;
+    [[nodiscard]] Polygon project(const vector3& nextXAxis,
+                                  const vector3& nextYAxis,
+                                  const vector3& nextCenter) const noexcept;
 
     /**
      * \brief Transform a polygon to a new space, keeping the same polygon shape, area and shuch.
@@ -124,7 +129,7 @@ class Polygon
      * \param[in] nextCenter The center of the polygon in th target space
      * \return A new polygon in the target space
      */
-    Polygon transform(const vector3& nextNormal, const vector3& nextCenter) const;
+    [[nodiscard]] Polygon transform(const vector3& nextNormal, const vector3& nextCenter) const noexcept;
 
     /**
      * \brief Transform a polygon to a new space, keeping the same polygon shape, area and shuch.
@@ -133,53 +138,55 @@ class Polygon
      * \param[in] nextCenter The center of the polygon in th target space
      * \return A new polygon in the target space
      */
-    Polygon transform(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const;
+    [[nodiscard]] Polygon transform(const vector3& nextXAxis,
+                                    const vector3& nextYAxis,
+                                    const vector3& nextCenter) const noexcept;
 
     /**
      * \brief Compute the inter/over of the two polygons
      * \return Inter of Union of the two polygons, or 0 if they do not overlap
      */
-    double inter_over_union(const Polygon& other) const;
+    [[nodiscard]] double inter_over_union(const Polygon& other) const noexcept;
 
     /**
      * \brief compute the area of the intersection of two polygons
      * \return the inter polygon area, or 0 if they do not overlap
      */
-    double inter_area(const Polygon& other) const;
+    [[nodiscard]] double inter_area(const Polygon& other) const noexcept;
 
     /**
      * \brief compute the area of the union of two polygons
      * \return the inter polygon area, or 0 if they do not overlap
      */
-    double union_area(const Polygon& other) const;
+    [[nodiscard]] double union_area(const Polygon& other) const noexcept;
 
     /**
      * \brief Compute the union of this polygon and another one.
      * \return The union if it exists, or an empty polygon
      */
-    polygon union_one(const Polygon& other) const;
+    [[nodiscard]] polygon union_one(const Polygon& other) const noexcept;
 
     /**
      * \brief Compute the inter of this polygon and another one.
      * \return The inter if it exists, or an empty polygon
      */
-    polygon inter_one(const Polygon& other) const;
+    [[nodiscard]] polygon inter_one(const Polygon& other) const noexcept;
 
     /**
      * \brief Simplify the boundary of the current polygon
      * \param[in] distanceThreshold max lateral distance between points to simplify (mm)
      */
-    void simplify(const double distanceThreshold = 10);
+    void simplify(const double distanceThreshold = 10) noexcept;
 
     /**
      * \brief compute and return the polygon boundary, in the unprojected space
      */
-    std::vector<vector3> get_unprojected_boundary() const;
+    [[nodiscard]] std::vector<vector3> get_unprojected_boundary() const noexcept;
 
-    vector3 get_center() const { return _center; };
-    vector3 get_x_axis() const { return _xAxis; };
-    vector3 get_y_axis() const { return _yAxis; };
-    vector3 get_normal() const { return _xAxis.cross(_yAxis); };
+    [[nodiscard]] vector3 get_center() const noexcept { return _center; };
+    [[nodiscard]] vector3 get_x_axis() const noexcept { return _xAxis; };
+    [[nodiscard]] vector3 get_y_axis() const noexcept { return _yAxis; };
+    [[nodiscard]] vector3 get_normal() const noexcept { return _xAxis.cross(_yAxis); };
 
   protected:
     polygon _polygon;
@@ -198,10 +205,10 @@ class Polygon
      * \param[in] nextCenter The center of the polygon in th target space
      * \return The boundary in the target space
      */
-    std::vector<point_2d> transform_boundary(const matrix44& transformationMatrix,
-                                             const vector3& nextXAxis,
-                                             const vector3& nextYAxis,
-                                             const vector3& nextCenter) const;
+    [[nodiscard]] std::vector<point_2d> transform_boundary(const matrix44& transformationMatrix,
+                                                           const vector3& nextXAxis,
+                                                           const vector3& nextYAxis,
+                                                           const vector3& nextCenter) const noexcept;
 };
 
 /**
@@ -218,30 +225,30 @@ class CameraPolygon : public Polygon
      * \param[in] color Color to draw this polygon with
      * \param[in, out] debugImage Image on which the polygon will be displayed
      */
-    void display(const cv::Scalar& color, cv::Mat& debugImage) const;
+    void display(const cv::Scalar& color, cv::Mat& debugImage) const noexcept;
 
     /**
      * \brief Project this polygon to the world space
      * \param[in] cameraToWorld Matrix to go from camera to world space
      * \return The polygon in world coordinates
      */
-    WorldPolygon to_world_space(const CameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] WorldPolygon to_world_space(const CameraToWorldMatrix& cameraToWorld) const noexcept;
 
     /**
      * \brief Compute the boundary points in screen coordinates
      */
-    std::vector<ScreenCoordinate> get_screen_points() const;
+    [[nodiscard]] std::vector<ScreenCoordinate> get_screen_points() const noexcept;
 
     /**
      * \brief Project this polygon to screen space
      */
-    polygon to_screen_space() const;
+    [[nodiscard]] polygon to_screen_space() const noexcept;
 
     /**
      * \brief Check that this polygon is visible in screen space
      * \return true if the polygon is visible from the camera 1
      */
-    bool is_visible_in_screen_space() const;
+    [[nodiscard]] bool is_visible_in_screen_space() const noexcept;
 };
 
 /**
@@ -258,13 +265,13 @@ class WorldPolygon : public Polygon
      * \param[in] worldToCamera A matrix to convert from world to camera view
      / \return This polygon in camera space
      */
-    CameraPolygon to_camera_space(const WorldToCameraMatrix& worldToCamera) const;
+    [[nodiscard]] CameraPolygon to_camera_space(const WorldToCameraMatrix& worldToCamera) const noexcept;
 
     /**
      * \brief Merge the other polygon into this one
      * \param[in] other The other polygon to merge into this one
      */
-    void merge(const WorldPolygon& other);
+    void merge(const WorldPolygon& other) noexcept;
 
     /**
      * \brief display the polygon in screen space on the given image
@@ -272,7 +279,7 @@ class WorldPolygon : public Polygon
      * \param[in] color Color to draw this polygon with
      * \param[in, out] debugImage Image on which the polygon will be displayed
      */
-    void display(const WorldToCameraMatrix& worldToCamera, const cv::Scalar& color, cv::Mat& debugImage) const;
+    void display(const WorldToCameraMatrix& worldToCamera, const cv::Scalar& color, cv::Mat& debugImage) const noexcept;
 };
 
 } // namespace rgbd_slam::utils

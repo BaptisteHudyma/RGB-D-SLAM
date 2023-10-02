@@ -21,7 +21,7 @@ struct PlaneWorldCoordinates;
 /**
  * \brief Return true is a measurement is in the measurement range
  */
-bool is_depth_valid(const double depth);
+[[nodiscard]] bool is_depth_valid(const double depth) noexcept;
 
 /**
  * \brief Compute the transformation matrix between two coordinate systems
@@ -33,12 +33,12 @@ bool is_depth_valid(const double depth);
  * \param[in] centerTo The center of the next coordinate system
  * \return The transformation matrix between those coordinate systems
  */
-matrix44 get_transformation_matrix(const vector3& xFrom,
-                                   const vector3& yFrom,
-                                   const vector3& centerFrom,
-                                   const vector3& xTo,
-                                   const vector3& yTo,
-                                   const vector3& centerTo);
+[[nodiscard]] matrix44 get_transformation_matrix(const vector3& xFrom,
+                                                 const vector3& yFrom,
+                                                 const vector3& centerFrom,
+                                                 const vector3& xTo,
+                                                 const vector3& yTo,
+                                                 const vector3& centerTo) noexcept;
 
 /**
  * \brief Contains a single of coordinate in screen space.
@@ -54,17 +54,17 @@ struct ScreenCoordinate2D : public vector2
      * \brief Transform a screen point with a depth value to a 3D camera point
      * \return A 3D point in camera coordinates
      */
-    CameraCoordinate2D to_camera_coordinates() const;
+    [[nodiscard]] CameraCoordinate2D to_camera_coordinates() const noexcept;
 
     /**
      * \brief Compute a covariance in screen space
      */
-    matrix22 get_covariance() const;
+    [[nodiscard]] matrix22 get_covariance() const noexcept;
 
     /**
      * \return true if this point is in the visible screen space
      */
-    bool is_in_screen_boundaries() const;
+    [[nodiscard]] bool is_in_screen_boundaries() const noexcept;
 };
 
 /**
@@ -82,25 +82,25 @@ struct ScreenCoordinate : public vector3
      * \param[in] cameraToWorld Matrix to transform local to world coordinates
      * \return A 3D point in world coordinates
      */
-    WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept;
 
     /**
      * \brief Transform a screen point with a depth value to a 3D camera point
      * \return A 3D point in camera coordinates
      */
-    CameraCoordinate to_camera_coordinates() const;
+    [[nodiscard]] CameraCoordinate to_camera_coordinates() const noexcept;
 
     /**
      * \brief Compute a covariance in screen space
      */
-    ScreenCoordinateCovariance get_covariance() const;
+    [[nodiscard]] ScreenCoordinateCovariance get_covariance() const noexcept;
 
-    ScreenCoordinate2D get_2D() const { return ScreenCoordinate2D(x(), y()); }
+    [[nodiscard]] ScreenCoordinate2D get_2D() const noexcept { return ScreenCoordinate2D(x(), y()); }
 
     /**
      * \return true if this point is in the visible screen space
      */
-    bool is_in_screen_boundaries() const;
+    [[nodiscard]] bool is_in_screen_boundaries() const noexcept;
 };
 
 /**
@@ -118,7 +118,7 @@ struct CameraCoordinate2D : public vector2
      * \param[out] screenPoint The point screen coordinates, if the function returned true
      * \return True if the screen position is valid
      */
-    bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const;
+    [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept;
 };
 
 /**
@@ -136,22 +136,22 @@ struct CameraCoordinate : public vector3
                 homegenousCoordinates.z() / homegenousCoordinates[3]) {};
     CameraCoordinate(const CameraCoordinate2D& other, const double z) : vector3(other.x(), other.y(), z) {};
 
-    vector4 get_homogenous() const { return vector4(x(), y(), z(), 1); };
+    [[nodiscard]] vector4 get_homogenous() const noexcept { return vector4(x(), y(), z(), 1); };
 
     /**
      * \brief Transform a camera point to a 3D world point
      * \param[in] cameraToWorld Matrix to transform local to world coordinates
      * \return A 3D point in world coordinates
      */
-    WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept;
 
     /**
      * \brief Transform a point from camera to screen coordinate system
      * \param[out] screenPoint The point screen coordinates, if the function returned true
      * \return True if the screen position is valid
      */
-    bool to_screen_coordinates(ScreenCoordinate& screenPoint) const;
-    bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const;
+    [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate& screenPoint) const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept;
 };
 
 /**
@@ -170,15 +170,17 @@ struct WorldCoordinate : public vector3
      * \param[out] screenPoint The point screen coordinates, if the function returned true
      * \return True if the screen position is valid
      */
-    bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera, ScreenCoordinate& screenPoint) const;
-    bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera, ScreenCoordinate2D& screenPoint) const;
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                             ScreenCoordinate& screenPoint) const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                             ScreenCoordinate2D& screenPoint) const noexcept;
 
     /**
      * \brief Transform a vector in world space to a vector in camera space
      * \param[in] worldToCamera Matrix to transform the world to a local coordinate system
      * \return The input vector transformed to camera space
      */
-    CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const;
+    [[nodiscard]] CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const noexcept;
 
     /**
      * \brief Compute a signed 2D distance between this world point and a screen point, by retroprojecting the world
@@ -187,8 +189,8 @@ struct WorldCoordinate : public vector3
      * \param[in] worldToCamera A transformation matrix to convert from world to camera space
      * \return a 2D signed distance in camera space (pixels)
      */
-    vector2 get_signed_distance_2D(const ScreenCoordinate2D& screenPoint,
-                                   const WorldToCameraMatrix& worldToCamera) const;
+    [[nodiscard]] vector2 get_signed_distance_2D(const ScreenCoordinate2D& screenPoint,
+                                                 const WorldToCameraMatrix& worldToCamera) const noexcept;
     /**
      * \brief Compute a distance between this world point and a screen point, by retroprojecting the world point to
      * screen space.
@@ -196,7 +198,8 @@ struct WorldCoordinate : public vector3
      * \param[in] worldToCamera A transformation matrix to convert from world to camera space
      * \return an unsigned distance in camera space (pixels)
      */
-    double get_distance(const ScreenCoordinate2D& screenPoint, const WorldToCameraMatrix& worldToCamera) const;
+    [[nodiscard]] double get_distance(const ScreenCoordinate2D& screenPoint,
+                                      const WorldToCameraMatrix& worldToCamera) const noexcept;
     /**
      * \brief Compute a signed distance between a world point and a 3D point in screen space, by projecting the screen
      * point to world space
@@ -204,7 +207,8 @@ struct WorldCoordinate : public vector3
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \return The 3D signed distance in world space
      */
-    vector3 get_signed_distance(const ScreenCoordinate& screenPoint, const CameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] vector3 get_signed_distance(const ScreenCoordinate& screenPoint,
+                                              const CameraToWorldMatrix& cameraToWorld) const noexcept;
     /**
      * \brief Compute a distance between a world point and a 3D point in screen space, by projecting the screen point to
      * world space
@@ -212,12 +216,16 @@ struct WorldCoordinate : public vector3
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \return The unsigned distance in world space
      */
-    double get_distance(const ScreenCoordinate& screenPoint, const CameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] double get_distance(const ScreenCoordinate& screenPoint,
+                                      const CameraToWorldMatrix& cameraToWorld) const noexcept;
     /**
      * \brief Compute a signed distance with another world point
      */
-    vector3 get_signed_distance(const WorldCoordinate& worldPoint) const { return this->base() - worldPoint; };
-    double get_distance(const WorldCoordinate& worldPoint) const
+    [[nodiscard]] vector3 get_signed_distance(const WorldCoordinate& worldPoint) const noexcept
+    {
+        return this->base() - worldPoint;
+    };
+    [[nodiscard]] double get_distance(const WorldCoordinate& worldPoint) const noexcept
     {
         return get_signed_distance(worldPoint).lpNorm<1>();
     };
@@ -239,7 +247,7 @@ struct PlaneCoordinates
         _normal.normalize();
     }
 
-    PlaneCoordinates& operator=(const PlaneCoordinates& other)
+    PlaneCoordinates& operator=(const PlaneCoordinates& other) noexcept
     {
         // Guard self assignment
         if (this == &other)
@@ -252,27 +260,33 @@ struct PlaneCoordinates
         return *this;
     }
 
-    vector4 get_parametrization() const { return vector4(_normal.x(), _normal.y(), _normal.z(), _d); };
-    vector3 get_normal() const { return _normal; };
-    vector3& normal() { return _normal; };
+    [[nodiscard]] vector4 get_parametrization() const noexcept
+    {
+        return vector4(_normal.x(), _normal.y(), _normal.z(), _d);
+    };
+    [[nodiscard]] vector3 get_normal() const noexcept { return _normal; };
+    [[nodiscard]] vector3& normal() noexcept { return _normal; };
 
-    double get_d() const { return _d; };
-    double& d() { return _d; };
+    [[nodiscard]] double get_d() const noexcept { return _d; };
+    [[nodiscard]] double& d() noexcept { return _d; };
 
-    WorldCoordinate get_center() const { return WorldCoordinate(_normal * (-_d)); };
-    double get_point_distance(const vector3& point) const
+    [[nodiscard]] WorldCoordinate get_center() const noexcept { return WorldCoordinate(_normal * (-_d)); };
+    [[nodiscard]] double get_point_distance(const vector3& point) const noexcept
     {
         // distance can be negative depending on the plane
         return abs(_normal.transpose() * point + _d);
     }
-    double get_point_distance_squared(const vector3& point) const
+    [[nodiscard]] double get_point_distance_squared(const vector3& point) const noexcept
     {
         // distance can be negative depending on the plane
         return pow(_normal.transpose() * point + _d, 2.0);
     }
-    double get_cos_angle(const PlaneCoordinates& other) const { return _normal.dot(other._normal); };
+    [[nodiscard]] double get_cos_angle(const PlaneCoordinates& other) const noexcept
+    {
+        return _normal.dot(other._normal);
+    };
 
-    bool hasNaN() const { return std::isnan(_d) or _normal.hasNaN(); };
+    [[nodiscard]] bool hasNaN() const noexcept { return std::isnan(_d) or _normal.hasNaN(); };
 
   private:
     vector3 _normal;
@@ -289,7 +303,8 @@ struct PlaneCameraCoordinates : public PlaneCoordinates
     /**
      * \brief project to world coordinates
      */
-    PlaneWorldCoordinates to_world_coordinates(const PlaneCameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] PlaneWorldCoordinates to_world_coordinates(
+            const PlaneCameraToWorldMatrix& cameraToWorld) const noexcept;
 };
 
 /**
@@ -302,7 +317,8 @@ struct PlaneWorldCoordinates : public PlaneCoordinates
     /**
      * \brief project to camera coordinates
      */
-    PlaneCameraCoordinates to_camera_coordinates(const PlaneWorldToCameraMatrix& worldToCamera) const;
+    [[nodiscard]] PlaneCameraCoordinates to_camera_coordinates(
+            const PlaneWorldToCameraMatrix& worldToCamera) const noexcept;
 
     /**
      * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space
@@ -311,8 +327,8 @@ struct PlaneWorldCoordinates : public PlaneCoordinates
      *
      * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
      */
-    vector4 get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                const PlaneWorldToCameraMatrix& worldToCamera) const;
+    [[nodiscard]] vector4 get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
+                                              const PlaneWorldToCameraMatrix& worldToCamera) const noexcept;
     /**
      * \brief Compute a distance between two planes, by retroprojecting a world plane to camera space. Result is reduced
      * to two angles and a distance
@@ -320,8 +336,8 @@ struct PlaneWorldCoordinates : public PlaneCoordinates
      * \param[in] worldToCamera A transformation matrix to convert from world to camera space
      * \return A 3D vector of the error between the two planes. The x and y are angle distances, the z is in millimeters
      */
-    vector3 get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
-                                        const PlaneWorldToCameraMatrix& worldToCamera) const;
+    [[nodiscard]] vector3 get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
+                                                      const PlaneWorldToCameraMatrix& worldToCamera) const noexcept;
 };
 
 } // namespace rgbd_slam::utils

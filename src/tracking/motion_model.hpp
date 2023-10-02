@@ -13,35 +13,36 @@ class Motion_Model
 {
   public:
     Motion_Model();
-    void reset();
-    void reset(const vector3& lastPosition, const quaternion& lastRotation);
+    void reset() noexcept;
+    void reset(const vector3& lastPosition, const quaternion& lastRotation) noexcept;
 
     /**
      * \brief Predicts next pose with motion model (dead reckoning)
      * \param[in] currentPose Last frame pose
      * \param[in] shouldIncreaseVariance If true, an uncertainty will be added to variance of the predicted pose
      */
-    utils::Pose predict_next_pose(const utils::Pose& currentPose, const bool shouldIncreaseVariance = true) const;
+    [[nodiscard]] utils::Pose predict_next_pose(const utils::Pose& currentPose,
+                                                const bool shouldIncreaseVariance = true) const noexcept;
 
     /**
      * \brief Update the motion model using the refined pose
      *
      * \param[in] pose Refined pose estimation
      */
-    void update_model(const utils::Pose& pose);
+    void update_model(const utils::Pose& pose) noexcept;
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-    vector3 get_position_velocity() const { return _linearVelocity; };
-    quaternion get_angular_velocity() const { return _angularVelocity; };
+    vector3 get_position_velocity() const noexcept { return _linearVelocity; };
+    quaternion get_angular_velocity() const noexcept { return _angularVelocity; };
 
   protected:
-    quaternion get_rotational_velocity(const quaternion& lastRotation,
-                                       const quaternion& lastVelocity,
-                                       const quaternion& currentRotation) const;
-    vector3 get_position_velocity(const vector3& lastPosition,
-                                  const vector3& lastVelocity,
-                                  const vector3& currentPosition) const;
+    [[nodiscard]] quaternion get_rotational_velocity(const quaternion& lastRotation,
+                                                     const quaternion& lastVelocity,
+                                                     const quaternion& currentRotation) const noexcept;
+    [[nodiscard]] vector3 get_position_velocity(const vector3& lastPosition,
+                                                const vector3& lastVelocity,
+                                                const vector3& currentPosition) const noexcept;
 
   private:
     // Last known rotation quaternion estimated by the motion model (set by update_model)

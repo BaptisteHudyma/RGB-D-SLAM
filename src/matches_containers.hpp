@@ -42,7 +42,7 @@ struct matchContainer
     match_point_container _points;
     match_plane_container _planes;
 
-    void clear()
+    void clear() noexcept
     {
         _points.clear();
         _planes.clear();
@@ -54,7 +54,7 @@ struct matchContainer
         _planes.swap(other._planes);
     }
 
-    size_t size() const { return _points.size() + _planes.size(); };
+    [[nodiscard]] size_t size() const noexcept { return _points.size() + _planes.size(); };
 };
 
 /**
@@ -65,7 +65,7 @@ template<class Container> struct match_sets_template
     Container _inliers;
     Container _outliers;
 
-    void clear()
+    void clear() noexcept
     {
         _inliers.clear();
         _outliers.clear();
@@ -89,7 +89,7 @@ struct match_sets
     point_match_sets _pointSets;
     plane_match_sets _planeSets;
 
-    void clear()
+    void clear() noexcept
     {
         _pointSets.clear();
         _planeSets.clear();

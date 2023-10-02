@@ -31,7 +31,7 @@ class RGBD_SLAM
      * \brief Convert the given depth image to the rectified version. IE: align it with the RGB image
      * \param[in, out] depthImage the distorded depth image
      */
-    void rectify_depth(cv::Mat_<float>& depthImage);
+    void rectify_depth(cv::Mat_<float>& depthImage) noexcept;
 
     /**
      * \brief Estimates a new pose from the given images
@@ -42,9 +42,9 @@ class RGBD_SLAM
      *
      * \return The new estimated pose
      */
-    utils::Pose track(const cv::Mat& inputRgbImage,
-                      const cv::Mat_<float>& inputDepthImage,
-                      const bool shouldDetectLines = false);
+    [[nodiscard]] utils::Pose track(const cv::Mat& inputRgbImage,
+                                    const cv::Mat_<float>& inputDepthImage,
+                                    const bool shouldDetectLines = false) noexcept;
 
     /**
      * \brief Compute a debug image
@@ -55,16 +55,16 @@ class RGBD_SLAM
      * \param[in] shouldDisplayStagedPoints Display the points that are not map points yet
      * \param[in] shouldDisplayPrimitiveMasks Display the detected primitive masks
      */
-    cv::Mat get_debug_image(const utils::Pose& camPose,
-                            const cv::Mat& originalRGB,
-                            const double elapsedTime,
-                            const bool shouldDisplayStagedPoints = false,
-                            const bool shouldDisplayPrimitiveMasks = false) const;
+    [[nodiscard]] cv::Mat get_debug_image(const utils::Pose& camPose,
+                                          const cv::Mat& originalRGB,
+                                          const double elapsedTime,
+                                          const bool shouldDisplayStagedPoints = false,
+                                          const bool shouldDisplayPrimitiveMasks = false) const noexcept;
 
     /**
      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
      */
-    void show_statistics(double meanFrameTreatmentDuration) const;
+    void show_statistics(double meanFrameTreatmentDuration) const noexcept;
 
   protected:
     /**
@@ -77,13 +77,13 @@ class RGBD_SLAM
      *
      * \return The new estimated pose from points positions
      */
-    utils::Pose compute_new_pose(const cv::Mat& grayImage,
-                                 const cv::Mat_<float>& depthImage,
-                                 const matrixf& cloudArrayOrganized);
+    [[nodiscard]] utils::Pose compute_new_pose(const cv::Mat& grayImage,
+                                               const cv::Mat_<float>& depthImage,
+                                               const matrixf& cloudArrayOrganized) noexcept;
 
-    void compute_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage, cv::Mat& outImage);
+    void compute_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage, cv::Mat& outImage) noexcept;
 
-    void set_color_vector();
+    void set_color_vector() noexcept;
 
   private:
     const uint _width;

@@ -18,18 +18,18 @@ class PoseBase
     virtual ~PoseBase() = default;
 
     // setters
-    void set_parameters(const vector3& position, const quaternion& orientation);
+    void set_parameters(const vector3& position, const quaternion& orientation) noexcept;
 
-    void update(const vector3& position, const quaternion& orientation);
+    void update(const vector3& position, const quaternion& orientation) noexcept;
 
     // getters
-    vector3 get_position() const { return _position; }
-    matrix33 get_orientation_matrix() const { return _orientation.toRotationMatrix(); }
-    quaternion get_orientation_quaternion() const { return _orientation; }
+    [[nodiscard]] vector3 get_position() const noexcept { return _position; }
+    [[nodiscard]] matrix33 get_orientation_matrix() const noexcept { return _orientation.toRotationMatrix(); }
+    [[nodiscard]] quaternion get_orientation_quaternion() const noexcept { return _orientation; }
     /**
      * \return a 6 element vector of the position followed by the rotation in radians
      */
-    vector6 get_vector() const
+    [[nodiscard]] vector6 get_vector() const noexcept
     {
         vector6 t;
         t << _position, _orientation.toRotationMatrix().eulerAngles(0, 1, 2);
@@ -39,16 +39,16 @@ class PoseBase
     /**
      * \brief compute a position error (Units are the same as the position units)
      */
-    double get_position_error(const PoseBase& pose) const;
+    [[nodiscard]] double get_position_error(const PoseBase& pose) const noexcept;
     /**
      * \brief compute a rotation error (degrees)
      */
-    double get_rotation_error(const PoseBase& pose) const;
+    [[nodiscard]] double get_rotation_error(const PoseBase& pose) const noexcept;
 
     /**
      * \brief A display function, to avoid a friend operator function
      */
-    virtual void display(std::ostream& os) const;
+    virtual void display(std::ostream& os) const noexcept;
 
   private:
     quaternion _orientation;
@@ -67,14 +67,14 @@ class Pose : public PoseBase
 
     virtual ~Pose() = default;
 
-    void set_position_variance(const matrix66& variance) { _poseVariance = variance; };
-    matrix66 get_pose_variance() const { return _poseVariance; };
-    matrix33 get_position_variance() const { return _poseVariance.block<3, 3>(0, 0); };
+    void set_position_variance(const matrix66& variance) noexcept { _poseVariance = variance; };
+    [[nodiscard]] matrix66 get_pose_variance() const noexcept { return _poseVariance; };
+    [[nodiscard]] matrix33 get_position_variance() const noexcept { return _poseVariance.block<3, 3>(0, 0); };
 
     /**
      * \brief A display function, to avoid a friend operator function
      */
-    void display(std::ostream& os) const override;
+    void display(std::ostream& os) const noexcept override;
 
   private:
     matrix66 _poseVariance;

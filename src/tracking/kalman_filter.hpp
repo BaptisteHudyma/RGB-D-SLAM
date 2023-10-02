@@ -48,7 +48,7 @@ template<int N, int M> class SharedKalmanFilter
             const Eigen::Vector<double, N>& currentState,
             const Eigen::Matrix<double, N, N>& stateNoiseCovariance,
             const Eigen::Vector<double, M>& newMeasurement,
-            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance)
+            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance) noexcept
     {
         // check parameters
         assert(utils::is_covariance_valid(stateNoiseCovariance));
@@ -137,7 +137,8 @@ template<int N, int M> class KalmanFilter : public SharedKalmanFilter<N, M>
      * \param[in] firstEstimateErrorCovariance Estimate error covariance for the first guess
      * \param[in] x0 The original state estimate
      */
-    void init(const Eigen::Matrix<double, N, N>& firstEstimateErrorCovariance, const Eigen::Vector<double, N>& x0)
+    void init(const Eigen::Matrix<double, N, N>& firstEstimateErrorCovariance,
+              const Eigen::Vector<double, N>& x0) noexcept
     {
         _estimateErrorCovariance = firstEstimateErrorCovariance;
         _stateEstimate = x0;
@@ -150,7 +151,7 @@ template<int N, int M> class KalmanFilter : public SharedKalmanFilter<N, M>
      * \param[in] measurementNoiseCovariance Measurement noise covariance
      */
     void update(const Eigen::Vector<double, M>& newMeasurement,
-                const Eigen::Matrix<double, M, M>& measurementNoiseCovariance)
+                const Eigen::Matrix<double, M, M>& measurementNoiseCovariance) noexcept
     {
         assert(is_initialized());
 
@@ -169,16 +170,19 @@ template<int N, int M> class KalmanFilter : public SharedKalmanFilter<N, M>
      */
     void update(const Eigen::Vector<double, N>& newMeasurement,
                 const Eigen::Matrix<double, N, N>& measurementNoiseCovariance,
-                const Eigen::Matrix<double, N, N>& systemDynamics)
+                const Eigen::Matrix<double, N, N>& systemDynamics) noexcept
     {
         this->_systemDynamics = systemDynamics;
         this->update(newMeasurement, measurementNoiseCovariance);
     }
 
-    Eigen::Vector<double, N> get_state() const { return _stateEstimate; };
-    Eigen::Matrix<double, N, N> get_state_covariance() const { return _estimateErrorCovariance; };
+    [[nodiscard]] Eigen::Vector<double, N> get_state() const noexcept { return _stateEstimate; };
+    [[nodiscard]] Eigen::Matrix<double, N, N> get_state_covariance() const noexcept
+    {
+        return _estimateErrorCovariance;
+    };
 
-    bool is_initialized() const { return _isInitialized; }
+    [[nodiscard]] bool is_initialized() const noexcept { return _isInitialized; }
 
   private:
     // Is the filter isInitialized?

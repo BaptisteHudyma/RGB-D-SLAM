@@ -3,7 +3,7 @@
 
 namespace rgbd_slam::tracking {
 
-utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const double baselinePoseSupposition)
+utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const double baselinePoseSupposition) noexcept
 {
     const vector3 pt(baselinePoseSupposition, 0, 0);
     const vector3 newPosition = (pose.get_orientation_matrix() * pt) + pose.get_position();
@@ -13,7 +13,7 @@ utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const doub
 bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
                                              const utils::ScreenCoordinate2D& screenPoint,
                                              const WorldToCameraMatrix& worldToCamera,
-                                             const double& maximumRetroprojectionError)
+                                             const double& maximumRetroprojectionError) noexcept
 {
     utils::ScreenCoordinate2D projectedScreenPoint;
     if (not worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint))
@@ -30,7 +30,7 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
                                 const WorldToCameraMatrix& newWorldToCamera,
                                 const utils::ScreenCoordinate2D& point2Da,
                                 const utils::ScreenCoordinate2D& point2Db,
-                                utils::WorldCoordinate& triangulatedPoint)
+                                utils::WorldCoordinate& triangulatedPoint) noexcept
 {
     const static double maximumRetroprojectionError = Parameters::get_maximum_retroprojection_error();
 

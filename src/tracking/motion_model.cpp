@@ -4,7 +4,7 @@ namespace rgbd_slam::tracking {
 
 Motion_Model::Motion_Model() { this->reset(); }
 
-void Motion_Model::reset()
+void Motion_Model::reset() noexcept
 {
     _lastQ.setIdentity();
     _angularVelocity.setIdentity();
@@ -13,7 +13,7 @@ void Motion_Model::reset()
     _linearVelocity.setZero();
 }
 
-void Motion_Model::reset(const vector3& lastPosition, const quaternion& lastRotation)
+void Motion_Model::reset(const vector3& lastPosition, const quaternion& lastRotation) noexcept
 {
     _lastQ = lastRotation;
     _angularVelocity.setIdentity();
@@ -24,7 +24,7 @@ void Motion_Model::reset(const vector3& lastPosition, const quaternion& lastRota
 
 quaternion Motion_Model::get_rotational_velocity(const quaternion& lastRotation,
                                                  const quaternion& lastVelocity,
-                                                 const quaternion& currentRotation) const
+                                                 const quaternion& currentRotation) const noexcept
 {
     const quaternion angVelDiff = currentRotation * lastRotation.inverse();
     // smooth velocity over time (decaying model)
@@ -34,14 +34,15 @@ quaternion Motion_Model::get_rotational_velocity(const quaternion& lastRotation,
 
 vector3 Motion_Model::get_position_velocity(const vector3& lastPosition,
                                             const vector3& lastVelocity,
-                                            const vector3& currentPosition) const
+                                            const vector3& currentPosition) const noexcept
 {
     const vector3 newLinVelocity = (currentPosition - lastPosition) / 1000.0;
     // smooth velocity over time (decaying model)
     return (newLinVelocity + lastVelocity) * 0.5;
 }
 
-utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose, const bool shouldIncreaseVariance) const
+utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose,
+                                            const bool shouldIncreaseVariance) const noexcept
 {
     const quaternion& currentRotation = currentPose.get_orientation_quaternion();
     const vector3& currentPosition = currentPose.get_position();
@@ -65,7 +66,7 @@ utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose, cons
     return utils::Pose(integralPos, integralQ, currentPose.get_pose_variance() + poseError);
 }
 
-void Motion_Model::update_model(const utils::Pose& pose)
+void Motion_Model::update_model(const utils::Pose& pose) noexcept
 {
     const quaternion& currentRotation = pose.get_orientation_quaternion();
     const vector3& currentPosition = pose.get_position();

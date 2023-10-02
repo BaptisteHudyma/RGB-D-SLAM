@@ -11,7 +11,7 @@ namespace rgbd_slam::utils {
  * \param[in] angleA
  * \param[in] angleB
  */
-double angle_distance(const double angleA, const double angleB);
+[[nodiscard]] double angle_distance(const double angleA, const double angleB) noexcept;
 
 /**
  * \brief Check an equality between two doubles, with an epsilon: TODO move this to a more sensible location
@@ -20,7 +20,9 @@ double angle_distance(const double angleA, const double angleB);
  * \param[in] epsilon
  * \return true if the two values are equal at +- epsilon
  */
-bool double_equal(const double a, const double b, const double epsilon = std::numeric_limits<double>::epsilon());
+[[nodiscard]] bool double_equal(const double a,
+                                const double b,
+                                const double epsilon = std::numeric_limits<double>::epsilon()) noexcept;
 
 } // namespace rgbd_slam::utils
 
