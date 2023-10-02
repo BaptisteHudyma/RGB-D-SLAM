@@ -144,16 +144,16 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     const double matchedPointSize = static_cast<double>(matchedFeatures._points.size());
     const double matchedPlaneSize = static_cast<double>(matchedFeatures._planes.size());
 
-    const static uint minimumPointsForOptimization =
-            Parameters::get_minimum_point_count_for_optimization(); // Number of random points to select
-    const static uint minimumPlanesForOptimization =
-            Parameters::get_minimum_plane_count_for_optimization(); // Number of random planes to select
-    assert(minimumPointsForOptimization > 0);
-    assert(minimumPlanesForOptimization > 0);
+    constexpr uint minimumPointsForOptimization =
+            parameters::optimization::minimumPointForOptimization; // Number of random points to select
+    constexpr uint minimumPlanesForOptimization =
+            parameters::optimization::minimumPlanesForOptimization; // Number of random planes to select
+    static_assert(minimumPointsForOptimization > 0);
+    static_assert(minimumPlanesForOptimization > 0);
 
     // individual feature score
-    const static double pointFeatureScore = 1.0 / minimumPointsForOptimization;
-    const static double planeFeatureScore = 1.0 / minimumPlanesForOptimization;
+    constexpr double pointFeatureScore = 1.0 / minimumPointsForOptimization;
+    constexpr double planeFeatureScore = 1.0 / minimumPlanesForOptimization;
 
     // check that we have enough features for minimal pose optimization
     const double initialFeatureScore = pointFeatureScore * matchedPointSize + planeFeatureScore * matchedPlaneSize;
@@ -166,21 +166,23 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         return false;
     }
 
-    const static double pointMaxRetroprojectionError =
-            Parameters::get_ransac_maximum_retroprojection_error_for_point_inliers(); // maximum inlier threshold, in
-                                                                                      // pixels
-    const static double planeMaxRetroprojectionError =
-            Parameters::get_ransac_maximum_retroprojection_error_for_plane_inliers(); // millimeters
-    assert(pointMaxRetroprojectionError > 0);
-    assert(planeMaxRetroprojectionError > 0);
+    constexpr double pointMaxRetroprojectionError =
+            parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px; // maximum inlier
+                                                                                             // threshold, in milli
+    constexpr double planeMaxRetroprojectionError =
+            parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm; // millimeters
+    static_assert(pointMaxRetroprojectionError > 0);
+    static_assert(planeMaxRetroprojectionError > 0);
     const uint acceptablePointInliersForEarlyStop = static_cast<uint>(
             matchedPointSize *
-            Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this
-                                                                                 // inlier count is reached
+            parameters::optimization::ransac::minimumInliersProportionForEarlyStop); // RANSAC will stop early if
+                                                                                     // this inlier count is
+                                                                                     // reached
     const uint acceptablePlaneInliersForEarlyStop = static_cast<uint>(
             matchedPlaneSize *
-            Parameters::get_ransac_minimum_inliers_proportion_for_early_stop()); // RANSAC will stop early if this
-                                                                                 // inlier count is reached
+            parameters::optimization::ransac::minimumInliersProportionForEarlyStop); // RANSAC will stop early if
+                                                                                     // this inlier count is
+                                                                                     // reached
 
     // check that we have enough inlier features for a pose optimization with RANSAC
     // This score is to stop the RANSAC process early (limit to 1 if we are low on features)
@@ -197,9 +199,9 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
             static_cast<uint>(std::ceil((1.0 - maxNumberOfPlanes * planeFeatureScore) / pointFeatureScore));
 
     // Compute maximum iteration with the original RANSAC formula
-    const uint maximumIterations = static_cast<uint>(
-            std::ceil(log(1.0 - Parameters::get_ransac_probability_of_success()) /
-                      log(1.0 - pow(Parameters::get_ransac_inlier_proportion(), minimumPointsForOptimization))));
+    const uint maximumIterations = static_cast<uint>(std::ceil(
+            log(1.0 - parameters::optimization::ransac::probabilityOfSuccess) /
+            log(1.0 - pow(parameters::optimization::ransac::inlierProportion, minimumPointsForOptimization))));
     assert(maximumIterations > 0);
 
     // set the start score to the maximum score
@@ -343,17 +345,17 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
     // maxfev   : maximum number of function evaluation
-    poseOptimizator.parameters.maxfev = Parameters::get_optimization_maximum_iterations();
+    poseOptimizator.parameters.maxfev = parameters::optimization::maximumIterations;
     // epsfcn   : error precision
-    poseOptimizator.parameters.epsfcn = Parameters::get_optimization_error_precision();
+    poseOptimizator.parameters.epsfcn = parameters::optimization::errorPrecision;
     // xtol     : tolerance for the norm of the solution vector
-    poseOptimizator.parameters.xtol = Parameters::get_optimization_xtol();
+    poseOptimizator.parameters.xtol = parameters::optimization::toleranceOfSolutionVectorNorm;
     // ftol     : tolerance for the norm of the vector function
-    poseOptimizator.parameters.ftol = Parameters::get_optimization_ftol();
+    poseOptimizator.parameters.ftol = parameters::optimization::toleranceOfVectorFunction;
     // gtol     : tolerance for the norm of the gradient of the error function
-    poseOptimizator.parameters.gtol = Parameters::get_optimization_gtol();
+    poseOptimizator.parameters.gtol = parameters::optimization::toleranceOfErrorFunctionGradient;
     // factor   : step bound for the diagonal shift
-    poseOptimizator.parameters.factor = Parameters::get_optimization_factor();
+    poseOptimizator.parameters.factor = parameters::optimization::diagonalStepBoundShift;
 
     // Start optimization
     const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);

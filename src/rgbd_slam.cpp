@@ -48,13 +48,13 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
     }
 
     // set threads
-    const int availableCores = static_cast<int>(Parameters::get_available_core_number());
+    const int availableCores = static_cast<int>(parameters::coreNumber);
     cv::setNumThreads(availableCores);
     Eigen::setNbThreads(availableCores);
 
     // primitive connected graph creator
     _depthOps = std::make_unique<features::primitives::Depth_Map_Transformation>(
-            _width, _height, Parameters::get_depth_map_patch_size());
+            _width, _height, parameters::detection::depthMapPatchSize_px);
     if (_depthOps == nullptr or not _depthOps->is_ok())
     {
         outputs::log_error("Cannot load parameter files, exiting");
@@ -66,7 +66,7 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
 
     // plane/cylinder finder
     _primitiveDetector = std::make_unique<features::primitives::Primitive_Detection>(
-            _width, _height, Parameters::get_depth_map_patch_size());
+            _width, _height, parameters::detection::depthMapPatchSize_px);
 
     // Point detector and matcher
     _pointDetector = std::make_unique<features::keypoints::Key_Point_Extraction>();
@@ -207,7 +207,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
                                         const matrixf& cloudArrayOrganized) noexcept
 {
     // every now and then, restart the search of points even if we have enough features
-    _computeKeypointCount = (_computeKeypointCount % Parameters::get_keypoint_refresh_frequency()) + 1;
+    _computeKeypointCount = (_computeKeypointCount % parameters::detection::keypointRefreshFrequency) + 1;
     const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
 
     // get a pose with the decaying motion model (do not add uncertainty if it's the first call)

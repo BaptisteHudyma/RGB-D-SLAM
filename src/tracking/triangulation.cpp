@@ -32,7 +32,7 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
                                 const utils::ScreenCoordinate2D& point2Db,
                                 utils::WorldCoordinate& triangulatedPoint) noexcept
 {
-    const static double maximumRetroprojectionError = Parameters::get_maximum_retroprojection_error();
+    constexpr double maximumRetroprojectionError = parameters::optimization::maximumRetroprojectionError;
 
     // project x and y coordinates
     const utils::CameraCoordinate2D& pointA = point2Da.to_camera_coordinates();

@@ -30,7 +30,7 @@ class Plane_Segment
 
         _ptsPerCellCount = pointPerCellCount;
         _minZeroPointCount = static_cast<uint>(
-                std::floor(static_cast<float>(_ptsPerCellCount) * Parameters::get_minimum_zero_depth_proportion()));
+                std::floor(static_cast<float>(_ptsPerCellCount) * parameters::detection::minimumZeroDepthProportion));
         _cellWidth = cellWidth;
         _cellHeight = _ptsPerCellCount / _cellWidth;
 

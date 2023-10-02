@@ -100,7 +100,7 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
     const double projectedArea = projectedPolygon.get_area();
 
     // minimum plane overlap
-    static double planeMinimalOverlap = Parameters::get_minimum_plane_overlap_for_match();
+    static double planeMinimalOverlap = parameters::matching::minimumPlaneOverlapToConsiderMatch;
     const double areaSimilarityThreshold = (useAdvancedSearch ? planeMinimalOverlap / 2 : planeMinimalOverlap);
 
     double greatestSimilarity = 0.0;
@@ -260,8 +260,7 @@ LocalMapPlane::LocalMapPlane(const StagedMapPlane& stagedPlane) : MapPlane(stage
 
 bool LocalMapPlane::is_lost() const noexcept
 {
-    const static size_t maximumUnmatchBeforeremoval = Parameters::get_maximum_unmatched_before_removal();
-    return _failedTrackingCount >= maximumUnmatchBeforeremoval;
+    return _failedTrackingCount >= parameters::mapping::planeUnmatchedCountToLoose;
 }
 
 } // namespace rgbd_slam::map_management

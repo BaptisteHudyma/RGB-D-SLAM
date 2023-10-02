@@ -14,9 +14,9 @@ namespace rgbd_slam::utils {
 double get_depth_quantization(const double depth) noexcept
 {
     // minimum depth diparity at z is the quadratic function  a + b z + c z^2
-    const static double depthSigmaError = Parameters::get_depth_sigma_error() * pow(1.0 / 1000.0, 2.0);
-    const static double depthSigmaMultiplier = Parameters::get_depth_sigma_multiplier() / 1000.0;
-    const static double depthSigmaMargin = Parameters::get_depth_sigma_margin();
+    const static double depthSigmaError = parameters::depthSigmaError * pow(1.0 / 1000.0, 2.0);
+    constexpr double depthSigmaMultiplier = parameters::depthSigmaMultiplier / 1000.0;
+    constexpr double depthSigmaMargin = parameters::depthSigmaMargin;
     return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0), 0.5);
 }
 

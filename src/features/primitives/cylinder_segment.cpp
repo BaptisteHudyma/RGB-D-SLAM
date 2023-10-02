@@ -3,6 +3,7 @@
 #include "../../parameters.hpp"
 #include "../../utils/random.hpp"
 #include "Eigen/Eigenvalues"
+#include <iostream>
 
 namespace rgbd_slam::features::primitives {
 
@@ -97,8 +98,8 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
     const double score = eigenValues(2) / eigenValues(0);
 
     // Checkpoint 1
-    if (const static float minimumCyinderScore = Parameters::get_cylinder_ransac_minimum_score();
-        score < minimumCyinderScore)
+    constexpr float minimumCyinderScore = parameters::detection::cylinderRansacMinimumScore;
+    if (score < minimumCyinderScore)
     {
         return;
     }
@@ -127,11 +128,11 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
     planeNormals.row(2) = planeNormals.row(2).array() / normalsNorm.array();
 
     // Ransac params
-    const static float pSuccess =
-            Parameters::get_cylinder_ransac_probability_of_success(); // probability of selecting only inliers in a
-                                                                      // ransac iteration
-    const static float w = Parameters::get_cylinder_ransac_inlier_proportion(); // inliers / all elements
-    const static uint maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(w, 3.0f)));
+    constexpr float pSuccess =
+            parameters::detection::cylinderRansacProbabilityOfSuccess; // probability of selecting only inliers in a
+                                                                       // ransac iteration
+    constexpr float w = parameters::detection::cylinderRansacInlierProportions; // inliers / all elements
+    constexpr uint maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(w, 3.0f)));
 
     uint planeSegmentsLeft = _cellActivatedCount;
     Matrixb idsLeftMask(1, _cellActivatedCount);
@@ -143,8 +144,8 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
         idsLeftMask(i) = true;
     }
     // Sequential RANSAC main loop
-    const static size_t minimumCellActivated =
-            static_cast<uint>(Parameters::get_minimum_cell_activated_proportion() * static_cast<double>(samplesCount));
+    const size_t minimumCellActivated = static_cast<uint>(parameters::detection::minimumCellActivatedProportion *
+                                                          static_cast<double>(samplesCount));
     while (planeSegmentsLeft > minimumCellActivated and planeSegmentsLeft > 0.1 * _cellActivatedCount)
     {
         Matrixb isInlierFinal(true, _cellActivatedCount);
@@ -241,7 +242,7 @@ size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations,
     const uint planeIdsLeft = static_cast<uint>(idsLeft.size());
     const uint inliersAcceptedCount = static_cast<uint>(std::floor(0.9 * planeIdsLeft));
 
-    const static float maximumSqrtDistance = Parameters::get_cylinder_ransac_max_distance();
+    constexpr float maximumSqrtDistance = parameters::detection::cylinderRansacSqrtMaxDistance;
     // Score of the maximum inliers configuration
     double minHypothesisDist = maximumSqrtDistance * static_cast<float>(planeIdsLeft);
     // Indexes of the inliers of the best configuration
