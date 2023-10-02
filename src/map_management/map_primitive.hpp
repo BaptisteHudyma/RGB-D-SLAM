@@ -14,7 +14,6 @@
 #include "polygon.hpp"
 #include "types.hpp"
 #include <bits/ranges_algo.h>
-#include <iostream>
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::map_management {

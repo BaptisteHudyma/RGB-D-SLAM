@@ -3,7 +3,6 @@
 #include "utils/camera_transformation.hpp"
 #include "utils/coordinates.hpp"
 #include <gtest/gtest.h>
-#include <iostream>
 
 namespace rgbd_slam::utils {
 

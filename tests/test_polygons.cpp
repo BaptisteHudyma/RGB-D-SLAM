@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <iostream>
 #include "polygon.hpp"
 
 namespace rgbd_slam::utils {

@@ -5,7 +5,6 @@
 #include "pose_optimization/pose_optimization.hpp"
 #include "matches_containers.hpp"
 #include "utils/random.hpp"
-#include <iostream>
 #include <memory>
 #include <opencv2/core.hpp>
 #include <opencv2/core/types.hpp>
@@ -92,9 +91,6 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
 
     _computeKeypointCount = 0;
     _currentPose = startPose;
-
-    // init motion model
-    _motionModel.reset(_currentPose.get_position(), _currentPose.get_orientation_quaternion());
 }
 
 void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage) noexcept
@@ -154,13 +150,6 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
     _meanPoseOptimizationDuration +=
             (static_cast<double>(cv::getTickCount()) - computePoseStartTime) / cv::getTickFrequency();
 
-    // update motion model with refined pose
-    _motionModel.update_model(_currentPose);
-
-    // Update current pose if tracking is ongoing
-    if (_failedTrackingCount == 0)
-        _currentPose = refinedPose;
-
     _totalFrameTreated += 1;
     return refinedPose;
 }
@@ -210,13 +199,16 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     _computeKeypointCount = (_computeKeypointCount % parameters::detection::keypointRefreshFrequency) + 1;
     const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
 
-    // get a pose with the decaying motion model (do not add uncertainty if it's the first call)
+// get a pose with the decaying motion model (do not add uncertainty if it's the first call)
+#if 0 // TODO : put back when the motion model as been debugged
     const utils::Pose& predictedPose = _motionModel.predict_next_pose(_currentPose, not _isFirstTrackingCall);
-
+#else
+    const utils::Pose& predictedPose = _currentPose;
+#endif
     // Get map points that were tracked last call, and retroproject them to screen space using last pose (used for
     // optical flow)
     const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
-            _localMap->get_tracked_keypoints_features(_currentPose);
+            _localMap->get_tracked_keypoints_features(predictedPose);
     // Detect keypoints, and match the one detected by optical flow
     const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(
             grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
@@ -253,7 +245,9 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     const double updateLocalMapStartTime = static_cast<double>(cv::getTickCount());
     if (isPoseValid)
     {
+        // Update current pose if tracking is ongoing
         newPose = optimizedPose;
+        _currentPose = optimizedPose;
 
         // Update local map if a valid transformation was found
         _localMap->update(optimizedPose,
@@ -285,6 +279,8 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             // tracking is lost after some consecutive fails
             // TODO add to parameters
             _isTrackingLost = (++_failedTrackingCount) > 3;
+
+            _motionModel.reset();
 
             outputs::log_error("Could not find an optimized pose");
         }

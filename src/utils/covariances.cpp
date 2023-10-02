@@ -7,7 +7,6 @@
 #include "types.hpp"
 #include <Eigen/src/Core/util/Constants.h>
 #include <cmath>
-#include <iostream>
 
 namespace rgbd_slam::utils {
 

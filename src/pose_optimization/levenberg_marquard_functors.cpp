@@ -78,7 +78,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
         const Eigen::Vector<double, scoreCountPerPoints>& distance =
                 match._worldFeature.get_signed_distance_2D(match._screenFeature, transformationMatrix);
 
-        outputScores.block<scoreCountPerPoints, 1>(featureScoreIndex, 0) = distance * pointAlphaReduction;
+        outputScores.segment<scoreCountPerPoints>(featureScoreIndex) = distance * pointAlphaReduction;
         featureScoreIndex += scoreCountPerPoints;
     }
 
@@ -92,7 +92,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
         const Eigen::Vector<double, scoreCountPerPlanes>& planeProjectionError =
                 match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
 
-        outputScores.block<scoreCountPerPlanes, 1>(featureScoreIndex, 0) = planeProjectionError * planeAlphaReduction;
+        outputScores.segment<scoreCountPerPlanes>(featureScoreIndex) = planeProjectionError * planeAlphaReduction;
         featureScoreIndex += scoreCountPerPlanes;
     }
     return 0;

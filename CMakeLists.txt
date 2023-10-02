@@ -6,6 +6,9 @@ IF(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
 
+# debug symbols for programing tasks
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
 set(CMAKE_CXX_STANDARD 20)
 # -g for valgrind line of origin
 set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal -lflann_cpp -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DGLEW_STATIC")# -Wconversion -Wsign-conversion")
