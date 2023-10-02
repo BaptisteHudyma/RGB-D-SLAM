@@ -34,13 +34,14 @@ struct Point
      * \param[in] newDetectionCovariance The newly detected point covariance
      * \return The distance between the updated position ans the previous one
      */
-    double track(const utils::WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance);
+    double track(const utils::WorldCoordinate& newDetectionCoordinates,
+                 const matrix33& newDetectionCovariance) noexcept;
 
   private:
     /**
      * \brief Build the caracteristics of the kalman filter
      */
-    static void build_kalman_filter();
+    static void build_kalman_filter() noexcept;
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
@@ -75,29 +76,31 @@ class MapPoint :
         assert(_id > 0);
     }
 
-    int find_match(const DetectedKeypointsObject& detectedFeatures,
-                   const WorldToCameraMatrix& worldToCamera,
-                   const vectorb& isDetectedFeatureMatched,
-                   std::list<PointMatchType>& matches,
-                   const bool shouldAddToMatches = true,
-                   const bool useAdvancedSearch = false) const override;
+    [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
+                                 const WorldToCameraMatrix& worldToCamera,
+                                 const vectorb& isDetectedFeatureMatched,
+                                 std::list<PointMatchType>& matches,
+                                 const bool shouldAddToMatches = true,
+                                 const bool useAdvancedSearch = false) const noexcept override;
 
-    bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
-                        TrackedPointsObject& trackedFeatures,
-                        const uint dropChance = 1000) const override;
+    [[nodiscard]] bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
+                                      TrackedPointsObject& trackedFeatures,
+                                      const uint dropChance = 1000) const noexcept override;
 
-    void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override;
+    void draw(const WorldToCameraMatrix& worldToCamMatrix,
+              cv::Mat& debugImage,
+              const cv::Scalar& color) const noexcept override;
 
-    bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override;
+    [[nodiscard]] bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept override;
 
-    void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const override;
+    void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
   protected:
-    bool update_with_match(const DetectedPointType& matchedFeature,
-                           const matrix33& poseCovariance,
-                           const CameraToWorldMatrix& cameraToWorld) override;
+    [[nodiscard]] bool update_with_match(const DetectedPointType& matchedFeature,
+                                         const matrix33& poseCovariance,
+                                         const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
-    void update_no_match() override;
+    void update_no_match() noexcept override;
 };
 
 /**
@@ -110,12 +113,12 @@ class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointTy
                    const CameraToWorldMatrix& cameraToWorld,
                    const DetectedPointType& detectedFeature);
 
-    bool should_remove_from_staged() const override;
+    [[nodiscard]] bool should_remove_from_staged() const noexcept override;
 
-    bool should_add_to_local_map() const override;
+    [[nodiscard]] bool should_add_to_local_map() const noexcept override;
 
   protected:
-    double get_confidence() const;
+    double get_confidence() const noexcept;
 };
 
 /**
@@ -126,7 +129,7 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
   public:
     LocalMapPoint(const StagedMapPoint& stagedPoint);
 
-    bool is_lost() const override;
+    [[nodiscard]] bool is_lost() const noexcept override;
 };
 
 } // namespace rgbd_slam::map_management

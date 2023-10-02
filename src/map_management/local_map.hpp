@@ -32,7 +32,8 @@ class Local_Map
      * ids
      * \param[in] lastpose The last known pose of the observer
      */
-    features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(const utils::Pose& lastpose) const;
+    [[nodiscard]] features::keypoints::KeypointsWithIdStruct get_tracked_keypoints_features(
+            const utils::Pose& lastpose) const noexcept;
 
     /**
      * \brief Find all matches for the given detected features
@@ -40,10 +41,10 @@ class Local_Map
      * \param[in] detectedKeypointsObject An object that contains the detected keypoints in the new input
      * \param[in] detectedPlanes An object that contains the detected planes in the new input
      */
-    matches_containers::matchContainer find_feature_matches(
+    [[nodiscard]] matches_containers::matchContainer find_feature_matches(
             const utils::Pose& currentPose,
             const features::keypoints::Keypoint_Handler& detectedKeypointsObject,
-            const features::primitives::plane_container& detectedPlanes);
+            const features::primitives::plane_container& detectedPlanes) noexcept;
 
     /**
      * \brief Update the local and global map. Add new points to staged and map container
@@ -61,12 +62,12 @@ class Local_Map
                 const features::keypoints::Keypoint_Handler& keypointObject,
                 const features::primitives::plane_container& detectedPlanes,
                 const matches_containers::match_point_container& outlierMatchedPoints,
-                const matches_containers::match_plane_container& outlierMatchedPlanes);
+                const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept;
 
     /**
      * \brief Update the local map when no pose could be estimated. Consider all features as unmatched
      */
-    void update_no_pose();
+    void update_no_pose() noexcept;
 
     /**
      * \brief Add features to staged map
@@ -82,12 +83,12 @@ class Local_Map
                              const CameraToWorldMatrix& cameraToWorld,
                              const features::keypoints::Keypoint_Handler& keypointObject,
                              const features::primitives::plane_container& detectedPlanes,
-                             const bool addAllFeatures);
+                             const bool addAllFeatures) noexcept;
 
     /**
      * \brief Hard clean the local and staged map
      */
-    void reset();
+    void reset() noexcept;
 
     /**
      * \brief Compute a debug image to display the keypoints & planes
@@ -100,29 +101,29 @@ class Local_Map
     void get_debug_image(const utils::Pose& camPose,
                          const bool shouldDisplayStaged,
                          const bool shouldDisplayPlaneMasks,
-                         cv::Mat& debugImage) const;
+                         cv::Mat& debugImage) const noexcept;
 
   protected:
     /**
      * \brief Clean the local map so it stays local, and update the global map with the good features
      */
-    void update_local_to_global();
+    void update_local_to_global() noexcept;
 
     /**
      * \brief draw the top information band on the debug image
      */
-    void draw_image_head_band(cv::Mat& debugImage) const;
+    void draw_image_head_band(cv::Mat& debugImage) const noexcept;
 
     /**
      * \brief Mark all the outliers detected during optimization as unmatched
      * \param[in] outlierMatchedPoints A container of the wrong matches detected after the optimization process
      */
-    void mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints);
+    void mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints) noexcept;
     /**
      * \brief Mark all the outliers detected during optimization as unmatched
      * \param[in] outlierMatchedPlanes A container of the wrong matches detected after the optimization process
      */
-    void mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes);
+    void mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept;
 
   private:
     // Define types

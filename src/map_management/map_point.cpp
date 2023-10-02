@@ -19,7 +19,8 @@ Point::Point(const utils::WorldCoordinate& coordinates,
     assert(not _coordinates.hasNaN());
 };
 
-double Point::track(const utils::WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance)
+double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
+                    const matrix33& newDetectionCovariance) noexcept
 {
     assert(_kalmanFilter != nullptr);
     assert(utils::is_covariance_valid(newDetectionCovariance));
@@ -38,7 +39,7 @@ double Point::track(const utils::WorldCoordinate& newDetectionCoordinates, const
     return score;
 }
 
-void Point::build_kalman_filter()
+void Point::build_kalman_filter() noexcept
 {
     if (_kalmanFilter == nullptr)
     {
@@ -63,7 +64,7 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
                          const vectorb& isDetectedFeatureMatched,
                          std::list<PointMatchType>& matches,
                          const bool shouldAddToMatches,
-                         const bool useAdvancedSearch) const
+                         const bool useAdvancedSearch) const noexcept
 {
     static const double searchSpaceRadius = Parameters::get_search_matches_distance();
     static const double advancedSearchSpaceRadius = Parameters::get_search_matches_distance() * 2;
@@ -108,7 +109,7 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
 
 bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPointsObject& trackedFeatures,
-                              const uint dropChance) const
+                              const uint dropChance) const noexcept
 {
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
@@ -128,7 +129,9 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
     return false;
 }
 
-void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const
+void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
+                    cv::Mat& debugImage,
+                    const cv::Scalar& color) const noexcept
 {
     utils::ScreenCoordinate screenPoint;
     const bool isCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint);
@@ -144,7 +147,7 @@ void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugI
     }
 }
 
-bool MapPoint::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const
+bool MapPoint::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
     if (utils::ScreenCoordinate projectedScreenCoordinates;
         _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates))
@@ -154,7 +157,7 @@ bool MapPoint::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const
     return false;
 }
 
-void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const
+void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
 {
     assert(mapWriter != nullptr);
     mapWriter->add_point(_coordinates);
@@ -162,7 +165,7 @@ void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) co
 
 bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
                                  const matrix33& poseCovariance,
-                                 const CameraToWorldMatrix& cameraToWorld)
+                                 const CameraToWorldMatrix& cameraToWorld) noexcept
 {
     assert(_matchIndex >= 0);
 
@@ -190,7 +193,7 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     return false;
 }
 
-void MapPoint::update_no_match()
+void MapPoint::update_no_match() noexcept
 {
     // do nothing
 }
@@ -208,15 +211,15 @@ StagedMapPoint::StagedMapPoint(const matrix33& poseCovariance,
 {
 }
 
-bool StagedMapPoint::should_remove_from_staged() const { return get_confidence() <= 0; }
+bool StagedMapPoint::should_remove_from_staged() const noexcept { return get_confidence() <= 0; }
 
-bool StagedMapPoint::should_add_to_local_map() const
+bool StagedMapPoint::should_add_to_local_map() const noexcept
 {
     const static double minimumConfidenceForLocalMap = Parameters::get_minimum_confidence_for_local_map();
     return (get_confidence() > minimumConfidenceForLocalMap);
 }
 
-double StagedMapPoint::get_confidence() const
+double StagedMapPoint::get_confidence() const noexcept
 {
     const static double stagedPointconfidence = static_cast<double>(Parameters::get_point_staged_age_confidence());
     const double confidence = static_cast<double>(_successivMatchedCount) / stagedPointconfidence;
@@ -237,7 +240,7 @@ LocalMapPoint::LocalMapPoint(const StagedMapPoint& stagedPoint) :
     _successivMatchedCount = stagedPoint._successivMatchedCount;
 }
 
-bool LocalMapPoint::is_lost() const
+bool LocalMapPoint::is_lost() const noexcept
 {
     const static uint maximumUnmatchBeforeRemoval = Parameters::get_maximum_unmatched_before_removal();
     return (_failedTrackingCount > maximumUnmatchBeforeRemoval);

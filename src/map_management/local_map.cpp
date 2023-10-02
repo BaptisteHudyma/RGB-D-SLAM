@@ -34,7 +34,8 @@ Local_Map::~Local_Map()
     _localPlaneMap.destroy(_mapWriter);
 }
 
-features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(const utils::Pose& lastPose) const
+features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(
+        const utils::Pose& lastPose) const noexcept
 {
     const size_t numberOfNewKeypoints = _localPointMap.get_local_map_size() + _localPointMap.get_staged_map_size();
 
@@ -55,7 +56,7 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
 matches_containers::matchContainer Local_Map::find_feature_matches(
         const utils::Pose& currentPose,
         const features::keypoints::Keypoint_Handler& detectedKeypointsObject,
-        const features::primitives::plane_container& detectedPlanes)
+        const features::primitives::plane_container& detectedPlanes) noexcept
 {
     const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
             currentPose.get_orientation_quaternion(), currentPose.get_position());
@@ -81,7 +82,7 @@ void Local_Map::update(const utils::Pose& optimizedPose,
                        const features::keypoints::Keypoint_Handler& keypointObject,
                        const features::primitives::plane_container& detectedPlanes,
                        const matches_containers::match_point_container& outlierMatchedPoints,
-                       const matches_containers::match_plane_container& outlierMatchedPlanes)
+                       const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept
 {
     // Unmatch detected outliers
     mark_outliers_as_unmatched(outlierMatchedPoints);
@@ -106,7 +107,7 @@ void Local_Map::add_features_to_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
                                     const features::keypoints::Keypoint_Handler& keypointObject,
                                     const features::primitives::plane_container& detectedPlanes,
-                                    const bool addAllFeatures)
+                                    const bool addAllFeatures) noexcept
 {
     _localPointMap.add_features_to_staged_map(poseCovariance, cameraToWorld, keypointObject, addAllFeatures);
 
@@ -114,12 +115,12 @@ void Local_Map::add_features_to_map(const matrix33& poseCovariance,
     _localPlaneMap.add_features_to_staged_map(poseCovariance, cameraToWorld, detectedPlanes, addAllFeatures);
 }
 
-void Local_Map::update_local_to_global()
+void Local_Map::update_local_to_global() noexcept
 {
     // TODO when we have a global map
 }
 
-void Local_Map::update_no_pose()
+void Local_Map::update_no_pose() noexcept
 {
     // add local map points
     _localPointMap.update_with_no_tracking(_mapWriter);
@@ -128,7 +129,7 @@ void Local_Map::update_no_pose()
     _localPlaneMap.update_with_no_tracking(_mapWriter);
 }
 
-void Local_Map::reset()
+void Local_Map::reset() noexcept
 {
     _localPointMap.reset();
     _localPlaneMap.reset();
@@ -138,7 +139,7 @@ void Local_Map::reset()
  * PROTECTED
  */
 
-void Local_Map::draw_image_head_band(cv::Mat& debugImage) const
+void Local_Map::draw_image_head_band(cv::Mat& debugImage) const noexcept
 {
     assert(not debugImage.empty());
 
@@ -185,7 +186,7 @@ void Local_Map::draw_image_head_band(cv::Mat& debugImage) const
 void Local_Map::get_debug_image(const utils::Pose& camPose,
                                 const bool shouldDisplayStaged,
                                 const bool shouldDisplayPlaneMasks,
-                                cv::Mat& debugImage) const
+                                cv::Mat& debugImage) const noexcept
 {
     draw_image_head_band(debugImage);
 
@@ -197,7 +198,8 @@ void Local_Map::get_debug_image(const utils::Pose& camPose,
         _localPlaneMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
 }
 
-void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints)
+void Local_Map::mark_outliers_as_unmatched(
+        const matches_containers::match_point_container& outlierMatchedPoints) noexcept
 {
     // Mark outliers as unmatched
     for (const matches_containers::PointMatch& match: outlierMatchedPoints)
@@ -211,7 +213,8 @@ void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_point
     }
 }
 
-void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes)
+void Local_Map::mark_outliers_as_unmatched(
+        const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept
 {
     // Mark outliers as unmatched
     for (const matches_containers::PlaneMatch& match: outlierMatchedPlanes)
