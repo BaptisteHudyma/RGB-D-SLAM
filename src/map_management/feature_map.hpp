@@ -45,28 +45,28 @@ class IMapFeature
      * \param[in] useAdvancedSearch If true, will search matches with a lesser accuracy, but further
      * \return the index of the match if found, or UNMATCHED_FEATURE_INDEX
      */
-    virtual int find_match(const DetectedFeaturesObject& detectedFeatures,
-                           const WorldToCameraMatrix& worldToCamera,
-                           const vectorb& isDetectedFeatureMatched,
-                           std::list<FeatureMatchType>& matches,
-                           const bool shouldAddToMatches = true,
-                           const bool useAdvancedSearch = false) const = 0;
+    [[nodiscard]] virtual int find_match(const DetectedFeaturesObject& detectedFeatures,
+                                         const WorldToCameraMatrix& worldToCamera,
+                                         const vectorb& isDetectedFeatureMatched,
+                                         std::list<FeatureMatchType>& matches,
+                                         const bool shouldAddToMatches = true,
+                                         const bool useAdvancedSearch = false) const noexcept = 0;
 
     /**
      * \return True if this map feature is marked as matched
      */
-    bool is_matched() const { return _matchIndex != UNMATCHED_FEATURE_INDEX; };
+    [[nodiscard]] bool is_matched() const noexcept { return _matchIndex != UNMATCHED_FEATURE_INDEX; };
 
     /**
      * \brief mark this map feature as having no match
      */
-    void mark_unmatched() { _matchIndex = UNMATCHED_FEATURE_INDEX; };
+    void mark_unmatched() noexcept { _matchIndex = UNMATCHED_FEATURE_INDEX; };
 
     /**
      * \brief mark this map feature as having a match at the given index
      * \param[in] matchIndex The index of the match in the detected features
      */
-    void mark_matched(const int matchIndex) { _matchIndex = matchIndex; };
+    void mark_matched(const int matchIndex) noexcept { _matchIndex = matchIndex; };
 
     /**
      * \brief Update the feature, with the corresponding match
@@ -77,7 +77,7 @@ class IMapFeature
      */
     void update_matched(const DetectedFeatureType& matchedFeature,
                         const matrix33& poseCovariance,
-                        const CameraToWorldMatrix& cameraToWorld)
+                        const CameraToWorldMatrix& cameraToWorld) noexcept
     {
         if (update_with_match(matchedFeature, poseCovariance, cameraToWorld))
         {
@@ -90,7 +90,7 @@ class IMapFeature
     /**
      * \brief Update the feature, with the no match status
      */
-    void update_unmatched()
+    void update_unmatched() noexcept
     {
         mark_unmatched();
 
@@ -102,7 +102,7 @@ class IMapFeature
     /**
      * \brief should write this feature to a file, using the provided mapWriter
      */
-    virtual void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const = 0;
+    virtual void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept = 0;
 
     /**
      * \brief Add the current feature to the trackedFeatures object
@@ -111,9 +111,9 @@ class IMapFeature
      * \param[in] dropChance 1/dropChance to drop this feature and not add it
      * \return True if this was added to trackedFeatures object
      */
-    virtual bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
-                                TrackedFeaturesObject& trackedFeatures,
-                                const uint dropChance = 1000) const = 0;
+    [[nodiscard]] virtual bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
+                                              TrackedFeaturesObject& trackedFeatures,
+                                              const uint dropChance = 1000) const noexcept = 0;
 
     /**
      * \brief Draw this feature on the given image
@@ -123,14 +123,14 @@ class IMapFeature
      */
     virtual void draw(const WorldToCameraMatrix& worldToCamMatrix,
                       cv::Mat& debugImage,
-                      const cv::Scalar& color) const = 0;
+                      const cv::Scalar& color) const noexcept = 0;
 
     /**
      * \brief Return true if the map feature is visible from the given position
      * \param[in] worldToCamMatrix A matrix to change from world to camera space
      * \return True if the feature should be visible
      */
-    virtual bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const = 0;
+    [[nodiscard]] virtual bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept = 0;
 
     /**
      *  Members
@@ -143,11 +143,11 @@ class IMapFeature
     static const int FIRST_DETECTION_INDEX = -2; // set for the first detection, to use tracking even if no match is set
 
   protected:
-    virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
-                                   const matrix33& poseCovariance,
-                                   const CameraToWorldMatrix& cameraToWorld) = 0;
+    [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
+                                                 const matrix33& poseCovariance,
+                                                 const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
 
-    virtual void update_no_match() = 0;
+    virtual void update_no_match() noexcept = 0;
 
   private:
     inline static uint _idAllocator = 0;
@@ -156,18 +156,18 @@ class IMapFeature
 template<class DetectedFeatureType> class IStagedMapFeature
 {
   public:
-    virtual bool should_remove_from_staged() const = 0;
-    virtual bool should_add_to_local_map() const = 0;
+    [[nodiscard]] virtual bool should_remove_from_staged() const noexcept = 0;
+    [[nodiscard]] virtual bool should_add_to_local_map() const noexcept = 0;
 };
 
 template<class StagedMapFeature> class ILocalMapFeature
 {
   public:
-    virtual bool is_lost() const = 0;
+    [[nodiscard]] virtual bool is_lost() const noexcept = 0;
 
     cv::Vec3b _color;
 
-    void set_color()
+    void set_color() noexcept
     {
         // set a random color for this feature
         _color[0] = utils::Random::get_random_uint(255);
@@ -197,7 +197,7 @@ class Feature_Map
     /**
      * \brief Reset the content of this map, empty all local maps
      */
-    void reset()
+    void reset() noexcept
     {
         if (not _isActivated)
             return;
@@ -206,7 +206,7 @@ class Feature_Map
         _stagedMap.clear();
     }
 
-    void destroy(std::shared_ptr<outputs::IMap_Writer> mapWriter) const
+    void destroy(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
     {
         if (not _isActivated)
             return;
@@ -230,7 +230,7 @@ class Feature_Map
     void get_matches(const DetectedFeaturesObject& detectedFeatures,
                      const WorldToCameraMatrix& worldToCamera,
                      const bool useAdvancedMatch,
-                     std::list<FeatureMatchType>& matches)
+                     std::list<FeatureMatchType>& matches) noexcept
     {
         if (not _isActivated)
             return;
@@ -298,7 +298,7 @@ class Feature_Map
      */
     void get_tracked_features(const WorldToCameraMatrix& worldToCamera,
                               TrackedFeaturesObject& trackedFeatures,
-                              const uint localMapDropChance = 1000) const
+                              const uint localMapDropChance = 1000) const noexcept
     {
         if (not _isActivated)
             return;
@@ -326,7 +326,7 @@ class Feature_Map
     void update_map(const CameraToWorldMatrix& cameraToWorld,
                     const matrix33& poseCovariance,
                     const DetectedFeaturesObject& detectedFeatureObject,
-                    std::shared_ptr<outputs::IMap_Writer> mapWriter)
+                    std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
     {
         if (not _isActivated)
             return;
@@ -340,7 +340,7 @@ class Feature_Map
      * \brief Update this local map with a failed tracking
      * \param[in] mapWriter A pointer to the map writer object
      */
-    void update_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter)
+    void update_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
     {
         if (not _isActivated)
             return;
@@ -361,7 +361,7 @@ class Feature_Map
     void add_features_to_staged_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
                                     const DetectedFeaturesObject& detectedFeatures,
-                                    const bool addAllFeatures)
+                                    const bool addAllFeatures) noexcept
     {
         if (not _isActivated)
             return;
@@ -392,7 +392,7 @@ class Feature_Map
      * \param[in] featureId The id of the feature to mark as unmatched
      * \return True if the feature was found, or false
      */
-    bool mark_feature_with_id_as_unmatched(const size_t featureId)
+    [[nodiscard]] bool mark_feature_with_id_as_unmatched(const size_t featureId) noexcept
     {
         if (not _isActivated)
             return false;
@@ -448,7 +448,7 @@ class Feature_Map
      */
     void draw_on_image(const WorldToCameraMatrix& worldToCamMatrix,
                        cv::Mat& debugImage,
-                       const bool shouldDisplayStaged = false) const
+                       const bool shouldDisplayStaged = false) const noexcept
     {
         if (not _isActivated)
             return;
@@ -475,17 +475,17 @@ class Feature_Map
     /**
      * \brief Dectivate this local map
      */
-    void deactivate() { _isActivated = false; }
+    void deactivate() noexcept { _isActivated = false; }
 
-    size_t get_local_map_size() const { return _localMap.size(); };
-    size_t get_staged_map_size() const { return _stagedMap.size(); };
-    size_t size() const { return get_local_map_size() + get_staged_map_size(); };
+    [[nodiscard]] size_t get_local_map_size() const noexcept { return _localMap.size(); };
+    [[nodiscard]] size_t get_staged_map_size() const noexcept { return _stagedMap.size(); };
+    [[nodiscard]] size_t size() const noexcept { return get_local_map_size() + get_staged_map_size(); };
 
   protected:
     void update_local_map(const CameraToWorldMatrix& cameraToWorld,
                           const matrix33& poseCovariance,
                           const DetectedFeaturesObject& detectedFeatureObject,
-                          std::shared_ptr<outputs::IMap_Writer> mapWriter)
+                          std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
     {
         typename localMapType::iterator featureMapIterator = _localMap.begin();
         while (featureMapIterator != _localMap.end())
@@ -526,7 +526,7 @@ class Feature_Map
 
     void update_staged_map(const CameraToWorldMatrix& cameraToWorld,
                            const matrix33& poseCovariance,
-                           const DetectedFeaturesObject& detectedFeatureObject)
+                           const DetectedFeaturesObject& detectedFeatureObject) noexcept
     {
         // Add correct staged points to local map
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
@@ -570,7 +570,7 @@ class Feature_Map
         }
     }
 
-    void update_local_map_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter)
+    void update_local_map_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
     {
         // update the local map with no matchs
         typename localMapType::iterator featureMapIterator = _localMap.begin();
@@ -596,7 +596,7 @@ class Feature_Map
         }
     }
 
-    void update_staged_map_with_no_tracking()
+    void update_staged_map_with_no_tracking() noexcept
     {
         // update the staged map with no matchs
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();

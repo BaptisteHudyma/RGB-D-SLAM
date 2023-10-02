@@ -29,9 +29,9 @@ class Plane
   public:
     Plane();
 
-    utils::PlaneWorldCoordinates get_parametrization() const { return _parametrization; }
-    matrix44 get_covariance() const { return _covariance; };
-    utils::WorldPolygon get_boundary_polygon() const { return _boundaryPolygon; };
+    [[nodiscard]] utils::PlaneWorldCoordinates get_parametrization() const noexcept { return _parametrization; }
+    [[nodiscard]] matrix44 get_covariance() const noexcept { return _covariance; };
+    [[nodiscard]] utils::WorldPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
 
     /**
      * \brief Update this plane coordinates using a new detection
@@ -44,7 +44,7 @@ class Plane
     double track(const CameraToWorldMatrix& cameraToWorld,
                  const DetectedPlaneType& matchedFeature,
                  const utils::PlaneWorldCoordinates& newDetectionParameters,
-                 const matrix44& newDetectionCovariance);
+                 const matrix44& newDetectionCovariance) noexcept;
 
     utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                          // covariance of this plane in world space
@@ -56,12 +56,13 @@ class Plane
      * \param[in] cameraToWorld The matrix to convert from caera to world space
      * \param[in] detectedPolygon The boundary polygon of the matched feature, to project to this plane space
      */
-    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld, const utils::CameraPolygon& detectedPolygon);
+    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
+                                 const utils::CameraPolygon& detectedPolygon) noexcept;
 
     /**
      * \brief Build the parameter kalman filter
      */
-    static void build_kalman_filter();
+    static void build_kalman_filter() noexcept;
 
     // shared kalman filter, between all planes
     inline static std::unique_ptr<tracking::SharedKalmanFilter<4, 4>> _kalmanFilter = nullptr;
@@ -85,29 +86,31 @@ class MapPlane :
 
     virtual ~MapPlane() = default;
 
-    int find_match(const DetectedPlaneObject& detectedFeatures,
-                   const WorldToCameraMatrix& worldToCamera,
-                   const vectorb& isDetectedFeatureMatched,
-                   std::list<PlaneMatchType>& matches,
-                   const bool shouldAddToMatches = true,
-                   const bool useAdvancedSearch = false) const override;
+    [[nodiscard]] int find_match(const DetectedPlaneObject& detectedFeatures,
+                                 const WorldToCameraMatrix& worldToCamera,
+                                 const vectorb& isDetectedFeatureMatched,
+                                 std::list<PlaneMatchType>& matches,
+                                 const bool shouldAddToMatches = true,
+                                 const bool useAdvancedSearch = false) const noexcept override;
 
-    bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
-                        TrackedPlaneObject& trackedFeatures,
-                        const uint dropChance = 1000) const override;
+    [[nodiscard]] bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
+                                      TrackedPlaneObject& trackedFeatures,
+                                      const uint dropChance = 1000) const noexcept override;
 
-    void draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const override;
+    void draw(const WorldToCameraMatrix& worldToCamMatrix,
+              cv::Mat& debugImage,
+              const cv::Scalar& color) const noexcept override;
 
-    bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const override;
+    [[nodiscard]] bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept override;
 
-    void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const override;
+    void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
   protected:
-    bool update_with_match(const DetectedPlaneType& matchedFeature,
-                           const matrix33& poseCovariance,
-                           const CameraToWorldMatrix& cameraToWorld) override;
+    [[nodiscard]] bool update_with_match(const DetectedPlaneType& matchedFeature,
+                                         const matrix33& poseCovariance,
+                                         const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
-    void update_no_match() override;
+    void update_no_match() noexcept override;
 };
 
 class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneType>
@@ -117,9 +120,9 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
                    const CameraToWorldMatrix& cameraToWorld,
                    const DetectedPlaneType& detectedFeature);
 
-    bool should_remove_from_staged() const override;
+    [[nodiscard]] bool should_remove_from_staged() const noexcept override;
 
-    bool should_add_to_local_map() const override;
+    [[nodiscard]] bool should_add_to_local_map() const noexcept override;
 };
 
 class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
@@ -127,7 +130,7 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
   public:
     LocalMapPlane(const StagedMapPlane& stagedPlane);
 
-    bool is_lost() const override;
+    [[nodiscard]] bool is_lost() const noexcept override;
 };
 
 } // namespace rgbd_slam::map_management

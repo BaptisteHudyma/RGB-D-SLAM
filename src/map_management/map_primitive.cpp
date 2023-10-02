@@ -17,7 +17,7 @@ Plane::Plane()
 double Plane::track(const CameraToWorldMatrix& cameraToWorld,
                     const DetectedPlaneType& matchedFeature,
                     const utils::PlaneWorldCoordinates& newDetectionParameters,
-                    const matrix44& newDetectionCovariance)
+                    const matrix44& newDetectionCovariance) noexcept
 {
     assert(_kalmanFilter != nullptr);
     assert(utils::is_covariance_valid(newDetectionCovariance));
@@ -49,7 +49,7 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
 }
 
 void Plane::update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
-                                    const utils::CameraPolygon& detectedPolygon)
+                                    const utils::CameraPolygon& detectedPolygon) noexcept
 {
     // correct the projection of the boundary polygon to correspond to the parametrization
     const vector3& worldPolygonNormal = _parametrization.get_normal();
@@ -64,7 +64,7 @@ void Plane::update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
     _boundaryPolygon.merge(projectedPolygon);
 }
 
-void Plane::build_kalman_filter()
+void Plane::build_kalman_filter() noexcept
 {
     if (_kalmanFilter == nullptr)
     {
@@ -89,7 +89,7 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
                          const vectorb& isDetectedFeatureMatched,
                          std::list<PlaneMatchType>& matches,
                          const bool shouldAddToMatches,
-                         const bool useAdvancedSearch) const
+                         const bool useAdvancedSearch) const noexcept
 {
     const PlaneWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
     // project plane in camera space
@@ -153,7 +153,7 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
 bool MapPlane::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPlaneObject& trackedFeatures,
-                              const uint dropChance) const
+                              const uint dropChance) const noexcept
 {
     // silence warning for unused parameters
     (void)worldToCamera;
@@ -162,18 +162,20 @@ bool MapPlane::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
     return false;
 }
 
-void MapPlane::draw(const WorldToCameraMatrix& worldToCamMatrix, cv::Mat& debugImage, const cv::Scalar& color) const
+void MapPlane::draw(const WorldToCameraMatrix& worldToCamMatrix,
+                    cv::Mat& debugImage,
+                    const cv::Scalar& color) const noexcept
 {
     // display the boundary of the plane
     _boundaryPolygon.display(worldToCamMatrix, color, debugImage);
 }
 
-bool MapPlane::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const
+bool MapPlane::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
     return _boundaryPolygon.to_camera_space(worldToCamMatrix).is_visible_in_screen_space();
 }
 
-void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const
+void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
 {
     assert(mapWriter != nullptr);
     mapWriter->add_polygon(_boundaryPolygon.get_unprojected_boundary());
@@ -181,7 +183,7 @@ void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) co
 
 bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
                                  const matrix33& poseCovariance,
-                                 const CameraToWorldMatrix& cameraToWorld)
+                                 const CameraToWorldMatrix& cameraToWorld) noexcept
 {
     assert(_matchIndex >= 0);
 
@@ -202,7 +204,7 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
     return true;
 }
 
-void MapPlane::update_no_match()
+void MapPlane::update_no_match() noexcept
 {
     // do nothing
 }
@@ -232,9 +234,9 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
     assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
 }
 
-bool StagedMapPlane::should_remove_from_staged() const { return _failedTrackingCount >= 2; }
+bool StagedMapPlane::should_remove_from_staged() const noexcept { return _failedTrackingCount >= 2; }
 
-bool StagedMapPlane::should_add_to_local_map() const { return _successivMatchedCount >= 2; }
+bool StagedMapPlane::should_add_to_local_map() const noexcept { return _successivMatchedCount >= 2; }
 
 /**
  *  LocalMapPlane
@@ -256,7 +258,7 @@ LocalMapPlane::LocalMapPlane(const StagedMapPlane& stagedPlane) : MapPlane(stage
     assert(utils::is_covariance_valid(_covariance));
 }
 
-bool LocalMapPlane::is_lost() const
+bool LocalMapPlane::is_lost() const noexcept
 {
     const static size_t maximumUnmatchBeforeremoval = Parameters::get_maximum_unmatched_before_removal();
     return _failedTrackingCount >= maximumUnmatchBeforeremoval;
