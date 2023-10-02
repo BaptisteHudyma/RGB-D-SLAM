@@ -16,7 +16,8 @@ namespace rgbd_slam::pose_optimization::ransac {
  * \return A container of size numberOfElementsToChoose, with no duplicated elements.
  */
 template<template<typename> class Container, typename T>
-Container<T> get_random_subset(const Container<T>& inContainer, const uint numberOfElementsToChoose)
+[[nodiscard]] Container<T> get_random_subset(const Container<T>& inContainer,
+                                             const uint numberOfElementsToChoose) noexcept
 {
     assert(numberOfElementsToChoose <= inContainer.size());
 
@@ -42,7 +43,8 @@ Container<T> get_random_subset(const Container<T>& inContainer, const uint numbe
  * \return A container of size numberOfElementsToChoose
  */
 template<template<typename> class Container, typename T>
-Container<T> get_random_subset_with_duplicates(const Container<T>& inContainer, const uint numberOfElementsToChoose)
+[[nodiscard]] Container<T> get_random_subset_with_duplicates(const Container<T>& inContainer,
+                                                             const uint numberOfElementsToChoose) noexcept
 {
     const uint inContainerSize = inContainer.size();
     assert(numberOfElementsToChoose <= inContainerSize);
