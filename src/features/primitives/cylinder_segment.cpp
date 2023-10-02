@@ -231,7 +231,7 @@ size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations,
                                          const matrixd& planeNormals,
                                          const matrixd& projectedCentroids,
                                          const Matrixb& idsLeftMask,
-                                         Matrixb& isInlierFinal) const
+                                         Matrixb& isInlierFinal) const noexcept
 {
     assert(maximumIterations > 0);
     // not enough ids left
@@ -323,7 +323,7 @@ size_t Cylinder_Segment::run_ransac_loop(const uint maximumIterations,
     return finalInlierIndexes.size();
 }
 
-double Cylinder_Segment::get_distance(const vector3& point) const
+double Cylinder_Segment::get_distance(const vector3& point) const noexcept
 {
     double minDist = this->get_distance(point, 0);
     const size_t pointAxisSize = _pointsAxis1.size();
@@ -336,7 +336,7 @@ double Cylinder_Segment::get_distance(const vector3& point) const
     return minDist;
 }
 
-double Cylinder_Segment::get_distance(const vector3& point, const size_t segmentId) const
+double Cylinder_Segment::get_distance(const vector3& point, const size_t segmentId) const noexcept
 {
     const vector3 pointAxis2to1 = _pointsAxis2[segmentId] - _pointsAxis1[segmentId];
     const vector3 pointAxisTo2 = point - _pointsAxis2[segmentId];
@@ -347,56 +347,56 @@ double Cylinder_Segment::get_distance(const vector3& point, const size_t segment
 /*
  *  Getters
  */
-uint Cylinder_Segment::get_segment_count() const { return _segmentCount; }
+uint Cylinder_Segment::get_segment_count() const noexcept { return _segmentCount; }
 
-double Cylinder_Segment::get_MSE_at(const uint index) const
+double Cylinder_Segment::get_MSE_at(const uint index) const noexcept
 {
     assert(index < _MSE.size());
     return _MSE[index];
 }
 
-bool Cylinder_Segment::is_inlier_at(const uint indexA, const uint indexB) const
+bool Cylinder_Segment::is_inlier_at(const uint indexA, const uint indexB) const noexcept
 {
     assert(indexA < _inliers.size() and indexB < _inliers[indexA].size());
     return _inliers[indexA](indexB);
 }
 
-uint Cylinder_Segment::get_local_to_global_mapping(const uint index) const
+uint Cylinder_Segment::get_local_to_global_mapping(const uint index) const noexcept
 {
     assert(index < _local2globalMap.size());
     return _local2globalMap[index];
 }
 
-const vector3& Cylinder_Segment::get_axis1_point(const uint index) const
+const vector3& Cylinder_Segment::get_axis1_point(const uint index) const noexcept
 {
     assert(index < _pointsAxis1.size());
     return _pointsAxis1[index];
 }
 
-const vector3& Cylinder_Segment::get_axis2_point(const uint index) const
+const vector3& Cylinder_Segment::get_axis2_point(const uint index) const noexcept
 {
     assert(index < _pointsAxis2.size());
     return _pointsAxis2[index];
 }
 
-double Cylinder_Segment::get_axis_normal(const uint index) const
+double Cylinder_Segment::get_axis_normal(const uint index) const noexcept
 {
     assert(index < _normalsAxis1Axis2.size());
     return _normalsAxis1Axis2[index];
 }
 
-double Cylinder_Segment::get_radius(const uint index) const
+double Cylinder_Segment::get_radius(const uint index) const noexcept
 {
     assert(index < _radius.size());
     return _radius[index];
 }
 
-double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other) const
+double Cylinder_Segment::get_normal_similarity(const Cylinder_Segment& other) const noexcept
 {
     return std::abs(_axis.dot(other._axis));
 }
 
-const vector3 Cylinder_Segment::get_normal() const { return _axis; }
+vector3 Cylinder_Segment::get_normal() const noexcept { return _axis; }
 
 Cylinder_Segment::~Cylinder_Segment() { _cellActivatedCount = 0; }
 

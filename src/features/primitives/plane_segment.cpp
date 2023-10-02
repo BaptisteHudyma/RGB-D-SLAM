@@ -43,7 +43,7 @@ Plane_Segment::Plane_Segment(const Plane_Segment& seg) :
  * \param[in,out] lastPixelDepth Last depht value to pass the continuity test
  * \return False if a continuities is detected
  */
-bool is_continuous(const float pixelDepth, float& lastPixelDepth)
+bool is_continuous(const float pixelDepth, float& lastPixelDepth) noexcept
 {
     // ignore empty depth values
     if (pixelDepth > 0)
@@ -61,7 +61,7 @@ bool is_continuous(const float pixelDepth, float& lastPixelDepth)
     return true;
 }
 
-bool Plane_Segment::is_cell_vertical_continuous(const matrixf& depthMatrix) const
+bool Plane_Segment::is_cell_vertical_continuous(const matrixf& depthMatrix) const noexcept
 {
     const uint startValue = _cellWidth / 2;
     const uint endValue = _ptsPerCellCount - startValue;
@@ -81,7 +81,7 @@ bool Plane_Segment::is_cell_vertical_continuous(const matrixf& depthMatrix) cons
     return true;
 }
 
-bool Plane_Segment::is_cell_horizontal_continuous(const matrixf& depthMatrix) const
+bool Plane_Segment::is_cell_horizontal_continuous(const matrixf& depthMatrix) const noexcept
 {
     const uint startValue = static_cast<uint>(_cellWidth * (_cellHeight / 2.0));
     const uint endValue = startValue + _cellWidth;
@@ -101,7 +101,7 @@ bool Plane_Segment::is_cell_horizontal_continuous(const matrixf& depthMatrix) co
     return true;
 }
 
-void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uint cellId)
+void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uint cellId) noexcept
 {
     clear_plane_parameters();
 
@@ -169,7 +169,7 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     _isPlanar = _MSE <= pow(utils::get_depth_quantization(_centroid.z()), 2.0);
 }
 
-void Plane_Segment::expand_segment(const Plane_Segment& planeSegment)
+void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) noexcept
 {
     _Sx += planeSegment._Sx;
     _Sy += planeSegment._Sy;
@@ -191,7 +191,7 @@ void Plane_Segment::expand_segment(const Plane_Segment& planeSegment)
     _pointCount += planeSegment._pointCount;
 }
 
-matrix33 Plane_Segment::get_point_cloud_covariance() const
+matrix33 Plane_Segment::get_point_cloud_covariance() const noexcept
 {
     const matrix33 pointCloudHessian({{_Sxs, _Sxy, _Szx}, {_Sxy, _Sys, _Syz}, {_Szx, _Syz, _Szs}});
 
@@ -203,7 +203,7 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
     return covariance;
 }
 
-matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const
+matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const noexcept
 {
     assert(_pointCount > 0);
     const double oneOverCount = 1.0 / static_cast<double>(_pointCount);
@@ -230,7 +230,7 @@ matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const
     return covariance;
 }
 
-void Plane_Segment::fit_plane()
+void Plane_Segment::fit_plane() noexcept
 {
     _isPlanar = false;
 
@@ -287,7 +287,7 @@ void Plane_Segment::fit_plane()
 /*
  * Sets all the plane parameters to zero
  */
-void Plane_Segment::clear_plane_parameters()
+void Plane_Segment::clear_plane_parameters() noexcept
 {
     _isPlanar = false;
 
@@ -310,21 +310,21 @@ void Plane_Segment::clear_plane_parameters()
     _Szx = 0;
 }
 
-double Plane_Segment::get_cos_angle(const Plane_Segment& p) const
+double Plane_Segment::get_cos_angle(const Plane_Segment& p) const noexcept
 {
     assert(_isPlanar);
     return _parametrization.get_cos_angle(p._parametrization);
 }
-double Plane_Segment::get_point_distance(const vector3& point) const
+double Plane_Segment::get_point_distance(const vector3& point) const noexcept
 {
     return _parametrization.get_point_distance(point);
 }
-double Plane_Segment::get_point_distance_squared(const vector3& point) const
+double Plane_Segment::get_point_distance_squared(const vector3& point) const noexcept
 {
     return _parametrization.get_point_distance_squared(point);
 }
 
-bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const
+bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const noexcept
 {
     const static double maximumMergeAngle = cos(Parameters::get_maximum_plane_merge_angle() * M_PI / 180.0);
     return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid()) < maxMatchDistance;

@@ -24,7 +24,8 @@ Depth_Map_Transformation::Depth_Map_Transformation(const uint width, const uint 
         init_matrices();
 }
 
-bool Depth_Map_Transformation::rectify_depth(const cv::Mat_<float>& depthImage, cv::Mat_<float>& rectifiedDepth)
+bool Depth_Map_Transformation::rectify_depth(const cv::Mat_<float>& depthImage,
+                                             cv::Mat_<float>& rectifiedDepth) noexcept
 {
     if (not this->is_ok())
         return false;
@@ -100,7 +101,7 @@ bool Depth_Map_Transformation::rectify_depth(const cv::Mat_<float>& depthImage, 
 }
 
 bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& depthImage,
-                                                         matrixf& organizedCloudArray)
+                                                         matrixf& organizedCloudArray) noexcept
 {
     if (not this->is_ok())
         return false;
@@ -155,7 +156,7 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
     return true;
 }
 
-bool Depth_Map_Transformation::load_parameters()
+bool Depth_Map_Transformation::load_parameters() noexcept
 {
     // TODO check parameters
     _fxIr = static_cast<float>(Parameters::get_camera_2_focal_x());
@@ -188,7 +189,7 @@ bool Depth_Map_Transformation::load_parameters()
 /*
  *  Called after loading parameters to init matrices
  */
-void Depth_Map_Transformation::init_matrices()
+void Depth_Map_Transformation::init_matrices() noexcept
 {
     const uint horizontalCellsCount = _width / _cellSize;
 
