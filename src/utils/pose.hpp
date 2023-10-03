@@ -10,7 +10,6 @@ namespace rgbd_slam::utils {
  */
 class PoseBase
 {
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   public:
     PoseBase();
     PoseBase(const vector3& position, const quaternion& orientation);

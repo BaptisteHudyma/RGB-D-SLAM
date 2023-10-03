@@ -24,8 +24,6 @@ class Motion_Model
     [[nodiscard]] utils::Pose predict_next_pose(const utils::Pose& currentPose,
                                                 const bool shouldIncreaseVariance = true) noexcept;
 
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
     vector3 get_position_velocity() const noexcept { return _linearVelocity; };
     quaternion get_angular_velocity() const noexcept { return _angularVelocity; };
 
