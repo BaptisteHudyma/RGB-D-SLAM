@@ -20,8 +20,6 @@ class Depth_Map_Transformation
      */
     Depth_Map_Transformation(const uint width, const uint height, const uint cellSize);
 
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
     /**
      * \brief Rectify the given depth image to align it with the RGB image
      * \param[in] depthImage The unrectified depth image

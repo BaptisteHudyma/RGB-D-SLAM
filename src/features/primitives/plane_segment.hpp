@@ -84,8 +84,6 @@ class Plane_Segment
      */
     [[nodiscard]] matrix33 get_point_cloud_covariance() const noexcept;
 
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
     [[nodiscard]] double get_MSE() const noexcept { return _MSE; };
     [[nodiscard]] vector3 get_normal() const noexcept { return _parametrization.get_normal(); };
     [[nodiscard]] utils::CameraCoordinate get_centroid() const noexcept { return _centroid; };

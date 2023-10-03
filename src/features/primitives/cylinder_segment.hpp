@@ -47,8 +47,6 @@ class Cylinder_Segment
 
     ~Cylinder_Segment();
 
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
     /**
      * \brief
      * \return The number of plane segments fitted in this cylinder surface
