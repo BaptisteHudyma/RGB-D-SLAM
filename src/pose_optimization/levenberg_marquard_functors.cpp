@@ -13,7 +13,7 @@ vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
     const vector3& qv = q.vec();
 
     const double sinha = qv.norm();
-    if (sinha > 0)
+    if (sinha > 0.001)
     {
         const double angle = 2 * atan2(sinha, q.w()); // NOTE: signed
         return (qv * (angle / sinha));
@@ -30,13 +30,12 @@ quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizati
 {
     const double a = optimizationCoefficients.norm();
     const double ha = a * 0.5;
-    const double scale = (a > 0) ? (sin(ha) / a) : 0.5;
+    const double scale = (a > 0.001) ? (sin(ha) / a) : 0.5;
     quaternion rotation(cos(ha),
                         optimizationCoefficients.x() * scale,
                         optimizationCoefficients.y() * scale,
                         optimizationCoefficients.z() * scale);
-    rotation.normalize();
-    return rotation;
+    return rotation.normalized();
 }
 
 /**
