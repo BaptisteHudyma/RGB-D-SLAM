@@ -21,23 +21,24 @@ namespace ransac {
 constexpr float maximumRetroprojectionErrorForPointInliers_px =
         10.0; // Max retroprojection error between two screen points before rejecting the match (pixels);
 constexpr float maximumRetroprojectionErrorForPlaneInliers_mm =
-        50.0; // Max retroprojection error between two screen planes, in millimeters, before rejecting the match
-constexpr float minimumInliersProportionForEarlyStop = 0.90; // proportion of inliers in total set, to stop RANSAC early
-constexpr float probabilityOfSuccess = 0.8; // probability of having at least one correct transformation
-constexpr float inlierProportion = 0.6;     // number of inliers in data / number of points in data
+        20.0; // Max retroprojection error between two screen planes, in millimeters, before rejecting the match
+constexpr double minimumInliersProportionForEarlyStop =
+        0.90f;                               // proportion of inliers in total set, to stop RANSAC early
+constexpr float probabilityOfSuccess = 0.8f; // probability of having at least one correct transformation
+constexpr float inlierProportion = 0.6f;     // number of inliers in data / number of points in data
 } // namespace ransac
 
 constexpr uint minimumPointForOptimization = 5; // Should be >= 5, the minimum point count for a 3D pose estimation
 constexpr uint minimumPlanesForOptimization =
         3;                             // Should be >= 3, the minimum infinite plane count for a 3D pose estimation
 constexpr uint maximumIterations = 64; // Max iteration of the Levenberg Marquart optimisation
-constexpr float errorPrecision = 0;    // tolerance for the norm of the solution vector
-constexpr float toleranceOfSolutionVectorNorm = 1e-4; // Smallest delta of doubles
-constexpr float toleranceOfVectorFunction = 1e-3;     // tolerance for the norm of the vector function
-constexpr float toleranceOfErrorFunctionGradient = 0; // tolerance for the norm of the gradient of the error function
-constexpr float diagonalStepBoundShift = 100;         // step bound for the diagonal shift
+constexpr float errorPrecision = 0.0f; // tolerance for the norm of the solution vector
+constexpr float toleranceOfSolutionVectorNorm = 1e-4f;   // Smallest delta of doubles
+constexpr float toleranceOfVectorFunction = 1e-3f;       // tolerance for the norm of the vector function
+constexpr float toleranceOfErrorFunctionGradient = 0.0f; // tolerance for the norm of the gradient of the error function
+constexpr float diagonalStepBoundShift = 100.0f;         // step bound for the diagonal shift
 constexpr float maximumRetroprojectionError =
-        3; // In pixel: maximum distance after which we can consider a retroprojection as invalid
+        3.0f; // In pixel: maximum distance after which we can consider a retroprojection as invalid
 } // namespace optimization
 
 namespace detection {
@@ -77,7 +78,7 @@ constexpr float cylinderRansacProbabilityOfSuccess = 0.8f;
 
 namespace matching {
 constexpr float minimumPlaneOverlapToConsiderMatch =
-        0.4; // // Inter over area of the two primitive masks, to consider a primitive match
+        0.4f; // // Inter over area of the two primitive masks, to consider a primitive match
 constexpr double maximumAngleForPlaneMatch_d =
         20.0; // Maximum angle between two primitives to consider a match (degrees)
 constexpr double maximumDistanceForPlaneMatch_mm =

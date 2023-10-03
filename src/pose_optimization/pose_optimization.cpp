@@ -167,10 +167,9 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     }
 
     constexpr double pointMaxRetroprojectionError =
-            parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px; // maximum inlier
-                                                                                             // threshold, in milli
+            parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px; // maximum inlier threshold
     constexpr double planeMaxRetroprojectionError =
-            parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm; // millimeters
+            parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm; // maximum inlier threshold
     static_assert(pointMaxRetroprojectionError > 0);
     static_assert(planeMaxRetroprojectionError > 0);
     const uint acceptablePointInliersForEarlyStop = static_cast<uint>(
