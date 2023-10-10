@@ -145,7 +145,7 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
             const int id = _cellMap(position[0], position[1]);
             assert(id >= 0 and id < organizedCloudArray.rows());
 
-            // undistorde depth
+            // undistorded depth
             organizedCloudArray(id, 0) = (static_cast<float>(position[1]) - _cxRgb) * z / _fxRgb;
             organizedCloudArray(id, 1) = (static_cast<float>(position[0]) - _cyRgb) * z / _fyRgb;
             organizedCloudArray(id, 2) = z;
