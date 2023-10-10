@@ -38,19 +38,7 @@ class Depth_Map_Transformation
     [[nodiscard]] bool get_organized_cloud_array(const cv::Mat_<float>& depthImage,
                                                  matrixf& organizedCloudArray) noexcept;
 
-    /**
-     * \brief Controls the state of this class.
-     *
-     * \return False if the camera parameters could not be loaded
-     */
-    [[nodiscard]] bool is_ok() const noexcept { return _isOk; };
-
   protected:
-    /**
-     * \brief Loads the camera intrinsic parameters
-     */
-    [[nodiscard]] bool load_parameters() noexcept;
-
     /**
      * \brief Must be called after load_parameters. Fills the computation matrices
      */
@@ -60,22 +48,6 @@ class Depth_Map_Transformation
     uint _width;
     uint _height;
     uint _cellSize;
-    bool _isOk;
-
-    // cam parameters
-    float _fxIr;
-    float _fyIr;
-    float _cxIr;
-    float _cyIr;
-
-    float _fxRgb;
-    float _fyRgb;
-    float _cxRgb;
-    float _cyRgb;
-
-    // camera parameters
-    cv::Mat_<float> _Rstereo;
-    cv::Mat_<float> _Tstereo;
 
     // pre computation matrix
     cv::Mat_<float> _Xpre;

@@ -152,8 +152,8 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    const uint width = rgbd_slam::Parameters::get_camera_1_image_size_x();  // 640
-    const uint height = rgbd_slam::Parameters::get_camera_1_image_size_y(); // 480
+    const uint width = rgbd_slam::Parameters::get_camera_1_image_size().x();  // 640
+    const uint height = rgbd_slam::Parameters::get_camera_1_image_size().y(); // 480
 
     // start with ground truth pose
     rgbd_slam::utils::Pose pose;

@@ -2,6 +2,7 @@
 #include "../../parameters.hpp"
 #include "../../utils/angle_utils.hpp"
 #include "../../utils/random.hpp"
+#include "coordinates.hpp"
 #include <cstddef>
 #include <opencv2/core/eigen.hpp>
 #include <tbb/parallel_for.h>
@@ -18,34 +19,13 @@ Depth_Map_Transformation::Depth_Map_Transformation(const uint width, const uint 
 {
     assert(height > 0 and width > 0);
 
-    _isOk = false;
-    _isOk = load_parameters();
-    if (this->is_ok())
-        init_matrices();
+    // init static matrices
+    init_matrices();
 }
 
 bool Depth_Map_Transformation::rectify_depth(const cv::Mat_<float>& depthImage,
                                              cv::Mat_<float>& rectifiedDepth) noexcept
 {
-    if (not this->is_ok())
-        return false;
-
-    const static float x0RStereo = _Rstereo(0, 0);
-    const static float x1RStereo = _Rstereo(1, 0);
-    const static float x2RStereo = _Rstereo(2, 0);
-
-    const static float y0RStereo = _Rstereo(0, 1);
-    const static float y1RStereo = _Rstereo(1, 1);
-    const static float y2RStereo = _Rstereo(2, 1);
-
-    const static float z0RStereo = _Rstereo(0, 2);
-    const static float z1RStereo = _Rstereo(1, 2);
-    const static float z2RStereo = _Rstereo(2, 2);
-
-    const static float xTStereo = _Tstereo(0);
-    const static float yTStereo = _Tstereo(1);
-    const static float zTStereo = _Tstereo(2);
-
     // will contain the projected depth image to rgb space
     rectifiedDepth = cv::Mat_<float>::zeros(static_cast<int>(_height), static_cast<int>(_width));
 
@@ -72,24 +52,33 @@ bool Depth_Map_Transformation::rectify_depth(const cv::Mat_<float>& depthImage,
                         continue;
                     }
                     // undistord the depth image
-                    const float originalX = preXRow[column] * originalZ;
-                    const float originalY = preYRow[column] * originalZ;
+                    const vector3 original(preXRow[column] * originalZ, preYRow[column] * originalZ, originalZ);
 
-                    // project to rgb space
-                    const float x = originalX * x0RStereo + originalY * y0RStereo + originalZ * z0RStereo + xTStereo;
-                    const float y = originalX * x1RStereo + originalY * y1RStereo + originalZ * z1RStereo + yTStereo;
-                    const float z = originalX * x2RStereo + originalY * y2RStereo + originalZ * z2RStereo + zTStereo;
+                    // project to camera1 space
+                    const vector3 projected =
+                            (Parameters::get_camera_2_to_camera_1_transformation() * original.homogeneous()).head<3>();
 
-                    // distord to align with rgb image
-                    const uint projCoordColumn = static_cast<uint>(floor(x * _fxRgb / z + _cxRgb));
-                    const uint projCoordRow = static_cast<uint>(floor(y * _fyRgb / z + _cyRgb));
-
-                    // keep projected coordinates that are in rgb image boundaries
-                    if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and
-                        projCoordRow < _height)
+                    // distord to align with camera1 image
+                    utils::ScreenCoordinate2D screenCoordinates;
+                    if (utils::CameraCoordinate(projected).to_screen_coordinates(screenCoordinates))
                     {
-                        // set transformed depth image
-                        rectifiedDepth.at<float>(static_cast<int>(projCoordRow), static_cast<int>(projCoordColumn)) = z;
+                        const uint projCoordColumn = static_cast<uint>(floor(screenCoordinates.x()));
+                        const uint projCoordRow = static_cast<uint>(floor(screenCoordinates.y()));
+
+                        // keep projected coordinates that are in rgb image boundaries
+                        if (projCoordColumn > 0 and projCoordRow > 0 and projCoordColumn < _width and
+                            projCoordRow < _height)
+                        {
+                            // set transformed depth image
+                            rectifiedDepth.at<float>(static_cast<int>(projCoordRow),
+                                                     static_cast<int>(projCoordColumn)) =
+                                    static_cast<float>(projected.z());
+                        }
+                    }
+                    else
+                    {
+                        // impossible: we checked that z > 0 before
+                        exit(-1);
                     }
                 }
             }
@@ -103,9 +92,6 @@ bool Depth_Map_Transformation::rectify_depth(const cv::Mat_<float>& depthImage,
 bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& depthImage,
                                                          matrixf& organizedCloudArray) noexcept
 {
-    if (not this->is_ok())
-        return false;
-
     assert(depthImage.rows == static_cast<int>(_height));
     assert(depthImage.cols == static_cast<int>(_width));
 
@@ -128,9 +114,12 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
                     const int id = _cellMap.at<int>(static_cast<int>(row), static_cast<int>(column));
                     assert(id >= 0 and id < organizedCloudArray.rows());
 
-                    // undistord depth
-                    organizedCloudArray(id, 0) = (static_cast<float>(column) - _cxRgb) * z / _fxRgb;
-                    organizedCloudArray(id, 1) = (static_cast<float>(row) - _cyRgb) * z / _fyRgb;
+                    const auto& cameraCoordinates =
+                            utils::ScreenCoordinate(position[1], position[0], z).to_camera_coordinates();
+
+                    // undistorded depth
+                    organizedCloudArray(id, 0) = static_cast<float>(cameraCoordinates.x());
+                    organizedCloudArray(id, 1) = static_cast<float>(cameraCoordinates.y());
                     organizedCloudArray(id, 2) = z;
                 }
             }
@@ -145,43 +134,16 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
             const int id = _cellMap(position[0], position[1]);
             assert(id >= 0 and id < organizedCloudArray.rows());
 
+            const auto& cameraCoordinates =
+                    utils::ScreenCoordinate(position[1], position[0], z).to_camera_coordinates();
+
             // undistorded depth
-            organizedCloudArray(id, 0) = (static_cast<float>(position[1]) - _cxRgb) * z / _fxRgb;
-            organizedCloudArray(id, 1) = (static_cast<float>(position[0]) - _cyRgb) * z / _fyRgb;
+            organizedCloudArray(id, 0) = static_cast<float>(cameraCoordinates.x());
+            organizedCloudArray(id, 1) = static_cast<float>(cameraCoordinates.y());
             organizedCloudArray(id, 2) = z;
         }
     });
 #endif
-
-    return true;
-}
-
-bool Depth_Map_Transformation::load_parameters() noexcept
-{
-    // TODO check parameters
-    _fxIr = static_cast<float>(Parameters::get_camera_2_focal().x());
-    _fyIr = static_cast<float>(Parameters::get_camera_2_focal().y());
-    _cxIr = static_cast<float>(Parameters::get_camera_2_center().x());
-    _cyIr = static_cast<float>(Parameters::get_camera_2_center().y());
-
-    _fxRgb = static_cast<float>(Parameters::get_camera_1_focal().x());
-    _fyRgb = static_cast<float>(Parameters::get_camera_1_focal().y());
-    _cxRgb = static_cast<float>(Parameters::get_camera_1_center().x());
-    _cyRgb = static_cast<float>(Parameters::get_camera_1_center().y());
-
-    _Tstereo = cv::Mat_<float>(3, 1);
-    _Tstereo.at<float>(0) = static_cast<float>(Parameters::get_camera_2_translation_x());
-    _Tstereo.at<float>(1) = static_cast<float>(Parameters::get_camera_2_translation_y());
-    _Tstereo.at<float>(2) = static_cast<float>(Parameters::get_camera_2_translation_z());
-
-    const EulerAngles rotationEuler(Parameters::get_camera_2_rotation_x(),
-                                    Parameters::get_camera_2_rotation_y(),
-                                    Parameters::get_camera_2_rotation_z());
-    const matrix33 cameraRotation = utils::get_rotation_matrix_from_euler_angles(rotationEuler);
-
-    cv::Mat_<double> rot(3, 3);
-    cv::eigen2cv(cameraRotation, rot);
-    _Rstereo = rot;
 
     return true;
 }
@@ -201,10 +163,11 @@ void Depth_Map_Transformation::init_matrices() noexcept
 
         for (uint colum = 0; colum < _width; ++colum)
         {
+            const auto cameraProjection = utils::ScreenCoordinate2D(colum, row).to_camera_coordinates();
+
             // Not efficient but at this stage doesn t matter
-            _Xpre.at<float>(static_cast<int>(row), static_cast<int>(colum)) =
-                    (static_cast<float>(colum) - _cxIr) / _fxIr;
-            _Ypre.at<float>(static_cast<int>(row), static_cast<int>(colum)) = (static_cast<float>(row) - _cyIr) / _fyIr;
+            _Xpre.at<float>(static_cast<int>(row), static_cast<int>(colum)) = static_cast<float>(cameraProjection.x());
+            _Ypre.at<float>(static_cast<int>(row), static_cast<int>(colum)) = static_cast<float>(cameraProjection.y());
 
             // Pre-computations for maping an image point cloud to a cache-friendly array where cell's local point
             // clouds are contiguous

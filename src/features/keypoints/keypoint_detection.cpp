@@ -16,15 +16,14 @@ namespace rgbd_slam::features::keypoints {
 
 Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 {
-    const size_t imageHeight = Parameters::get_camera_1_image_size_y();
-    const size_t imageWidth = Parameters::get_camera_1_image_size_x();
+    static const size_t imageHeight = Parameters::get_camera_1_image_size().y();
+    static const size_t imageWidth = Parameters::get_camera_1_image_size().x();
 
     constexpr uint maxKeypointToDetect = parameters::detection::maxNumberOfPointsToDetect;
     constexpr size_t cellSize = parameters::detection::keypointCellDetectionSize_px;
-    const size_t numCellsY = 1 + ((imageHeight - 1) / cellSize);
-    const size_t numCellsX = 1 + ((imageWidth - 1) / cellSize);
-
-    const size_t numberOfCells = numCellsY * numCellsX;
+    static const size_t numCellsY = 1 + ((imageHeight - 1) / cellSize);
+    static const size_t numCellsX = 1 + ((imageWidth - 1) / cellSize);
+    static const size_t numberOfCells = numCellsY * numCellsX;
 
     // Create feature extractor and matcher
     _featureDetector =

@@ -1,5 +1,8 @@
 #include "parameters.hpp"
+#include "angle_utils.hpp"
+#include "camera_transformation.hpp"
 #include "outputs/logger.hpp"
+#include "types.hpp"
 #include <cfloat>
 #include <math.h>
 #include <opencv2/core/core.hpp>
@@ -18,28 +21,36 @@ bool Parameters::parse_file(const std::string& fileName) noexcept
     }
 
     // Load camera 1 parameters
-    _camera1SizeX = int(configFile["camera_1_size_x"]);
-    _camera1SizeY = int(configFile["camera_1_size_y"]);
-    _camera1FocalX = configFile["camera_1_focal_x"];
-    _camera1FocalY = configFile["camera_1_focal_y"];
-    _camera1CenterX = configFile["camera_1_center_x"];
-    _camera1CenterY = configFile["camera_1_center_y"];
+    _camera1ImageSize.x() = int(configFile["camera_1_size_x"]);
+    _camera1ImageSize.y() = int(configFile["camera_1_size_y"]);
+    _camera1Focal.x() = configFile["camera_1_focal_x"];
+    _camera1Focal.y() = configFile["camera_1_focal_y"];
+    _camera1Center.x() = configFile["camera_1_center_x"];
+    _camera1Center.y() = configFile["camera_1_center_y"];
 
     // Load camera 2 parameters
-    _camera2SizeX = int(configFile["camera_2_size_x"]);
-    _camera2SizeY = int(configFile["camera_2_size_y"]);
-    _camera2FocalX = configFile["camera_2_focal_x"];
-    _camera2FocalY = configFile["camera_2_focal_y"];
-    _camera2CenterX = configFile["camera_2_center_x"];
-    _camera2CenterY = configFile["camera_2_center_y"];
+    _camera2ImageSize.x() = int(configFile["camera_2_size_x"]);
+    _camera2ImageSize.y() = int(configFile["camera_2_size_y"]);
+    _camera2Focal.x() = configFile["camera_2_focal_x"];
+    _camera2Focal.y() = configFile["camera_2_focal_y"];
+    _camera2Center.x() = configFile["camera_2_center_x"];
+    _camera2Center.y() = configFile["camera_2_center_y"];
 
     // Load camera offsets of camera 2, relative to camera 1
-    _camera2TranslationX = configFile["camera_2_translation_offset_x"];
-    _camera2TranslationY = configFile["camera_2_translation_offset_y"];
-    _camera2TranslationZ = configFile["camera_2_translation_offset_z"];
-    _camera2RotationX = configFile["camera_2_rotation_offset_x"];
-    _camera2RotationY = configFile["camera_2_rotation_offset_y"];
-    _camera2RotationZ = configFile["camera_2_rotation_offset_z"];
+    const float camera2TranslationX = configFile["camera_2_translation_offset_x"];
+    const float camera2TranslationY = configFile["camera_2_translation_offset_y"];
+    const float camera2TranslationZ = configFile["camera_2_translation_offset_z"];
+    const vector3 cam2tocam1Translation(camera2TranslationX, camera2TranslationY, camera2TranslationZ);
+
+    const float camera2RotationX = configFile["camera_2_rotation_offset_x"];
+    const float camera2RotationY = configFile["camera_2_rotation_offset_y"];
+    const float camera2RotationZ = configFile["camera_2_rotation_offset_z"];
+    const quaternion& cam2tocam1Rotation =
+            utils::get_quaternion_from_euler_angles(EulerAngles(camera2RotationX, camera2RotationY, camera2RotationZ));
+
+    _camera2toCamera1transformation = utils::get_transformation_matrix(cam2tocam1Rotation, cam2tocam1Translation);
+
+    // -------
 
     check_parameters_validity();
 
@@ -50,70 +61,60 @@ bool Parameters::parse_file(const std::string& fileName) noexcept
 void Parameters::load_defaut() noexcept
 {
     // Camera intrinsic parameters
-    _camera1SizeX = 640; // pixels
-    _camera1SizeY = 480; // pixels
-    _camera1FocalX = 550;
-    _camera1FocalY = 550;
-    _camera1CenterX = 320;
-    _camera1CenterY = 440;
+    _camera1ImageSize = vector2_uint(640, 480); // pixels
+    _camera1Focal = vector2(550, 550);
+    _camera1Center.x() = static_cast<float>(_camera1ImageSize.x()) / 2;
+    _camera1Center.y() = static_cast<float>(_camera1ImageSize.y()) / 2;
 
-    _camera2SizeX = 640; // pixels
-    _camera2SizeY = 480; // pixels
-    _camera2FocalX = 550;
-    _camera2FocalY = 550;
-    _camera2CenterX = 320;
-    _camera2CenterY = 440;
+    _camera2ImageSize = vector2_uint(640, 480); // pixels
+    _camera2Focal = vector2(550, 550);
+    _camera2Center.x() = static_cast<float>(_camera2ImageSize.x()) / 2;
+    _camera2Center.y() = static_cast<float>(_camera2ImageSize.y()) / 2;
 
     // Camera 2 position & rotation
-    _camera2TranslationX = 0;
-    _camera2TranslationY = 0;
-    _camera2TranslationZ = 0;
-
-    _camera2RotationX = 0;
-    _camera2RotationY = 0;
-    _camera2RotationZ = 0;
+    _camera2toCamera1transformation = utils::get_transformation_matrix(quaternion::Identity(), vector3::Zero());
 }
 
 void Parameters::check_parameters_validity() noexcept
 {
     _isValid = true;
-    if (_camera1SizeX <= 0)
+    if (_camera1ImageSize.x() <= 0)
     {
         outputs::log_error("Camera 1 size X must be > 0");
         _isValid = false;
     }
-    if (_camera1SizeY <= 0)
+    if (_camera1ImageSize.y() <= 0)
     {
         outputs::log_error("Camera 1 size Y must be > 0");
         _isValid = false;
     }
-    if (_camera1CenterX < 0)
+    if (_camera1Center.x() < 0)
     {
         outputs::log_error("Camera 1 center X distance must be >= 0");
         _isValid = false;
     }
-    if (_camera1CenterY < 0)
+    if (_camera1Center.y() < 0)
     {
         outputs::log_error("Camera 1 center Y distance must be >= 0");
         _isValid = false;
     }
 
-    if (_camera2SizeX <= 0)
+    if (_camera2ImageSize.x() <= 0)
     {
         outputs::log_error("Camera 2 size X must be > 0");
         _isValid = false;
     }
-    if (_camera2SizeY <= 0)
+    if (_camera2ImageSize.y() <= 0)
     {
         outputs::log_error("Camera 2 size Y must be > 0");
         _isValid = false;
     }
-    if (_camera2CenterX < 0)
+    if (_camera2Center.x() < 0)
     {
         outputs::log_error("Camera 2 center X distance must be >= 0");
         _isValid = false;
     }
-    if (_camera2CenterY < 0)
+    if (_camera2Center.y() < 0)
     {
         outputs::log_error("Camera 2 center Y distance must be >= 0");
         _isValid = false;

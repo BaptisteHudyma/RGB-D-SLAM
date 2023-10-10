@@ -2,6 +2,7 @@
 #define RGBDSLAM_PARAMETERS_HPP
 
 #include "types.hpp"
+#include <Eigen/src/Core/Matrix.h>
 #include <string>
 
 namespace rgbd_slam {
@@ -109,6 +110,8 @@ constexpr double pointMinimumConfidenceForMap = 0.9; // Minimum confidence of a 
  */
 class Parameters
 {
+    using vector2_uint = Eigen::Vector<uint, 2>;
+
   public:
     /**
      * \brief Parse a yaml configuration file and load the parameters. Sets the default parameters
@@ -123,18 +126,9 @@ class Parameters
     [[nodiscard]] static bool is_valid() noexcept { return _isValid; };
 
     // Camera 1 is the left camera in stereo, and the color camera in RGBD
-    [[nodiscard]] static uint get_camera_1_image_size_x() noexcept { return _camera1SizeX; };
-    [[nodiscard]] static uint get_camera_1_image_size_y() noexcept { return _camera1SizeY; };
-    [[nodiscard]] static vector2 get_camera_1_center() noexcept
-    {
-        const static vector2 camera1Center(_camera1CenterX, _camera1CenterY);
-        return camera1Center;
-    };
-    [[nodiscard]] static vector2 get_camera_1_focal() noexcept
-    {
-        const static vector2 camera1Focal(_camera1FocalX, _camera1FocalY);
-        return camera1Focal;
-    };
+    [[nodiscard]] static vector2_uint get_camera_1_image_size() noexcept { return _camera1ImageSize; };
+    [[nodiscard]] static vector2 get_camera_1_center() noexcept { return _camera1Center; };
+    [[nodiscard]] static vector2 get_camera_1_focal() noexcept { return _camera1Focal; };
 
     /**
      * \brief Get the camera pinhole model
@@ -142,23 +136,14 @@ class Parameters
     [[nodiscard]] static matrix33 get_camera_1_intrinsics()
     {
         const static matrix33 cameraMatrix(
-                {{_camera1FocalX, 0, _camera1CenterX}, {0, _camera1FocalY, _camera1CenterY}, {0, 0, 1}});
+                {{_camera1Focal.x(), 0, _camera1Center.x()}, {0, _camera1Focal.y(), _camera1Center.y()}, {0, 0, 1}});
         return cameraMatrix;
     };
 
     // Camera 2 is the right camera in stereo, and the depth camera in RGBD
-    [[nodiscard]] static uint get_camera_2_image_size_x() noexcept { return _camera2SizeX; };
-    [[nodiscard]] static uint get_camera_2_image_size_y() noexcept { return _camera2SizeY; };
-    [[nodiscard]] static vector2 get_camera_2_center() noexcept
-    {
-        const static vector2 camera2Center(_camera2CenterX, _camera2CenterY);
-        return camera2Center;
-    };
-    [[nodiscard]] static vector2 get_camera_2_focal() noexcept
-    {
-        const static vector2 camera2Focal(_camera2FocalX, _camera2FocalY);
-        return camera2Focal;
-    };
+    [[nodiscard]] static vector2_uint get_camera_2_image_size() noexcept { return _camera2ImageSize; };
+    [[nodiscard]] static vector2 get_camera_2_center() noexcept { return _camera2Center; };
+    [[nodiscard]] static vector2 get_camera_2_focal() noexcept { return _camera2Focal; };
 
     /**
      * \brief Get the camera pinhole model
@@ -166,45 +151,30 @@ class Parameters
     [[nodiscard]] static matrix33 get_camera_2_intrinsics()
     {
         const static matrix33 cameraMatrix(
-                {{_camera2FocalX, 0, _camera2CenterX}, {0, _camera2FocalY, _camera2CenterY}, {0, 0, 1}});
+                {{_camera2Focal.x(), 0, _camera2Center.x()}, {0, _camera2Focal.y(), _camera2Center.y()}, {0, 0, 1}});
         return cameraMatrix;
     };
 
-    [[nodiscard]] static double get_camera_2_translation_x() noexcept { return _camera2TranslationX; };
-    [[nodiscard]] static double get_camera_2_translation_y() noexcept { return _camera2TranslationY; };
-    [[nodiscard]] static double get_camera_2_translation_z() noexcept { return _camera2TranslationZ; };
-
-    [[nodiscard]] static double get_camera_2_rotation_x() noexcept { return _camera2RotationX; };
-    [[nodiscard]] static double get_camera_2_rotation_y() noexcept { return _camera2RotationY; };
-    [[nodiscard]] static double get_camera_2_rotation_z() noexcept { return _camera2RotationZ; };
+    [[nodiscard]] static matrix44 get_camera_2_to_camera_1_transformation() noexcept
+    {
+        return _camera2toCamera1transformation;
+    }
 
   private:
     // Is this set of parameters valid
     inline static bool _isValid = false;
 
     // Cameras intrinsics parameters
-    inline static uint _camera1SizeX;
-    inline static uint _camera1SizeY;
-    inline static double _camera1CenterX;
-    inline static double _camera1CenterY;
-    inline static double _camera1FocalX;
-    inline static double _camera1FocalY;
+    inline static vector2_uint _camera1ImageSize;
+    inline static vector2 _camera1Center;
+    inline static vector2 _camera1Focal;
 
-    inline static uint _camera2SizeX;
-    inline static uint _camera2SizeY;
-    inline static double _camera2CenterX;
-    inline static double _camera2CenterY;
-    inline static double _camera2FocalX;
-    inline static double _camera2FocalY;
+    inline static vector2_uint _camera2ImageSize;
+    inline static vector2 _camera2Center;
+    inline static vector2 _camera2Focal;
 
-    // Camera 2 position and rotation
-    inline static double _camera2TranslationX;
-    inline static double _camera2TranslationY;
-    inline static double _camera2TranslationZ;
-
-    inline static double _camera2RotationX;
-    inline static double _camera2RotationY;
-    inline static double _camera2RotationZ;
+    // Camera 2 position and rotation to go to camera 1
+    inline static matrix44 _camera2toCamera1transformation;
 
     /**
      * \brief Update the _isValid attribute
