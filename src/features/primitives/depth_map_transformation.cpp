@@ -159,15 +159,15 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
 bool Depth_Map_Transformation::load_parameters() noexcept
 {
     // TODO check parameters
-    _fxIr = static_cast<float>(Parameters::get_camera_2_focal_x());
-    _fyIr = static_cast<float>(Parameters::get_camera_2_focal_y());
-    _cxIr = static_cast<float>(Parameters::get_camera_2_center_x());
-    _cyIr = static_cast<float>(Parameters::get_camera_2_center_y());
+    _fxIr = static_cast<float>(Parameters::get_camera_2_focal().x());
+    _fyIr = static_cast<float>(Parameters::get_camera_2_focal().y());
+    _cxIr = static_cast<float>(Parameters::get_camera_2_center().x());
+    _cyIr = static_cast<float>(Parameters::get_camera_2_center().y());
 
-    _fxRgb = static_cast<float>(Parameters::get_camera_1_focal_x());
-    _fyRgb = static_cast<float>(Parameters::get_camera_1_focal_y());
-    _cxRgb = static_cast<float>(Parameters::get_camera_1_center_x());
-    _cyRgb = static_cast<float>(Parameters::get_camera_1_center_y());
+    _fxRgb = static_cast<float>(Parameters::get_camera_1_focal().x());
+    _fyRgb = static_cast<float>(Parameters::get_camera_1_focal().y());
+    _cxRgb = static_cast<float>(Parameters::get_camera_1_center().x());
+    _cyRgb = static_cast<float>(Parameters::get_camera_1_center().y());
 
     _Tstereo = cv::Mat_<float>(3, 1);
     _Tstereo.at<float>(0) = static_cast<float>(Parameters::get_camera_2_translation_x());
