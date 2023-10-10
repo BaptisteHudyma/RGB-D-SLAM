@@ -19,14 +19,14 @@ namespace rgbd_slam::pose_optimization {
 /**
  * \brief Compute a score for a transformation, and compute an inlier and outlier set
  * \param[in] pointsToEvaluate The set of points to evaluate the transformation on
- * \param[in] pointMaxRetroprojectionError The maximum retroprojection error between two point, below which we
+ * \param[in] pointMaxRetroprojectionError_px The maximum retroprojection error between two point, below which we
  * classifying the match as inlier
  * \param[in] transformationPose The transformation that needs to be evaluated
  * \param[out] pointMatcheSets The set of inliers/outliers of this transformation
  * \return The transformation score (sum of retroprojection distances)
  */
 [[nodiscard]] double get_point_inliers_outliers(const matches_containers::match_point_container& pointsToEvaluate,
-                                                const double pointMaxRetroprojectionError,
+                                                const double pointMaxRetroprojectionError_px,
                                                 const utils::PoseBase& transformationPose,
                                                 matches_containers::point_match_sets& pointMatcheSets) noexcept
 {
@@ -40,10 +40,10 @@ namespace rgbd_slam::pose_optimization {
     for (const matches_containers::PointMatch& match: pointsToEvaluate)
     {
         // Retroproject world point to screen, and compute screen distance
-        const double distance = match._worldFeature.get_distance(match._screenFeature, worldToCamera);
+        const double distance = match._worldFeature.get_distance_px(match._screenFeature, worldToCamera);
         assert(distance >= 0 and not std::isnan(distance));
         // inlier
-        if (distance < pointMaxRetroprojectionError)
+        if (distance < pointMaxRetroprojectionError_px)
         {
             pointMatcheSets._inliers.insert(pointMatcheSets._inliers.end(), match);
         }
@@ -52,7 +52,7 @@ namespace rgbd_slam::pose_optimization {
         {
             pointMatcheSets._outliers.insert(pointMatcheSets._outliers.end(), match);
         }
-        retroprojectionScore += std::min(pointMaxRetroprojectionError, distance);
+        retroprojectionScore += std::min(pointMaxRetroprojectionError_px, distance);
     }
     return retroprojectionScore;
 }
@@ -67,7 +67,7 @@ namespace rgbd_slam::pose_optimization {
  * \return The transformation score
  */
 [[nodiscard]] double get_plane_inliers_outliers(const matches_containers::match_plane_container& planesToEvaluate,
-                                                const double planeMaxRetroprojectionError,
+                                                const double planeMaxRetroprojectionError_mm,
                                                 const utils::PoseBase& transformationPose,
                                                 matches_containers::plane_match_sets& planeMatchSets) noexcept
 {
@@ -86,7 +86,7 @@ namespace rgbd_slam::pose_optimization {
                 match._worldFeature.get_reduced_signed_distance(match._screenFeature, worldToCamera).norm();
         assert(distance >= 0 and not std::isnan(distance));
         // inlier
-        if (distance < planeMaxRetroprojectionError)
+        if (distance < planeMaxRetroprojectionError_mm)
         {
             planeMatchSets._inliers.insert(planeMatchSets._inliers.end(), match);
         }
@@ -95,23 +95,25 @@ namespace rgbd_slam::pose_optimization {
         {
             planeMatchSets._outliers.insert(planeMatchSets._outliers.end(), match);
         }
-        retroprojectionScore += std::min(planeMaxRetroprojectionError, distance);
+        retroprojectionScore += std::min(planeMaxRetroprojectionError_mm, distance);
     }
     return retroprojectionScore;
 }
 
 [[nodiscard]] double get_features_inliers_outliers(const matches_containers::matchContainer& featuresToEvaluate,
-                                                   const double pointMaxRetroprojectionError,
-                                                   const double planeMaxRetroprojectionError,
+                                                   const double pointMaxRetroprojectionError_px,
+                                                   const double planeMaxRetroprojectionError_mm,
                                                    const utils::PoseBase& transformationPose,
                                                    matches_containers::match_sets& featureSet) noexcept
 {
     return get_point_inliers_outliers(featuresToEvaluate._points,
-                                      pointMaxRetroprojectionError,
+                                      pointMaxRetroprojectionError_px,
                                       transformationPose,
                                       featureSet._pointSets) +
-           get_plane_inliers_outliers(
-                   featuresToEvaluate._planes, planeMaxRetroprojectionError, transformationPose, featureSet._planeSets);
+           get_plane_inliers_outliers(featuresToEvaluate._planes,
+                                      planeMaxRetroprojectionError_mm,
+                                      transformationPose,
+                                      featureSet._planeSets);
 }
 
 /**
@@ -166,12 +168,12 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         return false;
     }
 
-    constexpr double pointMaxRetroprojectionError =
+    constexpr double pointMaxRetroprojectionError_px =
             parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px; // maximum inlier threshold
-    constexpr double planeMaxRetroprojectionError =
+    constexpr double planeMaxRetroprojectionError_mm =
             parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm; // maximum inlier threshold
-    static_assert(pointMaxRetroprojectionError > 0);
-    static_assert(planeMaxRetroprojectionError > 0);
+    static_assert(pointMaxRetroprojectionError_px > 0);
+    static_assert(planeMaxRetroprojectionError_mm > 0);
     const uint acceptablePointInliersForEarlyStop = static_cast<uint>(
             matchedPointSize *
             parameters::optimization::ransac::minimumInliersProportionForEarlyStop); // RANSAC will stop early if
@@ -204,7 +206,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     assert(maximumIterations > 0);
 
     // set the start score to the maximum score
-    double minScore = matchedPointSize * pointMaxRetroprojectionError + matchedPlaneSize * planeMaxRetroprojectionError;
+    double minScore =
+            matchedPointSize * pointMaxRetroprojectionError_px + matchedPlaneSize * planeMaxRetroprojectionError_mm;
     utils::PoseBase bestPose = currentPose;
     for (uint iteration = 0; iteration < maximumIterations; ++iteration)
     {
@@ -252,8 +255,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         // get inliers and outliers for this transformation
         matches_containers::match_sets potentialInliersOutliers;
         const double transformationScore = get_features_inliers_outliers(matchedFeatures,
-                                                                         pointMaxRetroprojectionError,
-                                                                         planeMaxRetroprojectionError,
+                                                                         pointMaxRetroprojectionError_px,
+                                                                         planeMaxRetroprojectionError_mm,
                                                                          candidatePose,
                                                                          potentialInliersOutliers);
         // We have a better score than the previous best one
