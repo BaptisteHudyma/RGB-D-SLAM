@@ -158,8 +158,8 @@ bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) 
 
 WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
-    const vector4 homogenousWorldCoords = cameraToWorld * this->get_homogenous();
-    return WorldCoordinate(homogenousWorldCoords.head<3>());
+    const vector4& homogeneousWorldCoords = cameraToWorld * this->homogeneous();
+    return WorldCoordinate(homogeneousWorldCoords.head<3>());
 }
 
 bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const noexcept
@@ -206,7 +206,7 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
     assert(not this->hasNaN());
 
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates(worldToCamera);
-    assert(cameraPoint.get_homogenous()[3] > 0);
+    assert(cameraPoint.homogeneous()[3] > 0);
 
     return cameraPoint.to_screen_coordinates(screenPoint);
 }
@@ -268,10 +268,7 @@ double WorldCoordinate::get_distance_mm(const ScreenCoordinate& screenPoint,
 CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     // WorldCoordinate
-    vector4 homogenousWorldCoordinates;
-    homogenousWorldCoordinates << this->base(), 1.0;
-
-    const vector4& cameraHomogenousCoordinates = worldToCamera * homogenousWorldCoordinates;
+    const vector4& cameraHomogenousCoordinates = worldToCamera * this->homogeneous();
     return CameraCoordinate(cameraHomogenousCoordinates);
 }
 

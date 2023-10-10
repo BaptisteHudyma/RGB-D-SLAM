@@ -136,8 +136,6 @@ struct CameraCoordinate : public vector3
                 homegenousCoordinates.z() / homegenousCoordinates[3]) {};
     CameraCoordinate(const CameraCoordinate2D& other, const double z) : vector3(other.x(), other.y(), z) {};
 
-    [[nodiscard]] vector4 get_homogenous() const noexcept { return vector4(x(), y(), z(), 1); };
-
     /**
      * \brief Transform a camera point to a 3D world point
      * \param[in] cameraToWorld Matrix to transform local to world coordinates
