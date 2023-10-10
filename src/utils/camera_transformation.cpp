@@ -2,11 +2,16 @@
 
 namespace rgbd_slam::utils {
 
+matrix44 get_transformation_matrix(const quaternion& rotation, const vector3& position) noexcept
+{
+    matrix44 transfoMatrix;
+    transfoMatrix << rotation.toRotationMatrix(), position, 0, 0, 0, 1;
+    return transfoMatrix;
+}
+
 CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position) noexcept
 {
-    CameraToWorldMatrix cameraToWorld;
-    cameraToWorld << rotation.toRotationMatrix(), position, 0, 0, 0, 1;
-    return cameraToWorld;
+    return CameraToWorldMatrix(get_transformation_matrix(rotation, position));
 }
 
 WorldToCameraMatrix compute_world_to_camera_transform(const quaternion& rotation, const vector3& position) noexcept

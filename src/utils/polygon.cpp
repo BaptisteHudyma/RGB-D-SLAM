@@ -110,8 +110,8 @@ vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
 Polygon::polygon get_static_screen_boundary_polygon() noexcept
 {
     // define a polygon that span the screen space
-    static const uint screenSizeX = Parameters::get_camera_1_image_size_x();
-    static const uint screenSizeY = Parameters::get_camera_1_image_size_y();
+    static const uint screenSizeX = Parameters::get_camera_1_image_size().x();
+    static const uint screenSizeY = Parameters::get_camera_1_image_size().y();
     static const std::array<Polygon::point_2d, 5> screenBoundaryPoints(
             {Polygon::point_2d(0, 0),
              Polygon::point_2d(static_cast<int>(round(screenSizeX)), 0),

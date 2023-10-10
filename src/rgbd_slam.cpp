@@ -54,9 +54,9 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
     // primitive connected graph creator
     _depthOps = std::make_unique<features::primitives::Depth_Map_Transformation>(
             _width, _height, parameters::detection::depthMapPatchSize_px);
-    if (_depthOps == nullptr or not _depthOps->is_ok())
+    if (_depthOps == nullptr)
     {
-        outputs::log_error("Cannot load parameter files, exiting");
+        outputs::log_error("Cannot create depth corrector, exiting");
         exit(-1);
     }
 

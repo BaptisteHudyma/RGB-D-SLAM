@@ -185,8 +185,8 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    const uint width = rgbd_slam::Parameters::get_camera_1_image_size_x();  // 640
-    const uint height = rgbd_slam::Parameters::get_camera_1_image_size_y(); // 480
+    const uint width = rgbd_slam::Parameters::get_camera_1_image_size().x();  // 640
+    const uint height = rgbd_slam::Parameters::get_camera_1_image_size().y(); // 480
 
     rgbd_slam::RGBD_SLAM RGBD_Slam(pose, width, height);
 
@@ -245,10 +245,8 @@ int main(int argc, char* argv[])
         {
             if (imageData.depthImage.isValid)
                 std::cerr << "Could not load depth image " << depthImagePath << std::endl;
-            depthImage = cv::Mat(rgbd_slam::Parameters::get_camera_2_image_size_y(),
-                                 rgbd_slam::Parameters::get_camera_2_image_size_x(),
-                                 CV_16UC1,
-                                 cv::Scalar(0.0));
+
+            depthImage = cv::Mat(height, width, CV_16UC1, cv::Scalar(0.0));
         }
         assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);
         assert(static_cast<uint>(depthImage.cols) == width and static_cast<uint>(depthImage.rows) == height);
