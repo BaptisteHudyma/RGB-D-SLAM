@@ -365,9 +365,7 @@ std::vector<Polygon::point_2d> Polygon::transform_boundary(const matrix44& trans
         const vector3& retroProjected =
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
 
-        const vector4 homogenous(retroProjected.x(), retroProjected.y(), retroProjected.z(), 1.0);
-        const vector3 transformed = (transformationMatrix * homogenous).head<3>();
-
+        const vector3& transformed = (transformationMatrix * retroProjected.homogeneous()).head<3>();
         const vector2& projected = utils::get_projected_plan_coordinates(transformed, nextCenter, nextXAxis, nextYAxis);
         newBoundary.emplace_back(projected.x(), projected.y());
     }
