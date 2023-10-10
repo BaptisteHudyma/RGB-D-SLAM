@@ -223,10 +223,11 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
     return false;
 }
 
-vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screenPoint,
-                                                const WorldToCameraMatrix& worldToCamera) const noexcept
+vector2 WorldCoordinate::get_signed_distance_2D_px(const ScreenCoordinate2D& screenPoint,
+                                                   const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    if (ScreenCoordinate2D projectedScreenPoint; to_screen_coordinates(worldToCamera, projectedScreenPoint))
+    ScreenCoordinate2D projectedScreenPoint;
+    if (to_screen_coordinates(worldToCamera, projectedScreenPoint))
     {
         vector2 distance = screenPoint - projectedScreenPoint;
         assert(not distance.hasNaN());
@@ -236,10 +237,10 @@ vector2 WorldCoordinate::get_signed_distance_2D(const ScreenCoordinate2D& screen
     return vector2(std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
 }
 
-double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint,
-                                     const WorldToCameraMatrix& worldToCamera) const noexcept
+double WorldCoordinate::get_distance_px(const ScreenCoordinate2D& screenPoint,
+                                        const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const vector2& distance2D = get_signed_distance_2D(screenPoint, worldToCamera);
+    const vector2& distance2D = get_signed_distance_2D_px(screenPoint, worldToCamera);
     if (distance2D.x() >= std::numeric_limits<double>::max() or distance2D.y() >= std::numeric_limits<double>::max())
         // high number
         return std::numeric_limits<double>::max();
@@ -247,17 +248,17 @@ double WorldCoordinate::get_distance(const ScreenCoordinate2D& screenPoint,
     return distance2D.lpNorm<1>();
 }
 
-vector3 WorldCoordinate::get_signed_distance(const ScreenCoordinate& screenPoint,
-                                             const CameraToWorldMatrix& cameraToWorld) const noexcept
+vector3 WorldCoordinate::get_signed_distance_mm(const ScreenCoordinate& screenPoint,
+                                                const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     const WorldCoordinate& projectedScreenPoint = screenPoint.to_world_coordinates(cameraToWorld);
     return this->base() - projectedScreenPoint;
 }
 
-double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
-                                     const CameraToWorldMatrix& cameraToWorld) const noexcept
+double WorldCoordinate::get_distance_mm(const ScreenCoordinate& screenPoint,
+                                        const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
-    return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
+    return get_signed_distance_mm(screenPoint, cameraToWorld).lpNorm<1>();
 }
 
 /**

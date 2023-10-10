@@ -75,7 +75,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
     {
         // Compute retroprojected distance
         const Eigen::Vector<double, scoreCountPerPoints>& distance =
-                match._worldFeature.get_signed_distance_2D(match._screenFeature, transformationMatrix);
+                match._worldFeature.get_signed_distance_2D_px(match._screenFeature, transformationMatrix);
 
         outputScores.segment<scoreCountPerPoints>(featureScoreIndex) = distance * pointAlphaReduction;
         featureScoreIndex += scoreCountPerPoints;
