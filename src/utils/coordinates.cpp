@@ -77,8 +77,8 @@ matrix22 ScreenCoordinate2D::get_covariance() const noexcept
 
 bool ScreenCoordinate2D::is_in_screen_boundaries() const noexcept
 {
-    static const uint screenSizeX = Parameters::get_camera_1_size_x();
-    static const uint screenSizeY = Parameters::get_camera_1_size_y();
+    static const uint screenSizeX = Parameters::get_camera_1_image_size_x();
+    static const uint screenSizeY = Parameters::get_camera_1_image_size_y();
 
     return
             // in screen space
@@ -124,8 +124,8 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const noexcept
 
 bool ScreenCoordinate::is_in_screen_boundaries() const noexcept
 {
-    static const uint screenSizeX = Parameters::get_camera_1_size_x();
-    static const uint screenSizeY = Parameters::get_camera_1_size_y();
+    static const uint screenSizeX = Parameters::get_camera_1_image_size_x();
+    static const uint screenSizeY = Parameters::get_camera_1_image_size_y();
 
     return
             // in screen space

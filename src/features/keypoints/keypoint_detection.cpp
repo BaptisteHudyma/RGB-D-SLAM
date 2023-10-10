@@ -16,8 +16,8 @@ namespace rgbd_slam::features::keypoints {
 
 Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 {
-    const size_t imageHeight = Parameters::get_camera_1_size_y();
-    const size_t imageWidth = Parameters::get_camera_1_size_x();
+    const size_t imageHeight = Parameters::get_camera_1_image_size_y();
+    const size_t imageWidth = Parameters::get_camera_1_image_size_x();
 
     constexpr uint maxKeypointToDetect = parameters::detection::maxNumberOfPointsToDetect;
     constexpr size_t cellSize = parameters::detection::keypointCellDetectionSize_px;

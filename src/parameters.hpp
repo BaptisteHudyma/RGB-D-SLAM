@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_PARAMETERS_HPP
 #define RGBDSLAM_PARAMETERS_HPP
 
+#include "types.hpp"
 #include <string>
 
 namespace rgbd_slam {
@@ -122,19 +123,38 @@ class Parameters
     [[nodiscard]] static bool is_valid() noexcept { return _isValid; };
 
     // Camera 1 is the left camera in stereo, and the color camera in RGBD
-    [[nodiscard]] static uint get_camera_1_size_x() noexcept { return _camera1SizeX; };
-    [[nodiscard]] static uint get_camera_1_size_y() noexcept { return _camera1SizeY; };
+    [[nodiscard]] static uint get_camera_1_image_size_x() noexcept { return _camera1SizeX; };
+    [[nodiscard]] static uint get_camera_1_image_size_y() noexcept { return _camera1SizeY; };
     [[nodiscard]] static double get_camera_1_center_x() noexcept { return _camera1CenterX; };
     [[nodiscard]] static double get_camera_1_center_y() noexcept { return _camera1CenterY; };
     [[nodiscard]] static double get_camera_1_focal_x() noexcept { return _camera1FocalX; };
     [[nodiscard]] static double get_camera_1_focal_y() noexcept { return _camera1FocalY; };
+
+    /**
+     * \brief Get the camera pinhole model
+     */
+    [[nodiscard]] static matrix33 get_camera_1_intrinsics()
+    {
+        matrix33 cameraMatrix({{_camera1FocalX, 0, _camera1CenterX}, {0, _camera1FocalY, _camera1CenterY}, {0, 0, 1}});
+        return cameraMatrix;
+    };
+
     // Camera 2 is the right camera in stereo, and the depth camera in RGBD
-    [[nodiscard]] static uint get_camera_2_size_x() noexcept { return _camera2SizeX; };
-    [[nodiscard]] static uint get_camera_2_size_y() noexcept { return _camera2SizeY; };
+    [[nodiscard]] static uint get_camera_2_image_size_x() noexcept { return _camera2SizeX; };
+    [[nodiscard]] static uint get_camera_2_image_size_y() noexcept { return _camera2SizeY; };
     [[nodiscard]] static double get_camera_2_center_x() noexcept { return _camera2CenterX; };
     [[nodiscard]] static double get_camera_2_center_y() noexcept { return _camera2CenterY; };
     [[nodiscard]] static double get_camera_2_focal_x() noexcept { return _camera2FocalX; };
     [[nodiscard]] static double get_camera_2_focal_y() noexcept { return _camera2FocalY; };
+
+    /**
+     * \brief Get the camera pinhole model
+     */
+    [[nodiscard]] static matrix33 get_camera_2_intrinsics()
+    {
+        matrix33 cameraMatrix({{_camera2FocalX, 0, _camera2CenterX}, {0, _camera2FocalY, _camera2CenterY}, {0, 0, 1}});
+        return cameraMatrix;
+    };
 
     [[nodiscard]] static double get_camera_2_translation_x() noexcept { return _camera2TranslationX; };
     [[nodiscard]] static double get_camera_2_translation_y() noexcept { return _camera2TranslationY; };
