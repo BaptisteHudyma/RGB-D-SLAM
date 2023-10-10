@@ -52,14 +52,29 @@ matrix44 get_transformation_matrix(const vector3& xFrom,
  *      SCREEN COORDINATES
  */
 
+/**
+ * \brief Transform screen coordinates to camera coordinates
+ */
+vector2 transform_screen_to_camera(const vector2& screenPoint)
+{
+    const static matrix33 cameraIntrinsics = Parameters::get_camera_1_intrinsics().inverse();
+    return (cameraIntrinsics * screenPoint.homogeneous()).head<2>();
+}
+
+/**
+ * \brief Transform camera coordinates to screen coordinates
+ */
+vector2 transform_camera_to_screen(const vector3& screenPoint)
+{
+    const static matrix33 cameraIntrinsics = Parameters::get_camera_1_intrinsics();
+    return (cameraIntrinsics * screenPoint).head<2>();
+}
+
 CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const noexcept
 {
     assert(x() >= 0 and y() >= 0);
 
-    const static vector2 cameraFocal = Parameters::get_camera_1_focal();
-    const static vector2 cameraCenter = Parameters::get_camera_1_center();
-
-    return CameraCoordinate2D((this->base() - cameraCenter).cwiseQuotient(cameraFocal));
+    return CameraCoordinate2D(transform_screen_to_camera(this->base()));
 }
 
 matrix22 ScreenCoordinate2D::get_covariance() const noexcept
@@ -104,10 +119,7 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const noexcept
     assert(x() >= 0 and y() >= 0);
     assert(not double_equal(z(), 0.0));
 
-    const static vector2 cameraFocal = Parameters::get_camera_1_focal();
-    const static vector2 cameraCenter = Parameters::get_camera_1_center();
-
-    const vector2 cameraPoint = (this->head<2>() - cameraCenter).cwiseQuotient(cameraFocal) * this->z();
+    const vector2 cameraPoint = this->z() * transform_screen_to_camera(this->head<2>());
     return CameraCoordinate(cameraPoint.x(), cameraPoint.y(), z());
 }
 
@@ -129,10 +141,7 @@ bool ScreenCoordinate::is_in_screen_boundaries() const noexcept
 
 bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept
 {
-    const static vector2 cameraF = Parameters::get_camera_1_focal();
-    const static vector2 cameraC = Parameters::get_camera_1_center();
-
-    const vector2 screenCoordinates = cameraF.cwiseProduct(this->base()) + cameraC;
+    const vector2 screenCoordinates = transform_camera_to_screen(this->homogeneous());
     if (not screenCoordinates.hasNaN())
     {
         screenPoint = ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y());
@@ -149,10 +158,7 @@ WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix
 
 bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const noexcept
 {
-    const static vector2 cameraF = Parameters::get_camera_1_focal();
-    const static vector2 cameraC = Parameters::get_camera_1_center();
-
-    const vector2 screenCoordinates = cameraF.cwiseProduct(this->head<2>()) / z() + cameraC;
+    const vector2 screenCoordinates = 1.0 / z() * transform_camera_to_screen(this->base());
     if (not screenCoordinates.hasNaN())
     {
         screenPoint = ScreenCoordinate(screenCoordinates.x(), screenCoordinates.y(), z());
@@ -163,11 +169,8 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
 
 bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept
 {
-    const static vector2 cameraF = Parameters::get_camera_1_focal();
-    const static vector2 cameraC = Parameters::get_camera_1_center();
-
-    const vector2 screenCoordinates = cameraF.cwiseProduct(this->head<2>()) / z() + cameraC;
-    if (not screenCoordinates.hasNaN())
+    ScreenCoordinate screenCoordinates;
+    if (to_screen_coordinates(screenCoordinates))
     {
         screenPoint = ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y());
         return true;
