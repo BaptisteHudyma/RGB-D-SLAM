@@ -56,16 +56,10 @@ CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const noexcept
 {
     assert(x() >= 0 and y() >= 0);
 
-    const static double cameraFX = Parameters::get_camera_1_focal_x();
-    const static double cameraFY = Parameters::get_camera_1_focal_y();
-    const static double cameraCX = Parameters::get_camera_1_center_x();
-    const static double cameraCY = Parameters::get_camera_1_center_y();
+    const static vector2 cameraFocal = Parameters::get_camera_1_focal();
+    const static vector2 cameraCenter = Parameters::get_camera_1_center();
 
-    const double x = (this->x() - cameraCX) / cameraFX;
-    const double y = (this->y() - cameraCY) / cameraFY;
-
-    CameraCoordinate2D cameraPoint(x, y);
-    return cameraPoint;
+    return CameraCoordinate2D((this->base() - cameraCenter).cwiseQuotient(cameraFocal));
 }
 
 matrix22 ScreenCoordinate2D::get_covariance() const noexcept
@@ -110,16 +104,11 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const noexcept
     assert(x() >= 0 and y() >= 0);
     assert(not double_equal(z(), 0.0));
 
-    const static double cameraFX = Parameters::get_camera_1_focal_x();
-    const static double cameraFY = Parameters::get_camera_1_focal_y();
-    const static double cameraCX = Parameters::get_camera_1_center_x();
-    const static double cameraCY = Parameters::get_camera_1_center_y();
+    const static vector2 cameraFocal = Parameters::get_camera_1_focal();
+    const static vector2 cameraCenter = Parameters::get_camera_1_center();
 
-    const double x = (this->x() - cameraCX) * this->z() / cameraFX;
-    const double y = (this->y() - cameraCY) * this->z() / cameraFY;
-
-    CameraCoordinate cameraPoint(x, y, z());
-    return cameraPoint;
+    const vector2 cameraPoint = (this->head<2>() - cameraCenter).cwiseQuotient(cameraFocal) * this->z();
+    return CameraCoordinate(cameraPoint.x(), cameraPoint.y(), z());
 }
 
 bool ScreenCoordinate::is_in_screen_boundaries() const noexcept
@@ -140,17 +129,13 @@ bool ScreenCoordinate::is_in_screen_boundaries() const noexcept
 
 bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept
 {
-    const static double cameraFX = Parameters::get_camera_1_focal_x();
-    const static double cameraFY = Parameters::get_camera_1_focal_y();
-    const static double cameraCX = Parameters::get_camera_1_center_x();
-    const static double cameraCY = Parameters::get_camera_1_center_y();
+    const static vector2 cameraF = Parameters::get_camera_1_focal();
+    const static vector2 cameraC = Parameters::get_camera_1_center();
 
-    const double screenX = cameraFX * x() + cameraCX;
-    const double screenY = cameraFY * y() + cameraCY;
-    if (not std::isnan(screenX) and not std::isnan(screenY))
+    const vector2 screenCoordinates = cameraF.cwiseProduct(this->base()) + cameraC;
+    if (not screenCoordinates.hasNaN())
     {
-        screenPoint.x() = screenX;
-        screenPoint.y() = screenY;
+        screenPoint = ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y());
         return true;
     }
     return false;
@@ -164,16 +149,13 @@ WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix
 
 bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const noexcept
 {
-    const static double cameraFX = Parameters::get_camera_1_focal_x();
-    const static double cameraFY = Parameters::get_camera_1_focal_y();
-    const static double cameraCX = Parameters::get_camera_1_center_x();
-    const static double cameraCY = Parameters::get_camera_1_center_y();
+    const static vector2 cameraF = Parameters::get_camera_1_focal();
+    const static vector2 cameraC = Parameters::get_camera_1_center();
 
-    const double screenX = cameraFX * x() / z() + cameraCX;
-    const double screenY = cameraFY * y() / z() + cameraCY;
-    if (not std::isnan(screenX) and not std::isnan(screenY))
+    const vector2 screenCoordinates = cameraF.cwiseProduct(this->head<2>()) / z() + cameraC;
+    if (not screenCoordinates.hasNaN())
     {
-        screenPoint = ScreenCoordinate(screenX, screenY, z());
+        screenPoint = ScreenCoordinate(screenCoordinates.x(), screenCoordinates.y(), z());
         return true;
     }
     return false;
@@ -181,16 +163,13 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) cons
 
 bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept
 {
-    const static double cameraFX = Parameters::get_camera_1_focal_x();
-    const static double cameraFY = Parameters::get_camera_1_focal_y();
-    const static double cameraCX = Parameters::get_camera_1_center_x();
-    const static double cameraCY = Parameters::get_camera_1_center_y();
+    const static vector2 cameraF = Parameters::get_camera_1_focal();
+    const static vector2 cameraC = Parameters::get_camera_1_center();
 
-    const double screenX = cameraFX * x() / z() + cameraCX;
-    const double screenY = cameraFY * y() / z() + cameraCY;
-    if (not std::isnan(screenX) and not std::isnan(screenY))
+    const vector2 screenCoordinates = cameraF.cwiseProduct(this->head<2>()) / z() + cameraC;
+    if (not screenCoordinates.hasNaN())
     {
-        screenPoint = ScreenCoordinate2D(screenX, screenY);
+        screenPoint = ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y());
         return true;
     }
     return false;
@@ -214,10 +193,10 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
 bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                             ScreenCoordinate2D& screenPoint) const noexcept
 {
-    if (ScreenCoordinate screenCoordinates; to_screen_coordinates(worldToCamera, screenCoordinates))
+    ScreenCoordinate screenCoordinates;
+    if (to_screen_coordinates(worldToCamera, screenCoordinates))
     {
-        screenPoint.x() = screenCoordinates.x();
-        screenPoint.y() = screenCoordinates.y();
+        screenPoint = ScreenCoordinate2D(screenCoordinates.x(), screenCoordinates.y());
         return true;
     }
     return false;

@@ -21,12 +21,11 @@ double get_depth_quantization(const double depth) noexcept
 
 ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
 {
-    const static double cameraFX = Parameters::get_camera_1_focal_x();
-    const static double cameraFY = Parameters::get_camera_1_focal_y();
+    const static vector2 cameraF = Parameters::get_camera_1_focal();
 
     // Jacobian of the camera to screen function
-    const matrix33 jacobian {{cameraFX / point.z(), 0.0, -cameraFX * point.x() / pow(point.z(), 2.0)},
-                             {0.0, cameraFY / point.z(), -cameraFY * point.y() / pow(point.z(), 2.0)},
+    const matrix33 jacobian {{cameraF.x() / point.z(), 0.0, -cameraF.x() * point.x() / pow(point.z(), 2.0)},
+                             {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / pow(point.z(), 2.0)},
                              {0.0, 0.0, 1.0}};
     ScreenCoordinateCovariance screenPointCovariance;
     screenPointCovariance << (jacobian * pointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose());
@@ -71,14 +70,12 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
 CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint,
                                                        const ScreenCoordinateCovariance& screenPointCovariance) noexcept
 {
-    const static double cameraFX = Parameters::get_camera_1_focal_x();
-    const static double cameraFY = Parameters::get_camera_1_focal_y();
-    const static double cameraCX = Parameters::get_camera_1_center_x();
-    const static double cameraCY = Parameters::get_camera_1_center_y();
+    const static vector2 cameraF = Parameters::get_camera_1_focal();
+    const static vector2 cameraC = Parameters::get_camera_1_center();
 
     // Jacobian of the screen to camera function. Use absolutes to prevent negative variances
-    const matrix33 jacobian {{screenPoint.z() / cameraFX, 0.0, abs(screenPoint.x() - cameraCX) / cameraFX},
-                             {0.0, screenPoint.z() / cameraFY, abs(screenPoint.y() - cameraCY) / cameraFY},
+    const matrix33 jacobian {{screenPoint.z() / cameraF.x(), 0.0, abs(screenPoint.x() - cameraC.x()) / cameraF.x()},
+                             {0.0, screenPoint.z() / cameraF.y(), abs(screenPoint.y() - cameraC.y()) / cameraF.y()},
                              {0.0, 0.0, 1.0}};
 
     CameraCoordinateCovariance cameraPointCovariance;
