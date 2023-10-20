@@ -16,6 +16,9 @@ set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wf
 # if this is set, the progam will be deterministic, and loose some perfs
 add_compile_definitions(MAKE_DETERMINISTIC)
 
+# ORB detector/descriptor as a different implementation than classical detector in opencv
+#add_compile_definitions(USE_ORB_DETECTOR_AND_MATCHING)
+
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
 #add special cmakes (here for g2o)
