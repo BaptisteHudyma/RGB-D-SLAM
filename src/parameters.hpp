@@ -45,7 +45,12 @@ constexpr float maximumRetroprojectionError =
 
 namespace detection {
 // point detection
-constexpr uint maxNumberOfPointsToDetect = 100; // point detector sensitivity (per frames)
+#ifdef USE_ORB_DETECTOR_AND_MATCHING
+constexpr uint maxNumberOfPointsToDetect = 100; // number of points to detect (per frame)
+#else
+constexpr uint maxNumberOfPointsToDetect = 4; // point detector sensitivity (per frame)
+#endif
+
 constexpr uint maximumPointPerFrame =
         200; // maximum points per frame, over which we do not want to detect more points (optimization)
 constexpr uint keypointCellDetectionSize_px = 250; // in pixel, the size of the keypoint detection window

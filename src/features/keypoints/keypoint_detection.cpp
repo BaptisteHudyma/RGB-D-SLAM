@@ -4,6 +4,7 @@
 
 // circle
 #include <opencv2/features2d.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 #include <vector>
@@ -26,10 +27,19 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     static const size_t numberOfCells = numCellsY * numCellsX;
 
     // Create feature extractor and matcher
-    _featureDetector =
-            cv::Ptr<cv::FeatureDetector>(cv::ORB::create(static_cast<int>(maxKeypointToDetect / numberOfCells)));
+#ifdef USE_ORB_DETECTOR_AND_MATCHING
+    const int detectorThreshold = std::max(1, static_cast<int>(maxKeypointToDetect / numberOfCells));
+    _featureDetector = cv::Ptr<cv::FeatureDetector>(cv::ORB::create(detectorThreshold));
+    _advancedFeatureDetector = cv::Ptr<cv::FeatureDetector>(cv::ORB::create(2 * detectorThreshold));
+#else
+    const int detectorThreshold = static_cast<int>(maxKeypointToDetect * numberOfCells);
+    _featureDetector = cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(detectorThreshold));
     _advancedFeatureDetector =
-            cv::Ptr<cv::FeatureDetector>(cv::ORB::create(2 * static_cast<int>(maxKeypointToDetect / numberOfCells)));
+            cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(std::max(1, detectorThreshold / 2)));
+    _featureDescriptor = cv::Ptr<cv::DescriptorExtractor>(cv::xfeatures2d::BriefDescriptorExtractor::create());
+    assert(not _featureDescriptor.empty());
+#endif
+
     assert(not _featureDetector.empty());
     assert(not _advancedFeatureDetector.empty());
 
@@ -187,9 +197,13 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
             // Caution: the frameKeypoints list is mutable by this function
             //          The bad points will be removed by the compute descriptor function
             cv::Mat detectedKeypointDescriptors;
+#ifdef USE_ORB_DETECTOR_AND_MATCHING
             assert(_featureDetector != nullptr);
             _featureDetector->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
-
+#else
+            assert(_featureDescriptor != nullptr);
+            _featureDescriptor->compute(grayImage, frameKeypoints, detectedKeypointDescriptors);
+#endif
             // convert back to keypoint list
             detectedKeypoints.clear();
             cv::KeyPoint::convert(frameKeypoints, detectedKeypoints);

@@ -88,6 +88,11 @@ class Key_Point_Extraction
   private:
     cv::Ptr<cv::FeatureDetector> _featureDetector;
     cv::Ptr<cv::FeatureDetector> _advancedFeatureDetector;
+
+#ifndef USE_ORB_DETECTOR_AND_MATCHING
+    cv::Ptr<cv::DescriptorExtractor> _featureDescriptor;
+#endif
+
     std::vector<cv::Rect> _detectionWindows;
 
     std::vector<cv::Mat> _lastFramePyramide;
