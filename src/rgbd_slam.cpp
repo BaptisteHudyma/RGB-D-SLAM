@@ -64,8 +64,7 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
     _localMap = std::make_unique<map_management::Local_Map>();
 
     // plane/cylinder finder
-    _primitiveDetector = std::make_unique<features::primitives::Primitive_Detection>(
-            _width, _height, parameters::detection::depthMapPatchSize_px);
+    _primitiveDetector = std::make_unique<features::primitives::Primitive_Detection>(_width, _height);
 
     // Point detector and matcher
     _pointDetector = std::make_unique<features::keypoints::Key_Point_Extraction>();
