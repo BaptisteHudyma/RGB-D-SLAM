@@ -114,7 +114,7 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
                     const int id = _cellMap.at<int>(static_cast<int>(row), static_cast<int>(column));
                     assert(id >= 0 and id < organizedCloudArray.rows());
 
-                    const auto& cameraCoordinates =
+                    const utils::CameraCoordinate& cameraCoordinates =
                             utils::ScreenCoordinate(position[1], position[0], z).to_camera_coordinates();
 
                     // undistorded depth
@@ -134,7 +134,7 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
             const int id = _cellMap(position[0], position[1]);
             assert(id >= 0 and id < organizedCloudArray.rows());
 
-            const auto& cameraCoordinates =
+            const utils::CameraCoordinate& cameraCoordinates =
                     utils::ScreenCoordinate(position[1], position[0], z).to_camera_coordinates();
 
             // undistorded depth
@@ -163,7 +163,8 @@ void Depth_Map_Transformation::init_matrices() noexcept
 
         for (uint colum = 0; colum < _width; ++colum)
         {
-            const auto cameraProjection = utils::ScreenCoordinate2D(colum, row).to_camera_coordinates();
+            const utils::CameraCoordinate2D& cameraProjection =
+                    utils::ScreenCoordinate2D(colum, row).to_camera_coordinates();
 
             // Not efficient but at this stage doesn t matter
             _Xpre.at<float>(static_cast<int>(row), static_cast<int>(colum)) = static_cast<float>(cameraProjection.x());

@@ -236,7 +236,7 @@ Polygon::polygon Polygon::compute_concave_hull(const std::vector<vector2>& point
     newPointVector.reserve(pointsIn.size());
 
     uint64_t id = 0;
-    for (const auto& point: pointsIn)
+    for (const vector2& point: pointsIn)
     {
         newPointVector.emplace_back(point.x(), point.y());
         newPointVector.back().id = id++;
@@ -299,7 +299,7 @@ Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, con
     std::vector<point_2d> newBoundary;
     newBoundary.reserve(_polygon.outer().size());
 
-    for (const auto& p: _polygon.outer())
+    for (const point_2d& p: _polygon.outer())
     {
         const vector3& retroProjected =
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
@@ -360,7 +360,7 @@ std::vector<Polygon::point_2d> Polygon::transform_boundary(const matrix44& trans
     newBoundary.reserve(_polygon.outer().size());
 
     // transform each boundary points
-    for (const auto& p: _polygon.outer())
+    for (const point_2d& p: _polygon.outer())
     {
         const vector3& retroProjected =
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
@@ -522,7 +522,7 @@ std::vector<vector3> Polygon::get_unprojected_boundary() const noexcept
     std::vector<vector3> projectedBoundary;
     projectedBoundary.reserve(_polygon.outer().size());
 
-    for (const auto& p: _polygon.outer())
+    for (const point_2d& p: _polygon.outer())
     {
         const vector3& retroProjected =
                 utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
@@ -606,7 +606,7 @@ std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const noexcept
 
 Polygon::polygon CameraPolygon::to_screen_space() const noexcept
 {
-    const auto& t = get_screen_points();
+    const std::vector<ScreenCoordinate>& t = get_screen_points();
 
     std::vector<point_2d> boundary;
     boundary.reserve(t.size());
