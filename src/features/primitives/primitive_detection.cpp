@@ -24,9 +24,11 @@
 
 namespace rgbd_slam::features::primitives {
 
-Primitive_Detection::Primitive_Detection(const uint width, const uint height, const uint blocSize) :
-    _histogram(blocSize),
-    _pointsPerCellCount(blocSize * blocSize),
+// namespace simplifcation
+constexpr uint blocSize = parameters::detection::depthMapPatchSize_px;
+constexpr uint pointsPerCellCount = blocSize * blocSize;
+
+Primitive_Detection::Primitive_Detection(const uint width, const uint height) :
     _horizontalCellsCount(width / blocSize),
     _verticalCellsCount(height / blocSize),
     _totalCellCount(_verticalCellsCount * _horizontalCellsCount)
@@ -55,7 +57,7 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height, co
     _maskSquareKernel = cv::Mat_<uchar>::ones(3, 3);
 
     // set before anything related to planar cells
-    Plane_Segment::set_static_members(blocSize, _pointsPerCellCount);
+    Plane_Segment::set_static_members(blocSize, pointsPerCellCount);
 
     // array of unique_ptr<Plane_Segment>
     const Plane_Segment defaultPlaneSegment = Plane_Segment();
@@ -156,11 +158,11 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
         // if this plane patch is planar, compute the diagonal distance
         if (planeSegment.is_planar())
         {
-            const uint offset = static_cast<uint>(std::floor(stackedCellId * _pointsPerCellCount));
+            const uint offset = static_cast<uint>(std::floor(stackedCellId * pointsPerCellCount));
             // cell diameter, in millimeters
             const float cellDiameter = (
                                                // right down corner (x, y, z)
-                                               depthCloudArray.block<1, 3>(offset + _pointsPerCellCount - 1, 0) -
+                                               depthCloudArray.block<1, 3>(offset + pointsPerCellCount - 1, 0) -
                                                // left up corner (x, y, z)
                                                depthCloudArray.block<1, 3>(offset, 0))
                                                .norm();
@@ -548,7 +550,7 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
                 _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
         }
 #ifdef DEBUG_DETECTED_POLYGONS
-        const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(_pointsPerCellCount)));
+        const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(pointsPerCellCount)));
         cv::Scalar color(utils::Random::get_random_uint(255),
                          utils::Random::get_random_uint(255),
                          utils::Random::get_random_uint(255));
@@ -614,7 +616,7 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
                // if distance of this point to the plane < threshold, this point is contained in the plane
                planeSegment.get_point_distance_squared(point.to_camera_coordinates()) < maxBoundaryDistance;
     };
-    const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(_pointsPerCellCount)));
+    const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(pointsPerCellCount)));
 
     std::vector<vector3> boundaryPoints;
     std::mutex mut;

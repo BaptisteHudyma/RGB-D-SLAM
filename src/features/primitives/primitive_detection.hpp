@@ -30,9 +30,8 @@ class Primitive_Detection
     /**
      * \param[in] width The fixed depth image width
      * \param[in] height The fixed depth image height
-     * \param[in] blocSize Size of an image division, in pixels.
      */
-    Primitive_Detection(const uint width, const uint height, const uint blocSize = 20);
+    Primitive_Detection(const uint width, const uint height);
 
     /**
      * \brief Main compute function: computes the primitives in the depth imahe
@@ -213,9 +212,7 @@ class Primitive_Detection
                                                           const size_t numberOfPlanes) const noexcept;
 
   private:
-    Histogram _histogram;
-
-    const uint _pointsPerCellCount;
+    Histogram<parameters::detection::depthMapPatchSize_px> _histogram;
 
     const uint _horizontalCellsCount;
     const uint _verticalCellsCount;

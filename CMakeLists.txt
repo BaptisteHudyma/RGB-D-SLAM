@@ -106,7 +106,6 @@ add_library(primitives SHARED
     ${PRIMITIVES}/primitive_detection.cpp
     ${PRIMITIVES}/plane_segment.cpp
     ${PRIMITIVES}/cylinder_segment.cpp
-    ${PRIMITIVES}/histogram.cpp
     ${PRIMITIVES}/shape_primitives.cpp
     )
 
