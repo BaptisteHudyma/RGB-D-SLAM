@@ -113,12 +113,13 @@ class Primitive_Detection
      * \brief For a given plane segment and plane patch, compute the point the better define the plane boundary
      * \return The best boundary point candidates
      */
-    [[nodiscard]] std::vector<vector3> find_defining_points(const cv::Mat_<float>& depthImage,
-                                                            const int xStart,
-                                                            const int yStart,
-                                                            const int xEnd,
-                                                            const int yEnd,
-                                                            auto is_point_in_plane) const noexcept;
+    [[nodiscard]] std::vector<vector3> find_defining_points(
+            const cv::Mat_<float>& depthImage,
+            const int xStart,
+            const int yStart,
+            const int xEnd,
+            const int yEnd,
+            std::function<bool(vector3)> is_point_in_plane) const noexcept;
 
     /**
      * \brief Try to fit a plane to a cylinder

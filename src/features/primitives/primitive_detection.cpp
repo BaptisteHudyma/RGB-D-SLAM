@@ -607,7 +607,8 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
     maskBoundary = maskBoundary - maskEroded;
 
     const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
-    auto is_point_in_plane = [&planeSegment, &maxBoundaryDistance](const utils::ScreenCoordinate& point) {
+    std::function<bool(vector3)> is_point_in_plane = [&planeSegment,
+                                                      &maxBoundaryDistance](const utils::ScreenCoordinate& point) {
         // Check that the point is inside the screen
         return (point.z() > 0 and point.x() >= 0 and point.y() >= 0) and
                // if distance of this point to the plane < threshold, this point is contained in the plane
@@ -646,12 +647,13 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
     return boundaryPoints;
 }
 
-std::vector<vector3> Primitive_Detection::find_defining_points(const cv::Mat_<float>& depthImage,
-                                                               const int xStart,
-                                                               const int yStart,
-                                                               const int xEnd,
-                                                               const int yEnd,
-                                                               auto is_point_in_plane) const noexcept
+std::vector<vector3> Primitive_Detection::find_defining_points(
+        const cv::Mat_<float>& depthImage,
+        const int xStart,
+        const int yStart,
+        const int xEnd,
+        const int yEnd,
+        std::function<bool(vector3)> is_point_in_plane) const noexcept
 {
     std::vector<vector3> definingPoints;
 
