@@ -107,9 +107,7 @@ void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage) noexcept
     }
 }
 
-utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
-                             const cv::Mat_<float>& inputDepthImage,
-                             const bool shouldDetectLines) noexcept
+utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat_<float>& inputDepthImage) noexcept
 {
     assert(static_cast<size_t>(inputDepthImage.rows) == _height);
     assert(static_cast<size_t>(inputDepthImage.cols) == _width);
@@ -130,20 +128,6 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
     cv::Mat grayImage;
     cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
-    if (shouldDetectLines)
-    { // detect lines in image
-
-        const double lineDetectionStartTime = static_cast<double>(cv::getTickCount());
-        const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, inputDepthImage);
-        _meanLineTreatmentDuration +=
-                (static_cast<double>(cv::getTickCount()) - lineDetectionStartTime) / cv::getTickFrequency();
-
-        cv::Mat outImage = inputRgbImage.clone();
-        _lineDetector->get_image_with_lines(detectedLines, inputDepthImage, outImage);
-
-        cv::imshow("line", outImage);
-    }
-
     // this frame points and  assoc
     const double computePoseStartTime = static_cast<double>(cv::getTickCount());
     const utils::Pose& refinedPose = this->compute_new_pose(grayImage, inputDepthImage, cloudArrayOrganized);
@@ -158,8 +142,10 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
                                    const cv::Mat& originalRGB,
                                    const double elapsedTime,
                                    const bool shouldDisplayStagedPoints,
+                                   const bool shouldDisplayLineDetection,
                                    const bool shouldDisplayPrimitiveMasks) const noexcept
 {
+    // TODO: use shouldDisplayLineDetection
     cv::Mat debugImage = originalRGB.clone();
 
     const uint bandSize =
@@ -283,35 +269,42 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
                                                                     const cv::Mat_<float>& depthImage,
                                                                     const matrixf& cloudArrayOrganized) noexcept
 {
-    auto kpHandler =
-            std::async(std::launch::async,
-                       [this, &predictedPose, &grayImage, &depthImage]() -> features::keypoints::Keypoint_Handler {
-                           const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
-                           // Get map points that were tracked last call, and retroproject them to screen space using
-                           // last pose (used for optical flow)
-                           const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
-                                   _localMap->get_tracked_keypoints_features(predictedPose);
-                           // Detect keypoints, and match the one detected by optical flow
-                           return _pointDetector->compute_keypoints(
-                                   grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
-                       });
+    // keypoint detection
+    auto kpHandler = std::async(std::launch::async, [this, &predictedPose, &grayImage, &depthImage]() {
+        const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
+        // Get map points that were tracked last call, and retroproject them to screen space using
+        // last pose (used for optical flow)
+        const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
+                _localMap->get_tracked_keypoints_features(predictedPose);
+        // Detect keypoints, and match the one detected by optical flow
+        return _pointDetector->compute_keypoints(
+                grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
+    });
 
-    auto planeHandler = std::async(
-            std::launch::async, [this, &cloudArrayOrganized, &depthImage]() -> features::primitives::plane_container {
-                // Run primitive detection
-                const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
-                features::primitives::plane_container detectedPlanes;
-                features::primitives::cylinder_container
-                        detectedCylinders; // TODO: handle detected cylinders in local map
-                _primitiveDetector->find_primitives(cloudArrayOrganized, depthImage, detectedPlanes, detectedCylinders);
-                _meanPrimitiveTreatmentDuration +=
-                        (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) /
-                        cv::getTickFrequency();
+    // plane detection
+    auto planeHandler = std::async(std::launch::async, [this, &cloudArrayOrganized, &depthImage]() {
+        // Run primitive detection
+        const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
+        features::primitives::plane_container detectedPlanes;
+        features::primitives::cylinder_container detectedCylinders; // TODO: handle detected cylinders in local map
+        _primitiveDetector->find_primitives(cloudArrayOrganized, depthImage, detectedPlanes, detectedCylinders);
+        _meanPrimitiveTreatmentDuration +=
+                (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
 
-                return detectedPlanes;
-            });
+        return detectedPlanes;
+    });
 
-    return map_management::DetectedFeatureContainer(kpHandler.get(), planeHandler.get());
+    // line detection
+    auto lineHandler = std::async([this, &grayImage, &depthImage]() {
+        const double lineDetectionStartTime = static_cast<double>(cv::getTickCount());
+        const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, depthImage);
+        _meanLineTreatmentDuration +=
+                (static_cast<double>(cv::getTickCount()) - lineDetectionStartTime) / cv::getTickFrequency();
+
+        return detectedLines;
+    });
+
+    return map_management::DetectedFeatureContainer(kpHandler.get(), lineHandler.get(), planeHandler.get());
 }
 
 double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) noexcept

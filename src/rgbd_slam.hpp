@@ -38,13 +38,10 @@ class RGBD_SLAM
      *
      * \param[in] inputRgbImage Raw RGB image
      * \param[in] inputDepthImage Raw depth Image, in millimeters
-     * \param[in] shouldDetectLines Should we use line detection on the RGB image ?
      *
      * \return The new estimated pose
      */
-    [[nodiscard]] utils::Pose track(const cv::Mat& inputRgbImage,
-                                    const cv::Mat_<float>& inputDepthImage,
-                                    const bool shouldDetectLines = false) noexcept;
+    [[nodiscard]] utils::Pose track(const cv::Mat& inputRgbImage, const cv::Mat_<float>& inputDepthImage) noexcept;
 
     /**
      * \brief Compute a debug image
@@ -53,12 +50,14 @@ class RGBD_SLAM
      * \param[in] originalRGB Raw rgb image. Will be used as a base for the final image
      * \param[in] elapsedTime Time since the last call (used for FPS count)
      * \param[in] shouldDisplayStagedPoints Display the points that are not map points yet
+     * \param[in] shouldDisplayLineDetection Display the detected lines
      * \param[in] shouldDisplayPrimitiveMasks Display the detected primitive masks
      */
     [[nodiscard]] cv::Mat get_debug_image(const utils::Pose& camPose,
                                           const cv::Mat& originalRGB,
                                           const double elapsedTime,
                                           const bool shouldDisplayStagedPoints = false,
+                                          const bool shouldDisplayLineDetection = false,
                                           const bool shouldDisplayPrimitiveMasks = false) const noexcept;
 
     /**

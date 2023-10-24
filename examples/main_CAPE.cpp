@@ -15,14 +15,11 @@
 
 #include "angle_utils.hpp"
 
-void check_user_inputs(bool& shouldStop, bool& shouldUseLineDetection, bool& shouldDisplayPrimitiveMasks)
+void check_user_inputs(bool& shouldStop, bool& shouldDisplayPrimitiveMasks)
 {
     switch (cv::waitKey(1))
     {
         // check pressed key
-        case 'l':
-            shouldUseLineDetection = not shouldUseLineDetection;
-            break;
         case 's':
             shouldDisplayPrimitiveMasks = not shouldDisplayPrimitiveMasks;
             break;
@@ -75,7 +72,7 @@ bool parse_parameters(int argc,
                       std::string& dataset,
                       bool& shouldDisplayPrimitiveMasks,
                       bool& shouldDisplayStagedPoints,
-                      bool& shouldUseLineDetection,
+                      bool& shouldDisplayLineDetection,
                       int& startIndex,
                       unsigned int& jumpImages,
                       unsigned int& fpsTarget,
@@ -86,7 +83,7 @@ bool parse_parameters(int argc,
             "{@dataset        | yoga | Dataset to process }"
             "{p primitive     |  1   | display primitive masks }"
             "{d staged        |  0   | display points in staged container }"
-            "{l lines         |  0   | Detect lines }"
+            "{l lines         |  0   | display lines }"
             "{i index         |  0   | First image to parse   }"
             "{j jump          |  0   | Only take every j image into consideration   }"
             "{r fps           |  30  | Used to slow down the treatment to correspond to a certain frame rate }"
@@ -104,7 +101,7 @@ bool parse_parameters(int argc,
     dataset = parser.get<std::string>("@dataset");
     shouldDisplayPrimitiveMasks = parser.get<bool>("p");
     shouldDisplayStagedPoints = parser.get<bool>("d");
-    shouldUseLineDetection = parser.get<bool>("l");
+    shouldDisplayLineDetection = parser.get<bool>("l");
     startIndex = parser.get<int>("i");
     jumpImages = parser.get<unsigned int>("j");
     fpsTarget = parser.get<unsigned int>("r");
@@ -123,7 +120,7 @@ int main(int argc, char* argv[])
     std::string dataset;
     bool shouldDisplayPrimitiveMasks;
     bool shouldDisplayStagedPoints;
-    bool shouldUseLineDetection;
+    bool shouldDisplayLineDetection;
     bool shouldSavePoses;
     int startIndex;
     uint jumpFrames = 0;
@@ -134,7 +131,7 @@ int main(int argc, char* argv[])
                              dataset,
                              shouldDisplayPrimitiveMasks,
                              shouldDisplayStagedPoints,
-                             shouldUseLineDetection,
+                             shouldDisplayLineDetection,
                              startIndex,
                              jumpFrames,
                              fpsTarget,
@@ -203,18 +200,22 @@ int main(int argc, char* argv[])
 
         // get optimized pose
         const double trackingStartTime = static_cast<double>(cv::getTickCount());
-        pose = RGBD_Slam.track(rgbImage, depthImage, shouldUseLineDetection);
+        pose = RGBD_Slam.track(rgbImage, depthImage);
         const double trackingDuration =
                 (static_cast<double>(cv::getTickCount()) - trackingStartTime) / cv::getTickFrequency();
         meanTreatmentDuration += trackingDuration;
 
         // display masks on image
-        const cv::Mat& segRgb = RGBD_Slam.get_debug_image(
-                pose, rgbImage, trackingDuration, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks);
+        const cv::Mat& segRgb = RGBD_Slam.get_debug_image(pose,
+                                                          rgbImage,
+                                                          trackingDuration,
+                                                          shouldDisplayStagedPoints,
+                                                          shouldDisplayLineDetection,
+                                                          shouldDisplayPrimitiveMasks);
         cv::imshow("RGBD-SLAM", segRgb);
 
         // check user inputs
-        check_user_inputs(shouldStop, shouldUseLineDetection, shouldDisplayPrimitiveMasks);
+        check_user_inputs(shouldStop, shouldDisplayPrimitiveMasks);
 
         // counters
         ++totalFrameTreated;
