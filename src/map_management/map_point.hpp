@@ -32,7 +32,7 @@ struct Point
      * \brief update this point coordinates using a new detection
      * \param[in] newDetectionCoordinates The newly detected point
      * \param[in] newDetectionCovariance The newly detected point covariance
-     * \return The distance between the updated position ans the previous one
+     * \return The distance between the updated position ans the previous one, -1 if an error occured
      */
     double track(const utils::WorldCoordinate& newDetectionCoordinates,
                  const matrix33& newDetectionCovariance) noexcept;
@@ -75,6 +75,8 @@ class MapPoint :
     {
         assert(_id > 0);
     }
+
+    virtual ~MapPoint() = default;
 
     [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
@@ -127,7 +129,7 @@ class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointTy
 class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
 {
   public:
-    LocalMapPoint(const StagedMapPoint& stagedPoint);
+    explicit LocalMapPoint(const StagedMapPoint& stagedPoint);
 
     [[nodiscard]] bool is_lost() const noexcept override;
 };

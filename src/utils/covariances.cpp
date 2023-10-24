@@ -7,6 +7,7 @@
 #include "types.hpp"
 #include <Eigen/src/Core/util/Constants.h>
 #include <cmath>
+#include <stdexcept>
 
 namespace rgbd_slam::utils {
 
@@ -83,10 +84,12 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
     return cameraPointCovariance;
 }
 
-matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters,
-                                  const matrix33& pointCloudCovariance) noexcept
+matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const matrix33& pointCloudCovariance)
 {
-    assert(is_covariance_valid(pointCloudCovariance));
+    if (not is_covariance_valid(pointCloudCovariance))
+    {
+        throw std::invalid_argument("the argument pointCloudCovariance is an invalid covariance matrix");
+    }
 
     const vector3& normal = planeParameters.get_normal();
     const double d = planeParameters.get_d();
@@ -120,7 +123,10 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters,
             // add a little bit of variance on the diagonal to counter floatting points errors
             (jacobian * pointCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
             matrix44::Identity() * 0.01;
-    assert(is_covariance_valid(planeParameterCovariance));
+    if (not is_covariance_valid(planeParameterCovariance))
+    {
+        throw std::logic_error("planeParameterCovariance is an invalid covariance matrix after process");
+    }
     return planeParameterCovariance;
 }
 
@@ -153,7 +159,7 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
                                     const CameraToWorldMatrix& cameraToWorldMatrix,
                                     const PlaneCameraToWorldMatrix& planeCameraToWorldMatrix,
                                     const matrix44& planeCovariance,
-                                    const matrix33& worldPoseCovariance) noexcept
+                                    const matrix33& worldPoseCovariance)
 {
     // transform to point form
     const matrix33& pointCloudCovariance =
@@ -163,7 +169,10 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
     const matrix33& rotation = cameraToWorldMatrix.block<3, 3>(0, 0);
     const matrix33& pointCloudWorlCovariance =
             rotation * pointCloudCovariance * rotation.transpose() + worldPoseCovariance;
-    assert(is_covariance_valid(pointCloudWorlCovariance));
+    if (not is_covariance_valid(pointCloudWorlCovariance))
+    {
+        throw std::logic_error("pointCloudWorlCovariance is an invalid covariance matrix after process");
+    }
     // conver back to plane hessian form
     return compute_plane_covariance(planeCoordinates.to_world_coordinates(planeCameraToWorldMatrix),
                                     pointCloudWorlCovariance);

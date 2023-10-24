@@ -43,7 +43,7 @@ class Plane
     double track(const CameraToWorldMatrix& cameraToWorld,
                  const DetectedPlaneType& matchedFeature,
                  const utils::PlaneWorldCoordinates& newDetectionParameters,
-                 const matrix44& newDetectionCovariance) noexcept;
+                 const matrix44& newDetectionCovariance);
 
     utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                          // covariance of this plane in world space
@@ -55,7 +55,7 @@ class Plane
      * \param[in] cameraToWorld The matrix to convert from caera to world space
      * \param[in] detectedPolygon The boundary polygon of the matched feature, to project to this plane space
      */
-    void update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
+    bool update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
                                  const utils::CameraPolygon& detectedPolygon) noexcept;
 
     /**
@@ -77,7 +77,7 @@ class MapPlane :
         assert(_id > 0);
     }
 
-    MapPlane(const size_t id) :
+    explicit MapPlane(const size_t id) :
         IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject>(id)
     {
         assert(_id > 0);
@@ -127,7 +127,7 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
 class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
 {
   public:
-    LocalMapPlane(const StagedMapPlane& stagedPlane);
+    explicit LocalMapPlane(const StagedMapPlane& stagedPlane);
 
     [[nodiscard]] bool is_lost() const noexcept override;
 };

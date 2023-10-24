@@ -1,4 +1,5 @@
 #include "map_point.hpp"
+#include "logger.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam::map_management {
@@ -24,20 +25,33 @@ double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
                     const matrix33& newDetectionCovariance) noexcept
 {
     assert(_kalmanFilter != nullptr);
-    assert(utils::is_covariance_valid(newDetectionCovariance));
-    assert(utils::is_covariance_valid(_covariance));
+    if (not utils::is_covariance_valid(newDetectionCovariance))
+    {
+        outputs::log_error("newDetectionCovariance: the covariance in invalid");
+        return -1;
+    }
+    if (not utils::is_covariance_valid(_covariance))
+    {
+        outputs::log_error("_covariance: the covariance in invalid");
+        return -1;
+    }
 
-    const std::pair<vector3, matrix33>& res =
-            _kalmanFilter->get_new_state(_coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
-    const vector3& newCoordinates = res.first;
-    const matrix33& newCovariance = res.second;
+    try
+    {
+        const auto& [newCoordinates, newCovariance] = _kalmanFilter->get_new_state(
+                _coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
 
-    const double score = (_coordinates - newCoordinates).norm();
+        const double score = (_coordinates - newCoordinates).norm();
 
-    _coordinates << newCoordinates;
-    _covariance << newCovariance;
-    assert(not _coordinates.hasNaN());
-    return score;
+        _coordinates << newCoordinates;
+        _covariance << newCovariance;
+        assert(not _coordinates.hasNaN());
+        return score;
+    }
+    catch (...)
+    {
+        return -1;
+    }
 }
 
 void Point::build_kalman_filter() noexcept
@@ -179,7 +193,9 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
         const matrix33& worldCovariance =
                 utils::get_world_point_covariance(matchedScreenPoint, cameraToWorld, poseCovariance);
         // update this map point errors & position
-        track(worldPointCoordinates, worldCovariance);
+        const double mergeScore = track(worldPointCoordinates, worldCovariance);
+        if (mergeScore < 0)
+            return false;
 
         // If a new descriptor is available, update it
         if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
