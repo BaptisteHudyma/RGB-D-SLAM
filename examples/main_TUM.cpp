@@ -19,22 +19,19 @@
 #include "types.hpp"
 #include "TUM_parser.hpp"
 
-void check_user_inputs(bool& shouldRunLoop, bool& useLineDetection, bool& showPrimitiveMasks)
+void check_user_inputs(bool& shouldStop, bool& shouldDisplayPrimitiveMasks)
 {
     switch (cv::waitKey(1))
     {
         // check pressed key
-        case 'l':
-            useLineDetection = not useLineDetection;
-            break;
         case 's':
-            showPrimitiveMasks = not showPrimitiveMasks;
+            shouldDisplayPrimitiveMasks = not shouldDisplayPrimitiveMasks;
             break;
         case 'p':            // pause button
             cv::waitKey(-1); // wait until any key is pressed
             break;
         case 'q': // quit button
-            shouldRunLoop = false;
+            shouldStop = false;
         default:
             break;
     }
@@ -53,24 +50,24 @@ inline bool is_file_valid(const std::string& fileName)
 bool parse_parameters(int argc,
                       char** argv,
                       std::string& dataset,
-                      bool& showPrimitiveMasks,
-                      bool& showStagedPoints,
-                      bool& useLineDetection,
+                      bool& shouldDisplayPrimitiveMasks,
+                      bool& shouldDisplayStagedPoints,
+                      bool& shouldDisplayLineDetection,
                       int& startIndex,
                       unsigned int& jumpImages,
                       unsigned int& fpsTarget,
                       bool& shouldSavePoses)
 {
     const cv::String keys =
-            "{help h usage ?  |         | print this message     }"
-            "{@dataset        | fr1_xyz | The dataset to read}"
-            "{p primitive     |  1      | display primitive masks }"
-            "{d staged        |  0      | display points in staged container }"
-            "{l lines         |  0      | Detect lines }"
-            "{i index         |  0      | First image to parse   }"
-            "{j jump          |  0      | Only take every j image into consideration   }"
-            "{r fps           |  30     | Used to slow down the treatment to correspond to a certain frame rate }"
-            "{s save          |  0      | Should save all the pose to a file }";
+            "{help h usage ?  |      | print this message     }"
+            "{@dataset        | yoga | Dataset to process }"
+            "{p primitive     |  1   | display primitive masks }"
+            "{d staged        |  0   | display points in staged container }"
+            "{l lines         |  0   | display lines }"
+            "{i index         |  0   | First image to parse   }"
+            "{j jump          |  0   | Only take every j image into consideration   }"
+            "{r fps           |  30  | Used to slow down the treatment to correspond to a certain frame rate }"
+            "{s save          |  0   | Should save all the pose to a file }";
 
     cv::CommandLineParser parser(argc, argv, keys);
     parser.about("RGBD Slam v0");
@@ -82,9 +79,9 @@ bool parse_parameters(int argc,
     }
 
     dataset = parser.get<std::string>("@dataset");
-    showPrimitiveMasks = parser.get<bool>("p");
-    showStagedPoints = parser.get<bool>("d");
-    useLineDetection = parser.get<bool>("l");
+    shouldDisplayPrimitiveMasks = parser.get<bool>("p");
+    shouldDisplayStagedPoints = parser.get<bool>("d");
+    shouldDisplayLineDetection = parser.get<bool>("l");
     startIndex = parser.get<int>("i");
     jumpImages = parser.get<unsigned int>("j");
     fpsTarget = parser.get<unsigned int>("r");
@@ -140,9 +137,9 @@ std::vector<Data> get_data_association(const std::string& dataPath)
 int main(int argc, char* argv[])
 {
     std::string dataset;
-    bool showPrimitiveMasks;
-    bool showStagedPoints;
-    bool useLineDetection;
+    bool shouldDisplayPrimitiveMasks;
+    bool shouldDisplayStagedPoints;
+    bool shouldDisplayLineDetection;
     bool shouldSavePoses;
     int startIndex;
     uint jumpFrames = 0;
@@ -151,9 +148,9 @@ int main(int argc, char* argv[])
     if (not parse_parameters(argc,
                              argv,
                              dataset,
-                             showPrimitiveMasks,
-                             showStagedPoints,
-                             useLineDetection,
+                             shouldDisplayPrimitiveMasks,
+                             shouldDisplayStagedPoints,
+                             shouldDisplayLineDetection,
                              startIndex,
                              jumpFrames,
                              fpsTarget,
@@ -213,12 +210,12 @@ int main(int argc, char* argv[])
     double rotationError = 0;
 
     // stop condition
-    bool shouldRunLoop = true;
+    bool shouldStop = true;
     bool isGroundTruthAvailable = false;
     for (const Data& imageData: datasetContainer)
     {
         // out condition
-        if (not shouldRunLoop)
+        if (not shouldStop)
             break;
 
         if (jumpFrames > 0 and frameIndex % jumpFrames != 0)
@@ -268,7 +265,7 @@ int main(int argc, char* argv[])
 
         // get optimized pose
         const double trackingStartTime = static_cast<double>(cv::getTickCount());
-        pose = RGBD_Slam.track(rgbImage, depthImage, useLineDetection);
+        pose = RGBD_Slam.track(rgbImage, depthImage);
         const double trackingDuration =
                 (static_cast<double>(cv::getTickCount()) - trackingStartTime) / (double)cv::getTickFrequency();
         meanTreatmentDuration += trackingDuration;
@@ -283,12 +280,16 @@ int main(int argc, char* argv[])
         }
 
         // display masks on image
-        const cv::Mat& segRgb =
-                RGBD_Slam.get_debug_image(pose, rgbImage, trackingDuration, showStagedPoints, showPrimitiveMasks);
+        const cv::Mat& segRgb = RGBD_Slam.get_debug_image(pose,
+                                                          rgbImage,
+                                                          trackingDuration,
+                                                          shouldDisplayStagedPoints,
+                                                          shouldDisplayLineDetection,
+                                                          shouldDisplayPrimitiveMasks);
         cv::imshow("RGBD-SLAM", segRgb);
 
         // check user inputs
-        check_user_inputs(shouldRunLoop, useLineDetection, showPrimitiveMasks);
+        check_user_inputs(shouldStop, shouldDisplayPrimitiveMasks);
 
         // counters
         ++totalFrameTreated;

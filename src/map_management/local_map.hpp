@@ -3,6 +3,7 @@
 
 #include "../features/keypoints/keypoint_handler.hpp"
 #include "../features/primitives/shape_primitives.hpp"
+#include "../features/lines/line_detection.hpp"
 #include "../outputs/map_writer.hpp"
 #include "../matches_containers.hpp"
 #include "../utils/pose.hpp"
@@ -19,14 +20,17 @@ namespace rgbd_slam::map_management {
 struct DetectedFeatureContainer
 {
     DetectedFeatureContainer(const features::keypoints::Keypoint_Handler& newKeypointObject,
+                             const features::lines::line_container& newdDetectedLines,
                              const features::primitives::plane_container& newDetectedPlanes) :
         keypointObject(newKeypointObject),
+        detectedLines(newdDetectedLines),
         detectedPlanes(newDetectedPlanes),
         id(++idAllocator)
     {
     }
 
     const features::keypoints::Keypoint_Handler keypointObject;
+    const features::lines::line_container detectedLines;
     const features::primitives::plane_container detectedPlanes;
     const size_t id; // unique id to differenciate from other detections
 
