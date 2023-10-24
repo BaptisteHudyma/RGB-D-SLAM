@@ -16,6 +16,24 @@
 
 namespace rgbd_slam::map_management {
 
+struct DetectedFeatureContainer
+{
+    DetectedFeatureContainer(const features::keypoints::Keypoint_Handler& newKeypointObject,
+                             const features::primitives::plane_container& newDetectedPlanes) :
+        keypointObject(newKeypointObject),
+        detectedPlanes(newDetectedPlanes),
+        id(++idAllocator)
+    {
+    }
+
+    const features::keypoints::Keypoint_Handler keypointObject;
+    const features::primitives::plane_container detectedPlanes;
+    const size_t id; // unique id to differenciate from other detections
+
+  private:
+    inline static size_t idAllocator = 0;
+};
+
 /**
  * \brief Maintain a local (around the camera) map.
  * Handle the feature association and tracking in local space.
@@ -38,29 +56,23 @@ class Local_Map
     /**
      * \brief Find all matches for the given detected features
      * \param[in] currentPose The pose of the observer
-     * \param[in] detectedKeypointsObject An object that contains the detected keypoints in the new input
-     * \param[in] detectedPlanes An object that contains the detected planes in the new input
+     * \param[in] detectedFeatures An object that contains the detected features
      */
     [[nodiscard]] matches_containers::matchContainer find_feature_matches(
-            const utils::Pose& currentPose,
-            const features::keypoints::Keypoint_Handler& detectedKeypointsObject,
-            const features::primitives::plane_container& detectedPlanes) noexcept;
+            const utils::Pose& currentPose, const DetectedFeatureContainer& detectedFeatures) noexcept;
 
     /**
      * \brief Update the local and global map. Add new points to staged and map container
      *
      * \param[in] optimizedPose The clean true pose of the observer, after optimization
-     * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in
-     * find_keypoint_matches
-     * \param[in] detectedPlanes A container for all detected planes in the depth image
+     * \param[in] detectedFeatures An object that contains all the detected features
      * \param[in] outlierMatchedPoints A container for all the wrongly associated points detected in the pose
      * optimization process. They should be marked as invalid matches
      * \param[in] outlierMatchedPlanes A container for all the wrongly associated planes detected in the pose
      * optimization process. They should be marked as invalid matches
      */
     void update(const utils::Pose& optimizedPose,
-                const features::keypoints::Keypoint_Handler& keypointObject,
-                const features::primitives::plane_container& detectedPlanes,
+                const DetectedFeatureContainer& detectedFeatures,
                 const matches_containers::match_point_container& outlierMatchedPoints,
                 const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept;
 
@@ -73,16 +85,13 @@ class Local_Map
      * \brief Add features to staged map
      * \param[in] poseCovariance The pose covariance of the observer, after optimization
      * \param[in] cameraToWorld The matrix to go from camera to world space
-     * \param[in] keypointObject An object containing the detected key points in the rgbd frame. Must be the same as in
-     * find_keypoint_matches
-     * \param[in] detectedPlanes A container for all detected planes in the depth image
+     * \param[in] detectedFeatures Contains the detected features
      * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features regardless of
      * the match status
      */
     void add_features_to_map(const matrix33& poseCovariance,
                              const CameraToWorldMatrix& cameraToWorld,
-                             const features::keypoints::Keypoint_Handler& keypointObject,
-                             const features::primitives::plane_container& detectedPlanes,
+                             const DetectedFeatureContainer& detectedFeatures,
                              const bool addAllFeatures) noexcept;
 
     /**
@@ -140,6 +149,7 @@ class Local_Map
                                       PlaneMatchType,
                                       TrackedPlaneObject>;
 
+    size_t _detectedFeatureId; // store the if of the detected feature
     localPointMap _localPointMap;
     localPlaneMap _localPlaneMap;
 
