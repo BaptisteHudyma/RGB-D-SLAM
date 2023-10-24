@@ -53,11 +53,13 @@ template<int N, int M> class SharedKalmanFilter
         // check parameters
         if (not utils::is_covariance_valid(stateNoiseCovariance))
         {
-            throw std::invalid_argument("stateNoiseCovariance is an invalid covariance matrix");
+            throw std::invalid_argument(
+                    "SharedKalmanFilter::get_new_state: stateNoiseCovariance is an invalid covariance matrix");
         }
         if (not utils::is_covariance_valid(measurementNoiseCovariance))
         {
-            throw std::invalid_argument("measurementNoiseCovariance is an invalid covariance matrix");
+            throw std::invalid_argument(
+                    "SharedKalmanFilter::get_new_state: measurementNoiseCovariance is an invalid covariance matrix");
         }
 
         // Get new raw estimate
@@ -73,7 +75,11 @@ template<int N, int M> class SharedKalmanFilter
         if (utils::double_equal(inovationCovariance.determinant(), 0))
         {
             // do not update state or covariance
-            assert(utils::is_covariance_valid(estimateErrorCovariance));
+            if (not utils::is_covariance_valid(estimateErrorCovariance))
+            {
+                throw std::logic_error(
+                        "SharedKalmanFilter::get_new_state: produced and invalid covariance estimateErrorCovariance");
+            }
             return std::make_pair(newStateEstimate, estimateErrorCovariance);
         }
 
@@ -98,8 +104,7 @@ template<int N, int M> class SharedKalmanFilter
 
         if (not utils::is_covariance_valid(newCovariance))
         {
-            throw std::logic_error(
-                    "Kalman filter produced and invalid covariance, returning estimated state and covariance");
+            throw std::logic_error("SharedKalmanFilter::get_new_state: produced and invalid covariance");
         }
         // return the covariance and state estimation
         return std::make_pair(newState, newCovariance);
@@ -156,7 +161,10 @@ template<int N, int M> class KalmanFilter : public SharedKalmanFilter<N, M>
     void update(const Eigen::Vector<double, M>& newMeasurement,
                 const Eigen::Matrix<double, M, M>& measurementNoiseCovariance)
     {
-        assert(is_initialized());
+        if (not is_initialized())
+        {
+            throw std::logic_error("KalmanFilter::update: called before initialization");
+        }
 
         // update the covariance and state estimation
         const std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, N, N>>& res = this->get_new_state(

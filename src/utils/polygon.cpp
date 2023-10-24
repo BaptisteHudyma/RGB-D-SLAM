@@ -9,9 +9,11 @@
 #include <boost/geometry/algorithms/detail/convex_hull/interface.hpp>
 #include <boost/geometry/algorithms/union.hpp>
 #include <boost/qvm/mat_operations.hpp>
+#include <exception>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
+#include <stdexcept>
 #include "logger.hpp"
 #include "concave_fitting.hpp"
 #include "correct_boost_polygon.hpp"
@@ -44,24 +46,45 @@ vector3 select_correct_transform(const vector3& normal) noexcept
  * \brief Compute the two vectors that span the plane
  * \return a pair of vector u and v, normal to the plane normal
  */
-std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal) noexcept
+std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal)
 {
-    assert(double_equal(normal.norm(), 1.0));
+    if (not double_equal(normal.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_plane_coordinate_system: The normal should have a norm of 1");
+    }
 
     // define a vector orthogonal to the normal (r.dot normal should be close to 0)
     const vector3& r = select_correct_transform(normal);
-    assert(double_equal(r.norm(), 1.0));
+    if (not double_equal(r.norm(), 1.0))
+    {
+        throw std::logic_error("get_plane_coordinate_system: The selected vector r should have a norm of 1");
+    }
 
     // get two vectors that will span the plane
     const vector3 xAxis = normal.cross(r).normalized();
     const vector3 yAxis = normal.cross(xAxis).normalized();
 
     // check that angles between vectors is close to 0
-    assert(double_equal(xAxis.norm(), 1.0));
-    assert(double_equal(yAxis.norm(), 1.0));
-    assert(abs(xAxis.dot(normal)) <= .01);
-    assert(abs(yAxis.dot(xAxis)) <= .01);
-    assert(abs(yAxis.dot(normal)) <= .01);
+    if (not double_equal(xAxis.norm(), 1.0))
+    {
+        throw std::logic_error("get_plane_coordinate_system: The x axis as an invalid norm");
+    }
+    if (not double_equal(yAxis.norm(), 1.0))
+    {
+        throw std::logic_error("get_plane_coordinate_system: The y axis as an invalid norm");
+    }
+    if (abs(xAxis.dot(normal)) > .01)
+    {
+        throw std::logic_error("get_plane_coordinate_system: The x axis and normal are not orthogonals");
+    }
+    if (abs(yAxis.dot(xAxis)) > .01)
+    {
+        throw std::logic_error("get_plane_coordinate_system: The y axis and x axis are not orthogonals");
+    }
+    if (abs(yAxis.dot(normal)) > .01)
+    {
+        throw std::logic_error("get_plane_coordinate_system: The y axis and normal are not orthogonals");
+    }
 
     return std::make_pair(xAxis, yAxis);
 }
@@ -77,11 +100,20 @@ std::pair<vector3, vector3> get_plane_coordinate_system(const vector3& normal) n
 vector2 get_projected_plan_coordinates(const vector3& pointToProject,
                                        const vector3& planeCenter,
                                        const vector3& xAxis,
-                                       const vector3& yAxis) noexcept
+                                       const vector3& yAxis)
 {
-    assert(double_equal(xAxis.norm(), 1.0));
-    assert(double_equal(yAxis.norm(), 1.0));
-    assert(abs(xAxis.dot(yAxis)) <= .01);
+    if (not double_equal(xAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_projected_plan_coordinates: xAxis norm should be 1");
+    }
+    if (not double_equal(yAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_projected_plan_coordinates: yAxis norm should be 1");
+    }
+    if (abs(yAxis.dot(xAxis)) > .01)
+    {
+        throw std::invalid_argument("get_projected_plan_coordinates: yAxis and xAxis should be orthogonals");
+    }
 
     const vector3& reducedPoint = pointToProject - planeCenter;
     return vector2(xAxis.dot(reducedPoint), yAxis.dot(reducedPoint));
@@ -98,11 +130,20 @@ vector2 get_projected_plan_coordinates(const vector3& pointToProject,
 vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
                                          const vector3& planeCenter,
                                          const vector3& xAxis,
-                                         const vector3& yAxis) noexcept
+                                         const vector3& yAxis)
 {
-    assert(double_equal(xAxis.norm(), 1.0));
-    assert(double_equal(yAxis.norm(), 1.0));
-    assert(abs(xAxis.dot(yAxis)) <= .01);
+    if (not double_equal(xAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_point_from_plane_coordinates: xAxis norm should be 1");
+    }
+    if (not double_equal(yAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_point_from_plane_coordinates: yAxis norm should be 1");
+    }
+    if (abs(yAxis.dot(xAxis)) > .01)
+    {
+        throw std::invalid_argument("get_point_from_plane_coordinates: yAxis and xAxis should be orthogonals");
+    }
 
     return planeCenter + pointToProject.x() * xAxis + pointToProject.y() * yAxis;
 }
@@ -129,8 +170,14 @@ Polygon::polygon get_static_screen_boundary_polygon() noexcept
 
 Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, const vector3& center) : _center(center)
 {
-    assert(double_equal(normal.norm(), 1.0));
-    assert(points.size() >= 3);
+    if (not double_equal(normal.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon: normal norm should be 1");
+    }
+    if (points.size() < 3)
+    {
+        throw std::invalid_argument("Polygon: need at least 3 points to fit a polygon");
+    }
 
     // find the polygon axis
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(normal);
@@ -157,9 +204,11 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
             outputs::log_warning("Invalid concave polygon fit detected, trying to use convex hull algorithm");
             _polygon = utils::Polygon::compute_convex_hull(boundaryPoints);
 
-            if (!is_valid())
+            std::string failureReason;
+            if (!is_valid(failureReason))
             {
-                outputs::log_error("Invalid convex and concave polygon fit detected, fitting failed");
+                outputs::log_error(std::format(
+                        "Invalid convex and concave polygon fit detected, fitting failed. reason {}", failureReason));
             }
         }
         else
@@ -167,9 +216,11 @@ Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, cons
             // TODO: should select the greatest area ?
             _polygon = result[0];
 
-            if (!is_valid())
+            std::string failureReason;
+            if (!is_valid(failureReason))
             {
-                outputs::log_error("Invalid concave polygon fit after correction step, fitting failed");
+                outputs::log_error(std::format(
+                        "Invalid concave polygon fit after correction step, fitting failed. reason {}", failureReason));
             }
         }
     }
@@ -193,9 +244,18 @@ Polygon::Polygon(const std::vector<point_2d>& boundaryPoints,
     _xAxis(xAxis),
     _yAxis(yAxis)
 {
-    assert(double_equal(_xAxis.norm(), 1.0));
-    assert(double_equal(_yAxis.norm(), 1.0));
-    assert(abs(_xAxis.dot(_yAxis)) <= .01);
+    if (not double_equal(_xAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon: _xAxis norm should be 1");
+    }
+    if (not double_equal(_yAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon: _yAxis norm should be 1");
+    }
+    if (abs(_yAxis.dot(_xAxis)) > .01)
+    {
+        throw std::invalid_argument("Polygon: _yAxis and _xAxis should be orthogonals");
+    }
 
     // set boundary in reverse (clockwise)
     boost::geometry::assign_points(_polygon, boundaryPoints);
@@ -265,7 +325,7 @@ bool Polygon::contains(const vector2& point) const noexcept
     return boost::geometry::within(boost::geometry::make<point_2d>(point.x(), point.y()), _polygon);
 }
 
-void Polygon::merge_union(const Polygon& other) noexcept
+void Polygon::merge_union(const Polygon& other)
 {
     const polygon& res = union_one(other.project(_xAxis, _yAxis, _center));
     if (res.outer().empty())
@@ -278,19 +338,31 @@ void Polygon::merge_union(const Polygon& other) noexcept
     simplify();
 }
 
-Polygon Polygon::project(const vector3& nextNormal, const vector3& nextCenter) const noexcept
+Polygon Polygon::project(const vector3& nextNormal, const vector3& nextCenter) const
 {
-    assert(double_equal(nextNormal.norm(), 1.0));
+    if (not double_equal(nextNormal.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::project: nextNormal norm should be 1");
+    }
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(nextNormal);
 
     return project(res.first, res.second, nextCenter);
 }
 
-Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const noexcept
+Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const
 {
-    assert(double_equal(nextXAxis.norm(), 1.0));
-    assert(double_equal(nextYAxis.norm(), 1.0));
-    assert(abs(nextXAxis.dot(nextYAxis)) <= .01);
+    if (not double_equal(nextXAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::project: nextXAxis norm should be 1");
+    }
+    if (not double_equal(nextXAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::project: nextYAxis norm should be 1");
+    }
+    if (abs(nextXAxis.dot(nextYAxis)) > .01)
+    {
+        throw std::invalid_argument("Polygon::project: nextXAxis and nextYAxis should be orthogonals");
+    }
 
     // if the projection is the same as this one, do not project
     if (_center.isApprox(nextCenter) and _xAxis.isApprox(nextXAxis) and _yAxis.isApprox(nextYAxis))
@@ -312,16 +384,16 @@ Polygon Polygon::project(const vector3& nextXAxis, const vector3& nextYAxis, con
     return Polygon(newBoundary, nextXAxis, nextYAxis, nextCenter);
 }
 
-Polygon Polygon::transform(const vector3& nextNormal, const vector3& nextCenter) const noexcept
+Polygon Polygon::transform(const vector3& nextNormal, const vector3& nextCenter) const
 {
-    assert(double_equal(nextNormal.norm(), 1.0));
+    if (not double_equal(nextNormal.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::transform: nextNormal norm should be 1");
+    }
+
     const std::pair<vector3, vector3>& res = utils::get_plane_coordinate_system(nextNormal);
     const vector3& nextXAxis = res.first;
     const vector3& nextYAxis = res.second;
-
-    assert(double_equal(nextXAxis.norm(), 1.0));
-    assert(double_equal(nextYAxis.norm(), 1.0));
-    assert(abs(nextXAxis.dot(nextYAxis)) <= .01);
 
     // if the projection is the same as this one, do not project
     if (_center.isApprox(nextCenter) and _xAxis.isApprox(nextXAxis) and _yAxis.isApprox(nextYAxis))
@@ -330,11 +402,20 @@ Polygon Polygon::transform(const vector3& nextNormal, const vector3& nextCenter)
     return transform(nextXAxis, nextYAxis, nextCenter);
 }
 
-Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const noexcept
+Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const
 {
-    assert(double_equal(nextXAxis.norm(), 1.0));
-    assert(double_equal(nextYAxis.norm(), 1.0));
-    assert(abs(nextXAxis.dot(nextYAxis)) <= .01);
+    if (not double_equal(nextXAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::transform: nextXAxis norm should be 1");
+    }
+    if (not double_equal(nextXAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::transform: nextYAxis norm should be 1");
+    }
+    if (abs(nextXAxis.dot(nextYAxis)) > .01)
+    {
+        throw std::invalid_argument("Polygon::transform: nextXAxis and nextYAxis should be orthogonals");
+    }
 
     // if the projection is the same as this one, do not project
     if (_center.isApprox(nextCenter) and _xAxis.isApprox(nextXAxis) and _yAxis.isApprox(nextYAxis))
@@ -354,7 +435,7 @@ Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, c
 std::vector<Polygon::point_2d> Polygon::transform_boundary(const matrix44& transformationMatrix,
                                                            const vector3& nextXAxis,
                                                            const vector3& nextYAxis,
-                                                           const vector3& nextCenter) const noexcept
+                                                           const vector3& nextCenter) const
 {
     std::vector<point_2d> newBoundary;
     newBoundary.reserve(_polygon.outer().size());
@@ -383,7 +464,7 @@ double Polygon::area() const noexcept
     return boost::geometry::area(_polygon);
 }
 
-Polygon::polygon Polygon::union_one(const Polygon& other) const noexcept
+Polygon::polygon Polygon::union_one(const Polygon& other) const
 {
     multi_polygon res;
     boost::geometry::union_(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
@@ -407,11 +488,15 @@ Polygon::polygon Polygon::union_one(const Polygon& other) const noexcept
             biggestPol = p;
         }
     }
-    assert(biggestArea > 0);
+
+    if (biggestArea <= 0)
+    {
+        throw std::logic_error("Polygon::union_one: biggestArea is <= 0");
+    }
     return biggestPol;
 }
 
-Polygon::polygon Polygon::inter_one(const Polygon& other) const noexcept
+Polygon::polygon Polygon::inter_one(const Polygon& other) const
 {
     multi_polygon res;
     boost::geometry::intersection(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
@@ -434,11 +519,14 @@ Polygon::polygon Polygon::inter_one(const Polygon& other) const noexcept
             biggestPol = p;
         }
     }
-    assert(biggestArea > 0);
+    if (biggestArea <= 0)
+    {
+        throw std::logic_error("Polygon::inter_one: biggestArea is <= 0");
+    }
     return biggestPol;
 }
 
-double Polygon::inter_over_union(const Polygon& other) const noexcept
+double Polygon::inter_over_union(const Polygon& other) const
 {
     const Polygon& projectedOther = other.project(_xAxis, _yAxis, _center);
     const polygon& un = union_one(projectedOther);
@@ -455,7 +543,7 @@ double Polygon::inter_over_union(const Polygon& other) const noexcept
     return finalInter / finalUnion;
 }
 
-double Polygon::inter_area(const Polygon& other) const noexcept
+double Polygon::inter_area(const Polygon& other) const
 {
     multi_polygon res;
     const bool processSuccess =
@@ -476,7 +564,7 @@ double Polygon::inter_area(const Polygon& other) const noexcept
     return areaSum;
 }
 
-double Polygon::union_area(const Polygon& other) const noexcept
+double Polygon::union_area(const Polygon& other) const
 {
     multi_polygon res;
     boost::geometry::union_(_polygon, other.project(_xAxis, _yAxis, _center)._polygon, res);
@@ -517,7 +605,7 @@ void Polygon::simplify(const double distanceThreshold) noexcept
     // dont change the polygon
 }
 
-std::vector<vector3> Polygon::get_unprojected_boundary() const noexcept
+std::vector<vector3> Polygon::get_unprojected_boundary() const
 {
     std::vector<vector3> projectedBoundary;
     projectedBoundary.reserve(_polygon.outer().size());
@@ -559,7 +647,7 @@ void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const 
     }
 }
 
-WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWorld) const noexcept
+WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWorld) const
 {
     const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(cameraToWorld);
 
@@ -568,9 +656,18 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
     const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
     const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 
-    assert(double_equal(newXAxis.norm(), 1.0));
-    assert(double_equal(newYAxis.norm(), 1.0));
-    assert(abs(newXAxis.dot(newYAxis)) <= .01);
+    if (not double_equal(newXAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::to_world_space: newXAxis norm should be 1");
+    }
+    if (not double_equal(newYAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::to_world_space: newYAxis norm should be 1");
+    }
+    if (abs(newYAxis.dot(newXAxis)) > .01)
+    {
+        throw std::invalid_argument("Polygon::to_world_space: newYAxis and newXAxis should be orthogonals");
+    }
 
     // project the boundary to the new space
     const std::vector<point_2d>& newBoundary = transform_boundary(cameraToWorld, newXAxis, newYAxis, newCenter);
@@ -579,7 +676,7 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
     return WorldPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
-std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const noexcept
+std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
 {
     std::vector<ScreenCoordinate> screenBoundary;
     screenBoundary.reserve(_polygon.outer().size());
@@ -604,7 +701,7 @@ std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const noexcept
     return screenBoundary;
 }
 
-Polygon::polygon CameraPolygon::to_screen_space() const noexcept
+Polygon::polygon CameraPolygon::to_screen_space() const
 {
     const std::vector<ScreenCoordinate>& t = get_screen_points();
 
@@ -622,7 +719,7 @@ Polygon::polygon CameraPolygon::to_screen_space() const noexcept
     return pol;
 }
 
-bool CameraPolygon::is_visible_in_screen_space() const noexcept
+bool CameraPolygon::is_visible_in_screen_space() const
 {
     // intersecton of this polygon in screen space, and the screen limits; if it exists, the polygon is visible
     multi_polygon res;
@@ -637,7 +734,7 @@ bool CameraPolygon::is_visible_in_screen_space() const noexcept
  *
  */
 
-CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCamera) const noexcept
+CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCamera) const
 {
     const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(worldToCamera);
 
@@ -646,9 +743,18 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
     const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
     const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 
-    assert(double_equal(newXAxis.norm(), 1.0));
-    assert(double_equal(newYAxis.norm(), 1.0));
-    assert(abs(newXAxis.dot(newYAxis)) <= .01);
+    if (not double_equal(newXAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::to_camera_space: newXAxis norm should be 1");
+    }
+    if (not double_equal(newYAxis.norm(), 1.0))
+    {
+        throw std::invalid_argument("Polygon::to_camera_space: newYAxis norm should be 1");
+    }
+    if (abs(newYAxis.dot(newXAxis)) > .01)
+    {
+        throw std::invalid_argument("Polygon::to_camera_space: newYAxis and newXAxis should be orthogonals");
+    }
 
     // project the boundary to the new space
     const std::vector<point_2d>& newBoundary = transform_boundary(worldToCamera, newXAxis, newYAxis, newCenter);
@@ -657,7 +763,7 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
     return CameraPolygon(newBoundary, newXAxis, newYAxis, newCenter);
 }
 
-void WorldPolygon::merge(const WorldPolygon& other) noexcept
+void WorldPolygon::merge(const WorldPolygon& other)
 {
     Polygon::merge_union(other.Polygon::project(_xAxis, _yAxis, _center));
     // no need to correct to polygon

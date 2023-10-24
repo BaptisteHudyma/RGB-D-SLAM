@@ -12,6 +12,8 @@
 #include "types.hpp"
 #include <Eigen/StdVector>
 #include <cmath>
+#include <exception>
+#include <stdexcept>
 #include <string>
 
 #include <tbb/parallel_for.h>
@@ -42,19 +44,29 @@ namespace rgbd_slam::pose_optimization {
     for (const matches_containers::PointMatch& match: pointsToEvaluate)
     {
         // Retroproject world point to screen, and compute screen distance
-        const double distance = match._worldFeature.get_distance_px(match._screenFeature, worldToCamera);
-        assert(distance >= 0 and not std::isnan(distance));
-        // inlier
-        if (distance < pointMaxRetroprojectionError_px)
+        try
         {
-            pointMatcheSets._inliers.insert(pointMatcheSets._inliers.end(), match);
+            const double distance = match._worldFeature.get_distance_px(match._screenFeature, worldToCamera);
+            // inlier
+            if (distance < pointMaxRetroprojectionError_px)
+            {
+                pointMatcheSets._inliers.insert(pointMatcheSets._inliers.end(), match);
+            }
+            // outlier
+            else
+            {
+                pointMatcheSets._outliers.insert(pointMatcheSets._outliers.end(), match);
+            }
+            retroprojectionScore += std::min(pointMaxRetroprojectionError_px, distance);
         }
-        // outlier
-        else
+        catch (const std::exception& ex)
         {
+            // treat as outlier
+            outputs::log_error("get_point_inliers_outliers: caught exeption while computing distance: " +
+                               std::string(ex.what()));
             pointMatcheSets._outliers.insert(pointMatcheSets._outliers.end(), match);
+            retroprojectionScore += pointMaxRetroprojectionError_px;
         }
-        retroprojectionScore += std::min(pointMaxRetroprojectionError_px, distance);
     }
     return retroprojectionScore;
 }
@@ -84,20 +96,29 @@ namespace rgbd_slam::pose_optimization {
     for (const matches_containers::PlaneMatch& match: planesToEvaluate)
     {
         // Retroproject world point to screen, and compute screen distance
-        const double distance =
-                match._worldFeature.get_reduced_signed_distance(match._screenFeature, worldToCamera).norm();
-        assert(distance >= 0 and not std::isnan(distance));
-        // inlier
-        if (distance < planeMaxRetroprojectionError_mm)
+        try
         {
-            planeMatchSets._inliers.insert(planeMatchSets._inliers.end(), match);
+            const double distance =
+                    match._worldFeature.get_reduced_signed_distance(match._screenFeature, worldToCamera).norm();
+            // inlier
+            if (distance < planeMaxRetroprojectionError_mm)
+            {
+                planeMatchSets._inliers.insert(planeMatchSets._inliers.end(), match);
+            }
+            // outlier
+            else
+            {
+                planeMatchSets._outliers.insert(planeMatchSets._outliers.end(), match);
+            }
+            retroprojectionScore += std::min(planeMaxRetroprojectionError_mm, distance);
         }
-        // outlier
-        else
+        catch (const std::exception& ex)
         {
+            outputs::log_error("get_plane_inliers_outliers: caught exeption while computing distance: " +
+                               std::string(ex.what()));
             planeMatchSets._outliers.insert(planeMatchSets._outliers.end(), match);
+            retroprojectionScore += planeMaxRetroprojectionError_mm;
         }
-        retroprojectionScore += std::min(planeMaxRetroprojectionError_mm, distance);
     }
     return retroprojectionScore;
 }
@@ -124,7 +145,7 @@ namespace rgbd_slam::pose_optimization {
 [[nodiscard]] matches_containers::match_sets get_random_subset(
         const uint numberOfPointsToSample,
         const uint numberOfPlanesToSample,
-        const matches_containers::matchContainer& matchedFeatures) noexcept
+        const matches_containers::matchContainer& matchedFeatures)
 {
     matches_containers::match_sets matchSubset;
     // we can have a lot of points, so use a more efficient but with potential duplicates subset
@@ -132,8 +153,12 @@ namespace rgbd_slam::pose_optimization {
     // numberOfPointsToSample);
     matchSubset._pointSets._inliers = ransac::get_random_subset(matchedFeatures._points, numberOfPointsToSample);
     matchSubset._planeSets._inliers = ransac::get_random_subset(matchedFeatures._planes, numberOfPlanesToSample);
-    assert(matchSubset._pointSets._inliers.size() == numberOfPointsToSample);
-    assert(matchSubset._planeSets._inliers.size() == numberOfPlanesToSample);
+
+    if (matchSubset._pointSets._inliers.size() != numberOfPointsToSample or
+        matchSubset._planeSets._inliers.size() != numberOfPlanesToSample)
+    {
+        throw std::logic_error("get_random_subset: the output subset should have the requested size");
+    }
 
     return matchSubset;
 }
@@ -205,17 +230,23 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     const uint maximumIterations = static_cast<uint>(std::ceil(
             log(1.0 - parameters::optimization::ransac::probabilityOfSuccess) /
             log(1.0 - pow(parameters::optimization::ransac::inlierProportion, minimumPointsForOptimization))));
-    assert(maximumIterations > 0);
+    if (maximumIterations <= 0)
+    {
+        outputs::log_error("maximumIterations should be > 0, no pose optimization will be made");
+        return false;
+    }
 
     // set the start score to the maximum score
-    double minScore =
+    const double maxFittingScore =
             matchedPointSize * pointMaxRetroprojectionError_px + matchedPlaneSize * planeMaxRetroprojectionError_mm;
+    double minScore = maxFittingScore;
     utils::PoseBase bestPose = currentPose;
     for (uint iteration = 0; iteration < maximumIterations; ++iteration)
     {
         // get random number of planes, between minNumberOfPlanes and maxNumberOfPlanes
-        const uint numberOfPlanesToSample = minNumberOfPlanes + (maxNumberOfPlanes - minNumberOfPlanes) *
-                                                                        (utils::Random::get_random_double() > 0.5);
+        const uint numberOfPlanesToSample =
+                minNumberOfPlanes +
+                ((utils::Random::get_random_double() > 0.5) ? maxNumberOfPlanes - minNumberOfPlanes : 0);
         // depending on this number of planes, get a number of points to sample for this RANSAC iteration
         const uint numberOfPointsToSample =
                 static_cast<uint>(std::ceil((1 - numberOfPlanesToSample * planeFeatureScore) / pointFeatureScore));
@@ -261,6 +292,14 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                                                                          planeMaxRetroprojectionError_mm,
                                                                          candidatePose,
                                                                          potentialInliersOutliers);
+
+        // safety
+        if (transformationScore > maxFittingScore)
+        {
+            outputs::log_error("The computed score is higher than the max fitting score");
+            continue;
+        }
+
         // We have a better score than the previous best one
         if (transformationScore < minScore)
         {
@@ -387,7 +426,11 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
                                               matrix66& poseCovariance,
                                               const uint iterations) noexcept
 {
-    assert(iterations > 0);
+    if (iterations == 0)
+    {
+        outputs::log_error("Cannot compute pose variance with 0 iterations");
+        return false;
+    }
     poseCovariance.setZero();
     vector6 medium = vector6::Zero();
 

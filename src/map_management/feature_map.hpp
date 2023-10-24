@@ -388,7 +388,7 @@ class Feature_Map
                     }
                     catch (const std::exception& ex)
                     {
-                        outputs::log_error("Caught exeption while creating the staged feature: " +
+                        outputs::log_error("Caught exception while creating the staged feature: " +
                                            std::string(ex.what()));
                     }
                 }

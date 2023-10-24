@@ -88,13 +88,20 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
 {
     if (not is_covariance_valid(pointCloudCovariance))
     {
-        throw std::invalid_argument("the argument pointCloudCovariance is an invalid covariance matrix");
+        throw std::invalid_argument(
+                "compute_plane_covariance: the argument pointCloudCovariance is an invalid covariance matrix");
     }
 
     const vector3& normal = planeParameters.get_normal();
     const double d = planeParameters.get_d();
-    assert(not utils::double_equal(d, 0.0));
-    assert(utils::double_equal(normal.norm(), 1.0));
+    if (utils::double_equal(d, 0.0))
+    {
+        throw std::invalid_argument("compute_plane_covariance: The d of planeParameters should not be 0");
+    }
+    if (not utils::double_equal(normal.norm(), 1.0))
+    {
+        throw std::invalid_argument("compute_plane_covariance: The normal of planeParameters should have a norm of 1");
+    }
 
     // reduce the parametrization
     const vector3 parameters = normal * d;
@@ -125,20 +132,35 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
             matrix44::Identity() * 0.01;
     if (not is_covariance_valid(planeParameterCovariance))
     {
-        throw std::logic_error("planeParameterCovariance is an invalid covariance matrix after process");
+        throw std::logic_error(
+                "compute_plane_covariance: planeParameterCovariance is an invalid covariance matrix after process");
     }
     return planeParameterCovariance;
 }
 
 matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& planeParameters,
-                                                      const matrix44& planeCloudCovariance) noexcept
+                                                      const matrix44& planeCloudCovariance)
 {
-    assert(is_covariance_valid(planeCloudCovariance));
+    if (not is_covariance_valid(planeCloudCovariance))
+    {
+        throw std::invalid_argument(
+                "compute_reduced_plane_point_cloud_covariance: planeCloudCovariance is an invalid covariance matrix");
+    }
 
     const vector3& normal = planeParameters.get_normal();
     const double d = planeParameters.get_d();
-    assert(not utils::double_equal(d, 0.0));
-    assert(utils::double_equal(normal.norm(), 1.0));
+    if (utils::double_equal(d, 0.0))
+    {
+        throw std::invalid_argument(
+                "compute_reduced_plane_point_cloud_covariance: compute_plane_covariance: The d of planeParameters "
+                "should not be 0");
+    }
+    if (not utils::double_equal(normal.norm(), 1.0))
+    {
+        throw std::invalid_argument(
+                "compute_reduced_plane_point_cloud_covariance: compute_plane_covariance: The normal of planeParameters "
+                "should have a norm of 1");
+    }
 
     // compute the jacobian of the 4 parameter plane to 3 parameters plane transformation -> vect = normal * d
     const matrix34 jacobian({
@@ -151,7 +173,12 @@ matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& pl
             // add a little bit of variance on the diagonal to counter floatting points errors
             (jacobian * planeCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
             matrix33::Identity() * 0.01;
-    assert(is_covariance_valid(pointCloudCovariance));
+    if (not is_covariance_valid(pointCloudCovariance))
+    {
+        throw std::logic_error(
+                "compute_reduced_plane_point_cloud_covariance: pointCloudCovariance is an invalid covariance matrix "
+                "after process");
+    }
     return pointCloudCovariance;
 }
 
@@ -161,6 +188,11 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
                                     const matrix44& planeCovariance,
                                     const matrix33& worldPoseCovariance)
 {
+    if (not is_covariance_valid(planeCovariance))
+    {
+        throw std::invalid_argument("get_world_plane_covariance: planeCovariance is an invalid covariance matrix");
+    }
+
     // transform to point form
     const matrix33& pointCloudCovariance =
             compute_reduced_plane_point_cloud_covariance(planeCoordinates, planeCovariance);
@@ -171,7 +203,8 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
             rotation * pointCloudCovariance * rotation.transpose() + worldPoseCovariance;
     if (not is_covariance_valid(pointCloudWorlCovariance))
     {
-        throw std::logic_error("pointCloudWorlCovariance is an invalid covariance matrix after process");
+        throw std::logic_error(
+                "get_world_plane_covariance: pointCloudWorlCovariance is an invalid covariance matrix after process");
     }
     // conver back to plane hessian form
     return compute_plane_covariance(planeCoordinates.to_world_coordinates(planeCameraToWorldMatrix),

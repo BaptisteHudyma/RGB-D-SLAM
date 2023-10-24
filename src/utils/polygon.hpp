@@ -100,7 +100,7 @@ class Polygon
     /**
      * \brief merge the other polygon into this one using the union of both polygons
      */
-    void merge_union(const Polygon& other) noexcept;
+    void merge_union(const Polygon& other);
 
     /**
      * \brief project this polygon on the next polygon plane.
@@ -109,7 +109,7 @@ class Polygon
      * \param[in] nextCenter The center to project to
      * \return A polygon projected to the new space
      */
-    [[nodiscard]] Polygon project(const vector3& nextNormal, const vector3& nextCenter) const noexcept;
+    [[nodiscard]] Polygon project(const vector3& nextNormal, const vector3& nextCenter) const;
 
     /**
      * \brief project this polygon on the next polygon plane.
@@ -119,9 +119,7 @@ class Polygon
      * \param[in] nextCenter The center to project to
      * \return A polygon projected to the new space
      */
-    [[nodiscard]] Polygon project(const vector3& nextXAxis,
-                                  const vector3& nextYAxis,
-                                  const vector3& nextCenter) const noexcept;
+    [[nodiscard]] Polygon project(const vector3& nextXAxis, const vector3& nextYAxis, const vector3& nextCenter) const;
 
     /**
      * \brief Transform a polygon to a new space, keeping the same polygon shape, area and shuch.
@@ -129,7 +127,7 @@ class Polygon
      * \param[in] nextCenter The center of the polygon in th target space
      * \return A new polygon in the target space
      */
-    [[nodiscard]] Polygon transform(const vector3& nextNormal, const vector3& nextCenter) const noexcept;
+    [[nodiscard]] Polygon transform(const vector3& nextNormal, const vector3& nextCenter) const;
 
     /**
      * \brief Transform a polygon to a new space, keeping the same polygon shape, area and shuch.
@@ -140,37 +138,37 @@ class Polygon
      */
     [[nodiscard]] Polygon transform(const vector3& nextXAxis,
                                     const vector3& nextYAxis,
-                                    const vector3& nextCenter) const noexcept;
+                                    const vector3& nextCenter) const;
 
     /**
      * \brief Compute the inter/over of the two polygons
      * \return Inter of Union of the two polygons, or 0 if they do not overlap
      */
-    [[nodiscard]] double inter_over_union(const Polygon& other) const noexcept;
+    [[nodiscard]] double inter_over_union(const Polygon& other) const;
 
     /**
      * \brief compute the area of the intersection of two polygons
      * \return the inter polygon area, or 0 if they do not overlap
      */
-    [[nodiscard]] double inter_area(const Polygon& other) const noexcept;
+    [[nodiscard]] double inter_area(const Polygon& other) const;
 
     /**
      * \brief compute the area of the union of two polygons
      * \return the inter polygon area, or 0 if they do not overlap
      */
-    [[nodiscard]] double union_area(const Polygon& other) const noexcept;
+    [[nodiscard]] double union_area(const Polygon& other) const;
 
     /**
      * \brief Compute the union of this polygon and another one.
      * \return The union if it exists, or an empty polygon
      */
-    [[nodiscard]] polygon union_one(const Polygon& other) const noexcept;
+    [[nodiscard]] polygon union_one(const Polygon& other) const;
 
     /**
      * \brief Compute the inter of this polygon and another one.
      * \return The inter if it exists, or an empty polygon
      */
-    [[nodiscard]] polygon inter_one(const Polygon& other) const noexcept;
+    [[nodiscard]] polygon inter_one(const Polygon& other) const;
 
     /**
      * \brief Simplify the boundary of the current polygon
@@ -181,7 +179,7 @@ class Polygon
     /**
      * \brief compute and return the polygon boundary, in the unprojected space
      */
-    [[nodiscard]] std::vector<vector3> get_unprojected_boundary() const noexcept;
+    [[nodiscard]] std::vector<vector3> get_unprojected_boundary() const;
 
     [[nodiscard]] vector3 get_center() const noexcept { return _center; };
     [[nodiscard]] vector3 get_x_axis() const noexcept { return _xAxis; };
@@ -208,7 +206,7 @@ class Polygon
     [[nodiscard]] std::vector<point_2d> transform_boundary(const matrix44& transformationMatrix,
                                                            const vector3& nextXAxis,
                                                            const vector3& nextYAxis,
-                                                           const vector3& nextCenter) const noexcept;
+                                                           const vector3& nextCenter) const;
 };
 
 /**
@@ -232,23 +230,23 @@ class CameraPolygon : public Polygon
      * \param[in] cameraToWorld Matrix to go from camera to world space
      * \return The polygon in world coordinates
      */
-    [[nodiscard]] WorldPolygon to_world_space(const CameraToWorldMatrix& cameraToWorld) const noexcept;
+    [[nodiscard]] WorldPolygon to_world_space(const CameraToWorldMatrix& cameraToWorld) const;
 
     /**
      * \brief Compute the boundary points in screen coordinates
      */
-    [[nodiscard]] std::vector<ScreenCoordinate> get_screen_points() const noexcept;
+    [[nodiscard]] std::vector<ScreenCoordinate> get_screen_points() const;
 
     /**
      * \brief Project this polygon to screen space
      */
-    [[nodiscard]] polygon to_screen_space() const noexcept;
+    [[nodiscard]] polygon to_screen_space() const;
 
     /**
      * \brief Check that this polygon is visible in screen space
      * \return true if the polygon is visible from the camera 1
      */
-    [[nodiscard]] bool is_visible_in_screen_space() const noexcept;
+    [[nodiscard]] bool is_visible_in_screen_space() const;
 };
 
 /**
@@ -265,13 +263,13 @@ class WorldPolygon : public Polygon
      * \param[in] worldToCamera A matrix to convert from world to camera view
      / \return This polygon in camera space
      */
-    [[nodiscard]] CameraPolygon to_camera_space(const WorldToCameraMatrix& worldToCamera) const noexcept;
+    [[nodiscard]] CameraPolygon to_camera_space(const WorldToCameraMatrix& worldToCamera) const;
 
     /**
      * \brief Merge the other polygon into this one
      * \param[in] other The other polygon to merge into this one
      */
-    void merge(const WorldPolygon& other) noexcept;
+    void merge(const WorldPolygon& other);
 
     /**
      * \brief display the polygon in screen space on the given image

@@ -4,6 +4,7 @@
 #include "../utils/random.hpp"
 #include <algorithm>
 #include <cassert>
+#include <stdexcept>
 #include <vector>
 
 namespace rgbd_slam::pose_optimization::ransac {
@@ -16,10 +17,12 @@ namespace rgbd_slam::pose_optimization::ransac {
  * \return A container of size numberOfElementsToChoose, with no duplicated elements.
  */
 template<template<typename> class Container, typename T>
-[[nodiscard]] Container<T> get_random_subset(const Container<T>& inContainer,
-                                             const uint numberOfElementsToChoose) noexcept
+[[nodiscard]] Container<T> get_random_subset(const Container<T>& inContainer, const uint numberOfElementsToChoose)
 {
-    assert(numberOfElementsToChoose <= inContainer.size());
+    if (numberOfElementsToChoose > inContainer.size())
+    {
+        throw std::invalid_argument("get_random_subset: numberOfElementsToChoose should be >= to the elements count");
+    }
 
     // get a local random engine
     thread_local std::mt19937 randomEngine(0);
@@ -27,7 +30,10 @@ template<template<typename> class Container, typename T>
     // get a vector of references and shuffle it
     std::vector<std::reference_wrapper<const T>> copyVector(inContainer.cbegin(), inContainer.cend());
     std::ranges::shuffle(copyVector, randomEngine);
-    assert(copyVector.size() == inContainer.size());
+    if (copyVector.size() != inContainer.size())
+    {
+        throw std::invalid_argument("get_random_subset: failed to create a reference vector");
+    }
 
     // copy the first matches, they will be randoms
     Container<T> outContainer;
@@ -44,10 +50,13 @@ template<template<typename> class Container, typename T>
  */
 template<template<typename> class Container, typename T>
 [[nodiscard]] Container<T> get_random_subset_with_duplicates(const Container<T>& inContainer,
-                                                             const uint numberOfElementsToChoose) noexcept
+                                                             const uint numberOfElementsToChoose)
 {
     const uint inContainerSize = inContainer.size();
-    assert(numberOfElementsToChoose <= inContainerSize);
+    if (numberOfElementsToChoose > inContainer.size())
+    {
+        throw std::invalid_argument("get_random_subset: numberOfElementsToChoose should be >= to the elements count");
+    }
 
     // get a vector of references
     std::vector<std::reference_wrapper<const T>> copyVector(inContainer.cbegin(), inContainer.cend());

@@ -22,8 +22,16 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
                     const matrix44& newDetectionCovariance)
 {
     assert(_kalmanFilter != nullptr);
-    assert(utils::is_covariance_valid(newDetectionCovariance));
-    assert(utils::is_covariance_valid(_covariance));
+    if (not utils::is_covariance_valid(newDetectionCovariance))
+    {
+        outputs::log_error("newDetectionCovariance is an invalid covariance matrix");
+        return false;
+    }
+    if (not utils::is_covariance_valid(_covariance))
+    {
+        outputs::log_error("_covariance is an invalid covariance matrix");
+        exit(-1);
+    }
 
     const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(_parametrization.get_parametrization(),
                                                                            _covariance,

@@ -174,15 +174,25 @@ bool MapPoint::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noe
 
 void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
 {
-    assert(mapWriter != nullptr);
-    mapWriter->add_point(_coordinates);
+    if (mapWriter != nullptr)
+    {
+        mapWriter->add_point(_coordinates);
+    }
+    else
+    {
+        outputs::log_error("mapWriter is null");
+    }
 }
 
 bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
                                  const matrix33& poseCovariance,
                                  const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    assert(_matchIndex >= 0);
+    if (_matchIndex < 0)
+    {
+        outputs::log_error("Tries to call the function update_with_match with no associated match");
+        return false;
+    }
 
     if (const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
         utils::is_depth_valid(matchedScreenPoint.z()))

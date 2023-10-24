@@ -38,7 +38,7 @@ struct PlaneWorldCoordinates;
                                                  const vector3& centerFrom,
                                                  const vector3& xTo,
                                                  const vector3& yTo,
-                                                 const vector3& centerTo) noexcept;
+                                                 const vector3& centerTo);
 
 /**
  * \brief Contains a single of coordinate in screen space.
@@ -54,12 +54,12 @@ struct ScreenCoordinate2D : public vector2
      * \brief Transform a screen point with a depth value to a 3D camera point
      * \return A 3D point in camera coordinates
      */
-    [[nodiscard]] CameraCoordinate2D to_camera_coordinates() const noexcept;
+    [[nodiscard]] CameraCoordinate2D to_camera_coordinates() const;
 
     /**
      * \brief Compute a covariance in screen space
      */
-    [[nodiscard]] matrix22 get_covariance() const noexcept;
+    [[nodiscard]] matrix22 get_covariance() const;
 
     /**
      * \return true if this point is in the visible screen space
@@ -82,18 +82,18 @@ struct ScreenCoordinate : public vector3
      * \param[in] cameraToWorld Matrix to transform local to world coordinates
      * \return A 3D point in world coordinates
      */
-    [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept;
+    [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const;
 
     /**
      * \brief Transform a screen point with a depth value to a 3D camera point
      * \return A 3D point in camera coordinates
      */
-    [[nodiscard]] CameraCoordinate to_camera_coordinates() const noexcept;
+    [[nodiscard]] CameraCoordinate to_camera_coordinates() const;
 
     /**
      * \brief Compute a covariance in screen space
      */
-    [[nodiscard]] ScreenCoordinateCovariance get_covariance() const noexcept;
+    [[nodiscard]] ScreenCoordinateCovariance get_covariance() const;
 
     [[nodiscard]] ScreenCoordinate2D get_2D() const noexcept { return ScreenCoordinate2D(x(), y()); }
 
@@ -188,7 +188,7 @@ struct WorldCoordinate : public vector3
      * \return a 2D signed distance in camera space (pixels)
      */
     [[nodiscard]] vector2 get_signed_distance_2D_px(const ScreenCoordinate2D& screenPoint,
-                                                    const WorldToCameraMatrix& worldToCamera) const noexcept;
+                                                    const WorldToCameraMatrix& worldToCamera) const;
     /**
      * \brief Compute a distance between this world point and a screen point, by retroprojecting the world point to
      * screen space.
@@ -197,7 +197,7 @@ struct WorldCoordinate : public vector3
      * \return an unsigned distance in camera space (pixels)
      */
     [[nodiscard]] double get_distance_px(const ScreenCoordinate2D& screenPoint,
-                                         const WorldToCameraMatrix& worldToCamera) const noexcept;
+                                         const WorldToCameraMatrix& worldToCamera) const;
     /**
      * \brief Compute a signed distance between a world point and a 3D point in screen space, by projecting the screen
      * point to world space
@@ -206,7 +206,7 @@ struct WorldCoordinate : public vector3
      * \return The 3D signed distance in world space
      */
     [[nodiscard]] vector3 get_signed_distance_mm(const ScreenCoordinate& screenPoint,
-                                                 const CameraToWorldMatrix& cameraToWorld) const noexcept;
+                                                 const CameraToWorldMatrix& cameraToWorld) const;
     /**
      * \brief Compute a distance between a world point and a 3D point in screen space, by projecting the screen point to
      * world space
@@ -215,15 +215,15 @@ struct WorldCoordinate : public vector3
      * \return The unsigned distance in world space
      */
     [[nodiscard]] double get_distance_mm(const ScreenCoordinate& screenPoint,
-                                         const CameraToWorldMatrix& cameraToWorld) const noexcept;
+                                         const CameraToWorldMatrix& cameraToWorld) const;
     /**
      * \brief Compute a signed distance with another world point
      */
-    [[nodiscard]] vector3 get_signed_distance_mm(const WorldCoordinate& worldPoint) const noexcept
+    [[nodiscard]] vector3 get_signed_distance_mm(const WorldCoordinate& worldPoint) const
     {
         return this->base() - worldPoint;
     };
-    [[nodiscard]] double get_distance_mm(const WorldCoordinate& worldPoint) const noexcept
+    [[nodiscard]] double get_distance_mm(const WorldCoordinate& worldPoint) const
     {
         return get_signed_distance_mm(worldPoint).lpNorm<1>();
     };
