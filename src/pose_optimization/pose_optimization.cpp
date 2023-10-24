@@ -14,6 +14,8 @@
 #include <cmath>
 #include <string>
 
+#include <tbb/parallel_for.h>
+
 namespace rgbd_slam::pose_optimization {
 
 /**
@@ -391,20 +393,34 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
 
     std::vector<vector6> poses;
     poses.reserve(iterations);
+#ifndef MAKE_DETERMINISTIC
+    std::mutex mut;
+    tbb::parallel_for(uint(0),
+                      iterations,
+                      [&](uint i)
+#else
     for (uint i = 0; i < iterations; ++i)
-    {
-        utils::PoseBase newPose;
-        if (compute_random_variation_of_pose(optimizedPose, matchedFeatures, newPose))
-        {
-            const vector6& pose6dof = newPose.get_vector();
-            medium += pose6dof;
-            poses.emplace_back(pose6dof);
-        }
-        else
-        {
-            outputs::log_warning(std::format("fail iteration {}: rejected pose optimization", i));
-        }
-    }
+#endif
+                      {
+                          utils::PoseBase newPose;
+                          if (compute_random_variation_of_pose(optimizedPose, matchedFeatures, newPose))
+                          {
+                              const vector6& pose6dof = newPose.get_vector();
+#ifndef MAKE_DETERMINISTIC
+                              std::scoped_lock<std::mutex> lock(mut);
+#endif
+                              medium += pose6dof;
+                              poses.emplace_back(pose6dof);
+                          }
+                          else
+                          {
+                              outputs::log_warning(std::format("fail iteration {}: rejected pose optimization", i));
+                          }
+                      }
+#ifndef MAKE_DETERMINISTIC
+    );
+#endif
+
     if (poses.size() < iterations / 2)
     {
         outputs::log_error("Could not compute covariance: too many faileds iterations");
