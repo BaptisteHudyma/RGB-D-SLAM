@@ -1,5 +1,7 @@
 #include "map_primitive.hpp"
+#include "logger.hpp"
 #include "polygon.hpp"
+#include <stdexcept>
 
 namespace rgbd_slam::map_management {
 
@@ -17,7 +19,7 @@ Plane::Plane()
 double Plane::track(const CameraToWorldMatrix& cameraToWorld,
                     const DetectedPlaneType& matchedFeature,
                     const utils::PlaneWorldCoordinates& newDetectionParameters,
-                    const matrix44& newDetectionCovariance) noexcept
+                    const matrix44& newDetectionCovariance)
 {
     assert(_kalmanFilter != nullptr);
     assert(utils::is_covariance_valid(newDetectionCovariance));
@@ -38,7 +40,10 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
     _parametrization = utils::PlaneWorldCoordinates(newEstimatedParameters);
 
     // merge the boundary polygon (after optimization) with the observed polygon
-    update_boundary_polygon(cameraToWorld, matchedFeature.get_boundary_polygon());
+    if (not update_boundary_polygon(cameraToWorld, matchedFeature.get_boundary_polygon()))
+    {
+        throw std::logic_error("Could not merge the polygons");
+    }
 
     // static sanity checks
     assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
@@ -48,20 +53,24 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
     return score;
 }
 
-void Plane::update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
+bool Plane::update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
                                     const utils::CameraPolygon& detectedPolygon) noexcept
 {
     // correct the projection of the boundary polygon to correspond to the parametrization
     const vector3& worldPolygonNormal = _parametrization.get_normal();
     const vector3& worldPolygonCenter = _parametrization.get_center();
     _boundaryPolygon = _boundaryPolygon.project(worldPolygonNormal, worldPolygonCenter);
-    assert(_boundaryPolygon.get_center().isApprox(worldPolygonCenter));
+    if (not _boundaryPolygon.get_center().isApprox(worldPolygonCenter))
+    {
+        return false;
+    }
 
     // convert detected polygon to world space, it is supposed to be aligned with the world polygon
     const utils::WorldPolygon& projectedPolygon = detectedPolygon.to_world_space(cameraToWorld);
 
     // merge the projected observed polygon with optimized parameters with the current world polygon
     _boundaryPolygon.merge(projectedPolygon);
+    return true;
 }
 
 void Plane::build_kalman_filter() noexcept
@@ -118,7 +127,6 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
             // TODO: change this
             continue;
 
-        assert(planeIndex >= 0 and planeIndex < detectedPlaneSize);
         const features::primitives::Plane& shapePlane = detectedFeatures[planeIndex];
 
         // if distance between planes is too great or angle between normals is further than a threshold, reject
@@ -177,31 +185,64 @@ bool MapPlane::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noe
 
 void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
 {
-    assert(mapWriter != nullptr);
-    mapWriter->add_polygon(_boundaryPolygon.get_unprojected_boundary());
+    if (mapWriter != nullptr)
+    {
+        mapWriter->add_polygon(_boundaryPolygon.get_unprojected_boundary());
+    }
+    else
+    {
+        outputs::log_error("mapWriter is null");
+        exit(-1);
+    }
 }
 
 bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
                                  const matrix33& poseCovariance,
                                  const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    assert(_matchIndex >= 0);
+    if (_matchIndex < 0)
+    {
+        outputs::log_error("Tries to call the function update_with_match with no associated match");
+        return false;
+    }
 
     // compute projection matrices
-    const utils::PlaneCameraCoordinates& matchedFeatureParams = matchedFeature.get_parametrization();
-    const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
-    const matrix44& planeParameterCovariance =
-            utils::compute_plane_covariance(matchedFeatureParams, matchedFeature.get_point_cloud_covariance());
+    try
+    {
+        const utils::PlaneCameraCoordinates& matchedFeatureParams = matchedFeature.get_parametrization();
+        const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
+        const matrix44& planeParameterCovariance =
+                utils::compute_plane_covariance(matchedFeatureParams, matchedFeature.get_point_cloud_covariance());
 
-    // project to world coordinates
-    const matrix44 worldCovariance = utils::get_world_plane_covariance(
-            matchedFeatureParams, cameraToWorld, planeCameraToWorld, planeParameterCovariance, poseCovariance);
-    const utils::PlaneWorldCoordinates& projectedPlaneCoordinates =
-            matchedFeatureParams.to_world_coordinates(planeCameraToWorld);
+        if (not utils::is_covariance_valid(planeParameterCovariance))
+        {
+            outputs::log_error(
+                    "MapPlane: Covariance of the detected plane is invalid after projecting it from point cloud "
+                    "covariance");
+            return false;
+        }
 
-    // update this plane with the other one's parameters
-    track(cameraToWorld, matchedFeature, projectedPlaneCoordinates, worldCovariance);
-    return true;
+        // project to world coordinates
+        const matrix44 worldCovariance = utils::get_world_plane_covariance(
+                matchedFeatureParams, cameraToWorld, planeCameraToWorld, planeParameterCovariance, poseCovariance);
+        if (not utils::is_covariance_valid(worldCovariance))
+        {
+            outputs::log_error(
+                    "MapPlane: Covariance of the detected plane is invalid after projecting it to world space");
+            return false;
+        }
+
+        const utils::PlaneWorldCoordinates& projectedPlaneCoordinates =
+                matchedFeatureParams.to_world_coordinates(planeCameraToWorld);
+
+        // update this plane with the other one's parameters
+        track(cameraToWorld, matchedFeature, projectedPlaneCoordinates, worldCovariance);
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
 }
 
 void MapPlane::update_no_match() noexcept
@@ -231,7 +272,10 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
             detectedFeatureParams, cameraToWorld, planeCameraToWorld, planeParameterCovariance, poseCovariance);
     _boundaryPolygon = detectedFeature.get_boundary_polygon().to_world_space(cameraToWorld);
 
-    assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
+    if (not utils::double_equal(_parametrization.get_normal().norm(), 1.0))
+    {
+        throw std::invalid_argument("parametrization of detected feature as an invalid normal vector");
+    }
 }
 
 bool StagedMapPlane::should_remove_from_staged() const noexcept { return _failedTrackingCount >= 2; }
@@ -254,8 +298,14 @@ LocalMapPlane::LocalMapPlane(const StagedMapPlane& stagedPlane) : MapPlane(stage
     _covariance = stagedPlane.get_covariance();
     _boundaryPolygon = stagedPlane._boundaryPolygon;
 
-    assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
-    assert(utils::is_covariance_valid(_covariance));
+    if (not utils::is_covariance_valid(_covariance))
+    {
+        throw std::invalid_argument("covariance of stagedPlane is an invalid covariance matrix");
+    }
+    if (not utils::double_equal(_parametrization.get_normal().norm(), 1.0))
+    {
+        throw std::invalid_argument("parametrization of stagedPlane as an invalid normal vector");
+    }
 }
 
 bool LocalMapPlane::is_lost() const noexcept

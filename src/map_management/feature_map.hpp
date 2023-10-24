@@ -10,6 +10,7 @@
 #include "pose.hpp"
 #include "random.hpp"
 #include "types.hpp"
+#include <exception>
 #include <list>
 #include <memory>
 #include <opencv2/core/matx.hpp>
@@ -27,7 +28,7 @@ class IMapFeature
         _successivMatchedCount(0),
         _id(++_idAllocator),
         _matchIndex(FIRST_DETECTION_INDEX) {};
-    IMapFeature(const size_t id) :
+    explicit IMapFeature(const size_t id) :
         _failedTrackingCount(0),
         _successivMatchedCount(0),
         _id(id),
@@ -378,10 +379,18 @@ class Feature_Map
                 // some features cannot be added to map
                 if (detectedfeature.can_add_to_map())
                 {
-                    const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
-                    assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
-                    // add to staged map
-                    _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
+                    try
+                    {
+                        const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
+                        assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
+                        // add to staged map
+                        _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
+                    }
+                    catch (const std::exception& ex)
+                    {
+                        outputs::log_error("Caught exeption while creating the staged feature: " +
+                                           std::string(ex.what()));
+                    }
                 }
             }
         }
@@ -552,10 +561,18 @@ class Feature_Map
 
             if (stagedFeature.should_add_to_local_map())
             {
-                // Add to local map, remove from staged points, with a copy of the id affected to the local map
-                _localMap.emplace(stagedFeature._id, MapFeatureType(stagedFeature));
-                assert(_localMap.at(stagedFeature._id)._id == stagedFeature._id);
-                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
+                try
+                {
+                    // Add to local map, remove from staged points, with a copy of the id affected to the local map
+                    _localMap.emplace(stagedFeature._id, MapFeatureType(stagedFeature));
+                    assert(_localMap.at(stagedFeature._id)._id == stagedFeature._id);
+                    stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
+                }
+                catch (const std::exception& ex)
+                {
+                    outputs::log_error("Caught exeption while creating a map feature from a staged feature: " +
+                                       std::string(ex.what()));
+                }
             }
             else if (stagedFeature.should_remove_from_staged())
             {

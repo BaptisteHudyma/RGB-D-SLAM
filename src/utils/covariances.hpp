@@ -98,7 +98,7 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
  * \return the plane parameter covariance
  */
 [[nodiscard]] matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters,
-                                                const matrix33& pointCloudCovariance) noexcept;
+                                                const matrix33& pointCloudCovariance);
 [[nodiscard]] matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& planeParameters,
                                                                     const matrix44& planeCloudCovariance) noexcept;
 
@@ -115,7 +115,7 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
                                                   const CameraToWorldMatrix& cameraToWorldMatrix,
                                                   const PlaneCameraToWorldMatrix& planeCameraToWorldMatrix,
                                                   const matrix44& planeCovariance,
-                                                  const matrix33& worldPoseCovariance) noexcept;
+                                                  const matrix33& worldPoseCovariance);
 
 } // namespace rgbd_slam::utils
 

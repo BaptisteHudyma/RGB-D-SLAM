@@ -393,6 +393,7 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
 
     std::vector<vector6> poses;
     poses.reserve(iterations);
+
 #ifndef MAKE_DETERMINISTIC
     std::mutex mut;
     tbb::parallel_for(uint(0),

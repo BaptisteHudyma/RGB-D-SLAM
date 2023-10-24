@@ -6,6 +6,7 @@
 #include "distance_utils.hpp"
 #include "logger.hpp"
 #include <Eigen/src/Core/Matrix.h>
+#include <stdexcept>
 
 namespace rgbd_slam::tracking {
 
@@ -47,11 +48,17 @@ template<int N, int M> class SharedKalmanFilter
             const Eigen::Vector<double, N>& currentState,
             const Eigen::Matrix<double, N, N>& stateNoiseCovariance,
             const Eigen::Vector<double, M>& newMeasurement,
-            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance) noexcept
+            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance)
     {
         // check parameters
-        assert(utils::is_covariance_valid(stateNoiseCovariance));
-        assert(utils::is_covariance_valid(measurementNoiseCovariance));
+        if (not utils::is_covariance_valid(stateNoiseCovariance))
+        {
+            throw std::invalid_argument("stateNoiseCovariance is an invalid covariance matrix");
+        }
+        if (not utils::is_covariance_valid(measurementNoiseCovariance))
+        {
+            throw std::invalid_argument("measurementNoiseCovariance is an invalid covariance matrix");
+        }
 
         // Get new raw estimate
         const Eigen::Vector<double, N>& newStateEstimate = _systemDynamics * currentState;
@@ -91,10 +98,8 @@ template<int N, int M> class SharedKalmanFilter
 
         if (not utils::is_covariance_valid(newCovariance))
         {
-            outputs::log_error(
+            throw std::logic_error(
                     "Kalman filter produced and invalid covariance, returning estimated state and covariance");
-            assert(utils::is_covariance_valid(estimateErrorCovariance));
-            return std::make_pair(newStateEstimate, estimateErrorCovariance);
         }
         // return the covariance and state estimation
         return std::make_pair(newState, newCovariance);
@@ -149,7 +154,7 @@ template<int N, int M> class KalmanFilter : public SharedKalmanFilter<N, M>
      * \param[in] measurementNoiseCovariance Measurement noise covariance
      */
     void update(const Eigen::Vector<double, M>& newMeasurement,
-                const Eigen::Matrix<double, M, M>& measurementNoiseCovariance) noexcept
+                const Eigen::Matrix<double, M, M>& measurementNoiseCovariance)
     {
         assert(is_initialized());
 
@@ -168,7 +173,7 @@ template<int N, int M> class KalmanFilter : public SharedKalmanFilter<N, M>
      */
     void update(const Eigen::Vector<double, N>& newMeasurement,
                 const Eigen::Matrix<double, N, N>& measurementNoiseCovariance,
-                const Eigen::Matrix<double, N, N>& systemDynamics) noexcept
+                const Eigen::Matrix<double, N, N>& systemDynamics)
     {
         this->_systemDynamics = systemDynamics;
         this->update(newMeasurement, measurementNoiseCovariance);
