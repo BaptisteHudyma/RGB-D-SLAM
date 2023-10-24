@@ -47,6 +47,8 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height) :
             cv::Mat_<int>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount), 0);
 
     _mask = cv::Mat_<uchar>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount));
+    _maskEroded = cv::Mat_<uchar>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount));
+    _maskDilated = cv::Mat_<uchar>(static_cast<int>(_verticalCellsCount), static_cast<int>(_horizontalCellsCount));
 
     _maskCrossKernel = cv::Mat_<uchar>::ones(3, 3);
     _maskCrossKernel.at<uchar>(0, 0) = 0;
@@ -525,9 +527,9 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
     const uint planeCount = static_cast<uint>(_planeSegments.size());
     planeContainer.clear();
     planeContainer.reserve(planeCount);
-
+// #define DEBUG_DETECTED_POLYGONS // help to debug the polygon detection and contour fitting
 #ifdef DEBUG_DETECTED_POLYGONS
-    cv::Mat debugImage(depthImage.size(), CV_8UC3, cv::Scalar(255, 255, 255));
+    cv::Mat debugImage(depthImage.size(), CV_8UC3, cv::Scalar(0, 0, 0));
 #endif
 
     // refine the coarse planes boundaries to smoother versions
@@ -547,14 +549,21 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         for (uint j = planeIndex; j < planeCount; ++j)
         {
             if (planeMergeLabels[j] == planeMergeLabel)
+            {
                 _mask.setTo(1, _gridPlaneSegmentMap == (j + 1));
+            }
         }
 #ifdef DEBUG_DETECTED_POLYGONS
+        cv::erode(_mask, _maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
+        // dilate to get boundaries
+        cv::dilate(_mask, _maskDilated, _maskSquareKernel);
+        const cv::Mat_<uchar>& maskBoundary = _maskDilated - _maskEroded;
+
         const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(pointsPerCellCount)));
         cv::Scalar color(utils::Random::get_random_uint(255),
                          utils::Random::get_random_uint(255),
                          utils::Random::get_random_uint(255));
-        _mask.forEach([&debugImage, &color, &pixelPerCellSide](const uchar value, const int position[]) {
+        maskBoundary.forEach([&debugImage, &color, &pixelPerCellSide](const uchar value, const int position[]) {
             if (value > 0)
                 cv::rectangle(debugImage,
                               cv::Point(position[1] * pixelPerCellSide, position[0] * pixelPerCellSide),
@@ -577,18 +586,22 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         {
             // add new plane to final shapes
             planeContainer.emplace_back(planeSegment, polygon);
-#ifdef DEBUG_DETECTED_POLYGONS
-            /*polygon.display(cv::Scalar(utils::Random::get_random_uint(255),
-                                       utils::Random::get_random_uint(255),
-                                       utils::Random::get_random_uint(255)),
-                            debugImage);*/
-#endif
         }
         else
         {
             std::cout << "Polyfit error: " << debug << std::endl;
         }
     }
+
+#ifdef DEBUG_DETECTED_POLYGONS
+    for (const auto& poly: planeContainer)
+    {
+        poly.get_boundary_polygon().display(cv::Scalar(utils::Random::get_random_uint(255),
+                                                       utils::Random::get_random_uint(255),
+                                                       utils::Random::get_random_uint(255)),
+                                            debugImage);
+    }
+#endif
 
 #ifdef DEBUG_DETECTED_POLYGONS
     cv::imshow("temp", debugImage);
@@ -599,129 +612,55 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
                                                                          const cv::Mat_<float>& depthImage,
                                                                          const cv::Mat_<uchar>& mask) const noexcept
 {
-    // erode considering the border as an obstacle
-    cv::Mat_<uchar> maskEroded(mask.size());
-    cv::erode(mask, maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
-
-    // dilate to get boundaries
-    cv::Mat_<uchar> maskBoundary(mask.size());
-    cv::dilate(mask, maskBoundary, _maskSquareKernel);
-    maskBoundary = maskBoundary - maskEroded;
-
-    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
-    std::function<bool(vector3)> is_point_in_plane = [&planeSegment,
-                                                      &maxBoundaryDistance](const utils::ScreenCoordinate& point) {
-        // Check that the point is inside the screen
-        return (point.z() > 0 and point.x() >= 0 and point.y() >= 0) and
-               // if distance of this point to the plane < threshold, this point is contained in the plane
-               planeSegment.get_point_distance_squared(point.to_camera_coordinates()) < maxBoundaryDistance;
-    };
-    const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(pointsPerCellCount)));
-
     std::vector<vector3> boundaryPoints;
     std::mutex mut;
 
+    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
+    static const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(pointsPerCellCount)));
+
+    auto add_point_if_in_plane =
+            [&planeSegment, &maxBoundaryDistance, &depthImage, &boundaryPoints, &mut](const int x, const int y) {
+                const double depth = depthImage(y, x);
+                if (depth > 0)
+                {
+                    const auto& cameraPoint = utils::ScreenCoordinate(x, y, depth).to_camera_coordinates();
+                    // if distance of this point to the plane < threshold, this point is contained in the plane
+                    if (planeSegment.get_point_distance_squared(cameraPoint) < maxBoundaryDistance)
+                    {
+                        std::scoped_lock<std::mutex> lock(mut);
+                        boundaryPoints.emplace_back(cameraPoint);
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+    // erode, considering that the border is empty space
+    cv::erode(mask, _maskEroded, _maskCrossKernel, cv::Point(-1, -1), 1, cv::BORDER_CONSTANT, cv::Scalar(0));
+    // dilate the original mask
+    cv::dilate(mask, _maskDilated, _maskSquareKernel);
+    // result boundary is in the difference of both
+    const cv::Mat_<uchar>& resultBoundary = _maskDilated - _maskEroded;
+
+    boundaryPoints.reserve(cv::countNonZero(resultBoundary));
+
+    // here we just take the center point of the cell and add it if it is inside the plane.
+    // simplified contour can produce misses and eliminate planes with just no luck, but it's fast !
+    // The boundaries are not as good as the other method, but the merging step can conpensate a bit
+
     // Cell refinement
-    maskBoundary.forEach([this, &depthImage, &boundaryPoints, &mut, &is_point_in_plane, pixelPerCellSide](
-                                 const uchar value, const int position[]) {
+    resultBoundary.forEach([&add_point_if_in_plane](const uchar value, const int position[]) {
         // cell is not in boundary, pass
         if (value <= 0)
             return;
 
-        const uint cellColum = position[1];
-        const uint cellRow = position[0];
-
-        // get the pixels in image space (+-1 for neigbors)
-        const int xStart = static_cast<int>(cellColum * pixelPerCellSide);
-        const int yStart = static_cast<int>(cellRow * pixelPerCellSide);
-        const int xEnd = static_cast<int>((cellColum + 1) * pixelPerCellSide);
-        const int yEnd = static_cast<int>((cellRow + 1) * pixelPerCellSide);
-
-        // get the defining points of this cell area
-        const std::vector<vector3>& definingPoints =
-                find_defining_points(depthImage, xStart, yStart, xEnd, yEnd, is_point_in_plane);
-
-        // add boundary points to the total of boundaries
-        std::scoped_lock<std::mutex> lock(mut);
-        boundaryPoints.insert(boundaryPoints.cend(), definingPoints.cbegin(), definingPoints.cend());
+        // only check and add the center cell of this plane (can fail due to noise sometime...)
+        const int centerX = static_cast<int>(position[1] * pixelPerCellSide + pixelPerCellSide / 2);
+        const int centerY = static_cast<int>(position[0] * pixelPerCellSide + pixelPerCellSide / 2);
+        add_point_if_in_plane(centerX, centerY);
     });
 
     return boundaryPoints;
-}
-
-std::vector<vector3> Primitive_Detection::find_defining_points(
-        const cv::Mat_<float>& depthImage,
-        const int xStart,
-        const int yStart,
-        const int xEnd,
-        const int yEnd,
-        std::function<bool(vector3)> is_point_in_plane) const noexcept
-{
-    std::vector<vector3> definingPoints;
-
-    const cv::Rect cellRoiRect(cv::Point(xStart, yStart), cv::Point(xEnd, yEnd));
-    const cv::Mat_<float>& cellRoi = depthImage(cellRoiRect);
-
-    std::mutex mut;
-    // iterate over all pixels of this cell
-    cellRoi.forEach([&depthImage, &is_point_in_plane, &definingPoints, &mut, xStart, yStart](const float value,
-                                                                                             const int position[]) {
-        const int x = xStart + position[1];
-        const int y = yStart + position[0];
-
-        const utils::ScreenCoordinate point(x, y, value);
-        if (is_point_in_plane(point))
-        {
-            constexpr uint numberOfNeigbor = 3;                           // neigboring points (3x3 here)
-            constexpr uint centerCoordinates = (numberOfNeigbor - 1) / 2; // coordinates of the center in the neigbors
-            static_assert(numberOfNeigbor % 2 == 1);
-
-            // the neigbors will contain the center point ! needs to be culled out
-            cv::Mat_<float> neigtbors(numberOfNeigbor, numberOfNeigbor);
-            // getRectSubPix can get values out of the image
-            cv::getRectSubPix(depthImage, neigtbors.size(), cv::Point(x, y), neigtbors);
-            assert(not neigtbors.empty());
-
-            // check number of neigbors in the plane
-            std::atomic<uint> inPlaneNeigborsCount = 0;
-            neigtbors.forEach([&inPlaneNeigborsCount, &is_point_in_plane, x, y](const float neigtborsValue,
-                                                                                const int neightborPosition[]) {
-                // Do not add the center cell in neigbor treatment
-                if (neightborPosition[1] != centerCoordinates && neightborPosition[0] != centerCoordinates &&
-                    is_point_in_plane(utils::ScreenCoordinate(
-                            neightborPosition[1] + x - 1, neightborPosition[0] + y - 1, neigtborsValue)))
-                {
-                    inPlaneNeigborsCount += 1;
-                }
-            });
-
-            // Check that most of the neigtbors are not in the plane (edge)
-            // and there is at least some neigbors (not a noise value)
-            constexpr uint minExistingNeigborCount = 2; // number of valid neigtbors to accept
-            constexpr uint maxEmptyNeigborCount =
-                    (numberOfNeigbor * numberOfNeigbor - 1) - 2; // number of empty neigbors to accept
-            if (inPlaneNeigborsCount >= minExistingNeigborCount and inPlaneNeigborsCount < maxEmptyNeigborCount)
-            {
-                // mutex for definingPoints
-                std::scoped_lock<std::mutex> lock(mut);
-
-                const vector3& candidate = point.to_camera_coordinates();
-                // do not add this point if it's too close to a point already in this cell
-                const bool isFarEnough = std::ranges::none_of(definingPoints, [&candidate](const vector3& bPoint) {
-                    static constexpr double minSetDistance = 1000.0;
-                    return (bPoint - candidate).lpNorm<1>() < minSetDistance;
-                });
-
-                // this point is far enough from the others and can be added to the boundary
-                if (isFarEnough)
-                {
-                    definingPoints.emplace_back(candidate);
-                }
-            }
-        }
-    });
-
-    return definingPoints;
 }
 
 void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cylinderToRegionMap,
@@ -738,13 +677,12 @@ void Primitive_Detection::add_cylinders_to_primitives(const intpair_vector& cyli
         _mask.setTo(1, _gridCylinderSegMap == (cylinderIndex + 1));
 
         // Opening
-        cv::Mat_<uchar> maskEroded;
         cv::dilate(_mask, _mask, _maskCrossKernel);
         cv::erode(_mask, _mask, _maskCrossKernel);
-        cv::erode(_mask, maskEroded, _maskCrossKernel);
+        cv::erode(_mask, _maskEroded, _maskCrossKernel);
         double min;
         double max;
-        cv::minMaxLoc(maskEroded, &min, &max);
+        cv::minMaxLoc(_maskEroded, &min, &max);
 
         if (max <= 0 or min >= max) // completely eroded: irrelevant cylinder
             continue;
