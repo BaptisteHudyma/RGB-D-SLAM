@@ -5,6 +5,7 @@
 #include "pose_optimization/pose_optimization.hpp"
 #include "matches_containers.hpp"
 #include "utils/random.hpp"
+#include <future>
 #include <memory>
 #include <opencv2/core.hpp>
 #include <opencv2/core/types.hpp>
@@ -282,24 +283,35 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
                                                                     const cv::Mat_<float>& depthImage,
                                                                     const matrixf& cloudArrayOrganized) noexcept
 {
-    const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
-    // Get map points that were tracked last call, and retroproject them to screen space using last pose (used for
-    // optical flow)
-    const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
-            _localMap->get_tracked_keypoints_features(predictedPose);
-    // Detect keypoints, and match the one detected by optical flow
-    const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(
-            grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
+    auto kpHandler =
+            std::async(std::launch::async,
+                       [this, &predictedPose, &grayImage, &depthImage]() -> features::keypoints::Keypoint_Handler {
+                           const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
+                           // Get map points that were tracked last call, and retroproject them to screen space using
+                           // last pose (used for optical flow)
+                           const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
+                                   _localMap->get_tracked_keypoints_features(predictedPose);
+                           // Detect keypoints, and match the one detected by optical flow
+                           return _pointDetector->compute_keypoints(
+                                   grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
+                       });
 
-    // Run primitive detection
-    const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
-    features::primitives::plane_container detectedPlanes;
-    features::primitives::cylinder_container detectedCylinders; // TODO: handle detected cylinders in local map
-    _primitiveDetector->find_primitives(cloudArrayOrganized, depthImage, detectedPlanes, detectedCylinders);
-    _meanPrimitiveTreatmentDuration +=
-            (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
+    auto planeHandler = std::async(
+            std::launch::async, [this, &cloudArrayOrganized, &depthImage]() -> features::primitives::plane_container {
+                // Run primitive detection
+                const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
+                features::primitives::plane_container detectedPlanes;
+                features::primitives::cylinder_container
+                        detectedCylinders; // TODO: handle detected cylinders in local map
+                _primitiveDetector->find_primitives(cloudArrayOrganized, depthImage, detectedPlanes, detectedCylinders);
+                _meanPrimitiveTreatmentDuration +=
+                        (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) /
+                        cv::getTickFrequency();
 
-    return map_management::DetectedFeatureContainer(keypointObject, detectedPlanes);
+                return detectedPlanes;
+            });
+
+    return map_management::DetectedFeatureContainer(kpHandler.get(), planeHandler.get());
 }
 
 double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) noexcept
