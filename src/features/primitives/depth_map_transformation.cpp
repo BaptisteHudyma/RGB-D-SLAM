@@ -102,26 +102,23 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
     // parallel loop to speed up the process
     // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
     tbb::parallel_for(uint(0), _height, [&](uint row) {
-        for (uint row = 0; row < _height; ++row)
+        const float* depthRow = depthImage.ptr<float>(static_cast<int>(row));
+        for (uint column = 0; column < _width; ++column)
         {
-            const float* depthRow = depthImage.ptr<float>(static_cast<int>(row));
-            for (uint column = 0; column < _width; ++column)
+            const float z = depthRow[column];
+            if (z > 0)
             {
-                const float z = depthRow[column];
-                if (z > 0)
-                {
-                    // set convertion matrix
-                    const int id = _cellMap.at<int>(static_cast<int>(row), static_cast<int>(column));
-                    assert(id >= 0 and id < organizedCloudArray.rows());
+                // set convertion matrix
+                const int id = _cellMap.at<int>(static_cast<int>(row), static_cast<int>(column));
+                assert(id >= 0 and id < organizedCloudArray.rows());
 
-                    const utils::CameraCoordinate& cameraCoordinates =
-                            utils::ScreenCoordinate(position[1], position[0], z).to_camera_coordinates();
+                const utils::CameraCoordinate& cameraCoordinates =
+                        utils::ScreenCoordinate(column, row, z).to_camera_coordinates();
 
-                    // undistorded depth
-                    organizedCloudArray(id, 0) = static_cast<float>(cameraCoordinates.x());
-                    organizedCloudArray(id, 1) = static_cast<float>(cameraCoordinates.y());
-                    organizedCloudArray(id, 2) = z;
-                }
+                // undistorded depth
+                organizedCloudArray(id, 0) = static_cast<float>(cameraCoordinates.x());
+                organizedCloudArray(id, 1) = static_cast<float>(cameraCoordinates.y());
+                organizedCloudArray(id, 2) = z;
             }
         }
     });
