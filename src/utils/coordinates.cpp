@@ -6,6 +6,7 @@
 #include "types.hpp"
 #include <cmath>
 #include <math.h>
+#include <stdexcept>
 
 namespace rgbd_slam::utils {
 
@@ -23,16 +24,34 @@ matrix44 get_transformation_matrix(const vector3& xFrom,
                                    const vector3& centerFrom,
                                    const vector3& xTo,
                                    const vector3& yTo,
-                                   const vector3& centerTo) noexcept
+                                   const vector3& centerTo)
 {
     // sanity checks
-    assert(double_equal(xFrom.norm(), 1.0));
-    assert(double_equal(yFrom.norm(), 1.0));
-    assert(abs(yFrom.dot(xFrom)) <= .01);
+    if (not double_equal(xFrom.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_transformation_matrix: xFrom as a norm different than 1");
+    }
+    if (not double_equal(yFrom.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_transformation_matrix: yFrom as a norm different than 1");
+    }
+    if (abs(yFrom.dot(xFrom)) > .01)
+    {
+        throw std::invalid_argument("get_transformation_matrix: yFrom and xFrom should be orthogonals");
+    }
 
-    assert(double_equal(xTo.norm(), 1.0));
-    assert(double_equal(yTo.norm(), 1.0));
-    assert(abs(yTo.dot(xTo)) <= .01);
+    if (not double_equal(xTo.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_transformation_matrix: xTo as a norm different than 1");
+    }
+    if (not double_equal(yTo.norm(), 1.0))
+    {
+        throw std::invalid_argument("get_transformation_matrix: yTo as a norm different than 1");
+    }
+    if (abs(yTo.dot(xTo)) > .01)
+    {
+        throw std::invalid_argument("get_transformation_matrix: yTo and xTo should be orthogonals");
+    }
 
     Eigen::Affine3d T1 = Eigen::Affine3d::Identity();
     T1.linear() << xFrom, yFrom, xFrom.cross(yFrom); // get coordinate system
@@ -70,18 +89,32 @@ vector2 transform_camera_to_screen(const vector3& screenPoint)
     return (cameraIntrinsics * screenPoint).head<2>();
 }
 
-CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const noexcept
+CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
 {
-    assert(x() >= 0 and y() >= 0);
+    if (x() < 0)
+    {
+        throw std::invalid_argument("ScreenCoordinate2D::to_camera_coordinates: x should be >= 0");
+    }
+    if (y() < 0)
+    {
+        throw std::invalid_argument("ScreenCoordinate2D::to_camera_coordinates: y should be >= 0");
+    }
 
     return CameraCoordinate2D(transform_screen_to_camera(this->base()));
 }
 
-matrix22 ScreenCoordinate2D::get_covariance() const noexcept
+matrix22 ScreenCoordinate2D::get_covariance() const
 {
     // TODO xy variance should also depend on the placement of the pixel in x and y
     const double xyVariance = 0.1 * 0.1;
-    return matrix22({{xyVariance, 0.0}, {0.0, xyVariance}});
+    matrix22 cov({{xyVariance, 0.0}, {0.0, xyVariance}});
+
+    if (not utils::is_covariance_valid(cov))
+    {
+        throw std::logic_error("ScreenCoordinate2D::get_covariance: invalid covariance");
+    }
+
+    return cov;
 }
 
 bool ScreenCoordinate2D::is_in_screen_boundaries() const noexcept
@@ -94,30 +127,48 @@ bool ScreenCoordinate2D::is_in_screen_boundaries() const noexcept
             x() >= 0 and x() <= screenSizeX and y() >= 0 and y() <= screenSizeY;
 }
 
-ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const noexcept
+ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
 {
     const double xyVariance = 0.1 * 0.1;
     const matrix22 covariance2D({{xyVariance, 0.0}, {0.0, xyVariance}});
 
     const double depthQuantization = utils::is_depth_valid(z()) ? get_depth_quantization(z()) : 1000.0;
     // a zero variance will break the kalman gain
-    assert(depthQuantization > 0);
+    if (depthQuantization <= 0)
+    {
+        throw std::logic_error("ScreenCoordinate::get_covariance: depthQuantization should always be positive");
+    }
 
     ScreenCoordinateCovariance cov;
     cov << covariance2D, vector2::Zero(), 0.0, 0.0, depthQuantization;
+
+    if (not utils::is_covariance_valid(cov))
+    {
+        throw std::logic_error("ScreenCoordinate::get_covariance: invalid covariance");
+    }
     return cov;
 }
 
-WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept
+WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const
 {
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates();
     return cameraPoint.to_world_coordinates(cameraToWorld);
 }
 
-CameraCoordinate ScreenCoordinate::to_camera_coordinates() const noexcept
+CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
 {
-    assert(x() >= 0 and y() >= 0);
-    assert(not double_equal(z(), 0.0));
+    if (x() < 0)
+    {
+        throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: x should be >= 0");
+    }
+    if (y() < 0)
+    {
+        throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: y should be >= 0");
+    }
+    if (double_equal(z(), 0.0))
+    {
+        throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: z should not be 0");
+    }
 
     const vector2 cameraPoint = this->z() * transform_screen_to_camera(this->head<2>());
     return CameraCoordinate(cameraPoint.x(), cameraPoint.y(), z());
@@ -185,8 +236,6 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) co
 bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                             ScreenCoordinate& screenPoint) const noexcept
 {
-    assert(not this->hasNaN());
-
     const CameraCoordinate& cameraPoint = this->to_camera_coordinates(worldToCamera);
     assert(cameraPoint.homogeneous()[3] > 0);
 
@@ -206,13 +255,16 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
 }
 
 vector2 WorldCoordinate::get_signed_distance_2D_px(const ScreenCoordinate2D& screenPoint,
-                                                   const WorldToCameraMatrix& worldToCamera) const noexcept
+                                                   const WorldToCameraMatrix& worldToCamera) const
 {
     ScreenCoordinate2D projectedScreenPoint;
     if (to_screen_coordinates(worldToCamera, projectedScreenPoint))
     {
         vector2 distance = screenPoint - projectedScreenPoint;
-        assert(not distance.hasNaN());
+        if (distance.hasNaN())
+        {
+            throw std::invalid_argument("WorldCoordinate::get_signed_distance_2D_px: distance as some NaN");
+        }
         return distance;
     }
     // high number
@@ -220,25 +272,32 @@ vector2 WorldCoordinate::get_signed_distance_2D_px(const ScreenCoordinate2D& scr
 }
 
 double WorldCoordinate::get_distance_px(const ScreenCoordinate2D& screenPoint,
-                                        const WorldToCameraMatrix& worldToCamera) const noexcept
+                                        const WorldToCameraMatrix& worldToCamera) const
 {
     const vector2& distance2D = get_signed_distance_2D_px(screenPoint, worldToCamera);
     if (distance2D.x() >= std::numeric_limits<double>::max() or distance2D.y() >= std::numeric_limits<double>::max())
         // high number
         return std::numeric_limits<double>::max();
     // compute manhattan distance (norm of power 1)
-    return distance2D.lpNorm<1>();
+    const double distance = distance2D.lpNorm<1>();
+
+    if (std::isnan(distance) or distance < 0)
+    {
+        throw std::logic_error("WorldCoordinate::get_distance_px: found an invalid distance");
+    }
+
+    return distance;
 }
 
 vector3 WorldCoordinate::get_signed_distance_mm(const ScreenCoordinate& screenPoint,
-                                                const CameraToWorldMatrix& cameraToWorld) const noexcept
+                                                const CameraToWorldMatrix& cameraToWorld) const
 {
     const WorldCoordinate& projectedScreenPoint = screenPoint.to_world_coordinates(cameraToWorld);
     return this->base() - projectedScreenPoint;
 }
 
 double WorldCoordinate::get_distance_mm(const ScreenCoordinate& screenPoint,
-                                        const CameraToWorldMatrix& cameraToWorld) const noexcept
+                                        const CameraToWorldMatrix& cameraToWorld) const
 {
     return get_signed_distance_mm(screenPoint, cameraToWorld).lpNorm<1>();
 }

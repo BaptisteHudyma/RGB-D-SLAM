@@ -100,7 +100,7 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
 [[nodiscard]] matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters,
                                                 const matrix33& pointCloudCovariance);
 [[nodiscard]] matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& planeParameters,
-                                                                    const matrix44& planeCloudCovariance) noexcept;
+                                                                    const matrix44& planeCloudCovariance);
 
 /**
  * \brief Compute the covariance of the world plane
