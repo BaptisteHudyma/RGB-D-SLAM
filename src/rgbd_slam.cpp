@@ -269,6 +269,8 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
                                                                     const cv::Mat_<float>& depthImage,
                                                                     const matrixf& cloudArrayOrganized) noexcept
 {
+#define USE_KEYPOINTS_DETECTION
+#ifdef USE_KEYPOINTS_DETECTION
     // keypoint detection
     auto kpHandler = std::async(std::launch::async, [this, &predictedPose, &grayImage, &depthImage]() {
         const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
@@ -280,7 +282,15 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
         return _pointDetector->compute_keypoints(
                 grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
     });
+#else
+    auto kpHandler = std::async(std::launch::async, [&depthImage]() {
+        static features::keypoints::Keypoint_Handler keypointHandler(depthImage.cols, depthImage.rows, 1.0);
+        return keypointHandler;
+    });
+#endif
 
+#define USE_PLANE_DETECTION
+#ifdef USE_PLANE_DETECTION
     // plane detection
     auto planeHandler = std::async(std::launch::async, [this, &cloudArrayOrganized, &depthImage]() {
         // Run primitive detection
@@ -293,7 +303,13 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
 
         return detectedPlanes;
     });
+#else
+    auto planeHandler = std::async(std::launch::async, []() {
+        return features::primitives::plane_container();
+    });
+#endif
 
+#ifdef USE_LINE_DETECTION
     // line detection
     auto lineHandler = std::async([this, &grayImage, &depthImage]() {
         const double lineDetectionStartTime = static_cast<double>(cv::getTickCount());
@@ -303,6 +319,11 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
 
         return detectedLines;
     });
+#else
+    auto lineHandler = std::async([]() {
+        return features::lines::line_container();
+    });
+#endif
 
     return map_management::DetectedFeatureContainer(kpHandler.get(), lineHandler.get(), planeHandler.get());
 }
