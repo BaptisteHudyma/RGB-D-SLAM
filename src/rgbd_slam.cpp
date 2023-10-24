@@ -196,7 +196,6 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
 {
     // every now and then, restart the search of points even if we have enough features
     _computeKeypointCount = (_computeKeypointCount % parameters::detection::keypointRefreshFrequency) + 1;
-    const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
 
 // get a pose with the decaying motion model (do not add uncertainty if it's the first call)
 #if 0 // TODO : put back when the motion model as been debugged
@@ -204,26 +203,14 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
 #else
     const utils::Pose& predictedPose = _currentPose;
 #endif
-    // Get map points that were tracked last call, and retroproject them to screen space using last pose (used for
-    // optical flow)
-    const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
-            _localMap->get_tracked_keypoints_features(predictedPose);
-    // Detect keypoints, and match the one detected by optical flow
-    const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(
-            grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
 
-    // Run primitive detection
-    const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
-    features::primitives::plane_container detectedPlanes;
-    features::primitives::cylinder_container detectedCylinders; // TODO: handle detected cylinders in local map
-    _primitiveDetector->find_primitives(cloudArrayOrganized, depthImage, detectedPlanes, detectedCylinders);
-    _meanPrimitiveTreatmentDuration +=
-            (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
+    // detect the features from the inputs
+    const auto& detectedFeatures = detect_features(predictedPose, grayImage, depthImage, cloudArrayOrganized);
 
     // Find matches by the pose predicted by motion model
     const double findMatchesStartTime = static_cast<double>(cv::getTickCount());
     const matches_containers::matchContainer& matchedFeatures =
-            _localMap->find_feature_matches(predictedPose, keypointObject, detectedPlanes);
+            _localMap->find_feature_matches(predictedPose, detectedFeatures);
     _meanFindMatchTime += (static_cast<double>(cv::getTickCount()) - findMatchesStartTime) / cv::getTickFrequency();
 
     // The new pose, after optimization
@@ -249,11 +236,8 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         _currentPose = optimizedPose;
 
         // Update local map if a valid transformation was found
-        _localMap->update(optimizedPose,
-                          keypointObject,
-                          detectedPlanes,
-                          matchSets._pointSets._outliers,
-                          matchSets._planeSets._outliers);
+        _localMap->update(
+                optimizedPose, detectedFeatures, matchSets._pointSets._outliers, matchSets._planeSets._outliers);
         _isTrackingLost = false;
         _failedTrackingCount = 0;
     }
@@ -270,7 +254,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
                     predictedPose.get_orientation_quaternion(), predictedPose.get_position());
 
-            _localMap->add_features_to_map(poseCovariance, cameraToWorld, keypointObject, detectedPlanes, true);
+            _localMap->add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, true);
         }
 
         if (not _isFirstTrackingCall)
@@ -291,6 +275,31 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     _isFirstTrackingCall = false;
 
     return newPose;
+}
+
+map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils::Pose& predictedPose,
+                                                                    const cv::Mat& grayImage,
+                                                                    const cv::Mat_<float>& depthImage,
+                                                                    const matrixf& cloudArrayOrganized) noexcept
+{
+    const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
+    // Get map points that were tracked last call, and retroproject them to screen space using last pose (used for
+    // optical flow)
+    const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
+            _localMap->get_tracked_keypoints_features(predictedPose);
+    // Detect keypoints, and match the one detected by optical flow
+    const features::keypoints::Keypoint_Handler& keypointObject = _pointDetector->compute_keypoints(
+            grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
+
+    // Run primitive detection
+    const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
+    features::primitives::plane_container detectedPlanes;
+    features::primitives::cylinder_container detectedCylinders; // TODO: handle detected cylinders in local map
+    _primitiveDetector->find_primitives(cloudArrayOrganized, depthImage, detectedPlanes, detectedCylinders);
+    _meanPrimitiveTreatmentDuration +=
+            (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
+
+    return map_management::DetectedFeatureContainer(keypointObject, detectedPlanes);
 }
 
 double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) noexcept

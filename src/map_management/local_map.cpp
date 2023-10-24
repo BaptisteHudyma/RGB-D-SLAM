@@ -54,35 +54,40 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
 }
 
 matches_containers::matchContainer Local_Map::find_feature_matches(
-        const utils::Pose& currentPose,
-        const features::keypoints::Keypoint_Handler& detectedKeypointsObject,
-        const features::primitives::plane_container& detectedPlanes) noexcept
+        const utils::Pose& currentPose, const DetectedFeatureContainer& detectedFeatures) noexcept
 {
+    // store the id given to the function
+    _detectedFeatureId = detectedFeatures.id;
+
+    // get transformation matrix from estimated pose
     const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
             currentPose.get_orientation_quaternion(), currentPose.get_position());
 
     matches_containers::matchContainer matchSets;
 
     // find point matches
-    _localPointMap.get_matches(detectedKeypointsObject, worldToCamera, false, matchSets._points);
+    _localPointMap.get_matches(detectedFeatures.keypointObject, worldToCamera, false, matchSets._points);
     if (matchSets._points.size() < parameters::optimization::minimumPointForOptimization or
-        matchSets._points.size() < std::min(detectedKeypointsObject.size(), _localPointMap.get_local_map_size()) / 2)
+        matchSets._points.size() <
+                std::min(detectedFeatures.keypointObject.size(), _localPointMap.get_local_map_size()) / 2)
     {
         // if the process as not enough matches, retry matches with a greater margin
-        _localPointMap.get_matches(detectedKeypointsObject, worldToCamera, true, matchSets._points);
+        _localPointMap.get_matches(detectedFeatures.keypointObject, worldToCamera, true, matchSets._points);
     }
 
     // find plane matches
-    _localPlaneMap.get_matches(detectedPlanes, worldToCamera, false, matchSets._planes);
+    _localPlaneMap.get_matches(detectedFeatures.detectedPlanes, worldToCamera, false, matchSets._planes);
+
     return matchSets;
 }
 
 void Local_Map::update(const utils::Pose& optimizedPose,
-                       const features::keypoints::Keypoint_Handler& keypointObject,
-                       const features::primitives::plane_container& detectedPlanes,
+                       const DetectedFeatureContainer& detectedFeatures,
                        const matches_containers::match_point_container& outlierMatchedPoints,
                        const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept
 {
+    assert(_detectedFeatureId == detectedFeatures.id);
+
     // Unmatch detected outliers
     mark_outliers_as_unmatched(outlierMatchedPoints);
     mark_outliers_as_unmatched(outlierMatchedPlanes);
@@ -92,11 +97,11 @@ void Local_Map::update(const utils::Pose& optimizedPose,
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
     // update all local maps
-    _localPointMap.update_map(cameraToWorld, poseCovariance, keypointObject, _mapWriter);
-    _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedPlanes, _mapWriter);
+    _localPointMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.keypointObject, _mapWriter);
+    _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.detectedPlanes, _mapWriter);
 
     const bool addAllFeatures = false; // only add unmatched features
-    add_features_to_map(poseCovariance, cameraToWorld, keypointObject, detectedPlanes, addAllFeatures);
+    add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
 
     // add local map points to global map
     update_local_to_global();
@@ -104,14 +109,17 @@ void Local_Map::update(const utils::Pose& optimizedPose,
 
 void Local_Map::add_features_to_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
-                                    const features::keypoints::Keypoint_Handler& keypointObject,
-                                    const features::primitives::plane_container& detectedPlanes,
+                                    const DetectedFeatureContainer& detectedFeatures,
                                     const bool addAllFeatures) noexcept
 {
-    _localPointMap.add_features_to_staged_map(poseCovariance, cameraToWorld, keypointObject, addAllFeatures);
+    assert(_detectedFeatureId == detectedFeatures.id);
+
+    _localPointMap.add_features_to_staged_map(
+            poseCovariance, cameraToWorld, detectedFeatures.keypointObject, addAllFeatures);
 
     // Add unmatched poins to the staged map, to unsure tracking of new features
-    _localPlaneMap.add_features_to_staged_map(poseCovariance, cameraToWorld, detectedPlanes, addAllFeatures);
+    _localPlaneMap.add_features_to_staged_map(
+            poseCovariance, cameraToWorld, detectedFeatures.detectedPlanes, addAllFeatures);
 }
 
 void Local_Map::update_local_to_global() noexcept

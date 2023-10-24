@@ -67,6 +67,11 @@ class RGBD_SLAM
     void show_statistics(double meanFrameTreatmentDuration) const noexcept;
 
   protected:
+    [[nodiscard]] map_management::DetectedFeatureContainer detect_features(const utils::Pose& predictedPose,
+                                                                           const cv::Mat& grayImage,
+                                                                           const cv::Mat_<float>& depthImage,
+                                                                           const matrixf& cloudArrayOrganized) noexcept;
+
     /**
      * \brief Compute a new pose from the keypoints points between two following images. It uses only the keypoints with
      * an associated depth
