@@ -1,14 +1,19 @@
-\hypertarget{kalman__filter_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/tracking/kalman\+\_\+filter.hpp File Reference}
-\label{kalman__filter_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/kalman\_filter.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/kalman\_filter.hpp}}
-{\ttfamily \#include \char`\"{}../../types.\+hpp\char`\"{}}\newline
-\doxysubsection*{Classes}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/tracking/kalman\+\_\+filter.hpp File Reference}
+\hypertarget{kalman__filter_8hpp}{}\label{kalman__filter_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/kalman\_filter.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/kalman\_filter.hpp}}
+{\ttfamily \#include "{}../../types.\+hpp"{}}\newline
+{\ttfamily \#include "{}covariances.\+hpp"{}}\newline
+{\ttfamily \#include "{}distance\+\_\+utils.\+hpp"{}}\newline
+{\ttfamily \#include "{}logger.\+hpp"{}}\newline
+{\ttfamily \#include $<$Eigen/src/\+Core/\+Matrix.\+h$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter}}
-\begin{DoxyCompactList}\small\item\em Implement a Kalman filter that can be shared by multiple systems, if they share the same dimentions. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter}{rgbd\+\_\+slam\+::tracking\+::\+Kalman\+Filter}}
+class \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{rgbd\+\_\+slam\+::tracking\+::\+Shared\+Kalman\+Filter$<$ N, M $>$}}
+\begin{DoxyCompactList}\small\item\em Implement a Kalman filter that can be shared by multiple systems, if they share the same dimentions. N is number of state variables M is number of outputs P number of inputs. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter}{rgbd\+\_\+slam\+::tracking\+::\+Kalman\+Filter$<$ N, M $>$}}
 \begin{DoxyCompactList}\small\item\em Implement a Kalman filter, to track a single system. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}

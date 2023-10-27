@@ -1,5 +1,5 @@
-\hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{}\doxysection{rgbd\+\_\+slam\+::utils\+::Screen\+Coordinate2D Struct Reference}
-\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}\index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
+\doxysection{rgbd\+\_\+slam\+::utils\+::Screen\+Coordinate2D Struct Reference}
+\hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}\index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
 
 
 Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels.  
@@ -12,48 +12,55 @@ Contains a single of coordinate in screen space. Screen space is defined as (x, 
 Inheritance diagram for rgbd\+\_\+slam\+::utils\+::Screen\+Coordinate2D\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=3.000000cm]{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}
+\includegraphics[height=2.000000cm]{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ad551c839382e53ee9545350e12910709}{Screen\+Coordinate2D}} ()
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ae962a23616a38d84cea8af71b910b496}{Screen\+Coordinate2D}} (const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&coords)
-\item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a5d9a15ba0baa9c132bf6c151b62087d7}{Screen\+Coordinate2D}} (const double x, const double y)
-\item 
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{Camera\+Coordinate2D}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a49412d9e80902d72f81cdbd1a7631b48}{to\+\_\+camera\+\_\+coordinates}} () const
-\begin{DoxyCompactList}\small\item\em Transform a screen point with a depth value to a 3D camera point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Transform a screen point with a depth value to a 3D camera point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a684727fac43c1d1cec6104d0d15af94e}{matrix22}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_acf07cb75720feb10fe2a0718fe443c74}{get\+\_\+covariance}} () const
+\begin{DoxyCompactList}\small\item\em Compute a covariance in screen space. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a2b339251a0bd84d5a37d5fbbd680bbc1}{is\+\_\+in\+\_\+screen\+\_\+boundaries}} () const noexcept
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ad551c839382e53ee9545350e12910709}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ad551c839382e53ee9545350e12910709}} 
+\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ad551c839382e53ee9545350e12910709}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ad551c839382e53ee9545350e12910709} 
 \index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}!ScreenCoordinate2D@{ScreenCoordinate2D}}
 \index{ScreenCoordinate2D@{ScreenCoordinate2D}!rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
-\doxysubsubsection{\texorpdfstring{ScreenCoordinate2D()}{ScreenCoordinate2D()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+\doxysubsubsection{\texorpdfstring{ScreenCoordinate2D()}{ScreenCoordinate2D()}}
 {\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate2\+D\+::\+Screen\+Coordinate2D (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ae962a23616a38d84cea8af71b910b496}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_ae962a23616a38d84cea8af71b910b496}} 
-\index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}!ScreenCoordinate2D@{ScreenCoordinate2D}}
-\index{ScreenCoordinate2D@{ScreenCoordinate2D}!rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
-\doxysubsubsection{\texorpdfstring{ScreenCoordinate2D()}{ScreenCoordinate2D()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate2\+D\+::\+Screen\+Coordinate2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}} \&}]{coords }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a5d9a15ba0baa9c132bf6c151b62087d7}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a5d9a15ba0baa9c132bf6c151b62087d7}} 
-\index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}!ScreenCoordinate2D@{ScreenCoordinate2D}}
-\index{ScreenCoordinate2D@{ScreenCoordinate2D}!rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
-\doxysubsubsection{\texorpdfstring{ScreenCoordinate2D()}{ScreenCoordinate2D()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate2\+D\+::\+Screen\+Coordinate2D (\begin{DoxyParamCaption}\item[{const double}]{x,  }\item[{const double}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a49412d9e80902d72f81cdbd1a7631b48}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a49412d9e80902d72f81cdbd1a7631b48}} 
+\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_acf07cb75720feb10fe2a0718fe443c74}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_acf07cb75720feb10fe2a0718fe443c74} 
+\index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}!get\_covariance@{get\_covariance}}
+\index{get\_covariance@{get\_covariance}!rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
+\doxysubsubsection{\texorpdfstring{get\_covariance()}{get\_covariance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a684727fac43c1d1cec6104d0d15af94e}{matrix22}} rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate2\+D\+::get\+\_\+covariance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Compute a covariance in screen space. 
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a2b339251a0bd84d5a37d5fbbd680bbc1}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a2b339251a0bd84d5a37d5fbbd680bbc1} 
+\index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}!is\_in\_screen\_boundaries@{is\_in\_screen\_boundaries}}
+\index{is\_in\_screen\_boundaries@{is\_in\_screen\_boundaries}!rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
+\doxysubsubsection{\texorpdfstring{is\_in\_screen\_boundaries()}{is\_in\_screen\_boundaries()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate2\+D\+::is\+\_\+in\+\_\+screen\+\_\+boundaries (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+\begin{DoxyReturn}{Returns}
+true if this point is in the visible screen space 
+\end{DoxyReturn}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a49412d9e80902d72f81cdbd1a7631b48}\label{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d_a49412d9e80902d72f81cdbd1a7631b48} 
 \index{rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}!to\_camera\_coordinates@{to\_camera\_coordinates}}
 \index{to\_camera\_coordinates@{to\_camera\_coordinates}!rgbd\_slam::utils::ScreenCoordinate2D@{rgbd\_slam::utils::ScreenCoordinate2D}}
 \doxysubsubsection{\texorpdfstring{to\_camera\_coordinates()}{to\_camera\_coordinates()}}
@@ -64,9 +71,9 @@ Contains a single of coordinate in screen space. Screen space is defined as (x, 
 Transform a screen point with a depth value to a 3D camera point. 
 
 \begin{DoxyReturn}{Returns}
-A 3D point in camera coordinates
+A 3D point in camera coordinates 
 \end{DoxyReturn}
-SCREEN COORDINATES 
+
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

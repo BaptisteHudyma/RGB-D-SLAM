@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['inputtype_0',['InputType',['../structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html#a10beb8913f4937bc0c3de4e7eb048124',1,'rgbd_slam::pose_optimization::Levenberg_Marquardt_Functor']]],
-  ['intpair_5fvector_1',['intpair_vector',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ad96ff3c75c6a7784c3a8f1f4b0102a65',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
+  ['detectedkeypointsobject_0',['DetectedKeypointsObject',['../namespacergbd__slam_1_1map__management.html#aac0c80fadeb6bc233d18d5a562f5e6d4',1,'rgbd_slam::map_management']]],
+  ['detectedplaneobject_1',['DetectedPlaneObject',['../namespacergbd__slam_1_1map__management.html#a0518eb2c14d5f45b399da54a33aff1cb',1,'rgbd_slam::map_management']]],
+  ['detectedplanetype_2',['DetectedPlaneType',['../namespacergbd__slam_1_1map__management.html#aecce2c9b26ca5dd01f1f6883f40c95a6',1,'rgbd_slam::map_management']]],
+  ['detectedpointtype_3',['DetectedPointType',['../namespacergbd__slam_1_1map__management.html#a96089616c3d98a7f8aa8c3384649c57c',1,'rgbd_slam::map_management']]]
 ];

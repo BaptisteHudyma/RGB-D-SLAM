@@ -1,6 +1,6 @@
-\hypertarget{namespacergbd__slam_1_1features_1_1primitives}{}\doxysection{rgbd\+\_\+slam\+::features\+::primitives Namespace Reference}
-\label{namespacergbd__slam_1_1features_1_1primitives}\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
-\doxysubsection*{Classes}
+\doxysection{rgbd\+\_\+slam\+::features\+::primitives Namespace Reference}
+\hypertarget{namespacergbd__slam_1_1features_1_1primitives}{}\label{namespacergbd__slam_1_1features_1_1primitives}\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}}
@@ -10,7 +10,7 @@ class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{Depth\+\_\+\+Map\+\_\+\+Transformation}}
 \begin{DoxyCompactList}\small\item\em Handles operations on the initial depth image, to transform it on a connected cloud points. It also handles the loading of the camera parameters from the configuration file. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}
-\begin{DoxyCompactList}\small\item\em Basic 2D \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}} class, handling an histogram of N x N. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Basic 2D \doxylink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram} class, handling an histogram of N x N. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{IPrimitive}}
 \begin{DoxyCompactList}\small\item\em A base class used to compute the tracking analysis. It is a pure virtual class. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}}
@@ -19,41 +19,56 @@ class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___seg
 \begin{DoxyCompactList}\small\item\em Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection}{Primitive\+\_\+\+Detection}}
 \begin{DoxyCompactList}\small\item\em Main extraction class. Extracts shape primitives from an organized cloud of points. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Typedefs}
+\doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}{cylinder\+\_\+container}}
+using \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ad1597638f286a73a6099675b2c0458a7}{cylinder\+\_\+container}} = std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} $>$
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}{plane\+\_\+container}}
+using \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a}{plane\+\_\+container}} = std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} $>$
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a6146d5a7fb8d0399ed5db7f42793d97a}{is\+\_\+continuous}} (const float pixel\+Depth, float \&last\+Pixel\+Depth)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a810c8b0ae7dd3fc6fea6ffe695a20cb4}{is\+\_\+continuous}} (const float pixel\+Depth, float \&last\+Pixel\+Depth) noexcept
 \begin{DoxyCompactList}\small\item\em Runs a check on a depth value, and increment a discontinuity counter if needed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f}{minX}} = 0
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c}{minY}} = -\/M\+\_\+\+PI
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a0934672d73718403af6852eb641ed300}{max\+XminX}} = M\+\_\+\+PI -\/ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f}{minX}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac998207b791c1e44609a8b2a2b195017}{max\+YminY}} = M\+\_\+\+PI -\/ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c}{minY}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a6e2ebafb14544ecceef30f73f0c0fae9}{bloc\+Size}} = \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ae602f09cddfce36c6b341a491e3cc10b}{parameters\+::detection\+::depth\+Map\+Patch\+Size\+\_\+px}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_abfeee6fe2b8af94d381e401423daeb06}{points\+Per\+Cell\+Count}} = \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a6e2ebafb14544ecceef30f73f0c0fae9}{bloc\+Size}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a6e2ebafb14544ecceef30f73f0c0fae9}{bloc\+Size}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}\label{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_ad1597638f286a73a6099675b2c0458a7}\label{namespacergbd__slam_1_1features_1_1primitives_ad1597638f286a73a6099675b2c0458a7} 
 \index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!cylinder\_container@{cylinder\_container}}
 \index{cylinder\_container@{cylinder\_container}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
 \doxysubsubsection{\texorpdfstring{cylinder\_container}{cylinder\_container}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}{rgbd\+\_\+slam\+::features\+::primitives\+::cylinder\+\_\+container}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ad1597638f286a73a6099675b2c0458a7}{rgbd\+\_\+slam\+::features\+::primitives\+::cylinder\+\_\+container}} = typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}}$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}\label{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a}\label{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a} 
 \index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!plane\_container@{plane\_container}}
 \index{plane\_container@{plane\_container}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
 \doxysubsubsection{\texorpdfstring{plane\_container}{plane\_container}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}}$>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}{rgbd\+\_\+slam\+::features\+::primitives\+::plane\+\_\+container}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a}{rgbd\+\_\+slam\+::features\+::primitives\+::plane\+\_\+container}} = typedef std\+::vector$<$\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}}$>$}
 
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a6146d5a7fb8d0399ed5db7f42793d97a}\label{namespacergbd__slam_1_1features_1_1primitives_a6146d5a7fb8d0399ed5db7f42793d97a}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a810c8b0ae7dd3fc6fea6ffe695a20cb4}\label{namespacergbd__slam_1_1features_1_1primitives_a810c8b0ae7dd3fc6fea6ffe695a20cb4} 
 \index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!is\_continuous@{is\_continuous}}
 \index{is\_continuous@{is\_continuous}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
 \doxysubsubsection{\texorpdfstring{is\_continuous()}{is\_continuous()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::is\+\_\+continuous (\begin{DoxyParamCaption}\item[{const float}]{pixel\+Depth,  }\item[{float \&}]{last\+Pixel\+Depth }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::is\+\_\+continuous (\begin{DoxyParamCaption}\item[{const float}]{pixel\+Depth,  }\item[{float \&}]{last\+Pixel\+Depth }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -69,3 +84,42 @@ Runs a check on a depth value, and increment a discontinuity counter if needed.
 \begin{DoxyReturn}{Returns}
 False if a continuities is detected 
 \end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a6e2ebafb14544ecceef30f73f0c0fae9}\label{namespacergbd__slam_1_1features_1_1primitives_a6e2ebafb14544ecceef30f73f0c0fae9} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!blocSize@{blocSize}}
+\index{blocSize@{blocSize}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{blocSize}{blocSize}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::features\+::primitives\+::bloc\+Size = \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ae602f09cddfce36c6b341a491e3cc10b}{parameters\+::detection\+::depth\+Map\+Patch\+Size\+\_\+px}}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a0934672d73718403af6852eb641ed300}\label{namespacergbd__slam_1_1features_1_1primitives_a0934672d73718403af6852eb641ed300} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!maxXminX@{maxXminX}}
+\index{maxXminX@{maxXminX}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{maxXminX}{maxXminX}}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::features\+::primitives\+::max\+XminX = M\+\_\+\+PI -\/ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f}{minX}}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_ac998207b791c1e44609a8b2a2b195017}\label{namespacergbd__slam_1_1features_1_1primitives_ac998207b791c1e44609a8b2a2b195017} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!maxYminY@{maxYminY}}
+\index{maxYminY@{maxYminY}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{maxYminY}{maxYminY}}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::features\+::primitives\+::max\+YminY = M\+\_\+\+PI -\/ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c}{minY}}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f}\label{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!minX@{minX}}
+\index{minX@{minX}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{minX}{minX}}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::features\+::primitives\+::minX = 0\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c}\label{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!minY@{minY}}
+\index{minY@{minY}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{minY}{minY}}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::features\+::primitives\+::minY = -\/M\+\_\+\+PI\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1features_1_1primitives_abfeee6fe2b8af94d381e401423daeb06}\label{namespacergbd__slam_1_1features_1_1primitives_abfeee6fe2b8af94d381e401423daeb06} 
+\index{rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}!pointsPerCellCount@{pointsPerCellCount}}
+\index{pointsPerCellCount@{pointsPerCellCount}!rgbd\_slam::features::primitives@{rgbd\_slam::features::primitives}}
+\doxysubsubsection{\texorpdfstring{pointsPerCellCount}{pointsPerCellCount}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::features\+::primitives\+::points\+Per\+Cell\+Count = \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a6e2ebafb14544ecceef30f73f0c0fae9}{bloc\+Size}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a6e2ebafb14544ecceef30f73f0c0fae9}{bloc\+Size}}\hspace{0.3cm}{\ttfamily [constexpr]}}
+

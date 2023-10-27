@@ -1,15 +1,18 @@
-\hypertarget{distance__utils_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/distance\+\_\+utils.hpp File Reference}
-\label{distance__utils_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.hpp}}
-{\ttfamily \#include \char`\"{}coordinates.\+hpp\char`\"{}}\newline
-\doxysubsection*{Namespaces}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/distance\+\_\+utils.hpp File Reference}
+\hypertarget{distance__utils_8hpp}{}\label{distance__utils_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.hpp}}
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80ec6c1e06ca299cfdd1061180cfbb22}{rgbd\+\_\+slam\+::utils\+::angle\+\_\+distance}} (const double angleA, const double angleB)
-\begin{DoxyCompactList}\small\item\em compute a distance bewteen two angles in radian \end{DoxyCompactList}\end{DoxyCompactItemize}
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a16a02447a90e06cbf50b708dadc4715c}{rgbd\+\_\+slam\+::utils\+::angle\+\_\+distance}} (const double angleA, const double angleB) noexcept
+\begin{DoxyCompactList}\small\item\em compute a distance bewteen two angles in radian \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387}{rgbd\+\_\+slam\+::utils\+::double\+\_\+equal}} (const double a, const double b, const double epsilon=std\+::numeric\+\_\+limits$<$ double $>$\+::epsilon()) noexcept
+\begin{DoxyCompactList}\small\item\em Check an equality between two doubles, with an epsilon\+: TODO move this to a more sensible location. \end{DoxyCompactList}\end{DoxyCompactItemize}

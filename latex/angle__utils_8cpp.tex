@@ -1,19 +1,20 @@
-\hypertarget{angle__utils_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/angle\+\_\+utils.cpp File Reference}
-\label{angle__utils_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.cpp}}
-{\ttfamily \#include \char`\"{}angle\+\_\+utils.\+hpp\char`\"{}}\newline
-\doxysubsection*{Namespaces}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/angle\+\_\+utils.cpp File Reference}
+\hypertarget{angle__utils_8cpp}{}\label{angle__utils_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.cpp}}
+{\ttfamily \#include "{}angle\+\_\+utils.\+hpp"{}}\newline
+{\ttfamily \#include $<$unsupported/\+Eigen/\+Euler\+Angles$>$}\newline
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-const quaternion \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const Euler\+Angles \&euler\+Angles)
+\mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_afc4ea91746700b54fc5117838582961b}{rgbd\+\_\+slam\+::utils\+::get\+\_\+quaternion\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from the given euler angles, in radians. \end{DoxyCompactList}\item 
-const Euler\+Angles \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{rgbd\+\_\+slam\+::utils\+::get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const quaternion \&quat)
+\mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a981a10b36e7275921435fffac8d6d2bd}{rgbd\+\_\+slam\+::utils\+::get\+\_\+euler\+\_\+angles\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&quat) noexcept
 \begin{DoxyCompactList}\small\item\em Compute euler angles from a given quaternion. \end{DoxyCompactList}\item 
-const matrix33 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a07db914662571bbec6e8a1911fa8a117}{rgbd\+\_\+slam\+::utils\+::get\+\_\+rotation\+\_\+matrix\+\_\+from\+\_\+euler\+\_\+angles}} (const Euler\+Angles \&euler\+Angles)
+\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a00a1a97c6c5d901cff2aff58d56a1c09}{rgbd\+\_\+slam\+::utils\+::get\+\_\+rotation\+\_\+matrix\+\_\+from\+\_\+euler\+\_\+angles}} (const \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}} \&euler\+Angles) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a rotation matrix from a euler angle container. \end{DoxyCompactList}\end{DoxyCompactItemize}

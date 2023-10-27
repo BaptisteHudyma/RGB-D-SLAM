@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1tracking_1_1_triangulation}{}\doxysection{rgbd\+\_\+slam\+::tracking\+::Triangulation Class Reference}
-\label{classrgbd__slam_1_1tracking_1_1_triangulation}\index{rgbd\_slam::tracking::Triangulation@{rgbd\_slam::tracking::Triangulation}}
+\doxysection{rgbd\+\_\+slam\+::tracking\+::Triangulation Class Reference}
+\hypertarget{classrgbd__slam_1_1tracking_1_1_triangulation}{}\label{classrgbd__slam_1_1tracking_1_1_triangulation}\index{rgbd\_slam::tracking::Triangulation@{rgbd\_slam::tracking::Triangulation}}
 
 
 Triangulate 2D point (screen space) to find 3D correspondances (camera space)  
@@ -9,12 +9,12 @@ Triangulate 2D point (screen space) to find 3D correspondances (camera space)
 
 {\ttfamily \#include $<$triangulation.\+hpp$>$}
 
-\doxysubsection*{Static Public Member Functions}
+\doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static bool \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a69133e174baa3c1309b3f3629ee02143}{triangulate}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&current\+World\+To\+Camera, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&new\+World\+To\+Camera, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point2\+Da, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point2\+Db, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&triangulated\+Point)
+static bool \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a15a04531fd9d5b45cf8b575a30fa3bf3}{triangulate}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&current\+World\+To\+Camera, const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&new\+World\+To\+Camera, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point2\+Da, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point2\+Db, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&triangulated\+Point) noexcept
 \begin{DoxyCompactList}\small\item\em Triangulate a world point from two successive 2D matches, with an already known pose. \end{DoxyCompactList}\item 
-static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a8033f57b4e72fd466722553e72654081}{get\+\_\+supposed\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose, const double baseline\+Pose\+Supposition)
+static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a16c39fb6a176092cf67dde66f8460078}{get\+\_\+supposed\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&pose, const double baseline\+Pose\+Supposition) noexcept
 \begin{DoxyCompactList}\small\item\em Return a weak supposition of a new pose, from an optimized pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -22,21 +22,21 @@ static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mb
 Triangulate 2D point (screen space) to find 3D correspondances (camera space) 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_triangulation_a8033f57b4e72fd466722553e72654081}\label{classrgbd__slam_1_1tracking_1_1_triangulation_a8033f57b4e72fd466722553e72654081}} 
+\Hypertarget{classrgbd__slam_1_1tracking_1_1_triangulation_a16c39fb6a176092cf67dde66f8460078}\label{classrgbd__slam_1_1tracking_1_1_triangulation_a16c39fb6a176092cf67dde66f8460078} 
 \index{rgbd\_slam::tracking::Triangulation@{rgbd\_slam::tracking::Triangulation}!get\_supposed\_pose@{get\_supposed\_pose}}
 \index{get\_supposed\_pose@{get\_supposed\_pose}!rgbd\_slam::tracking::Triangulation@{rgbd\_slam::tracking::Triangulation}}
 \doxysubsubsection{\texorpdfstring{get\_supposed\_pose()}{get\_supposed\_pose()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} rgbd\+\_\+slam\+::tracking\+::\+Triangulation\+::get\+\_\+supposed\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{pose,  }\item[{const double}]{baseline\+Pose\+Supposition }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} rgbd\+\_\+slam\+::tracking\+::\+Triangulation\+::get\+\_\+supposed\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{pose,  }\item[{const double}]{baseline\+Pose\+Supposition }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [noexcept]}}
 
 
 
 Return a weak supposition of a new pose, from an optimized pose. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1tracking_1_1_triangulation_a69133e174baa3c1309b3f3629ee02143}\label{classrgbd__slam_1_1tracking_1_1_triangulation_a69133e174baa3c1309b3f3629ee02143}} 
+\Hypertarget{classrgbd__slam_1_1tracking_1_1_triangulation_a15a04531fd9d5b45cf8b575a30fa3bf3}\label{classrgbd__slam_1_1tracking_1_1_triangulation_a15a04531fd9d5b45cf8b575a30fa3bf3} 
 \index{rgbd\_slam::tracking::Triangulation@{rgbd\_slam::tracking::Triangulation}!triangulate@{triangulate}}
 \index{triangulate@{triangulate}!rgbd\_slam::tracking::Triangulation@{rgbd\_slam::tracking::Triangulation}}
 \doxysubsubsection{\texorpdfstring{triangulate()}{triangulate()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::tracking\+::\+Triangulation\+::triangulate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{current\+World\+To\+Camera,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{new\+World\+To\+Camera,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point2\+Da,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point2\+Db,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{triangulated\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::tracking\+::\+Triangulation\+::triangulate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{current\+World\+To\+Camera,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{new\+World\+To\+Camera,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point2\+Da,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point2\+Db,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{triangulated\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [noexcept]}}
 
 
 

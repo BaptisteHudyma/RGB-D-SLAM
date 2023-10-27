@@ -1,11 +1,12 @@
-\hypertarget{shape__primitives_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/shape\+\_\+primitives.hpp File Reference}
-\label{shape__primitives_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/shape\_primitives.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/shape\_primitives.hpp}}
-{\ttfamily \#include \char`\"{}../../types.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../../utils/coordinates.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}cylinder\+\_\+segment.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}plane\+\_\+segment.\+hpp\char`\"{}}\newline
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/shape\+\_\+primitives.hpp File Reference}
+\hypertarget{shape__primitives_8hpp}{}\label{shape__primitives_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/shape\_primitives.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/shape\_primitives.hpp}}
+{\ttfamily \#include "{}../../types.\+hpp"{}}\newline
+{\ttfamily \#include "{}../../utils/coordinates.\+hpp"{}}\newline
+{\ttfamily \#include "{}cylinder\+\_\+segment.\+hpp"{}}\newline
+{\ttfamily \#include "{}plane\+\_\+segment.\+hpp"{}}\newline
+{\ttfamily \#include "{}polygon.\+hpp"{}}\newline
 {\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
-\doxysubsection*{Classes}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive}}
@@ -14,7 +15,7 @@ class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{r
 \begin{DoxyCompactList}\small\item\em Handles cylinder primitives. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane}}
 \begin{DoxyCompactList}\small\item\em Handles planes. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
@@ -23,10 +24,10 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{rgbd\+\_\+slam\+::fe
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives}{rgbd\+\_\+slam\+::features\+::primitives}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Typedefs}
+\doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::vector$<$ Cylinder $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_aebcff031fc8d59dd6df6857d25026ed1}{rgbd\+\_\+slam\+::features\+::primitives\+::cylinder\+\_\+container}}
+using \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ad1597638f286a73a6099675b2c0458a7}{rgbd\+\_\+slam\+::features\+::primitives\+::cylinder\+\_\+container}} = std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}{Cylinder}} $>$
 \item 
-typedef std\+::vector$<$ Plane $>$ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac85a148cd872917385ff3d0622c8162d}{rgbd\+\_\+slam\+::features\+::primitives\+::plane\+\_\+container}}
+using \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a}{rgbd\+\_\+slam\+::features\+::primitives\+::plane\+\_\+container}} = std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{Plane}} $>$
 \end{DoxyCompactItemize}

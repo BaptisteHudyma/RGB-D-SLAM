@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scalar_0',['Scalar',['../structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html#ac17e7c1e7b79a465b35470493424a0a7',1,'rgbd_slam::pose_optimization::Levenberg_Marquardt_Functor']]]
+  ['quaternion_0',['quaternion',['../namespacergbd__slam.html#a93a0925863fdadf4e9f70b21fa87e627',1,'rgbd_slam']]]
 ];

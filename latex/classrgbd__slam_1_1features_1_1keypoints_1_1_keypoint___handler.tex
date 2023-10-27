@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{}\doxysection{rgbd\+\_\+slam\+::features\+::keypoints\+::Keypoint\+\_\+\+Handler Class Reference}
-\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}\index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
+\doxysection{rgbd\+\_\+slam\+::features\+::keypoints\+::Keypoint\+\_\+\+Handler Class Reference}
+\hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}\index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 
 
 Handler object to store a reference to detected key points. Passed to other classes for data association purposes.  
@@ -9,48 +9,52 @@ Handler object to store a reference to detected key points. Passed to other clas
 
 {\ttfamily \#include $<$keypoint\+\_\+handler.\+hpp$>$}
 
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ae78d03d8b92dce4173ced4ee2c65eade}{Keypoint\+\_\+\+Handler}} (const uint depth\+Image\+Cols, const uint depth\+Image\+Rows, const double max\+Match\+Distance=0.\+7)
 \item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ab7eaa2f7d32a6b2ed32f996cfb0d2bac}{set}} (std\+::vector$<$ cv\+::\+Point2f $>$ \&in\+Keypoints, cv\+::\+Mat \&in\+Descriptors, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const cv\+::\+Mat \&depth\+Image)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a087710b4c6adbb889ea26c66074e98c4}{set}} (std\+::vector$<$ cv\+::\+Point2f $>$ \&in\+Keypoints, const cv\+::\+Mat \&in\+Descriptors, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image) noexcept
 \begin{DoxyCompactList}\small\item\em Set the container properties. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5c91eb5ffe6398f16309667053291720}{get\+\_\+tracking\+\_\+match\+\_\+index}} (const size\+\_\+t map\+Point\+Id, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Key\+Point\+Matched\+Container) const
+int \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ac6eea08a7dede74c26a4634ae54258cc}{get\+\_\+tracking\+\_\+match\+\_\+index}} (const size\+\_\+t map\+Point\+Id, const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&is\+Key\+Point\+Matched\+Container) const noexcept
 \begin{DoxyCompactList}\small\item\em Get a tracking index if it exist, or -\/1. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa158b851bacc9286979fce533cb38e09}{get\+\_\+tracking\+\_\+match\+\_\+index}} (const size\+\_\+t map\+Point\+Id) const
+int \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a10770b477ddf9d36f2d5c102ff517367}{get\+\_\+tracking\+\_\+match\+\_\+index}} (const size\+\_\+t map\+Point\+Id) const noexcept
 \item 
-int \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a22b92c6bcad04249ba7ea9b3c3d5cbec}{get\+\_\+match\+\_\+index}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&projected\+Map\+Point, const cv\+::\+Mat \&map\+Point\+Descriptor, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Key\+Point\+Matched\+Container, const double search\+Space\+Radius) const
+int \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_adcc932105991350f848d551f99c6d0b9}{get\+\_\+match\+\_\+index}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&projected\+Map\+Point, const cv\+::\+Mat \&map\+Point\+Descriptor, const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&is\+Key\+Point\+Matched\+Container, const double search\+Space\+Radius) const noexcept
 \begin{DoxyCompactList}\small\item\em get an index corresponding to the index of the point matches. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a9633779b8e95af25326b1b7bb89ebe62}{get\+\_\+keypoint}} (const uint index) const
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a2872ee20a50148d8e6a3898a8f3ac13f}{get\+\_\+keypoint}} (const uint index) const noexcept
 \begin{DoxyCompactList}\small\item\em return the keypoint associated with the index \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}{is\+\_\+descriptor\+\_\+computed}} (const uint index) const
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a171af7ce369be199a95e823707fe4ca7}{is\+\_\+descriptor\+\_\+computed}} (const uint index) const noexcept
 \item 
-const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}{get\+\_\+descriptor}} (const uint index) const
+cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a05928c35bbc9b209ac710ebc482942c7}{get\+\_\+descriptor}} (const uint index) const noexcept
 \item 
-size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a213657ddbef0adb8d38b1c48a17f5b53}{get\+\_\+keypoint\+\_\+count}} () const
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a36682ba9db57a79f79555b4757989708}{get\+\_\+keypoint\+\_\+count}} () const noexcept
 \item 
-size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad0e7991c1bbf0d1b86b8e1b14f31ae14}{size}} () const
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8ce4de870f937d388c1ad72cc6cd7b68}{size}} () const noexcept
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{Detected\+Key\+Point}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a603df5820f88b507207175980ab07bd2}{at}} (const size\+\_\+t index) const
+\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{Detected\+Key\+Point}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5cb527e7230872ce8553d50ce4b25d3c}{at}} (const size\+\_\+t index) const noexcept
 \end{DoxyCompactItemize}
-\doxysubsection*{Protected Types}
+\doxysubsubsection*{Protected Types}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::pair$<$ uint, uint $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\+\_\+pair}}
+using \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8f4a1f4486030209a6b26757b3619f82}{index\+\_\+container}} = std\+::vector$<$ uint $>$
+\item 
+using \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728}{uint\+\_\+pair}} = std\+::pair$<$ uint, uint $>$
 \end{DoxyCompactItemize}
-\doxysubsection*{Protected Member Functions}
+\doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-const cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa24e6468ef134d76dec647cb102d095c}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point\+To\+Search, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Key\+Point\+Matched\+Container, const uint search\+Space\+Cell\+Radius) const
+cv\+::\+Mat\+\_\+$<$ uchar $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ac6b2307af5bf886193ddb1bf52a69ab9}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point\+To\+Search, const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&is\+Key\+Point\+Matched\+Container, const uint search\+Space\+Cell\+Radius) const noexcept
 \begin{DoxyCompactList}\small\item\em Return a mask eliminating the keypoints to far from the point to match. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\+\_\+pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_abbce39337e950fa363c4ccc49f8248f4}{get\+\_\+search\+\_\+space\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point\+To\+Place) const
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aae5e21323fc45c62fd9c855d2b8b7863}{fill\+\_\+keypoint\+\_\+mask}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point\+To\+Search, const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8f4a1f4486030209a6b26757b3619f82}{index\+\_\+container}} \&keypoint\+Index\+Container, const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&is\+Key\+Point\+Matched\+Container, cv\+::\+Mat\+\_\+$<$ uchar $>$ \&key\+Point\+Mask) const noexcept
+\begin{DoxyCompactList}\small\item\em Fill the keypoint mask with the an area around the given keypoints. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728}{uint\+\_\+pair}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a26541573721c22cc5b08ee9b39445d27}{get\+\_\+search\+\_\+space\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&point\+To\+Place) const noexcept
 \begin{DoxyCompactList}\small\item\em Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with \+\_\+search\+Space\+Index\+Container. \end{DoxyCompactList}\item 
-uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}{get\+\_\+search\+\_\+space\+\_\+index}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\+\_\+pair}} \&search\+Space\+Index) const
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66f8146f53d75afc0e046d1875e34da6}{get\+\_\+search\+\_\+space\+\_\+index}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728}{uint\+\_\+pair}} \&search\+Space\+Index) const noexcept
 \begin{DoxyCompactList}\small\item\em Compute an 1D array index from a 2D array index. \end{DoxyCompactList}\item 
-uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8afbfa646282d48643f7c56a80bbfb0c}{get\+\_\+search\+\_\+space\+\_\+index}} (const uint x, const uint y) const
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_abe5e0dbe8bb2664933ae2a081645dd5a}{get\+\_\+search\+\_\+space\+\_\+index}} (const uint x, const uint y) const noexcept
 \item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aaa809cd5cf54e695371d5685e24b2fd0}{clear}} ()
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a1bc1016240692208634236281101567b}{clear}} () noexcept
 \end{DoxyCompactItemize}
 
 
@@ -58,16 +62,22 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___ha
 Handler object to store a reference to detected key points. Passed to other classes for data association purposes. 
 
 \doxysubsection{Member Typedef Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8f4a1f4486030209a6b26757b3619f82}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8f4a1f4486030209a6b26757b3619f82} 
+\index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!index\_container@{index\_container}}
+\index{index\_container@{index\_container}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
+\doxysubsubsection{\texorpdfstring{index\_container}{index\_container}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8f4a1f4486030209a6b26757b3619f82}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::index\+\_\+container}} =  std\+::vector$<$uint$>$\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!uint\_pair@{uint\_pair}}
 \index{uint\_pair@{uint\_pair}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{uint\_pair}{uint\_pair}}
-{\footnotesize\ttfamily typedef std\+::pair$<$uint, uint$>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::uint\+\_\+pair}}\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728}{rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::uint\+\_\+pair}} =  std\+::pair$<$uint, uint$>$\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ae78d03d8b92dce4173ced4ee2c65eade}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ae78d03d8b92dce4173ced4ee2c65eade}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ae78d03d8b92dce4173ced4ee2c65eade}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ae78d03d8b92dce4173ced4ee2c65eade} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!Keypoint\_Handler@{Keypoint\_Handler}}
 \index{Keypoint\_Handler@{Keypoint\_Handler}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{Keypoint\_Handler()}{Keypoint\_Handler()}}
@@ -85,23 +95,23 @@ Handler object to store a reference to detected key points. Passed to other clas
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a603df5820f88b507207175980ab07bd2}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a603df5820f88b507207175980ab07bd2}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5cb527e7230872ce8553d50ce4b25d3c}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5cb527e7230872ce8553d50ce4b25d3c} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!at@{at}}
 \index{at@{at}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{at()}{at()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{Detected\+Key\+Point}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::at (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{Detected\+Key\+Point}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::at (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aaa809cd5cf54e695371d5685e24b2fd0}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aaa809cd5cf54e695371d5685e24b2fd0}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a1bc1016240692208634236281101567b}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a1bc1016240692208634236281101567b} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!clear@{clear}}
 \index{clear@{clear}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{clear()}{clear()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa24e6468ef134d76dec647cb102d095c}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa24e6468ef134d76dec647cb102d095c}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ac6b2307af5bf886193ddb1bf52a69ab9}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ac6b2307af5bf886193ddb1bf52a69ab9} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!compute\_key\_point\_mask@{compute\_key\_point\_mask}}
 \index{compute\_key\_point\_mask@{compute\_key\_point\_mask}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{compute\_key\_point\_mask()}{compute\_key\_point\_mask()}}
-{\footnotesize\ttfamily const cv\+::\+Mat rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::compute\+\_\+key\+\_\+point\+\_\+mask (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point\+To\+Search,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Key\+Point\+Matched\+Container,  }\item[{const uint}]{search\+Space\+Cell\+Radius }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily cv\+::\+Mat\+\_\+$<$ uchar $>$ rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::compute\+\_\+key\+\_\+point\+\_\+mask (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point\+To\+Search,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&}]{is\+Key\+Point\+Matched\+Container,  }\item[{const uint}]{search\+Space\+Cell\+Radius }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
 
 
@@ -119,33 +129,54 @@ Return a mask eliminating the keypoints to far from the point to match.
 \begin{DoxyReturn}{Returns}
 A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66fbc904e5696804ad81a889fc44a475}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aae5e21323fc45c62fd9c855d2b8b7863}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aae5e21323fc45c62fd9c855d2b8b7863} 
+\index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!fill\_keypoint\_mask@{fill\_keypoint\_mask}}
+\index{fill\_keypoint\_mask@{fill\_keypoint\_mask}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
+\doxysubsubsection{\texorpdfstring{fill\_keypoint\_mask()}{fill\_keypoint\_mask()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::fill\+\_\+keypoint\+\_\+mask (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point\+To\+Search,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8f4a1f4486030209a6b26757b3619f82}{index\+\_\+container}} \&}]{keypoint\+Index\+Container,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&}]{is\+Key\+Point\+Matched\+Container,  }\item[{cv\+::\+Mat\+\_\+$<$ uchar $>$ \&}]{key\+Point\+Mask }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Fill the keypoint mask with the an area around the given keypoints. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em point\+To\+Search} & The cooridnates of the point we want to match \\
+\hline
+\mbox{\texttt{ in}}  & {\em keypoint\+Index\+Container} & A container with all the keypoints to draw an area around \\
+\hline
+\mbox{\texttt{ in}}  & {\em is\+Key\+Point\+Matched\+Container} & If a keypoint is already matched, it\textquotesingle{}s index will be true \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em key\+Point\+Mask} & The match mask for each keypoints \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a05928c35bbc9b209ac710ebc482942c7}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a05928c35bbc9b209ac710ebc482942c7} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_descriptor@{get\_descriptor}}
 \index{get\_descriptor@{get\_descriptor}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_descriptor()}{get\_descriptor()}}
-{\footnotesize\ttfamily const cv\+::\+Mat rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+descriptor (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+descriptor (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a9633779b8e95af25326b1b7bb89ebe62}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a9633779b8e95af25326b1b7bb89ebe62}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a2872ee20a50148d8e6a3898a8f3ac13f}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a2872ee20a50148d8e6a3898a8f3ac13f} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_keypoint@{get\_keypoint}}
 \index{get\_keypoint@{get\_keypoint}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_keypoint()}{get\_keypoint()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+keypoint (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+keypoint (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 
 return the keypoint associated with the index 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a213657ddbef0adb8d38b1c48a17f5b53}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a213657ddbef0adb8d38b1c48a17f5b53}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a36682ba9db57a79f79555b4757989708}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a36682ba9db57a79f79555b4757989708} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_keypoint\_count@{get\_keypoint\_count}}
 \index{get\_keypoint\_count@{get\_keypoint\_count}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_keypoint\_count()}{get\_keypoint\_count()}}
-{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+keypoint\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+keypoint\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a22b92c6bcad04249ba7ea9b3c3d5cbec}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a22b92c6bcad04249ba7ea9b3c3d5cbec}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_adcc932105991350f848d551f99c6d0b9}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_adcc932105991350f848d551f99c6d0b9} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_match\_index@{get\_match\_index}}
 \index{get\_match\_index@{get\_match\_index}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_match\_index()}{get\_match\_index()}}
-{\footnotesize\ttfamily int rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{projected\+Map\+Point,  }\item[{const cv\+::\+Mat \&}]{map\+Point\+Descriptor,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Key\+Point\+Matched\+Container,  }\item[{const double}]{search\+Space\+Radius }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{projected\+Map\+Point,  }\item[{const cv\+::\+Mat \&}]{map\+Point\+Descriptor,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&}]{is\+Key\+Point\+Matched\+Container,  }\item[{const double}]{search\+Space\+Radius }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -165,27 +196,27 @@ get an index corresponding to the index of the point matches.
 \begin{DoxyReturn}{Returns}
 An index \texorpdfstring{$>$}{>}= 0 corresponding to the matched keypoint, or -\/1 if no match was found 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_abbce39337e950fa363c4ccc49f8248f4}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_abbce39337e950fa363c4ccc49f8248f4}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a26541573721c22cc5b08ee9b39445d27}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a26541573721c22cc5b08ee9b39445d27} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_search\_space\_coordinates@{get\_search\_space\_coordinates}}
 \index{get\_search\_space\_coordinates@{get\_search\_space\_coordinates}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_search\_space\_coordinates()}{get\_search\_space\_coordinates()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{Keypoint\+\_\+\+Handler\+::uint\+\_\+pair}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point\+To\+Place }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728}{Keypoint\+\_\+\+Handler\+::uint\+\_\+pair}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{point\+To\+Place }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
 
 
 Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes must be used with \+\_\+search\+Space\+Index\+Container. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8afbfa646282d48643f7c56a80bbfb0c}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8afbfa646282d48643f7c56a80bbfb0c}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_abe5e0dbe8bb2664933ae2a081645dd5a}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_abe5e0dbe8bb2664933ae2a081645dd5a} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_search\_space\_index@{get\_search\_space\_index}}
 \index{get\_search\_space\_index@{get\_search\_space\_index}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_search\_space\_index()}{get\_search\_space\_index()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+index (\begin{DoxyParamCaption}\item[{const uint}]{x,  }\item[{const uint}]{y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+index (\begin{DoxyParamCaption}\item[{const uint}]{x,  }\item[{const uint}]{y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a80d54ffd5dafe3ced9a90848f8a11327}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66f8146f53d75afc0e046d1875e34da6}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a66f8146f53d75afc0e046d1875e34da6} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_search\_space\_index@{get\_search\_space\_index}}
 \index{get\_search\_space\_index@{get\_search\_space\_index}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_search\_space\_index()}{get\_search\_space\_index()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a40a257eb2b5d17ea2645b84e662f1133}{uint\+\_\+pair}} \&}]{search\+Space\+Index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+search\+\_\+space\+\_\+index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a7f488389c78de815ca86cd5c3c937728}{uint\+\_\+pair}} \&}]{search\+Space\+Index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
 
 
@@ -196,17 +227,17 @@ Compute an 1D array index from a 2D array index.
 \mbox{\texttt{ in}}  & {\em search\+Space\+Index} & The 2D array index (y, x) \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa158b851bacc9286979fce533cb38e09}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_aa158b851bacc9286979fce533cb38e09}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a10770b477ddf9d36f2d5c102ff517367}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a10770b477ddf9d36f2d5c102ff517367} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_tracking\_match\_index@{get\_tracking\_match\_index}}
 \index{get\_tracking\_match\_index@{get\_tracking\_match\_index}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_tracking\_match\_index()}{get\_tracking\_match\_index()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily int rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+tracking\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{map\+Point\+Id }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+tracking\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{map\+Point\+Id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5c91eb5ffe6398f16309667053291720}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a5c91eb5ffe6398f16309667053291720}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ac6eea08a7dede74c26a4634ae54258cc}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ac6eea08a7dede74c26a4634ae54258cc} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!get\_tracking\_match\_index@{get\_tracking\_match\_index}}
 \index{get\_tracking\_match\_index@{get\_tracking\_match\_index}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{get\_tracking\_match\_index()}{get\_tracking\_match\_index()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily int rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+tracking\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{map\+Point\+Id,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Key\+Point\+Matched\+Container }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::get\+\_\+tracking\+\_\+match\+\_\+index (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{map\+Point\+Id,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&}]{is\+Key\+Point\+Matched\+Container }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -222,17 +253,17 @@ Get a tracking index if it exist, or -\/1.
 \begin{DoxyReturn}{Returns}
 the index of the tracked point in \+\_\+keypoints, or -\/1 if no match was found 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a84f4e67e3c3e4e459d7398a2310cacf5}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a171af7ce369be199a95e823707fe4ca7}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a171af7ce369be199a95e823707fe4ca7} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!is\_descriptor\_computed@{is\_descriptor\_computed}}
 \index{is\_descriptor\_computed@{is\_descriptor\_computed}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{is\_descriptor\_computed()}{is\_descriptor\_computed()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::is\+\_\+descriptor\+\_\+computed (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::is\+\_\+descriptor\+\_\+computed (\begin{DoxyParamCaption}\item[{const uint}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ab7eaa2f7d32a6b2ed32f996cfb0d2bac}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ab7eaa2f7d32a6b2ed32f996cfb0d2bac}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a087710b4c6adbb889ea26c66074e98c4}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a087710b4c6adbb889ea26c66074e98c4} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!set@{set}}
 \index{set@{set}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{set()}{set()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::set (\begin{DoxyParamCaption}\item[{std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{in\+Keypoints,  }\item[{cv\+::\+Mat \&}]{in\+Descriptors,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&}]{last\+Keypoints\+With\+Ids,  }\item[{const cv\+::\+Mat \&}]{depth\+Image }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::set (\begin{DoxyParamCaption}\item[{std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{in\+Keypoints,  }\item[{const cv\+::\+Mat \&}]{in\+Descriptors,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&}]{last\+Keypoints\+With\+Ids,  }\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -249,11 +280,11 @@ Set the container properties.
 \mbox{\texttt{ in}}  & {\em depth\+Image} & The depth image in which those keypoints were detected \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad0e7991c1bbf0d1b86b8e1b14f31ae14}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_ad0e7991c1bbf0d1b86b8e1b14f31ae14}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8ce4de870f937d388c1ad72cc6cd7b68}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler_a8ce4de870f937d388c1ad72cc6cd7b68} 
 \index{rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}!size@{size}}
 \index{size@{size}!rgbd\_slam::features::keypoints::Keypoint\_Handler@{rgbd\_slam::features::keypoints::Keypoint\_Handler}}
 \doxysubsubsection{\texorpdfstring{size()}{size()}}
-{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoint\+\_\+\+Handler\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 

@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{}\doxysection{rgbd\+\_\+slam\+::features\+::primitives\+::Plane\+\_\+\+Segment Class Reference}
-\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
+\doxysection{rgbd\+\_\+slam\+::features\+::primitives\+::Plane\+\_\+\+Segment Class Reference}
+\hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 
 
 Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program.  
@@ -9,68 +9,76 @@ Node class representing a depth graph point. Used to find planes in a depth imag
 
 {\ttfamily \#include $<$plane\+\_\+segment.\+hpp$>$}
 
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2709ea13fa22970c490d4aa56b306acd}{Plane\+\_\+\+Segment}} ()
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5a91e76f9334abee9b5f294713f2b2b9}{Plane\+\_\+\+Segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&seg)
 \begin{DoxyCompactList}\small\item\em Copy construtor. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a7d943b511b66956ffb79302a00b5d1e8}{init\+\_\+plane\+\_\+segment}} (const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&depth\+Cloud\+Array, const uint cell\+Id)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5c29c6ae97dad4d491152184f6c4fc81}{init\+\_\+plane\+\_\+segment}} (const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&depth\+Cloud\+Array, const uint cell\+Id) noexcept
 \item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}{expand\+\_\+segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+Segment)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ac36ad74866e25463414f84e54375fd39}{expand\+\_\+segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&plane\+Segment) noexcept
 \begin{DoxyCompactList}\small\item\em Merge the PCA saved values in prevision of a plane fitting. This function do not make any new plane calculations. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a539e2c9830873d305f2261c7bb6ce490}{get\+\_\+cos\+\_\+angle}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&p) const
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a0b88ad67d7654cbbfa05e659987b6967}{get\+\_\+cos\+\_\+angle}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&p) const noexcept
 \begin{DoxyCompactList}\small\item\em Compute the dot product of two plane normals, It is thecos of the angle between those normals. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a34235cb0c9cbcbeeb1d81e42cef5e862}{get\+\_\+point\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&point) const
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abd22426de977152cfcf9c7f36a56721a}{get\+\_\+point\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&point) const noexcept
 \begin{DoxyCompactList}\small\item\em Return the distance from a plane to the given point. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a1ebb34da810d0016bba01a9555ba235d}{can\+\_\+be\+\_\+merged}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&p, const double max\+Match\+Distance) const
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a7e5b40a15b1763dcdacf0b48c3efd8ce}{get\+\_\+point\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&point) const noexcept
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a56cf52b20c59d870a3778f1345cb7602}{can\+\_\+be\+\_\+merged}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&p, const double max\+Match\+Distance) const noexcept
 \begin{DoxyCompactList}\small\item\em Check if this plane segment and another onsatisfy the mertge conditions. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a68c2a5064518afdfc94fc50d3753c1da}{fit\+\_\+plane}} ()
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8ce36f9c69173fa3fad9c67eb174dbde}{fit\+\_\+plane}} () noexcept
 \begin{DoxyCompactList}\small\item\em Fit a plane to the contained points using PCA. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a4cc94ec3ad8ecc546810e905272a6a23}{clear\+\_\+plane\+\_\+parameters}} ()
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa9eaa39bfe792a52e32bf7f23dde4e11}{clear\+\_\+plane\+\_\+parameters}} () noexcept
 \begin{DoxyCompactList}\small\item\em Clears this segment parameters to restart analysis. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a673e1b4c7064c6b04a0c35c4e787ab16}{get\+\_\+point\+\_\+cloud\+\_\+covariance}} () const
+\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee}{get\+\_\+point\+\_\+cloud\+\_\+covariance}} () const noexcept
 \begin{DoxyCompactList}\small\item\em Compute the covariance of the points in the plane. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a66ab7fa6c31aeabbe55aa38c5dddb2e6}{get\+\_\+\+MSE}} () const
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a0f7705197d19b80c42c2894f626360ad}{get\+\_\+\+MSE}} () const noexcept
 \item 
-\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2cbb7e0d475665f6519a434642817be1}{get\+\_\+normal}} () const
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2df4152acd16ff960b3daa5cb2de4c63}{get\+\_\+normal}} () const noexcept
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a762b5bc2a643e3654cc8880762167a4a}{get\+\_\+centroid}} () const
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a08b2dd24ef8deb6b51d7acce98c81f14}{get\+\_\+centroid}} () const noexcept
 \item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abaad9ce92dfcdec28d2c772d2cc1aaab}{get\+\_\+plane\+\_\+d}} () const
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a75dde572fa10243009891c6a08355018}{get\+\_\+center}} () const noexcept
 \item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2746bf24bf12a0932ab2544a40c409ba}{is\+\_\+planar}} () const
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aebcd5e61146fd2ce10c71bd3b88853a9}{get\+\_\+plane\+\_\+d}} () const noexcept
 \item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa4777ebf46540b6c0d3fe4a811d4c6ab}{get\+\_\+score}} () const
+\mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{vector4}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a240e72e35c9f8eaff752b605801ded21}{get\+\_\+parametrization}} () const noexcept
 \item 
-uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ad70ad5c5282f07796dfc4fc0b1515043}{get\+\_\+point\+\_\+count}} () const
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a3fbcfc80bc6d50bc21e1cac5ded73021}{is\+\_\+planar}} () const noexcept
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6001f2f9c72f0060be3331df907d6609}{get\+\_\+score}} () const noexcept
+\item 
+uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_acdf8ba375b7754a25b27bfbf2911eee4}{get\+\_\+point\+\_\+count}} () const noexcept
 \end{DoxyCompactItemize}
-\doxysubsection*{Static Public Member Functions}
+\doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a24a4749ab8aeaa72eead3654c13f1304}{set\+\_\+static\+\_\+members}} (const uint cell\+Width, const uint point\+Per\+Cell\+Count)
+static void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a05d98ffd6fd8e23b592016438a743d2b}{set\+\_\+static\+\_\+members}} (const uint cell\+Width, const uint point\+Per\+Cell\+Count) noexcept
 \end{DoxyCompactItemize}
-\doxysubsection*{Protected Member Functions}
+\doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a11aa581053ba22c7dcfcd44c6449b800}{is\+\_\+cell\+\_\+vertical\+\_\+continuous}} (const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&depth\+Matrix) const
-\item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6a30cb1bee0671aee5ae6b60b05e11a7}{is\+\_\+cell\+\_\+horizontal\+\_\+continuous}} (const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&depth\+Matrix) const
-\end{DoxyCompactItemize}
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a57c7e1ed99ca79a22fda259a846e4895}{is\+\_\+cell\+\_\+vertical\+\_\+continuous}} (const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&depth\+Matrix) const noexcept
+\begin{DoxyCompactList}\small\item\em Check that the point cloud for this plane patch is verticaly continuous. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5178046bb083b2911d1a6b18de3ce8d7}{is\+\_\+cell\+\_\+horizontal\+\_\+continuous}} (const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&depth\+Matrix) const noexcept
+\begin{DoxyCompactList}\small\item\em Check that the point cloud for this plane patch is horizontaly continuous. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5ce84e1eb7e657244c87fc02a9126b42}{get\+\_\+point\+\_\+cloud\+\_\+\+Huygen\+\_\+covariance}} () const noexcept
+\begin{DoxyCompactList}\small\item\em return the covariance of this point cloud computed from König-\/\+Huygen formula \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Node class representing a depth graph point. Used to find planes in a depth image. Mainly inspired from CAPE program. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2709ea13fa22970c490d4aa56b306acd}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2709ea13fa22970c490d4aa56b306acd}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2709ea13fa22970c490d4aa56b306acd}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2709ea13fa22970c490d4aa56b306acd} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!Plane\_Segment@{Plane\_Segment}}
 \index{Plane\_Segment@{Plane\_Segment}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{Plane\_Segment()}{Plane\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::\+Plane\+\_\+\+Segment (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5a91e76f9334abee9b5f294713f2b2b9}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5a91e76f9334abee9b5f294713f2b2b9}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5a91e76f9334abee9b5f294713f2b2b9}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5a91e76f9334abee9b5f294713f2b2b9} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!Plane\_Segment@{Plane\_Segment}}
 \index{Plane\_Segment@{Plane\_Segment}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{Plane\_Segment()}{Plane\_Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
@@ -83,11 +91,11 @@ Copy construtor.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a1ebb34da810d0016bba01a9555ba235d}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a1ebb34da810d0016bba01a9555ba235d}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a56cf52b20c59d870a3778f1345cb7602}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a56cf52b20c59d870a3778f1345cb7602} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!can\_be\_merged@{can\_be\_merged}}
 \index{can\_be\_merged@{can\_be\_merged}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{can\_be\_merged()}{can\_be\_merged()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::can\+\_\+be\+\_\+merged (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{p,  }\item[{const double}]{max\+Match\+Distance }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::can\+\_\+be\+\_\+merged (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{p,  }\item[{const double}]{max\+Match\+Distance }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -103,21 +111,21 @@ Check if this plane segment and another onsatisfy the mertge conditions.
 \begin{DoxyReturn}{Returns}
 True if the planes could be merged. It is based on the normal angles and center distances 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a4cc94ec3ad8ecc546810e905272a6a23}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a4cc94ec3ad8ecc546810e905272a6a23}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa9eaa39bfe792a52e32bf7f23dde4e11}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa9eaa39bfe792a52e32bf7f23dde4e11} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!clear\_plane\_parameters@{clear\_plane\_parameters}}
 \index{clear\_plane\_parameters@{clear\_plane\_parameters}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{clear\_plane\_parameters()}{clear\_plane\_parameters()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::clear\+\_\+plane\+\_\+parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::clear\+\_\+plane\+\_\+parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
 Clears this segment parameters to restart analysis. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8b1e72fb7ce2a37682169726012392cd}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ac36ad74866e25463414f84e54375fd39}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ac36ad74866e25463414f84e54375fd39} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!expand\_segment@{expand\_segment}}
 \index{expand\_segment@{expand\_segment}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{expand\_segment()}{expand\_segment()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::expand\+\_\+segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+Segment }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::expand\+\_\+segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{plane\+Segment }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -128,27 +136,33 @@ Merge the PCA saved values in prevision of a plane fitting. This function do not
 \mbox{\texttt{ in}}  & {\em plane\+Segment} & Another plane segment \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a68c2a5064518afdfc94fc50d3753c1da}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a68c2a5064518afdfc94fc50d3753c1da}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8ce36f9c69173fa3fad9c67eb174dbde}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a8ce36f9c69173fa3fad9c67eb174dbde} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!fit\_plane@{fit\_plane}}
 \index{fit\_plane@{fit\_plane}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{fit\_plane()}{fit\_plane()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::fit\+\_\+plane (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::fit\+\_\+plane (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
 Fit a plane to the contained points using PCA. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a762b5bc2a643e3654cc8880762167a4a}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a762b5bc2a643e3654cc8880762167a4a}} 
+Alternative plane parameter computation const matrix33\& pcc = \doxylink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee}{get\+\_\+point\+\_\+cloud\+\_\+covariance()}; const vector3 e(-\/\+\_\+\+Sx, -\/\+\_\+\+Sy, -\/\+\_\+\+Sz); const vector3 params = (pcc \texorpdfstring{$\ast$}{*} e).transpose(); const vector3 normal = params / params.\+norm(); const double d = 1.\+0 / params.\+norm();\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a75dde572fa10243009891c6a08355018}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a75dde572fa10243009891c6a08355018} 
+\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_center@{get\_center}}
+\index{get\_center@{get\_center}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_center()}{get\_center()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+center (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a08b2dd24ef8deb6b51d7acce98c81f14}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a08b2dd24ef8deb6b51d7acce98c81f14} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_centroid@{get\_centroid}}
 \index{get\_centroid@{get\_centroid}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_centroid()}{get\_centroid()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{utils\+::\+Camera\+Coordinate}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a539e2c9830873d305f2261c7bb6ce490}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a539e2c9830873d305f2261c7bb6ce490}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a0b88ad67d7654cbbfa05e659987b6967}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a0b88ad67d7654cbbfa05e659987b6967} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_cos\_angle@{get\_cos\_angle}}
 \index{get\_cos\_angle@{get\_cos\_angle}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_cos\_angle()}{get\_cos\_angle()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+cos\+\_\+angle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{p }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+cos\+\_\+angle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment}{Plane\+\_\+\+Segment}} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -162,29 +176,35 @@ Compute the dot product of two plane normals, It is thecos of the angle between 
 \begin{DoxyReturn}{Returns}
 A number between -\/1 and 1 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a66ab7fa6c31aeabbe55aa38c5dddb2e6}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a66ab7fa6c31aeabbe55aa38c5dddb2e6}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a0f7705197d19b80c42c2894f626360ad}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a0f7705197d19b80c42c2894f626360ad} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_MSE@{get\_MSE}}
 \index{get\_MSE@{get\_MSE}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_MSE()}{get\_MSE()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+\+MSE (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+\+MSE (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2cbb7e0d475665f6519a434642817be1}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2cbb7e0d475665f6519a434642817be1}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2df4152acd16ff960b3daa5cb2de4c63}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2df4152acd16ff960b3daa5cb2de4c63} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_normal@{get\_normal}}
 \index{get\_normal@{get\_normal}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_normal()}{get\_normal()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abaad9ce92dfcdec28d2c772d2cc1aaab}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abaad9ce92dfcdec28d2c772d2cc1aaab}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a240e72e35c9f8eaff752b605801ded21}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a240e72e35c9f8eaff752b605801ded21} 
+\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_parametrization@{get\_parametrization}}
+\index{get\_parametrization@{get\_parametrization}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_parametrization()}{get\_parametrization()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{vector4}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+parametrization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aebcd5e61146fd2ce10c71bd3b88853a9}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aebcd5e61146fd2ce10c71bd3b88853a9} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_plane\_d@{get\_plane\_d}}
 \index{get\_plane\_d@{get\_plane\_d}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_plane\_d()}{get\_plane\_d()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+plane\+\_\+d (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+plane\+\_\+d (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a673e1b4c7064c6b04a0c35c4e787ab16}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a673e1b4c7064c6b04a0c35c4e787ab16}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_point\_cloud\_covariance@{get\_point\_cloud\_covariance}}
 \index{get\_point\_cloud\_covariance@{get\_point\_cloud\_covariance}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_point\_cloud\_covariance()}{get\_point\_cloud\_covariance()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+cloud\+\_\+covariance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+cloud\+\_\+covariance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -193,57 +213,91 @@ Compute the covariance of the points in the plane.
 \begin{DoxyReturn}{Returns}
 the filled covariance matrix of the point cloud 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ad70ad5c5282f07796dfc4fc0b1515043}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ad70ad5c5282f07796dfc4fc0b1515043}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5ce84e1eb7e657244c87fc02a9126b42}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5ce84e1eb7e657244c87fc02a9126b42} 
+\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_point\_cloud\_Huygen\_covariance@{get\_point\_cloud\_Huygen\_covariance}}
+\index{get\_point\_cloud\_Huygen\_covariance@{get\_point\_cloud\_Huygen\_covariance}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_point\_cloud\_Huygen\_covariance()}{get\_point\_cloud\_Huygen\_covariance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+cloud\+\_\+\+Huygen\+\_\+covariance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+return the covariance of this point cloud computed from König-\/\+Huygen formula 
+
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_acdf8ba375b7754a25b27bfbf2911eee4}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_acdf8ba375b7754a25b27bfbf2911eee4} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_point\_count@{get\_point\_count}}
 \index{get\_point\_count@{get\_point\_count}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_point\_count()}{get\_point\_count()}}
-{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a34235cb0c9cbcbeeb1d81e42cef5e862}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a34235cb0c9cbcbeeb1d81e42cef5e862}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abd22426de977152cfcf9c7f36a56721a}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_abd22426de977152cfcf9c7f36a56721a} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_point\_distance@{get\_point\_distance}}
 \index{get\_point\_distance@{get\_point\_distance}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_point\_distance()}{get\_point\_distance()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} \&}]{point }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
 Return the distance from a plane to the given point. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa4777ebf46540b6c0d3fe4a811d4c6ab}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa4777ebf46540b6c0d3fe4a811d4c6ab}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a7e5b40a15b1763dcdacf0b48c3efd8ce}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a7e5b40a15b1763dcdacf0b48c3efd8ce} 
+\index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_point\_distance\_squared@{get\_point\_distance\_squared}}
+\index{get\_point\_distance\_squared@{get\_point\_distance\_squared}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
+\doxysubsubsection{\texorpdfstring{get\_point\_distance\_squared()}{get\_point\_distance\_squared()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6001f2f9c72f0060be3331df907d6609}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6001f2f9c72f0060be3331df907d6609} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_score@{get\_score}}
 \index{get\_score@{get\_score}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_score()}{get\_score()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a7d943b511b66956ffb79302a00b5d1e8}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a7d943b511b66956ffb79302a00b5d1e8}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5c29c6ae97dad4d491152184f6c4fc81}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5c29c6ae97dad4d491152184f6c4fc81} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!init\_plane\_segment@{init\_plane\_segment}}
 \index{init\_plane\_segment@{init\_plane\_segment}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{init\_plane\_segment()}{init\_plane\_segment()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::init\+\_\+plane\+\_\+segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&}]{depth\+Cloud\+Array,  }\item[{const uint}]{cell\+Id }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::init\+\_\+plane\+\_\+segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&}]{depth\+Cloud\+Array,  }\item[{const uint}]{cell\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6a30cb1bee0671aee5ae6b60b05e11a7}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a6a30cb1bee0671aee5ae6b60b05e11a7}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5178046bb083b2911d1a6b18de3ce8d7}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a5178046bb083b2911d1a6b18de3ce8d7} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!is\_cell\_horizontal\_continuous@{is\_cell\_horizontal\_continuous}}
 \index{is\_cell\_horizontal\_continuous@{is\_cell\_horizontal\_continuous}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{is\_cell\_horizontal\_continuous()}{is\_cell\_horizontal\_continuous()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+cell\+\_\+horizontal\+\_\+continuous (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&}]{depth\+Matrix }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+cell\+\_\+horizontal\+\_\+continuous (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&}]{depth\+Matrix }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a11aa581053ba22c7dcfcd44c6449b800}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a11aa581053ba22c7dcfcd44c6449b800}} 
+
+
+Check that the point cloud for this plane patch is horizontaly continuous. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em depth\+Matrix} & The depth representation of the image \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a57c7e1ed99ca79a22fda259a846e4895}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a57c7e1ed99ca79a22fda259a846e4895} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!is\_cell\_vertical\_continuous@{is\_cell\_vertical\_continuous}}
 \index{is\_cell\_vertical\_continuous@{is\_cell\_vertical\_continuous}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{is\_cell\_vertical\_continuous()}{is\_cell\_vertical\_continuous()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+cell\+\_\+vertical\+\_\+continuous (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&}]{depth\+Matrix }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+cell\+\_\+vertical\+\_\+continuous (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&}]{depth\+Matrix }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2746bf24bf12a0932ab2544a40c409ba}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a2746bf24bf12a0932ab2544a40c409ba}} 
+
+
+Check that the point cloud for this plane patch is verticaly continuous. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em depth\+Matrix} & The depth representation of the image \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a3fbcfc80bc6d50bc21e1cac5ded73021}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a3fbcfc80bc6d50bc21e1cac5ded73021} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!is\_planar@{is\_planar}}
 \index{is\_planar@{is\_planar}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{is\_planar()}{is\_planar()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+planar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::is\+\_\+planar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a24a4749ab8aeaa72eead3654c13f1304}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a24a4749ab8aeaa72eead3654c13f1304}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a05d98ffd6fd8e23b592016438a743d2b}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a05d98ffd6fd8e23b592016438a743d2b} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!set\_static\_members@{set\_static\_members}}
 \index{set\_static\_members@{set\_static\_members}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{set\_static\_members()}{set\_static\_members()}}
-{\footnotesize\ttfamily static void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::set\+\_\+static\+\_\+members (\begin{DoxyParamCaption}\item[{const uint}]{cell\+Width,  }\item[{const uint}]{point\+Per\+Cell\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+{\footnotesize\ttfamily static void rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::set\+\_\+static\+\_\+members (\begin{DoxyParamCaption}\item[{const uint}]{cell\+Width,  }\item[{const uint}]{point\+Per\+Cell\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
 
 
 

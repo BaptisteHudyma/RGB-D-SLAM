@@ -1,44 +1,43 @@
-\hypertarget{line__detection_8hpp_source}{}\doxysection{line\+\_\+detection.\+hpp}
-\label{line__detection_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/lines/line\_detection.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/lines/line\_detection.hpp}}
+\doxysection{line\+\_\+detection.\+hpp}
+\hypertarget{line__detection_8hpp_source}{}\label{line__detection_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/lines/line\_detection.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/lines/line\_detection.hpp}}
 \mbox{\hyperlink{line__detection_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_FEATURES\_LINES\_LINE\_DETECTION\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_FEATURES\_LINES\_LINE\_DETECTION\_HPP}}
 \DoxyCodeLine{00003\ }
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../../../third\_party/line\_segment\_detector.hpp"{}}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <opencv2/opencv.hpp>}}
-\DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }features\ \{}
-\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }lines\ \{}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ std::vector<cv::Vec4f>\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_abdfd61c4861cd95714920422d0d8764d}{line\_container}};}
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}}
-\DoxyCodeLine{00017\ \{}
-\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ scale\ =\ 1.0,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ sigmaScale\ =\ 1.0);}
-\DoxyCodeLine{00020\ }
-\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_abdfd61c4861cd95714920422d0d8764d}{line\_container}}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ad6fbcf2fd63fe5efa84dcaa5f129a72f}{detect\_lines}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,\ \textcolor{keyword}{const}\ cv::Mat\&\ depthImage);}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_affcfd4f25a8643633fff4891034d143e}{get\_image\_with\_lines}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_abdfd61c4861cd95714920422d0d8764d}{line\_container}}\&\ linesToDisplay,\ \textcolor{keyword}{const}\ cv::Mat\&\ depthImage,\ cv::Mat\&\ outImage);}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ LineSegmentDetector}}
-\DoxyCodeLine{00042\ \ \ \ \ cv::LSD*\ \_lineDetector;}
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ kernel\ for\ morphological\ operations}}
-\DoxyCodeLine{00045\ \ \ \ \ cv::Mat\ \_kernel;}
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{//\ remove\ copy\ constructors\ as\ we\ have\ dynamically\ instantiated\ members}}
-\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00050\ \};}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \}\ \textcolor{comment}{//\ namespace\ lines}}
-\DoxyCodeLine{00053\ \}\ \textcolor{comment}{//\ namespace\ features}}
-\DoxyCodeLine{00054\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <opencv2/opencv.hpp>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines}{rgbd\_slam::features::lines}}\ \{}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\_container}}\ =\ std::vector<cv::Vec4f>;}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ scale\ =\ 1.0,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ sigmaScale\ =\ 1.0);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00028\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\_container}}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a7714f09bbb8f49776a14403a15ec558f}{detect\_lines}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,\ \textcolor{keyword}{const}\ cv::Mat\_<float>\&\ depthImage)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a36e1be51d0e907754930e78e4978a87a}{get\_image\_with\_lines}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\_container}}\&\ linesToDisplay,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<float>\&\ depthImage,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ outImage)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//\ LineSegmentDetector}}
+\DoxyCodeLine{00043\ \ \ \ \ std::unique\_ptr<cv::LSD>\ \_lineDetector;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ kernel\ for\ morphological\ operations}}
+\DoxyCodeLine{00046\ \ \ \ \ cv::Mat\_<uchar>\ \_kernel;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ remove\ copy\ constructors\ as\ we\ have\ dynamically\ instantiated\ members}}
+\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::features::lines}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

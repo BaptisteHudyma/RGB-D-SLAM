@@ -1,21 +1,38 @@
-\hypertarget{logger_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/outputs/logger.cpp File Reference}
-\label{logger_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.cpp}}
-{\ttfamily \#include \char`\"{}logger.\+hpp\char`\"{}}\newline
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/outputs/logger.cpp File Reference}
+\hypertarget{logger_8cpp}{}\label{logger_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.cpp}}
+{\ttfamily \#include "{}logger.\+hpp"{}}\newline
 {\ttfamily \#include $<$filesystem$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1outputs}{rgbd\+\_\+slam\+::outputs}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ac481964e17f115af5414d23bdc2d97a7}{rgbd\+\_\+slam\+::outputs\+::log}} (const std\+::string\+\_\+view \&message, const std\+::source\+\_\+location \&location)
+enum class \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0}{rgbd\+\_\+slam\+::outputs\+::\+Info\+Level}} \{ \newline
+\mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0a5fb1f955b45e38e31789286a1790398d}{rgbd\+\_\+slam\+::outputs\+::\+ALL}} = 0
+, \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0a41bc94cbd8eebea13ce0491b2ac11b88}{rgbd\+\_\+slam\+::outputs\+::\+LOW}} = 1
+, \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0a2ad6d5975c45da2e711c796f3a1b029c}{rgbd\+\_\+slam\+::outputs\+::\+MED}} = 2
+, \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0ab89de3b4b81c4facfac906edf29aec8c}{rgbd\+\_\+slam\+::outputs\+::\+HIGH}} = 3
+, \newline
+\mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0ab50339a10e1de285ac99d4c3990b8693}{rgbd\+\_\+slam\+::outputs\+::\+NONE}} = 100
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{namespacergbd__slam_1_1outputs_a854c348cba8433fee04b58feb5054cc6}{rgbd\+\_\+slam\+::outputs\+::log\+\_\+warning}} (const std\+::string\+\_\+view \&message, const std\+::source\+\_\+location \&location)
+void \mbox{\hyperlink{namespacergbd__slam_1_1outputs_a808fff6f6c0889f1e54f995791c95823}{rgbd\+\_\+slam\+::outputs\+::log}} (const std\+::string\+\_\+view \&message, const std\+::source\+\_\+location \&location) noexcept
 \item 
-void \mbox{\hyperlink{namespacergbd__slam_1_1outputs_a7c11e499578358f64a58d71f5b0dfb4d}{rgbd\+\_\+slam\+::outputs\+::log\+\_\+error}} (const std\+::string\+\_\+view \&message, const std\+::source\+\_\+location \&location)
+void \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ab717e4badd78d57b03feca68cd4265c0}{rgbd\+\_\+slam\+::outputs\+::log\+\_\+warning}} (const std\+::string\+\_\+view \&message, const std\+::source\+\_\+location \&location) noexcept
+\item 
+void \mbox{\hyperlink{namespacergbd__slam_1_1outputs_abc9d557f41ce2b1c97e961c0f94d910f}{rgbd\+\_\+slam\+::outputs\+::log\+\_\+error}} (const std\+::string\+\_\+view \&message, const std\+::source\+\_\+location \&location) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0}{Info\+Level}} \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ab16c5599146cde7f44bba50fc6e9001d}{rgbd\+\_\+slam\+::outputs\+::\+INFO\+\_\+\+LEVEL}} = \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ad32626c82c72b97572a771df8066a8f0a5fb1f955b45e38e31789286a1790398d}{Info\+Level\+::\+ALL}}
 \end{DoxyCompactItemize}

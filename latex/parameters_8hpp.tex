@@ -1,13 +1,120 @@
-\hypertarget{parameters_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/parameters.hpp File Reference}
-\label{parameters_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp}}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/parameters.hpp File Reference}
+\hypertarget{parameters_8hpp}{}\label{parameters_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/parameters.hpp}}
+{\ttfamily \#include "{}types.\+hpp"{}}\newline
+{\ttfamily \#include $<$Eigen/src/\+Core/\+Matrix.\+h$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
-\doxysubsection*{Classes}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1_parameters}{rgbd\+\_\+slam\+::\+Parameters}}
 \begin{DoxyCompactList}\small\item\em Store all parameters of this SLAM program. It should be used as a static class everywhere in the program. If the parameters are not loaded from a file, a set of default parameters will be used. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1parameters}{rgbd\+\_\+slam\+::parameters}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization}{rgbd\+\_\+slam\+::parameters\+::optimization}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection}{rgbd\+\_\+slam\+::parameters\+::detection}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1matching}{rgbd\+\_\+slam\+::parameters\+::matching}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping}{rgbd\+\_\+slam\+::parameters\+::mapping}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_a50cf5640527f063890dcb800c6769e78}{rgbd\+\_\+slam\+::parameters\+::core\+Number}} = 8
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_a6257956258079ea5e7b7968069e3fccf}{rgbd\+\_\+slam\+::parameters\+::depth\+Sigma\+Error}} = 2.\+73
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_a73dececcff98a340a779ccdfcdad8ebe}{rgbd\+\_\+slam\+::parameters\+::depth\+Sigma\+Multiplier}} = 0.\+74
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_aa3568d0db63ed98fd20287f341a220c7}{rgbd\+\_\+slam\+::parameters\+::depth\+Sigma\+Margin}} = -\/0.\+53
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a0cadff9b4af49317efe33fa87556caf5}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::maximum\+Retroprojection\+Error\+For\+Point\+Inliers\+\_\+px}}
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a191c4131ca672f1090af70205166bb93}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::maximum\+Retroprojection\+Error\+For\+Plane\+Inliers\+\_\+mm}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a23e05b1127d1a872bb2f66853afef57e}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::minimum\+Inliers\+Proportion\+For\+Early\+Stop}}
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a975f315740a68e5e6b6d472e0dc18da5}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::probability\+Of\+Success}} = 0.\+8f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a2804f816542663a78bfdae0bba005677}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::inlier\+Proportion}} = 0.\+6f
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a6ac6911f7e441e728d91ce0550be308b}{rgbd\+\_\+slam\+::parameters\+::optimization\+::minimum\+Point\+For\+Optimization}} = 5
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a596cdb23070cf14a3063e673779362e6}{rgbd\+\_\+slam\+::parameters\+::optimization\+::minimum\+Planes\+For\+Optimization}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a516732c5fb031c2d49ebe95e62333ea8}{rgbd\+\_\+slam\+::parameters\+::optimization\+::maximum\+Iterations}} = 64
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_ad7cde39374ba10ae5abebec70c649014}{rgbd\+\_\+slam\+::parameters\+::optimization\+::error\+Precision}} = 0.\+0f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a88601aafba5b10801c7b0101a55fd535}{rgbd\+\_\+slam\+::parameters\+::optimization\+::tolerance\+Of\+Solution\+Vector\+Norm}} = 1e-\/4f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_ac7a1a80dda7a9a322d46f276e15ce60f}{rgbd\+\_\+slam\+::parameters\+::optimization\+::tolerance\+Of\+Vector\+Function}} = 1e-\/3f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a92ecc7ba813f163a1015e342703d9f2b}{rgbd\+\_\+slam\+::parameters\+::optimization\+::tolerance\+Of\+Error\+Function\+Gradient}} = 0.\+0f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a2b6ef5e9d14af05461fb51aadbff10f6}{rgbd\+\_\+slam\+::parameters\+::optimization\+::diagonal\+Step\+Bound\+Shift}} = 100.\+0f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a1ff6c8f50286f530620dfb70beeacb14}{rgbd\+\_\+slam\+::parameters\+::optimization\+::maximum\+Retroprojection\+Error}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a58a53527a5861893bc07b540f2ebc3ff}{rgbd\+\_\+slam\+::parameters\+::detection\+::keypoint\+Cell\+Detection\+Height\+Count}} = 3
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a1ca69fcc3691ed6b94b96fa8a1bee75e}{rgbd\+\_\+slam\+::parameters\+::detection\+::keypoint\+Cell\+Detection\+Width\+Count}} = 3
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a506067cae6131ac70a83826b45e76f7a}{rgbd\+\_\+slam\+::parameters\+::detection\+::point\+Detector\+Threshold}} = 3
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a537cb4cb1ed112c441da8cc5b63d49f2}{rgbd\+\_\+slam\+::parameters\+::detection\+::maximum\+Point\+Per\+Frame}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_aae5ff5bf2d15f50d6f0c460def49111e}{rgbd\+\_\+slam\+::parameters\+::detection\+::keypoint\+Refresh\+Frequency}} = 5
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_af38c194587d8ed13685426321a6dc29e}{rgbd\+\_\+slam\+::parameters\+::detection\+::optical\+Flow\+Pyramid\+Depth}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ad3c2f5e4467af4bb31ce581f573d3359}{rgbd\+\_\+slam\+::parameters\+::detection\+::optical\+Flow\+Pyramid\+Window\+Size\+Height\+Count}} = 9
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_aeaf82d3c2f7fc505b2bfc740d977c56e}{rgbd\+\_\+slam\+::parameters\+::detection\+::optical\+Flow\+Pyramid\+Window\+Size\+Width\+Count}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a38767713312f98351c7843ff4a849c04}{rgbd\+\_\+slam\+::parameters\+::detection\+::minimum\+Plane\+Seed\+Proportion}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a34c926edfe5fdcc4a59e488e4ff536dd}{rgbd\+\_\+slam\+::parameters\+::detection\+::minimum\+Cell\+Activated\+Proportion}}
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a65345bd5184cf24c058942da9f0ca5d8}{rgbd\+\_\+slam\+::parameters\+::detection\+::minimum\+Zero\+Depth\+Proportion}}
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_adf509a5381c9a9a9cc16d5f15152839f}{rgbd\+\_\+slam\+::parameters\+::detection\+::maximum\+Plane\+Angle\+For\+Merge\+\_\+d}}
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a698781b302a3ab4416614fa45ca23f80}{rgbd\+\_\+slam\+::parameters\+::detection\+::maximum\+Plane\+Distance\+For\+Merge\+\_\+mm}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ae602f09cddfce36c6b341a491e3cc10b}{rgbd\+\_\+slam\+::parameters\+::detection\+::depth\+Map\+Patch\+Size\+\_\+px}}
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a26a195096659b661ad40d2d1d357bd6e}{rgbd\+\_\+slam\+::parameters\+::detection\+::cylinder\+Ransac\+Sqrt\+Max\+Distance}} = 0.\+04f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_add2359362f2103fe9819676e4b82af8a}{rgbd\+\_\+slam\+::parameters\+::detection\+::cylinder\+Ransac\+Minimum\+Score}} = 75
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ab8bf54eca480097eb3b5a5aa5b9367d8}{rgbd\+\_\+slam\+::parameters\+::detection\+::cylinder\+Ransac\+Inlier\+Proportions}} = 0.\+33f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ac6d1b0090851bd65ade374d4c2a5dcbf}{rgbd\+\_\+slam\+::parameters\+::detection\+::cylinder\+Ransac\+Probability\+Of\+Success}} = 0.\+8f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1matching_a9818f8caf953bd93cacbad72b9c5509e}{rgbd\+\_\+slam\+::parameters\+::matching\+::minimum\+Plane\+Overlap\+To\+Consider\+Match}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1matching_ad7d32ceb2e9487462c1ac044d1cf8e7e}{rgbd\+\_\+slam\+::parameters\+::matching\+::maximum\+Angle\+For\+Plane\+Match\+\_\+d}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1matching_a807820601fb26f30bc72b8111ee9621b}{rgbd\+\_\+slam\+::parameters\+::matching\+::maximum\+Distance\+For\+Plane\+Match\+\_\+mm}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1matching_a68182be5887941ac2d66bfe3cac5c555}{rgbd\+\_\+slam\+::parameters\+::matching\+::match\+Search\+Radius\+\_\+px}} = 30
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1matching_a110cd92b443e39c20393d7e162e32ea4}{rgbd\+\_\+slam\+::parameters\+::matching\+::maximum\+Match\+Distance}} = 0.\+7
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_ae5391c441ce07d54561bdaca4606cb62}{rgbd\+\_\+slam\+::parameters\+::mapping\+::point\+Unmatched\+Count\+To\+Loose}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_afbf83e61b09bb2b252a259d6ef743870}{rgbd\+\_\+slam\+::parameters\+::mapping\+::plane\+Unmatched\+Count\+To\+Loose}}
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_ad34e74384fbe29f820ffff019a564871}{rgbd\+\_\+slam\+::parameters\+::mapping\+::point\+Staged\+Age\+Confidence}} = 3
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_a279a6537837d4c7483e76dbf9b19948f}{rgbd\+\_\+slam\+::parameters\+::mapping\+::point\+Minimum\+Confidence\+For\+Map}} = 0.\+9
 \end{DoxyCompactItemize}

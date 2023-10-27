@@ -1,0 +1,137 @@
+\doxysection{polygon.\+hpp}
+\hypertarget{polygon_8hpp_source}{}\label{polygon_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/polygon.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/polygon.hpp}}
+\mbox{\hyperlink{polygon_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_POLYGON\_UTILS\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_UTILS\_POLYGON\_UTILS\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../types.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{coordinates_8hpp}{coordinates.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <boost/geometry/geometry.hpp>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <opencv2/core/mat.hpp>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\_slam::utils}}\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }WorldPolygon;}
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }CameraPolygon;}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\_2d}}\ =\ boost::geometry::model::d2::point\_xy<double>;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}}\ =\ boost::geometry::model::polygon<point\_2d>;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a88bf374fa23364d991eaf39b33d51d5e}{multi\_polygon}}\ =\ boost::geometry::model::multi\_polygon<polygon>;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a11e4b77d98b1accbc1fea20b9c14896e}{box\_2d}}\ =\ boost::geometry::model::box<point\_2d>;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a654a9374867f802f774291449782f89b}{Polygon}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a654a9374867f802f774291449782f89b}{Polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ points,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ normal,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ center);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a654a9374867f802f774291449782f89b}{Polygon}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ otherPolygon,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ normal,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ center);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00045\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a654a9374867f802f774291449782f89b}{Polygon}}(\textcolor{keyword}{const}\ std::vector<point\_2d>\&\ boundaryPoints,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ xAxis,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ yAxis,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ center);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00055\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6885c9907c32bb7abc91ed24641010d6}{compute\_convex\_hull}}(\textcolor{keyword}{const}\ std::vector<vector2>\&\ points)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00062\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6370aa1ca6c1cc52040af5e13322183d}{compute\_concave\_hull}}(\textcolor{keyword}{const}\ std::vector<vector2>\&\ points)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00069\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6c6c2afb09c186fb20e769e28032a133}{contains}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}}\&\ point)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00074\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a84153c6bf504b6e9aedff80df0473a7e}{is\_valid}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ boost::geometry::is\_valid(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a89188f485c3e3a4dcaba19c246e9121f}{\_polygon}});\ \}}
+\DoxyCodeLine{00079\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a09f295ca8c1e114c73abc7ed8bd61626}{is\_valid}}(std::string\&\ reason)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00080\ \ \ \ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ boost::geometry::is\_valid(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a89188f485c3e3a4dcaba19c246e9121f}{\_polygon}},\ reason);}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00087\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a9e876d5aded387b01f2a9eedf83f4c1b}{boundary\_length}}()\ const\ noexcept}
+\DoxyCodeLine{00088\ \ \ \ \ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ boundarylength\ =\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a89188f485c3e3a4dcaba19c246e9121f}{\_polygon}}.outer().size();}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ boundarylength\ ==\ 0\ ?\ 0\ :\ boundarylength\ -\/\ 1;}
+\DoxyCodeLine{00091\ \ \ \ \ \};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00097\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a96dd4791b0f8eee0614be9c5eb623af3}{area}}()\ const\ noexcept;}
+\DoxyCodeLine{00098\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a2a1609287a9d24f1579a15ff57e70c51}{get\_area}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a810c2ccb4967fc5206e66786a957fe7c}{\_area}};\ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a4be765094c39bcafeb05a7ed5eed9a4d}{merge\_union}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other);}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00112\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6937e91bf15fd2ef935e11ca0a2310ed}{project}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextNormal,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextCenter)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00122\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6937e91bf15fd2ef935e11ca0a2310ed}{project}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextXAxis,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextYAxis,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextCenter)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00130\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a25755108a2d9bedb266b538ccb40ff24}{transform}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextNormal,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextCenter)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00139\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a25755108a2d9bedb266b538ccb40ff24}{transform}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextXAxis,}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextYAxis,}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextCenter)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00147\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a3d52db1dcc71acb1eaba0beae2ffdd35}{inter\_over\_union}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00153\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a03c0e6574ebba1cae869272882b7c1a0}{inter\_area}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00159\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a7ee915587578c9dec2a445cd2c09adc3}{union\_area}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00165\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a816385f8c09ebdb95ce088c2e231613c}{union\_one}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00171\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a344c2f2948b6d503b6aa1a57e7f67d2e}{inter\_one}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a258a8afa84926452e9a342ef88aa982d}{simplify}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ distanceThreshold\ =\ 10)\ noexcept;}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00182\ \ \ \ \ [[nodiscard]]\ std::vector<\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a488844ec3dd37040e6def160a63d4616}{get\_unprojected\_boundary}}()\ const;}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_ae5f893339501af853c84ae9ae8a8325b}{get\_center}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_acec2e018f07aaee20be2481fc088b592}{\_center}};\ \};}
+\DoxyCodeLine{00185\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a9cad5af5e1c9e7b6c5f7cbfc6672222e}{get\_x\_axis}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6db06cc850b6ae2bec64bfd417414405}{\_xAxis}};\ \};}
+\DoxyCodeLine{00186\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a8e72b60879523268ec5d59adf68879dd}{get\_y\_axis}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_ac5205cbc47c86daac086bffd5a869b2b}{\_yAxis}};\ \};}
+\DoxyCodeLine{00187\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a7638c11a057f5080dfa7d03e40e46015}{get\_normal}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6db06cc850b6ae2bec64bfd417414405}{\_xAxis}}.cross(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_ac5205cbc47c86daac086bffd5a869b2b}{\_yAxis}});\ \};}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00190\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a89188f485c3e3a4dcaba19c246e9121f}{\_polygon}};}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_acec2e018f07aaee20be2481fc088b592}{\_center}};}
+\DoxyCodeLine{00193\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6db06cc850b6ae2bec64bfd417414405}{\_xAxis}};}
+\DoxyCodeLine{00194\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_ac5205cbc47c86daac086bffd5a869b2b}{\_yAxis}};}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a810c2ccb4967fc5206e66786a957fe7c}{\_area}};\ \textcolor{comment}{//\ this\ polygon\ area:\ computation\ savings}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00206\ \ \ \ \ [[nodiscard]]\ std::vector<point\_2d>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a21da7a6ebac3432f329b6effdb6aefea}{transform\_boundary}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}\&\ transformationMatrix,}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextXAxis,}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextYAxis,}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ nextCenter)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00210\ \};}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00215\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{CameraPolygon}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}}
+\DoxyCodeLine{00216\ \{}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a654a9374867f802f774291449782f89b}{Polygon::Polygon}};}
+\DoxyCodeLine{00219\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon_a4aeac714b74a604e9b8ffa6884042673}{CameraPolygon}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other)\ :\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}(other)\ \{\};}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon_a0b1104c8efcd46806a8220f3f9e77ec7}{display}}(\textcolor{keyword}{const}\ cv::Scalar\&\ color,\ cv::Mat\&\ debugImage)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00233\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{WorldPolygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon_a9ecb80a035bc64d09536a017ba3d516f}{to\_world\_space}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00238\ \ \ \ \ [[nodiscard]]\ std::vector<ScreenCoordinate>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon_a0f875638a5440dfbc17496c64d662326}{get\_screen\_points}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00243\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon_a38575a2116227ae92e4f5036f2e71a6c}{to\_screen\_space}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00249\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon_ae8ef81c7f3996d55335840a90fd5af77}{is\_visible\_in\_screen\_space}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00250\ \};}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00255\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{WorldPolygon}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}}
+\DoxyCodeLine{00256\ \{}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a654a9374867f802f774291449782f89b}{Polygon::Polygon}};}
+\DoxyCodeLine{00259\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_a9e65b66c4b86290515f16e72e5239af6}{WorldPolygon}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}\&\ other)\ :\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}}(other)\ \{\};}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00266\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{CameraPolygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_a8751c52ec84595fe9338bdb3bbfb8032}{to\_camera\_space}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_ad48dd7186c3217fa2ea6553ce7014b38}{merge}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{WorldPolygon}}\&\ other);}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_afb450c340cc756480d82477fae24ce02}{display}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,\ \textcolor{keyword}{const}\ cv::Scalar\&\ color,\ cv::Mat\&\ debugImage)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00281\ \};}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::utils}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

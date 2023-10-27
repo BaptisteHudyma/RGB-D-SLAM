@@ -1,25 +1,27 @@
-\hypertarget{camera__transformation_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/camera\+\_\+transformation.hpp File Reference}
-\label{camera__transformation_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.hpp}}
-{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
-\doxysubsection*{Namespaces}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/camera\+\_\+transformation.hpp File Reference}
+\hypertarget{camera__transformation_8hpp}{}\label{camera__transformation_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/camera\_transformation.hpp}}
+{\ttfamily \#include "{}../types.\+hpp"{}}\newline
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-const world\+To\+Camera\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a80a5c96230a6cced4d4999c60ea659e9}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aedf536ebc2f460ba395df83337240251}{rgbd\+\_\+slam\+::utils\+::get\+\_\+transformation\+\_\+matrix}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&position) noexcept
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3cab8d3e798d09c4d39a14f58d2edd78}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&position) noexcept
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
-const world\+To\+Camera\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a0374f99788406cd572d51692961af33a}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const camera\+To\+World\+Matrix \&camera\+To\+World)
+\mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3305d4173d2bf66546c1d3a956b84d16}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept
 \item 
-const camera\+To\+World\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_acf2041d958f5f63468f142a85b634587}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const quaternion \&rotation, const vector3 \&position)
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5ebcc138398dd5eb327a7f3511a27c8d}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&position) noexcept
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
-const camera\+To\+World\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_a10634a07a41ccc1fa31b3171ea95f490}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const world\+To\+Camera\+Matrix \&world\+To\+Camera)
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a206878e4f0b9589162acdfbea3c7316c}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera) noexcept
 \item 
-plane\+Camera\+To\+World\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_afd84759fb9912b365c73bc392434a849}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+plane\+\_\+camera\+\_\+to\+\_\+world\+\_\+matrix}} (const camera\+To\+World\+Matrix \&camera\+To\+World)
-\begin{DoxyCompactList}\small\item\em Transform a \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} to a special plane camera\+To\+World matrix. \end{DoxyCompactList}\item 
-plane\+World\+To\+Camera\+Matrix \mbox{\hyperlink{namespacergbd__slam_1_1utils_ab4ddc88ce4d31a2c11785ee2288ba534}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+plane\+\_\+world\+\_\+to\+\_\+camera\+\_\+matrix}} (const world\+To\+Camera\+Matrix \&world\+To\+Camera)
-\begin{DoxyCompactList}\small\item\em Transform a \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} to a special plane world\+To\+Camera matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\mbox{\hyperlink{structrgbd__slam_1_1_plane_camera_to_world_matrix}{Plane\+Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aefd412bfec46952817ed7f4248d5c069}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+plane\+\_\+camera\+\_\+to\+\_\+world\+\_\+matrix}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept
+\begin{DoxyCompactList}\small\item\em Transform a \doxylink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix} to a special plane camera\+To\+World matrix. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_plane_world_to_camera_matrix}{Plane\+World\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a06af923843a4356694463fccfa499697}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+plane\+\_\+world\+\_\+to\+\_\+camera\+\_\+matrix}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera) noexcept
+\begin{DoxyCompactList}\small\item\em Transform a \doxylink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix} to a special plane world\+To\+Camera matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}

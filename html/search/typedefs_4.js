@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['line_5fcontainer_0',['line_container',['../namespacergbd__slam_1_1features_1_1lines.html#abdfd61c4861cd95714920422d0d8764d',1,'rgbd_slam::features::lines']]]
+  ['jacobiantype_0',['JacobianType',['../structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor.html#abe7b0b5112eed1b000b20f6cd3029b7b',1,'rgbd_slam::pose_optimization::Levenberg_Marquardt_Functor']]]
 ];

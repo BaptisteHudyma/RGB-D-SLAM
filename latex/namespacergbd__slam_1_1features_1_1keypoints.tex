@@ -1,6 +1,6 @@
-\hypertarget{namespacergbd__slam_1_1features_1_1keypoints}{}\doxysection{rgbd\+\_\+slam\+::features\+::keypoints Namespace Reference}
-\label{namespacergbd__slam_1_1features_1_1keypoints}\index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
-\doxysubsection*{Classes}
+\doxysection{rgbd\+\_\+slam\+::features\+::keypoints Namespace Reference}
+\hypertarget{namespacergbd__slam_1_1features_1_1keypoints}{}\label{namespacergbd__slam_1_1features_1_1keypoints}\index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{Detected\+Key\+Point}}
@@ -11,16 +11,16 @@ class \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___h
 \begin{DoxyCompactList}\small\item\em Handler object to store a reference to detected key points. Passed to other classes for data association purposes. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}}
 \begin{DoxyCompactList}\small\item\em Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a3983644a278082924a6d4780f305e666}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed) noexcept
 \item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a6c6e02021b7ede338ae200ddad7645c5}{is\+\_\+in\+\_\+border}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&im, const double border\+Size=0)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a422b1188033f2763f8e90257186b5fac}{is\+\_\+in\+\_\+border}} (const cv\+::\+Point2f \&pt, const cv\+::\+Mat \&im, const double border\+Size=0) noexcept
 \begin{DoxyCompactList}\small\item\em checks if a point is in an image, a with border \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad80397e4b7ec8be74317bf0}{get\+\_\+depth\+\_\+approximation}} (const cv\+::\+Mat \&depth\+Image, const cv\+::\+Point2f \&depth\+Coordinates)
+double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a5756d74bed4ace6c2af12d88a10f0304}{get\+\_\+depth\+\_\+approximation}} (const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, const cv\+::\+Point2f \&depth\+Coordinates) noexcept
 \begin{DoxyCompactList}\small\item\em Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth with the surrounding points to prevent invalid depth on edges. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Variables}
+\doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 const int \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a0559f810d254e2321e79ac81051d7058}{BORDER\+\_\+\+SIZE}} = 1
@@ -32,27 +32,27 @@ const int \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a971a9b2
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad80397e4b7ec8be74317bf0}\label{namespacergbd__slam_1_1features_1_1keypoints_ac3f09b90ad80397e4b7ec8be74317bf0}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a5756d74bed4ace6c2af12d88a10f0304}\label{namespacergbd__slam_1_1features_1_1keypoints_a5756d74bed4ace6c2af12d88a10f0304} 
 \index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!get\_depth\_approximation@{get\_depth\_approximation}}
 \index{get\_depth\_approximation@{get\_depth\_approximation}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
 \doxysubsubsection{\texorpdfstring{get\_depth\_approximation()}{get\_depth\_approximation()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+depth\+\_\+approximation (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{depth\+Image,  }\item[{const cv\+::\+Point2f \&}]{depth\+Coordinates }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+depth\+\_\+approximation (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image,  }\item[{const cv\+::\+Point2f \&}]{depth\+Coordinates }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
 Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth with the surrounding points to prevent invalid depth on edges. 
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}\label{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a3983644a278082924a6d4780f305e666}\label{namespacergbd__slam_1_1features_1_1keypoints_a3983644a278082924a6d4780f305e666} 
 \index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}}
 \index{get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
 \doxysubsubsection{\texorpdfstring{get\_percent\_of\_elapsed\_time()}{get\_percent\_of\_elapsed\_time()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a6c6e02021b7ede338ae200ddad7645c5}\label{namespacergbd__slam_1_1features_1_1keypoints_a6c6e02021b7ede338ae200ddad7645c5}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a422b1188033f2763f8e90257186b5fac}\label{namespacergbd__slam_1_1features_1_1keypoints_a422b1188033f2763f8e90257186b5fac} 
 \index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!is\_in\_border@{is\_in\_border}}
 \index{is\_in\_border@{is\_in\_border}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
 \doxysubsubsection{\texorpdfstring{is\_in\_border()}{is\_in\_border()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::keypoints\+::is\+\_\+in\+\_\+border (\begin{DoxyParamCaption}\item[{const cv\+::\+Point2f \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{im,  }\item[{const double}]{border\+Size }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::keypoints\+::is\+\_\+in\+\_\+border (\begin{DoxyParamCaption}\item[{const cv\+::\+Point2f \&}]{pt,  }\item[{const cv\+::\+Mat \&}]{im,  }\item[{const double}]{border\+Size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -61,19 +61,19 @@ checks if a point is in an image, a with border
 
 
 \doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a0559f810d254e2321e79ac81051d7058}\label{namespacergbd__slam_1_1features_1_1keypoints_a0559f810d254e2321e79ac81051d7058}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a0559f810d254e2321e79ac81051d7058}\label{namespacergbd__slam_1_1features_1_1keypoints_a0559f810d254e2321e79ac81051d7058} 
 \index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!BORDER\_SIZE@{BORDER\_SIZE}}
 \index{BORDER\_SIZE@{BORDER\_SIZE}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
 \doxysubsubsection{\texorpdfstring{BORDER\_SIZE}{BORDER\_SIZE}}
 {\footnotesize\ttfamily const int rgbd\+\_\+slam\+::features\+::keypoints\+::\+BORDER\+\_\+\+SIZE = 1}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b}\label{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b}\label{namespacergbd__slam_1_1features_1_1keypoints_a8dec335b4df747657c48bcde64bbf91b} 
 \index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!INVALID\_MAP\_POINT\_ID@{INVALID\_MAP\_POINT\_ID}}
 \index{INVALID\_MAP\_POINT\_ID@{INVALID\_MAP\_POINT\_ID}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
 \doxysubsubsection{\texorpdfstring{INVALID\_MAP\_POINT\_ID}{INVALID\_MAP\_POINT\_ID}}
 {\footnotesize\ttfamily const size\+\_\+t rgbd\+\_\+slam\+::features\+::keypoints\+::\+INVALID\+\_\+\+MAP\+\_\+\+POINT\+\_\+\+ID = 0}
 
-\mbox{\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a971a9b22938388e8501402da887c4bb1}\label{namespacergbd__slam_1_1features_1_1keypoints_a971a9b22938388e8501402da887c4bb1}} 
+\Hypertarget{namespacergbd__slam_1_1features_1_1keypoints_a971a9b22938388e8501402da887c4bb1}\label{namespacergbd__slam_1_1features_1_1keypoints_a971a9b22938388e8501402da887c4bb1} 
 \index{rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}!INVALID\_MATCH\_INDEX@{INVALID\_MATCH\_INDEX}}
 \index{INVALID\_MATCH\_INDEX@{INVALID\_MATCH\_INDEX}!rgbd\_slam::features::keypoints@{rgbd\_slam::features::keypoints}}
 \doxysubsubsection{\texorpdfstring{INVALID\_MATCH\_INDEX}{INVALID\_MATCH\_INDEX}}

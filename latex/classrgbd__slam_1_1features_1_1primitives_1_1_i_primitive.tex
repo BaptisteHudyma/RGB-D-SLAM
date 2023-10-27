@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{}\doxysection{rgbd\+\_\+slam\+::features\+::primitives\+::IPrimitive Class Reference}
-\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
+\doxysection{rgbd\+\_\+slam\+::features\+::primitives\+::IPrimitive Class Reference}
+\hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
 
 
 A base class used to compute the tracking analysis. It is a pure virtual class.  
@@ -15,32 +15,12 @@ Inheritance diagram for rgbd\+\_\+slam\+::features\+::primitives\+::IPrimitive\+
 \includegraphics[height=2.000000cm]{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a91f8908c4d1bdeb608afb2c9dd2d703c}{$\sim$\+IPrimitive}} ()
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_abf33b94e258b265c5520a2bbd38cc9dd}{IPrimitive}} ()=default
 \item 
-cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a71f6a83c970280a5fa178aad54e5d052}{get\+\_\+shape\+\_\+mask}} () const
-\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7215414226fe5f61ed62c0b4b328d951}{set\+\_\+shape\+\_\+mask}} (const cv\+::\+Mat \&mask)
-\item 
-uint \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7056be096b83f3367192db1e5303a870}{get\+\_\+contained\+\_\+pixels}} () const
-\begin{DoxyCompactList}\small\item\em Return the number of pixels in this plane mask. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1a43837708a375ce3edd7af6f8785bbf}{can\+\_\+add\+\_\+to\+\_\+map}} () const
-\end{DoxyCompactItemize}
-\doxysubsection*{Protected Member Functions}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a69305ec72e95d91e7abb26c86984422d}{IPrimitive}} (const cv\+::\+Mat \&shape\+Mask)
-\begin{DoxyCompactList}\small\item\em Hidden constructor, to set shape. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_ac24216fb167ae471911d13ddbbe62f47}{get\+\_\+\+IOU}} (const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{IPrimitive}} \&prim) const
-\begin{DoxyCompactList}\small\item\em Compute the Inter over Union factor of two masks. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a8aa4afd9eee9669f066905a251ad8cc3}{get\+\_\+\+IOU}} (const cv\+::\+Mat \&mask) const
-\end{DoxyCompactItemize}
-\doxysubsection*{Protected Attributes}
-\begin{DoxyCompactItemize}
-\item 
-cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1e8c070a3e48598e1f9d2b0ce76b6dec}{\+\_\+shape\+Mask}}
+bool \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_afdb6f2ef9f0acee3cc4b655747834a92}{can\+\_\+add\+\_\+to\+\_\+map}} () const noexcept
 \end{DoxyCompactItemize}
 
 
@@ -48,89 +28,23 @@ cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_pri
 A base class used to compute the tracking analysis. It is a pure virtual class. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a91f8908c4d1bdeb608afb2c9dd2d703c}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a91f8908c4d1bdeb608afb2c9dd2d703c}} 
-\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!````~IPrimitive@{$\sim$IPrimitive}}
-\index{````~IPrimitive@{$\sim$IPrimitive}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
-\doxysubsubsection{\texorpdfstring{$\sim$IPrimitive()}{~IPrimitive()}}
-{\footnotesize\ttfamily virtual rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::$\sim$\+IPrimitive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a69305ec72e95d91e7abb26c86984422d}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a69305ec72e95d91e7abb26c86984422d}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_abf33b94e258b265c5520a2bbd38cc9dd}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_abf33b94e258b265c5520a2bbd38cc9dd} 
 \index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!IPrimitive@{IPrimitive}}
 \index{IPrimitive@{IPrimitive}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
 \doxysubsubsection{\texorpdfstring{IPrimitive()}{IPrimitive()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::\+IPrimitive (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{shape\+Mask }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
-
-
-
-Hidden constructor, to set shape. 
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::\+IPrimitive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1a43837708a375ce3edd7af6f8785bbf}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1a43837708a375ce3edd7af6f8785bbf}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_afdb6f2ef9f0acee3cc4b655747834a92}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_afdb6f2ef9f0acee3cc4b655747834a92} 
 \index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!can\_add\_to\_map@{can\_add\_to\_map}}
 \index{can\_add\_to\_map@{can\_add\_to\_map}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
 \doxysubsubsection{\texorpdfstring{can\_add\_to\_map()}{can\_add\_to\_map()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::can\+\_\+add\+\_\+to\+\_\+map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7056be096b83f3367192db1e5303a870}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7056be096b83f3367192db1e5303a870}} 
-\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!get\_contained\_pixels@{get\_contained\_pixels}}
-\index{get\_contained\_pixels@{get\_contained\_pixels}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
-\doxysubsubsection{\texorpdfstring{get\_contained\_pixels()}{get\_contained\_pixels()}}
-{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::get\+\_\+contained\+\_\+pixels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::can\+\_\+add\+\_\+to\+\_\+map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 
-Return the number of pixels in this plane mask. 
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a8aa4afd9eee9669f066905a251ad8cc3}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a8aa4afd9eee9669f066905a251ad8cc3}} 
-\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!get\_IOU@{get\_IOU}}
-\index{get\_IOU@{get\_IOU}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
-\doxysubsubsection{\texorpdfstring{get\_IOU()}{get\_IOU()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::get\+\_\+\+IOU (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{mask }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_ac24216fb167ae471911d13ddbbe62f47}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_ac24216fb167ae471911d13ddbbe62f47}} 
-\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!get\_IOU@{get\_IOU}}
-\index{get\_IOU@{get\_IOU}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
-\doxysubsubsection{\texorpdfstring{get\_IOU()}{get\_IOU()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::get\+\_\+\+IOU (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}{IPrimitive}} \&}]{prim }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
-
-
-
-Compute the Inter over Union factor of two masks. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em prim} & Another primitive object\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-A number between 0 and 1, indicating the IoU 
-\end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a71f6a83c970280a5fa178aad54e5d052}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a71f6a83c970280a5fa178aad54e5d052}} 
-\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!get\_shape\_mask@{get\_shape\_mask}}
-\index{get\_shape\_mask@{get\_shape\_mask}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
-\doxysubsubsection{\texorpdfstring{get\_shape\_mask()}{get\_shape\_mask()}}
-{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::get\+\_\+shape\+\_\+mask (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7215414226fe5f61ed62c0b4b328d951}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a7215414226fe5f61ed62c0b4b328d951}} 
-\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!set\_shape\_mask@{set\_shape\_mask}}
-\index{set\_shape\_mask@{set\_shape\_mask}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
-\doxysubsubsection{\texorpdfstring{set\_shape\_mask()}{set\_shape\_mask()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::set\+\_\+shape\+\_\+mask (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{mask }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-
-
-\doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1e8c070a3e48598e1f9d2b0ce76b6dec}\label{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive_a1e8c070a3e48598e1f9d2b0ce76b6dec}} 
-\index{rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}!\_shapeMask@{\_shapeMask}}
-\index{\_shapeMask@{\_shapeMask}!rgbd\_slam::features::primitives::IPrimitive@{rgbd\_slam::features::primitives::IPrimitive}}
-\doxysubsubsection{\texorpdfstring{\_shapeMask}{\_shapeMask}}
-{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::features\+::primitives\+::\+IPrimitive\+::\+\_\+shape\+Mask\hspace{0.3cm}{\ttfamily [protected]}}
-
-
-
-The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{shape__primitives_8hpp}{shape\+\_\+primitives.\+hpp}}\item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{shape__primitives_8cpp}{shape\+\_\+primitives.\+cpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{shape__primitives_8hpp}{shape\+\_\+primitives.\+hpp}}\end{DoxyCompactItemize}

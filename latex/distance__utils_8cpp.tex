@@ -1,25 +1,17 @@
-\hypertarget{distance__utils_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/distance\+\_\+utils.cpp File Reference}
-\label{distance__utils_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.cpp}}
-{\ttfamily \#include \char`\"{}distance\+\_\+utils.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}camera\+\_\+transformation.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
-\doxysubsection*{Namespaces}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/distance\+\_\+utils.cpp File Reference}
+\hypertarget{distance__utils_8cpp}{}\label{distance__utils_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/distance\_utils.cpp}}
+{\ttfamily \#include "{}distance\+\_\+utils.\+hpp"{}}\newline
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-Eigen\+::\+Vector\+Xd \mbox{\hyperlink{namespacergbd__slam_1_1utils_a477393006dbc7176069ab906c9d71de0}{rgbd\+\_\+slam\+::utils\+::get\+\_\+signed\+\_\+distance}} (const Eigen\+::\+Vector\+Xd \&pointA, const Eigen\+::\+Vector\+Xd \&pointB)
-\begin{DoxyCompactList}\small\item\em Compute a signed distance between two points. \end{DoxyCompactList}\item 
-vector2 \mbox{\hyperlink{namespacergbd__slam_1_1utils_a801ddab347a34f9751bc34d986a54a94}{rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance\+\_\+2D}} (const World\+Coordinate \&world\+Point, const Screen\+Coordinate \&camera\+Point, const world\+To\+Camera\+Matrix \&world\+To\+Camera)
-\begin{DoxyCompactList}\small\item\em Compute a signed 2D distance between a world point and a camera point, by retroprojecting the world point to camera space. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_adb50cd04e7f8326de182132457b47bca}{rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+2\+D\+\_\+distance}} (const World\+Coordinate \&world\+Point, const Screen\+Coordinate \&camera\+Point, const world\+To\+Camera\+Matrix \&world\+To\+Camera)
-\begin{DoxyCompactList}\small\item\em Compute a distance between a world point and a camera point, by retroprojecting the world point to camera space. \end{DoxyCompactList}\item 
-vector3 \mbox{\hyperlink{namespacergbd__slam_1_1utils_aebd0eb5e51aa0589be2606a3c8a393fd}{rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance\+\_\+3D}} (const World\+Coordinate \&world\+Point, const Screen\+Coordinate \&camera\+Point, const camera\+To\+World\+Matrix \&camera\+To\+World)
-\begin{DoxyCompactList}\small\item\em Compute a signed distance between a world point and a 3D point in camera space, by projecting the camera point to world space. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2afb7eac5e5a965281a356e386468b5d}{rgbd\+\_\+slam\+::utils\+::get\+\_\+3\+D\+\_\+to\+\_\+3\+D\+\_\+distance}} (const World\+Coordinate \&world\+Point, const Screen\+Coordinate \&camera\+Point, const camera\+To\+World\+Matrix \&camera\+To\+World)
-\begin{DoxyCompactList}\small\item\em Compute a distance between a world point and a 3D point in camera space, by projecting the camera point to world space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a16a02447a90e06cbf50b708dadc4715c}{rgbd\+\_\+slam\+::utils\+::angle\+\_\+distance}} (const double angleA, const double angleB) noexcept
+\begin{DoxyCompactList}\small\item\em compute a distance bewteen two angles in radian \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387}{rgbd\+\_\+slam\+::utils\+::double\+\_\+equal}} (const double a, const double b, const double epsilon=std\+::numeric\+\_\+limits$<$ double $>$\+::epsilon()) noexcept
+\begin{DoxyCompactList}\small\item\em Check an equality between two doubles, with an epsilon\+: TODO move this to a more sensible location. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
-\hypertarget{depth__map__transformation_8hpp_source}{}\doxysection{depth\+\_\+map\+\_\+transformation.\+hpp}
-\label{depth__map__transformation_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/depth\_map\_transformation.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/depth\_map\_transformation.hpp}}
+\doxysection{depth\+\_\+map\+\_\+transformation.\+hpp}
+\hypertarget{depth__map__transformation_8hpp_source}{}\label{depth__map__transformation_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/depth\_map\_transformation.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/depth\_map\_transformation.hpp}}
 \mbox{\hyperlink{depth__map__transformation_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_FEATURES\_PRIMITIVES\_DEPTHOPERATIONS\_HPP}}
@@ -8,79 +8,34 @@
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../../types.hpp"{}}}
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <opencv2/opencv.hpp>}}
 \DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }features\ \{}
-\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }primitives\ \{}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{Depth\_Map\_Transformation}}}
-\DoxyCodeLine{00016\ \{}
-\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{Depth\_Map\_Transformation}}(\textcolor{keyword}{const}\ uint\ width,\ \textcolor{keyword}{const}\ uint\ height,\ \textcolor{keyword}{const}\ uint\ cellSize);}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \ \ \ \ EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a1f9883adb7283bcceff9fa4d146b1123}{rectify\_depth}}(\textcolor{keyword}{const}\ cv::Mat\&\ depthImage,\ cv::Mat\&\ rectifiedDepth);}
-\DoxyCodeLine{00034\ }
-\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_ad1ae59253af7865691e36cc2dd8e4708}{get\_organized\_cloud\_array}}(\textcolor{keyword}{const}\ cv::Mat\&\ depthImage,\ \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}}\&\ organizedCloudArray);}
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a241946b20821fd2206529856b81f866a}{is\_ok}}()\textcolor{keyword}{\ const}}
-\DoxyCodeLine{00050\ \textcolor{keyword}{\ \ \ \ }\{}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_isOk;}
-\DoxyCodeLine{00052\ \ \ \ \ \};}
-\DoxyCodeLine{00053\ }
-\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{public}:\ \textcolor{comment}{//\ getters}}
-\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a6b4d9e1b31a8aca926e57d68a29036ab}{get\_rgb\_fx}}()\textcolor{keyword}{\ const}}
-\DoxyCodeLine{00056\ \textcolor{keyword}{\ \ \ \ }\{}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_fxRgb;}
-\DoxyCodeLine{00058\ \ \ \ \ \}}
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a9307664eefcf389c381bea3da3dd757f}{get\_rgb\_fy}}()\textcolor{keyword}{\ const}}
-\DoxyCodeLine{00060\ \textcolor{keyword}{\ \ \ \ }\{}
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_fyRgb;}
-\DoxyCodeLine{00062\ \ \ \ \ \}}
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a828b06eedbc4940ffe0a52c664a0857f}{get\_rgb\_cx}}()\textcolor{keyword}{\ const}}
-\DoxyCodeLine{00064\ \textcolor{keyword}{\ \ \ \ }\{}
-\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_cxRgb;}
-\DoxyCodeLine{00066\ \ \ \ \ \}}
-\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a0ba4ab7ea890c0983145cd14c4de41dd}{get\_rgb\_cy}}()\textcolor{keyword}{\ const}}
-\DoxyCodeLine{00068\ \textcolor{keyword}{\ \ \ \ }\{}
-\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_cyRgb;}
-\DoxyCodeLine{00070\ \ \ \ \ \}}
-\DoxyCodeLine{00071\ }
-\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a2e718af36fd6b11ef68be47485f42287}{load\_parameters}}();}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_ad2fc7e2abf09fea51ffcc9f76bd1bf16}{init\_matrices}}();}
-\DoxyCodeLine{00082\ }
-\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00084\ \ \ \ \ uint\ \_width;}
-\DoxyCodeLine{00085\ \ \ \ \ uint\ \_height;}
-\DoxyCodeLine{00086\ \ \ \ \ uint\ \_cellSize;}
-\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_isOk;}
-\DoxyCodeLine{00088\ }
-\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ cam\ parameters}}
-\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{float}\ \_fxIr;}
-\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{float}\ \_fyIr;}
-\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{float}\ \_cxIr;}
-\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{float}\ \_cyIr;}
-\DoxyCodeLine{00094\ }
-\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{float}\ \_fxRgb;}
-\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{float}\ \_fyRgb;}
-\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{float}\ \_cxRgb;}
-\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{float}\ \_cyRgb;}
-\DoxyCodeLine{00099\ }
-\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ camera\ parameters}}
-\DoxyCodeLine{00101\ \ \ \ \ cv::Mat\ \_Rstereo;}
-\DoxyCodeLine{00102\ \ \ \ \ cv::Mat\ \_Tstereo;}
-\DoxyCodeLine{00103\ }
-\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\ pre\ computation\ matrix}}
-\DoxyCodeLine{00105\ \ \ \ \ cv::Mat\_<float>\ \_Xpre;}
-\DoxyCodeLine{00106\ \ \ \ \ cv::Mat\_<float>\ \_Ypre;}
-\DoxyCodeLine{00107\ \ \ \ \ cv::Mat\_<int>\ \_cellMap;}
-\DoxyCodeLine{00108\ \};}
-\DoxyCodeLine{00109\ \}\ \textcolor{comment}{//\ namespace\ primitives}}
-\DoxyCodeLine{00110\ \}\ \textcolor{comment}{//\ namespace\ features}}
-\DoxyCodeLine{00111\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00112\ }
-\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives}{rgbd\_slam::features::primitives}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{Depth\_Map\_Transformation}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}{Depth\_Map\_Transformation}}(\textcolor{keyword}{const}\ uint\ width,\ \textcolor{keyword}{const}\ uint\ height,\ \textcolor{keyword}{const}\ uint\ cellSize);}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00029\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_a0494b4fcc4dfea284297108f04e2328c}{rectify\_depth}}(\textcolor{keyword}{const}\ cv::Mat\_<float>\&\ depthImage,\ cv::Mat\_<float>\&\ rectifiedDepth)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00038\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_ae557566e9364e74f3090814aa2cfeb53}{get\_organized\_cloud\_array}}(\textcolor{keyword}{const}\ cv::Mat\_<float>\&\ depthImage,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}}\&\ organizedCloudArray)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation_acc791afdffe9f6acb2cad42a76b11ffc}{init\_matrices}}()\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00048\ \ \ \ \ uint\ \_width;}
+\DoxyCodeLine{00049\ \ \ \ \ uint\ \_height;}
+\DoxyCodeLine{00050\ \ \ \ \ uint\ \_cellSize;}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ pre\ computation\ matrix}}
+\DoxyCodeLine{00053\ \ \ \ \ cv::Mat\_<float>\ \_Xpre;}
+\DoxyCodeLine{00054\ \ \ \ \ cv::Mat\_<float>\ \_Ypre;}
+\DoxyCodeLine{00055\ \ \ \ \ cv::Mat\_<int>\ \_cellMap;}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::features::primitives}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

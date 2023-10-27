@@ -1,13 +1,16 @@
-\hypertarget{keypoint__detection_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/keypoint\+\_\+detection.cpp File Reference}
-\label{keypoint__detection_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.cpp}}
-{\ttfamily \#include \char`\"{}keypoint\+\_\+detection.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../../outputs/logger.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../../parameters.\+hpp\char`\"{}}\newline
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/keypoints/keypoint\+\_\+detection.cpp File Reference}
+\hypertarget{keypoint__detection_8cpp}{}\label{keypoint__detection_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/keypoints/keypoint\_detection.cpp}}
+{\ttfamily \#include "{}keypoint\+\_\+detection.\+hpp"{}}\newline
+{\ttfamily \#include "{}../../outputs/logger.\+hpp"{}}\newline
+{\ttfamily \#include "{}../../parameters.\+hpp"{}}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$tbb/parallel\+\_\+for.\+h$>$}\newline
 {\ttfamily \#include $<$opencv2/features2d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/xfeatures2d.\+hpp$>$}\newline
 {\ttfamily \#include $<$opencv2/highgui.\+hpp$>$}\newline
 {\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
 {\ttfamily \#include $<$vector$>$}\newline
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
@@ -16,8 +19,8 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{rgbd\+\_\+slam\+::fe
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints}{rgbd\+\_\+slam\+::features\+::keypoints}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a32c3a65d4275dbdab6fdcadea7835a2f}{rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+double \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1keypoints_a3983644a278082924a6d4780f305e666}{rgbd\+\_\+slam\+::features\+::keypoints\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed) noexcept
 \end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{}\doxysection{rgbd\+\_\+slam\+::RGBD\+\_\+\+SLAM Class Reference}
-\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}\index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
+\doxysection{rgbd\+\_\+slam\+::RGBD\+\_\+\+SLAM Class Reference}
+\hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}\index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 
 
 Main Simultaneous localisation and tracking class. This is the input of the program, the only needed interaction from a user view point.  
@@ -9,29 +9,29 @@ Main Simultaneous localisation and tracking class. This is the input of the prog
 
 {\ttfamily \#include $<$rgbd\+\_\+slam.\+hpp$>$}
 
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}{RGBD\+\_\+\+SLAM}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&start\+Pose, const uint image\+Width=640, const uint image\+Height=480)
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}{$\sim$\+RGBD\+\_\+\+SLAM}} ()
-\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a51b11f3c63fb22540c62a2cad6523f43}{rectify\+\_\+depth}} (cv\+::\+Mat \&depth\+Image)
+void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a3afe35b040e276215f9694c17bc378f9}{rectify\+\_\+depth}} (cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image) noexcept
 \begin{DoxyCompactList}\small\item\em Convert the given depth image to the rectified version. IE\+: align it with the RGB image. \end{DoxyCompactList}\item 
-const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a2d46b45a8cbb0855481e230ac8f44198}{track}} (const cv\+::\+Mat \&input\+Rgb\+Image, const cv\+::\+Mat \&input\+Depth\+Image, const bool should\+Detect\+Lines=false)
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac2cef1b4accbf1bca29237dcbb8c02e5}{track}} (const cv\+::\+Mat \&input\+Rgb\+Image, const cv\+::\+Mat\+\_\+$<$ float $>$ \&input\+Depth\+Image) noexcept
 \begin{DoxyCompactList}\small\item\em Estimates a new pose from the given images. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a008cefbaca5a56008abd12909be97b71}{get\+\_\+debug\+\_\+image}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&cam\+Pose, const cv\+::\+Mat \&original\+RGB, cv\+::\+Mat \&debug\+Image, const double elapsed\+Time, const bool should\+Display\+Staged\+Points=false, const bool should\+Display\+Primitive\+Masks=false)
+cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ae549d0ed9237ee6ca5f981f635ff6ca1}{get\+\_\+debug\+\_\+image}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&cam\+Pose, const cv\+::\+Mat \&original\+RGB, const double elapsed\+Time, const bool should\+Display\+Staged\+Points=false, const bool should\+Display\+Line\+Detection=false, const bool should\+Display\+Primitive\+Masks=false) const noexcept
 \begin{DoxyCompactList}\small\item\em Compute a debug image. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ab4e4a7a16ea2d66a16d962c1ff2747a1}{show\+\_\+statistics}} (double mean\+Frame\+Treatment\+Duration) const
+void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_aaa39c832444df0a184447e248709a628}{show\+\_\+statistics}} (double mean\+Frame\+Treatment\+Duration) const noexcept
 \begin{DoxyCompactList}\small\item\em Show the time statistics for certain parts of the program. Kind of a basic profiler. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Protected Member Functions}
+\doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ae1bd3d3499e79eb3c0047f2ea8e9982c}{compute\+\_\+new\+\_\+pose}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&depth\+Image, const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&cloud\+Array\+Organized)
-\begin{DoxyCompactList}\small\item\em Compute a new pose from the keypoints points between two following images. It uses only the keypoints with an associated depth. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a80bf1bf691ef1247d8275535d0eb433c}{compute\+\_\+lines}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&depth\+Image, cv\+::\+Mat \&out\+Image)
+\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_detected_feature_container}{map\+\_\+management\+::\+Detected\+Feature\+Container}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a66fa928c5c601c1a2d1165b70f5109a5}{detect\+\_\+features}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&predicted\+Pose, const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&cloud\+Array\+Organized) noexcept
 \item 
-void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b806720e8040b9}{set\+\_\+color\+\_\+vector}} ()
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a9f02ffc108ef3e7e9d192a05d0c2d1ba}{compute\+\_\+new\+\_\+pose}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&cloud\+Array\+Organized) noexcept
+\begin{DoxyCompactList}\small\item\em Compute a new pose from the keypoints points between two following images. It uses only the keypoints with an associated depth. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a3a4dfaea8574ddb512357698976cd29b}{compute\+\_\+lines}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, cv\+::\+Mat \&out\+Image) noexcept
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac614f1d014bf2d1b5fe959e976dadadf}{set\+\_\+color\+\_\+vector}} () noexcept
 \end{DoxyCompactItemize}
 
 
@@ -39,11 +39,11 @@ void \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b
 Main Simultaneous localisation and tracking class. This is the input of the program, the only needed interaction from a user view point. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a7c5df73aff09ecdb2fb4f655e634b2d1} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!RGBD\_SLAM@{RGBD\_SLAM}}
 \index{RGBD\_SLAM@{RGBD\_SLAM}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{RGBD\_SLAM()}{RGBD\_SLAM()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{start\+Pose,  }\item[{const uint}]{image\+Width = {\ttfamily 640},  }\item[{const uint}]{image\+Height = {\ttfamily 480} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{start\+Pose,  }\item[{const uint}]{image\+Width = {\ttfamily 640},  }\item[{const uint}]{image\+Height = {\ttfamily 480} }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -54,26 +54,20 @@ Main Simultaneous localisation and tracking class. This is the input of the prog
 \mbox{\texttt{ in}}  & {\em image\+Height} & The height of the depth image (fixed) \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a088d6a5a0579505227fd57004dc54bbe}} 
-\index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!````~RGBD\_SLAM@{$\sim$RGBD\_SLAM}}
-\index{````~RGBD\_SLAM@{$\sim$RGBD\_SLAM}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
-\doxysubsubsection{\texorpdfstring{$\sim$RGBD\_SLAM()}{~RGBD\_SLAM()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::$\sim$\+RGBD\+\_\+\+SLAM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a80bf1bf691ef1247d8275535d0eb433c}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a80bf1bf691ef1247d8275535d0eb433c}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a3a4dfaea8574ddb512357698976cd29b}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a3a4dfaea8574ddb512357698976cd29b} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!compute\_lines@{compute\_lines}}
 \index{compute\_lines@{compute\_lines}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{compute\_lines()}{compute\_lines()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::compute\+\_\+lines (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat \&}]{depth\+Image,  }\item[{cv\+::\+Mat \&}]{out\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::compute\+\_\+lines (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image,  }\item[{cv\+::\+Mat \&}]{out\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ae1bd3d3499e79eb3c0047f2ea8e9982c}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ae1bd3d3499e79eb3c0047f2ea8e9982c}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a9f02ffc108ef3e7e9d192a05d0c2d1ba}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a9f02ffc108ef3e7e9d192a05d0c2d1ba} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!compute\_new\_pose@{compute\_new\_pose}}
 \index{compute\_new\_pose@{compute\_new\_pose}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{compute\_new\_pose()}{compute\_new\_pose()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::compute\+\_\+new\+\_\+pose (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat \&}]{depth\+Image,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}} \&}]{cloud\+Array\+Organized }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::compute\+\_\+new\+\_\+pose (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&}]{cloud\+Array\+Organized }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
 
 
@@ -91,11 +85,17 @@ Compute a new pose from the keypoints points between two following images. It us
 \begin{DoxyReturn}{Returns}
 The new estimated pose from points positions 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a008cefbaca5a56008abd12909be97b71}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a008cefbaca5a56008abd12909be97b71}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a66fa928c5c601c1a2d1165b70f5109a5}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a66fa928c5c601c1a2d1165b70f5109a5} 
+\index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!detect\_features@{detect\_features}}
+\index{detect\_features@{detect\_features}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
+\doxysubsubsection{\texorpdfstring{detect\_features()}{detect\_features()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_detected_feature_container}{map\+\_\+management\+::\+Detected\+Feature\+Container}} rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::detect\+\_\+features (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{predicted\+Pose,  }\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&}]{cloud\+Array\+Organized }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ae549d0ed9237ee6ca5f981f635ff6ca1}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ae549d0ed9237ee6ca5f981f635ff6ca1} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!get\_debug\_image@{get\_debug\_image}}
 \index{get\_debug\_image@{get\_debug\_image}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{get\_debug\_image()}{get\_debug\_image()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::get\+\_\+debug\+\_\+image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{cam\+Pose,  }\item[{const cv\+::\+Mat \&}]{original\+RGB,  }\item[{cv\+::\+Mat \&}]{debug\+Image,  }\item[{const double}]{elapsed\+Time,  }\item[{const bool}]{should\+Display\+Staged\+Points = {\ttfamily false},  }\item[{const bool}]{should\+Display\+Primitive\+Masks = {\ttfamily false} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::get\+\_\+debug\+\_\+image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{cam\+Pose,  }\item[{const cv\+::\+Mat \&}]{original\+RGB,  }\item[{const double}]{elapsed\+Time,  }\item[{const bool}]{should\+Display\+Staged\+Points = {\ttfamily false},  }\item[{const bool}]{should\+Display\+Line\+Detection = {\ttfamily false},  }\item[{const bool}]{should\+Display\+Primitive\+Masks = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -107,20 +107,20 @@ Compute a debug image.
 \hline
 \mbox{\texttt{ in}}  & {\em original\+RGB} & Raw rgb image. Will be used as a base for the final image \\
 \hline
-\mbox{\texttt{ out}}  & {\em debug\+Image} & Output image \\
-\hline
 \mbox{\texttt{ in}}  & {\em elapsed\+Time} & Time since the last call (used for FPS count) \\
 \hline
 \mbox{\texttt{ in}}  & {\em should\+Display\+Staged\+Points} & Display the points that are not map points yet \\
 \hline
+\mbox{\texttt{ in}}  & {\em should\+Display\+Line\+Detection} & Display the detected lines \\
+\hline
 \mbox{\texttt{ in}}  & {\em should\+Display\+Primitive\+Masks} & Display the detected primitive masks \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a51b11f3c63fb22540c62a2cad6523f43}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a51b11f3c63fb22540c62a2cad6523f43}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a3afe35b040e276215f9694c17bc378f9}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a3afe35b040e276215f9694c17bc378f9} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!rectify\_depth@{rectify\_depth}}
 \index{rectify\_depth@{rectify\_depth}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{rectify\_depth()}{rectify\_depth()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::rectify\+\_\+depth (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{depth\+Image }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::rectify\+\_\+depth (\begin{DoxyParamCaption}\item[{cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -131,27 +131,27 @@ Convert the given depth image to the rectified version. IE\+: align it with the 
 \mbox{\texttt{ in,out}}  & {\em depth\+Image} & the distorded depth image \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b806720e8040b9}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a496a44dc9b41f28e81b806720e8040b9}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac614f1d014bf2d1b5fe959e976dadadf}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac614f1d014bf2d1b5fe959e976dadadf} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!set\_color\_vector@{set\_color\_vector}}
 \index{set\_color\_vector@{set\_color\_vector}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{set\_color\_vector()}{set\_color\_vector()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::set\+\_\+color\+\_\+vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::set\+\_\+color\+\_\+vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ab4e4a7a16ea2d66a16d962c1ff2747a1}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ab4e4a7a16ea2d66a16d962c1ff2747a1}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_aaa39c832444df0a184447e248709a628}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_aaa39c832444df0a184447e248709a628} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!show\_statistics@{show\_statistics}}
 \index{show\_statistics@{show\_statistics}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{double}]{mean\+Frame\+Treatment\+Duration }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{double}]{mean\+Frame\+Treatment\+Duration }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
 Show the time statistics for certain parts of the program. Kind of a basic profiler. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a2d46b45a8cbb0855481e230ac8f44198}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_a2d46b45a8cbb0855481e230ac8f44198}} 
+\Hypertarget{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac2cef1b4accbf1bca29237dcbb8c02e5}\label{classrgbd__slam_1_1_r_g_b_d___s_l_a_m_ac2cef1b4accbf1bca29237dcbb8c02e5} 
 \index{rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}!track@{track}}
 \index{track@{track}!rgbd\_slam::RGBD\_SLAM@{rgbd\_slam::RGBD\_SLAM}}
 \doxysubsubsection{\texorpdfstring{track()}{track()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::track (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{input\+Rgb\+Image,  }\item[{const cv\+::\+Mat \&}]{input\+Depth\+Image,  }\item[{const bool}]{should\+Detect\+Lines = {\ttfamily false} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} rgbd\+\_\+slam\+::\+RGBD\+\_\+\+SLAM\+::track (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{input\+Rgb\+Image,  }\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{input\+Depth\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -161,9 +161,7 @@ Estimates a new pose from the given images.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em input\+Rgb\+Image} & Raw RGB image \\
 \hline
-\mbox{\texttt{ in}}  & {\em input\+Depth\+Image} & Raw depth Image, in millimeters \\
-\hline
-\mbox{\texttt{ in}}  & {\em should\+Detect\+Lines} & Should we use line detection on the RGB image ?\\
+\mbox{\texttt{ in}}  & {\em input\+Depth\+Image} & Raw depth Image, in millimeters\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

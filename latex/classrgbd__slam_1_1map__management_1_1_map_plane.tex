@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane}{}\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Plane Class Reference}
-\label{classrgbd__slam_1_1map__management_1_1_map_plane}\index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
+\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Plane Class Reference}
+\hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane}{}\label{classrgbd__slam_1_1map__management_1_1_map_plane}\index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 
 
 {\ttfamily \#include $<$map\+\_\+primitive.\+hpp$>$}
@@ -10,127 +10,119 @@ Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Plane\+:\b
 \includegraphics[height=1.117021cm]{classrgbd__slam_1_1map__management_1_1_map_plane}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ad567f0b086924d9411d2ab4e17f05123}{Map\+Plane}} ()
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ad85eeb2c411dd8cd60873c95c442e030}{Map\+Plane}} (const size\+\_\+t id)
 \item 
-virtual int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a816fac00ba24ce117969fc69f897dd0a}{find\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ae81589b5d45d36b6a81b595c1d750d05}{Detected\+Plane\+Object}} \&detected\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Detected\+Feature\+Matched, std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2a6b855421340e137ed5f3534ad8d7fc}{Plane\+Match\+Type}} $>$ \&matches, const bool should\+Add\+To\+Matches=true, const bool use\+Advanced\+Search=false) const override
-\begin{DoxyCompactList}\small\item\em Searches for a match in the detected\+Features object. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a0e1fec550820521a2e9838b5e43b9bc4}{add\+\_\+to\+\_\+tracked}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad040cfd44b25854570bb2d067c07b639}{Tracked\+Plane\+Object}} \&tracked\+Features, const uint drop\+Chance=1000) const override
+virtual \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_aa2fc9458bd11d60c3c515211cac4d01d}{\texorpdfstring{$\sim$}{\string~}\+Map\+Plane}} ()=default
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ace0734a5ce9d2f3f701ce04989ab71a5}{find\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{Detected\+Plane\+Object}} \&detected\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera, const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&is\+Detected\+Feature\+Matched, std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a672f8c0a672c4f640ac2bc6238a43bb9}{Plane\+Match\+Type}} $>$ \&matches, const bool should\+Add\+To\+Matches=true, const bool use\+Advanced\+Search=false) const noexcept override
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_af5c73a06092eac5a25f354c731d3a50e}{add\+\_\+to\+\_\+tracked}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{Tracked\+Plane\+Object}} \&tracked\+Features, const uint drop\+Chance=1000) const noexcept override
 \begin{DoxyCompactList}\small\item\em Add the current feature to the tracked\+Features object. \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a1ccfa1bd6290b3337594e91c8765b0c8}{draw}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix, cv\+::\+Mat \&debug\+Image, const cv\+::\+Scalar \&color) const override
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a821627d0be6ebefc5bfe0ce277d27281}{draw}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix, cv\+::\+Mat \&debug\+Image, const cv\+::\+Scalar \&color) const noexcept override
 \begin{DoxyCompactList}\small\item\em Draw this feature on the given image. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_add5456bd487e43fa067511f965528e81}{is\+\_\+visible}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix) const override
-\begin{DoxyCompactList}\small\item\em Return true if the map feature is visible from the given position. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane}}}
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_afa5962a2b020993fbb71df2a882324d4}{is\+\_\+visible}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix) const noexcept override
+\begin{DoxyCompactList}\small\item\em Return true if the map feature is visible from the given position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a1c4d38e6aa6ff364e805d61a268cd70c}{write\+\_\+to\+\_\+file}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{outputs\+::\+IMap\+\_\+\+Writer}} $>$ map\+Writer) const noexcept override
+\begin{DoxyCompactList}\small\item\em should write this feature to a file, using the provided map\+Writer \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane}}}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_ac45ff8a02b6c0158d345d7adb69ab632}{Plane}} ()
 \item 
-uint \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a440c916b429222c2c9243297c6444335}{get\+\_\+contained\+\_\+pixels}} () const
-\begin{DoxyCompactList}\small\item\em Return the number of pixels in this plane mask. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a9fac516dde68975943ee4df501c28509}{get\+\_\+parametrization}} () const
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a8c27b07da30efe8adf896f54fb4fcd40}{get\+\_\+parametrization}} () const noexcept
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_afcbbe76631ca015792ff00a6dac2c243}{get\+\_\+centroid}} () const
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a7f911a99bfcf97170ed4a3c8b4bc1f17}{get\+\_\+covariance}} () const noexcept
 \item 
-cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a54d37981f7e5570f73cec64c4e4c9d16}{get\+\_\+mask}} () const
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils\+::\+World\+Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a2240000e79d48701d6c886a3fb4e26db}{get\+\_\+boundary\+\_\+polygon}} () const noexcept
 \item 
-double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a751c86ba4f796c634d0b28328d429d36}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \&new\+Detection\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&new\+Detection\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&detected\+Centroid)
+double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_ab0f6d8e071c6e4cdc199a44863925248}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{Detected\+Plane\+Type}} \&matched\+Feature, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \&new\+Detection\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&new\+Detection\+Covariance)
 \begin{DoxyCompactList}\small\item\em Update this plane coordinates using a new detection. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a27bcc4947154718cc94d2ab884012501}{IMap\+Feature}} ()
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aa0673e0693625747f856bbaee9cf17f7}{IMap\+Feature}} (const size\+\_\+t id)
 \item 
-virtual int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_afaa4f0c52c1bb35ce10250ce002dffc6}{find\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ae81589b5d45d36b6a81b595c1d750d05}{Detected\+Plane\+Object}} \&detected\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Detected\+Feature\+Matched, std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2a6b855421340e137ed5f3534ad8d7fc}{Plane\+Match\+Type}} $>$ \&matches, const bool should\+Add\+To\+Matches=true, const bool use\+Advanced\+Search=false) const=0
-\begin{DoxyCompactList}\small\item\em Searches for a match in the detected\+Features object. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a6beb4a077f930d39e78d59a429cd89c3}{is\+\_\+matched}} () const
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_adcc9b8e9842232162f88e957b4e3dd2d}{is\+\_\+matched}} () const noexcept
 \item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ac3e463b77f6924cd0202817b20f4cc93}{mark\+\_\+unmatched}} ()
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aab0ed3419ce8a5e72ee61ac730448ec5}{mark\+\_\+unmatched}} () noexcept
 \begin{DoxyCompactList}\small\item\em mark this map feature as having no match \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a0d8d9dd6ceae1e898c236c5a4a5a620a}{mark\+\_\+matched}} (const int match\+Index)
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aed3e6f5a155dedc47d69c68860d4459e}{mark\+\_\+matched}} (const int match\+Index) noexcept
 \begin{DoxyCompactList}\small\item\em mark this map feature as having a match at the given index \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a55e3a577c3f1c291d45e9a5300333f40}{update\+\_\+matched}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aacb253b3ad5f6c5efbbe7bab588e03df}{Detected\+Plane\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a43bf430c776d1d804f3dea637c6afbef}{update\+\_\+matched}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{Detected\+Plane\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept
 \begin{DoxyCompactList}\small\item\em Update the feature, with the corresponding match. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_af081fbddaf8d75beae457fd4470b6c4a}{update\+\_\+unmatched}} ()
-\begin{DoxyCompactList}\small\item\em Update the feature, with the no match status. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a09408d864bc2af9663353620f2845a03}{add\+\_\+to\+\_\+tracked}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad040cfd44b25854570bb2d067c07b639}{Tracked\+Plane\+Object}} \&tracked\+Features, const uint drop\+Chance=1000) const=0
-\begin{DoxyCompactList}\small\item\em Add the current feature to the tracked\+Features object. \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_abc1b10ae3b6192c0af88297859e84660}{draw}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix, cv\+::\+Mat \&debug\+Image, const cv\+::\+Scalar \&color) const=0
-\begin{DoxyCompactList}\small\item\em Draw this feature on the given image. \end{DoxyCompactList}\item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a70d06b6fbda9a3aacf637896599b1418}{is\+\_\+visible}} (const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix) const=0
-\begin{DoxyCompactList}\small\item\em Return true if the map feature is visible from the given position. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Protected Member Functions}
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_afdcfc1d18296f19d065f35374fbefa18}{update\+\_\+unmatched}} () noexcept
+\begin{DoxyCompactList}\small\item\em Update the feature, with the no match status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a3d432dda73ab80b5f20d3003ecee5f91}{update\+\_\+with\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aacb253b3ad5f6c5efbbe7bab588e03df}{Detected\+Plane\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World) override
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a0921dfae483dcd83f35af09a4ca0be91}{update\+\_\+with\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{Detected\+Plane\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept override
 \item 
-virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_adaaf892b5cead31e6ccd1122d71cd6f5}{update\+\_\+no\+\_\+match}} () override
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_af2f161c54ce198b2fdf5be8990a6fc1f}{update\+\_\+no\+\_\+match}} () noexcept override
 \end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane}}}
 \begin{DoxyCompactItemize}
 \item 
-virtual bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ab734a9993f3a1d3b3a3714a0000b906f}{update\+\_\+with\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aacb253b3ad5f6c5efbbe7bab588e03df}{Detected\+Plane\+Type}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&camera\+To\+World)=0
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}{\+\_\+parametrization}}
 \item 
-virtual void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ab97a2ee3935ba54fbf3fbec01b4c370a}{update\+\_\+no\+\_\+match}} ()=0
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}{\+\_\+covariance}}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils\+::\+World\+Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a7f6e2e303f928e468b9a6d9fa9bb33b8}{\+\_\+boundary\+Polygon}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Additional Inherited Members}
-\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}}
 \begin{DoxyCompactItemize}
 \item 
 size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_af1c6ff5c9dd91b5aef2eefd7c85364b3}{\+\_\+failed\+Tracking\+Count}}
 \item 
 int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a652dc56e42d950f53c4791e71cde7c7f}{\+\_\+successiv\+Matched\+Count}}
 \item 
-const uint \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aa7b6261d017379730064aa6912771f57}{\+\_\+id}}
+const size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aa0b5532442e3831bf54e38b90c0dc6c6}{\+\_\+id}}
 \item 
 int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a2cdcd6ba3138a1fe84346b571479d3de}{\+\_\+match\+Index}}
 \end{DoxyCompactItemize}
-\doxysubsubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}}
 \begin{DoxyCompactItemize}
 \item 
 static const int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a965a94a5ffa851e7fb3851aa47b9ce09}{UNMATCHED\+\_\+\+FEATURE\+\_\+\+INDEX}}
 \item 
 static const int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a82d85e722ecbc9b0dd4acb46e947fbec}{FIRST\+\_\+\+DETECTION\+\_\+\+INDEX}}
 \end{DoxyCompactItemize}
-\doxysubsubsection*{Protected Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane}}}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}{\+\_\+parametrization}}
-\item 
-\mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}{\+\_\+covariance}}
-\item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_acca9e48254d94129725663edd89b01c3}{\+\_\+centroid}}
-\item 
-cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_af8b8c8fd4a2cf4afdfc15a4f6f70c145}{\+\_\+shape\+Mask}}
-\end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_ad567f0b086924d9411d2ab4e17f05123}\label{classrgbd__slam_1_1map__management_1_1_map_plane_ad567f0b086924d9411d2ab4e17f05123}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_ad567f0b086924d9411d2ab4e17f05123}\label{classrgbd__slam_1_1map__management_1_1_map_plane_ad567f0b086924d9411d2ab4e17f05123} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!MapPlane@{MapPlane}}
 \index{MapPlane@{MapPlane}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{MapPlane()}{MapPlane()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::\+Map\+Plane (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_ad85eeb2c411dd8cd60873c95c442e030}\label{classrgbd__slam_1_1map__management_1_1_map_plane_ad85eeb2c411dd8cd60873c95c442e030}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_ad85eeb2c411dd8cd60873c95c442e030}\label{classrgbd__slam_1_1map__management_1_1_map_plane_ad85eeb2c411dd8cd60873c95c442e030} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!MapPlane@{MapPlane}}
 \index{MapPlane@{MapPlane}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{MapPlane()}{MapPlane()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::\+Map\+Plane (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::\+Map\+Plane (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_aa2fc9458bd11d60c3c515211cac4d01d}\label{classrgbd__slam_1_1map__management_1_1_map_plane_aa2fc9458bd11d60c3c515211cac4d01d} 
+\index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!````~MapPlane@{\texorpdfstring{$\sim$}{\string~}MapPlane}}
+\index{````~MapPlane@{\texorpdfstring{$\sim$}{\string~}MapPlane}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}MapPlane()}{\string~MapPlane()}}
+{\footnotesize\ttfamily virtual rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::\texorpdfstring{$\sim$}{\string~}\+Map\+Plane (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_a0e1fec550820521a2e9838b5e43b9bc4}\label{classrgbd__slam_1_1map__management_1_1_map_plane_a0e1fec550820521a2e9838b5e43b9bc4}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_af5c73a06092eac5a25f354c731d3a50e}\label{classrgbd__slam_1_1map__management_1_1_map_plane_af5c73a06092eac5a25f354c731d3a50e} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!add\_to\_tracked@{add\_to\_tracked}}
 \index{add\_to\_tracked@{add\_to\_tracked}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{add\_to\_tracked()}{add\_to\_tracked()}}
-{\footnotesize\ttfamily virtual bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::add\+\_\+to\+\_\+tracked (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad040cfd44b25854570bb2d067c07b639}{Tracked\+Plane\+Object}} \&}]{tracked\+Features,  }\item[{const uint}]{drop\+Chance = {\ttfamily 1000} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::add\+\_\+to\+\_\+tracked (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{Tracked\+Plane\+Object}} \&}]{tracked\+Features,  }\item[{const uint}]{drop\+Chance = {\ttfamily 1000} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
 
 
 
@@ -150,13 +142,13 @@ True if this was added to tracked\+Features object
 \end{DoxyReturn}
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a09408d864bc2af9663353620f2845a03}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a9c3d9fb37ae25110e2aeec8188b6cc19}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_a1ccfa1bd6290b3337594e91c8765b0c8}\label{classrgbd__slam_1_1map__management_1_1_map_plane_a1ccfa1bd6290b3337594e91c8765b0c8}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_a821627d0be6ebefc5bfe0ce277d27281}\label{classrgbd__slam_1_1map__management_1_1_map_plane_a821627d0be6ebefc5bfe0ce277d27281} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!draw@{draw}}
 \index{draw@{draw}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{draw()}{draw()}}
-{\footnotesize\ttfamily virtual void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::draw (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Cam\+Matrix,  }\item[{cv\+::\+Mat \&}]{debug\+Image,  }\item[{const cv\+::\+Scalar \&}]{color }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::draw (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Cam\+Matrix,  }\item[{cv\+::\+Mat \&}]{debug\+Image,  }\item[{const cv\+::\+Scalar \&}]{color }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
 
 
 
@@ -173,45 +165,23 @@ Draw this feature on the given image.
 \end{DoxyParams}
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_abc1b10ae3b6192c0af88297859e84660}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a4b1b8af1b9f50f1adebf268bb4e34b56}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_a816fac00ba24ce117969fc69f897dd0a}\label{classrgbd__slam_1_1map__management_1_1_map_plane_a816fac00ba24ce117969fc69f897dd0a}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_ace0734a5ce9d2f3f701ce04989ab71a5}\label{classrgbd__slam_1_1map__management_1_1_map_plane_ace0734a5ce9d2f3f701ce04989ab71a5} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!find\_match@{find\_match}}
 \index{find\_match@{find\_match}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{find\_match()}{find\_match()}}
-{\footnotesize\ttfamily virtual int rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::find\+\_\+match (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ae81589b5d45d36b6a81b595c1d750d05}{Detected\+Plane\+Object}} \&}]{detected\+Features,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Detected\+Feature\+Matched,  }\item[{std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a2a6b855421340e137ed5f3534ad8d7fc}{Plane\+Match\+Type}} $>$ \&}]{matches,  }\item[{const bool}]{should\+Add\+To\+Matches = {\ttfamily true},  }\item[{const bool}]{use\+Advanced\+Search = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::find\+\_\+match (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{Detected\+Plane\+Object}} \&}]{detected\+Features,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&}]{is\+Detected\+Feature\+Matched,  }\item[{std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a672f8c0a672c4f640ac2bc6238a43bb9}{Plane\+Match\+Type}} $>$ \&}]{matches,  }\item[{const bool}]{should\+Add\+To\+Matches = {\ttfamily true},  }\item[{const bool}]{use\+Advanced\+Search = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
 
+\doxylink{classrgbd__slam_1_1map__management_1_1_map_plane}{Map\+Plane} 
 
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ac681e4bf4d71a3477e39cf8163ef06a6}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
 
-Searches for a match in the detected\+Features object. 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em detected\+Features} & The object that contains the detected features for this frame \\
-\hline
-\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & The matrix to convert from map space to camera space. This should be an estimate of the position from which detected\+Features were observed \\
-\hline
-\mbox{\texttt{ in,out}}  & {\em is\+Detected\+Feature\+Matched} & A vector of booleans indicating which detected features are already matched. should be updated if a match is found \\
-\hline
-\mbox{\texttt{ in,out}}  & {\em matches} & The object that contains the feature matches \\
-\hline
-\mbox{\texttt{ in}}  & {\em should\+Add\+To\+Matches} & If false, will mark feature as matched but wont add them to the match vector \\
-\hline
-\mbox{\texttt{ in}}  & {\em use\+Advanced\+Search} & If true, will search matches with a lesser accuracy, but further \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the index of the match if found, or UNMATCHED\+\_\+\+FEATURE\+\_\+\+INDEX 
-\end{DoxyReturn}
-
-
-Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_afaa4f0c52c1bb35ce10250ce002dffc6}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
-
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_add5456bd487e43fa067511f965528e81}\label{classrgbd__slam_1_1map__management_1_1_map_plane_add5456bd487e43fa067511f965528e81}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_afa5962a2b020993fbb71df2a882324d4}\label{classrgbd__slam_1_1map__management_1_1_map_plane_afa5962a2b020993fbb71df2a882324d4} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!is\_visible@{is\_visible}}
 \index{is\_visible@{is\_visible}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{is\_visible()}{is\_visible()}}
-{\footnotesize\ttfamily virtual bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::is\+\_\+visible (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}} \&}]{world\+To\+Cam\+Matrix }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::is\+\_\+visible (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Cam\+Matrix }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
 
 
 
@@ -227,30 +197,45 @@ True if the feature should be visible
 \end{DoxyReturn}
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a70d06b6fbda9a3aacf637896599b1418}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a34aa1523c3a642ee822b9e5e52a0f8b3}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_adaaf892b5cead31e6ccd1122d71cd6f5}\label{classrgbd__slam_1_1map__management_1_1_map_plane_adaaf892b5cead31e6ccd1122d71cd6f5}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_af2f161c54ce198b2fdf5be8990a6fc1f}\label{classrgbd__slam_1_1map__management_1_1_map_plane_af2f161c54ce198b2fdf5be8990a6fc1f} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!update\_no\_match@{update\_no\_match}}
 \index{update\_no\_match@{update\_no\_match}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{update\_no\_match()}{update\_no\_match()}}
-{\footnotesize\ttfamily virtual void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::update\+\_\+no\+\_\+match (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::update\+\_\+no\+\_\+match (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
 
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ab97a2ee3935ba54fbf3fbec01b4c370a}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a6d0eccc9cf62867c2a3bf159393e164f}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_a3d432dda73ab80b5f20d3003ecee5f91}\label{classrgbd__slam_1_1map__management_1_1_map_plane_a3d432dda73ab80b5f20d3003ecee5f91}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_a0921dfae483dcd83f35af09a4ca0be91}\label{classrgbd__slam_1_1map__management_1_1_map_plane_a0921dfae483dcd83f35af09a4ca0be91} 
 \index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!update\_with\_match@{update\_with\_match}}
 \index{update\_with\_match@{update\_with\_match}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
 \doxysubsubsection{\texorpdfstring{update\_with\_match()}{update\_with\_match()}}
-{\footnotesize\ttfamily virtual bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::update\+\_\+with\+\_\+match (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aacb253b3ad5f6c5efbbe7bab588e03df}{Detected\+Plane\+Type}} \&}]{matched\+Feature,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::update\+\_\+with\+\_\+match (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{Detected\+Plane\+Type}} \&}]{matched\+Feature,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
 
 
 
-Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ab734a9993f3a1d3b3a3714a0000b906f}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a1f3624a9ecad2aae8f1e0f87e016ad03}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
+
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_map_plane_a1c4d38e6aa6ff364e805d61a268cd70c}\label{classrgbd__slam_1_1map__management_1_1_map_plane_a1c4d38e6aa6ff364e805d61a268cd70c} 
+\index{rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}!write\_to\_file@{write\_to\_file}}
+\index{write\_to\_file@{write\_to\_file}!rgbd\_slam::map\_management::MapPlane@{rgbd\_slam::map\_management::MapPlane}}
+\doxysubsubsection{\texorpdfstring{write\_to\_file()}{write\_to\_file()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane\+::write\+\_\+to\+\_\+file (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{outputs\+::\+IMap\+\_\+\+Writer}} $>$}]{map\+Writer }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
 
 
 
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+should write this feature to a file, using the provided map\+Writer 
+
+
+
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a20b1104c89ef1b344d49cca46cbc42a2}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object $>$}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__primitive_8hpp}{map\+\_\+primitive.\+hpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__primitive_8hpp}{map\+\_\+primitive.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__primitive_8cpp}{map\+\_\+primitive.\+cpp}}\end{DoxyCompactItemize}

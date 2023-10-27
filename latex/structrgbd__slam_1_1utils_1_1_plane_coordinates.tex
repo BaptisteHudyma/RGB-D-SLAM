@@ -1,0 +1,154 @@
+\doxysection{rgbd\+\_\+slam\+::utils\+::Plane\+Coordinates Struct Reference}
+\hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates}{}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates}\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+
+
+Base class to handle plane coordinates.  
+
+
+
+
+{\ttfamily \#include $<$coordinates.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::Plane\+Coordinates\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structrgbd__slam_1_1utils_1_1_plane_coordinates}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a9f89c9ca06b421ce2586ca2ff2a35ba7}{Plane\+Coordinates}} ()
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a83a5fa38eb858c7ac7ba9ed984ff6daf}{Plane\+Coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{vector4}} \&parametrization)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac685aa74b484c4e5b94f660ce1518fbc}{Plane\+Coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a198fbbbe3e912c793c53666a007822b9}{normal}}, const double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac03e3a45e8ab32720e51fa7f5368df9e}{d}})
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_ad767ebc5e0fb66114175f4e09b25e7b6}{Plane\+Coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&other)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \& \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_ad27a3915174356948b055b4adbd3eda3}{operator=}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&other) noexcept
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{vector4}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a74481bbd5ec9f167026bd909c577a807}{get\+\_\+parametrization}} () const noexcept
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a19ddd18d8bcba5a6654e64fb254708b1}{get\+\_\+normal}} () const noexcept
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \& \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a198fbbbe3e912c793c53666a007822b9}{normal}} () noexcept
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac662cd40facec1a33908b7e7a36cdace}{get\+\_\+d}} () const noexcept
+\item 
+double \& \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac03e3a45e8ab32720e51fa7f5368df9e}{d}} () noexcept
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a94be3058f7913e8ab2f12bcd4a6e3a4e}{get\+\_\+center}} () const noexcept
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_abab8eb1c31465976fae4f02a9a4a90e6}{get\+\_\+point\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&point) const noexcept
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_afcea2cb775ccdc39eed4a472dfe92c78}{get\+\_\+point\+\_\+distance\+\_\+squared}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&point) const noexcept
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_a25ba0cd1bb449ea34bea5ebdcf0f8e2d}{get\+\_\+cos\+\_\+angle}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&other) const noexcept
+\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates_af142eb88cef0b35d5ad103c0692f979b}{has\+NaN}} () const noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class to handle plane coordinates. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_a9f89c9ca06b421ce2586ca2ff2a35ba7}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_a9f89c9ca06b421ce2586ca2ff2a35ba7} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!PlaneCoordinates@{PlaneCoordinates}}
+\index{PlaneCoordinates@{PlaneCoordinates}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{PlaneCoordinates()}{PlaneCoordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::\+Plane\+Coordinates (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_a83a5fa38eb858c7ac7ba9ed984ff6daf}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_a83a5fa38eb858c7ac7ba9ed984ff6daf} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!PlaneCoordinates@{PlaneCoordinates}}
+\index{PlaneCoordinates@{PlaneCoordinates}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{PlaneCoordinates()}{PlaneCoordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::\+Plane\+Coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{vector4}} \&}]{parametrization }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac685aa74b484c4e5b94f660ce1518fbc}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac685aa74b484c4e5b94f660ce1518fbc} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!PlaneCoordinates@{PlaneCoordinates}}
+\index{PlaneCoordinates@{PlaneCoordinates}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{PlaneCoordinates()}{PlaneCoordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::\+Plane\+Coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{normal,  }\item[{const double}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_ad767ebc5e0fb66114175f4e09b25e7b6}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_ad767ebc5e0fb66114175f4e09b25e7b6} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!PlaneCoordinates@{PlaneCoordinates}}
+\index{PlaneCoordinates@{PlaneCoordinates}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{PlaneCoordinates()}{PlaneCoordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::\+Plane\+Coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac03e3a45e8ab32720e51fa7f5368df9e}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac03e3a45e8ab32720e51fa7f5368df9e} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!d@{d}}
+\index{d@{d}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{d()}{d()}}
+{\footnotesize\ttfamily double \& rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::d (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_a94be3058f7913e8ab2f12bcd4a6e3a4e}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_a94be3058f7913e8ab2f12bcd4a6e3a4e} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!get\_center@{get\_center}}
+\index{get\_center@{get\_center}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{get\_center()}{get\_center()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::get\+\_\+center (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_a25ba0cd1bb449ea34bea5ebdcf0f8e2d}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_a25ba0cd1bb449ea34bea5ebdcf0f8e2d} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!get\_cos\_angle@{get\_cos\_angle}}
+\index{get\_cos\_angle@{get\_cos\_angle}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{get\_cos\_angle()}{get\_cos\_angle()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::get\+\_\+cos\+\_\+angle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac662cd40facec1a33908b7e7a36cdace}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_ac662cd40facec1a33908b7e7a36cdace} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!get\_d@{get\_d}}
+\index{get\_d@{get\_d}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{get\_d()}{get\_d()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::get\+\_\+d (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_a19ddd18d8bcba5a6654e64fb254708b1}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_a19ddd18d8bcba5a6654e64fb254708b1} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!get\_normal@{get\_normal}}
+\index{get\_normal@{get\_normal}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{get\_normal()}{get\_normal()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::get\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_a74481bbd5ec9f167026bd909c577a807}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_a74481bbd5ec9f167026bd909c577a807} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!get\_parametrization@{get\_parametrization}}
+\index{get\_parametrization@{get\_parametrization}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{get\_parametrization()}{get\_parametrization()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{vector4}} rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::get\+\_\+parametrization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_abab8eb1c31465976fae4f02a9a4a90e6}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_abab8eb1c31465976fae4f02a9a4a90e6} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!get\_point\_distance@{get\_point\_distance}}
+\index{get\_point\_distance@{get\_point\_distance}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{get\_point\_distance()}{get\_point\_distance()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::get\+\_\+point\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_afcea2cb775ccdc39eed4a472dfe92c78}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_afcea2cb775ccdc39eed4a472dfe92c78} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!get\_point\_distance\_squared@{get\_point\_distance\_squared}}
+\index{get\_point\_distance\_squared@{get\_point\_distance\_squared}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{get\_point\_distance\_squared()}{get\_point\_distance\_squared()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::get\+\_\+point\+\_\+distance\+\_\+squared (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_af142eb88cef0b35d5ad103c0692f979b}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_af142eb88cef0b35d5ad103c0692f979b} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!hasNaN@{hasNaN}}
+\index{hasNaN@{hasNaN}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{hasNaN()}{hasNaN()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::has\+NaN (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_a198fbbbe3e912c793c53666a007822b9}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_a198fbbbe3e912c793c53666a007822b9} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!normal@{normal}}
+\index{normal@{normal}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{normal()}{normal()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \& rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_plane_coordinates_ad27a3915174356948b055b4adbd3eda3}\label{structrgbd__slam_1_1utils_1_1_plane_coordinates_ad27a3915174356948b055b4adbd3eda3} 
+\index{rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}!operator=@{operator=}}
+\index{operator=@{operator=}!rgbd\_slam::utils::PlaneCoordinates@{rgbd\_slam::utils::PlaneCoordinates}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \& rgbd\+\_\+slam\+::utils\+::\+Plane\+Coordinates\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{coordinates_8hpp}{coordinates.\+hpp}}\end{DoxyCompactItemize}

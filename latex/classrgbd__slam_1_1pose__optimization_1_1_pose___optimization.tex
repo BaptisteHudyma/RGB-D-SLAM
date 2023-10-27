@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}{}\doxysection{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Pose\+\_\+\+Optimization Class Reference}
-\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}\index{rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}}
+\doxysection{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Pose\+\_\+\+Optimization Class Reference}
+\hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}{}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization}\index{rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}}
 
 
 Find the transformation between a matches feature sets, using a custom Levenberg Marquardt method.  
@@ -9,12 +9,12 @@ Find the transformation between a matches feature sets, using a custom Levenberg
 
 {\ttfamily \#include $<$pose\+\_\+optimization.\+hpp$>$}
 
-\doxysubsection*{Static Public Member Functions}
+\doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a6cb17e6de2fb54ef9264c9e355628401}{compute\+\_\+optimized\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&current\+Pose, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&matched\+Features, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&optimized\+Pose, \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&feature\+Sets)
+static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_adc5cc03e3b5200e03d71003b2267e60e}{compute\+\_\+optimized\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&current\+Pose, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&matched\+Features, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&optimized\+Pose, \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&feature\+Sets) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a new observer global pose, to replace the current estimated pose. \end{DoxyCompactList}\item 
-static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_aeabf50dd46499608e0b10dad37b366d2}{compute\+\_\+pose\+\_\+variance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&optimized\+Pose, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&matched\+Features, \mbox{\hyperlink{namespacergbd__slam_a94c77331186bb0c8fdcb26baa0d910d5}{matrix66}} \&pose\+Covariance, const uint iterations=100)
+static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a1bcea3b59274de253018e2cc661401c1}{compute\+\_\+pose\+\_\+variance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&optimized\+Pose, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&matched\+Features, \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&pose\+Covariance, const uint iterations=100) noexcept
 \begin{DoxyCompactList}\small\item\em Compute the variance of a given pose, using multiple iterations of the optimization process. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -22,11 +22,11 @@ static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___op
 Find the transformation between a matches feature sets, using a custom Levenberg Marquardt method. 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a6cb17e6de2fb54ef9264c9e355628401}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a6cb17e6de2fb54ef9264c9e355628401}} 
+\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_adc5cc03e3b5200e03d71003b2267e60e}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_adc5cc03e3b5200e03d71003b2267e60e} 
 \index{rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}!compute\_optimized\_pose@{compute\_optimized\_pose}}
 \index{compute\_optimized\_pose@{compute\_optimized\_pose}!rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}}
 \doxysubsubsection{\texorpdfstring{compute\_optimized\_pose()}{compute\_optimized\_pose()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Pose\+\_\+\+Optimization\+::compute\+\_\+optimized\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{current\+Pose,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{matched\+Features,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{optimized\+Pose,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&}]{feature\+Sets }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Pose\+\_\+\+Optimization\+::compute\+\_\+optimized\+\_\+pose (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{current\+Pose,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{matched\+Features,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&}]{optimized\+Pose,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&}]{feature\+Sets }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [noexcept]}}
 
 
 
@@ -46,11 +46,11 @@ Compute a new observer global pose, to replace the current estimated pose.
 \begin{DoxyReturn}{Returns}
 True if a valid pose was computed 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_aeabf50dd46499608e0b10dad37b366d2}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_aeabf50dd46499608e0b10dad37b366d2}} 
+\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a1bcea3b59274de253018e2cc661401c1}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a1bcea3b59274de253018e2cc661401c1} 
 \index{rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}!compute\_pose\_variance@{compute\_pose\_variance}}
 \index{compute\_pose\_variance@{compute\_pose\_variance}!rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}}
 \doxysubsubsection{\texorpdfstring{compute\_pose\_variance()}{compute\_pose\_variance()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Pose\+\_\+\+Optimization\+::compute\+\_\+pose\+\_\+variance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{optimized\+Pose,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&}]{matched\+Features,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a94c77331186bb0c8fdcb26baa0d910d5}{matrix66}} \&}]{pose\+Covariance,  }\item[{const uint}]{iterations = {\ttfamily 100} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Pose\+\_\+\+Optimization\+::compute\+\_\+pose\+\_\+variance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{optimized\+Pose,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&}]{matched\+Features,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&}]{pose\+Covariance,  }\item[{const uint}]{iterations = {\ttfamily 100} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [noexcept]}}
 
 
 

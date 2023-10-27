@@ -1,29 +1,29 @@
-\hypertarget{pose_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/pose.hpp File Reference}
-\label{pose_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/pose.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/pose.hpp}}
-{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
-\doxysubsection*{Classes}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/pose.hpp File Reference}
+\hypertarget{pose_8hpp}{}\label{pose_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/pose.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/pose.hpp}}
+{\ttfamily \#include "{}../types.\+hpp"{}}\newline
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{rgbd\+\_\+slam\+::utils\+::\+Pose\+Base}}
 \begin{DoxyCompactList}\small\item\em Store a position. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{rgbd\+\_\+slam\+::utils\+::\+Pose}}
 \begin{DoxyCompactList}\small\item\em Store a position with variance estimations. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Typedefs}
+\doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::vector$<$ Pose, Eigen\+::aligned\+\_\+allocator$<$ Pose $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_1_1utils_ad5c3e0ac91a5ac0fa91e12e608cb8399}{rgbd\+\_\+slam\+::utils\+::pose\+\_\+array}}
+using \mbox{\hyperlink{namespacergbd__slam_1_1utils_aba8243faeece6c766b7d18fa69effba4}{rgbd\+\_\+slam\+::utils\+::pose\+\_\+array}} = std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} $>$ $>$
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7830f2322d077dd3b0659ac1226daa5f}{rgbd\+\_\+slam\+::utils\+::operator$<$$<$}} (std\+::ostream \&os, const Pose\+Base \&pose)
+std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7830f2322d077dd3b0659ac1226daa5f}{rgbd\+\_\+slam\+::utils\+::operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{Pose\+Base}} \&pose)
 \item 
-std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}{rgbd\+\_\+slam\+::utils\+::operator$<$$<$}} (std\+::ostream \&os, const Pose \&pose)
+std\+::ostream \& \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1f943d571d918b61309edcd6d98f848a}{rgbd\+\_\+slam\+::utils\+::operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{Pose}} \&pose)
 \end{DoxyCompactItemize}

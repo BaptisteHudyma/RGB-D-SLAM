@@ -1,0 +1,151 @@
+\chapter{RGB-\/\+D-\/\+SLAM}
+\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e}{}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e}\index{RGB-\/D-\/SLAM@{RGB-\/D-\/SLAM}}
+\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md1}%
+\Hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md1}%
+ My take on a SLAM, based on shape primitive recognition with a RGB-\/D camera. The system extracts primitive shapes for the depth image, and use those primitives with 3D points and lines to estimate the observer position in space. A map is created with those points, lines and primitive shapes. See the Doxygen documentation for this program on \href{https://baptistehudyma.github.io/RGB-D-SLAM/html/index.html}{\texttt{ Git\+Hub Pages}}.
+
+Each map feature is tracked using independent Kalman filter instead of bundle adjustment.
+
+Point detection is based on \href{https://ieeexplore.ieee.org/document/6126544}{\texttt{ ORB detection and descriptors}}, as well as optical flow for short term tracking. Line detection uses \href{http://www.ipol.im/pub/art/2012/gjmr-lsd/}{\texttt{ LSD -\/ Line Segment Detector}}. The primitive detection is based on \href{https://arxiv.org/pdf/1803.02380.pdf}{\texttt{ Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry}}.
+
+For now, the program can do basic visual odometry with local mapping, and do not uses loop closures. The program runs above real time (200 -\/ 400 FPS), the feature extraction process being the most time consumming part (50\%).\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{Examples}{Examples}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md2}
+Some examples are provided, but their datasets must be downloaded separatly. A configuration file must be provided for every example, based on the model given in {\bfseries{configuration\+\_\+example.\+yaml}}. This configuration file must be placed in the {\bfseries{data/my\+\_\+dataset}} folder.
+
+
+\begin{DoxyItemize}
+\item {\bfseries{CAPE}} \+: The CAPE dataset contains RGB-\/D (size\+: 640x480) sequences of low textured environments, that are challenging for point-\/based SLAMs. It contains planes and cylinders, initially to test the CAPE process. The groundtrut trajectory are given for some sequences.
+\item {\bfseries{TUM-\/\+RGBD}} \+: The TUM RGBD datasets are sequences of raw RGB-\/D (size\+: 640x480), with accelerometers data and groundtruth trajectories. There is a lot of different videos, with different conditions (translation/rotations only, dynamic environments, low texture, ...). The RGB and depth images must be synchronised by the user. The example program given here synchronises them with a greedy method.
+\end{DoxyItemize}\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md3}{}\doxysection{\texorpdfstring{packages}{packages}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md3}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{opencv}
+\DoxyCodeLine{Eigen}
+\DoxyCodeLine{boost}
+\DoxyCodeLine{flann}
+\DoxyCodeLine{pugixml}
+\DoxyCodeLine{vtk}
+\DoxyCodeLine{fmt}
+
+\end{DoxyCode}
+\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md4}{}\doxysection{\texorpdfstring{Build and Run}{Build and Run}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md4}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mkdir\ build\ \&\&\ cd\ build}
+\DoxyCodeLine{cmake\ ..}
+\DoxyCodeLine{make}
+
+\end{DoxyCode}
+\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{\texorpdfstring{Run the tests}{Run the tests}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md5}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./test\_p3p}
+\DoxyCodeLine{./testPoseOptimization}
+\DoxyCodeLine{./testKalmanFiltering}
+
+\end{DoxyCode}
+
+
+When all the tests are validated, you can run the main SLAM algorithm\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{\texorpdfstring{How to use}{How to use}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md6}
+Use the provided example programs with the dataset at your disposal. The dataset should be located next to the src folder, in a data folder. Ex\+: For TUM fr1\+\_\+xyz, you should place it in data/\+TUM/fr1\+\_\+xyz
+
+Running this program will produce a map file (format is .xyz for now) at the location of the executable.
+
+While the program is running, an Open\+CV windows displays the current frame with the tracked features in it. Each feature is assigned to a random color, that will never change during the mapping process. A good tracking/\+SLAM process will keep the same feature\textquotesingle{}s colors during the whole process.
+
+The top bar displays the number of points in the local map, as well as the planes and their colors.\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md7}{}\doxysubsubsection{\texorpdfstring{CAPE}{CAPE}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md7}
+CAPE provides the yoga and tunnel dataset, composed of low textured environment with cylinder primitives 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./slam\_CAPE\ tunnel}
+
+\end{DoxyCode}
+\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md8}{}\doxysubsubsection{\texorpdfstring{TUM}{TUM}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md8}
+TUM contains many sequences, but it\textquotesingle{}s best to start with the fr1\+\_\+xyz and fr1\+\_\+rpy (respectivly pure translations and pure rotations). 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./slam\_TUM\ fr1\_xyz}
+
+\end{DoxyCode}
+\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md9}{}\doxysubsubsection{\texorpdfstring{Launch parameters}{Launch parameters}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md9}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/h\ Display\ the\ help}
+\DoxyCodeLine{-\/d\ displays\ the\ staged\ features\ (not\ yet\ in\ local\ map)}
+\DoxyCodeLine{-\/f\ path\ to\ the\ file\ containing\ the\ data\ (depth,\ rgb,\ cam\ parameters)}
+\DoxyCodeLine{-\/c\ use\ cylinder\ detection\ }
+\DoxyCodeLine{-\/j\ Drop\ j\ frames\ between\ slam\ process}
+\DoxyCodeLine{-\/i\ index\ of\ starting\ frame\ (>\ 0)}
+\DoxyCodeLine{-\/l\ compute\ line\ features}
+\DoxyCodeLine{-\/s\ Save\ the\ trajectory\ in\ an\ output\ file}
+\DoxyCodeLine{-\/r\ FPS\ limiter,\ to\ debug\ sequences\ in\ real\ time}
+
+\end{DoxyCode}
+
+
+Check memory errors 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{valgrind\ -\/-\/suppressions=/usr/share/opencv4/valgrind.supp\ -\/-\/suppressions=/usr/share/opencv4/valgrind\_3rdparty.supp\ ./slam\_TUM\ desk}
+
+\end{DoxyCode}
+
+
+Most of the program\textquotesingle{}s parameters are stored in the \doxylink{parameters_8cpp}{parameters.\+cpp} file. They can be modified as needed, and basic checks are launched at startup to detect erroneous parameters. The provided configuration should work for most of the use cases.
+
+The user can also choose to run the program with deterministic results, by activating the {\ttfamily MAKE\+\_\+\+DETERMINISTIC} option in the CMake\+List.\+txt file. The maping process will be a bit slower but the result will always be the same between two sequences, allowing for reproductibility and debugging.\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md10}{}\doxysection{\texorpdfstring{Detailed process}{Detailed process}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md10}
+\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md11}{}\doxysubsection{\texorpdfstring{feature detection \& matching}{feature detection \& matching}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md11}
+The system starts by splitting the depth image as a 2D connected graph, and run a primitive analysis on it. This analysis extract local planar features, that are merged into bigger planes. Using an iterative RANSAC algorithm, those planar features are fitted to cylinders if possible, providing two kind of high level features. Those high level features are matched on one frame to another by comparing their normals and Inter-\/\+Over-\/\+Union score.
+
+The system also extract points and lines, to improve reliability of pose extraction. The lines are extracted using LSD. The feature points are tracked by optical flow and matched by their ORB descriptors when needed, and every N frames to prevent optical flow drift.\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md12}{}\doxysubsection{\texorpdfstring{local map}{local map}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md12}
+Every features are maintained in a local map, that keep tracks of the reliable local features. Those features parameters (positions, uncertainties, speed, ...) are updated if a map feature is matched, using an individual Kalman filter per feature (no bundle adjustment yet).
+
+New features are maintained in a staged feature container, that behaves exactly like the local map, but as a lesser priority during the matching step.\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md13}{}\doxysubsection{\texorpdfstring{pose optimization}{pose optimization}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md13}
+The final pose for the frame is computed using the local map to detected feature matches. Outliers are filtered out using a simple RANSAC, and the final pose is computed using Levenberg Marquardt algorithm, with custom weighting functions (based on per feature covariance).
+
+The optimized pose is used to update the local map and decaying motion model, in case the features are lost for a moment.
+
+The complete systems runs in real time, between 300FPS and 600FPS for images of 640x480 pixels (depth and RGB images).\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md14}{}\doxysection{\texorpdfstring{To be implemented soon}{To be implemented soon}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md14}
+
+\begin{DoxyItemize}
+\item Advanced camera parameter model
+\item Point descriptors based on custom neural network
+\item Usage of keyframe to separate local maps
+\item Loop closing based on multiscale neural network
+\item Use a graph between keyframe to represent the trajectory, and close the loop easily (using bundle adjustment)
+\item Create a new separate trajectory when loosing track of features, and merge it to the main trajectory when possible
+\end{DoxyItemize}\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md15}{}\doxysection{\texorpdfstring{References\+:}{References:}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md15}
+\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md16}{}\doxysubsection{\texorpdfstring{Primitive extraction}{Primitive extraction}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md16}
+
+\begin{DoxyItemize}
+\item \href{https://arxiv.org/pdf/1803.02380.pdf}{\texttt{ Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry}}
+\item \href{http://www.cs.cmu.edu/~mmv/papers/11rssw-BiswasVeloso2.pdf}{\texttt{ Fast Sampling Plane Filtering, Polygon Construction and Merging from Depth Images}}
+\item \href{https://merl.com/publications/docs/TR2014-066.pdf}{\texttt{ Fast Plane Extraction in Organized Point Clouds Using Agglomerative Hierarchical\+Clustering}}
+\item \href{https://www.researchgate.net/publication/328822338_Depth_image-based_plane_detection}{\texttt{ Depth image-\/based plane detection}}
+\end{DoxyItemize}\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md17}{}\doxysubsection{\texorpdfstring{Pose Optimization}{Pose Optimization}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md17}
+
+\begin{DoxyItemize}
+\item \href{https://www.yumpu.com/en/document/read/30132260/using-quaternions-for-parametrizing-3-d-rotations-in-}{\texttt{ Using Quaternions for Parametrizing 3D Rotations in Unconstrained Nonlinear Optimization}} -\/ 2001
+\item \mbox{[}At All Costs\+: A Comparison of Robust Cost Functions for Camera Correspondence Outliers\mbox{]}() -\/ 2015
+\item \mbox{[}An Eﬀicient Solution to the Homography-\/\+Based Relative Pose Problem With a Common Reference Direction\mbox{]}() -\/ 2019
+\item \mbox{[}A Quaternion-\/based Certifiably Optimal Solution to the Wahba Problem with Outliers\mbox{]}()
+\item \mbox{[}A General and Adaptive Robust Loss Function\mbox{]}() -\/ 2019
+\end{DoxyItemize}\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md18}{}\doxysubsection{\texorpdfstring{Visual odometry}{Visual odometry}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md18}
+
+\begin{DoxyItemize}
+\item \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6165120/}{\texttt{ LVT\+: Lightweight Visual Odometry for Autonomous Mobile Robots}}
+\item \href{https://www.researchgate.net/publication/283806535_Dense_RGB-D_visual_odometry_using_inverse_depth}{\texttt{ Dense RGB-\/D visual odometry using inverse depth}}
+\item \href{http://epubs.surrey.ac.uk/846020/1/SPLODE.pdf}{\texttt{ SPLODE\+: Semi-\/\+Probabilistic Point and Line Odometry with Depth Estimation from RGB-\/D Camera Motion}}
+\item \href{http://mapir.isa.uma.es/rgomez/publications/iros16plsvo.pdf}{\texttt{ PL-\/\+SVO\+: Semi-\/\+Direct Monocular Visual Odometry by\+Combining Points and Line Segments}}
+\item \href{https://arxiv.org/pdf/1705.06516v1.pdf}{\texttt{ Probabilistic Combination of Noisy Points and\+Planes for RGB-\/D Odometry}} and \href{https://arxiv.org/pdf/1706.04034.pdf}{\texttt{ Probabilistic RGB-\/D Odometry based on Points, Linesand Planes Under Depth Uncertainty}} -\/ 2017
+\item \href{https://www.mdpi.com/1424-8220/20/10/2922/htm}{\texttt{ Robust Stereo Visual Inertial Navigation System Based on Multi-\/\+Stage Outlier Removal in Dynamic Environments}}
+\item \mbox{[}RP-\/\+VIO\+: Robust Plane-\/based Visual-\/\+Inertial Odometry for Dynamic Environments\mbox{]}() -\/ 2021
+\end{DoxyItemize}\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md19}{}\doxysubsection{\texorpdfstring{SLAM}{SLAM}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md19}
+
+\begin{DoxyItemize}
+\item \href{https://arxiv.org/pdf/1610.06475.pdf}{\texttt{ ORB-\/\+SLAM2\+: an Open-\/\+Source SLAM System for Monocular, Stereo and RGB-\/D Cameras}}
+\item \href{https://www.researchgate.net/publication/283273992_3D_SLAM_in_texture-less_environments_using_rank_order_statistics}{\texttt{ 3D SLAM in texture-\/less environments using rank order statistics}}
+\item \href{http://www2.informatik.uni-freiburg.de/~endres/files/publications/felix-endres-phd-thesis.pdf}{\texttt{ 3D Mapping with an RGB-\/D Camera}}
+\item \href{http://robotics.jacobs-university.de/publicationData/JFR-3D-PlaneSLAM.pdf}{\texttt{ Online 3D SLAM by Registration of Large Planar\+Surface Segments and Closed Form Pose-\/\+Graph\+Relaxation}}
+\item \href{http://udel.edu/~yuyang/downloads/geneva_iros2018.pdf}{\texttt{ LIPS\+: Li\+DAR-\/\+Inertial 3D Plane SLAM}}
+\item \href{https://arxiv.org/pdf/1703.07334.pdf}{\texttt{ Pop-\/up SLAM\+: Semantic Monocular Plane SLAM for Low-\/texture Environments}}
+\item \href{https://arxiv.org/pdf/1809.03415.pdf}{\texttt{ Monocular Object and Plane SLAM in Structured Environments}}
+\item \href{https://www.mdpi.com/1424-8220/19/17/3795/htm}{\texttt{ Point-\/\+Plane SLAM Using Supposed Planes for Indoor Environments}}
+\item \mbox{[}Stereo Plane SLAM Based on Intersecting Lines\mbox{]}() -\/ 2020 
+\end{DoxyItemize}

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['detectedkeypointsobject_0',['DetectedKeypointsObject',['../namespacergbd__slam_1_1map__management.html#a95c21ce2a6639057adf799fea76af9b1',1,'rgbd_slam::map_management']]],
-  ['detectedplaneobject_1',['DetectedPlaneObject',['../namespacergbd__slam_1_1map__management.html#ae81589b5d45d36b6a81b595c1d750d05',1,'rgbd_slam::map_management']]],
-  ['detectedplanetype_2',['DetectedPlaneType',['../namespacergbd__slam_1_1map__management.html#aacb253b3ad5f6c5efbbe7bab588e03df',1,'rgbd_slam::map_management']]],
-  ['detectedpointtype_3',['DetectedPointType',['../namespacergbd__slam_1_1map__management.html#a2894a3e69da189eb9f8a08cbe55f3da9',1,'rgbd_slam::map_management']]]
+  ['cylinder_5fcontainer_0',['cylinder_container',['../namespacergbd__slam_1_1features_1_1primitives.html#ad1597638f286a73a6099675b2c0458a7',1,'rgbd_slam::features::primitives']]],
+  ['cylinder_5fsegments_5fcontainer_1',['cylinder_segments_container',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab315ba07a53a01bcd7dc4bbde11b0e00',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
 ];

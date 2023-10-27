@@ -1,5 +1,5 @@
-\hypertarget{structrgbd__slam_1_1map__management_1_1_point}{}\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Point Struct Reference}
-\label{structrgbd__slam_1_1map__management_1_1_point}\index{rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}}
+\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Point Struct Reference}
+\hypertarget{structrgbd__slam_1_1map__management_1_1_point}{}\label{structrgbd__slam_1_1map__management_1_1_point}\index{rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}}
 
 
 {\ttfamily \#include $<$map\+\_\+point.\+hpp$>$}
@@ -10,39 +10,39 @@ Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::Point\+:\begin{
 \includegraphics[height=2.978723cm]{structrgbd__slam_1_1map__management_1_1_point}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a93f33e8e6e997f3babfe0c104ff95d47}{Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&covariance, const cv\+::\+Mat \&descriptor)
+\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_aa865d9281b99c5f5a1ef5dcc37f78d37}{Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&covariance, const cv\+::\+Mat \&descriptor)
 \item 
-double \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a0693e602b92fa0d3b12fb045e8c74580}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&new\+Detection\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&new\+Detection\+Covariance)
+double \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a1bafdb653895c1efb23e3979d2ba1375}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&new\+Detection\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&new\+Detection\+Covariance) noexcept
 \begin{DoxyCompactList}\small\item\em update this point coordinates using a new detection \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Public Attributes}
+\doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_aa538c84e53a30f94804c77fbfa6dda0c}{\+\_\+coordinates}}
 \item 
 cv\+::\+Mat \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_acb78f641c06c5c7ad59b03bc4cebed47}{\+\_\+descriptor}}
 \item 
-\mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a8f4fe80c0500949f7eb49e74b21f379e}{\+\_\+covariance}}
+\mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_ac69b33b227c43f4afed0ffab3137c9e2}{\+\_\+covariance}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_a93f33e8e6e997f3babfe0c104ff95d47}\label{structrgbd__slam_1_1map__management_1_1_point_a93f33e8e6e997f3babfe0c104ff95d47}} 
+\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_aa865d9281b99c5f5a1ef5dcc37f78d37}\label{structrgbd__slam_1_1map__management_1_1_point_aa865d9281b99c5f5a1ef5dcc37f78d37} 
 \index{rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}!Point@{Point}}
 \index{Point@{Point}!rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}}
 \doxysubsubsection{\texorpdfstring{Point()}{Point()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+::\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+::\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
 
-
+\doxylink{structrgbd__slam_1_1map__management_1_1_point}{Point} 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_a0693e602b92fa0d3b12fb045e8c74580}\label{structrgbd__slam_1_1map__management_1_1_point_a0693e602b92fa0d3b12fb045e8c74580}} 
+\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_a1bafdb653895c1efb23e3979d2ba1375}\label{structrgbd__slam_1_1map__management_1_1_point_a1bafdb653895c1efb23e3979d2ba1375} 
 \index{rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}!track@{track}}
 \index{track@{track}!rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}}
 \doxysubsubsection{\texorpdfstring{track()}{track()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{new\+Detection\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} \&}]{new\+Detection\+Covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{new\+Detection\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{new\+Detection\+Covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -52,28 +52,28 @@ update this point coordinates using a new detection
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em new\+Detection\+Coordinates} & The newly detected point \\
 \hline
-\mbox{\texttt{ in}}  & {\em new\+Detection\+Covariance} & The newly detected point covariance\\
+\mbox{\texttt{ in}}  & {\em new\+Detection\+Covariance} & The newly detected point covariance \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The distance between the updated position ans the previous one 
+The distance between the updated position ans the previous one, -\/1 if an error occured 
 \end{DoxyReturn}
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_aa538c84e53a30f94804c77fbfa6dda0c}\label{structrgbd__slam_1_1map__management_1_1_point_aa538c84e53a30f94804c77fbfa6dda0c}} 
+\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_aa538c84e53a30f94804c77fbfa6dda0c}\label{structrgbd__slam_1_1map__management_1_1_point_aa538c84e53a30f94804c77fbfa6dda0c} 
 \index{rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}!\_coordinates@{\_coordinates}}
 \index{\_coordinates@{\_coordinates}!rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}}
 \doxysubsubsection{\texorpdfstring{\_coordinates}{\_coordinates}}
 {\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+::\+\_\+coordinates}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_a8f4fe80c0500949f7eb49e74b21f379e}\label{structrgbd__slam_1_1map__management_1_1_point_a8f4fe80c0500949f7eb49e74b21f379e}} 
+\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_ac69b33b227c43f4afed0ffab3137c9e2}\label{structrgbd__slam_1_1map__management_1_1_point_ac69b33b227c43f4afed0ffab3137c9e2} 
 \index{rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}!\_covariance@{\_covariance}}
 \index{\_covariance@{\_covariance}!rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}}
 \doxysubsubsection{\texorpdfstring{\_covariance}{\_covariance}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+::\+\_\+covariance}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+::\+\_\+covariance}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_acb78f641c06c5c7ad59b03bc4cebed47}\label{structrgbd__slam_1_1map__management_1_1_point_acb78f641c06c5c7ad59b03bc4cebed47}} 
+\Hypertarget{structrgbd__slam_1_1map__management_1_1_point_acb78f641c06c5c7ad59b03bc4cebed47}\label{structrgbd__slam_1_1map__management_1_1_point_acb78f641c06c5c7ad59b03bc4cebed47} 
 \index{rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}!\_descriptor@{\_descriptor}}
 \index{\_descriptor@{\_descriptor}!rgbd\_slam::map\_management::Point@{rgbd\_slam::map\_management::Point}}
 \doxysubsubsection{\texorpdfstring{\_descriptor}{\_descriptor}}
@@ -81,6 +81,7 @@ The distance between the updated position ans the previous one
 
 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8hpp}{map\+\_\+point.\+hpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8hpp}{map\+\_\+point.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point_8cpp}{map\+\_\+point.\+cpp}}\end{DoxyCompactItemize}

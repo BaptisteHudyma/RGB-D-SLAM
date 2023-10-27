@@ -1,10 +1,10 @@
-\hypertarget{levenberg__marquard__functors_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/levenberg\+\_\+marquard\+\_\+functors.hpp File Reference}
-\label{levenberg__marquard__functors_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.hpp}}
-{\ttfamily \#include \char`\"{}../types.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/matches\+\_\+containers.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/pose.\+hpp\char`\"{}}\newline
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/levenberg\+\_\+marquard\+\_\+functors.hpp File Reference}
+\hypertarget{levenberg__marquard__functors_8hpp}{}\label{levenberg__marquard__functors_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.hpp}}
+{\ttfamily \#include "{}../types.\+hpp"{}}\newline
+{\ttfamily \#include "{}../matches\+\_\+containers.\+hpp"{}}\newline
+{\ttfamily \#include "{}../utils/pose.\+hpp"{}}\newline
 {\ttfamily \#include $<$unsupported/\+Eigen/\+Non\+Linear\+Optimization$>$}\newline
-\doxysubsection*{Classes}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ \+\_\+\+Scalar, NX, NY $>$}}
@@ -13,19 +13,19 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose
 \begin{DoxyCompactList}\small\item\em Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Functor}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-vector3 \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const quaternion \&quat)
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+scaled\+\_\+axis\+\_\+coefficients\+\_\+from\+\_\+quaternion}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&quat)
 \begin{DoxyCompactList}\small\item\em Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation) \end{DoxyCompactList}\item 
-quaternion \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const vector3 \&optimization\+Coefficients)
+\mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+quaternion\+\_\+from\+\_\+scale\+\_\+axis\+\_\+coefficients}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&optimization\+Coefficients)
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from the Lie projection (Scaled Axis representation) \end{DoxyCompactList}\item 
-const std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac7a23970392763710a2096a10bbdb68a}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status)
+std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9844c916b02700c139e7caeb702cb4a}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status) noexcept
 \begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
-\hypertarget{logger_8hpp_source}{}\doxysection{logger.\+hpp}
-\label{logger_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.hpp}}
+\doxysection{logger.\+hpp}
+\hypertarget{logger_8hpp_source}{}\label{logger_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/outputs/logger.hpp}}
 \mbox{\hyperlink{logger_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_OUTPUTS\_LOGGER\_HPP}}
@@ -7,18 +7,19 @@
 \DoxyCodeLine{00003\ }
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <source\_location>}}
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string\_view>}}
-\DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }outputs\ \{}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <format>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1outputs}{rgbd\_slam::outputs}}\ \{}
 \DoxyCodeLine{00009\ }
-\DoxyCodeLine{00013\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ac481964e17f115af5414d23bdc2d97a7}{log}}(\textcolor{keyword}{const}\ std::string\_view\&\ message,\ \textcolor{keyword}{const}\ std::source\_location\&\ location\ =\ std::source\_location::current());}
-\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacergbd__slam_1_1outputs_a854c348cba8433fee04b58feb5054cc6}{log\_warning}}(\textcolor{keyword}{const}\ std::string\_view\&\ message,}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::source\_location\&\ location\ =\ std::source\_location::current());}
-\DoxyCodeLine{00016\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacergbd__slam_1_1outputs_a7c11e499578358f64a58d71f5b0dfb4d}{log\_error}}(\textcolor{keyword}{const}\ std::string\_view\&\ message,\ \textcolor{keyword}{const}\ std::source\_location\&\ location\ =\ std::source\_location::current());}
-\DoxyCodeLine{00017\ }
-\DoxyCodeLine{00018\ \}\ \textcolor{comment}{//\ namespace\ outputs}}
-\DoxyCodeLine{00019\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00020\ }
-\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00013\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacergbd__slam_1_1outputs_a808fff6f6c0889f1e54f995791c95823}{log}}(\textcolor{keyword}{const}\ std::string\_view\&\ message,}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::source\_location\&\ location\ =\ std::source\_location::current())\ noexcept;}
+\DoxyCodeLine{00015\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacergbd__slam_1_1outputs_ab717e4badd78d57b03feca68cd4265c0}{log\_warning}}(const\ std::string\_view\&\ message,}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::source\_location\&\ location\ =\ std::source\_location::current())\ noexcept;}
+\DoxyCodeLine{00017\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacergbd__slam_1_1outputs_abc9d557f41ce2b1c97e961c0f94d910f}{log\_error}}(const\ std::string\_view\&\ message,}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ std::source\_location\&\ location\ =\ std::source\_location::current())\ noexcept;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::outputs}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

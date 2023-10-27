@@ -1,55 +1,123 @@
-\hypertarget{histogram_8hpp_source}{}\doxysection{histogram.\+hpp}
-\label{histogram_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/histogram.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/histogram.hpp}}
+\doxysection{histogram.\+hpp}
+\hypertarget{histogram_8hpp_source}{}\label{histogram_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/histogram.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/histogram.hpp}}
 \mbox{\hyperlink{histogram_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_FEATURES\_PRIMITIVES\_HISTOGRAM\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_FEATURES\_PRIMITIVES\_HISTOGRAM\_HPP}}
 \DoxyCodeLine{00003\ }
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../../types.hpp"{}}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
-\DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }features\ \{}
-\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }primitives\ \{}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../../outputs/logger.hpp"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{parameters_8hpp}{parameters.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives}{rgbd\_slam::features::primitives}}\ \{}
 \DoxyCodeLine{00010\ }
-\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}}
-\DoxyCodeLine{00015\ \{}
-\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}(\textcolor{keyword}{const}\ uint\ binPerCoordCount);}
-\DoxyCodeLine{00021\ }
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ada29c5c8bd20f5aec022b32a5a7bc09d}{init\_histogram}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}}\&\ points,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}}\&\ isUnasignedMask);}
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00035\ \ \ \ \ std::vector<uint>\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ac5a822f4ce4e714296d1f6a82e00f3c7}{get\_points\_from\_most\_frequent\_bin}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_aafcd0a0740549c359aeda54fb2642cfc}{remove\_point}}(\textcolor{keyword}{const}\ uint\ pointId);}
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c368107f33fe5ab90b6315be44687e2}{reset}}();}
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a904455f98ed432c6f445e34a13d6c034}{\string~Histogram}}();}
-\DoxyCodeLine{00048\ }
-\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00051\ \ \ \ \ std::vector<uint>\ \_H;}
-\DoxyCodeLine{00052\ \ \ \ \ std::vector<int>\ \_B;}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ limits}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f}{minX}}\ =\ 0;}
+\DoxyCodeLine{00013\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c}{minY}}\ =\ -\/M\_PI;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a0934672d73718403af6852eb641ed300}{maxXminX}}\ =\ M\_PI\ -\/\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f}{minX}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac998207b791c1e44609a8b2a2b195017}{maxYminY}}\ =\ M\_PI\ -\/\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c}{minY}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{template}<\textcolor{keywordtype}{size\_t}\ Size>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a8f2e5ba773865423904ab27831396ae3}{Histogram}}()}
+\DoxyCodeLine{00024\ \ \ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \_H.fill(0);}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a83cdff1460fb194978fc76eabbbd2646}{reset}}();}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a4652c5123dedfd2690329e7d21f32b98}{init\_histogram}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa697476dd2fc1efe9d1ecc56c120197e}{matrixd}}\&\ points,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}}\&\ isUnasignedMask)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00036\ \ \ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\_reset();}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \_pointCount\ =\ \textcolor{keyword}{static\_cast<}uint\textcolor{keyword}{>}(points.rows());}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \_B.assign(\_pointCount,\ -\/1);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ assert(\_pointCount\ ==\ isUnasignedMask.size());}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ assert(\_B.size()\ ==\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(isUnasignedMask.size()));}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\ i\ =\ 0;\ i\ <\ \_pointCount;\ ++i)}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isUnasignedMask[i])}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ xQ\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(floor((Size\ -\/\ 1)\ *\ (points(i,\ 0)\ -\/\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_af42285b0620a66497104fe3358fca26f}{minX}})\ /\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a0934672d73718403af6852eb641ed300}{maxXminX}}));}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ dealing\ with\ degeneracy}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ yQ\ =\ 0;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (xQ\ >\ 0)}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ yQ\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(floor((Size\ -\/\ 1)\ *\ (points(i,\ 1)\ -\/\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a9014d91babb1fd2bff8543f7d552801c}{minY}})\ /\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ac998207b791c1e44609a8b2a2b195017}{maxYminY}}));}
 \DoxyCodeLine{00053\ }
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ uint\ \_binPerCoordCount;}
-\DoxyCodeLine{00055\ \ \ \ \ uint\ \_pointCount;}
-\DoxyCodeLine{00056\ }
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \_minX;}
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \_minY;}
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \_maxXminX;}
-\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \_maxYminY;}
-\DoxyCodeLine{00061\ }
-\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ prevent\ backend\ copy}}
-\DoxyCodeLine{00064\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}\&);}
-\DoxyCodeLine{00065\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}\&);}
-\DoxyCodeLine{00066\ \};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \}\ \textcolor{comment}{//\ namespace\ primitives}}
-\DoxyCodeLine{00069\ \}\ \textcolor{comment}{//\ namespace\ features}}
-\DoxyCodeLine{00070\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00071\ }
-\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint\ bin\ =\ yQ\ *\ Size\ +\ xQ;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(i\ <\ \_B.size());}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_B[i]\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(bin);}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(bin\ <\ \_H.size());}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_H[bin]\ +=\ 1;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00069\ \ \ \ \ [[nodiscard]]\ std::vector<uint>\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a30b9403d2a91319df4d17748f9461082}{get\_points\_from\_most\_frequent\_bin}}()\ const\ noexcept}
+\DoxyCodeLine{00070\ \ \ \ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mostFrequentBin\ =\ -\/1;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ uint\ maxOccurencesCount\ =\ 0;}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\ i\ =\ 0;\ i\ <\ \_H.size();\ ++i)}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ get\ most\ frequent\ bin\ index}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_H[i]\ >\ maxOccurencesCount)}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mostFrequentBin\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(i);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ maxOccurencesCount\ =\ \_H[i];}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ std::vector<uint>\ pointsIds;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mostFrequentBin\ >=\ 0)}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ pointsIds.reserve(\_pointCount);}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ most\ frequent\ bin\ is\ not\ empty}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\ i\ =\ 0;\ i\ <\ \_pointCount;\ ++i)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_B[i]\ ==\ mostFrequentBin)}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pointsIds.push\_back(i);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pointsIds;}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c0905c9110db0b9b71f32a359e0dff3}{remove\_point}}(\textcolor{keyword}{const}\ uint\ pointId)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00104\ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pointId\ >=\ \_B.size())}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1outputs_abc9d557f41ce2b1c97e961c0f94d910f}{outputs::log\_error}}(std::format(\textcolor{stringliteral}{"{}Histogram:\ remove\_point\ called\ on\ invalid\ ID\ \{\}"{}},\ pointId));}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ exit(-\/1);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_H[\_B[pointId]]\ !=\ 0)}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \_H[\_B[pointId]]\ -\/=\ 1;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \_B[pointId]\ =\ 1;}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a83cdff1460fb194978fc76eabbbd2646}{reset}}()\ noexcept}
+\DoxyCodeLine{00119\ \ \ \ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \_H.fill(0);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \_B.clear();}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00125\ \ \ \ \ std::array<uint,\ Size\ *\ Size>\ \_H;}
+\DoxyCodeLine{00126\ \ \ \ \ std::vector<int>\ \_B;}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ uint\ \_pointCount;}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ prevent\ backend\ copy}}
+\DoxyCodeLine{00131\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a8f2e5ba773865423904ab27831396ae3}{Histogram}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}\&);}
+\DoxyCodeLine{00132\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}}\&);}
+\DoxyCodeLine{00133\ \};}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::features::primitives}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

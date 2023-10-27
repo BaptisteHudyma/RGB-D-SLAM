@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['uint_5fpair_0',['uint_pair',['../classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html#a40a257eb2b5d17ea2645b84e662f1133',1,'rgbd_slam::features::keypoints::Keypoint_Handler']]],
-  ['uint_5fvector_1',['uint_vector',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#ab3ed9416eca995f1a3dc2fc2795bb2db',1,'rgbd_slam::features::primitives::Primitive_Detection']]]
+  ['trackedplaneobject_0',['TrackedPlaneObject',['../namespacergbd__slam_1_1map__management.html#a812007e7a8def3a8a07d067b30b68364',1,'rgbd_slam::map_management']]],
+  ['trackedpointsobject_1',['TrackedPointsObject',['../namespacergbd__slam_1_1map__management.html#a5333eab93113d2bf50629b4519d91ae2',1,'rgbd_slam::map_management']]]
 ];

@@ -1,5 +1,5 @@
-\hypertarget{ransac_8hpp_source}{}\doxysection{ransac.\+hpp}
-\label{ransac_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/ransac.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/ransac.hpp}}
+\doxysection{ransac.\+hpp}
+\hypertarget{ransac_8hpp_source}{}\label{ransac_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/ransac.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/ransac.hpp}}
 \mbox{\hyperlink{ransac_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_POSEOPTIMIZATION\_RANSAC\_HPP}}
@@ -7,51 +7,62 @@
 \DoxyCodeLine{00003\ }
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../utils/random.hpp"{}}}
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <algorithm>}}
-\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <vector>}}
-\DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }pose\_optimization\ \{}
-\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }ransac\ \{}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_1_1ransac}{rgbd\_slam::pose\_optimization::ransac}}\ \{}
 \DoxyCodeLine{00011\ }
 \DoxyCodeLine{00019\ \textcolor{keyword}{template}<\textcolor{keyword}{template}<\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Container,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00020\ Container<T>\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_1_1ransac_a132ebe7760df9a95d9a89f41136453d1}{get\_random\_subset}}(\textcolor{keyword}{const}\ Container<T>\&\ inContainer,\ \textcolor{keyword}{const}\ uint\ numberOfElementsToChoose)}
+\DoxyCodeLine{00020\ [[nodiscard]]\ Container<T>\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_1_1ransac_a132ebe7760df9a95d9a89f41136453d1}{get\_random\_subset}}(\textcolor{keyword}{const}\ Container<T>\&\ inContainer,\ \textcolor{keyword}{const}\ uint\ numberOfElementsToChoose)}
 \DoxyCodeLine{00021\ \{}
-\DoxyCodeLine{00022\ \ \ \ \ assert(numberOfElementsToChoose\ <=\ inContainer.size());}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{//\ get\ a\ vector\ of\ references\ and\ shuffle\ it}}
-\DoxyCodeLine{00025\ \ \ \ \ std::vector<std::reference\_wrapper<const\ T>>\ copyVector(inContainer.cbegin(),\ inContainer.cend());}
-\DoxyCodeLine{00026\ \ \ \ \ std::random\_shuffle(copyVector.begin(),\ copyVector.end());}
-\DoxyCodeLine{00027\ \ \ \ \ assert(copyVector.size()\ ==\ inContainer.size());}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ copy\ the\ first\ matches,\ they\ will\ be\ randoms}}
-\DoxyCodeLine{00030\ \ \ \ \ Container<T>\ outContainer;}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\ i\ =\ 0;\ i\ <\ numberOfElementsToChoose;\ ++i)}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ outContainer.insert(outContainer.begin(),\ copyVector[i]);}
-\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ outContainer;}
-\DoxyCodeLine{00034\ \}}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00042\ \textcolor{keyword}{template}<\textcolor{keyword}{template}<\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Container,\ \textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00043\ Container<T>\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_1_1ransac_a93da2cc0f5600b2ec045f1ccae5df462}{get\_random\_subset\_with\_duplicates}}(\textcolor{keyword}{const}\ Container<T>\&\ inContainer,\ \textcolor{keyword}{const}\ uint\ numberOfElementsToChoose)}
-\DoxyCodeLine{00044\ \{}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ uint\ inContainerSize\ =\ inContainer.size();}
-\DoxyCodeLine{00046\ \ \ \ \ assert(numberOfElementsToChoose\ <=\ inContainerSize);}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ get\ a\ vector\ of\ references}}
-\DoxyCodeLine{00049\ \ \ \ \ std::vector<std::reference\_wrapper<const\ T>>\ copyVector(inContainer.cbegin(),\ inContainer.cend());}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ copy\ the\ first\ matches,\ they\ will\ be\ randoms}}
-\DoxyCodeLine{00052\ \ \ \ \ Container<T>\ outContainer;}
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{while}\ (outContainer.size()\ <\ numberOfElementsToChoose)}
-\DoxyCodeLine{00054\ \ \ \ \ \{}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ outContainer.insert(outContainer.begin(),\ copyVector[\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_aa1a557874759dc86cc5b19cc18a32894}{utils::Random::get\_random\_uint}}(inContainerSize)]);}
-\DoxyCodeLine{00056\ \ \ \ \ \}}
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ outContainer;}
-\DoxyCodeLine{00058\ \}}
-\DoxyCodeLine{00059\ }
-\DoxyCodeLine{00060\ \}\ \textcolor{comment}{//\ namespace\ ransac}}
-\DoxyCodeLine{00061\ \}\ \textcolor{comment}{//\ namespace\ pose\_optimization}}
-\DoxyCodeLine{00062\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{if}\ (numberOfElementsToChoose\ >\ inContainer.size())}
+\DoxyCodeLine{00023\ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}get\_random\_subset:\ numberOfElementsToChoose\ should\ be\ >=\ to\ the\ elements\ count"{}});}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//\ get\ a\ local\ random\ engine}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::mt19937\ randomEngine(0);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//\ get\ a\ vector\ of\ references\ and\ shuffle\ it}}
+\DoxyCodeLine{00031\ \ \ \ \ std::vector<std::reference\_wrapper<const\ T>>\ copyVector(inContainer.cbegin(),\ inContainer.cend());}
+\DoxyCodeLine{00032\ \ \ \ \ std::ranges::shuffle(copyVector,\ randomEngine);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (copyVector.size()\ !=\ inContainer.size())}
+\DoxyCodeLine{00034\ \ \ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}get\_random\_subset:\ failed\ to\ create\ a\ reference\ vector"{}});}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ copy\ the\ first\ matches,\ they\ will\ be\ randoms}}
+\DoxyCodeLine{00039\ \ \ \ \ Container<T>\ outContainer;}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\ i\ =\ 0;\ i\ <\ numberOfElementsToChoose;\ ++i)}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ outContainer.insert(outContainer.begin(),\ copyVector[i]);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ outContainer;}
+\DoxyCodeLine{00043\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}<\textcolor{keyword}{template}<\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }Container,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00052\ [[nodiscard]]\ Container<T>\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_1_1ransac_a93da2cc0f5600b2ec045f1ccae5df462}{get\_random\_subset\_with\_duplicates}}(\textcolor{keyword}{const}\ Container<T>\&\ inContainer,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint\ numberOfElementsToChoose)}
+\DoxyCodeLine{00054\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{const}\ uint\ inContainerSize\ =\ inContainer.size();}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{if}\ (numberOfElementsToChoose\ >\ inContainer.size())}
+\DoxyCodeLine{00057\ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}get\_random\_subset:\ numberOfElementsToChoose\ should\ be\ >=\ to\ the\ elements\ count"{}});}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{comment}{//\ get\ a\ vector\ of\ references}}
+\DoxyCodeLine{00062\ \ \ \ \ std::vector<std::reference\_wrapper<const\ T>>\ copyVector(inContainer.cbegin(),\ inContainer.cend());}
 \DoxyCodeLine{00063\ }
-\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\ copy\ the\ first\ matches,\ they\ will\ be\ randoms}}
+\DoxyCodeLine{00065\ \ \ \ \ Container<T>\ outContainer;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{while}\ (outContainer.size()\ <\ numberOfElementsToChoose)}
+\DoxyCodeLine{00067\ \ \ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ outContainer.insert(outContainer.begin(),\ copyVector[\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_aa1a557874759dc86cc5b19cc18a32894}{utils::Random::get\_random\_uint}}(inContainerSize)]);}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ outContainer;}
+\DoxyCodeLine{00071\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::pose\_optimization::ransac}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

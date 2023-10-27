@@ -1,12 +1,15 @@
-\hypertarget{plane__segment_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/plane\+\_\+segment.cpp File Reference}
-\label{plane__segment_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/plane\_segment.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/plane\_segment.cpp}}
-{\ttfamily \#include \char`\"{}plane\+\_\+segment.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../../outputs/logger.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../../parameters.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Eigen/\+Eigenvalues\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}covariances.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
-\doxysubsection*{Namespaces}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/plane\+\_\+segment.cpp File Reference}
+\hypertarget{plane__segment_8cpp}{}\label{plane__segment_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/plane\_segment.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/features/primitives/plane\_segment.cpp}}
+{\ttfamily \#include "{}plane\+\_\+segment.\+hpp"{}}\newline
+{\ttfamily \#include "{}../../outputs/logger.\+hpp"{}}\newline
+{\ttfamily \#include "{}../../parameters.\+hpp"{}}\newline
+{\ttfamily \#include "{}Eigen/\+Eigenvalues"{}}\newline
+{\ttfamily \#include "{}coordinates.\+hpp"{}}\newline
+{\ttfamily \#include "{}covariances.\+hpp"{}}\newline
+{\ttfamily \#include "{}distance\+\_\+utils.\+hpp"{}}\newline
+{\ttfamily \#include "{}types.\+hpp"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
@@ -15,8 +18,8 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{rgbd\+\_\+slam\+::fe
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives}{rgbd\+\_\+slam\+::features\+::primitives}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a6146d5a7fb8d0399ed5db7f42793d97a}{rgbd\+\_\+slam\+::features\+::primitives\+::is\+\_\+continuous}} (const float pixel\+Depth, float \&last\+Pixel\+Depth)
+bool \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a810c8b0ae7dd3fc6fea6ffe695a20cb4}{rgbd\+\_\+slam\+::features\+::primitives\+::is\+\_\+continuous}} (const float pixel\+Depth, float \&last\+Pixel\+Depth) noexcept
 \begin{DoxyCompactList}\small\item\em Runs a check on a depth value, and increment a discontinuity counter if needed. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1map__management_1_1_plane}{}\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Plane Class Reference}
-\label{classrgbd__slam_1_1map__management_1_1_plane}\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
+\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Plane Class Reference}
+\hypertarget{classrgbd__slam_1_1map__management_1_1_plane}{}\label{classrgbd__slam_1_1map__management_1_1_plane}\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
 
 
 {\ttfamily \#include $<$map\+\_\+primitive.\+hpp$>$}
@@ -10,77 +10,63 @@ Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::Plane\+:\begin{
 \includegraphics[height=2.937063cm]{classrgbd__slam_1_1map__management_1_1_plane}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_ac45ff8a02b6c0158d345d7adb69ab632}{Plane}} ()
 \item 
-uint \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a440c916b429222c2c9243297c6444335}{get\+\_\+contained\+\_\+pixels}} () const
-\begin{DoxyCompactList}\small\item\em Return the number of pixels in this plane mask. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a9fac516dde68975943ee4df501c28509}{get\+\_\+parametrization}} () const
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a8c27b07da30efe8adf896f54fb4fcd40}{get\+\_\+parametrization}} () const noexcept
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_afcbbe76631ca015792ff00a6dac2c243}{get\+\_\+centroid}} () const
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a7f911a99bfcf97170ed4a3c8b4bc1f17}{get\+\_\+covariance}} () const noexcept
 \item 
-cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a54d37981f7e5570f73cec64c4e4c9d16}{get\+\_\+mask}} () const
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils\+::\+World\+Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a2240000e79d48701d6c886a3fb4e26db}{get\+\_\+boundary\+\_\+polygon}} () const noexcept
 \item 
-double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a751c86ba4f796c634d0b28328d429d36}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \&new\+Detection\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&new\+Detection\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&detected\+Centroid)
+double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_ab0f6d8e071c6e4cdc199a44863925248}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{Detected\+Plane\+Type}} \&matched\+Feature, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \&new\+Detection\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&new\+Detection\+Covariance)
 \begin{DoxyCompactList}\small\item\em Update this plane coordinates using a new detection. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Protected Attributes}
+\doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}{\+\_\+parametrization}}
 \item 
-\mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}{\+\_\+covariance}}
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}{\+\_\+covariance}}
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_acca9e48254d94129725663edd89b01c3}{\+\_\+centroid}}
-\item 
-cv\+::\+Mat \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_af8b8c8fd4a2cf4afdfc15a4f6f70c145}{\+\_\+shape\+Mask}}
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils\+::\+World\+Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a7f6e2e303f928e468b9a6d9fa9bb33b8}{\+\_\+boundary\+Polygon}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_ac45ff8a02b6c0158d345d7adb69ab632}\label{classrgbd__slam_1_1map__management_1_1_plane_ac45ff8a02b6c0158d345d7adb69ab632}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_ac45ff8a02b6c0158d345d7adb69ab632}\label{classrgbd__slam_1_1map__management_1_1_plane_ac45ff8a02b6c0158d345d7adb69ab632} 
 \index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!Plane@{Plane}}
 \index{Plane@{Plane}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
 \doxysubsubsection{\texorpdfstring{Plane()}{Plane()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+Plane (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+Plane (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-
+\doxylink{classrgbd__slam_1_1map__management_1_1_plane}{Plane} 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_afcbbe76631ca015792ff00a6dac2c243}\label{classrgbd__slam_1_1map__management_1_1_plane_afcbbe76631ca015792ff00a6dac2c243}} 
-\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!get\_centroid@{get\_centroid}}
-\index{get\_centroid@{get\_centroid}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
-\doxysubsubsection{\texorpdfstring{get\_centroid()}{get\_centroid()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::get\+\_\+centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a2240000e79d48701d6c886a3fb4e26db}\label{classrgbd__slam_1_1map__management_1_1_plane_a2240000e79d48701d6c886a3fb4e26db} 
+\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!get\_boundary\_polygon@{get\_boundary\_polygon}}
+\index{get\_boundary\_polygon@{get\_boundary\_polygon}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
+\doxysubsubsection{\texorpdfstring{get\_boundary\_polygon()}{get\_boundary\_polygon()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils\+::\+World\+Polygon}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::get\+\_\+boundary\+\_\+polygon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a440c916b429222c2c9243297c6444335}\label{classrgbd__slam_1_1map__management_1_1_plane_a440c916b429222c2c9243297c6444335}} 
-\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!get\_contained\_pixels@{get\_contained\_pixels}}
-\index{get\_contained\_pixels@{get\_contained\_pixels}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
-\doxysubsubsection{\texorpdfstring{get\_contained\_pixels()}{get\_contained\_pixels()}}
-{\footnotesize\ttfamily uint rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::get\+\_\+contained\+\_\+pixels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a7f911a99bfcf97170ed4a3c8b4bc1f17}\label{classrgbd__slam_1_1map__management_1_1_plane_a7f911a99bfcf97170ed4a3c8b4bc1f17} 
+\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!get\_covariance@{get\_covariance}}
+\index{get\_covariance@{get\_covariance}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
+\doxysubsubsection{\texorpdfstring{get\_covariance()}{get\_covariance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::get\+\_\+covariance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-
-
-Return the number of pixels in this plane mask. 
-
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a54d37981f7e5570f73cec64c4e4c9d16}\label{classrgbd__slam_1_1map__management_1_1_plane_a54d37981f7e5570f73cec64c4e4c9d16}} 
-\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!get\_mask@{get\_mask}}
-\index{get\_mask@{get\_mask}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
-\doxysubsubsection{\texorpdfstring{get\_mask()}{get\_mask()}}
-{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::get\+\_\+mask (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a9fac516dde68975943ee4df501c28509}\label{classrgbd__slam_1_1map__management_1_1_plane_a9fac516dde68975943ee4df501c28509}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a8c27b07da30efe8adf896f54fb4fcd40}\label{classrgbd__slam_1_1map__management_1_1_plane_a8c27b07da30efe8adf896f54fb4fcd40} 
 \index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!get\_parametrization@{get\_parametrization}}
 \index{get\_parametrization@{get\_parametrization}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
 \doxysubsubsection{\texorpdfstring{get\_parametrization()}{get\_parametrization()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::get\+\_\+parametrization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::get\+\_\+parametrization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a751c86ba4f796c634d0b28328d429d36}\label{classrgbd__slam_1_1map__management_1_1_plane_a751c86ba4f796c634d0b28328d429d36}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_ab0f6d8e071c6e4cdc199a44863925248}\label{classrgbd__slam_1_1map__management_1_1_plane_ab0f6d8e071c6e4cdc199a44863925248} 
 \index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!track@{track}}
 \index{track@{track}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
 \doxysubsubsection{\texorpdfstring{track()}{track()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \&}]{new\+Detection\+Parameters,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} \&}]{new\+Detection\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{detected\+Centroid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{Detected\+Plane\+Type}} \&}]{matched\+Feature,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} \&}]{new\+Detection\+Parameters,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&}]{new\+Detection\+Covariance }\end{DoxyParamCaption})}
 
 
 
@@ -88,11 +74,13 @@ Update this plane coordinates using a new detection.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em new\+Detection\+Parameters} & The detected plane parameters \\
+\mbox{\texttt{ in}}  & {\em camera\+To\+World} & The matrix to go from camera to world space \\
 \hline
-\mbox{\texttt{ in}}  & {\em new\+Detection\+Covariance} & The covariance of the newly detected feature \\
+\mbox{\texttt{ in}}  & {\em matched\+Feature} & The feature matched to this world feature \\
 \hline
-\mbox{\texttt{ in}}  & {\em detected\+Centroid} & The centroid of the detected plane \\
+\mbox{\texttt{ in}}  & {\em new\+Detection\+Parameters} & The detected plane parameters, projected to world \\
+\hline
+\mbox{\texttt{ in}}  & {\em new\+Detection\+Covariance} & The covariance of the newly detected feature; in world coordinates \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -101,32 +89,27 @@ The update score (distance between old and new parametrization)
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_acca9e48254d94129725663edd89b01c3}\label{classrgbd__slam_1_1map__management_1_1_plane_acca9e48254d94129725663edd89b01c3}} 
-\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!\_centroid@{\_centroid}}
-\index{\_centroid@{\_centroid}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
-\doxysubsubsection{\texorpdfstring{\_centroid}{\_centroid}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+\_\+centroid\hspace{0.3cm}{\ttfamily [protected]}}
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_a7f6e2e303f928e468b9a6d9fa9bb33b8}\label{classrgbd__slam_1_1map__management_1_1_plane_a7f6e2e303f928e468b9a6d9fa9bb33b8} 
+\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!\_boundaryPolygon@{\_boundaryPolygon}}
+\index{\_boundaryPolygon@{\_boundaryPolygon}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
+\doxysubsubsection{\texorpdfstring{\_boundaryPolygon}{\_boundaryPolygon}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils\+::\+World\+Polygon}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+\_\+boundary\+Polygon}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}\label{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}\label{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3} 
 \index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!\_covariance@{\_covariance}}
 \index{\_covariance@{\_covariance}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
 \doxysubsubsection{\texorpdfstring{\_covariance}{\_covariance}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+\_\+covariance\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+\_\+covariance}
 
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}\label{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}} 
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}\label{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc} 
 \index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!\_parametrization@{\_parametrization}}
 \index{\_parametrization@{\_parametrization}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
 \doxysubsubsection{\texorpdfstring{\_parametrization}{\_parametrization}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+\_\+parametrization\hspace{0.3cm}{\ttfamily [protected]}}
-
-\mbox{\Hypertarget{classrgbd__slam_1_1map__management_1_1_plane_af8b8c8fd4a2cf4afdfc15a4f6f70c145}\label{classrgbd__slam_1_1map__management_1_1_plane_af8b8c8fd4a2cf4afdfc15a4f6f70c145}} 
-\index{rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}!\_shapeMask@{\_shapeMask}}
-\index{\_shapeMask@{\_shapeMask}!rgbd\_slam::map\_management::Plane@{rgbd\_slam::map\_management::Plane}}
-\doxysubsubsection{\texorpdfstring{\_shapeMask}{\_shapeMask}}
-{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+\_\+shape\+Mask\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}} rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+::\+\_\+parametrization}
 
 
 
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__primitive_8hpp}{map\+\_\+primitive.\+hpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__primitive_8hpp}{map\+\_\+primitive.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__primitive_8cpp}{map\+\_\+primitive.\+cpp}}\end{DoxyCompactItemize}

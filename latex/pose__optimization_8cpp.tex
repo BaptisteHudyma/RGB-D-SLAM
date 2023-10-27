@@ -1,34 +1,38 @@
-\hypertarget{pose__optimization_8cpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/pose\+\_\+optimization.cpp File Reference}
-\label{pose__optimization_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp}}
-{\ttfamily \#include \char`\"{}pose\+\_\+optimization.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../../third\+\_\+party/p3p.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../outputs/logger.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../parameters.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/camera\+\_\+transformation.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/covariances.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/random.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}levenberg\+\_\+marquard\+\_\+functors.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}matches\+\_\+containers.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}ransac.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}types.\+hpp\char`\"{}}\newline
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/pose\+\_\+optimization.cpp File Reference}
+\hypertarget{pose__optimization_8cpp}{}\label{pose__optimization_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/pose\_optimization.cpp}}
+{\ttfamily \#include "{}pose\+\_\+optimization.\+hpp"{}}\newline
+{\ttfamily \#include "{}../../third\+\_\+party/p3p.\+hpp"{}}\newline
+{\ttfamily \#include "{}../outputs/logger.\+hpp"{}}\newline
+{\ttfamily \#include "{}../parameters.\+hpp"{}}\newline
+{\ttfamily \#include "{}../utils/camera\+\_\+transformation.\+hpp"{}}\newline
+{\ttfamily \#include "{}../utils/covariances.\+hpp"{}}\newline
+{\ttfamily \#include "{}../utils/random.\+hpp"{}}\newline
+{\ttfamily \#include "{}coordinates.\+hpp"{}}\newline
+{\ttfamily \#include "{}levenberg\+\_\+marquard\+\_\+functors.\+hpp"{}}\newline
+{\ttfamily \#include "{}matches\+\_\+containers.\+hpp"{}}\newline
+{\ttfamily \#include "{}ransac.\+hpp"{}}\newline
+{\ttfamily \#include "{}types.\+hpp"{}}\newline
 {\ttfamily \#include $<$Eigen/\+Std\+Vector$>$}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
-\doxysubsection*{Namespaces}
+{\ttfamily \#include $<$tbb/parallel\+\_\+for.\+h$>$}\newline
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\+\_\+slam\+::pose\+\_\+optimization}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad39ae55c25371ec8ee66b553d1940fc7}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+point\+\_\+inliers\+\_\+outliers}} (const matches\+\_\+containers\+::match\+\_\+point\+\_\+container \&points\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error, const utils\+::\+Pose\+Base \&transformation\+Pose, matches\+\_\+containers\+::point\+\_\+match\+\_\+sets \&point\+Matche\+Sets)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a6887cef030e154a5837d40eadda8f0c0}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+point\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error\+\_\+px, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a9555085cb256703cf45880077a789c7a}{matches\+\_\+containers\+::point\+\_\+match\+\_\+sets}} \&point\+Matche\+Sets) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a8c3da22dd5264b5d590be1c6100ad2c8}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+plane\+\_\+inliers\+\_\+outliers}} (const matches\+\_\+containers\+::match\+\_\+plane\+\_\+container \&planes\+To\+Evaluate, const double plane\+Max\+Retroprojection\+Error, const utils\+::\+Pose\+Base \&transformation\+Pose, matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets \&plane\+Match\+Sets)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae93d7b6432703034ffbcd6879ee720fb}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+plane\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \&planes\+To\+Evaluate, const double plane\+Max\+Retroprojection\+Error\+\_\+mm, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a064c556345ab975d37ba817b97b99712}{matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets}} \&plane\+Match\+Sets) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0d83bf863f3d422bf228b3944c8fcf9c}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+features\+\_\+inliers\+\_\+outliers}} (const matches\+\_\+containers\+::match\+Container \&features\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error, const double plane\+Max\+Retroprojection\+Error, const utils\+::\+Pose\+Base \&transformation\+Pose, matches\+\_\+containers\+::match\+\_\+sets \&feature\+Set)
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac181abaf8b164dab6d2cdb86964b5eab}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+features\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&features\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error\+\_\+px, const double plane\+Max\+Retroprojection\+Error\+\_\+mm, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&feature\+Set) noexcept
 \item 
-matches\+\_\+containers\+::match\+\_\+sets \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+subset}} (const uint number\+Of\+Points\+To\+Sample, const uint number\+Of\+Planes\+To\+Sample, const matches\+\_\+containers\+::match\+Container \&matched\+Features)
+\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+subset}} (const uint number\+Of\+Points\+To\+Sample, const uint number\+Of\+Planes\+To\+Sample, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&matched\+Features)
 \begin{DoxyCompactList}\small\item\em Return a subset of a given inlier set. \end{DoxyCompactList}\end{DoxyCompactItemize}

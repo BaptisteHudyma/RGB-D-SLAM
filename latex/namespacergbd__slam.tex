@@ -1,6 +1,6 @@
-\hypertarget{namespacergbd__slam}{}\doxysection{rgbd\+\_\+slam Namespace Reference}
-\label{namespacergbd__slam}\index{rgbd\_slam@{rgbd\_slam}}
-\doxysubsection*{Namespaces}
+\doxysection{rgbd\+\_\+slam Namespace Reference}
+\hypertarget{namespacergbd__slam}{}\label{namespacergbd__slam}\index{rgbd\_slam@{rgbd\_slam}}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1features}{features}}
@@ -11,76 +11,80 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers}{matches\+
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1outputs}{outputs}}
 \item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1parameters}{parameters}}
+\item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{pose\+\_\+optimization}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1tracking}{tracking}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{utils}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Classes}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1camera_coordinate_covariance}{camera\+Coordinate\+Covariance}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1camera_to_world_matrix}{camera\+To\+World\+Matrix}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{Euler\+Angles}}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1_parameters}{Parameters}}
 \begin{DoxyCompactList}\small\item\em Store all parameters of this SLAM program. It should be used as a static class everywhere in the program. If the parameters are not loaded from a file, a set of default parameters will be used. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1plane_camera_to_world_matrix}{plane\+Camera\+To\+World\+Matrix}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_plane_camera_to_world_matrix}{Plane\+Camera\+To\+World\+Matrix}}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1plane_world_to_camera_matrix}{plane\+World\+To\+Camera\+Matrix}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_plane_world_to_camera_matrix}{Plane\+World\+To\+Camera\+Matrix}}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\+\_\+\+SLAM}}
 \begin{DoxyCompactList}\small\item\em Main Simultaneous localisation and tracking class. This is the input of the program, the only needed interaction from a user view point. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1screen_coordinate_covariance}{screen\+Coordinate\+Covariance}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1world_coordinate_covariance}{world\+Coordinate\+Covariance}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}}
 \item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{world\+To\+Camera\+Matrix}}
+struct \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Typedefs}
+\doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef Eigen\+::\+Matrix$<$ bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic $>$ \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{Matrixb}}
+using \mbox{\hyperlink{namespacergbd__slam_ace6ea045a4a0d38f128a104030887ebe}{Matrixb}} = Eigen\+::\+Matrix$<$ bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic $>$
 \item 
-typedef Eigen\+::\+Matrix\+Xf \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{matrixf}}
+using \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} = Eigen\+::\+Matrix\+Xf
 \item 
-typedef Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}}
+using \mbox{\hyperlink{namespacergbd__slam_aa697476dd2fc1efe9d1ecc56c120197e}{matrixd}} = Eigen\+::\+Matrix\+Xd
 \item 
-typedef Eigen\+::\+Vector2d \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{vector2}}
+using \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} = Eigen\+::\+Vector2d
 \item 
-typedef Eigen\+::\+Vector\+Xd \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}}
+using \mbox{\hyperlink{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}{vectorxd}} = Eigen\+::\+Vector\+Xd
 \item 
-typedef Eigen\+::\+Vector$<$ bool, Eigen\+::\+Dynamic $>$ \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}}
+using \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} = Eigen\+::\+Vector$<$ bool, Eigen\+::\+Dynamic $>$
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 3, 1 $>$ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}
+using \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} = Eigen\+::\+Matrix$<$ double, 3, 1 $>$
 \item 
-typedef Eigen\+::\+Vector4d \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{vector4}}
+using \mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{vector4}} = Eigen\+::\+Vector4d
 \item 
-typedef Eigen\+::\+Matrix3d \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}
+using \mbox{\hyperlink{namespacergbd__slam_a684727fac43c1d1cec6104d0d15af94e}{matrix22}} = Eigen\+::\+Matrix2d
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 3, 4 $>$ \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{matrix34}}
+using \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} = Eigen\+::\+Matrix3d
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 4, 3 $>$ \mbox{\hyperlink{namespacergbd__slam_a823edbcbe45c6e21187073ad28cd0370}{matrix43}}
+using \mbox{\hyperlink{namespacergbd__slam_ac304b2969ab2978a7c10ffb31baf976b}{matrix34}} = Eigen\+::\+Matrix$<$ double, 3, 4 $>$
 \item 
-typedef Eigen\+::\+Matrix4d \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{matrix44}}
+using \mbox{\hyperlink{namespacergbd__slam_a063183a28e926d0a18600e33874dc844}{matrix43}} = Eigen\+::\+Matrix$<$ double, 4, 3 $>$
 \item 
-typedef Eigen\+::\+Quaternion$<$ double $>$ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}
+using \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} = Eigen\+::\+Matrix4d
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 6, 1 $>$ \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{vector6}}
+using \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} = Eigen\+::\+Quaternion$<$ double $>$
 \item 
-typedef Eigen\+::\+Matrix$<$ double, 6, 6 $>$ \mbox{\hyperlink{namespacergbd__slam_a94c77331186bb0c8fdcb26baa0d910d5}{matrix66}}
+using \mbox{\hyperlink{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468}{vector6}} = Eigen\+::\+Matrix$<$ double, 6, 1 $>$
 \item 
-typedef std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}} $>$ $>$ \mbox{\hyperlink{namespacergbd__slam_ae6859425949b304e9b491455312fea52}{vector3\+\_\+vector}}
+using \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} = Eigen\+::\+Matrix$<$ double, 6, 6 $>$
+\item 
+using \mbox{\hyperlink{namespacergbd__slam_a2ef82ebfa76f6740a67599bab7004e84}{vector3\+\_\+vector}} = std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ $>$
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_a0e64ff2828290a079a7e2c76eea845b5}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed)
+double \mbox{\hyperlink{namespacergbd__slam_ab4da88e71fa2bbc18cacac5778297397}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed) noexcept
 \end{DoxyCompactItemize}
-\doxysubsection*{Variables}
+\doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}{Euler\+To\+Radian}} = M\+\_\+\+PI / 180.\+0
@@ -88,115 +92,121 @@ const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec
 
 
 \doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}\label{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}} 
+\Hypertarget{namespacergbd__slam_a684727fac43c1d1cec6104d0d15af94e}\label{namespacergbd__slam_a684727fac43c1d1cec6104d0d15af94e} 
+\index{rgbd\_slam@{rgbd\_slam}!matrix22@{matrix22}}
+\index{matrix22@{matrix22}!rgbd\_slam@{rgbd\_slam}}
+\doxysubsubsection{\texorpdfstring{matrix22}{matrix22}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a684727fac43c1d1cec6104d0d15af94e}{rgbd\+\_\+slam\+::matrix22}} = typedef Eigen\+::\+Matrix2d}
+
+\Hypertarget{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}\label{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3} 
 \index{rgbd\_slam@{rgbd\_slam}!matrix33@{matrix33}}
 \index{matrix33@{matrix33}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matrix33}{matrix33}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix3d \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{rgbd\+\_\+slam\+::matrix33}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{rgbd\+\_\+slam\+::matrix33}} = typedef Eigen\+::\+Matrix3d}
 
-\mbox{\Hypertarget{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}\label{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}} 
+\Hypertarget{namespacergbd__slam_ac304b2969ab2978a7c10ffb31baf976b}\label{namespacergbd__slam_ac304b2969ab2978a7c10ffb31baf976b} 
 \index{rgbd\_slam@{rgbd\_slam}!matrix34@{matrix34}}
 \index{matrix34@{matrix34}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matrix34}{matrix34}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 3, 4$>$ \mbox{\hyperlink{namespacergbd__slam_ae454c342bc3dc5ead4e6c1df65e3fd84}{rgbd\+\_\+slam\+::matrix34}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_ac304b2969ab2978a7c10ffb31baf976b}{rgbd\+\_\+slam\+::matrix34}} = typedef Eigen\+::\+Matrix$<$double, 3, 4$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_a823edbcbe45c6e21187073ad28cd0370}\label{namespacergbd__slam_a823edbcbe45c6e21187073ad28cd0370}} 
+\Hypertarget{namespacergbd__slam_a063183a28e926d0a18600e33874dc844}\label{namespacergbd__slam_a063183a28e926d0a18600e33874dc844} 
 \index{rgbd\_slam@{rgbd\_slam}!matrix43@{matrix43}}
 \index{matrix43@{matrix43}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matrix43}{matrix43}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 4, 3$>$ \mbox{\hyperlink{namespacergbd__slam_a823edbcbe45c6e21187073ad28cd0370}{rgbd\+\_\+slam\+::matrix43}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a063183a28e926d0a18600e33874dc844}{rgbd\+\_\+slam\+::matrix43}} = typedef Eigen\+::\+Matrix$<$double, 4, 3$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}\label{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}} 
+\Hypertarget{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}\label{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f} 
 \index{rgbd\_slam@{rgbd\_slam}!matrix44@{matrix44}}
 \index{matrix44@{matrix44}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matrix44}{matrix44}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix4d \mbox{\hyperlink{namespacergbd__slam_a4c5100025d8dbfb05b957c61197cc83a}{rgbd\+\_\+slam\+::matrix44}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{rgbd\+\_\+slam\+::matrix44}} = typedef Eigen\+::\+Matrix4d}
 
-\mbox{\Hypertarget{namespacergbd__slam_a94c77331186bb0c8fdcb26baa0d910d5}\label{namespacergbd__slam_a94c77331186bb0c8fdcb26baa0d910d5}} 
+\Hypertarget{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}\label{namespacergbd__slam_a502d6e9992f89238aab609e627445e55} 
 \index{rgbd\_slam@{rgbd\_slam}!matrix66@{matrix66}}
 \index{matrix66@{matrix66}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matrix66}{matrix66}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 6, 6$>$ \mbox{\hyperlink{namespacergbd__slam_a94c77331186bb0c8fdcb26baa0d910d5}{rgbd\+\_\+slam\+::matrix66}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{rgbd\+\_\+slam\+::matrix66}} = typedef Eigen\+::\+Matrix$<$double, 6, 6$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}\label{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}} 
+\Hypertarget{namespacergbd__slam_ace6ea045a4a0d38f128a104030887ebe}\label{namespacergbd__slam_ace6ea045a4a0d38f128a104030887ebe} 
 \index{rgbd\_slam@{rgbd\_slam}!Matrixb@{Matrixb}}
 \index{Matrixb@{Matrixb}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{Matrixb}{Matrixb}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic$>$ \mbox{\hyperlink{namespacergbd__slam_a0fe13c1b6f4e20bd00b1d8c76d6fcc53}{rgbd\+\_\+slam\+::\+Matrixb}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_ace6ea045a4a0d38f128a104030887ebe}{rgbd\+\_\+slam\+::\+Matrixb}} = typedef Eigen\+::\+Matrix$<$bool, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}\label{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}} 
+\Hypertarget{namespacergbd__slam_aa697476dd2fc1efe9d1ecc56c120197e}\label{namespacergbd__slam_aa697476dd2fc1efe9d1ecc56c120197e} 
 \index{rgbd\_slam@{rgbd\_slam}!matrixd@{matrixd}}
 \index{matrixd@{matrixd}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matrixd}{matrixd}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{rgbd\+\_\+slam\+::matrixd}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_aa697476dd2fc1efe9d1ecc56c120197e}{rgbd\+\_\+slam\+::matrixd}} = typedef Eigen\+::\+Matrix\+Xd}
 
-\mbox{\Hypertarget{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}\label{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}} 
+\Hypertarget{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}\label{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144} 
 \index{rgbd\_slam@{rgbd\_slam}!matrixf@{matrixf}}
 \index{matrixf@{matrixf}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{matrixf}{matrixf}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix\+Xf \mbox{\hyperlink{namespacergbd__slam_ac9a8753b26f3eee39bc45a91f8f9c650}{rgbd\+\_\+slam\+::matrixf}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{rgbd\+\_\+slam\+::matrixf}} = typedef Eigen\+::\+Matrix\+Xf}
 
-\mbox{\Hypertarget{namespacergbd__slam_a078420ee4217ebf095ba100570679827}\label{namespacergbd__slam_a078420ee4217ebf095ba100570679827}} 
+\Hypertarget{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}\label{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627} 
 \index{rgbd\_slam@{rgbd\_slam}!quaternion@{quaternion}}
 \index{quaternion@{quaternion}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{quaternion}{quaternion}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Quaternion$<$double$>$ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{rgbd\+\_\+slam\+::quaternion}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{rgbd\+\_\+slam\+::quaternion}} = typedef Eigen\+::\+Quaternion$<$double$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}\label{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}} 
+\Hypertarget{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}\label{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1} 
 \index{rgbd\_slam@{rgbd\_slam}!vector2@{vector2}}
 \index{vector2@{vector2}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{vector2}{vector2}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Vector2d \mbox{\hyperlink{namespacergbd__slam_acbfe158267b4d08e84815de6e0fc4cda}{rgbd\+\_\+slam\+::vector2}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{rgbd\+\_\+slam\+::vector2}} = typedef Eigen\+::\+Vector2d}
 
-\mbox{\Hypertarget{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}\label{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}} 
+\Hypertarget{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}\label{namespacergbd__slam_aa713e4372aad00d97551abf1588572de} 
 \index{rgbd\_slam@{rgbd\_slam}!vector3@{vector3}}
 \index{vector3@{vector3}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{vector3}{vector3}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 3, 1$>$ \mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{rgbd\+\_\+slam\+::vector3}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{rgbd\+\_\+slam\+::vector3}} = typedef Eigen\+::\+Matrix$<$double, 3, 1$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_ae6859425949b304e9b491455312fea52}\label{namespacergbd__slam_ae6859425949b304e9b491455312fea52}} 
+\Hypertarget{namespacergbd__slam_a2ef82ebfa76f6740a67599bab7004e84}\label{namespacergbd__slam_a2ef82ebfa76f6740a67599bab7004e84} 
 \index{rgbd\_slam@{rgbd\_slam}!vector3\_vector@{vector3\_vector}}
 \index{vector3\_vector@{vector3\_vector}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{vector3\_vector}{vector3\_vector}}
-{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacergbd__slam_a1c642e1c4dfceaa8c7409331bfc10b6b}{vector3}}$>$ $>$ \mbox{\hyperlink{namespacergbd__slam_ae6859425949b304e9b491455312fea52}{rgbd\+\_\+slam\+::vector3\+\_\+vector}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a2ef82ebfa76f6740a67599bab7004e84}{rgbd\+\_\+slam\+::vector3\+\_\+vector}} = typedef std\+::vector$<$\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}$>$ $>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}\label{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}} 
+\Hypertarget{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}\label{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d} 
 \index{rgbd\_slam@{rgbd\_slam}!vector4@{vector4}}
 \index{vector4@{vector4}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{vector4}{vector4}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Vector4d \mbox{\hyperlink{namespacergbd__slam_a5cbcd8eb5bdfc3609954483b8c18b675}{rgbd\+\_\+slam\+::vector4}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a5f827c31c564a1336ce9925aabeaf99d}{rgbd\+\_\+slam\+::vector4}} = typedef Eigen\+::\+Vector4d}
 
-\mbox{\Hypertarget{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}\label{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}} 
+\Hypertarget{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468}\label{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468} 
 \index{rgbd\_slam@{rgbd\_slam}!vector6@{vector6}}
 \index{vector6@{vector6}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{vector6}{vector6}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Matrix$<$double, 6, 1$>$ \mbox{\hyperlink{namespacergbd__slam_a54f5198175c41ce6f3d69192686b8c28}{rgbd\+\_\+slam\+::vector6}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468}{rgbd\+\_\+slam\+::vector6}} = typedef Eigen\+::\+Matrix$<$double, 6, 1$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}\label{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}} 
+\Hypertarget{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}\label{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d} 
 \index{rgbd\_slam@{rgbd\_slam}!vectorb@{vectorb}}
 \index{vectorb@{vectorb}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{vectorb}{vectorb}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Vector$<$bool, Eigen\+::\+Dynamic$>$ \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{rgbd\+\_\+slam\+::vectorb}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{rgbd\+\_\+slam\+::vectorb}} = typedef Eigen\+::\+Vector$<$bool, Eigen\+::\+Dynamic$>$}
 
-\mbox{\Hypertarget{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}\label{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}} 
+\Hypertarget{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}\label{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878} 
 \index{rgbd\_slam@{rgbd\_slam}!vectorxd@{vectorxd}}
 \index{vectorxd@{vectorxd}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{vectorxd}{vectorxd}}
-{\footnotesize\ttfamily typedef Eigen\+::\+Vector\+Xd \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{rgbd\+\_\+slam\+::vectorxd}}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}{rgbd\+\_\+slam\+::vectorxd}} = typedef Eigen\+::\+Vector\+Xd}
 
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_a0e64ff2828290a079a7e2c76eea845b5}\label{namespacergbd__slam_a0e64ff2828290a079a7e2c76eea845b5}} 
+\Hypertarget{namespacergbd__slam_ab4da88e71fa2bbc18cacac5778297397}\label{namespacergbd__slam_ab4da88e71fa2bbc18cacac5778297397} 
 \index{rgbd\_slam@{rgbd\_slam}!get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}}
 \index{get\_percent\_of\_elapsed\_time@{get\_percent\_of\_elapsed\_time}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{get\_percent\_of\_elapsed\_time()}{get\_percent\_of\_elapsed\_time()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
 \doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}\label{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}} 
+\Hypertarget{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}\label{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9} 
 \index{rgbd\_slam@{rgbd\_slam}!EulerToRadian@{EulerToRadian}}
 \index{EulerToRadian@{EulerToRadian}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{EulerToRadian}{EulerToRadian}}

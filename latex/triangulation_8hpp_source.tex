@@ -1,5 +1,5 @@
-\hypertarget{triangulation_8hpp_source}{}\doxysection{triangulation.\+hpp}
-\label{triangulation_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/triangulation.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/triangulation.hpp}}
+\doxysection{triangulation.\+hpp}
+\hypertarget{triangulation_8hpp_source}{}\label{triangulation_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/triangulation.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/triangulation.hpp}}
 \mbox{\hyperlink{triangulation_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_TRIANGULATION\_HPP}}
@@ -8,30 +8,29 @@
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../utils/coordinates.hpp"{}}}
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../utils/pose.hpp"{}}}
 \DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }tracking\ \{}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation}{Triangulation}}}
-\DoxyCodeLine{00014\ \{}
-\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a69133e174baa3c1309b3f3629ee02143}{triangulate}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ currentWorldToCamera,}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ newWorldToCamera,}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ point2Da,}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ point2Db,}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ triangulatedPoint);}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a8033f57b4e72fd466722553e72654081}{get\_supposed\_pose}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\&\ pose,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ baselinePoseSupposition);}
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1tracking}{rgbd\_slam::tracking}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation}{Triangulation}}}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a15a04531fd9d5b45cf8b575a30fa3bf3}{triangulate}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ currentWorldToCamera,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ newWorldToCamera,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ point2Da,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ point2Db,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ triangulatedPoint)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00036\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_triangulation_a16c39fb6a176092cf67dde66f8460078}{get\_supposed\_pose}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils::Pose}}\&\ pose,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ baselinePoseSupposition)\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00038\ }
 \DoxyCodeLine{00039\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_retroprojection\_valid(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ worldPoint,}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ screenPoint,}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1world_to_camera_matrix}{worldToCameraMatrix}}\&\ worldToCamera,}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ maximumRetroprojectionError);}
+\DoxyCodeLine{00045\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_retroprojection\_valid(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ worldPoint,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ screenPoint,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ maximumRetroprojectionError)\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00049\ \};}
 \DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \}\ \textcolor{comment}{//\ namespace\ tracking}}
-\DoxyCodeLine{00052\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00053\ }
-\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00051\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::tracking}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

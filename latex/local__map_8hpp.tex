@@ -1,22 +1,26 @@
-\hypertarget{local__map_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/local\+\_\+map.hpp File Reference}
-\label{local__map_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/local\_map.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/local\_map.hpp}}
-{\ttfamily \#include \char`\"{}../features/keypoints/keypoint\+\_\+handler.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../features/primitives/shape\+\_\+primitives.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../outputs/map\+\_\+writer.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/matches\+\_\+containers.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}../utils/pose.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}feature\+\_\+map.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}map\+\_\+point.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}map\+\_\+primitive.\+hpp\char`\"{}}\newline
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/local\+\_\+map.hpp File Reference}
+\hypertarget{local__map_8hpp}{}\label{local__map_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/local\_map.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/local\_map.hpp}}
+{\ttfamily \#include "{}../features/keypoints/keypoint\+\_\+handler.\+hpp"{}}\newline
+{\ttfamily \#include "{}../features/primitives/shape\+\_\+primitives.\+hpp"{}}\newline
+{\ttfamily \#include "{}../features/lines/line\+\_\+detection.\+hpp"{}}\newline
+{\ttfamily \#include "{}../outputs/map\+\_\+writer.\+hpp"{}}\newline
+{\ttfamily \#include "{}../matches\+\_\+containers.\+hpp"{}}\newline
+{\ttfamily \#include "{}../utils/pose.\+hpp"{}}\newline
+{\ttfamily \#include "{}feature\+\_\+map.\+hpp"{}}\newline
+{\ttfamily \#include "{}map\+\_\+point.\+hpp"{}}\newline
+{\ttfamily \#include "{}map\+\_\+primitive.\+hpp"{}}\newline
+{\ttfamily \#include $<$memory$>$}\newline
 {\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
 {\ttfamily \#include $<$opencv2/xfeatures2d.\+hpp$>$}\newline
 {\ttfamily \#include $<$vector$>$}\newline
-\doxysubsection*{Classes}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_detected_feature_container}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Feature\+Container}}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local___map}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Local\+\_\+\+Map}}
 \begin{DoxyCompactList}\small\item\em Maintain a local (around the camera) map. Handle the feature association and tracking in local space. Can return matched features, and update the global map when features are estimated to be reliable. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}

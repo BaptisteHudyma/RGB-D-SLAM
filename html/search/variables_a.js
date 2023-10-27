@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yaw_0',['yaw',['../structrgbd__slam_1_1_euler_angles.html#aff48fb8c3f6813d864e22b562f6c9e27',1,'rgbd_slam::EulerAngles']]]
+  ['numberofdetectioncells_0',['numberOfDetectionCells',['../classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a1d525f0abd1cc1403d08f52b59a7a86b',1,'rgbd_slam::features::keypoints::Key_Point_Extraction']]]
 ];

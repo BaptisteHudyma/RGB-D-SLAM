@@ -1,25 +1,42 @@
-\hypertarget{covariances_8hpp}{}\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/covariances.hpp File Reference}
-\label{covariances_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/covariances.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/covariances.hpp}}
-{\ttfamily \#include \char`\"{}coordinates.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}matches\+\_\+containers.\+hpp\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}pose.\+hpp\char`\"{}}\newline
-\doxysubsection*{Namespaces}
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/covariances.hpp File Reference}
+\hypertarget{covariances_8hpp}{}\label{covariances_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/covariances.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/covariances.hpp}}
+{\ttfamily \#include "{}coordinates.\+hpp"{}}\newline
+{\ttfamily \#include "{}logger.\+hpp"{}}\newline
+{\ttfamily \#include "{}matches\+\_\+containers.\+hpp"{}}\newline
+{\ttfamily \#include "{}pose.\+hpp"{}}\newline
+{\ttfamily \#include "{}types.\+hpp"{}}\newline
+{\ttfamily \#include $<$Eigen/src/\+Core/\+Matrix.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$bits/ranges\+\_\+algo.\+h$>$}\newline
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a823b15c372a579e1530327dc01545363}{rgbd\+\_\+slam\+::utils\+::get\+\_\+depth\+\_\+quantization}} (const double depht)
+{\footnotesize template$<$int N$>$ }\\bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{rgbd\+\_\+slam\+::utils\+::is\+\_\+covariance\+\_\+valid}} (const Eigen\+::\+Matrix$<$ double, N, N $>$ \&covariance) noexcept
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a034845c6434a68e6e6002f4f6277ab2c}{rgbd\+\_\+slam\+::utils\+::get\+\_\+depth\+\_\+quantization}} (const double depht) noexcept
 \begin{DoxyCompactList}\small\item\em Return the expected depth quantization at this depth value. \end{DoxyCompactList}\item 
-const screen\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_aede262c3a1f121d6b1cdf563589af35e}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&Screen\+Coordinate)
-\begin{DoxyCompactList}\small\item\em compute a covariance matrix for a screen point associated with a depth measurement \end{DoxyCompactList}\item 
-const screen\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_a54ea82737d46ab46f8aebebdf565b517}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const vector3 \&point, const matrix33 \&point\+Covariance)
+\mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aaf52fb94ffa43e76e7ccaee01fab2122}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&point, const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&point\+Covariance) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a screen point covariance from a given point. \end{DoxyCompactList}\item 
-const camera\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_affb3af7de401247c96630ba2e56be652}{rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&screen\+Point)
+\mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7bb51a5bdb779e18aa2fef3309765094}{rgbd\+\_\+slam\+::utils\+::get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} \&point, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \&point\+Covariance) noexcept
+\begin{DoxyCompactList}\small\item\em Compute a screen point covariance from a given point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aea0efe85d8571e80a7c8665704cb0d9e}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \&camera\+Point\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance) noexcept
+\begin{DoxyCompactList}\small\item\em Compute the covariance of a world point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9778cf1395973f4bb8b77e72cb1335c8}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance) noexcept
+\begin{DoxyCompactList}\small\item\em Compute covariance of a screen point in world state. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a556ccbd966f58a0f76d9a53405072745}{rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point) noexcept
 \begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This function will internaly compute the covariance of the screen point. \end{DoxyCompactList}\item 
-const camera\+Coordinate\+Covariance \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac170dd09810eef1955f5bf07830e4cdd}{rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance}} (const Screen\+Coordinate \&screen\+Point, const screen\+Coordinate\+Covariance \&screen\+Point\+Covariance)
-\begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to camera point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a09ee9e17b91f1e9ef5fdd7d24bcace6d}{rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \&screen\+Point\+Covariance) noexcept
+\begin{DoxyCompactList}\small\item\em Compute the associated Gaussian error of a screen point when it will be transformed to camera point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3735cd614fe750dfe0dc7ade7346b158}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+plane\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&plane\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&point\+Cloud\+Covariance)
+\begin{DoxyCompactList}\small\item\em Compute the covariance of a plane using it\textquotesingle{}s point cloud covariance matrix. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a071e281f17fe3f487e25e9cc9349a5a3}{rgbd\+\_\+slam\+::utils\+::compute\+\_\+reduced\+\_\+plane\+\_\+point\+\_\+cloud\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&plane\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&plane\+Cloud\+Covariance)
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_adb9b794ab09890567eb981adabe2b566}{rgbd\+\_\+slam\+::utils\+::get\+\_\+world\+\_\+plane\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{Plane\+Camera\+Coordinates}} \&plane\+Coordinates, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World\+Matrix, const \mbox{\hyperlink{structrgbd__slam_1_1_plane_camera_to_world_matrix}{Plane\+Camera\+To\+World\+Matrix}} \&plane\+Camera\+To\+World\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&plane\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&world\+Pose\+Covariance)
+\begin{DoxyCompactList}\small\item\em Compute the covariance of the world plane. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['operator_28_29_0',['operator()',['../structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#aa226bbe0fb62408f8e64490e6ac8183d',1,'rgbd_slam::pose_optimization::Global_Pose_Estimator']]],
-  ['operator_3c_3c_1',['operator&lt;&lt;',['../structrgbd__slam_1_1utils_1_1_camera_coordinate.html#aac7f1bac56912cb9f5f786c3d5fc014f',1,'rgbd_slam::utils::CameraCoordinate::operator&lt;&lt;(const vector3 &amp;other)'],['../structrgbd__slam_1_1utils_1_1_camera_coordinate.html#a100feeb35abdaf020c4a21331bf25469',1,'rgbd_slam::utils::CameraCoordinate::operator&lt;&lt;(const CameraCoordinate &amp;other)'],['../namespacergbd__slam_1_1utils.html#a7830f2322d077dd3b0659ac1226daa5f',1,'rgbd_slam::utils::operator&lt;&lt;(std::ostream &amp;os, const PoseBase &amp;pose)'],['../namespacergbd__slam_1_1utils.html#a1f943d571d918b61309edcd6d98f848a',1,'rgbd_slam::utils::operator&lt;&lt;(std::ostream &amp;os, const Pose &amp;pose)']]],
-  ['operator_3d_2',['operator=',['../structrgbd__slam_1_1utils_1_1_camera_coordinate.html#af22af52f3496d51a39a751df27eace58',1,'rgbd_slam::utils::CameraCoordinate::operator=(const vector3 &amp;other)'],['../structrgbd__slam_1_1utils_1_1_camera_coordinate.html#ac502be12a2bef9740672b572abd6a7b1',1,'rgbd_slam::utils::CameraCoordinate::operator=(const CameraCoordinate &amp;other)']]]
+  ['none_0',['NONE',['../namespacergbd__slam_1_1outputs.html#ad32626c82c72b97572a771df8066a8f0ab50339a10e1de285ac99d4c3990b8693',1,'rgbd_slam::outputs']]],
+  ['normal_1',['normal',['../structrgbd__slam_1_1utils_1_1_plane_coordinates.html#a198fbbbe3e912c793c53666a007822b9',1,'rgbd_slam::utils::PlaneCoordinates']]],
+  ['numberofdetectioncells_2',['numberOfDetectionCells',['../classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a1d525f0abd1cc1403d08f52b59a7a86b',1,'rgbd_slam::features::keypoints::Key_Point_Extraction']]]
 ];

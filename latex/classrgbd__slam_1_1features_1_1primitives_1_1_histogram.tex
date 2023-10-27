@@ -1,60 +1,51 @@
-\hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{}\doxysection{rgbd\+\_\+slam\+::features\+::primitives\+::Histogram Class Reference}
-\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}\index{rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}}
+\doxysection{rgbd\+\_\+slam\+::features\+::primitives\+::Histogram\texorpdfstring{$<$}{<} Size \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}\index{rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}}
 
 
-Basic 2D \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}} class, handling an histogram of N x N.  
+Basic 2D \doxylink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram} class, handling an histogram of N x N.  
 
 
 
 
 {\ttfamily \#include $<$histogram.\+hpp$>$}
 
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a2c554b601e1418e56cb53973929d2274}{Histogram}} (const uint bin\+Per\+Coord\+Count)
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a8f2e5ba773865423904ab27831396ae3}{Histogram}} ()
 \item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ada29c5c8bd20f5aec022b32a5a7bc09d}{init\+\_\+histogram}} (const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&points, const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&is\+Unasigned\+Mask)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a4652c5123dedfd2690329e7d21f32b98}{init\+\_\+histogram}} (const \mbox{\hyperlink{namespacergbd__slam_aa697476dd2fc1efe9d1ecc56c120197e}{matrixd}} \&points, const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&is\+Unasigned\+Mask) noexcept
 \begin{DoxyCompactList}\small\item\em Initialise the histogram. \end{DoxyCompactList}\item 
-std\+::vector$<$ uint $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ac5a822f4ce4e714296d1f6a82e00f3c7}{get\+\_\+points\+\_\+from\+\_\+most\+\_\+frequent\+\_\+bin}} () const
+std\+::vector$<$ uint $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a30b9403d2a91319df4d17748f9461082}{get\+\_\+points\+\_\+from\+\_\+most\+\_\+frequent\+\_\+bin}} () const noexcept
 \begin{DoxyCompactList}\small\item\em Return the points in the bin containing the most points. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_aafcd0a0740549c359aeda54fb2642cfc}{remove\+\_\+point}} (const uint point\+Id)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c0905c9110db0b9b71f32a359e0dff3}{remove\+\_\+point}} (const uint point\+Id) noexcept
 \begin{DoxyCompactList}\small\item\em Remove all points from a bin. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c368107f33fe5ab90b6315be44687e2}{reset}} ()
-\begin{DoxyCompactList}\small\item\em Empty bins and clear content. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a904455f98ed432c6f445e34a13d6c034}{$\sim$\+Histogram}} ()
-\end{DoxyCompactItemize}
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a83cdff1460fb194978fc76eabbbd2646}{reset}} () noexcept
+\begin{DoxyCompactList}\small\item\em Empty bins and clear content. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Basic 2D \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram}} class, handling an histogram of N x N. 
+\subsubsection*{template$<$size\+\_\+t Size$>$\newline
+class rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram$<$ Size $>$}
+Basic 2D \doxylink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{Histogram} class, handling an histogram of N x N. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a2c554b601e1418e56cb53973929d2274}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a2c554b601e1418e56cb53973929d2274}} 
-\index{rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}!Histogram@{Histogram}}
-\index{Histogram@{Histogram}!rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a8f2e5ba773865423904ab27831396ae3}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a8f2e5ba773865423904ab27831396ae3} 
+\index{rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}!Histogram@{Histogram}}
+\index{Histogram@{Histogram}!rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}}
 \doxysubsubsection{\texorpdfstring{Histogram()}{Histogram()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram\+::\+Histogram (\begin{DoxyParamCaption}\item[{const uint}]{bin\+Per\+Coord\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em bin\+Per\+Coord\+Count} & Size of a bin, in pixels \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a904455f98ed432c6f445e34a13d6c034}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a904455f98ed432c6f445e34a13d6c034}} 
-\index{rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}!````~Histogram@{$\sim$Histogram}}
-\index{````~Histogram@{$\sim$Histogram}!rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}}
-\doxysubsubsection{\texorpdfstring{$\sim$Histogram()}{~Histogram()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram\+::$\sim$\+Histogram (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$size\+\_\+t Size$>$ \\
+\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram}}$<$ Size $>$\+::\+Histogram (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ac5a822f4ce4e714296d1f6a82e00f3c7}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ac5a822f4ce4e714296d1f6a82e00f3c7}} 
-\index{rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}!get\_points\_from\_most\_frequent\_bin@{get\_points\_from\_most\_frequent\_bin}}
-\index{get\_points\_from\_most\_frequent\_bin@{get\_points\_from\_most\_frequent\_bin}!rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a30b9403d2a91319df4d17748f9461082}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a30b9403d2a91319df4d17748f9461082} 
+\index{rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}!get\_points\_from\_most\_frequent\_bin@{get\_points\_from\_most\_frequent\_bin}}
+\index{get\_points\_from\_most\_frequent\_bin@{get\_points\_from\_most\_frequent\_bin}!rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}}
 \doxysubsubsection{\texorpdfstring{get\_points\_from\_most\_frequent\_bin()}{get\_points\_from\_most\_frequent\_bin()}}
-{\footnotesize\ttfamily std\+::vector$<$ uint $>$ rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram\+::get\+\_\+points\+\_\+from\+\_\+most\+\_\+frequent\+\_\+bin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily template$<$size\+\_\+t Size$>$ \\
+std\+::vector$<$ uint $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram}}$<$ Size $>$\+::get\+\_\+points\+\_\+from\+\_\+most\+\_\+frequent\+\_\+bin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 
@@ -63,11 +54,12 @@ Return the points in the bin containing the most points.
 \begin{DoxyReturn}{Returns}
 Container storing the points in the biggest bin 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ada29c5c8bd20f5aec022b32a5a7bc09d}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_ada29c5c8bd20f5aec022b32a5a7bc09d}} 
-\index{rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}!init\_histogram@{init\_histogram}}
-\index{init\_histogram@{init\_histogram}!rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a4652c5123dedfd2690329e7d21f32b98}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a4652c5123dedfd2690329e7d21f32b98} 
+\index{rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}!init\_histogram@{init\_histogram}}
+\index{init\_histogram@{init\_histogram}!rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}}
 \doxysubsubsection{\texorpdfstring{init\_histogram()}{init\_histogram()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram\+::init\+\_\+histogram (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ad3944806a3e625773f01e4fd81d3b05b}{matrixd}} \&}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad78c6ab4d4b0133a34dbdd7901ddf7f8}{vectorb}} \&}]{is\+Unasigned\+Mask }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$size\+\_\+t Size$>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram}}$<$ Size $>$\+::init\+\_\+histogram (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa697476dd2fc1efe9d1ecc56c120197e}{matrixd}} \&}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&}]{is\+Unasigned\+Mask }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 
@@ -80,21 +72,23 @@ Initialise the histogram.
 \mbox{\texttt{ in}}  & {\em is\+Unasigned\+Mask} & Array of size points.\+rows(), indicating which point is in a planar segment \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_aafcd0a0740549c359aeda54fb2642cfc}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_aafcd0a0740549c359aeda54fb2642cfc}} 
-\index{rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}!remove\_point@{remove\_point}}
-\index{remove\_point@{remove\_point}!rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c0905c9110db0b9b71f32a359e0dff3}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c0905c9110db0b9b71f32a359e0dff3} 
+\index{rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}!remove\_point@{remove\_point}}
+\index{remove\_point@{remove\_point}!rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}}
 \doxysubsubsection{\texorpdfstring{remove\_point()}{remove\_point()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram\+::remove\+\_\+point (\begin{DoxyParamCaption}\item[{const uint}]{point\+Id }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$size\+\_\+t Size$>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram}}$<$ Size $>$\+::remove\+\_\+point (\begin{DoxyParamCaption}\item[{const uint}]{point\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 
 Remove all points from a bin. 
 
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c368107f33fe5ab90b6315be44687e2}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a5c368107f33fe5ab90b6315be44687e2}} 
-\index{rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}!reset@{reset}}
-\index{reset@{reset}!rgbd\_slam::features::primitives::Histogram@{rgbd\_slam::features::primitives::Histogram}}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a83cdff1460fb194978fc76eabbbd2646}\label{classrgbd__slam_1_1features_1_1primitives_1_1_histogram_a83cdff1460fb194978fc76eabbbd2646} 
+\index{rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}!reset@{reset}}
+\index{reset@{reset}!rgbd\_slam::features::primitives::Histogram$<$ Size $>$@{rgbd\_slam::features::primitives::Histogram$<$ Size $>$}}
 \doxysubsubsection{\texorpdfstring{reset()}{reset()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$size\+\_\+t Size$>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}{rgbd\+\_\+slam\+::features\+::primitives\+::\+Histogram}}$<$ Size $>$\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 
@@ -102,7 +96,6 @@ Empty bins and clear content.
 
 
 
-The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{histogram_8hpp}{histogram.\+hpp}}\item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{histogram_8cpp}{histogram.\+cpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/features/primitives/\mbox{\hyperlink{histogram_8hpp}{histogram.\+hpp}}\end{DoxyCompactItemize}

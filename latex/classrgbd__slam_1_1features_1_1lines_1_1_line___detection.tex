@@ -1,5 +1,5 @@
-\hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{}\doxysection{rgbd\+\_\+slam\+::features\+::lines\+::Line\+\_\+\+Detection Class Reference}
-\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}\index{rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}}
+\doxysection{rgbd\+\_\+slam\+::features\+::lines\+::Line\+\_\+\+Detection Class Reference}
+\hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}\index{rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}}
 
 
 A class to detect and store lines.  
@@ -9,14 +9,14 @@ A class to detect and store lines.
 
 {\ttfamily \#include $<$line\+\_\+detection.\+hpp$>$}
 
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ac403019ef1d1f2ec9fef296d1b39b0ba}{Line\+\_\+\+Detection}} (const double scale=1.\+0, const double sigma\+Scale=1.\+0)
 \item 
-\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_abdfd61c4861cd95714920422d0d8764d}{line\+\_\+container}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ad6fbcf2fd63fe5efa84dcaa5f129a72f}{detect\+\_\+lines}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat \&depth\+Image)
+\mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\+\_\+container}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a7714f09bbb8f49776a14403a15ec558f}{detect\+\_\+lines}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image) noexcept
 \begin{DoxyCompactList}\small\item\em Search for lines in an gray image. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_affcfd4f25a8643633fff4891034d143e}{get\+\_\+image\+\_\+with\+\_\+lines}} (const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_abdfd61c4861cd95714920422d0d8764d}{line\+\_\+container}} \&lines\+To\+Display, const cv\+::\+Mat \&depth\+Image, cv\+::\+Mat \&out\+Image)
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a36e1be51d0e907754930e78e4978a87a}{get\+\_\+image\+\_\+with\+\_\+lines}} (const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\+\_\+container}} \&lines\+To\+Display, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, cv\+::\+Mat \&out\+Image) const noexcept
 \begin{DoxyCompactList}\small\item\em display the given lines on an image \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -24,7 +24,7 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_
 A class to detect and store lines. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ac403019ef1d1f2ec9fef296d1b39b0ba}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ac403019ef1d1f2ec9fef296d1b39b0ba}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ac403019ef1d1f2ec9fef296d1b39b0ba}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ac403019ef1d1f2ec9fef296d1b39b0ba} 
 \index{rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}!Line\_Detection@{Line\_Detection}}
 \index{Line\_Detection@{Line\_Detection}!rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}}
 \doxysubsubsection{\texorpdfstring{Line\_Detection()}{Line\_Detection()}}
@@ -33,11 +33,11 @@ A class to detect and store lines.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ad6fbcf2fd63fe5efa84dcaa5f129a72f}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_ad6fbcf2fd63fe5efa84dcaa5f129a72f}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a7714f09bbb8f49776a14403a15ec558f}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a7714f09bbb8f49776a14403a15ec558f} 
 \index{rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}!detect\_lines@{detect\_lines}}
 \index{detect\_lines@{detect\_lines}!rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}}
 \doxysubsubsection{\texorpdfstring{detect\_lines()}{detect\_lines()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_abdfd61c4861cd95714920422d0d8764d}{line\+\_\+container}} rgbd\+\_\+slam\+::features\+::lines\+::\+Line\+\_\+\+Detection\+::detect\+\_\+lines (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat \&}]{depth\+Image }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\+\_\+container}} rgbd\+\_\+slam\+::features\+::lines\+::\+Line\+\_\+\+Detection\+::detect\+\_\+lines (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -53,11 +53,11 @@ Search for lines in an gray image.
 \begin{DoxyReturn}{Returns}
 A container with the detected lines (2D start and end point) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_affcfd4f25a8643633fff4891034d143e}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_affcfd4f25a8643633fff4891034d143e}} 
+\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a36e1be51d0e907754930e78e4978a87a}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a36e1be51d0e907754930e78e4978a87a} 
 \index{rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}!get\_image\_with\_lines@{get\_image\_with\_lines}}
 \index{get\_image\_with\_lines@{get\_image\_with\_lines}!rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}}
 \doxysubsubsection{\texorpdfstring{get\_image\_with\_lines()}{get\_image\_with\_lines()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::lines\+::\+Line\+\_\+\+Detection\+::get\+\_\+image\+\_\+with\+\_\+lines (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_abdfd61c4861cd95714920422d0d8764d}{line\+\_\+container}} \&}]{lines\+To\+Display,  }\item[{const cv\+::\+Mat \&}]{depth\+Image,  }\item[{cv\+::\+Mat \&}]{out\+Image }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::lines\+::\+Line\+\_\+\+Detection\+::get\+\_\+image\+\_\+with\+\_\+lines (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\+\_\+container}} \&}]{lines\+To\+Display,  }\item[{const cv\+::\+Mat\+\_\+$<$ float $>$ \&}]{depth\+Image,  }\item[{cv\+::\+Mat \&}]{out\+Image }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 

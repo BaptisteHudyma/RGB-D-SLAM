@@ -1,5 +1,5 @@
-\hypertarget{angle__utils_8hpp_source}{}\doxysection{angle\+\_\+utils.\+hpp}
-\label{angle__utils_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.hpp}}
+\doxysection{angle\+\_\+utils.\+hpp}
+\hypertarget{angle__utils_8hpp_source}{}\label{angle__utils_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/angle\_utils.hpp}}
 \mbox{\hyperlink{angle__utils_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_ANGLE\_UTILS\_HPP}}
@@ -7,18 +7,16 @@
 \DoxyCodeLine{00003\ }
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../types.hpp"{}}}
 \DoxyCodeLine{00005\ }
-\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }utils\ \{}
-\DoxyCodeLine{00008\ }
-\DoxyCodeLine{00012\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a689f666ff207fba3031e7f371e2d0a5a}{get\_quaternion\_from\_euler\_angles}}(\textcolor{keyword}{const}\ EulerAngles\&\ eulerAngles);}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00017\ \textcolor{keyword}{const}\ EulerAngles\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a995cd2edc48202cf14bce574a152b0ce}{get\_euler\_angles\_from\_quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a078420ee4217ebf095ba100570679827}{quaternion}}\&\ quat);}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00022\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a2877fc3a278a20d5132bcd38e12faf69}{matrix33}}\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a07db914662571bbec6e8a1911fa8a117}{get\_rotation\_matrix\_from\_euler\_angles}}(\textcolor{keyword}{const}\ EulerAngles\&\ eulerAngles);}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ \}\ \textcolor{comment}{//\ namespace\ utils}}
-\DoxyCodeLine{00025\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\_slam::utils}}\ \{}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00011\ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_afc4ea91746700b54fc5117838582961b}{get\_quaternion\_from\_euler\_angles}}(\textcolor{keyword}{const}\ EulerAngles\&\ eulerAngles)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00016\ [[nodiscard]]\ EulerAngles\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a981a10b36e7275921435fffac8d6d2bd}{get\_euler\_angles\_from\_quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\&\ quat)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00021\ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a00a1a97c6c5d901cff2aff58d56a1c09}{get\_rotation\_matrix\_from\_euler\_angles}}(\textcolor{keyword}{const}\ EulerAngles\&\ eulerAngles)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::utils}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

@@ -1,5 +1,5 @@
-\hypertarget{matches__containers_8hpp_source}{}\doxysection{matches\+\_\+containers.\+hpp}
-\label{matches__containers_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/matches\_containers.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/matches\_containers.hpp}}
+\doxysection{matches\+\_\+containers.\+hpp}
+\hypertarget{matches__containers_8hpp_source}{}\label{matches__containers_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/matches\_containers.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/matches\_containers.hpp}}
 \mbox{\hyperlink{matches__containers_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_MATCHESCONTAINERS\_HPP}}
@@ -8,114 +8,103 @@
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{coordinates_8hpp}{coordinates.hpp}}"{}}}
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <list>}}
 \DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam}{rgbd\_slam}}\ \{}
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }matches\_containers\ \{}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }FeatureCameraSpace,}
-\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }FeatureWorldSpace,}
-\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }WorldFeatureCovariance,}
-\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }ProjectedWorldFeatureCovariance>}
-\DoxyCodeLine{00014\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{MatchTemplate}}}
-\DoxyCodeLine{00015\ \{}
-\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a424e6e5e9cbe24203d5887465ac390a9}{MatchTemplate}}(\textcolor{keyword}{const}\ FeatureCameraSpace\&\ screenfeature,}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FeatureWorldSpace\&\ worldFeature,}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ WorldFeatureCovariance\&\ worldfeatureCovariance,}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ ProjectedWorldFeatureCovariance\&\ projectedWorldfeatureCovariance,}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mapId)\ :}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_ad4e6b7dfd336080bfe98e0e99fde7de7}{\_screenFeature}}(screenfeature),}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a3a939ecffed2f513247f187bd25feb18}{\_worldFeature}}(worldFeature),}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_ad887359be89a0c0a03a272dc58e3a0bd}{\_worldFeatureCovariance}}(worldfeatureCovariance),}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_ac4f6962d4714cada714ecba8bb03bd5d}{\_projectedWorldfeatureCovariance}}(projectedWorldfeatureCovariance),}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a5664e65a4172070846011712282e0a11}{\_idInMap}}(mapId)\ \{\};}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \ \ \ \ FeatureCameraSpace\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_ad4e6b7dfd336080bfe98e0e99fde7de7}{\_screenFeature}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Coordinates\ of\ the\ detected\ screen\ point}}
-\DoxyCodeLine{00028\ \ \ \ \ FeatureWorldSpace\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a3a939ecffed2f513247f187bd25feb18}{\_worldFeature}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ coordinates\ of\ the\ local\ world\ point}}
-\DoxyCodeLine{00029\ \ \ \ \ WorldFeatureCovariance\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_ad887359be89a0c0a03a272dc58e3a0bd}{\_worldFeatureCovariance}};\ \textcolor{comment}{//\ projected\ to\ screen\ space}}
-\DoxyCodeLine{00030\ \ \ \ \ ProjectedWorldFeatureCovariance\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_ac4f6962d4714cada714ecba8bb03bd5d}{\_projectedWorldfeatureCovariance}};}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a5664e65a4172070846011712282e0a11}{\_idInMap}};\ \textcolor{comment}{//\ Id\ of\ the\ world\ feature\ in\ the\ local\ map}}
-\DoxyCodeLine{00032\ \};}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \textcolor{comment}{//\ KeyPoint\ matching:\ contains\ :}}
-\DoxyCodeLine{00035\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ coordinates\ of\ the\ detected\ point\ in\ screen\ space}}
-\DoxyCodeLine{00036\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ coordinates\ of\ the\ matched\ point\ in\ world\ space}}
-\DoxyCodeLine{00037\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ covariance\ of\ the\ world\ plane\ projected\ in\ screen\ space}}
-\DoxyCodeLine{00038\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{MatchTemplate<utils::ScreenCoordinate,\ utils::WorldCoordinate,\ vector3,\ vector2>}}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a760b9000ceb197f781d7dc53db104800}{PointMatch}};}
-\DoxyCodeLine{00039\ \textcolor{keyword}{typedef}\ std::list<PointMatch>\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{match\_point\_container}};}
-\DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ \textcolor{comment}{//\ MapPlane\ matching:\ contains\ :}}
-\DoxyCodeLine{00042\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ normal\ vector\ of\ the\ plane\ in\ camera\ space}}
-\DoxyCodeLine{00043\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ normal\ vector\ of\ the\ plane\ in\ world\ space}}
-\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ covariance\ of\ the\ world\ plane\ projected\ in\ camera\ space}}
-\DoxyCodeLine{00045\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{MatchTemplate<utils::PlaneCameraCoordinates,\ utils::PlaneWorldCoordinates,\ void*,\ void*>}}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a7ca945e98a914f7c2c9849981813a440}{PlaneMatch}};}
-\DoxyCodeLine{00046\ \textcolor{keyword}{typedef}\ std::list<PlaneMatch>\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{match\_plane\_container}};}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matchContainer}}}
-\DoxyCodeLine{00049\ \{}
-\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{match\_point\_container}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}};}
-\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{match\_plane\_container}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}};}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_a9ba3cf2d14572a375871f8802765a0da}{clear}}()}
-\DoxyCodeLine{00054\ \ \ \ \ \{}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}}.clear();}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}}.clear();}
-\DoxyCodeLine{00057\ \ \ \ \ \}}
-\DoxyCodeLine{00058\ }
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_a107715021f4949169cb5927cb85d5566}{swap}}(\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matchContainer}}\&\ other)}
-\DoxyCodeLine{00060\ \ \ \ \ \{}
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}}.swap(other.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}});}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}}.swap(other.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}});}
-\DoxyCodeLine{00063\ \ \ \ \ \}}
-\DoxyCodeLine{00064\ }
-\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_a71b7270ca1ea3145357f86b55817b4e2}{size}}()\textcolor{keyword}{\ const}}
-\DoxyCodeLine{00066\ \textcolor{keyword}{\ \ \ \ }\{}
-\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}}.size()\ +\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}}.size();}
-\DoxyCodeLine{00068\ \ \ \ \ \};}
-\DoxyCodeLine{00069\ \};}
-\DoxyCodeLine{00070\ }
-\DoxyCodeLine{00074\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Container>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template}}}
-\DoxyCodeLine{00075\ \{}
-\DoxyCodeLine{00076\ \ \ \ \ Container\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a360d6b3d679be2fa2763b2b1e61b5af3}{\_inliers}};}
-\DoxyCodeLine{00077\ \ \ \ \ Container\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab0389940642c9aa751f025216b988b64}{\_outliers}};}
-\DoxyCodeLine{00078\ }
-\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a2ffae697d797398a451099b5d3f5b441}{clear}}()}
-\DoxyCodeLine{00080\ \ \ \ \ \{}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a360d6b3d679be2fa2763b2b1e61b5af3}{\_inliers}}.clear();}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab0389940642c9aa751f025216b988b64}{\_outliers}}.clear();}
-\DoxyCodeLine{00083\ \ \ \ \ \}}
-\DoxyCodeLine{00084\ }
-\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a52cdc1bc1b419ba72624b5534832923b}{swap}}(\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template}}\&\ other)}
-\DoxyCodeLine{00086\ \ \ \ \ \{}
-\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a360d6b3d679be2fa2763b2b1e61b5af3}{\_inliers}}.swap(other.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a360d6b3d679be2fa2763b2b1e61b5af3}{\_inliers}});}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab0389940642c9aa751f025216b988b64}{\_outliers}}.swap(other.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab0389940642c9aa751f025216b988b64}{\_outliers}});}
-\DoxyCodeLine{00089\ \ \ \ \ \}}
-\DoxyCodeLine{00090\ \};}
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers}{rgbd\_slam::matches\_containers}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ FeatureCameraSpace,\ \textcolor{keyword}{class}\ FeatureWorldSpace,\ \textcolor{keyword}{class}\ WorldFeatureCovariance>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{MatchTemplate}}}
+\DoxyCodeLine{00010\ \{}
+\DoxyCodeLine{00011\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_acd9822d2cba3ed64d86fd9dca04d2153}{MatchTemplate}}(\textcolor{keyword}{const}\ FeatureCameraSpace\&\ screenfeature,}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FeatureWorldSpace\&\ worldFeature,}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ WorldFeatureCovariance\&\ worldfeatureCovariance,}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mapId)\ :}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_aada82f7cff5ba2e6a5e71ca1083ced56}{\_screenFeature}}(screenfeature),}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a24a17a46ca707091ace0b133dd691c9d}{\_worldFeature}}(worldFeature),}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a14eed05f323b8267c74797d08d2556f7}{\_worldFeatureCovariance}}(worldfeatureCovariance),}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a813c05b4dd38fef952618f2e8981d0a8}{\_idInMap}}(mapId)\ \{\};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ FeatureCameraSpace\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_aada82f7cff5ba2e6a5e71ca1083ced56}{\_screenFeature}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Coordinates\ of\ the\ detected\ screen\ point}}
+\DoxyCodeLine{00021\ \ \ \ \ FeatureWorldSpace\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a24a17a46ca707091ace0b133dd691c9d}{\_worldFeature}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ coordinates\ of\ the\ local\ world\ point}}
+\DoxyCodeLine{00022\ \ \ \ \ WorldFeatureCovariance\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a14eed05f323b8267c74797d08d2556f7}{\_worldFeatureCovariance}};\ \textcolor{comment}{//\ Covariance\ of\ this\ feature\ in\ world\ space}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template_a813c05b4dd38fef952618f2e8981d0a8}{\_idInMap}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Id\ of\ the\ world\ feature\ in\ the\ local\ map}}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ KeyPoint\ matching:\ contains\ :}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ coordinates\ of\ the\ detected\ point\ in\ screen\ space}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ coordinates\ of\ the\ matched\ point\ in\ world\ space}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ diagonal\ of\ the\ covariance\ of\ the\ world\ point\ in\ world\ space}}
+\DoxyCodeLine{00030\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatch}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{MatchTemplate<utils::ScreenCoordinate2D,\ utils::WorldCoordinate,\ vector3>}};}
+\DoxyCodeLine{00031\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{match\_point\_container}}\ =\ std::list<PointMatch>;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ MapPlane\ matching:\ contains\ :}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ normal\ vector\ of\ the\ plane\ in\ camera\ space}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ normal\ vector\ of\ the\ plane\ in\ world\ space}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ \ \ \ \ \ -\/\ the\ covariance\ of\ the\ world\ plane\ in\ world\ space}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatch}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{MatchTemplate<utils::PlaneCameraCoordinates,\ utils::PlaneWorldCoordinates,\ matrix44>}};}
+\DoxyCodeLine{00038\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{match\_plane\_container}}\ =\ std::list<PlaneMatch>;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matchContainer}}}
+\DoxyCodeLine{00041\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{match\_point\_container}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}};}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{match\_plane\_container}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_a1241f728209641335a829e42ebbf80f5}{clear}}()\ noexcept}
+\DoxyCodeLine{00046\ \ \ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}}.clear();}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}}.clear();}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_ad874187de702d38777a4fc642663d08c}{swap}}(\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matchContainer}}\&\ other)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00052\ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}}.swap(other.\_points);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}}.swap(other.\_planes);}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_a09e40bb7b3572c853f8d878cb065f51a}{size}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aecce0aa2ed41b79eb2fc7e0c90f4331c}{\_points}}.size()\ +\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container_aba8df956f0c7173f216273b08cfcb7dd}{\_planes}}.size();\ \};}
+\DoxyCodeLine{00058\ \};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Container>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template}}}
+\DoxyCodeLine{00064\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ Container\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a360d6b3d679be2fa2763b2b1e61b5af3}{\_inliers}};}
+\DoxyCodeLine{00066\ \ \ \ \ Container\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab0389940642c9aa751f025216b988b64}{\_outliers}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a474d0aedb35d44c40c4e07b286c52c99}{clear}}()\ noexcept}
+\DoxyCodeLine{00069\ \ \ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a360d6b3d679be2fa2763b2b1e61b5af3}{\_inliers}}.clear();}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab0389940642c9aa751f025216b988b64}{\_outliers}}.clear();}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab5276fd64d19c4946066ff1fde08dcad}{swap}}(\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template}}\&\ other)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00075\ \ \ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a360d6b3d679be2fa2763b2b1e61b5af3}{\_inliers}}.swap(other.\_inliers);}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab0389940642c9aa751f025216b988b64}{\_outliers}}.swap(other.\_outliers);}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ store\ a\ set\ of\ inliers\ and\ a\ set\ of\ outliers\ for\ points}}
+\DoxyCodeLine{00082\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{point\_match\_sets}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template<match\_point\_container>}};}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ store\ a\ set\ of\ inliers\ and\ a\ set\ of\ outliers\ for\ planes}}
+\DoxyCodeLine{00084\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{plane\_match\_sets}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template<match\_plane\_container>}};}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ store\ a\ set\ of\ inliers\ and\ a\ set\ of\ outliers\ for\ all\ features}}
+\DoxyCodeLine{00087\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{match\_sets}}}
+\DoxyCodeLine{00088\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{point\_match\_sets}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a09eda8a34e923c454ce55054ce51645f}{\_pointSets}};}
+\DoxyCodeLine{00090\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{plane\_match\_sets}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a261f8b52c7f7e9908ecb162a9cfb0382}{\_planeSets}};}
 \DoxyCodeLine{00091\ }
-\DoxyCodeLine{00092\ \textcolor{comment}{//\ store\ a\ set\ of\ inliers\ and\ a\ set\ of\ outliers\ for\ points}}
-\DoxyCodeLine{00093\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template<match\_point\_container>}}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_aeb45382259f71b52c4f4822ccc443363}{point\_match\_sets}};}
-\DoxyCodeLine{00094\ \textcolor{comment}{//\ store\ a\ set\ of\ inliers\ and\ a\ set\ of\ outliers\ for\ planes}}
-\DoxyCodeLine{00095\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\_sets\_template<match\_plane\_container>}}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a785a2d09f3996ca3daed4e16a59b30a8}{plane\_match\_sets}};}
-\DoxyCodeLine{00096\ }
-\DoxyCodeLine{00097\ \textcolor{comment}{//\ store\ a\ set\ of\ inliers\ and\ a\ set\ of\ outliers\ for\ all\ features}}
-\DoxyCodeLine{00098\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{match\_sets}}}
-\DoxyCodeLine{00099\ \{}
-\DoxyCodeLine{00100\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{point\_match\_sets}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a09eda8a34e923c454ce55054ce51645f}{\_pointSets}};}
-\DoxyCodeLine{00101\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{plane\_match\_sets}}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a261f8b52c7f7e9908ecb162a9cfb0382}{\_planeSets}};}
-\DoxyCodeLine{00102\ }
-\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a9938272cabc4bdf07403bb9402f950c4}{clear}}()}
-\DoxyCodeLine{00104\ \ \ \ \ \{}
-\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a09eda8a34e923c454ce55054ce51645f}{\_pointSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a2ffae697d797398a451099b5d3f5b441}{clear}}();}
-\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a261f8b52c7f7e9908ecb162a9cfb0382}{\_planeSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a2ffae697d797398a451099b5d3f5b441}{clear}}();}
-\DoxyCodeLine{00107\ \ \ \ \ \}}
-\DoxyCodeLine{00108\ }
-\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a738038424bdcb3b8e362b7278975f904}{swap}}(\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{match\_sets}}\&\ other)}
-\DoxyCodeLine{00110\ \ \ \ \ \{}
-\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a09eda8a34e923c454ce55054ce51645f}{\_pointSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a52cdc1bc1b419ba72624b5534832923b}{swap}}(other.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a09eda8a34e923c454ce55054ce51645f}{\_pointSets}});}
-\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a261f8b52c7f7e9908ecb162a9cfb0382}{\_planeSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a52cdc1bc1b419ba72624b5534832923b}{swap}}(other.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a261f8b52c7f7e9908ecb162a9cfb0382}{\_planeSets}});}
-\DoxyCodeLine{00113\ \ \ \ \ \}}
-\DoxyCodeLine{00114\ \};}
-\DoxyCodeLine{00115\ \}\ \textcolor{comment}{//\ namespace\ matches\_containers}}
-\DoxyCodeLine{00116\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00117\ }
-\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_abb29580b91fc9241516170d4f2125057}{clear}}()\ noexcept}
+\DoxyCodeLine{00093\ \ \ \ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a09eda8a34e923c454ce55054ce51645f}{\_pointSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a474d0aedb35d44c40c4e07b286c52c99}{clear}}();}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a261f8b52c7f7e9908ecb162a9cfb0382}{\_planeSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_a474d0aedb35d44c40c4e07b286c52c99}{clear}}();}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a2ec3f46088a73d45cbb3ae8ea0e2a17f}{swap}}(\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{match\_sets}}\&\ other)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00099\ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a09eda8a34e923c454ce55054ce51645f}{\_pointSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab5276fd64d19c4946066ff1fde08dcad}{swap}}(other.\_pointSets);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets_a261f8b52c7f7e9908ecb162a9cfb0382}{\_planeSets}}.\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template_ab5276fd64d19c4946066ff1fde08dcad}{swap}}(other.\_planeSets);}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::matches\_containers}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

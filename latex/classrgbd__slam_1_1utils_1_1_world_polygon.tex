@@ -1,0 +1,255 @@
+\doxysection{rgbd\+\_\+slam\+::utils\+::World\+Polygon Class Reference}
+\hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon}{}\label{classrgbd__slam_1_1utils_1_1_world_polygon}\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+
+
+Describe a polygon in world coordinates.  
+
+
+
+
+{\ttfamily \#include $<$polygon.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::World\+Polygon\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrgbd__slam_1_1utils_1_1_world_polygon}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_a9e65b66c4b86290515f16e72e5239af6}{World\+Polygon}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{Camera\+Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_a8751c52ec84595fe9338bdb3bbfb8032}{to\+\_\+camera\+\_\+space}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera) const
+\begin{DoxyCompactList}\small\item\em project this polygon to camera space \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_ad48dd7186c3217fa2ea6553ce7014b38}{merge}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{World\+Polygon}} \&other)
+\begin{DoxyCompactList}\small\item\em Merge the other polygon into this one. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_afb450c340cc756480d82477fae24ce02}{display}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera, const cv\+::\+Scalar \&color, cv\+::\+Mat \&debug\+Image) const noexcept
+\begin{DoxyCompactList}\small\item\em display the polygon in screen space on the given image \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_a654a9374867f802f774291449782f89b}{Polygon}} ()=default
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_a5cbaf14f413a6371897309d95f176f4d}{Polygon}} (const std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ \&points, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center)
+\begin{DoxyCompactList}\small\item\em Build constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_adba9d56f1ac573b23cb45ed42cb5cfe1}{Polygon}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other\+Polygon, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center)
+\begin{DoxyCompactList}\small\item\em transform constructor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon_a661c9751854c35b78893284ab1ce2f91}{Polygon}} (const std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\+\_\+2d}} $>$ \&boundary\+Points, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+Axis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+Axis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center)
+\begin{DoxyCompactList}\small\item\em copy constructor for the project functions \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{rgbd\+\_\+slam\+::utils\+::\+Polygon}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a654a9374867f802f774291449782f89b}{Polygon}} ()=default
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a5cbaf14f413a6371897309d95f176f4d}{Polygon}} (const std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ \&points, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center)
+\begin{DoxyCompactList}\small\item\em Build constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_adba9d56f1ac573b23cb45ed42cb5cfe1}{Polygon}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other\+Polygon, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center)
+\begin{DoxyCompactList}\small\item\em transform constructor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a661c9751854c35b78893284ab1ce2f91}{Polygon}} (const std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\+\_\+2d}} $>$ \&boundary\+Points, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+Axis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+Axis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center)
+\begin{DoxyCompactList}\small\item\em copy constructor for the project functions \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6c6c2afb09c186fb20e769e28032a133}{contains}} (const \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \&point) const noexcept
+\begin{DoxyCompactList}\small\item\em Return true if this point is in the polygon boundaries. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a84153c6bf504b6e9aedff80df0473a7e}{is\+\_\+valid}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Return true if this polygon is valid. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a09f295ca8c1e114c73abc7ed8bd61626}{is\+\_\+valid}} (std\+::string \&reason) const noexcept
+\begin{DoxyCompactList}\small\item\em Return true if this polygon is valid. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a9e876d5aded387b01f2a9eedf83f4c1b}{boundary\+\_\+length}} () const noexcept
+\begin{DoxyCompactList}\small\item\em get number of points in boundary \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a96dd4791b0f8eee0614be9c5eb623af3}{area}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Compute this polygon area. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a2a1609287a9d24f1579a15ff57e70c51}{get\+\_\+area}} () const noexcept
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a4be765094c39bcafeb05a7ed5eed9a4d}{merge\+\_\+union}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other)
+\begin{DoxyCompactList}\small\item\em merge the other polygon into this one using the union of both polygons \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6937e91bf15fd2ef935e11ca0a2310ed}{project}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+Normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+Center) const
+\begin{DoxyCompactList}\small\item\em project this polygon on the next polygon plane. This projection may be reduced to a line or a point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a1e72ec40367d0402f6d2487bc3d24d98}{project}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+XAxis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+YAxis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+Center) const
+\begin{DoxyCompactList}\small\item\em project this polygon on the next polygon plane. This projection may be reduced to a line or a point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a25755108a2d9bedb266b538ccb40ff24}{transform}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+Normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+Center) const
+\begin{DoxyCompactList}\small\item\em Transform a polygon to a new space, keeping the same polygon shape, area and shuch. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa37ac628e4d50819f717458ad173018d}{transform}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+XAxis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+YAxis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+Center) const
+\begin{DoxyCompactList}\small\item\em Transform a polygon to a new space, keeping the same polygon shape, area and shuch. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a3d52db1dcc71acb1eaba0beae2ffdd35}{inter\+\_\+over\+\_\+union}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other) const
+\begin{DoxyCompactList}\small\item\em Compute the inter/over of the two polygons. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a03c0e6574ebba1cae869272882b7c1a0}{inter\+\_\+area}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other) const
+\begin{DoxyCompactList}\small\item\em compute the area of the intersection of two polygons \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a7ee915587578c9dec2a445cd2c09adc3}{union\+\_\+area}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other) const
+\begin{DoxyCompactList}\small\item\em compute the area of the union of two polygons \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a816385f8c09ebdb95ce088c2e231613c}{union\+\_\+one}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other) const
+\begin{DoxyCompactList}\small\item\em Compute the union of this polygon and another one. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a344c2f2948b6d503b6aa1a57e7f67d2e}{inter\+\_\+one}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&other) const
+\begin{DoxyCompactList}\small\item\em Compute the inter of this polygon and another one. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a258a8afa84926452e9a342ef88aa982d}{simplify}} (const double distance\+Threshold=10) noexcept
+\begin{DoxyCompactList}\small\item\em Simplify the boundary of the current polygon. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a488844ec3dd37040e6def160a63d4616}{get\+\_\+unprojected\+\_\+boundary}} () const
+\begin{DoxyCompactList}\small\item\em compute and return the polygon boundary, in the unprojected space \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_ae5f893339501af853c84ae9ae8a8325b}{get\+\_\+center}} () const noexcept
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a9cad5af5e1c9e7b6c5f7cbfc6672222e}{get\+\_\+x\+\_\+axis}} () const noexcept
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a8e72b60879523268ec5d59adf68879dd}{get\+\_\+y\+\_\+axis}} () const noexcept
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a7638c11a057f5080dfa7d03e40e46015}{get\+\_\+normal}} () const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{rgbd\+\_\+slam\+::utils\+::\+Polygon}}}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\+\_\+2d}} = boost\+::geometry\+::model\+::d2\+::point\+\_\+xy$<$ double $>$
+\item 
+using \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}} = boost\+::geometry\+::model\+::polygon$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\+\_\+2d}} $>$
+\item 
+using \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a88bf374fa23364d991eaf39b33d51d5e}{multi\+\_\+polygon}} = boost\+::geometry\+::model\+::multi\+\_\+polygon$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}} $>$
+\item 
+using \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a11e4b77d98b1accbc1fea20b9c14896e}{box\+\_\+2d}} = boost\+::geometry\+::model\+::box$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\+\_\+2d}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{rgbd\+\_\+slam\+::utils\+::\+Polygon}}}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6885c9907c32bb7abc91ed24641010d6}{compute\+\_\+convex\+\_\+hull}} (const std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} $>$ \&points) noexcept
+\begin{DoxyCompactList}\small\item\em Compute the convex hull for a set of points. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6370aa1ca6c1cc52040af5e13322183d}{compute\+\_\+concave\+\_\+hull}} (const std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} $>$ \&points) noexcept
+\begin{DoxyCompactList}\small\item\em Compute the concave hull for a set of points. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{rgbd\+\_\+slam\+::utils\+::\+Polygon}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\+\_\+2d}} $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a21da7a6ebac3432f329b6effdb6aefea}{transform\+\_\+boundary}} (const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&transformation\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+XAxis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+YAxis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&next\+Center) const
+\begin{DoxyCompactList}\small\item\em Transform boundary points to the new space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{rgbd\+\_\+slam\+::utils\+::\+Polygon}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{polygon}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a89188f485c3e3a4dcaba19c246e9121f}{\+\_\+polygon}}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_acec2e018f07aaee20be2481fc088b592}{\+\_\+center}}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a6db06cc850b6ae2bec64bfd417414405}{\+\_\+x\+Axis}}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_ac5205cbc47c86daac086bffd5a869b2b}{\+\_\+y\+Axis}}
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a810c2ccb4967fc5206e66786a957fe7c}{\+\_\+area}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Describe a polygon in world coordinates. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_a9e65b66c4b86290515f16e72e5239af6}\label{classrgbd__slam_1_1utils_1_1_world_polygon_a9e65b66c4b86290515f16e72e5239af6} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!WorldPolygon@{WorldPolygon}}
+\index{WorldPolygon@{WorldPolygon}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{WorldPolygon()}{WorldPolygon()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+World\+Polygon\+::\+World\+Polygon (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_afb450c340cc756480d82477fae24ce02}\label{classrgbd__slam_1_1utils_1_1_world_polygon_afb450c340cc756480d82477fae24ce02} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!display@{display}}
+\index{display@{display}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+World\+Polygon\+::display (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{const cv\+::\+Scalar \&}]{color,  }\item[{cv\+::\+Mat \&}]{debug\+Image }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+display the polygon in screen space on the given image 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A matrix tp convert from world to camera space \\
+\hline
+\mbox{\texttt{ in}}  & {\em color} & Color to draw this polygon with \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em debug\+Image} & Image on which the polygon will be displayed \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_ad48dd7186c3217fa2ea6553ce7014b38}\label{classrgbd__slam_1_1utils_1_1_world_polygon_ad48dd7186c3217fa2ea6553ce7014b38} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!merge@{merge}}
+\index{merge@{merge}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{merge()}{merge()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+World\+Polygon\+::merge (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{World\+Polygon}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+Merge the other polygon into this one. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other} & The other polygon to merge into this one \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_a654a9374867f802f774291449782f89b}\label{classrgbd__slam_1_1utils_1_1_world_polygon_a654a9374867f802f774291449782f89b} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!Polygon@{Polygon}}
+\index{Polygon@{Polygon}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{Polygon()}{Polygon()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Polygon\+::\+Polygon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_adba9d56f1ac573b23cb45ed42cb5cfe1}\label{classrgbd__slam_1_1utils_1_1_world_polygon_adba9d56f1ac573b23cb45ed42cb5cfe1} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!Polygon@{Polygon}}
+\index{Polygon@{Polygon}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{Polygon()}{Polygon()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Polygon\+::\+Polygon (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon}{Polygon}} \&}]{other\+Polygon,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{normal,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{center }\end{DoxyParamCaption})}
+
+
+
+transform constructor 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other\+Polygon} & The polygon to project to a new space \\
+\hline
+\mbox{\texttt{ in}}  & {\em normal} & The normal of the plane that contains those points \\
+\hline
+\mbox{\texttt{ in}}  & {\em center} & The center of the plane that contains those points \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_a661c9751854c35b78893284ab1ce2f91}\label{classrgbd__slam_1_1utils_1_1_world_polygon_a661c9751854c35b78893284ab1ce2f91} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!Polygon@{Polygon}}
+\index{Polygon@{Polygon}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{Polygon()}{Polygon()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Polygon\+::\+Polygon (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_a95665beac4b45403adea6d06b575f003}{point\+\_\+2d}} $>$ \&}]{boundary\+Points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{x\+Axis,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{y\+Axis,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{center }\end{DoxyParamCaption})}
+
+
+
+copy constructor for the project functions 
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_a5cbaf14f413a6371897309d95f176f4d}\label{classrgbd__slam_1_1utils_1_1_world_polygon_a5cbaf14f413a6371897309d95f176f4d} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!Polygon@{Polygon}}
+\index{Polygon@{Polygon}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{Polygon()}{Polygon()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Polygon\+::\+Polygon (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ \&}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{normal,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{center }\end{DoxyParamCaption})}
+
+
+
+Build constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em points} & The points to put in the polygon. They will be projected to the polygon space \\
+\hline
+\mbox{\texttt{ in}}  & {\em normal} & The normal of the plane that contains those points \\
+\hline
+\mbox{\texttt{ in}}  & {\em center} & The center of the plane that contains those points \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_world_polygon_a8751c52ec84595fe9338bdb3bbfb8032}\label{classrgbd__slam_1_1utils_1_1_world_polygon_a8751c52ec84595fe9338bdb3bbfb8032} 
+\index{rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}!to\_camera\_space@{to\_camera\_space}}
+\index{to\_camera\_space@{to\_camera\_space}!rgbd\_slam::utils::WorldPolygon@{rgbd\_slam::utils::WorldPolygon}}
+\doxysubsubsection{\texorpdfstring{to\_camera\_space()}{to\_camera\_space()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{Camera\+Polygon}} rgbd\+\_\+slam\+::utils\+::\+World\+Polygon\+::to\+\_\+camera\+\_\+space (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption}) const}
+
+
+
+project this polygon to camera space 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & A matrix to convert from world to camera view / \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This polygon in camera space
+\end{DoxyReturn}
+WORLD POLYGON 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{polygon_8hpp}{polygon.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{polygon_8cpp}{polygon.\+cpp}}\end{DoxyCompactItemize}

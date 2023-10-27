@@ -1,0 +1,41 @@
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/polygon.cpp File Reference}
+\hypertarget{polygon_8cpp}{}\label{polygon_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/polygon.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/polygon.cpp}}
+{\ttfamily \#include "{}polygon.\+hpp"{}}\newline
+{\ttfamily \#include "{}coordinates.\+hpp"{}}\newline
+{\ttfamily \#include "{}distance\+\_\+utils.\+hpp"{}}\newline
+{\ttfamily \#include "{}parameters.\+hpp"{}}\newline
+{\ttfamily \#include "{}types.\+hpp"{}}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$bits/ranges\+\_\+algo.\+h$>$}\newline
+{\ttfamily \#include $<$boost/geometry/algorithms/area.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/geometry/algorithms/detail/convex\+\_\+hull/interface.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/geometry/algorithms/union.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/qvm/mat\+\_\+operations.\+hpp$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+{\ttfamily \#include $<$opencv2/core/mat.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/core/types.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/imgproc.\+hpp$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include "{}logger.\+hpp"{}}\newline
+{\ttfamily \#include "{}concave\+\_\+fitting.\+hpp"{}}\newline
+{\ttfamily \#include "{}correct\+\_\+boost\+\_\+polygon.\+hpp"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a82917c7b90b3b7cc6a00354c63d07089}{rgbd\+\_\+slam\+::utils\+::select\+\_\+correct\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal) noexcept
+\begin{DoxyCompactList}\small\item\em Select the transform vector furthest from the normal. \end{DoxyCompactList}\item 
+std\+::pair$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}, \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a247e4c7ebf1febb62f368e4a9ef970e3}{rgbd\+\_\+slam\+::utils\+::get\+\_\+plane\+\_\+coordinate\+\_\+system}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal)
+\begin{DoxyCompactList}\small\item\em Compute the two vectors that span the plane. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aecfc35d8258c22f0fb83bf712aff0685}{rgbd\+\_\+slam\+::utils\+::get\+\_\+projected\+\_\+plan\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&point\+To\+Project, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&plane\+Center, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+Axis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+Axis)
+\begin{DoxyCompactList}\small\item\em Compute the position of a point in the plane coordinate system. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a052b65f3afc913b3ae983e3d0759b4c8}{rgbd\+\_\+slam\+::utils\+::get\+\_\+point\+\_\+from\+\_\+plane\+\_\+coordinates}} (const \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \&point\+To\+Project, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&plane\+Center, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+Axis, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+Axis)
+\begin{DoxyCompactList}\small\item\em Compute the projection of a point from the plane coordinate system to world. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_polygon_aa5b76074ea65d5c82e744abe5339b85d}{Polygon\+::polygon}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac520562590d554cf90196a6c084059c5}{rgbd\+\_\+slam\+::utils\+::get\+\_\+static\+\_\+screen\+\_\+boundary\+\_\+polygon}} () noexcept
+\end{DoxyCompactItemize}

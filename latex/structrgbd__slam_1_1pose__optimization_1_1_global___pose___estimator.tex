@@ -1,5 +1,5 @@
-\hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}{}\doxysection{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+\+Pose\+\_\+\+Estimator Struct Reference}
-\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}\index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
+\doxysection{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+\+Pose\+\_\+\+Estimator Struct Reference}
+\hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}{}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}\index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 
 
 Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator.  
@@ -15,14 +15,14 @@ Inheritance diagram for rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+
 \includegraphics[height=2.000000cm]{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_af1cd7de3bd7dec9086d56430e07588fd}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \&planes)
+\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_accf6ced405956f723c47d870694709ad}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \texorpdfstring{$\ast$}{*}const points, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \texorpdfstring{$\ast$}{*}const planes)
 \item 
-int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_aa226bbe0fb62408f8e64490e6ac8183d}{operator()}} (const \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&optimized\+Parameters, \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&output\+Scores) const
+int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a45d32727cad348886c646cfa84bba1a6}{operator()}} (const Eigen\+::\+Vector$<$ double, 6 $>$ \&optimized\+Parameters, \mbox{\hyperlink{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}{vectorxd}} \&output\+Scores) const
 \begin{DoxyCompactList}\small\item\em Implementation of the objective function. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ double $>$}}}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ double $>$}}}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_af4f370c6c3ccf4cc97fcfe53f83323ca}{Levenberg\+\_\+\+Marquardt\+\_\+\+Functor}} (const uint input\+Count, const uint output\+Count)
@@ -31,21 +31,21 @@ uint \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___mar
 \item 
 uint \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a63d94e30ab19e862fad26f9c55e0ca51}{inputs}} () const
 \end{DoxyCompactItemize}
-\doxysubsection*{Additional Inherited Members}
-\doxysubsubsection*{Public Types inherited from \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ double $>$}}}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ double $>$}}}
 \begin{DoxyCompactItemize}
 \item 
 enum 
 \item 
-typedef double \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}
+using \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a0d66cd7752d88a76197c87391c51d225}{Scalar}} = double
 \item 
-typedef Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, Inputs\+At\+Compile\+Time, 1 $>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a10beb8913f4937bc0c3de4e7eb048124}{Input\+Type}}
+using \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_af98cb60a281530375b47fdd15584ca7e}{Input\+Type}} = Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a0d66cd7752d88a76197c87391c51d225}{Scalar}}, Inputs\+At\+Compile\+Time, 1 $>$
 \item 
-typedef Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, Values\+At\+Compile\+Time, 1 $>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a76469098b16581f5e74bf4d29066ce36}{Value\+Type}}
+using \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a724643616d3c02b8b58d14936503f146}{Value\+Type}} = Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a0d66cd7752d88a76197c87391c51d225}{Scalar}}, Values\+At\+Compile\+Time, 1 $>$
 \item 
-typedef Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ac17e7c1e7b79a465b35470493424a0a7}{Scalar}}, Values\+At\+Compile\+Time, Inputs\+At\+Compile\+Time $>$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_aa3fc6a4805e1f47ce21048d8f19db1b8}{Jacobian\+Type}}
+using \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_abe7b0b5112eed1b000b20f6cd3029b7b}{Jacobian\+Type}} = Eigen\+::\+Matrix$<$ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a0d66cd7752d88a76197c87391c51d225}{Scalar}}, Values\+At\+Compile\+Time, Inputs\+At\+Compile\+Time $>$
 \end{DoxyCompactItemize}
-\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ double $>$}}}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Levenberg\+\_\+\+Marquardt\+\_\+\+Functor$<$ double $>$}}}
 \begin{DoxyCompactItemize}
 \item 
 uint \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ad8ec8a4b845359edf29c4d47c130d815}{\+\_\+input\+Count}}
@@ -58,27 +58,27 @@ uint \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___mar
 Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_af1cd7de3bd7dec9086d56430e07588fd}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_af1cd7de3bd7dec9086d56430e07588fd}} 
+\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_accf6ced405956f723c47d870694709ad}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_accf6ced405956f723c47d870694709ad} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!Global\_Pose\_Estimator@{Global\_Pose\_Estimator}}
 \index{Global\_Pose\_Estimator@{Global\_Pose\_Estimator}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{Global\_Pose\_Estimator()}{Global\_Pose\_Estimator()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ab56afd18853a71d647cdd9564ac2ee73}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a58801f59c64a14987579f745edbd3276}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \&}]{planes }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \texorpdfstring{$\ast$}{*}const}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \texorpdfstring{$\ast$}{*}const}]{planes }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em points} & Matched 2D (screen) to 3D (world) points \\
 \hline
-\mbox{\texttt{ in}}  & {\em planes} & Matched camera to world planes\\
+\mbox{\texttt{ in}}  & {\em planes} & Matched camera to world planes \\
 \hline
 \end{DoxyParams}
-GLOBAL POSE ESTIMATOR members 
+
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_aa226bbe0fb62408f8e64490e6ac8183d}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_aa226bbe0fb62408f8e64490e6ac8183d}} 
+\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a45d32727cad348886c646cfa84bba1a6}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a45d32727cad348886c646cfa84bba1a6} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!operator()@{operator()}}
 \index{operator()@{operator()}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
-{\footnotesize\ttfamily int rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&}]{optimized\+Parameters,  }\item[{\mbox{\hyperlink{namespacergbd__slam_af973f319d6d2d10c3f98edc438a54b01}{vectorxd}} \&}]{output\+Scores }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily int rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::operator() (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, 6 $>$ \&}]{optimized\+Parameters,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}{vectorxd}} \&}]{output\+Scores }\end{DoxyParamCaption}) const}
 
 
 

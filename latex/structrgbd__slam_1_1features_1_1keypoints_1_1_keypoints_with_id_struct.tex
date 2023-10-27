@@ -1,5 +1,5 @@
-\hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{}\doxysection{rgbd\+\_\+slam\+::features\+::keypoints\+::Keypoints\+With\+Id\+Struct Struct Reference}
-\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}\index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
+\doxysection{rgbd\+\_\+slam\+::features\+::keypoints\+::Keypoints\+With\+Id\+Struct Struct Reference}
+\hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}\index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 
 
 Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map.  
@@ -9,31 +9,31 @@ Stores a vector of keypoints, along with a vector of the unique ids associated w
 
 {\ttfamily \#include $<$keypoint\+\_\+handler.\+hpp$>$}
 
-\doxysubsection*{Classes}
+\doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypoint\+With\+Id}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a77f4c35cb919c91afc66a55919e66807}{clear}} ()
+void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ae89c0c440fa59f15bc7d39b44f0abf62}{clear}} () noexcept
 \item 
-void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a37306c3a2ac2d508c36bd4548a005c28}{reserve}} (const size\+\_\+t number\+Of\+New\+Keypoints)
+void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a84c41b77b698f321219e92665fc7be3d}{reserve}} (const size\+\_\+t number\+Of\+New\+Keypoints) noexcept
 \item 
-size\+\_\+t \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a9ec255b5ca25332c64843b83ca1c2fae}{size}} () const
+size\+\_\+t \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a64b4bb1a5e0c9aa74091bb5b3ecfcf90}{size}} () const noexcept
 \item 
-bool \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_abab02d094aa1e4fd618610614eaa37a3}{empty}} () const
+bool \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a628a2ceafc156929188cdf25a2499ed1}{empty}} () const noexcept
 \item 
-const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypoint\+With\+Id}} \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec5f33ccd60fcc2c01c16f37b1b31fd2}{at}} (const size\+\_\+t index) const
+\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypoint\+With\+Id}} \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ac6312f881b0080167350233c6fdc6bd9}{at}} (const size\+\_\+t index) const noexcept
 \item 
-void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6d57bd1cc5fc732b61470fab30221bac}{add}} (const size\+\_\+t id, const double pointX, const double pointY)
+void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_abd9267bada36324bf71800adb35080b1}{add}} (const size\+\_\+t id, const double pointX, const double pointY) noexcept
 \item 
-void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a81323684a4f875773016fbb10c733a95}{add}} (const size\+\_\+t id, const cv\+::\+Point2f point)
+void \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_af50ff3d8a99fa5f4139aeea9379d14f0}{add}} (const size\+\_\+t id, const cv\+::\+Point2f point) noexcept
 \item 
-const std\+::vector$<$ cv\+::\+Point2f $>$ \& \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec631861a7ba4d345b04d6a75d01e812}{get\+\_\+keypoints}} () const
+const std\+::vector$<$ cv\+::\+Point2f $>$ \& \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ae1334e7078e757c093f0112d7ba99cb6}{get\+\_\+keypoints}} () const noexcept
 \item 
-const std\+::vector$<$ size\+\_\+t $>$ \& \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6a145b0b00e8d6fd81bd7bdf086a6858}{get\+\_\+ids}} () const
+const std\+::vector$<$ size\+\_\+t $>$ \& \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ace17e66cd68170876bf589433d4ed4a0}{get\+\_\+ids}} () const noexcept
 \end{DoxyCompactItemize}
 
 
@@ -41,59 +41,59 @@ const std\+::vector$<$ size\+\_\+t $>$ \& \mbox{\hyperlink{structrgbd__slam_1_1f
 Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the local map. 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a81323684a4f875773016fbb10c733a95}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a81323684a4f875773016fbb10c733a95}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_af50ff3d8a99fa5f4139aeea9379d14f0}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_af50ff3d8a99fa5f4139aeea9379d14f0} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!add@{add}}
 \index{add@{add}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::add (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{id,  }\item[{const cv\+::\+Point2f}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::add (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{id,  }\item[{const cv\+::\+Point2f}]{point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6d57bd1cc5fc732b61470fab30221bac}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6d57bd1cc5fc732b61470fab30221bac}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_abd9267bada36324bf71800adb35080b1}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_abd9267bada36324bf71800adb35080b1} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!add@{add}}
 \index{add@{add}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::add (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{id,  }\item[{const double}]{pointX,  }\item[{const double}]{pointY }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::add (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{id,  }\item[{const double}]{pointX,  }\item[{const double}]{pointY }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec5f33ccd60fcc2c01c16f37b1b31fd2}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec5f33ccd60fcc2c01c16f37b1b31fd2}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ac6312f881b0080167350233c6fdc6bd9}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ac6312f881b0080167350233c6fdc6bd9} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!at@{at}}
 \index{at@{at}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{at()}{at()}}
-{\footnotesize\ttfamily const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypoint\+With\+Id}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::at (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_1_1keypoint_with_id}{keypoint\+With\+Id}} rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::at (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a77f4c35cb919c91afc66a55919e66807}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a77f4c35cb919c91afc66a55919e66807}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ae89c0c440fa59f15bc7d39b44f0abf62}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ae89c0c440fa59f15bc7d39b44f0abf62} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!clear@{clear}}
 \index{clear@{clear}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{clear()}{clear()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_abab02d094aa1e4fd618610614eaa37a3}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_abab02d094aa1e4fd618610614eaa37a3}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a628a2ceafc156929188cdf25a2499ed1}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a628a2ceafc156929188cdf25a2499ed1} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!empty@{empty}}
 \index{empty@{empty}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{empty()}{empty()}}
-{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6a145b0b00e8d6fd81bd7bdf086a6858}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a6a145b0b00e8d6fd81bd7bdf086a6858}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ace17e66cd68170876bf589433d4ed4a0}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ace17e66cd68170876bf589433d4ed4a0} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!get\_ids@{get\_ids}}
 \index{get\_ids@{get\_ids}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{get\_ids()}{get\_ids()}}
-{\footnotesize\ttfamily const std\+::vector$<$ size\+\_\+t $>$ \& rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::get\+\_\+ids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily const std\+::vector$<$ size\+\_\+t $>$ \& rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::get\+\_\+ids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec631861a7ba4d345b04d6a75d01e812}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_aec631861a7ba4d345b04d6a75d01e812}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ae1334e7078e757c093f0112d7ba99cb6}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_ae1334e7078e757c093f0112d7ba99cb6} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!get\_keypoints@{get\_keypoints}}
 \index{get\_keypoints@{get\_keypoints}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{get\_keypoints()}{get\_keypoints()}}
-{\footnotesize\ttfamily const std\+::vector$<$ cv\+::\+Point2f $>$ \& rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::get\+\_\+keypoints (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily const std\+::vector$<$ cv\+::\+Point2f $>$ \& rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::get\+\_\+keypoints (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a37306c3a2ac2d508c36bd4548a005c28}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a37306c3a2ac2d508c36bd4548a005c28}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a84c41b77b698f321219e92665fc7be3d}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a84c41b77b698f321219e92665fc7be3d} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!reserve@{reserve}}
 \index{reserve@{reserve}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{reserve()}{reserve()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::reserve (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{number\+Of\+New\+Keypoints }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::reserve (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{number\+Of\+New\+Keypoints }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\mbox{\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a9ec255b5ca25332c64843b83ca1c2fae}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a9ec255b5ca25332c64843b83ca1c2fae}} 
+\Hypertarget{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a64b4bb1a5e0c9aa74091bb5b3ecfcf90}\label{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct_a64b4bb1a5e0c9aa74091bb5b3ecfcf90} 
 \index{rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}!size@{size}}
 \index{size@{size}!rgbd\_slam::features::keypoints::KeypointsWithIdStruct@{rgbd\_slam::features::keypoints::KeypointsWithIdStruct}}
 \doxysubsubsection{\texorpdfstring{size()}{size()}}
-{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily size\+\_\+t rgbd\+\_\+slam\+::features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 
 
