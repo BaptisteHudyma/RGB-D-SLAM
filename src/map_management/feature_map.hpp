@@ -226,11 +226,13 @@ class Feature_Map
      * \param[in] worldToCamera A matrix to convert from world to camera space
      * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if True.
      * Also less precise
+     * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
      * \param[out] matches An object of matches between map object and detected features
      */
     void get_matches(const DetectedFeaturesObject& detectedFeatures,
                      const WorldToCameraMatrix& worldToCamera,
                      const bool useAdvancedMatch,
+                     const uint minimumFeaturesForOptimization,
                      std::list<FeatureMatchType>& matches) noexcept
     {
         if (not _isActivated)
@@ -259,13 +261,10 @@ class Feature_Map
             }
         }
 
-        // TODO Remove this limit or make it type dependent
-        // if we have enough points from local map to run the optimization, no need to add the staged points
-        // Still, we need to try and match them to insure tracking and new map points
-        constexpr uint minimumPointsForOptimization =
-                parameters::optimization::minimumPointForOptimization *
-                3; // TODO: Why 3 ? seems about right to be sure to have enough points for the optimization process...
-        const bool shouldUseStagedPoints = matches.size() < minimumPointsForOptimization;
+        // if we have enough features from local map to run the optimization, no need to add the staged features
+        // Still, we need to try and match them to insure tracking and new map features
+        // TODO: Why 3 ? seems about right to be sure to have enough features for the optimization process...
+        const bool shouldUseStagedFeatures = matches.size() < minimumFeaturesForOptimization * 3;
 
         // search matches in staged map second
         for (auto& [mapId, mapFeature]: _stagedMap)
@@ -281,7 +280,7 @@ class Feature_Map
                                                          worldToCamera,
                                                          _isDetectedFeatureMatched,
                                                          matches,
-                                                         shouldUseStagedPoints,
+                                                         shouldUseStagedFeatures,
                                                          useAdvancedMatch);
             if (matchIndex >= 0)
             {

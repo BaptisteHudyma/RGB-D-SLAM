@@ -66,17 +66,29 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
     matches_containers::matchContainer matchSets;
 
     // find point matches
-    _localPointMap.get_matches(detectedFeatures.keypointObject, worldToCamera, false, matchSets._points);
+    _localPointMap.get_matches(detectedFeatures.keypointObject,
+                               worldToCamera,
+                               false,
+                               parameters::optimization::minimumPointForOptimization,
+                               matchSets._points);
     if (matchSets._points.size() < parameters::optimization::minimumPointForOptimization or
         matchSets._points.size() <
                 std::min(detectedFeatures.keypointObject.size(), _localPointMap.get_local_map_size()) / 2)
     {
         // if the process as not enough matches, retry matches with a greater margin
-        _localPointMap.get_matches(detectedFeatures.keypointObject, worldToCamera, true, matchSets._points);
+        _localPointMap.get_matches(detectedFeatures.keypointObject,
+                                   worldToCamera,
+                                   true,
+                                   parameters::optimization::minimumPointForOptimization,
+                                   matchSets._points);
     }
 
     // find plane matches
-    _localPlaneMap.get_matches(detectedFeatures.detectedPlanes, worldToCamera, false, matchSets._planes);
+    _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
+                               worldToCamera,
+                               false,
+                               parameters::optimization::minimumPlanesForOptimization,
+                               matchSets._planes);
 
     return matchSets;
 }
