@@ -160,7 +160,7 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
     if (elapsedTime > 0)
     {
         std::stringstream fps;
-        fps << round(1 / elapsedTime + 0.5) << " fps";
+        fps << std::format("{: >3}", round(1 / elapsedTime + 0.5)) << " fps";
         cv::putText(
                 debugImage, fps.str(), cv::Point(15, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
     }
