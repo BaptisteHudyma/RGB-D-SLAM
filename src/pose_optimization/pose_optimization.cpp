@@ -381,9 +381,9 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     input[4] = rotationCoefficients.y();
     input[5] = rotationCoefficients.z();
 
-    // Optimization function
+    // Optimization function (ok to use pointers: optimization of copy)
     Global_Pose_Functor pose_optimisation_functor(
-            Global_Pose_Estimator(matchedFeatures._pointSets._inliers, matchedFeatures._planeSets._inliers));
+            Global_Pose_Estimator(&matchedFeatures._pointSets._inliers, &matchedFeatures._planeSets._inliers));
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
@@ -400,7 +400,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     // factor   : step bound for the diagonal shift
     poseOptimizator.parameters.factor = parameters::optimization::diagonalStepBoundShift;
 
-    // Start optimization
+    // Start optimization (always use it just after the constructor, to ensure pointer validity)
     const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
 
     // Get result

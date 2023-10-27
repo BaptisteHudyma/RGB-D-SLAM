@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-O4 -g -lgtest -pedantic -pedantic-errors -Wall -Wextra -Wfloat-equal -lflann_cpp -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DGLEW_STATIC")# -Wconversion -Wsign-conversion")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 # if this is set, the progam will be deterministic, and loose some perfs
-add_compile_definitions(MAKE_DETERMINISTIC)
+# add_compile_definitions(MAKE_DETERMINISTIC)
 
 # ORB detector/descriptor as a different implementation than classical detector in opencv
 #add_compile_definitions(USE_ORB_DETECTOR_AND_MATCHING)

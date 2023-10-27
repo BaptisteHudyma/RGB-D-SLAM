@@ -17,8 +17,7 @@
 
 #if defined USE_OPENMP
 #    if !defined _OPENMP
-#        pragma message( \
-                "You've chosen to want OpenMP usage but have not made it a compilation option. Compile with /openmp")
+#        pragma message("You've chosen to want OpenMP usage but have not made it a compilation option. Compile with /openmp")
 #    endif
 #endif
 
@@ -69,7 +68,7 @@ bool compute_concave_hull(const PointVector& points, PointVector& hull, const ui
 
 bool compute_concave_hull(PointVector& points, PointVector& hull, const uint8_t maxIterations)
 {
-    // use prime numbers because why not ??
+    // use prime numbers because why not (success of fitting happens at a mean of 3.7 neighbors)
     static const std::vector<uint> possibleNeigborsValues = {3,  5,  7,  11, 13, 17, 21, 23, 29, 31, 37, 41,
                                                              43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
     assert(points.size() >= 3);

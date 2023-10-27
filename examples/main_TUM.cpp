@@ -12,6 +12,7 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "logger.hpp"
 #include "rgbd_slam.hpp"
 #include "pose.hpp"
 #include "parameters.hpp"
@@ -234,12 +235,14 @@ int main(int argc, char* argv[])
 
         if (rgbImage.empty())
         {
+            rgbd_slam::outputs::log("No color image input, use black image");
             if (imageData.rgbImage.isValid)
                 std::cerr << "Cannot load rgb image " << rgbImagePath << std::endl;
             rgbImage = cv::Mat(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
         }
         if (depthImage.empty())
         {
+            rgbd_slam::outputs::log("No depth image input, use empty depth");
             if (imageData.depthImage.isValid)
                 std::cerr << "Could not load depth image " << depthImagePath << std::endl;
 

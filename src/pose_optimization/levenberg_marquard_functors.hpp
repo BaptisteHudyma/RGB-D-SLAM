@@ -68,8 +68,8 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
      * \param[in] points Matched 2D (screen) to 3D (world) points
      * \param[in] planes Matched camera to world planes
      */
-    Global_Pose_Estimator(const matches_containers::match_point_container& points,
-                          const matches_containers::match_plane_container& planes);
+    Global_Pose_Estimator(const matches_containers::match_point_container* const points,
+                          const matches_containers::match_plane_container* const planes);
 
     /**
      * \brief Implementation of the objective function
@@ -80,8 +80,9 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
     int operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const;
 
   private:
-    const matches_containers::match_point_container& _points;
-    const matches_containers::match_plane_container& _planes;
+    // use pointers to prevent useless copy
+    const matches_containers::match_point_container* const _points;
+    const matches_containers::match_plane_container* const _planes;
 };
 
 struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator>
