@@ -34,13 +34,13 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     const int detectorThreshold = std::max(1, static_cast<int>(maxKeypointToDetect / numberOfDetectionCells));
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
     {
-        _featureDetectors.emplace_back(cv::Ptr<cv::FeatureDetector>(cv::ORB::create(detectorThreshold)));
-        _advancedFeatureDetectors.emplace_back(cv::Ptr<cv::FeatureDetector>(cv::ORB::create(2 * detectorThreshold)));
-        assert(not _featureDetectors.back().empty());
-        assert(not _advancedFeatureDetectors.back().empty());
+        _featureDetectors[i] = cv::Ptr<cv::FeatureDetector>(cv::ORB::create(detectorThreshold));
+        _advancedFeatureDetectors[i] = cv::Ptr<cv::FeatureDetector>(cv::ORB::create(2 * detectorThreshold));
+        assert(not _featureDetectors[i].empty());
+        assert(not _advancedFeatureDetectors[i].empty());
     }
 
-    _featureDescriptor = _featureDetectors.front();
+    _featureDescriptor = _featureDetectors[0];
 #else
     constexpr uint detectorthreshold = parameters::detection::pointDetectorThreshold;
     const int detectorThreshold = static_cast<int>(detectorthreshold * numberOfDetectionCells);

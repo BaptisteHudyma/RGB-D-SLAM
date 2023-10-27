@@ -48,7 +48,7 @@ namespace detection {
 constexpr uint keypointCellDetectionHeightCount = 3; // the number of the keypoint detection window in height
 constexpr uint keypointCellDetectionWidthCount = 3;  // the number of the keypoint detection window in width
 #ifdef USE_ORB_DETECTOR_AND_MATCHING
-constexpr uint pointDetectorOrbThreshold = 100; // number of points to detect (per frame)
+constexpr uint pointDetectorOrbThreshold = 200; // number of points to detect (per frame)
 #else
 constexpr uint pointDetectorThreshold = 3; // point detector sensitivity (per cell detection window)
 #endif
