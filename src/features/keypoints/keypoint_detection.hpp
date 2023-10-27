@@ -67,25 +67,20 @@ class Key_Point_Extraction
      * \brief Compute new key point, with an optional mask to exclude detection zones
      * \param[in] grayImage The image in which we want to detect waypoints
      * \param[in] mask The mask which we do not want to detect waypoints
-     * \param[in] minimumPointsForValidity The minimum number of points under which we will use the precise
      * detector \return An array of points in the input image
      */
     [[nodiscard]] std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage,
-                                                            const cv::Mat_<uchar>& mask,
-                                                            const uint minimumPointsForValidity) const noexcept;
+                                                            const cv::Mat_<uchar>& mask) const noexcept;
 
     /**
      * \brief Perform keypoint detection on the image, divided in smaller patches.
      * \param[in] grayImage Image in which to detect keypoints
      * \param[in] mask Mask of the image in which to detect keypoints. No keypoints will be detected in this
-     * area \param[in] featureDetectors The feature detectors to use \param[out] frameKeypoints the detected
      * keypoints in the image
      */
-    void perform_keypoint_detection(
-            const cv::Mat& grayImage,
-            const cv::Mat_<uchar>& mask,
-            const std::array<cv::Ptr<cv::FeatureDetector>, numberOfDetectionCells>& featureDetectors,
-            std::vector<cv::KeyPoint>& frameKeypoints) const noexcept;
+    void perform_keypoint_detection(const cv::Mat& grayImage,
+                                    const cv::Mat_<uchar>& mask,
+                                    std::vector<cv::KeyPoint>& frameKeypoints) const noexcept;
 
     [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(
             const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept;

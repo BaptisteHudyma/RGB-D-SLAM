@@ -53,7 +53,7 @@ constexpr uint pointDetectorOrbThreshold = 100; // number of points to detect (p
 constexpr uint pointDetectorThreshold = 3; // point detector sensitivity (per cell detection window)
 #endif
 constexpr uint maximumPointPerFrame =
-        200; // maximum points per frame, over which we do not want to detect more points (optimization)
+        100; // maximum points per frame, over which we do not want to detect more points (optimization)
 constexpr uint keypointRefreshFrequency = 5; // Update the keypoint list every N calls (opti)
 
 // point tracking
