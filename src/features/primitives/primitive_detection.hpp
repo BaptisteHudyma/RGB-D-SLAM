@@ -99,7 +99,7 @@ class Primitive_Detection
 
     /**
      * \brief Compute the plane hull in plane coordinates
-     * \param[in] depthMatrix The depth image in matrix form
+     * \param[in] planeSegment The plane segment to compute a boundary for
      * \param[in] depthImage The depth image used to create depthMatrix
      * \param[in] mask The mask of this plane segment in image space
      * \return The boundary point of the polygon

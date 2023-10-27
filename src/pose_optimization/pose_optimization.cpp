@@ -74,7 +74,7 @@ namespace rgbd_slam::pose_optimization {
 /**
  * \brief Compute a score for a transformation, and compute an inlier and outlier set
  * \param[in] planesToEvaluate The set of planes to evaluate the transformation on
- * \param[in] planeMaxRetroprojectionError The maximum retroprojection error between two planes, below which we
+ * \param[in] planeMaxRetroprojectionError_mm The maximum retroprojection error between two planes, below which we
  * classifying the match as inlier
  * \param[in] transformationPose The transformation that needs to be evaluated
  * \param[out] planeMatchSets The set of inliers/outliers of this transformation

@@ -137,9 +137,10 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     constexpr double maxDistance = parameters::matching::matchSearchRadius_px;
     constexpr double maximumMatchDistance = parameters::matching::maximumMatchDistance;
 
-    static const cv::Size pyramidSize(
-            Parameters::get_camera_1_image_size().x() / parameters::detection::opticalFlowPyramidWindowSizeWidthCount,
-            Parameters::get_camera_1_image_size().y() / parameters::detection::opticalFlowPyramidWindowSizeHeightCount);
+    static const cv::Size pyramidSize(static_cast<int>(Parameters::get_camera_1_image_size().x() /
+                                                       parameters::detection::opticalFlowPyramidWindowSizeWidthCount),
+                                      static_cast<int>(Parameters::get_camera_1_image_size().y() /
+                                                       parameters::detection::opticalFlowPyramidWindowSizeHeightCount));
 
     // build pyramid
     std::vector<cv::Mat> newImagePyramide;
@@ -155,8 +156,6 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
                                         pyramidSize,
                                         maxDistance,
                                         newKeypointsObject);
-
-        // TODO: add descriptors to handle short term rematching of lost optical flow features
     }
     // else: No optical flow for the first frame or no optical flow for this frame
     _lastFramePyramide = newImagePyramide;
@@ -171,7 +170,6 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     // detect keypoint if: it is requested OR not enough points were detected
     std::vector<cv::Point2f> detectedKeypoints;
     cv::Mat keypointDescriptors;
-    // TODO: better metric to search for more keypoints
     if (forceKeypointDetection or opticalFlowTrackedPointCount < parameters::detection::maximumPointPerFrame)
     {
         // create a mask at current keypoint location
@@ -342,6 +340,7 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
 {
     assert(grayImage.size() == mask.size());
     frameKeypoints.clear();
+    std::mutex mut;
 
 #ifdef USE_ORB_DETECTOR_AND_MATCHING
     constexpr uint maxKeypointToDetect = parameters::detection::pointDetectorOrbThreshold;
@@ -353,28 +352,25 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
     const size_t maxKeypointToDetectByCell = detectorThreshold * _detectionWindows.size();
 #endif
 
-    std::mutex mut;
-
 #ifndef MAKE_DETERMINISTIC
     tbb::parallel_for(size_t(0),
                       static_cast<size_t>(numberOfDetectionCells),
-                      [&](size_t i)
+                      [this, &grayImage, &mask, &maxKeypointToDetectByCell, &frameKeypoints, &mut](size_t i)
 #else
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
 #endif
                       {
                           const auto& detectionWindow = _detectionWindows[i];
-                          const auto& featureDetector = _featureDetectors[i];
-
                           assert(!detectionWindow.empty());
-                          assert(!featureDetector.empty());
 
                           const cv::Mat& subImg = grayImage(detectionWindow);
                           const cv::Mat_<uchar>& subMask = mask(detectionWindow);
 
                           std::vector<cv::KeyPoint> keypoints;
                           keypoints.reserve(maxKeypointToDetectByCell);
-                          featureDetector->detect(subImg, keypoints, subMask);
+
+                          assert(!_featureDetectors[i].empty());
+                          _featureDetectors[i]->detect(subImg, keypoints, subMask);
 
                           // Not enough keypoints detected: restart with a more precise detector
                           static constexpr uint8_t maxPointPerSubFrame =
