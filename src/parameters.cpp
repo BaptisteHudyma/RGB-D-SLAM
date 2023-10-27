@@ -154,7 +154,12 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::optimization::maximumRetroprojectionError > 0,
                   "The maximum retroprojection error  must be > 0");
 
-    static_assert(parameters::detection::maxNumberOfPointsToDetect > 0, "Keypoint detector hessian must be > 0");
+#ifdef USE_ORB_DETECTOR_AND_MATCHING
+    static_assert(parameters::detection::pointDetectorOrbThreshold > 0,
+                  "Keypoint detector points to detect must be > 0");
+#else
+    static_assert(parameters::detection::pointDetectorThreshold > 0, "Keypoint detector hessian must be > 0");
+#endif
     static_assert(parameters::detection::keypointCellDetectionSize_px > 0, "Keypoint detection cell size must be > 0");
     static_assert(parameters::detection::keypointRefreshFrequency > 0, "Keypoint refresh frequency must be > 0");
     static_assert(parameters::detection::opticalFlowPyramidDepth > 0, "Pyramid depth must be > 0");
