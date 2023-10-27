@@ -72,19 +72,12 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 }
 
 std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage,
-                                                                const cv::Mat_<uchar>& mask,
-                                                                const uint minimumPointsForValidity) const noexcept
+                                                                const cv::Mat_<uchar>& mask) const noexcept
 {
     assert(grayImage.size() == mask.size());
     // search keypoints, using an advanced detector if not enough features are found
     std::vector<cv::KeyPoint> frameKeypoints;
-    perform_keypoint_detection(grayImage, mask, _featureDetectors, frameKeypoints);
-
-    if (frameKeypoints.size() <= minimumPointsForValidity)
-    {
-        // Not enough keypoints detected: restart with a more precise detector
-        perform_keypoint_detection(grayImage, mask, _advancedFeatureDetectors, frameKeypoints);
-    }
+    perform_keypoint_detection(grayImage, mask, frameKeypoints);
 
     // compute a subcorner accuracy estimation for all waypoints
     std::vector<cv::Point2f> framePoints;
@@ -142,8 +135,6 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     // load parameters
     constexpr int pyramidDepth = static_cast<int>(parameters::detection::opticalFlowPyramidDepth);
     constexpr double maxDistance = parameters::matching::matchSearchRadius_px;
-    constexpr uint minimumPointsForOptimization = parameters::optimization::minimumPointForOptimization;
-    constexpr uint maximumPointsForLocalMap = parameters::detection::maximumPointPerFrame;
     constexpr double maximumMatchDistance = parameters::matching::maximumMatchDistance;
 
     static const cv::Size pyramidSize(
@@ -181,16 +172,14 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     std::vector<cv::Point2f> detectedKeypoints;
     cv::Mat keypointDescriptors;
     // TODO: better metric to search for more keypoints
-    if (forceKeypointDetection or (opticalFlowTrackedPointCount / 3 < minimumPointsForOptimization and
-                                   opticalFlowTrackedPointCount < maximumPointsForLocalMap))
+    if (forceKeypointDetection or opticalFlowTrackedPointCount < parameters::detection::maximumPointPerFrame)
     {
         // create a mask at current keypoint location
         const cv::Mat_<uchar>& keypointMask =
                 compute_key_point_mask(grayImage.size(), newKeypointsObject.get_keypoints());
 
         // get new keypoints
-        detectedKeypoints = detect_keypoints(grayImage, keypointMask, minimumPointsForOptimization);
-
+        detectedKeypoints = detect_keypoints(grayImage, keypointMask);
         if (not detectedKeypoints.empty())
         {
             /**
@@ -347,11 +336,9 @@ void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDurati
     }
 }
 
-void Key_Point_Extraction::perform_keypoint_detection(
-        const cv::Mat& grayImage,
-        const cv::Mat_<uchar>& mask,
-        const std::array<cv::Ptr<cv::FeatureDetector>, numberOfDetectionCells>& featureDetectors,
-        std::vector<cv::KeyPoint>& frameKeypoints) const noexcept
+void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
+                                                      const cv::Mat_<uchar>& mask,
+                                                      std::vector<cv::KeyPoint>& frameKeypoints) const noexcept
 {
     assert(grayImage.size() == mask.size());
     frameKeypoints.clear();
@@ -377,10 +364,10 @@ void Key_Point_Extraction::perform_keypoint_detection(
 #endif
                       {
                           const auto& detectionWindow = _detectionWindows[i];
-                          const auto& featureDetector = featureDetectors[i];
+                          const auto& featureDetector = _featureDetectors[i];
 
                           assert(!detectionWindow.empty());
-                          assert(!featureDetectors.empty());
+                          assert(!featureDetector.empty());
 
                           const cv::Mat& subImg = grayImage(detectionWindow);
                           const cv::Mat_<uchar>& subMask = mask(detectionWindow);
@@ -388,6 +375,18 @@ void Key_Point_Extraction::perform_keypoint_detection(
                           std::vector<cv::KeyPoint> keypoints;
                           keypoints.reserve(maxKeypointToDetectByCell);
                           featureDetector->detect(subImg, keypoints, subMask);
+
+                          // Not enough keypoints detected: restart with a more precise detector
+                          static constexpr uint8_t maxPointPerSubFrame =
+                                  parameters::detection::maximumPointPerFrame /
+                                  (parameters::detection::keypointCellDetectionHeightCount *
+                                   parameters::detection::keypointCellDetectionWidthCount);
+                          if (keypoints.size() <= maxPointPerSubFrame)
+                          {
+                              keypoints.clear();
+                              assert(!_advancedFeatureDetectors[i].empty());
+                              _advancedFeatureDetectors[i]->detect(subImg, keypoints, subMask);
+                          }
 
                           for (cv::KeyPoint& keypoint: keypoints)
                           {
