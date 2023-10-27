@@ -44,22 +44,23 @@ quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizati
 constexpr uint scoreCountPerPoints = 2;
 constexpr uint scoreCountPerPlanes = 3;
 
-Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point_container& points,
-                                             const matches_containers::match_plane_container& planes) :
-    Levenberg_Marquardt_Functor<double>(6, points.size() * scoreCountPerPoints + planes.size() * scoreCountPerPlanes),
-    // TODO: optimize below: we copy the containers instead of referencing them
+Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point_container* const points,
+                                             const matches_containers::match_plane_container* const planes) :
+    Levenberg_Marquardt_Functor<double>(6, points->size() * scoreCountPerPoints + planes->size() * scoreCountPerPlanes),
     _points(points),
     _planes(planes)
 {
-    assert(not _points.empty() or not _planes.empty());
+    assert(_points != nullptr and _planes != nullptr);
+    assert(not _points->empty() or not _planes->empty());
 }
 
 // Implementation of the objective function
 int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const
 {
-    assert(not _points.empty() or not _planes.empty());
+    assert(_points != nullptr and _planes != nullptr);
+    assert(not _points->empty() or not _planes->empty());
     assert(static_cast<size_t>(outputScores.size()) ==
-           (_points.size() * scoreCountPerPoints + _planes.size() * scoreCountPerPlanes));
+           (_points->size() * scoreCountPerPoints + _planes->size() * scoreCountPerPlanes));
 
     // Get the new estimated pose
     const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
@@ -71,7 +72,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 
     // Compute retroprojection distances
     static constexpr double pointAlphaReduction = 1.0; // multiplier for points parameters in the equation
-    for (const matches_containers::PointMatch& match: _points)
+    for (const matches_containers::PointMatch& match: *_points)
     {
         // Compute retroprojected distance
         const Eigen::Vector<double, scoreCountPerPoints>& distance =
@@ -85,7 +86,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
     static constexpr double planeAlphaReduction = 1.0; // multiplier for plane parameters in the equation
     const PlaneWorldToCameraMatrix& planeTransformationMatrix =
             utils::compute_plane_world_to_camera_matrix(transformationMatrix);
-    for (const matches_containers::PlaneMatch& match: _planes)
+    for (const matches_containers::PlaneMatch& match: *_planes)
     {
         // TODO remove d from optimization, replace with boundary optimization
         const Eigen::Vector<double, scoreCountPerPlanes>& planeProjectionError =
