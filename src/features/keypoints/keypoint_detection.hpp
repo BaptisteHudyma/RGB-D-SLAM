@@ -74,24 +74,22 @@ class Key_Point_Extraction
      * \brief Perform keypoint detection on the image, divided in smaller patches.
      * \param[in] grayImage Image in which to detect keypoints
      * \param[in] mask Mask of the image in which to detect keypoints. No keypoints will be detected in this
-     * area \param[in] featureDetector The feature detector to use \param[out] frameKeypoints the detected
+     * area \param[in] featureDetectors The feature detectors to use \param[out] frameKeypoints the detected
      * keypoints in the image
      */
     void perform_keypoint_detection(const cv::Mat& grayImage,
                                     const cv::Mat_<uchar>& mask,
-                                    const cv::Ptr<cv::FeatureDetector>& featureDetector,
+                                    const std::vector<cv::Ptr<cv::FeatureDetector>>& featureDetectors,
                                     std::vector<cv::KeyPoint>& frameKeypoints) const noexcept;
 
     [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(
             const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept;
 
   private:
-    cv::Ptr<cv::FeatureDetector> _featureDetector;
-    cv::Ptr<cv::FeatureDetector> _advancedFeatureDetector;
+    std::vector<cv::Ptr<cv::FeatureDetector>> _featureDetectors;
+    std::vector<cv::Ptr<cv::FeatureDetector>> _advancedFeatureDetectors;
 
-#ifndef USE_ORB_DETECTOR_AND_MATCHING
     cv::Ptr<cv::DescriptorExtractor> _featureDescriptor;
-#endif
 
     std::vector<cv::Rect> _detectionWindows;
 

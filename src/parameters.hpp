@@ -46,9 +46,9 @@ constexpr float maximumRetroprojectionError =
 namespace detection {
 // point detection
 #ifdef USE_ORB_DETECTOR_AND_MATCHING
-constexpr uint maxNumberOfPointsToDetect = 100; // number of points to detect (per frame)
+constexpr uint pointDetectorOrbThreshold = 100; // number of points to detect (per frame)
 #else
-constexpr uint maxNumberOfPointsToDetect = 4; // point detector sensitivity (per frame)
+constexpr uint pointDetectorThreshold = 4; // point detector sensitivity (per frame)
 #endif
 
 constexpr uint maximumPointPerFrame =
