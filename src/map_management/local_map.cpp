@@ -158,7 +158,8 @@ void Local_Map::draw_image_head_band(cv::Mat& debugImage) const noexcept
     const int placeInBand = static_cast<int>(std::floor(bandSize * 0.75));
 
     std::stringstream textPoints;
-    textPoints << "Points:" << _localPointMap.get_staged_map_size() << "|" << _localPointMap.get_local_map_size();
+    textPoints << "Points:" << std::format("{: >3}", _localPointMap.get_staged_map_size()) << "|"
+               << std::format("{: >3}", _localPointMap.get_local_map_size());
     const int plointLabelPosition = static_cast<int>(imageWidth * 0.15);
     cv::putText(debugImage,
                 textPoints.str(),
@@ -169,7 +170,8 @@ void Local_Map::draw_image_head_band(cv::Mat& debugImage) const noexcept
 
     std::stringstream text1;
     const double planeOffset = 0.35;
-    text1 << "Planes:" << _localPlaneMap.get_staged_map_size() << "|" << _localPlaneMap.get_local_map_size();
+    text1 << "Planes:" << std::format("{: >2}", _localPlaneMap.get_staged_map_size()) << "|"
+          << std::format("{: >2}", _localPlaneMap.get_local_map_size());
     const int planeLabelPosition = static_cast<int>(imageWidth * planeOffset);
     cv::putText(debugImage,
                 text1.str(),
