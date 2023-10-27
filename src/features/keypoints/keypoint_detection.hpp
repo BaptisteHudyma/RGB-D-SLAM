@@ -2,6 +2,7 @@
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_DETECTION_HPP
 
 #include "keypoint_handler.hpp"
+#include "parameters.hpp"
 
 namespace rgbd_slam::features::keypoints {
 
@@ -39,6 +40,9 @@ class Key_Point_Extraction
     void show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const noexcept;
 
   protected:
+    static constexpr uint numberOfDetectionCells = parameters::detection::keypointCellDetectionHeightCount *
+                                                   parameters::detection::keypointCellDetectionWidthCount;
+
     /**
      * \brief Compute the current frame keypoints from optical flow. There is need for matching with this
      * configuration
@@ -47,7 +51,7 @@ class Key_Point_Extraction
      * \param[in] imageCurrentPyramide The pyramid representation of the current image to analyze
      * \param[in] lastKeypointsWithIds The keypoints detected in imagePrevious
      * \param[in] pyramidDepth The chosen depth of the image pyramids
-     * \param[in] windowSize The chosen size of the optical flow window
+     * \param[in] windowSizeObject The chosen size of the optical flow window
      * \param[in] maxDistanceThreshold a distance threshold, in pixels
      * \param[out] keypointStruct The keypoints tracked by optical flow
      */
@@ -55,7 +59,7 @@ class Key_Point_Extraction
                                                 const std::vector<cv::Mat>& imageCurrentPyramide,
                                                 const KeypointsWithIdStruct& lastKeypointsWithIds,
                                                 const uint pyramidDepth,
-                                                const uint windowSize,
+                                                const cv::Size& windowSizeObject,
                                                 const double maxDistanceThreshold,
                                                 KeypointsWithIdStruct& keypointStruct) noexcept;
 
@@ -77,21 +81,21 @@ class Key_Point_Extraction
      * area \param[in] featureDetectors The feature detectors to use \param[out] frameKeypoints the detected
      * keypoints in the image
      */
-    void perform_keypoint_detection(const cv::Mat& grayImage,
-                                    const cv::Mat_<uchar>& mask,
-                                    const std::vector<cv::Ptr<cv::FeatureDetector>>& featureDetectors,
-                                    std::vector<cv::KeyPoint>& frameKeypoints) const noexcept;
+    void perform_keypoint_detection(
+            const cv::Mat& grayImage,
+            const cv::Mat_<uchar>& mask,
+            const std::array<cv::Ptr<cv::FeatureDetector>, numberOfDetectionCells>& featureDetectors,
+            std::vector<cv::KeyPoint>& frameKeypoints) const noexcept;
 
     [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(
             const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept;
 
   private:
-    std::vector<cv::Ptr<cv::FeatureDetector>> _featureDetectors;
-    std::vector<cv::Ptr<cv::FeatureDetector>> _advancedFeatureDetectors;
+    std::array<cv::Ptr<cv::FeatureDetector>, numberOfDetectionCells> _featureDetectors;
+    std::array<cv::Ptr<cv::FeatureDetector>, numberOfDetectionCells> _advancedFeatureDetectors;
+    std::array<cv::Rect, numberOfDetectionCells> _detectionWindows;
 
     cv::Ptr<cv::DescriptorExtractor> _featureDescriptor;
-
-    std::vector<cv::Rect> _detectionWindows;
 
     std::vector<cv::Mat> _lastFramePyramide;
 

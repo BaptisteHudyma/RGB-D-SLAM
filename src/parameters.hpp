@@ -45,21 +45,23 @@ constexpr float maximumRetroprojectionError =
 
 namespace detection {
 // point detection
+constexpr uint keypointCellDetectionHeightCount = 3; // the number of the keypoint detection window in height
+constexpr uint keypointCellDetectionWidthCount = 3;  // the number of the keypoint detection window in width
 #ifdef USE_ORB_DETECTOR_AND_MATCHING
 constexpr uint pointDetectorOrbThreshold = 100; // number of points to detect (per frame)
 #else
-constexpr uint pointDetectorThreshold = 4; // point detector sensitivity (per frame)
+constexpr uint pointDetectorThreshold = 3; // point detector sensitivity (per cell detection window)
 #endif
-
 constexpr uint maximumPointPerFrame =
         200; // maximum points per frame, over which we do not want to detect more points (optimization)
-constexpr uint keypointCellDetectionSize_px = 250; // in pixel, the size of the keypoint detection window
-constexpr uint keypointRefreshFrequency = 5;       // Update the keypoint list every N calls (opti)
+constexpr uint keypointRefreshFrequency = 5; // Update the keypoint list every N calls (opti)
 
 // point tracking
 constexpr uint opticalFlowPyramidDepth =
         4; // depth of the optical pyramid (0 based. Higher than 5 levels is mostly useless)
-constexpr uint opticalFlowPyramidWindowSize_px = 50; // search size at each pyramid level (pixel)
+constexpr uint opticalFlowPyramidWindowSizeHeightCount = 9; // search size window count (vertical) at each pyramid level
+constexpr uint opticalFlowPyramidWindowSizeWidthCount =
+        12; // search size window count (horizontal) at each pyramid level
 
 // plane detection
 constexpr double minimumPlaneSeedProportion =
