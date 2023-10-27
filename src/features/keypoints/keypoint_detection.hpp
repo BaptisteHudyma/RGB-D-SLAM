@@ -76,6 +76,7 @@ class Key_Point_Extraction
      * \brief Perform keypoint detection on the image, divided in smaller patches.
      * \param[in] grayImage Image in which to detect keypoints
      * \param[in] mask Mask of the image in which to detect keypoints. No keypoints will be detected in this
+     * \param[out] frameKeypoints The keypoint detected in this process
      * keypoints in the image
      */
     void perform_keypoint_detection(const cv::Mat& grayImage,
