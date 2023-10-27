@@ -22,18 +22,17 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     static const size_t imageHeight = Parameters::get_camera_1_image_size().y();
     static const size_t imageWidth = Parameters::get_camera_1_image_size().x();
 
-    constexpr size_t cellSize = parameters::detection::keypointCellDetectionSize_px;
-    static const size_t numCellsY = 1 + ((imageHeight - 1) / cellSize);
-    static const size_t numCellsX = 1 + ((imageWidth - 1) / cellSize);
-    static const size_t numberOfCells = numCellsY * numCellsX;
+    static constexpr size_t numCellsY = parameters::detection::keypointCellDetectionHeightCount;
+    static constexpr size_t numCellsX = parameters::detection::keypointCellDetectionWidthCount;
 
-    _featureDetectors.reserve(numberOfCells);
-    _advancedFeatureDetectors.reserve(numberOfCells);
+    static const size_t cellSizeY = imageHeight / numCellsY;
+    static const size_t cellSizeX = imageWidth / numCellsX;
+
     // Create feature extractor and matcher
 #ifdef USE_ORB_DETECTOR_AND_MATCHING
     constexpr uint maxKeypointToDetect = parameters::detection::pointDetectorOrbThreshold;
-    const int detectorThreshold = std::max(1, static_cast<int>(maxKeypointToDetect / numberOfCells));
-    for (size_t i = 0; i < numberOfCells; ++i)
+    const int detectorThreshold = std::max(1, static_cast<int>(maxKeypointToDetect / numberOfDetectionCells));
+    for (size_t i = 0; i < numberOfDetectionCells; ++i)
     {
         _featureDetectors.emplace_back(cv::Ptr<cv::FeatureDetector>(cv::ORB::create(detectorThreshold)));
         _advancedFeatureDetectors.emplace_back(cv::Ptr<cv::FeatureDetector>(cv::ORB::create(2 * detectorThreshold)));
@@ -44,16 +43,14 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     _featureDescriptor = _featureDetectors.front();
 #else
     constexpr uint detectorthreshold = parameters::detection::pointDetectorThreshold;
-    const int detectorThreshold = static_cast<int>(detectorthreshold * numberOfCells);
+    const int detectorThreshold = static_cast<int>(detectorthreshold * numberOfDetectionCells);
 
-    for (size_t i = 0; i < numberOfCells; ++i)
+    for (size_t i = 0; i < numberOfDetectionCells; ++i)
     {
-        _featureDetectors.emplace_back(
-                cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(detectorThreshold)));
-        _advancedFeatureDetectors.emplace_back(
-                cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(std::max(1, detectorThreshold / 2))));
-        assert(not _featureDetectors.back().empty());
-        assert(not _advancedFeatureDetectors.back().empty());
+        _featureDetectors[i] = cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(detectorThreshold));
+        _advancedFeatureDetectors[i] = cv::FastFeatureDetector::create(std::max(1, detectorThreshold / 2));
+        assert(not _featureDetectors[i].empty());
+        assert(not _advancedFeatureDetectors[i].empty());
     }
 
     _featureDescriptor = cv::Ptr<cv::DescriptorExtractor>(cv::xfeatures2d::BriefDescriptorExtractor::create());
@@ -61,28 +58,17 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 #endif
 
     // create the detection windows
-    _detectionWindows.reserve(numberOfCells);
+    size_t i = 0;
     for (size_t cellYIndex = 0; cellYIndex < numCellsY; ++cellYIndex)
     {
-        for (size_t cellXIndex = 0; cellXIndex < numCellsX; ++cellXIndex)
+        for (size_t cellXIndex = 0; cellXIndex < numCellsX; ++cellXIndex, ++i)
         {
-            // adjust cell size if we reach the limits
-            const size_t cellSizeY = ((cellYIndex == numCellsY - 1) && ((cellYIndex + 1) * cellSize > imageHeight)) ?
-                                             imageHeight - (cellYIndex * cellSize) :
-                                             cellSize;
-            const size_t cellSizeX = ((cellXIndex == numCellsX - 1) && ((cellXIndex + 1) * cellSize > imageWidth)) ?
-                                             imageWidth - (cellXIndex * cellSize) :
-                                             cellSize;
-
-            _detectionWindows.push_back(cv::Rect(static_cast<int>(cellXIndex * cellSize),
-                                                 static_cast<int>(cellYIndex * cellSize),
-                                                 static_cast<int>(cellSizeX),
-                                                 static_cast<int>(cellSizeY)));
+            _detectionWindows[i] = cv::Rect(static_cast<int>(cellXIndex * cellSizeX),
+                                            static_cast<int>(cellYIndex * cellSizeY),
+                                            static_cast<int>(cellSizeX),
+                                            static_cast<int>(cellSizeY));
         }
     }
-
-    assert(_detectionWindows.size() == _featureDetectors.size());
-    assert(_detectionWindows.size() == _advancedFeatureDetectors.size());
 }
 
 std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage,
@@ -154,15 +140,15 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
      */
 
     // load parameters
-    constexpr int pyramidWindowSize = static_cast<int>(parameters::detection::opticalFlowPyramidWindowSize_px);
     constexpr int pyramidDepth = static_cast<int>(parameters::detection::opticalFlowPyramidDepth);
     constexpr double maxDistance = parameters::matching::matchSearchRadius_px;
     constexpr uint minimumPointsForOptimization = parameters::optimization::minimumPointForOptimization;
     constexpr uint maximumPointsForLocalMap = parameters::detection::maximumPointPerFrame;
     constexpr double maximumMatchDistance = parameters::matching::maximumMatchDistance;
 
-    static const cv::Size pyramidSize(pyramidWindowSize,
-                                      pyramidWindowSize); // must be >= than the size used in calcOpticalFlow
+    static const cv::Size pyramidSize(
+            Parameters::get_camera_1_image_size().x() / parameters::detection::opticalFlowPyramidWindowSizeWidthCount,
+            Parameters::get_camera_1_image_size().y() / parameters::detection::opticalFlowPyramidWindowSizeHeightCount);
 
     // build pyramid
     std::vector<cv::Mat> newImagePyramide;
@@ -175,7 +161,7 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
                                         newImagePyramide,
                                         lastKeypointsWithIds,
                                         pyramidDepth,
-                                        pyramidWindowSize,
+                                        pyramidSize,
                                         maxDistance,
                                         newKeypointsObject);
 
@@ -245,7 +231,7 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
                                                            const std::vector<cv::Mat>& imageCurrentPyramide,
                                                            const KeypointsWithIdStruct& lastKeypointsWithIds,
                                                            const uint pyramidDepth,
-                                                           const uint windowSize,
+                                                           const cv::Size& windowSizeObject,
                                                            const double maxDistanceThreshold,
                                                            KeypointsWithIdStruct& keypointStruct) noexcept
 {
@@ -262,7 +248,6 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
     std::vector<cv::Point2f> forwardPoints;
 
     const size_t previousKeyPointCount = lastKeypointsWithIds.size();
-    const cv::Size windowSizeObject = cv::Size(static_cast<int>(windowSize), static_cast<int>(windowSize));
     const static cv::TermCriteria criteria =
             cv::TermCriteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 10, 0.03);
 
@@ -362,12 +347,12 @@ void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDurati
     }
 }
 
-void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
-                                                      const cv::Mat_<uchar>& mask,
-                                                      const std::vector<cv::Ptr<cv::FeatureDetector>>& featureDetectors,
-                                                      std::vector<cv::KeyPoint>& frameKeypoints) const noexcept
+void Key_Point_Extraction::perform_keypoint_detection(
+        const cv::Mat& grayImage,
+        const cv::Mat_<uchar>& mask,
+        const std::array<cv::Ptr<cv::FeatureDetector>, numberOfDetectionCells>& featureDetectors,
+        std::vector<cv::KeyPoint>& frameKeypoints) const noexcept
 {
-    assert(featureDetectors.size() == _detectionWindows.size());
     assert(grayImage.size() == mask.size());
     frameKeypoints.clear();
 
@@ -385,10 +370,10 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
 
 #ifndef MAKE_DETERMINISTIC
     tbb::parallel_for(size_t(0),
-                      _detectionWindows.size(),
+                      static_cast<size_t>(numberOfDetectionCells),
                       [&](size_t i)
 #else
-    for (size_t i = 0; i < _detectionWindows.size(); ++i)
+    for (size_t i = 0; i < numberOfDetectionCells; ++i)
 #endif
                       {
                           const auto& detectionWindow = _detectionWindows[i];
