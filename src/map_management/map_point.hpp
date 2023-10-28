@@ -51,17 +51,26 @@ using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPointType = features::keypoints::DetectedKeyPoint;
 using PointMatchType = matches_containers::PointMatch;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
+using UpgradedPointType = void*; // no upgrade for 3D points
 
 class MapPoint :
     public Point,
-    public IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>
+    public IMapFeature<DetectedKeypointsObject,
+                       DetectedPointType,
+                       PointMatchType,
+                       TrackedPointsObject,
+                       UpgradedPointType>
 {
   public:
     MapPoint(const utils::WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
         Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>()
+        IMapFeature<DetectedKeypointsObject,
+                    DetectedPointType,
+                    PointMatchType,
+                    TrackedPointsObject,
+                    UpgradedPointType>()
     {
         assert(_id > 0);
     }
@@ -71,7 +80,8 @@ class MapPoint :
              const cv::Mat& descriptor,
              const size_t id) :
         Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>(id)
+        IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject, UpgradedPointType>(
+                id)
     {
         assert(_id > 0);
     }
@@ -96,6 +106,12 @@ class MapPoint :
     [[nodiscard]] bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept override;
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
+
+    [[nodiscard]] bool compute_upgraded(UpgradedPointType& upgradeFeature) const noexcept override
+    {
+        (void)upgradeFeature;
+        return false;
+    }
 
   protected:
     [[nodiscard]] bool update_with_match(const DetectedPointType& matchedFeature,

@@ -22,6 +22,7 @@ using DetectedPlaneType = features::primitives::Plane;
 using DetectedPlaneObject = features::primitives::plane_container;
 using PlaneMatchType = matches_containers::PlaneMatch;
 using TrackedPlaneObject = void*; // TODO implement
+using UpgradedPlaneType = void*;  // no upgrades for planes
 
 class Plane
 {
@@ -69,16 +70,17 @@ class Plane
 
 class MapPlane :
     public Plane,
-    public IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject>
+    public IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType>
 {
   public:
-    MapPlane() : IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject>()
+    MapPlane() :
+        IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType>()
     {
         assert(_id > 0);
     }
 
     explicit MapPlane(const size_t id) :
-        IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject>(id)
+        IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType>(id)
     {
         assert(_id > 0);
     }
@@ -103,6 +105,12 @@ class MapPlane :
     [[nodiscard]] bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept override;
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
+
+    [[nodiscard]] bool compute_upgraded(UpgradedPlaneType& upgradeFeature) const noexcept override
+    {
+        (void)upgradeFeature;
+        return false;
+    }
 
   protected:
     [[nodiscard]] bool update_with_match(const DetectedPlaneType& matchedFeature,

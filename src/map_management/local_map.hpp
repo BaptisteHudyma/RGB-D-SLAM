@@ -146,19 +146,22 @@ class Local_Map
                                         DetectedKeypointsObject,
                                         DetectedPoint2DType,
                                         PointMatch2DType,
-                                        TrackedPointsObject>;
+                                        TrackedPointsObject,
+                                        void>;
     using localPointMap = Feature_Map<LocalMapPoint,
                                       StagedMapPoint,
                                       DetectedKeypointsObject,
                                       DetectedPointType,
                                       PointMatchType,
-                                      TrackedPointsObject>;
+                                      TrackedPointsObject,
+                                      void>;
     using localPlaneMap = Feature_Map<LocalMapPlane,
                                       StagedMapPlane,
                                       DetectedPlaneObject,
                                       DetectedPlaneType,
                                       PlaneMatchType,
-                                      TrackedPlaneObject>;
+                                      TrackedPlaneObject,
+                                      void>;
 
     size_t _detectedFeatureId; // store the if of the detected feature
     localPoint2DMap _localPoint2DMap;

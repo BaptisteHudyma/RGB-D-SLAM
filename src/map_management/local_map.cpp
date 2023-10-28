@@ -39,8 +39,7 @@ Local_Map::~Local_Map()
 features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(
         const utils::Pose& lastPose) const noexcept
 {
-    const size_t numberOfNewKeypoints = _localPoint2DMap.get_local_map_size() + _localPoint2DMap.get_staged_map_size() +
-                                        _localPointMap.get_local_map_size() + _localPointMap.get_staged_map_size();
+    const size_t numberOfNewKeypoints = _localPoint2DMap.size() + _localPointMap.size();
 
     const WorldToCameraMatrix& worldToCamera =
             utils::compute_world_to_camera_transform(lastPose.get_orientation_quaternion(), lastPose.get_position());

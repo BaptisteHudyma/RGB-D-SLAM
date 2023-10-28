@@ -10,6 +10,7 @@
 #include "pose.hpp"
 #include "random.hpp"
 #include "types.hpp"
+#include <cmath>
 #include <exception>
 #include <list>
 #include <memory>
@@ -19,7 +20,11 @@
 
 namespace rgbd_slam::map_management {
 
-template<class DetectedFeaturesObject, class DetectedFeatureType, class FeatureMatchType, class TrackedFeaturesObject>
+template<class DetectedFeaturesObject,
+         class DetectedFeatureType,
+         class FeatureMatchType,
+         class TrackedFeaturesObject,
+         class UpgradedFeatureType>
 class IMapFeature
 {
   public:
@@ -52,6 +57,11 @@ class IMapFeature
                                          std::list<FeatureMatchType>& matches,
                                          const bool shouldAddToMatches = true,
                                          const bool useAdvancedSearch = false) const noexcept = 0;
+
+    /** \brief Return true if this feature can be upgraded to UpgradedFeatureType
+     * \param[out] upgradeFeature The upgraded feature, valid if this function returned true
+     */
+    [[nodiscard]] virtual bool compute_upgraded(UpgradedFeatureType& upgradeFeature) const noexcept = 0;
 
     /**
      * \return True if this map feature is marked as matched
@@ -157,6 +167,12 @@ class IMapFeature
 template<class DetectedFeatureType> class IStagedMapFeature
 {
   public:
+    /*
+    IStagedMapFeature(const matrix33& poseCovariance,
+                      const CameraToWorldMatrix& cameraToWorld,
+                      const DetectedFeatureType& detectedFeature) = 0;
+    */
+
     [[nodiscard]] virtual bool should_remove_from_staged() const noexcept = 0;
     [[nodiscard]] virtual bool should_add_to_local_map() const noexcept = 0;
 
@@ -171,6 +187,10 @@ template<class DetectedFeatureType> class IStagedMapFeature
 template<class StagedMapFeature> class ILocalMapFeature
 {
   public:
+    /*
+    ILocalMapFeature(const StagedMapFeature& stagedfeature);
+    */
+
     [[nodiscard]] virtual bool is_lost() const noexcept = 0;
 
     cv::Vec3b _color;
@@ -192,7 +212,8 @@ template<class MapFeatureType,
          class DetectedFeaturesObject,
          class DetectedFeatureType,
          class FeatureMatchType,
-         class TrackedFeaturesObject>
+         class TrackedFeaturesObject,
+         class UpgradedFeatureType>
 class Feature_Map
 {
   private:
@@ -231,10 +252,9 @@ class Feature_Map
      * _isDetectedFeatureMatched flags
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
-     * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if True.
-     * Also less precise
-     * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
-     * \param[out] matches An object of matches between map object and detected features
+     * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
+     * True. Also less precise \param[in] minimumFeaturesForOptimization The minimum feature count for a pose
+     * optimization \param[out] matches An object of matches between map object and detected features
      */
     void get_matches(const DetectedFeaturesObject& detectedFeatures,
                      const WorldToCameraMatrix& worldToCamera,
@@ -362,8 +382,8 @@ class Feature_Map
      * \param[in] poseCovariance Covariance of the pose where those features were detected
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \param[in] detectedFeatures The object that contains the detected features to add
-     * \param[in] addAllFeatures If true, will add all detected features to the staged map. If false, will only add the
-     * unmatched features to staged map
+     * \param[in] addAllFeatures If true, will add all detected features to the staged map. If false, will only add
+     * the unmatched features to staged map
      */
     void add_features_to_staged_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
@@ -496,6 +516,14 @@ class Feature_Map
     [[nodiscard]] size_t get_local_map_size() const noexcept { return _localMap.size(); };
     [[nodiscard]] size_t get_staged_map_size() const noexcept { return _stagedMap.size(); };
     [[nodiscard]] size_t size() const noexcept { return get_local_map_size() + get_staged_map_size(); };
+
+    /**
+     * \brief compute the upgraded features and remove them from the map
+     */
+    std::vector<UpgradedFeatureType> get_upgraded_features()
+    {
+        return get_upgraded_map_features() + get_upgraded_staged_features();
+    }
 
   protected:
     void update_local_map(const CameraToWorldMatrix& cameraToWorld,
@@ -640,6 +668,56 @@ class Feature_Map
                 ++stagedFeatureIterator;
             }
         }
+    }
+
+    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_map_features() noexcept
+    {
+        std::vector<UpgradedFeatureType> upgradedFeatures;
+        // update the staged map with no matchs
+        typename stagedMapType::iterator mapFeatureIterator = _localMap.begin();
+        while (mapFeatureIterator != _localMap.end())
+        {
+            MapFeatureType& mapFeature = mapFeatureIterator->second;
+            assert(mapFeatureIterator->first == mapFeature._id);
+
+            UpgradedFeatureType upgraded;
+            if (mapFeature.compute_upgraded(upgraded))
+            {
+                upgradedFeatures.emplace_back(upgraded);
+                // Remove useless point
+                mapFeatureIterator = _localMap.erase(mapFeatureIterator);
+            }
+            else
+            {
+                ++mapFeatureIterator;
+            }
+        }
+        return upgradedFeatures;
+    }
+
+    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_staged_features() noexcept
+    {
+        std::vector<UpgradedFeatureType> upgradedFeatures;
+        // update the staged map with no matchs
+        typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
+        while (stagedFeatureIterator != _stagedMap.end())
+        {
+            StagedFeatureType& stagedFeature = stagedFeatureIterator->second;
+            assert(stagedFeatureIterator->first == stagedFeature._id);
+
+            UpgradedFeatureType upgraded;
+            if (stagedFeature.compute_upgraded(upgraded))
+            {
+                upgradedFeatures.emplace_back(upgraded);
+                // Remove useless point
+                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
+            }
+            else
+            {
+                ++stagedFeatureIterator;
+            }
+        }
+        return upgradedFeatures;
     }
 
   private:
