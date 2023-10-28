@@ -1,5 +1,5 @@
-#ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
-#define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
+#ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT2D_HPP
+#define RGBDSLAM_MAPMANAGEMENT_MAPPOINT2D_HPP
 
 #include "../features/keypoints/keypoint_handler.hpp"
 #include "../tracking/kalman_filter.hpp"
@@ -13,20 +13,18 @@
 
 namespace rgbd_slam::map_management {
 
-const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
-
-struct Point
+struct Point2D
 {
     // world coordinates
-    utils::WorldCoordinate _coordinates;
+    utils::ScreenCoordinate2D _coordinates;
     // 3D descriptor (ORB)
     cv::Mat _descriptor;
     // position covariance
-    WorldCoordinateCovariance _covariance;
+    ScreenCoordinate2DCovariance _covariance;
 
-    Point(const utils::WorldCoordinate& coordinates,
-          const WorldCoordinateCovariance& covariance,
-          const cv::Mat& descriptor);
+    Point2D(const utils::ScreenCoordinate2D& coordinates,
+            const ScreenCoordinate2DCovariance& covariance,
+            const cv::Mat& descriptor);
 
     /**
      * \brief update this point coordinates using a new detection
@@ -34,8 +32,8 @@ struct Point
      * \param[in] newDetectionCovariance The newly detected point covariance
      * \return The distance between the updated position ans the previous one, -1 if an error occured
      */
-    double track(const utils::WorldCoordinate& newDetectionCoordinates,
-                 const matrix33& newDetectionCovariance) noexcept;
+    double track(const utils::ScreenCoordinate2D& newDetectionCoordinates,
+                 const matrix22& newDetectionCovariance) noexcept;
 
   private:
     /**
@@ -44,44 +42,44 @@ struct Point
     static void build_kalman_filter() noexcept;
 
     // shared kalman filter, between all points
-    inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::SharedKalmanFilter<2, 2>> _kalmanFilter = nullptr;
 };
 
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
-using DetectedPointType = features::keypoints::DetectedKeyPoint;
-using PointMatchType = matches_containers::PointMatch;
+using DetectedPoint2DType = features::keypoints::DetectedKeyPoint;
+using PointMatch2DType = matches_containers::PointMatch2D;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 
-class MapPoint :
-    public Point,
-    public IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>
+class MapPoint2D :
+    public Point2D,
+    public IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, PointMatch2DType, TrackedPointsObject>
 {
   public:
-    MapPoint(const utils::WorldCoordinate& coordinates,
-             const WorldCoordinateCovariance& covariance,
-             const cv::Mat& descriptor) :
-        Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>()
+    MapPoint2D(const utils::ScreenCoordinate2D& coordinates,
+               const ScreenCoordinate2DCovariance& covariance,
+               const cv::Mat& descriptor) :
+        Point2D(coordinates, covariance, descriptor),
+        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, PointMatch2DType, TrackedPointsObject>()
     {
         assert(_id > 0);
     }
 
-    MapPoint(const utils::WorldCoordinate& coordinates,
-             const WorldCoordinateCovariance& covariance,
-             const cv::Mat& descriptor,
-             const size_t id) :
-        Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject>(id)
+    MapPoint2D(const utils::ScreenCoordinate2D& coordinates,
+               const ScreenCoordinate2DCovariance& covariance,
+               const cv::Mat& descriptor,
+               const size_t id) :
+        Point2D(coordinates, covariance, descriptor),
+        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, PointMatch2DType, TrackedPointsObject>(id)
     {
         assert(_id > 0);
     }
 
-    virtual ~MapPoint() = default;
+    virtual ~MapPoint2D() = default;
 
     [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
                                  const vectorb& isDetectedFeatureMatched,
-                                 std::list<PointMatchType>& matches,
+                                 std::list<PointMatch2DType>& matches,
                                  const bool shouldAddToMatches = true,
                                  const bool useAdvancedSearch = false) const noexcept override;
 
@@ -97,8 +95,10 @@ class MapPoint :
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
+    WorldToCameraMatrix _firstWorldToCam;
+
   protected:
-    [[nodiscard]] bool update_with_match(const DetectedPointType& matchedFeature,
+    [[nodiscard]] bool update_with_match(const DetectedPoint2DType& matchedFeature,
                                          const matrix33& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
@@ -108,20 +108,20 @@ class MapPoint :
 /**
  * \brief Candidate for a map point
  */
-class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointType>
+class StagedMapPoint2D : public MapPoint2D, public IStagedMapFeature<DetectedPoint2DType>
 {
   public:
-    StagedMapPoint(const matrix33& poseCovariance,
-                   const CameraToWorldMatrix& cameraToWorld,
-                   const DetectedPointType& detectedFeature);
+    StagedMapPoint2D(const matrix33& poseCovariance,
+                     const CameraToWorldMatrix& cameraToWorld,
+                     const DetectedPoint2DType& detectedFeature);
 
     [[nodiscard]] bool should_remove_from_staged() const noexcept override;
 
     [[nodiscard]] bool should_add_to_local_map() const noexcept override;
 
-    [[nodiscard]] static bool can_add_to_map(const DetectedPointType& detectedPoint) noexcept
+    [[nodiscard]] static bool can_add_to_map(const DetectedPoint2DType& detectedPoint) noexcept
     {
-        return not detectedPoint._descriptor.empty() and utils::is_depth_valid(detectedPoint._coordinates.z());
+        return not detectedPoint._descriptor.empty() and not utils::is_depth_valid(detectedPoint._coordinates.z());
     }
 
   protected:
@@ -131,10 +131,10 @@ class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointTy
 /**
  * \brief A map point structure, containing all the necessary informations to identify a map point in local map
  */
-class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
+class LocalMapPoint2D : public MapPoint2D, public ILocalMapFeature<StagedMapPoint2D>
 {
   public:
-    explicit LocalMapPoint(const StagedMapPoint& stagedPoint);
+    explicit LocalMapPoint2D(const StagedMapPoint2D& stagedPoint);
 
     [[nodiscard]] bool is_lost() const noexcept override;
 };

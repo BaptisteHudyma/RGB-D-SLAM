@@ -20,12 +20,6 @@ class IPrimitive
   public:
     IPrimitive() = default;
 
-    bool can_add_to_map() const noexcept
-    {
-        // TODO
-        return true;
-    }
-
   private:
     // remove copy functions
     IPrimitive& operator=(const IPrimitive&) = delete;

@@ -159,6 +159,13 @@ template<class DetectedFeatureType> class IStagedMapFeature
   public:
     [[nodiscard]] virtual bool should_remove_from_staged() const noexcept = 0;
     [[nodiscard]] virtual bool should_add_to_local_map() const noexcept = 0;
+
+    [[nodiscard]] static bool can_add_to_map(const DetectedFeatureType& detectedFeature) noexcept
+    {
+        (void)detectedFeature;
+        outputs::log_error("Called default can_add_to_map function");
+        return false;
+    }
 };
 
 template<class StagedMapFeature> class ILocalMapFeature
@@ -376,12 +383,13 @@ class Feature_Map
             {
                 const DetectedFeatureType& detectedfeature = detectedFeatures.at(i);
                 // some features cannot be added to map
-                if (detectedfeature.can_add_to_map())
+                if (StagedFeatureType::can_add_to_map(detectedfeature))
                 {
                     try
                     {
                         const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
                         assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
+
                         // add to staged map
                         _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
                     }

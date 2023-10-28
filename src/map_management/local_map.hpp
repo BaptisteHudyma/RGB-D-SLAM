@@ -8,6 +8,7 @@
 #include "../matches_containers.hpp"
 #include "../utils/pose.hpp"
 #include "feature_map.hpp"
+#include "map_point2d.hpp"
 #include "map_point.hpp"
 #include "map_primitive.hpp"
 #include <memory>
@@ -140,6 +141,12 @@ class Local_Map
 
   private:
     // Define types
+    using localPoint2DMap = Feature_Map<LocalMapPoint2D,
+                                        StagedMapPoint2D,
+                                        DetectedKeypointsObject,
+                                        DetectedPoint2DType,
+                                        PointMatch2DType,
+                                        TrackedPointsObject>;
     using localPointMap = Feature_Map<LocalMapPoint,
                                       StagedMapPoint,
                                       DetectedKeypointsObject,
@@ -154,6 +161,7 @@ class Local_Map
                                       TrackedPlaneObject>;
 
     size_t _detectedFeatureId; // store the if of the detected feature
+    localPoint2DMap _localPoint2DMap;
     localPointMap _localPointMap;
     localPlaneMap _localPlaneMap;
 

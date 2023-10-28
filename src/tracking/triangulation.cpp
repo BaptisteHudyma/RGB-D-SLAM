@@ -29,14 +29,14 @@ bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& world
 bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
                                 const WorldToCameraMatrix& newWorldToCamera,
                                 const utils::ScreenCoordinate2D& point2Da,
-                                const utils::ScreenCoordinate2D& point2Db,
+                                const utils::ScreenCoordinate2D& newPoint2Db,
                                 utils::WorldCoordinate& triangulatedPoint) noexcept
 {
     constexpr double maximumRetroprojectionError = parameters::optimization::maximumRetroprojectionError;
 
     // project x and y coordinates
     const utils::CameraCoordinate2D& pointA = point2Da.to_camera_coordinates();
-    const utils::CameraCoordinate2D& pointB = point2Db.to_camera_coordinates();
+    const utils::CameraCoordinate2D& pointB = newPoint2Db.to_camera_coordinates();
 
     // Linear-LS triangulation
     matrix44 triangulationMatrix;
@@ -62,7 +62,7 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
 
         // Check retroprojection of point in frame B
         if (not Triangulation::is_retroprojection_valid(
-                    worldPoint, point2Db, newWorldToCamera, maximumRetroprojectionError))
+                    worldPoint, newPoint2Db, newWorldToCamera, maximumRetroprojectionError))
             return false;
 
         // retroprojection is good enough
