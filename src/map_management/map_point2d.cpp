@@ -171,6 +171,37 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
 
 void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept { (void)mapWriter; }
 
+bool MapPoint2D::compute_upgraded(UpgradedPoint2DType& upgradedFeature) const noexcept
+{
+    // invalid depth: try to triangulate
+    if (not utils::is_depth_valid(_lastMatchCoordinates.z()))
+    {
+        utils::WorldCoordinate triangulatedPoint;
+        if (tracking::Triangulation::triangulate(_firstWorldToCam,
+                                                 _lastMatchWorldToCamera,
+                                                 _coordinates,
+                                                 _lastMatchCoordinates.get_2D(),
+                                                 triangulatedPoint))
+        {
+            upgradedFeature = triangulatedPoint;
+            return true;
+        }
+        else
+        {
+            // not possible to triangulate, wait a bit
+            return false;
+        }
+    }
+    else
+    {
+        // depth is valid: compute world position
+        upgradedFeature = _lastMatchCoordinates.to_world_coordinates(
+                utils::compute_camera_to_world_transform(_lastMatchWorldToCamera));
+        return true;
+    }
+    return false;
+}
+
 bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
                                    const matrix33& poseCovariance,
                                    const CameraToWorldMatrix& cameraToWorld) noexcept
@@ -182,28 +213,8 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         return false;
     }
 
-    const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
-    if (not utils::is_depth_valid(matchedScreenPoint.z()))
-    {
-        utils::WorldCoordinate triangulatedPoint;
-        if (tracking::Triangulation::triangulate(_firstWorldToCam,
-                                                 utils::compute_world_to_camera_transform(cameraToWorld),
-                                                 _coordinates,
-                                                 matchedScreenPoint.get_2D(),
-                                                 triangulatedPoint))
-        {
-            // TODO: we have a 3D point now !
-        }
-        else
-        {
-            // TODO update 2D point
-        }
-    }
-    else
-    {
-        // TODO: we have a 3d point now !
-    }
-    _coordinates = matchedScreenPoint.get_2D();
+    _lastMatchCoordinates = matchedFeature._coordinates;
+    _lastMatchWorldToCamera = utils::compute_world_to_camera_transform(cameraToWorld);
     return true;
 }
 

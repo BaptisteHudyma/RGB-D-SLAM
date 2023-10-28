@@ -49,17 +49,26 @@ using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPoint2DType = features::keypoints::DetectedKeyPoint;
 using PointMatch2DType = matches_containers::PointMatch2D;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
+using UpgradedPoint2DType = utils::WorldCoordinate; // 2D points can be upgraded to 3D
 
 class MapPoint2D :
     public Point2D,
-    public IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, PointMatch2DType, TrackedPointsObject>
+    public IMapFeature<DetectedKeypointsObject,
+                       DetectedPoint2DType,
+                       PointMatch2DType,
+                       TrackedPointsObject,
+                       UpgradedPoint2DType>
 {
   public:
     MapPoint2D(const utils::ScreenCoordinate2D& coordinates,
                const ScreenCoordinate2DCovariance& covariance,
                const cv::Mat& descriptor) :
         Point2D(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, PointMatch2DType, TrackedPointsObject>()
+        IMapFeature<DetectedKeypointsObject,
+                    DetectedPoint2DType,
+                    PointMatch2DType,
+                    TrackedPointsObject,
+                    UpgradedPoint2DType>()
     {
         assert(_id > 0);
     }
@@ -69,7 +78,11 @@ class MapPoint2D :
                const cv::Mat& descriptor,
                const size_t id) :
         Point2D(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, PointMatch2DType, TrackedPointsObject>(id)
+        IMapFeature<DetectedKeypointsObject,
+                    DetectedPoint2DType,
+                    PointMatch2DType,
+                    TrackedPointsObject,
+                    UpgradedPoint2DType>(id)
     {
         assert(_id > 0);
     }
@@ -95,7 +108,12 @@ class MapPoint2D :
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
+    [[nodiscard]] bool compute_upgraded(UpgradedPoint2DType& upgradeFeature) const noexcept override;
+
     WorldToCameraMatrix _firstWorldToCam;
+
+    utils::ScreenCoordinate _lastMatchCoordinates; // can be 2D
+    WorldToCameraMatrix _lastMatchWorldToCamera;
 
   protected:
     [[nodiscard]] bool update_with_match(const DetectedPoint2DType& matchedFeature,
