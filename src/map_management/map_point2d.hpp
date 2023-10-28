@@ -25,24 +25,6 @@ struct Point2D
     Point2D(const utils::ScreenCoordinate2D& coordinates,
             const ScreenCoordinate2DCovariance& covariance,
             const cv::Mat& descriptor);
-
-    /**
-     * \brief update this point coordinates using a new detection
-     * \param[in] newDetectionCoordinates The newly detected point
-     * \param[in] newDetectionCovariance The newly detected point covariance
-     * \return The distance between the updated position ans the previous one, -1 if an error occured
-     */
-    double track(const utils::ScreenCoordinate2D& newDetectionCoordinates,
-                 const matrix22& newDetectionCovariance) noexcept;
-
-  private:
-    /**
-     * \brief Build the caracteristics of the kalman filter
-     */
-    static void build_kalman_filter() noexcept;
-
-    // shared kalman filter, between all points
-    inline static std::unique_ptr<tracking::SharedKalmanFilter<2, 2>> _kalmanFilter = nullptr;
 };
 
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
@@ -112,6 +94,7 @@ class MapPoint2D :
 
     WorldToCameraMatrix _firstWorldToCam;
 
+    bool _isLastMatchCoordinatesSet = false;
     utils::ScreenCoordinate _lastMatchCoordinates; // can be 2D
     WorldToCameraMatrix _lastMatchWorldToCamera;
 

@@ -197,36 +197,18 @@ void Local_Map::draw_image_head_band(cv::Mat& debugImage) const noexcept
     const uint bandSize = 20;
     const int placeInBand = static_cast<int>(std::floor(bandSize * 0.75));
 
-    std::stringstream textPoints;
-    textPoints << "Points:" << std::format("{: >3}", _localPointMap.get_staged_map_size()) << "|"
-               << std::format("{: >3}", _localPointMap.get_local_map_size());
-    const int plointLabelPosition = static_cast<int>(imageWidth * 0.15);
+    const double point2DOffset = 0.15;
+    std::stringstream textPoints2D;
+    textPoints2D << "P2D:" << std::format("{: >3}", _localPoint2DMap.get_staged_map_size()) << ":"
+                 << std::format("{: >3}", _localPoint2DMap.get_local_map_size())
+                 << " | Points:" << std::format("{: >3}", _localPointMap.get_staged_map_size()) << ":"
+                 << std::format("{: >3}", _localPointMap.get_local_map_size())
+                 << " | Planes:" << std::format("{: >2}", _localPlaneMap.get_staged_map_size()) << ":"
+                 << std::format("{: >2}", _localPlaneMap.get_local_map_size()) << " | Cylinders:" << 0 << ":" << 0;
+    const int ploint2DLabelPosition = static_cast<int>(imageWidth * point2DOffset);
     cv::putText(debugImage,
-                textPoints.str(),
-                cv::Point(plointLabelPosition, placeInBand),
-                cv::FONT_HERSHEY_SIMPLEX,
-                0.5,
-                cv::Scalar(255, 255, 255, 1));
-
-    std::stringstream text1;
-    const double planeOffset = 0.35;
-    text1 << "Planes:" << std::format("{: >2}", _localPlaneMap.get_staged_map_size()) << "|"
-          << std::format("{: >2}", _localPlaneMap.get_local_map_size());
-    const int planeLabelPosition = static_cast<int>(imageWidth * planeOffset);
-    cv::putText(debugImage,
-                text1.str(),
-                cv::Point(planeLabelPosition, placeInBand),
-                cv::FONT_HERSHEY_SIMPLEX,
-                0.5,
-                cv::Scalar(255, 255, 255, 1));
-
-    std::stringstream text2;
-    const double cylinderOffset = 0.70;
-    text2 << "Cylinders:";
-    const int cylinderLabelPosition = static_cast<int>(imageWidth * cylinderOffset);
-    cv::putText(debugImage,
-                text2.str(),
-                cv::Point(cylinderLabelPosition, placeInBand),
+                textPoints2D.str(),
+                cv::Point(ploint2DLabelPosition, placeInBand),
                 cv::FONT_HERSHEY_SIMPLEX,
                 0.5,
                 cv::Scalar(255, 255, 255, 1));

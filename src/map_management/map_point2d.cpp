@@ -19,61 +19,9 @@ Point2D::Point2D(const utils::ScreenCoordinate2D& coordinates,
     _descriptor(descriptor),
     _covariance(covariance)
 {
-    build_kalman_filter();
-
     assert(not _descriptor.empty() and _descriptor.cols > 0);
     assert(not _coordinates.hasNaN());
 };
-
-double Point2D::track(const utils::ScreenCoordinate2D& newDetectionCoordinates,
-                      const matrix22& newDetectionCovariance) noexcept
-{
-    assert(_kalmanFilter != nullptr);
-    if (not utils::is_covariance_valid(newDetectionCovariance))
-    {
-        outputs::log_error("newDetectionCovariance: the covariance in invalid");
-        return -1;
-    }
-    if (not utils::is_covariance_valid(_covariance))
-    {
-        outputs::log_error("_covariance: the covariance in invalid");
-        return -1;
-    }
-
-    try
-    {
-        const auto& [newCoordinates, newCovariance] = _kalmanFilter->get_new_state(
-                _coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
-
-        const double score = (_coordinates - newCoordinates).norm();
-
-        _coordinates << newCoordinates;
-        _covariance << newCovariance;
-        assert(not _coordinates.hasNaN());
-        return score;
-    }
-    catch (const std::exception& ex)
-    {
-        outputs::log_error("Catch exeption: " + std::string(ex.what()));
-        return -1;
-    }
-}
-
-void Point2D::build_kalman_filter() noexcept
-{
-    if (_kalmanFilter == nullptr)
-    {
-        const matrix22 systemDynamics = matrix22::Identity(); // points are not supposed to move, so no dynamics
-        const matrix22 outputMatrix = matrix22::Identity();   // we need all positions
-
-        const double parametersProcessNoise = 0; // TODO set in parameters
-        const matrix22 processNoiseCovariance =
-                matrix22::Identity() * parametersProcessNoise; // Process noise covariance
-
-        _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter<2, 2>>(
-                systemDynamics, outputMatrix, processNoiseCovariance);
-    }
-}
 
 /**
  * MapPoint
@@ -99,8 +47,12 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     if (matchIndex == invalidfeatureIndex)
     {
         // No match: try to find match in a window around the point
-        matchIndex =
-                detectedFeatures.get_match_index(_coordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
+        if (_isLastMatchCoordinatesSet)
+            matchIndex = detectedFeatures.get_match_index(
+                    _lastMatchCoordinates.get_2D(), _descriptor, isDetectedFeatureMatched, searchRadius);
+        else
+            matchIndex =
+                    detectedFeatures.get_match_index(_coordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
     }
 
     if (matchIndex == invalidfeatureIndex)
@@ -136,7 +88,10 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
     if (shouldNotDropPoint)
     {
         // use previously known screen coordinates
-        trackedFeatures.add(_id, _coordinates.x(), _coordinates.y());
+        if (_isLastMatchCoordinatesSet)
+            trackedFeatures.add(_id, _lastMatchCoordinates.x(), _lastMatchCoordinates.y());
+        else
+            trackedFeatures.add(_id, _coordinates.x(), _coordinates.y());
 
         return true;
     }
@@ -152,12 +107,12 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 
     // small blue circle around it
     cv::circle(debugImage,
-               cv::Point(static_cast<int>(_coordinates.x()), static_cast<int>(_coordinates.y())),
+               cv::Point(static_cast<int>(_lastMatchCoordinates.x()), static_cast<int>(_lastMatchCoordinates.y())),
                5,
                cv::Scalar(255, 0, 0),
                -1);
     cv::circle(debugImage,
-               cv::Point(static_cast<int>(_coordinates.x()), static_cast<int>(_coordinates.y())),
+               cv::Point(static_cast<int>(_lastMatchCoordinates.x()), static_cast<int>(_lastMatchCoordinates.y())),
                3,
                color,
                -1);
@@ -166,7 +121,8 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
     (void)worldToCamMatrix;
-    return _coordinates.is_in_screen_boundaries();
+    // screen point are always visible (by definition)
+    return true;
 }
 
 void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept { (void)mapWriter; }
@@ -215,6 +171,9 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
 
     _lastMatchCoordinates = matchedFeature._coordinates;
     _lastMatchWorldToCamera = utils::compute_world_to_camera_transform(cameraToWorld);
+    if (not matchedFeature._descriptor.empty())
+        _descriptor = matchedFeature._descriptor;
+    _isLastMatchCoordinatesSet = true;
     return true;
 }
 
@@ -236,6 +195,9 @@ StagedMapPoint2D::StagedMapPoint2D(const matrix33& poseCovariance,
 {
     (void)poseCovariance;
     _firstWorldToCam = utils::compute_world_to_camera_transform(cameraToWorld);
+    _lastMatchWorldToCamera = _firstWorldToCam;
+    _lastMatchCoordinates = detectedFeature._coordinates;
+    _isLastMatchCoordinatesSet = true;
 }
 
 bool StagedMapPoint2D::should_remove_from_staged() const noexcept { return get_confidence() <= 0; }
