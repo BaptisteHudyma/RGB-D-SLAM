@@ -262,6 +262,7 @@ int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projected
     assert(searchSpaceCellRadius > 0);
 
     // check descriptor dimensions
+    assert(!mapPointDescriptor.empty());
     assert(mapPointDescriptor.cols == _descriptors.cols);
 
     const cv::Mat_<uchar>& keyPointMask =
