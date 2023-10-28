@@ -24,12 +24,14 @@ Local_Map::Local_Map()
     _mapWriter = std::make_unique<outputs::OBJ_Map_Writer>("out");
 
     // For testing purposes, one can deactivate those maps
+    //_localPoint2DMap.deactivate();
     //_localPointMap.deactivate();
     //_localPlaneMap.deactivate();
 }
 
 Local_Map::~Local_Map()
 {
+    _localPoint2DMap.destroy(_mapWriter);
     _localPointMap.destroy(_mapWriter);
     _localPlaneMap.destroy(_mapWriter);
 }
@@ -37,7 +39,8 @@ Local_Map::~Local_Map()
 features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_features(
         const utils::Pose& lastPose) const noexcept
 {
-    const size_t numberOfNewKeypoints = _localPointMap.get_local_map_size() + _localPointMap.get_staged_map_size();
+    const size_t numberOfNewKeypoints = _localPoint2DMap.get_local_map_size() + _localPoint2DMap.get_staged_map_size() +
+                                        _localPointMap.get_local_map_size() + _localPointMap.get_staged_map_size();
 
     const WorldToCameraMatrix& worldToCamera =
             utils::compute_world_to_camera_transform(lastPose.get_orientation_quaternion(), lastPose.get_position());
@@ -49,6 +52,7 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
     keypointsWithIds.reserve(numberOfNewKeypoints);
 
     constexpr uint refreshFrequency = parameters::detection::keypointRefreshFrequency * 2;
+    _localPoint2DMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
     _localPointMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
     return keypointsWithIds;
 }
@@ -64,6 +68,24 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
             currentPose.get_orientation_quaternion(), currentPose.get_position());
 
     matches_containers::matchContainer matchSets;
+
+    // find point matches
+    _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
+                                 worldToCamera,
+                                 false,
+                                 parameters::optimization::minimumPointForOptimization,
+                                 matchSets._points2D);
+    if (matchSets._points.size() < parameters::optimization::minimumPointForOptimization or
+        matchSets._points.size() <
+                std::min(detectedFeatures.keypointObject.size(), _localPoint2DMap.get_local_map_size()) / 2)
+    {
+        // if the process as not enough matches, retry matches with a greater margin
+        _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
+                                     worldToCamera,
+                                     true,
+                                     parameters::optimization::minimumPointForOptimization,
+                                     matchSets._points2D);
+    }
 
     // find point matches
     _localPointMap.get_matches(detectedFeatures.keypointObject,
@@ -109,6 +131,7 @@ void Local_Map::update(const utils::Pose& optimizedPose,
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
     // update all local maps
+    _localPoint2DMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.keypointObject, _mapWriter);
     _localPointMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.keypointObject, _mapWriter);
     _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.detectedPlanes, _mapWriter);
 
@@ -126,6 +149,9 @@ void Local_Map::add_features_to_map(const matrix33& poseCovariance,
 {
     assert(_detectedFeatureId == detectedFeatures.id);
 
+    _localPoint2DMap.add_features_to_staged_map(
+            poseCovariance, cameraToWorld, detectedFeatures.keypointObject, addAllFeatures);
+
     _localPointMap.add_features_to_staged_map(
             poseCovariance, cameraToWorld, detectedFeatures.keypointObject, addAllFeatures);
 
@@ -141,6 +167,8 @@ void Local_Map::update_local_to_global() noexcept
 
 void Local_Map::update_no_pose() noexcept
 {
+    _localPoint2DMap.update_with_no_tracking(_mapWriter);
+
     // add local map points
     _localPointMap.update_with_no_tracking(_mapWriter);
 
@@ -150,6 +178,7 @@ void Local_Map::update_no_pose() noexcept
 
 void Local_Map::reset() noexcept
 {
+    _localPoint2DMap.reset();
     _localPointMap.reset();
     _localPlaneMap.reset();
 }
@@ -214,6 +243,7 @@ void Local_Map::get_debug_image(const utils::Pose& camPose,
     const WorldToCameraMatrix& worldToCamMatrix =
             utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
     // draw all map features
+    _localPoint2DMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
     _localPointMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
     if (shouldDisplayPlaneMasks)
         _localPlaneMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);

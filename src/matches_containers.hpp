@@ -30,6 +30,13 @@ template<class FeatureCameraSpace, class FeatureWorldSpace, class WorldFeatureCo
 using PointMatch = MatchTemplate<utils::ScreenCoordinate2D, utils::WorldCoordinate, vector3>;
 using match_point_container = std::list<PointMatch>;
 
+// KeyPoint matching: contains :
+//      - the coordinates of the detected point in screen space
+//      - the coordinates of the matched point in screen space
+//      - the diagonal of the covariance of the screen point in screen space
+using PointMatch2D = MatchTemplate<utils::ScreenCoordinate2D, utils::ScreenCoordinate2D, vector2>;
+using match_point2D_container = std::list<PointMatch2D>;
+
 // MapPlane matching: contains :
 //      - the normal vector of the plane in camera space
 //      - the normal vector of the plane in world space
@@ -40,21 +47,24 @@ using match_plane_container = std::list<PlaneMatch>;
 struct matchContainer
 {
     match_point_container _points;
+    match_point2D_container _points2D;
     match_plane_container _planes;
 
     void clear() noexcept
     {
         _points.clear();
+        _points2D.clear();
         _planes.clear();
     }
 
     void swap(matchContainer& other) noexcept
     {
         _points.swap(other._points);
+        _points2D.swap(other._points2D);
         _planes.swap(other._planes);
     }
 
-    [[nodiscard]] size_t size() const noexcept { return _points.size() + _planes.size(); };
+    [[nodiscard]] size_t size() const noexcept { return _points.size() + _points2D.size() + _planes.size(); };
 };
 
 /**

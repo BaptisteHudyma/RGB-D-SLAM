@@ -18,12 +18,6 @@ struct DetectedKeyPoint
 {
     utils::ScreenCoordinate _coordinates;
     cv::Mat _descriptor;
-
-    [[nodiscard]] bool can_add_to_map() const noexcept
-    {
-        // descriptor is not empty, depth is valid
-        return (not _descriptor.empty()) and (utils::is_depth_valid(_coordinates.z()));
-    }
 };
 
 /**

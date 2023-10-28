@@ -26,7 +26,10 @@ double get_depth_approximation(const cv::Mat_<float>& depthImage, const cv::Poin
         double min;
         double max;
         cv::minMaxLoc(roi, &min, &max);
-        return min;
+        if (min <= 0)
+            return max;
+        else
+            return min;
     }
     return 0.0;
 }
@@ -119,21 +122,14 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
         }
         else
         {
-            outputs::log_error("A keypoint detected by optical flow does nothave a valid keypoint id");
+            outputs::log_error("A keypoint detected by optical flow does not have a valid keypoint id");
         }
 
         // Depths are in millimeters, will be 0 if coordinates are invalid
         const double depthApproximation = get_depth_approximation(depthImage, pt);
         const utils::ScreenCoordinate vectorKeypoint(pt.x, pt.y, depthApproximation);
 
-#if 0
-                    // add to matcher (not activated = never matched with descriptors)
-                    const uint searchSpaceIndex = get_search_space_index(get_search_space_coordinates(vectorKeypoint));
-                    assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
-
-                    _searchSpaceIndexContainer[searchSpaceIndex].push_back(newKeypointIndex);
-#endif
-
+        // no search space: already matched
         _keypoints[newKeypointIndex] = vectorKeypoint;
     }
 }

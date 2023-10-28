@@ -1,6 +1,9 @@
 #include "map_point.hpp"
+#include "coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
+#include <exception>
+#include <stdexcept>
 
 namespace rgbd_slam::map_management {
 
@@ -48,8 +51,9 @@ double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
         assert(not _coordinates.hasNaN());
         return score;
     }
-    catch (...)
+    catch (const std::exception& ex)
     {
+        outputs::log_error("Catch exeption: " + std::string(ex.what()));
         return -1;
     }
 }

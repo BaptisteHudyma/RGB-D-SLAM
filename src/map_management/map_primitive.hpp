@@ -122,6 +122,12 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
     [[nodiscard]] bool should_remove_from_staged() const noexcept override;
 
     [[nodiscard]] bool should_add_to_local_map() const noexcept override;
+
+    [[nodiscard]] static bool can_add_to_map(const DetectedPlaneType& detectedPlane) noexcept
+    {
+        (void)detectedPlane;
+        return true;
+    }
 };
 
 class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
