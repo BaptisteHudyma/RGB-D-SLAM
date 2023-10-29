@@ -1,7 +1,9 @@
 #include "map_point.hpp"
+#include "camera_transformation.hpp"
 #include "coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
+#include "triangulation.hpp"
 #include "types.hpp"
 #include <exception>
 #include <stdexcept>
@@ -220,7 +222,16 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     }
     else
     {
-        // TODO: Point is 2D, handle separatly
+        // Point is 2D, check retroprojection
+        const auto& worldToCamera = utils::compute_world_to_camera_transform(cameraToWorld);
+        utils::ScreenCoordinate2D projection;
+        if (_coordinates.to_screen_coordinates(worldToCamera, projection))
+        {
+            // tracking is valid if retroprojection is not too far
+            return (projection - matchedScreenPoint.get_2D()).squaredNorm() <=
+                   parameters::mapping::maximumRetroprojectionErrorForTriangulatePow_px;
+            // TODO: triangulate ?
+        }
     }
     return false;
 }

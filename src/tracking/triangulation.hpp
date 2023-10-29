@@ -45,7 +45,7 @@ class Triangulation
     [[nodiscard]] static bool is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
                                                        const utils::ScreenCoordinate2D& screenPoint,
                                                        const WorldToCameraMatrix& worldToCamera,
-                                                       const double& maximumRetroprojectionError) noexcept;
+                                                       const double maximumRetroprojectionErrorSqr_px) noexcept;
 };
 
 } // namespace rgbd_slam::tracking

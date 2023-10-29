@@ -151,7 +151,7 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::optimization::diagonalStepBoundShift > 0,
                   "The optimization diagonal stepbound shift must be > 0");
 
-    static_assert(parameters::optimization::maximumRetroprojectionError > 0,
+    static_assert(parameters::optimization::maximumRetroprojectionError_px > 0,
                   "The maximum retroprojection error  must be > 0");
 
     static_assert(parameters::detection::keypointCellDetectionHeightCount > 0,

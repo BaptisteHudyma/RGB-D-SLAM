@@ -13,17 +13,17 @@ utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const doub
 bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
                                              const utils::ScreenCoordinate2D& screenPoint,
                                              const WorldToCameraMatrix& worldToCamera,
-                                             const double& maximumRetroprojectionError) noexcept
+                                             const double maximumRetroprojectionErrorSqr_px) noexcept
 {
-    utils::ScreenCoordinate2D projectedScreenPoint;
-    if (not worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint))
+    utils::ScreenCoordinate projectedScreenPoint;
+    if (worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint) and
+        projectedScreenPoint.is_in_screen_boundaries() and projectedScreenPoint.z() > 0)
     {
-        return false;
+        const double retroprojectionError = (screenPoint - projectedScreenPoint.get_2D()).squaredNorm();
+        // true if retroprojection error is small enough
+        return (retroprojectionError < maximumRetroprojectionErrorSqr_px);
     }
-    const double retroprojectionError = (screenPoint - projectedScreenPoint).norm();
-
-    // true if retroprojection error is small enough
-    return (retroprojectionError > maximumRetroprojectionError);
+    return false;
 }
 
 bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
@@ -32,18 +32,16 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
                                 const utils::ScreenCoordinate2D& newPoint2Db,
                                 utils::WorldCoordinate& triangulatedPoint) noexcept
 {
-    constexpr double maximumRetroprojectionError = parameters::optimization::maximumRetroprojectionError;
-
     // project x and y coordinates
     const utils::CameraCoordinate2D& pointA = point2Da.to_camera_coordinates();
     const utils::CameraCoordinate2D& pointB = newPoint2Db.to_camera_coordinates();
 
     // Linear-LS triangulation
     matrix44 triangulationMatrix;
-    triangulationMatrix << pointA.x() * currentWorldToCamera.row(2) - currentWorldToCamera.row(0),
-            pointA.y() * currentWorldToCamera.row(2) - currentWorldToCamera.row(1),
-            pointB.x() * newWorldToCamera.row(2) - newWorldToCamera.row(0),
-            pointB.y() * newWorldToCamera.row(2) - newWorldToCamera.row(1);
+    triangulationMatrix.row(0) = pointA.x() * currentWorldToCamera.row(2) - currentWorldToCamera.row(0);
+    triangulationMatrix.row(1) = pointA.y() * currentWorldToCamera.row(2) - currentWorldToCamera.row(1);
+    triangulationMatrix.row(2) = pointB.x() * newWorldToCamera.row(2) - newWorldToCamera.row(0);
+    triangulationMatrix.row(3) = pointB.y() * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
     // this happens but I have no idea why
     if (triangulationMatrix.hasNaN())
@@ -56,22 +54,21 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
                                                       .jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV)
                                                       .solve(-triangulationMatrix.col(3));
 
-    if (std::isfinite(worldPoint.x()) and std::isfinite(worldPoint.y()) and std::isfinite(worldPoint.z()))
+    // Check retroprojection of point in frame A
+    if (not worldPoint.hasNaN() and std::isfinite(worldPoint.x()) and std::isfinite(worldPoint.y()) and
+        std::isfinite(worldPoint.z()) and
+        Triangulation::is_retroprojection_valid(
+                worldPoint,
+                point2Da,
+                currentWorldToCamera,
+                parameters::mapping::maximumRetroprojectionErrorForTriangulatePow_px) and
+        Triangulation::is_retroprojection_valid(worldPoint,
+                                                newPoint2Db,
+                                                newWorldToCamera,
+                                                parameters::mapping::maximumRetroprojectionErrorForTriangulatePow_px))
     {
         // We have a good triangulation ! Maybe not good enough but still usable
         triangulatedPoint = worldPoint;
-
-        // Check retroprojection of point in frame A
-        if (not Triangulation::is_retroprojection_valid(
-                    worldPoint, point2Da, currentWorldToCamera, maximumRetroprojectionError))
-            return false;
-
-        // Check retroprojection of point in frame B
-        if (not Triangulation::is_retroprojection_valid(
-                    worldPoint, newPoint2Db, newWorldToCamera, maximumRetroprojectionError))
-            return false;
-
-        // retroprojection is good enough
         return true;
     }
     // invalid triangulation

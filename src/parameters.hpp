@@ -39,7 +39,7 @@ constexpr float toleranceOfSolutionVectorNorm = 1e-4f;   // Smallest delta of do
 constexpr float toleranceOfVectorFunction = 1e-3f;       // tolerance for the norm of the vector function
 constexpr float toleranceOfErrorFunctionGradient = 0.0f; // tolerance for the norm of the gradient of the error function
 constexpr float diagonalStepBoundShift = 100.0f;         // step bound for the diagonal shift
-constexpr float maximumRetroprojectionError =
+constexpr float maximumRetroprojectionError_px =
         3.0f; // In pixel: maximum distance after which we can consider a retroprojection as invalid
 } // namespace optimization
 
@@ -106,6 +106,8 @@ constexpr uint planeUnmatchedCountToLoose =
         10; // consecutive unmatched frames before removing from local map (high is good, but consumes more perfs);
 constexpr uint pointStagedAgeConfidence = 3;         // Minimum age of a point in staged map to consider it good
 constexpr double pointMinimumConfidenceForMap = 0.9; // Minimum confidence of a staged point to add it to local map
+constexpr float maximumRetroprojectionErrorForTriangulatePow_px =
+        6.0; // In pixel: maximum squared distance after which we can consider a retroprojection as invalid
 } // namespace mapping
 
 } // namespace parameters

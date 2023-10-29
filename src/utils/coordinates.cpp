@@ -91,15 +91,6 @@ vector2 transform_camera_to_screen(const vector3& screenPoint)
 
 CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
 {
-    if (x() < 0)
-    {
-        throw std::invalid_argument("ScreenCoordinate2D::to_camera_coordinates: x should be >= 0");
-    }
-    if (y() < 0)
-    {
-        throw std::invalid_argument("ScreenCoordinate2D::to_camera_coordinates: y should be >= 0");
-    }
-
     return CameraCoordinate2D(transform_screen_to_camera(this->base()));
 }
 

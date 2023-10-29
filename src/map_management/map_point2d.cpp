@@ -154,6 +154,10 @@ bool MapPoint2D::compute_upgraded(const matrix33& poseCovariance, UpgradedPoint2
         {
             // compute the new point covariance
             const auto& cameraPoint = triangulatedPoint.to_camera_coordinates(_lastMatchWorldToCamera);
+            // point is too far ! invalid triangulation
+            if (cameraPoint.z() > 5000)
+                return false;
+
             ScreenCoordinateCovariance screenPointCovariance(ScreenCoordinateCovariance::Zero());
             screenPointCovariance.block<2, 2>(0, 0) = _covariance;
             screenPointCovariance(2, 2) = 100 * 100; // big covariance for depth

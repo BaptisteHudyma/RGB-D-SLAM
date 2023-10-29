@@ -525,6 +525,9 @@ class Feature_Map
      */
     [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_features(const matrix33& poseCovariance)
     {
+        // just compute map features
+        // return get_upgraded_map_features(poseCovariance);
+
         auto upgradedMapFeatures = get_upgraded_map_features(poseCovariance);
         auto upgradedStagedFeatures = get_upgraded_staged_features(poseCovariance);
         upgradedMapFeatures.insert(
