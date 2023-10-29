@@ -1,9 +1,11 @@
 #include "map_point2d.hpp"
 #include "camera_transformation.hpp"
 #include "coordinates.hpp"
+#include "covariances.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "triangulation.hpp"
+#include "types.hpp"
 #include <exception>
 
 namespace rgbd_slam::map_management {
@@ -105,17 +107,25 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 {
     (void)worldToCamMatrix;
 
+    utils::ScreenCoordinate2D temp;
+    if (_isLastMatchCoordinatesSet)
+    {
+        temp.x() = _lastMatchCoordinates.x();
+        temp.y() = _lastMatchCoordinates.y();
+    }
+    else
+    {
+        temp.x() = _coordinates.x();
+        temp.y() = _coordinates.y();
+    }
+
     // small blue circle around it
     cv::circle(debugImage,
-               cv::Point(static_cast<int>(_lastMatchCoordinates.x()), static_cast<int>(_lastMatchCoordinates.y())),
+               cv::Point(static_cast<int>(temp.x()), static_cast<int>(temp.y())),
                5,
                cv::Scalar(255, 0, 0),
                -1);
-    cv::circle(debugImage,
-               cv::Point(static_cast<int>(_lastMatchCoordinates.x()), static_cast<int>(_lastMatchCoordinates.y())),
-               3,
-               color,
-               -1);
+    cv::circle(debugImage, cv::Point(static_cast<int>(temp.x()), static_cast<int>(temp.y())), 3, color, -1);
 }
 
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
@@ -127,8 +137,11 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
 
 void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept { (void)mapWriter; }
 
-bool MapPoint2D::compute_upgraded(UpgradedPoint2DType& upgradedFeature) const noexcept
+bool MapPoint2D::compute_upgraded(const matrix33& poseCovariance, UpgradedPoint2DType& upgradedFeature) const noexcept
 {
+    if (not _isLastMatchCoordinatesSet)
+        return false;
+
     // invalid depth: try to triangulate
     if (not utils::is_depth_valid(_lastMatchCoordinates.z()))
     {
@@ -139,7 +152,22 @@ bool MapPoint2D::compute_upgraded(UpgradedPoint2DType& upgradedFeature) const no
                                                  _lastMatchCoordinates.get_2D(),
                                                  triangulatedPoint))
         {
-            upgradedFeature = triangulatedPoint;
+            // compute the new point covariance
+            const auto& cameraPoint = triangulatedPoint.to_camera_coordinates(_lastMatchWorldToCamera);
+            ScreenCoordinateCovariance screenPointCovariance(ScreenCoordinateCovariance::Zero());
+            screenPointCovariance.block<2, 2>(0, 0) = _covariance;
+            screenPointCovariance(2, 2) = 100 * 100; // big covariance for depth
+            const CameraCoordinateCovariance& projectedCovariance =
+                    utils::get_camera_point_covariance(cameraPoint, screenPointCovariance);
+
+            // set the new feature parameters
+            upgradedFeature._coordinates = triangulatedPoint;
+            upgradedFeature._covariance << utils::get_world_point_covariance(
+                    projectedCovariance,
+                    utils::compute_camera_to_world_transform(_lastMatchWorldToCamera),
+                    poseCovariance);
+            upgradedFeature._descriptor = _descriptor;
+            upgradedFeature._matchIndex = _matchIndex;
             return true;
         }
         else
@@ -150,9 +178,13 @@ bool MapPoint2D::compute_upgraded(UpgradedPoint2DType& upgradedFeature) const no
     }
     else
     {
+        const auto& cameraToWorld = utils::compute_camera_to_world_transform(_lastMatchWorldToCamera);
         // depth is valid: compute world position
-        upgradedFeature = _lastMatchCoordinates.to_world_coordinates(
-                utils::compute_camera_to_world_transform(_lastMatchWorldToCamera));
+        upgradedFeature._coordinates = _lastMatchCoordinates.to_world_coordinates(cameraToWorld);
+        upgradedFeature._covariance << utils::get_world_point_covariance(
+                _lastMatchCoordinates, cameraToWorld, poseCovariance);
+        upgradedFeature._descriptor = _descriptor;
+        upgradedFeature._matchIndex = _matchIndex;
         return true;
     }
     return false;

@@ -2,6 +2,7 @@
 #include "coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
+#include "types.hpp"
 #include <exception>
 #include <stdexcept>
 
@@ -270,6 +271,19 @@ LocalMapPoint::LocalMapPoint(const StagedMapPoint& stagedPoint) :
 
     _matchIndex = stagedPoint._matchIndex;
     _successivMatchedCount = stagedPoint._successivMatchedCount;
+}
+
+LocalMapPoint::LocalMapPoint(const utils::WorldCoordinate& coordinates,
+                             const WorldCoordinateCovariance& covariance,
+                             const cv::Mat& descriptor,
+                             const int matchIndex) :
+    MapPoint(coordinates, covariance, descriptor)
+{
+    // new map point, new color
+    set_color();
+
+    _matchIndex = matchIndex;
+    _successivMatchedCount = 1;
 }
 
 bool LocalMapPoint::is_lost() const noexcept

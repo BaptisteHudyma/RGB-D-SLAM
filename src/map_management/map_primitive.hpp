@@ -106,8 +106,10 @@ class MapPlane :
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
-    [[nodiscard]] bool compute_upgraded(UpgradedPlaneType& upgradeFeature) const noexcept override
+    [[nodiscard]] bool compute_upgraded(const matrix33& poseCovariance,
+                                        UpgradedPlaneType& upgradeFeature) const noexcept override
     {
+        (void)poseCovariance;
         (void)upgradeFeature;
         return false;
     }

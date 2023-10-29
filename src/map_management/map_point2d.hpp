@@ -27,11 +27,19 @@ struct Point2D
             const cv::Mat& descriptor);
 };
 
+struct UpgradedPoint2D
+{
+    utils::WorldCoordinate _coordinates;
+    WorldCoordinateCovariance _covariance;
+    cv::Mat _descriptor;
+    int _matchIndex;
+};
+
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPoint2DType = features::keypoints::DetectedKeyPoint;
 using PointMatch2DType = matches_containers::PointMatch2D;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
-using UpgradedPoint2DType = utils::WorldCoordinate; // 2D points can be upgraded to 3D
+using UpgradedPoint2DType = UpgradedPoint2D; // 2D points can be upgraded to 3D
 
 class MapPoint2D :
     public Point2D,
@@ -90,7 +98,8 @@ class MapPoint2D :
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
-    [[nodiscard]] bool compute_upgraded(UpgradedPoint2DType& upgradeFeature) const noexcept override;
+    [[nodiscard]] bool compute_upgraded(const matrix33& poseCovariance,
+                                        UpgradedPoint2DType& upgradeFeature) const noexcept override;
 
     WorldToCameraMatrix _firstWorldToCam;
 

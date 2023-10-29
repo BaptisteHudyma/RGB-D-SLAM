@@ -59,9 +59,11 @@ class IMapFeature
                                          const bool useAdvancedSearch = false) const noexcept = 0;
 
     /** \brief Return true if this feature can be upgraded to UpgradedFeatureType
+     * \param[in] poseCovariance The covariance of the global pose
      * \param[out] upgradeFeature The upgraded feature, valid if this function returned true
      */
-    [[nodiscard]] virtual bool compute_upgraded(UpgradedFeatureType& upgradeFeature) const noexcept = 0;
+    [[nodiscard]] virtual bool compute_upgraded(const matrix33& poseCovariance,
+                                                UpgradedFeatureType& upgradeFeature) const noexcept = 0;
 
     /**
      * \return True if this map feature is marked as matched
@@ -519,11 +521,19 @@ class Feature_Map
 
     /**
      * \brief compute the upgraded features and remove them from the map
+     * \param[in] poseCovariance The covariance of the global pose
      */
-    std::vector<UpgradedFeatureType> get_upgraded_features()
+    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_features(const matrix33& poseCovariance)
     {
-        return get_upgraded_map_features() + get_upgraded_staged_features();
+        auto upgradedMapFeatures = get_upgraded_map_features(poseCovariance);
+        auto upgradedStagedFeatures = get_upgraded_staged_features(poseCovariance);
+        upgradedMapFeatures.insert(
+                upgradedMapFeatures.end(), upgradedStagedFeatures.begin(), upgradedStagedFeatures.end());
+        return upgradedMapFeatures;
     }
+
+    // shortcut to add map points
+    void add_local_map_point(const MapFeatureType& mapFeature) { _localMap.emplace(mapFeature._id, mapFeature); }
 
   protected:
     void update_local_map(const CameraToWorldMatrix& cameraToWorld,
@@ -670,18 +680,18 @@ class Feature_Map
         }
     }
 
-    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_map_features() noexcept
+    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_map_features(const matrix33& poseCovariance) noexcept
     {
         std::vector<UpgradedFeatureType> upgradedFeatures;
         // update the staged map with no matchs
-        typename stagedMapType::iterator mapFeatureIterator = _localMap.begin();
+        typename localMapType::iterator mapFeatureIterator = _localMap.begin();
         while (mapFeatureIterator != _localMap.end())
         {
             MapFeatureType& mapFeature = mapFeatureIterator->second;
             assert(mapFeatureIterator->first == mapFeature._id);
 
             UpgradedFeatureType upgraded;
-            if (mapFeature.compute_upgraded(upgraded))
+            if (mapFeature.compute_upgraded(poseCovariance, upgraded))
             {
                 upgradedFeatures.emplace_back(upgraded);
                 // Remove useless point
@@ -695,7 +705,7 @@ class Feature_Map
         return upgradedFeatures;
     }
 
-    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_staged_features() noexcept
+    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_staged_features(const matrix33& poseCovariance) noexcept
     {
         std::vector<UpgradedFeatureType> upgradedFeatures;
         // update the staged map with no matchs
@@ -706,7 +716,7 @@ class Feature_Map
             assert(stagedFeatureIterator->first == stagedFeature._id);
 
             UpgradedFeatureType upgraded;
-            if (stagedFeature.compute_upgraded(upgraded))
+            if (stagedFeature.compute_upgraded(poseCovariance, upgraded))
             {
                 upgradedFeatures.emplace_back(upgraded);
                 // Remove useless point
