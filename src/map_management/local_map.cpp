@@ -134,6 +134,14 @@ void Local_Map::update(const utils::Pose& optimizedPose,
     _localPointMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.keypointObject, _mapWriter);
     _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.detectedPlanes, _mapWriter);
 
+    // try to triangulate the new features
+    const std::vector<UpgradedPoint2DType>& newFeatures = _localPoint2DMap.get_upgraded_features(poseCovariance);
+    for (const auto& upgraded: newFeatures)
+    {
+        _localPointMap.add_local_map_point(
+                LocalMapPoint(upgraded._coordinates, upgraded._covariance, upgraded._descriptor, upgraded._matchIndex));
+    }
+
     const bool addAllFeatures = false; // only add unmatched features
     add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
 

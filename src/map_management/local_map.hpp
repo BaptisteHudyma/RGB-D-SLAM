@@ -7,6 +7,7 @@
 #include "../outputs/map_writer.hpp"
 #include "../matches_containers.hpp"
 #include "../utils/pose.hpp"
+#include "coordinates.hpp"
 #include "feature_map.hpp"
 #include "map_point2d.hpp"
 #include "map_point.hpp"
@@ -147,21 +148,21 @@ class Local_Map
                                         DetectedPoint2DType,
                                         PointMatch2DType,
                                         TrackedPointsObject,
-                                        void>;
+                                        UpgradedPoint2DType>;
     using localPointMap = Feature_Map<LocalMapPoint,
                                       StagedMapPoint,
                                       DetectedKeypointsObject,
                                       DetectedPointType,
                                       PointMatchType,
                                       TrackedPointsObject,
-                                      void>;
+                                      UpgradedPointType>;
     using localPlaneMap = Feature_Map<LocalMapPlane,
                                       StagedMapPlane,
                                       DetectedPlaneObject,
                                       DetectedPlaneType,
                                       PlaneMatchType,
                                       TrackedPlaneObject,
-                                      void>;
+                                      UpgradedPlaneType>;
 
     size_t _detectedFeatureId; // store the if of the detected feature
     localPoint2DMap _localPoint2DMap;

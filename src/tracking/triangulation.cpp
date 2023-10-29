@@ -45,10 +45,16 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
             pointB.x() * newWorldToCamera.row(2) - newWorldToCamera.row(0),
             pointB.y() * newWorldToCamera.row(2) - newWorldToCamera.row(1);
 
+    // this happens but I have no idea why
+    if (triangulationMatrix.hasNaN())
+    {
+        return false;
+    }
+
     // singular value decomposition
-    const utils::WorldCoordinate worldPoint(triangulationMatrix.leftCols<3>()
-                                                    .jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV)
-                                                    .solve(-triangulationMatrix.col(3)));
+    const utils::WorldCoordinate worldPoint = triangulationMatrix.leftCols<3>()
+                                                      .jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV)
+                                                      .solve(-triangulationMatrix.col(3));
 
     if (std::isfinite(worldPoint.x()) and std::isfinite(worldPoint.y()) and std::isfinite(worldPoint.z()))
     {

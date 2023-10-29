@@ -107,8 +107,10 @@ class MapPoint :
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
-    [[nodiscard]] bool compute_upgraded(UpgradedPointType& upgradeFeature) const noexcept override
+    [[nodiscard]] bool compute_upgraded(const matrix33& poseCovariance,
+                                        UpgradedPointType& upgradeFeature) const noexcept override
     {
+        (void)poseCovariance;
         (void)upgradeFeature;
         return false;
     }
@@ -151,6 +153,12 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
 {
   public:
     explicit LocalMapPoint(const StagedMapPoint& stagedPoint);
+
+    // constructor for upgraded features
+    LocalMapPoint(const utils::WorldCoordinate& coordinates,
+                  const WorldCoordinateCovariance& covariance,
+                  const cv::Mat& descriptor,
+                  const int matchIndex);
 
     [[nodiscard]] bool is_lost() const noexcept override;
 };
