@@ -652,7 +652,7 @@ WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWo
     const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(cameraToWorld);
 
     // rotate axis
-    const matrix33& rotationMatrix = cameraToWorld.block<3, 3>(0, 0);
+    const matrix33& rotationMatrix = cameraToWorld.rotation();
     const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
     const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 
@@ -739,7 +739,7 @@ CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCa
     const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(worldToCamera);
 
     // rotate axis
-    const matrix33& rotationMatrix = worldToCamera.block<3, 3>(0, 0);
+    const matrix33& rotationMatrix = worldToCamera.rotation();
     const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
     const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
 

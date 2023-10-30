@@ -49,7 +49,7 @@ WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovar
                                                      const CameraToWorldMatrix& cameraToWorld,
                                                      const matrix33& poseCovariance) noexcept
 {
-    const matrix33& rotation = cameraToWorld.block<3, 3>(0, 0);
+    const matrix33& rotation = cameraToWorld.rotation();
 
     WorldCoordinateCovariance cov;
     cov << rotation * cameraPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
@@ -198,7 +198,7 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
             compute_reduced_plane_point_cloud_covariance(planeCoordinates, planeCovariance);
 
     // covert covariance to world
-    const matrix33& rotation = cameraToWorldMatrix.block<3, 3>(0, 0);
+    const matrix33& rotation = cameraToWorldMatrix.rotation();
     const matrix33& pointCloudWorlCovariance =
             rotation * pointCloudCovariance * rotation.transpose() + worldPoseCovariance;
     if (not is_covariance_valid(pointCloudWorlCovariance))

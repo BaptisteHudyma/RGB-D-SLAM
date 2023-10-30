@@ -22,7 +22,6 @@ Point2D::Point2D(const utils::ScreenCoordinate2D& coordinates,
     _covariance(covariance)
 {
     assert(not _descriptor.empty() and _descriptor.cols > 0);
-    assert(not _coordinates.hasNaN());
 };
 
 /**
