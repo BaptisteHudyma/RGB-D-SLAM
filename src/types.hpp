@@ -44,16 +44,23 @@ struct WorldCoordinateCovariance : public matrix33
 };
 
 // define new classes to not mix types
-struct WorldToCameraMatrix : public matrix44
+struct TransitionMatrix : public matrix44
+{
+    using matrix44::matrix44;
+    [[nodiscard]] matrix33 rotation() const noexcept { return this->block<3, 3>(0, 0); };
+    [[nodiscard]] vector3 translation() const noexcept { return this->col(3).head<3>(); };
+};
+
+struct WorldToCameraMatrix : public TransitionMatrix
 {
 };
-struct CameraToWorldMatrix : public matrix44
+struct CameraToWorldMatrix : public TransitionMatrix
 {
 };
-struct PlaneWorldToCameraMatrix : public matrix44
+struct PlaneWorldToCameraMatrix : public TransitionMatrix
 {
 };
-struct PlaneCameraToWorldMatrix : public matrix44
+struct PlaneCameraToWorldMatrix : public TransitionMatrix
 {
 };
 
