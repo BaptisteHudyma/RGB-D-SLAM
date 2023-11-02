@@ -44,7 +44,7 @@ template<int N, int M> class SharedKalmanFilter
      *
      * \return A pair of the new state and covariance matrix
      */
-    std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, N, N>> get_new_state(
+    [[nodiscard]] std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, N, N>> get_new_state(
             const Eigen::Vector<double, N>& currentState,
             const Eigen::Matrix<double, N, N>& stateNoiseCovariance,
             const Eigen::Vector<double, M>& newMeasurement,
