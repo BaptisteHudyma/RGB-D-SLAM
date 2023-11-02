@@ -1,51 +1,14 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
-#include "../features/keypoints/keypoint_handler.hpp"
-#include "../tracking/kalman_filter.hpp"
-#include "../utils/coordinates/point_coordinates.hpp"
 #include "feature_map.hpp"
+#include "features/keypoints/keypoint_handler.hpp"
+#include "tracking/point_with_tracking.hpp"
 #include "matches_containers.hpp"
-#include "parameters.hpp"
-#include "types.hpp"
-#include <memory>
-#include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::map_management {
 
 const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
-
-struct Point
-{
-    // world coordinates
-    utils::WorldCoordinate _coordinates;
-    // 3D descriptor (ORB)
-    cv::Mat _descriptor;
-    // position covariance
-    WorldCoordinateCovariance _covariance;
-
-    Point(const utils::WorldCoordinate& coordinates,
-          const WorldCoordinateCovariance& covariance,
-          const cv::Mat& descriptor);
-
-    /**
-     * \brief update this point coordinates using a new detection
-     * \param[in] newDetectionCoordinates The newly detected point
-     * \param[in] newDetectionCovariance The newly detected point covariance
-     * \return The distance between the updated position ans the previous one, -1 if an error occured
-     */
-    double track(const utils::WorldCoordinate& newDetectionCoordinates,
-                 const matrix33& newDetectionCovariance) noexcept;
-
-  private:
-    /**
-     * \brief Build the caracteristics of the kalman filter
-     */
-    static void build_kalman_filter() noexcept;
-
-    // shared kalman filter, between all points
-    inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
-};
 
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPointType = features::keypoints::DetectedKeyPoint;
@@ -54,7 +17,7 @@ using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 using UpgradedPointType = void*; // no upgrade for 3D points
 
 class MapPoint :
-    public Point,
+    public tracking::Point,
     public IMapFeature<DetectedKeypointsObject,
                        DetectedPointType,
                        PointMatchType,
@@ -65,7 +28,7 @@ class MapPoint :
     MapPoint(const utils::WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
-        Point(coordinates, covariance, descriptor),
+        tracking::Point(coordinates, covariance, descriptor),
         IMapFeature<DetectedKeypointsObject,
                     DetectedPointType,
                     PointMatchType,
@@ -79,7 +42,7 @@ class MapPoint :
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor,
              const size_t id) :
-        Point(coordinates, covariance, descriptor),
+        tracking::Point(coordinates, covariance, descriptor),
         IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject, UpgradedPointType>(
                 id)
     {
@@ -162,6 +125,14 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
 
     [[nodiscard]] bool is_lost() const noexcept override;
 };
+
+using localPointMap = Feature_Map<LocalMapPoint,
+                                  StagedMapPoint,
+                                  DetectedKeypointsObject,
+                                  DetectedPointType,
+                                  PointMatchType,
+                                  TrackedPointsObject,
+                                  UpgradedPointType>;
 
 } // namespace rgbd_slam::map_management
 

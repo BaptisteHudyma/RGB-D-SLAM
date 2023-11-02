@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 #define RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 
-#include "../../types.hpp"
+#include "types.hpp"
 #include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "logger.hpp"

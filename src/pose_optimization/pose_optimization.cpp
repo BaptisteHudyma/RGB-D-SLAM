@@ -1,16 +1,20 @@
 #include "pose_optimization.hpp"
-#include "../../third_party/p3p.hpp"
-#include "../outputs/logger.hpp"
-#include "../parameters.hpp"
-#include "../utils/camera_transformation.hpp"
-#include "../utils/covariances.hpp"
-#include "../utils/random.hpp"
-#include "../utils/coordinates/point_coordinates.hpp"
-#include "../utils/coordinates/plane_coordinates.hpp"
+
+#include "outputs/logger.hpp"
+#include "parameters.hpp"
 #include "levenberg_marquard_functors.hpp"
 #include "matches_containers.hpp"
 #include "ransac.hpp"
 #include "types.hpp"
+
+#include "../../third_party/p3p.hpp"
+
+#include "utils/camera_transformation.hpp"
+#include "utils/covariances.hpp"
+#include "utils/random.hpp"
+#include "utils/coordinates/point_coordinates.hpp"
+#include "utils/coordinates/plane_coordinates.hpp"
+
 #include <Eigen/StdVector>
 #include <cmath>
 #include <exception>

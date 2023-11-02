@@ -1,5 +1,6 @@
 #include "triangulation.hpp"
-#include "../parameters.hpp"
+
+#include "parameters.hpp"
 
 namespace rgbd_slam::tracking {
 

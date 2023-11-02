@@ -1,7 +1,8 @@
 #ifndef RGBDSLAM_POSEOPTIMIZATION_RANSAC_HPP
 #define RGBDSLAM_POSEOPTIMIZATION_RANSAC_HPP
 
-#include "../utils/random.hpp"
+#include "utils/random.hpp"
+
 #include <algorithm>
 #include <cassert>
 #include <stdexcept>
