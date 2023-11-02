@@ -1,6 +1,5 @@
 #include "map_point.hpp"
 #include "camera_transformation.hpp"
-#include "coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "triangulation.hpp"

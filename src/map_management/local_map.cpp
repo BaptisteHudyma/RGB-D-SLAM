@@ -3,7 +3,6 @@
 #include "../parameters.hpp"
 #include "../tracking/triangulation.hpp"
 #include "../utils/camera_transformation.hpp"
-#include "../utils/coordinates.hpp"
 #include "../utils/covariances.hpp"
 #include "../utils/random.hpp"
 #include "map_point.hpp"

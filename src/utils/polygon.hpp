@@ -2,7 +2,7 @@
 #define RGBDSLAM_UTILS_POLYGON_UTILS_HPP
 
 #include "../types.hpp"
-#include "coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include <boost/geometry/geometry.hpp>
 #include <opencv2/core/mat.hpp>
 

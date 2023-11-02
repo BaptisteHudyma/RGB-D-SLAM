@@ -2,7 +2,6 @@
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
 #include "Eigen/Eigenvalues"
-#include "coordinates.hpp"
 #include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "types.hpp"

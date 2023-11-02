@@ -5,7 +5,8 @@
 
 #include "../../parameters.hpp"
 #include "../../types.hpp"
-#include "coordinates.hpp"
+#include "../utils/coordinates/point_coordinates.hpp"
+#include "../utils/coordinates/plane_coordinates.hpp"
 
 namespace rgbd_slam::features::primitives {
 

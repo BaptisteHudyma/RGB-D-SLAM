@@ -1,7 +1,8 @@
 #ifndef RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 #define RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 
-#include "coordinates.hpp"
+#include "utils/coordinates/point_coordinates.hpp"
+#include "utils/coordinates/plane_coordinates.hpp"
 #include <list>
 
 namespace rgbd_slam::matches_containers {

@@ -1,7 +1,6 @@
 #include "primitive_detection.hpp"
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
-#include "coordinates.hpp"
 #include "covariances.hpp"
 #include "cylinder_segment.hpp"
 #include "distance_utils.hpp"
