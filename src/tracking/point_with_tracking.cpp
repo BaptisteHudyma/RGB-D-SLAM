@@ -81,6 +81,7 @@ PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observatio
                                      const matrix33& stateCovariance) :
     _coordinates(observation, c2w)
 {
+    // new mesurment always as the same uncertainty in depth (and another one in position)
     _covariance.block<3, 3>(0, 0) = stateCovariance;
     _covariance(3, 3) = 0.1;       // theta angle covariance
     _covariance(4, 4) = 0.1;       // phi angle covariance
@@ -94,14 +95,14 @@ PointInverseDepth::PointInverseDepth(const utils::CameraCoordinate& cameraCoordi
                                      const CameraToWorldMatrix& c2w) :
     _coordinates(cameraCoordinates, c2w)
 {
-    // TODO: covariance projection
+    // TODO: covariance projection to world
 
     assert(utils::is_covariance_valid(_covariance));
 }
 
-bool PointInverseDepth::add_observation(const utils::ScreenCoordinate2D& screenObservation,
-                                        const CameraToWorldMatrix& c2w,
-                                        const matrix33& stateCovariance)
+bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation,
+                              const CameraToWorldMatrix& c2w,
+                              const matrix33& stateCovariance)
 {
     // get observation in world space
     const PointInverseDepth newObservation(screenObservation, c2w, stateCovariance);

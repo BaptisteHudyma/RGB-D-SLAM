@@ -185,7 +185,7 @@ void Keypoint_Handler::fill_keypoint_mask(const utils::ScreenCoordinate2D& point
                                           cv::Mat_<uchar>& keyPointMask) const noexcept
 {
     // Squared search diameter, to compare distance without sqrt
-    constexpr float squaredSearchDiameter = static_cast<float>(pow(parameters::matching::matchSearchRadius_px, 2.0));
+    constexpr float squaredSearchDiameter = static_cast<float>(SQR(parameters::matching::matchSearchRadius_px));
     for (const uint keypointIndex: keypointIndexContainer)
     {
         // ignore this point if it is already matched (prevent multiple matches of one point)

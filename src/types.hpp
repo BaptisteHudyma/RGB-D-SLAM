@@ -75,6 +75,9 @@ struct EulerAngles
     EulerAngles(const double y, const double p, const double r) : yaw(y), pitch(p), roll(r) {};
 };
 
+// define an optimized squared
+#define SQR(x) ((x) * (x))
+
 using vector3_vector = std::vector<vector3, Eigen::aligned_allocator<vector3>>;
 } // namespace rgbd_slam
 

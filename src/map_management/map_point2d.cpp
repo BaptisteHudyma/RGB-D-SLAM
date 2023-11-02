@@ -156,7 +156,7 @@ bool MapPoint2D::compute_upgraded(const matrix33& poseCovariance, UpgradedPoint2
 
             ScreenCoordinateCovariance screenPointCovariance(ScreenCoordinateCovariance::Zero());
             screenPointCovariance.block<2, 2>(0, 0) = _covariance;
-            screenPointCovariance(2, 2) = 100 * 100; // big covariance for depth
+            screenPointCovariance(2, 2) = SQR(100); // big covariance for depth
             const CameraCoordinateCovariance& projectedCovariance =
                     utils::get_camera_point_covariance(cameraPoint, screenPointCovariance);
 

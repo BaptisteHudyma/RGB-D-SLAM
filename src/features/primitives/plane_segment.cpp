@@ -143,9 +143,9 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
             _Sx += x;
             _Sy += y;
             _Sz += z;
-            _Sxs += x * x;
-            _Sys += y * y;
-            _Szs += z * z;
+            _Sxs += SQR(x);
+            _Sys += SQR(y);
+            _Szs += SQR(z);
             _Sxy += x * y;
             _Szx += x * z;
             _Syz += y * z;
@@ -165,7 +165,7 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
     // fit a plane to those points
     fit_plane();
     // plane variance should be less than depth quantization, plus a tolerance factor
-    _isPlanar = _MSE <= pow(utils::get_depth_quantization(_centroid.z()), 2.0);
+    _isPlanar = _MSE <= SQR(utils::get_depth_quantization(_centroid.z()));
 }
 
 void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) noexcept
@@ -210,9 +210,9 @@ matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const noexcept
     // diagonal
     // The diagonal should always be >= 0 (Cauchy Schwarz)
     // Here it's not always the case because of floating point error accumulation
-    const double xxCovariance = std::max(0.0, _Sxs - _Sx * _Sx * oneOverCount);
-    const double yyCovariance = std::max(0.0, _Sys - _Sy * _Sy * oneOverCount);
-    const double zzCovariance = std::max(0.0, _Szs - _Sz * _Sz * oneOverCount);
+    const double xxCovariance = std::max(0.0, _Sxs - SQR(_Sx) * oneOverCount);
+    const double yyCovariance = std::max(0.0, _Sys - SQR(_Sy) * oneOverCount);
+    const double zzCovariance = std::max(0.0, _Szs - SQR(_Sz) * oneOverCount);
     assert(xxCovariance >= 0);
     assert(yyCovariance >= 0);
     assert(zzCovariance >= 0);

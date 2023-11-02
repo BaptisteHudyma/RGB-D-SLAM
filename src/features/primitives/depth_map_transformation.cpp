@@ -172,7 +172,7 @@ void Depth_Map_Transformation::init_matrices() noexcept
             const uint cellC = static_cast<uint>(floor(colum / _cellSize));
             const uint localC = static_cast<uint>(floor(colum % _cellSize));
             _cellMap.at<int>(static_cast<int>(row), static_cast<int>(colum)) = static_cast<int>(
-                    floor((cellR * horizontalCellsCount + cellC) * pow(_cellSize, 2) + localR * _cellSize + localC));
+                    floor((cellR * horizontalCellsCount + cellC) * SQR(_cellSize) + localR * _cellSize + localC));
         }
     }
 }
