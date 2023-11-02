@@ -1,8 +1,8 @@
 #ifndef RGBDSLAM_UTILS_TRIANGULATION_HPP
 #define RGBDSLAM_UTILS_TRIANGULATION_HPP
 
-#include "../utils/coordinates/point_coordinates.hpp"
-#include "../utils/pose.hpp"
+#include "utils/coordinates/point_coordinates.hpp"
+#include "utils/pose.hpp"
 
 namespace rgbd_slam::tracking {
 

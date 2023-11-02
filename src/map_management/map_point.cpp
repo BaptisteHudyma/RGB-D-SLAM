@@ -1,80 +1,11 @@
 #include "map_point.hpp"
-#include "camera_transformation.hpp"
+
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "triangulation.hpp"
-#include "types.hpp"
-#include <exception>
-#include <stdexcept>
+#include "camera_transformation.hpp"
 
 namespace rgbd_slam::map_management {
-
-/**
- * Point
- */
-
-Point::Point(const utils::WorldCoordinate& coordinates,
-             const WorldCoordinateCovariance& covariance,
-             const cv::Mat& descriptor) :
-    _coordinates(coordinates),
-    _descriptor(descriptor),
-    _covariance(covariance)
-{
-    build_kalman_filter();
-
-    assert(not _descriptor.empty() and _descriptor.cols > 0);
-    assert(not _coordinates.hasNaN());
-};
-
-double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
-                    const matrix33& newDetectionCovariance) noexcept
-{
-    assert(_kalmanFilter != nullptr);
-    if (not utils::is_covariance_valid(newDetectionCovariance))
-    {
-        outputs::log_error("newDetectionCovariance: the covariance in invalid");
-        return -1;
-    }
-    if (not utils::is_covariance_valid(_covariance))
-    {
-        outputs::log_error("_covariance: the covariance in invalid");
-        return -1;
-    }
-
-    try
-    {
-        const auto& [newCoordinates, newCovariance] = _kalmanFilter->get_new_state(
-                _coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
-
-        const double score = (_coordinates - newCoordinates).norm();
-
-        _coordinates << newCoordinates;
-        _covariance << newCovariance;
-        assert(not _coordinates.hasNaN());
-        return score;
-    }
-    catch (const std::exception& ex)
-    {
-        outputs::log_error("Catch exeption: " + std::string(ex.what()));
-        return -1;
-    }
-}
-
-void Point::build_kalman_filter() noexcept
-{
-    if (_kalmanFilter == nullptr)
-    {
-        const matrix33 systemDynamics = matrix33::Identity(); // points are not supposed to move, so no dynamics
-        const matrix33 outputMatrix = matrix33::Identity();   // we need all positions
-
-        const double parametersProcessNoise = 0; // TODO set in parameters
-        const matrix33 processNoiseCovariance =
-                matrix33::Identity() * parametersProcessNoise; // Process noise covariance
-
-        _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter<3, 3>>(
-                systemDynamics, outputMatrix, processNoiseCovariance);
-    }
-}
 
 /**
  * MapPoint

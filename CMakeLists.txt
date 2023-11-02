@@ -133,6 +133,8 @@ add_library(poseOptimization SHARED
 add_library(tracking SHARED
     ${TRACKING}/motion_model.cpp
     ${TRACKING}/triangulation.cpp
+    ${TRACKING}/plane_with_tracking.cpp
+    ${TRACKING}/point_with_tracking.cpp
 )
 
 add_library(outputs SHARED

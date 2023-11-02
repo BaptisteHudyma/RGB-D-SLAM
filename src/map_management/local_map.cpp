@@ -1,17 +1,7 @@
 #include "local_map.hpp"
-#include "../outputs/logger.hpp"
-#include "../parameters.hpp"
-#include "../tracking/triangulation.hpp"
-#include "../utils/camera_transformation.hpp"
-#include "../utils/covariances.hpp"
-#include "../utils/random.hpp"
-#include "map_point.hpp"
-#include "map_primitive.hpp"
-#include "matches_containers.hpp"
-#include "pose.hpp"
-#include "shape_primitives.hpp"
-#include "types.hpp"
-#include <memory>
+
+#include "outputs/logger.hpp"
+#include "parameters.hpp"
 
 namespace rgbd_slam::map_management {
 

@@ -1,22 +1,17 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
 #define RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
 
-#include "../features/keypoints/keypoint_handler.hpp"
-#include "../features/primitives/shape_primitives.hpp"
+// TODO: remove when map is ready
 #include "../features/lines/line_detection.hpp"
-#include "../outputs/map_writer.hpp"
-#include "../matches_containers.hpp"
-#include "../utils/pose.hpp"
-#include "../utils/coordinates/point_coordinates.hpp"
-#include "../utils/coordinates/plane_coordinates.hpp"
-#include "feature_map.hpp"
+// \TODO
+
+#include "outputs/map_writer.hpp"
+#include "matches_containers.hpp"
+#include "utils/pose.hpp"
+
 #include "map_point2d.hpp"
 #include "map_point.hpp"
 #include "map_primitive.hpp"
-#include <memory>
-#include <opencv2/opencv.hpp>
-#include <opencv2/xfeatures2d.hpp>
-#include <vector>
 
 namespace rgbd_slam::map_management {
 
@@ -142,36 +137,10 @@ class Local_Map
     void mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept;
 
   private:
-    // Define types
-    using localPoint2DMap = Feature_Map<LocalMapPoint2D,
-                                        StagedMapPoint2D,
-                                        DetectedKeypointsObject,
-                                        DetectedPoint2DType,
-                                        PointMatch2DType,
-                                        TrackedPointsObject,
-                                        UpgradedPoint2DType>;
-    using localPointMap = Feature_Map<LocalMapPoint,
-                                      StagedMapPoint,
-                                      DetectedKeypointsObject,
-                                      DetectedPointType,
-                                      PointMatchType,
-                                      TrackedPointsObject,
-                                      UpgradedPointType>;
-    using localPlaneMap = Feature_Map<LocalMapPlane,
-                                      StagedMapPlane,
-                                      DetectedPlaneObject,
-                                      DetectedPlaneType,
-                                      PlaneMatchType,
-                                      TrackedPlaneObject,
-                                      UpgradedPlaneType>;
-
     size_t _detectedFeatureId; // store the if of the detected feature
     localPoint2DMap _localPoint2DMap;
     localPointMap _localPointMap;
     localPlaneMap _localPlaneMap;
-
-    // local shape plane map container
-    using plane_map_container = std::unordered_map<size_t, MapPlane>;
 
     std::shared_ptr<outputs::IMap_Writer> _mapWriter = nullptr;
 

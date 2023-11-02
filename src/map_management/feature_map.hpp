@@ -1,21 +1,21 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 #define RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 
-#include "../outputs/logger.hpp"
-#include "camera_transformation.hpp"
-#include "covariances.hpp"
-#include "map_writer.hpp"
-#include "parameters.hpp"
-#include "pose.hpp"
-#include "random.hpp"
+#include "outputs/map_writer.hpp"
+#include "outputs/logger.hpp"
+
+#include "utils/camera_transformation.hpp"
+#include "utils/random.hpp"
+#include "utils/pose.hpp"
+
 #include "types.hpp"
+
 #include <cmath>
-#include <exception>
 #include <list>
 #include <memory>
+
 #include <opencv2/core/matx.hpp>
 #include <opencv2/core/types.hpp>
-#include <unordered_map>
 
 namespace rgbd_slam::map_management {
 
