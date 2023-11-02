@@ -5,7 +5,8 @@
 #include "types.hpp"
 #include "utils/angle_utils.hpp"
 #include "utils/camera_transformation.hpp"
-#include "utils/coordinates.hpp"
+#include "utils/coordinates/point_coordinates.hpp"
+#include "utils/coordinates/plane_coordinates.hpp"
 #include "utils/pose.hpp"
 #include <gtest/gtest.h>
 #include <random>

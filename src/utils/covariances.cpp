@@ -1,7 +1,7 @@
 #include "covariances.hpp"
+
 #include "../parameters.hpp"
 #include "camera_transformation.hpp"
-#include "coordinates.hpp"
 #include "distance_utils.hpp"
 #include "logger.hpp"
 #include "types.hpp"

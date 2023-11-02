@@ -1,7 +1,8 @@
 #ifndef RGBDSLAM_UTILS_COVARIANCES_HPP
 #define RGBDSLAM_UTILS_COVARIANCES_HPP
 
-#include "coordinates.hpp"
+#include "coordinates/plane_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include "logger.hpp"
 #include "matches_containers.hpp"
 #include "pose.hpp"
@@ -67,6 +68,7 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
         const CameraCoordinateCovariance& cameraPointCovariance,
         const CameraToWorldMatrix& cameraToWorld,
         const matrix33& poseCovariance) noexcept;
+
 /**
  * \brief Compute covariance of a screen point in world state
  */
@@ -99,6 +101,13 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
  */
 [[nodiscard]] matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters,
                                                 const matrix33& pointCloudCovariance);
+
+/**
+ * \brief Compute the covariance of a plane as the covariance of the equivalent point cloud
+ * \param[in] planeParameters The plane parameters to compute covariance for
+ * \param[in] planeCloudCovariance The covariance of the plane parameters
+ * \return the equivalent point cloud parameter covariance
+ */
 [[nodiscard]] matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& planeParameters,
                                                                     const matrix44& planeCloudCovariance);
 

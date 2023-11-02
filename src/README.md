@@ -10,3 +10,4 @@ The program source files are organized as so:
 - **pose_optimization** Contains all the pose optimization functions. The optimization process uses a Levenberg-Marquardt algorithm for frame to frame optimization
 - **tracking** The tracking functions, as Kalman filters and observers motion model
 - **utils** Math and cameras utils functions. Also contains the main types (eg: Pose)
+    - **coordinates** define the diverse coordinates used in this program (screen, camera and world point, inverse depth points, camera plane, world plane, ...)

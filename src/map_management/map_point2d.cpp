@@ -1,6 +1,5 @@
 #include "map_point2d.hpp"
 #include "camera_transformation.hpp"
-#include "coordinates.hpp"
 #include "covariances.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"

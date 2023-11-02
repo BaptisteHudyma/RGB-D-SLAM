@@ -1,7 +1,8 @@
 #include "parameters.hpp"
 #include "types.hpp"
 #include "utils/camera_transformation.hpp"
-#include "utils/coordinates.hpp"
+#include "utils/coordinates/point_coordinates.hpp"
+#include "utils/coordinates/plane_coordinates.hpp"
 #include <gtest/gtest.h>
 
 namespace rgbd_slam::utils {

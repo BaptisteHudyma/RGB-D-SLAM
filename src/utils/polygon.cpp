@@ -1,5 +1,4 @@
 #include "polygon.hpp"
-#include "coordinates.hpp"
 #include "distance_utils.hpp"
 #include "parameters.hpp"
 #include "types.hpp"

@@ -3,7 +3,6 @@
 
 #include "../outputs/logger.hpp"
 #include "camera_transformation.hpp"
-#include "coordinates.hpp"
 #include "covariances.hpp"
 #include "map_writer.hpp"
 #include "parameters.hpp"

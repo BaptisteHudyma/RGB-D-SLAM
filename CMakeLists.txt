@@ -141,11 +141,12 @@ add_library(outputs SHARED
     )
 
 add_library(utils SHARED
+    ${UTILS}/coordinates/point_coordinates.cpp
+    ${UTILS}/coordinates/plane_coordinates.cpp
     ${UTILS}/angle_utils.cpp
     ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
     ${UTILS}/pose.cpp
-    ${UTILS}/coordinates.cpp
     ${UTILS}/distance_utils.cpp
     ${UTILS}/polygon.cpp
     )

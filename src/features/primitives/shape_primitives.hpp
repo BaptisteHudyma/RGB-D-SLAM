@@ -3,7 +3,7 @@
 
 // cv:Mat
 #include "../../types.hpp"
-#include "../../utils/coordinates.hpp"
+#include "../../utils/coordinates/point_coordinates.hpp"
 #include "cylinder_segment.hpp"
 #include "plane_segment.hpp"
 #include "polygon.hpp"

@@ -1,6 +1,5 @@
 #include "levenberg_marquard_functors.hpp"
 #include "../utils/camera_transformation.hpp"
-#include "coordinates.hpp"
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
 

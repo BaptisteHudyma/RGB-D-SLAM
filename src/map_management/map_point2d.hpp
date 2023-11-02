@@ -3,7 +3,7 @@
 
 #include "../features/keypoints/keypoint_handler.hpp"
 #include "../tracking/kalman_filter.hpp"
-#include "../utils/coordinates.hpp"
+#include "../utils/coordinates/point_coordinates.hpp"
 #include "feature_map.hpp"
 #include "matches_containers.hpp"
 #include "parameters.hpp"
