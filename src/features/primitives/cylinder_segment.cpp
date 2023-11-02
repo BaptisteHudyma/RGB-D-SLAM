@@ -211,8 +211,8 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
                 const vector3 P3 = planeCentroids.block<3, 1>(0, i);
                 // Compute point to line distance
                 // Use point-to-line distances (same as cylinder distances)
-                // distance = pow((P3 - center).norm() - radius, 2.0);
-                const double distance = pow(((P2d - P1d).cross(P3 - P2d)).norm() / P1P2d - radius, 2.0);
+                // distance = SQR((P3 - center).norm() - radius);
+                const double distance = SQR(((P2d - P1d).cross(P3 - P2d)).norm() / P1P2d - radius);
                 mse += distance;
             }
         }

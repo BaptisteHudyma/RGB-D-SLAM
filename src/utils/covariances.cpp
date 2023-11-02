@@ -14,10 +14,10 @@ namespace rgbd_slam::utils {
 double get_depth_quantization(const double depth) noexcept
 {
     // minimum depth diparity at z is the quadratic function  a + b z + c z^2
-    const static double depthSigmaError = parameters::depthSigmaError * pow(1.0 / 1000.0, 2.0);
+    const static double depthSigmaError = parameters::depthSigmaError * SQR(1.0 / 1000.0);
     constexpr double depthSigmaMultiplier = parameters::depthSigmaMultiplier / 1000.0;
     constexpr double depthSigmaMargin = parameters::depthSigmaMargin;
-    return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * pow(depth, 2.0), 0.5);
+    return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * SQR(depth), 0.5);
 }
 
 ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
@@ -25,8 +25,8 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
     const static vector2 cameraF = Parameters::get_camera_1_focal();
 
     // Jacobian of the camera to screen function
-    const matrix33 jacobian {{cameraF.x() / point.z(), 0.0, -cameraF.x() * point.x() / pow(point.z(), 2.0)},
-                             {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / pow(point.z(), 2.0)},
+    const matrix33 jacobian {{cameraF.x() / point.z(), 0.0, -cameraF.x() * point.x() / SQR(point.z())},
+                             {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / SQR(point.z())},
                              {0.0, 0.0, 1.0}};
     ScreenCoordinateCovariance screenPointCovariance;
     screenPointCovariance << (jacobian * pointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose());
@@ -109,9 +109,9 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
     const double b = parameters.y();
     const double c = parameters.z();
 
-    const double aSquared = a * a;
-    const double bSquared = b * b;
-    const double cSquared = c * c;
+    const double aSquared = SQR(a);
+    const double bSquared = SQR(b);
+    const double cSquared = SQR(c);
 
     // common divider of all partial derivatives
     const double divider = pow(aSquared + bSquared + cSquared, 3.0 / 2.0);

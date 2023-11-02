@@ -25,7 +25,7 @@ namespace rgbd_slam::features::primitives {
 
 // namespace simplifcation
 constexpr uint blocSize = parameters::detection::depthMapPatchSize_px;
-constexpr uint pointsPerCellCount = blocSize * blocSize;
+constexpr uint pointsPerCellCount = SQR(blocSize);
 
 Primitive_Detection::Primitive_Detection(const uint width, const uint height) :
     _horizontalCellsCount(width / blocSize),

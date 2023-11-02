@@ -97,7 +97,7 @@ CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
 matrix22 ScreenCoordinate2D::get_covariance() const
 {
     // TODO xy variance should also depend on the placement of the pixel in x and y
-    const double xyVariance = 0.1 * 0.1;
+    const double xyVariance = SQR(0.1);
     matrix22 cov({{xyVariance, 0.0}, {0.0, xyVariance}});
 
     if (not utils::is_covariance_valid(cov))
@@ -120,7 +120,7 @@ bool ScreenCoordinate2D::is_in_screen_boundaries() const noexcept
 
 ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
 {
-    const double xyVariance = 0.1 * 0.1;
+    const double xyVariance = SQR(0.1);
     const matrix22 covariance2D({{xyVariance, 0.0}, {0.0, xyVariance}});
 
     const double depthQuantization = utils::is_depth_valid(z()) ? get_depth_quantization(z()) : 1000.0;
@@ -314,7 +314,7 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::CameraCoordinate& ob
 {
     const vector3 directionalVector = c2w.rotation() * observation;
     _theta_rad = atan2(directionalVector.x(), directionalVector.z());
-    _phi_rad = atan2(-directionalVector.y(), sqrt(pow(directionalVector.x(), 2.0) + pow(directionalVector.z(), 2.0)));
+    _phi_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
     _inverseDepth_mm = 1.0 / 5000.0; // 50 meters baseline (infinity is approx to 50 meters right ?)
 }
 

@@ -46,15 +46,31 @@ struct PointInverseDepth
                       const CameraToWorldMatrix& c2w,
                       const matrix33& stateCovariance);
 
-    bool add_observation(const utils::ScreenCoordinate2D& observation,
-                         const CameraToWorldMatrix& c2w,
-                         const matrix33& stateCovariance);
+    /**
+     * \brief Add an new measurment to the tracking
+     * \param[in] observation The new observation
+     * \param[in] c2w The cam to world matrix
+     * \param[in] stateCovariance The covariance of the observer position
+     * \return True if the tracking succeeded, false if something is wrong
+     */
+    bool track(const utils::ScreenCoordinate2D& observation,
+               const CameraToWorldMatrix& c2w,
+               const matrix33& stateCovariance);
 
+    /**
+     * \brief Compute th covariance of the cartesian projection of this inverse depth
+     */
     [[nodiscard]] WorldCoordinateCovariance get_cartesian_covariance() const noexcept;
 
+    /**
+     * \brief Compute the covariance of the cartesian projection of this inverse depth, in camera space
+     */
     [[nodiscard]] CameraCoordinateCovariance get_camera_coordinate_variance(
             const WorldToCameraMatrix& w2c) const noexcept;
 
+    /**
+     * \brief Compute the covariance of the cartesian projection of this inverse depth, in screen space
+     */
     [[nodiscard]] ScreenCoordinateCovariance get_screen_coordinate_variance(
             const WorldToCameraMatrix& w2c) const noexcept;
 

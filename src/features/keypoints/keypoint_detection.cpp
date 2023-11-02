@@ -61,10 +61,11 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     size_t i = 0;
     for (size_t cellYIndex = 0; cellYIndex < numCellsY; ++cellYIndex)
     {
+        const int maxYIndex = static_cast<int>(cellYIndex * cellSizeY);
         for (size_t cellXIndex = 0; cellXIndex < numCellsX; ++cellXIndex, ++i)
         {
             _detectionWindows[i] = cv::Rect(static_cast<int>(cellXIndex * cellSizeX),
-                                            static_cast<int>(cellYIndex * cellSizeY),
+                                            maxYIndex,
                                             static_cast<int>(cellSizeX),
                                             static_cast<int>(cellSizeY));
         }

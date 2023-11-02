@@ -59,7 +59,7 @@ struct PlaneCoordinates
     [[nodiscard]] double get_point_distance_squared(const vector3& point) const noexcept
     {
         // distance can be negative depending on the plane
-        return pow(_normal.transpose() * point + _d, 2.0);
+        return SQR(_normal.transpose() * point + _d);
     }
     [[nodiscard]] double get_cos_angle(const PlaneCoordinates& other) const noexcept
     {
