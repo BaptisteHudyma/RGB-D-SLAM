@@ -15,6 +15,8 @@ struct CameraCoordinate;
 
 struct WorldCoordinate;
 
+struct InverseDepthWorldPoint;
+
 struct PlaneCameraCoordinates;
 struct PlaneWorldCoordinates;
 
@@ -227,6 +229,50 @@ struct WorldCoordinate : public vector3
     {
         return get_signed_distance_mm(worldPoint).lpNorm<1>();
     };
+};
+
+/**
+ * \brief Contain an inverse depth representation of a world point.
+ * This is used to represent point with an unknown depth
+ */
+struct InverseDepthWorldPoint
+{
+  public:
+    InverseDepthWorldPoint(const utils::ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w);
+    InverseDepthWorldPoint(const utils::CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
+
+    /**
+     * \brief compute the cartesian projection of this point.
+     * \return The point in camera coordinates (the associated covariance can be huge)
+     */
+    [[nodiscard]] utils::WorldCoordinate get_cartesian() const noexcept;
+
+    /**
+     * \brief Compute the projected coordinates of this point to camera space
+     * \param[in] w2c The matrix to go from world to camera space
+     * \return The point in camera coordinates (the associated covariance can be huge)
+     */
+    [[nodiscard]] utils::CameraCoordinate get_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept;
+
+    /**
+     * \brief Compute the projected coordinates of this point to screen space
+     * \param[in] w2c The matrix to go from world to camera space
+     * \param[out] screenCoordinates The projected coordinates, only valid if the function returned true
+     * \return True if the process succeeded (the associated covariance can be huge)
+     */
+    [[nodiscard]] bool get_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                              utils::ScreenCoordinate2D& screenCoordinates) const noexcept;
+
+    // get the bearing vector that point from _firstObservation to the point
+    vector3 get_bearing_vector() const noexcept;
+
+    [[nodiscard]] vector6 get_vector_state() const noexcept;
+    void from_vector_state(const vector6& state) noexcept;
+
+    const CameraToWorldMatrix _c2w; // position of the camera for the first observation
+    double _theta_rad = 0.0;        // azimuth angle of the first observation, in world space
+    double _phi_rad = 0.0;          // elevation angle of the first observation, in world space
+    double _inverseDepth_mm = 0.0;  // inverse of the depth (>= 0)
 };
 
 /**

@@ -305,6 +305,69 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
 }
 
 /**
+ *      INVERSE DEPTH COORDINATES
+ */
+
+InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::ScreenCoordinate2D& observation,
+                                               const CameraToWorldMatrix& c2w) :
+    InverseDepthWorldPoint(utils::CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
+{
+}
+
+InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::CameraCoordinate& observation,
+                                               const CameraToWorldMatrix& c2w) :
+    _c2w(c2w)
+{
+    const vector3 directionalVector = c2w.rotation() * observation;
+    _theta_rad = atan2(directionalVector.x(), directionalVector.z());
+    _phi_rad = atan2(-directionalVector.y(), sqrt(pow(directionalVector.x(), 2.0) + pow(directionalVector.z(), 2.0)));
+    _inverseDepth_mm = 1.0 / 5000.0; // 50 meters baseline (infinity is approx to 50 meters right ?)
+}
+
+utils::CameraCoordinate InverseDepthWorldPoint::get_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept
+{
+    return utils::CameraCoordinate(
+            w2c.rotation() * (_inverseDepth_mm * (_c2w.translation() - w2c.translation()) + get_bearing_vector()));
+}
+
+bool InverseDepthWorldPoint::get_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                                    utils::ScreenCoordinate2D& screenCoordinates) const noexcept
+{
+    return get_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
+}
+
+vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
+{
+    const double cosPhi = cos(_phi_rad);
+    const vector3 bearingVector(cosPhi * sin(_theta_rad), -sin(_phi_rad), cosPhi * cos(_theta_rad));
+    return bearingVector.normalized();
+}
+
+utils::WorldCoordinate InverseDepthWorldPoint::get_cartesian() const noexcept
+{
+    assert(_inverseDepth_mm > 0.0);
+    return utils::WorldCoordinate(_c2w.translation() + 1.0 / _inverseDepth_mm * get_bearing_vector());
+}
+
+vector6 InverseDepthWorldPoint::get_vector_state() const noexcept
+{
+    return vector6(_c2w.translation().x(),
+                   _c2w.translation().y(),
+                   _c2w.translation().z(),
+                   _theta_rad,
+                   _phi_rad,
+                   _inverseDepth_mm);
+}
+
+void InverseDepthWorldPoint::from_vector_state(const vector6& state) noexcept
+{
+    // do not change the translation (for now !)
+    _theta_rad = state(3);
+    _phi_rad = state(4);
+    _inverseDepth_mm = state(5);
+}
+
+/**
  *      PLANE COORDINATES
  */
 

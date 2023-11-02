@@ -8,10 +8,51 @@
 #include "matches_containers.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
+#include <math.h>
 #include <memory>
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::map_management {
+
+struct PointInverseDepth
+{
+  public:
+    PointInverseDepth(const utils::ScreenCoordinate2D& observation,
+                      const CameraToWorldMatrix& c2w,
+                      const matrix33& stateCovariance);
+
+    bool add_observation(const utils::ScreenCoordinate2D& observation,
+                         const CameraToWorldMatrix& c2w,
+                         const matrix33& stateCovariance);
+
+    [[nodiscard]] WorldCoordinateCovariance get_cartesian_covariance() const noexcept;
+
+    [[nodiscard]] CameraCoordinateCovariance get_camera_coordinate_variance(
+            const WorldToCameraMatrix& w2c) const noexcept;
+
+    [[nodiscard]] ScreenCoordinateCovariance get_screen_coordinate_variance(
+            const WorldToCameraMatrix& w2c) const noexcept;
+
+  protected:
+    /**
+     * \brief Construct an inverse depth point from a camera point (intend to be used for new observations)
+     */
+    PointInverseDepth(const utils::CameraCoordinate& cameraCoordinates,
+                      const CameraCoordinateCovariance& cameraCovariance,
+                      const CameraToWorldMatrix& c2w);
+
+    /**
+     * \brief Build the caracteristics of the kalman filter
+     */
+    static void build_kalman_filter() noexcept;
+
+    // shared kalman filter, between all points
+    inline static std::unique_ptr<tracking::SharedKalmanFilter<6, 6>> _kalmanFilter = nullptr;
+
+  private:
+    utils::InverseDepthWorldPoint _coordinates;
+    matrix66 _covariance = matrix66::Zero();
+};
 
 struct Point2D
 {
