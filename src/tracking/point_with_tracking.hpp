@@ -59,10 +59,10 @@ struct PointInverseDepth
      * \param[in] stateCovariance The covariance of the observer position
      * \return True if the tracking succeeded, false if something is wrong
      */
-    bool track(const utils::ScreenCoordinate2D& observation,
-               const CameraToWorldMatrix& c2w,
-               const matrix33& stateCovariance,
-               const cv::Mat& descriptor);
+    [[nodiscard]] bool track(const utils::ScreenCoordinate2D& observation,
+                             const CameraToWorldMatrix& c2w,
+                             const matrix33& stateCovariance,
+                             const cv::Mat& descriptor);
 
     /**
      * \brief Compute th covariance of the cartesian projection of this inverse depth

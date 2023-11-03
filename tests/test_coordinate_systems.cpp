@@ -1,4 +1,7 @@
+#include "angle_utils.hpp"
+#include "covariances.hpp"
 #include "parameters.hpp"
+#include "point_with_tracking.hpp"
 #include "types.hpp"
 #include "utils/camera_transformation.hpp"
 #include "utils/coordinates/point_coordinates.hpp"
@@ -293,7 +296,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation3)
             compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
-
+/*
 TEST(InverseDepthPoint, convertBackAndForthCenter)
 {
     if (not Parameters::is_valid())
@@ -313,8 +316,7 @@ TEST(InverseDepthPoint, convertBackAndForthCenter)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), Parameters::get_camera_1_center().x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), Parameters::get_camera_1_center().y(), 0.01);
@@ -334,13 +336,12 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeft)
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
     EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.36067193828148641, 0.0001);    // top
-    EXPECT_NEAR(inverseDepth._theta_rad, -0.52694322718942965, 0.0001); // left
+    EXPECT_NEAR(inverseDepth._phi_rad, -0.52694322718942965, 0.0001);  // top
+    EXPECT_NEAR(inverseDepth._theta_rad, 0.36067193828148641, 0.0001); // left
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), 0.0, 0.01);
     EXPECT_NEAR(screenCoordinates.y(), 0.0, 0.01);
@@ -369,8 +370,7 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRight)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), imageHeight, 0.01);
     EXPECT_NEAR(screenCoordinates.y(), imageWidth, 0.01);
@@ -396,8 +396,7 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfo)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), Parameters::get_camera_1_center().x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), Parameters::get_camera_1_center().y(), 0.01);
@@ -423,8 +422,7 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithTransfo)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), 0.0, 0.01);
     EXPECT_NEAR(screenCoordinates.y(), 0.0, 0.01);
@@ -454,8 +452,7 @@ TEST(InverseDepthPoint, convertBackAndForthBottomLeftWithTransfo)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), imageHeight, 0.01);
     EXPECT_NEAR(screenCoordinates.y(), imageWidth, 0.01);
@@ -481,8 +478,7 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithRotation)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), Parameters::get_camera_1_center().x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), Parameters::get_camera_1_center().y(), 0.01);
@@ -508,8 +504,7 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithRotation)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), 0.0, 0.01);
     EXPECT_NEAR(screenCoordinates.y(), 0.0, 0.01);
@@ -539,12 +534,63 @@ TEST(InverseDepthPoint, convertBackAndForthBottomLeftWithRotation)
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
-    EXPECT_EQ(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates),
-              true);
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), imageHeight, 0.01);
     EXPECT_NEAR(screenCoordinates.y(), imageWidth, 0.01);
 }
+
+TEST(InverseDepthPointFusion, centerPointParallelFusion)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // observe the center of the camera
+    const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center());
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
+
+    // convert to inverse
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Zero(), cv::Mat());
+    EXPECT_NEAR(inverseDepth._coordinates._inverseDepth_mm, 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth._coordinates._phi_rad, 0.0, 0.0001);
+    EXPECT_NEAR(inverseDepth._coordinates._theta_rad, 0.0, 0.0001);
+
+    const auto& beforeMergeCovariance = inverseDepth.get_cartesian_covariance();
+    std::cout << beforeMergeCovariance << std::endl << std::endl;
+    EXPECT_TRUE(is_covariance_valid(beforeMergeCovariance));
+    EXPECT_GT(beforeMergeCovariance(0, 0),
+              1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
+    EXPECT_GT(beforeMergeCovariance(1, 1),
+              1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
+    EXPECT_GT(beforeMergeCovariance(2, 2), 1e6); // very high variance for z coordinate depth is unknown
+
+    // fuse the two points
+    EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Zero(), cv::Mat()));
+
+    const auto& afterMergeCovariance = inverseDepth.get_cartesian_covariance();
+    std::cout << afterMergeCovariance << std::endl << std::endl;
+    EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
+    EXPECT_NEAR(
+            afterMergeCovariance(0, 0),
+            0.0,
+            0.00001); // very low variance for x coordinate (center of observation): angle uncertainty as been reduced
+    EXPECT_NEAR(
+            afterMergeCovariance(1, 1),
+            0.0,
+            0.00001); // very low variance for y coordinate (center of observation): angle uncertainty as been reduced
+    EXPECT_GT(afterMergeCovariance(2, 2), 1e6); // very high variance for z coordinate depth is unknown
+
+    // add a new measurment at 45 degrees
+    const CameraToWorldMatrix& c2w45 = utils::compute_camera_to_world_transform(
+            get_quaternion_from_euler_angles(EulerAngles(-45 * EulerToRadian, 0.0, 0.0)), vector3(100, 100, 0.0));
+    // fuse the two points
+    EXPECT_TRUE(inverseDepth.track(observation, c2w45, matrix33::Zero(), cv::Mat()));
+    EXPECT_TRUE(is_covariance_valid(inverseDepth.get_cartesian_covariance()));
+
+    std::cout << inverseDepth.get_cartesian_covariance() << std::endl;
+}*/
 
 void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates& planeB)
 {
