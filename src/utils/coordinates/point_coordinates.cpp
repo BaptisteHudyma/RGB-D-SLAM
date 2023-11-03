@@ -318,16 +318,23 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::CameraCoordinate& ob
     _inverseDepth_mm = 1.0 / 5000.0; // 50 meters baseline (infinity is approx to 50 meters right ?)
 }
 
-utils::CameraCoordinate InverseDepthWorldPoint::get_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept
+utils::CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept
 {
+    // this is a transformation of retroprojection of the inverse depth (world) to camera
+    // w2c.rotation() * (_c2w.translation() + 1.0 / _inverseDepth_mm * get_bearing_vector() - w2c.translation());
+    // this as the advantage of handling nicely a point at infinite distance (_inverseDepth_mm == 0)
+
+    const auto& w2cProjection = utils::compute_camera_to_world_transform(w2c);
+
     return utils::CameraCoordinate(
-            w2c.rotation() * (_inverseDepth_mm * (_c2w.translation() - w2c.translation()) + get_bearing_vector()));
+            w2c.rotation() *
+            (_inverseDepth_mm * (_c2w.translation() - w2cProjection.translation()) + get_bearing_vector()));
 }
 
-bool InverseDepthWorldPoint::get_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                                    utils::ScreenCoordinate2D& screenCoordinates) const noexcept
+bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                                   utils::ScreenCoordinate2D& screenCoordinates) const noexcept
 {
-    return get_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
+    return to_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
 }
 
 vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
@@ -336,7 +343,7 @@ vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
     return vector3(cosPhi * sin(_theta_rad), -sin(_phi_rad), cosPhi * cos(_theta_rad)).normalized();
 }
 
-utils::WorldCoordinate InverseDepthWorldPoint::get_cartesian() const noexcept
+utils::WorldCoordinate InverseDepthWorldPoint::to_cartesian() const noexcept
 {
     assert(_inverseDepth_mm > 0.0);
     return utils::WorldCoordinate(_c2w.translation() + 1.0 / _inverseDepth_mm * get_bearing_vector());

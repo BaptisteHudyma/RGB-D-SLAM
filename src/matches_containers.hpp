@@ -33,9 +33,9 @@ using match_point_container = std::list<PointMatch>;
 
 // KeyPoint matching: contains :
 //      - the coordinates of the detected point in screen space
-//      - the coordinates of the matched point in screen space
+//      - the coordinates of the matched point in inverse depth space
 //      - the diagonal of the covariance of the screen point in screen space
-using PointMatch2D = MatchTemplate<utils::ScreenCoordinate2D, utils::ScreenCoordinate2D, vector2>;
+using PointMatch2D = MatchTemplate<utils::ScreenCoordinate2D, utils::InverseDepthWorldPoint, matrix66>;
 using match_point2D_container = std::list<PointMatch2D>;
 
 // MapPlane matching: contains :

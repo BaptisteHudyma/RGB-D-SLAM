@@ -1,26 +1,13 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT2D_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT2D_HPP
 
+#include "coordinates/point_coordinates.hpp"
 #include "feature_map.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
 #include "tracking/point_with_tracking.hpp"
 #include "matches_containers.hpp"
 
 namespace rgbd_slam::map_management {
-
-struct Point2D
-{
-    // world coordinates
-    utils::ScreenCoordinate2D _coordinates;
-    // 3D descriptor (ORB)
-    cv::Mat _descriptor;
-    // position covariance
-    ScreenCoordinate2DCovariance _covariance;
-
-    Point2D(const utils::ScreenCoordinate2D& coordinates,
-            const ScreenCoordinate2DCovariance& covariance,
-            const cv::Mat& descriptor);
-};
 
 struct UpgradedPoint2D
 {
@@ -37,7 +24,7 @@ using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 using UpgradedPoint2DType = UpgradedPoint2D; // 2D points can be upgraded to 3D
 
 class MapPoint2D :
-    public Point2D,
+    public tracking::PointInverseDepth,
     public IMapFeature<DetectedKeypointsObject,
                        DetectedPoint2DType,
                        PointMatch2DType,
@@ -46,9 +33,10 @@ class MapPoint2D :
 {
   public:
     MapPoint2D(const utils::ScreenCoordinate2D& coordinates,
-               const ScreenCoordinate2DCovariance& covariance,
+               const CameraToWorldMatrix& c2w,
+               const matrix33& stateCovariance,
                const cv::Mat& descriptor) :
-        Point2D(coordinates, covariance, descriptor),
+        PointInverseDepth(coordinates, c2w, stateCovariance, descriptor),
         IMapFeature<DetectedKeypointsObject,
                     DetectedPoint2DType,
                     PointMatch2DType,
@@ -58,11 +46,8 @@ class MapPoint2D :
         assert(_id > 0);
     }
 
-    MapPoint2D(const utils::ScreenCoordinate2D& coordinates,
-               const ScreenCoordinate2DCovariance& covariance,
-               const cv::Mat& descriptor,
-               const size_t id) :
-        Point2D(coordinates, covariance, descriptor),
+    MapPoint2D(const tracking::PointInverseDepth& coordinates, const size_t id) :
+        tracking::PointInverseDepth(coordinates),
         IMapFeature<DetectedKeypointsObject,
                     DetectedPoint2DType,
                     PointMatch2DType,
@@ -95,12 +80,6 @@ class MapPoint2D :
 
     [[nodiscard]] bool compute_upgraded(const matrix33& poseCovariance,
                                         UpgradedPoint2DType& upgradeFeature) const noexcept override;
-
-    WorldToCameraMatrix _firstWorldToCam;
-
-    bool _isLastMatchCoordinatesSet = false;
-    utils::ScreenCoordinate _lastMatchCoordinates; // can be 2D
-    WorldToCameraMatrix _lastMatchWorldToCamera;
 
   protected:
     [[nodiscard]] bool update_with_match(const DetectedPoint2DType& matchedFeature,
