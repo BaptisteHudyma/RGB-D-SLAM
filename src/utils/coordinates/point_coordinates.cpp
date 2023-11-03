@@ -310,25 +310,27 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::ScreenCoordinate2D& 
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::CameraCoordinate& observation,
                                                const CameraToWorldMatrix& c2w) :
-    _c2w(c2w)
+    _firstObservation(c2w.translation())
 {
     const vector3 directionalVector = c2w.rotation() * observation;
-    _theta_rad = atan2(directionalVector.x(), directionalVector.z());
-    _phi_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
+    _theta_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
+    _phi_rad = atan2(directionalVector.x(), directionalVector.z());
     _inverseDepth_mm = 1.0 / 5000.0; // 50 meters baseline (infinity is approx to 50 meters right ?)
+}
+
+utils::WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
+{
+    assert(_inverseDepth_mm > 0.0);
+    return utils::WorldCoordinate(_firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector());
 }
 
 utils::CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept
 {
     // this is a transformation of retroprojection of the inverse depth (world) to camera
-    // w2c.rotation() * (_c2w.translation() + 1.0 / _inverseDepth_mm * get_bearing_vector() - w2c.translation());
+    return to_world_coordinates().to_camera_coordinates(w2c);
     // this as the advantage of handling nicely a point at infinite distance (_inverseDepth_mm == 0)
-
-    const auto& w2cProjection = utils::compute_camera_to_world_transform(w2c);
-
-    return utils::CameraCoordinate(
-            w2c.rotation() *
-            (_inverseDepth_mm * (_c2w.translation() - w2cProjection.translation()) + get_bearing_vector()));
+    // return utils::CameraCoordinate(w2c.rotation() * (_inverseDepth_mm * (_firstObservation - w2c.translation()) +
+    // get_bearing_vector()));
 }
 
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
@@ -343,17 +345,11 @@ vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
     return vector3(cosPhi * sin(_theta_rad), -sin(_phi_rad), cosPhi * cos(_theta_rad)).normalized();
 }
 
-utils::WorldCoordinate InverseDepthWorldPoint::to_cartesian() const noexcept
-{
-    assert(_inverseDepth_mm > 0.0);
-    return utils::WorldCoordinate(_c2w.translation() + 1.0 / _inverseDepth_mm * get_bearing_vector());
-}
-
 vector6 InverseDepthWorldPoint::get_vector_state() const noexcept
 {
-    return vector6(_c2w.translation().x(),
-                   _c2w.translation().y(),
-                   _c2w.translation().z(),
+    return vector6(_firstObservation.x(),
+                   _firstObservation.y(),
+                   _firstObservation.z(),
                    _theta_rad,
                    _phi_rad,
                    _inverseDepth_mm);

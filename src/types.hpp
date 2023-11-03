@@ -10,7 +10,7 @@ namespace rgbd_slam {
  *        Declare the most common types used in this program
  */
 
-const double EulerToRadian = M_PI / 180.0;
+constexpr double EulerToRadian = M_PI / 180.0;
 
 using Matrixb = Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic>;
 using matrixf = Eigen::MatrixXf;

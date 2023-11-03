@@ -239,10 +239,10 @@ struct InverseDepthWorldPoint
     InverseDepthWorldPoint(const utils::CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
 
     /**
-     * \brief compute the cartesian projection of this point.
+     * \brief compute the cartesian projection of this point in world space.
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    [[nodiscard]] utils::WorldCoordinate to_cartesian() const noexcept;
+    [[nodiscard]] utils::WorldCoordinate to_world_coordinates() const noexcept;
 
     /**
      * \brief Compute the projected coordinates of this point to camera space
@@ -266,10 +266,10 @@ struct InverseDepthWorldPoint
     [[nodiscard]] vector6 get_vector_state() const noexcept;
     void from_vector_state(const vector6& state) noexcept;
 
-    const CameraToWorldMatrix _c2w; // position of the camera for the first observation
-    double _theta_rad = 0.0;        // azimuth angle of the first observation, in world space
-    double _phi_rad = 0.0;          // elevation angle of the first observation, in world space
-    double _inverseDepth_mm = 0.0;  // inverse of the depth (>= 0)
+    const WorldCoordinate _firstObservation; // position of the camera for the first observation
+    double _theta_rad = 0.0;                 // azimuth angle of the first observation, in world space
+    double _phi_rad = 0.0;                   // elevation angle of the first observation, in world space
+    double _inverseDepth_mm = 0.0;           // inverse of the depth (>= 0)
 };
 
 } // namespace rgbd_slam::utils
