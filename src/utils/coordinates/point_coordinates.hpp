@@ -242,14 +242,14 @@ struct InverseDepthWorldPoint
      * \brief compute the cartesian projection of this point.
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    [[nodiscard]] utils::WorldCoordinate get_cartesian() const noexcept;
+    [[nodiscard]] utils::WorldCoordinate to_cartesian() const noexcept;
 
     /**
      * \brief Compute the projected coordinates of this point to camera space
      * \param[in] w2c The matrix to go from world to camera space
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    [[nodiscard]] utils::CameraCoordinate get_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept;
+    [[nodiscard]] utils::CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept;
 
     /**
      * \brief Compute the projected coordinates of this point to screen space
@@ -257,8 +257,8 @@ struct InverseDepthWorldPoint
      * \param[out] screenCoordinates The projected coordinates, only valid if the function returned true
      * \return True if the process succeeded (the associated covariance can be huge)
      */
-    [[nodiscard]] bool get_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                              utils::ScreenCoordinate2D& screenCoordinates) const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                             utils::ScreenCoordinate2D& screenCoordinates) const noexcept;
 
     // get the bearing vector that point from _firstObservation to the point
     vector3 get_bearing_vector() const noexcept;

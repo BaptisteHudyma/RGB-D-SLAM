@@ -62,6 +62,16 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
         const CameraCoordinate& point, const CameraCoordinateCovariance& pointCovariance) noexcept;
 
 /**
+ * \brief Compute the covariance of the camera point from the world coordinates
+ * \param[in] worldPointCovariance The covariance of the world point to convert
+ * \param[in] worldToCamera The matrix to convert world to camera coordinates
+ * \param[in] poseCovariance The covariance of the pose
+ */
+CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCovariance& worldPointCovariance,
+                                                       const WorldToCameraMatrix& worldToCamera,
+                                                       const matrix33& poseCovariance) noexcept;
+
+/**
  * \brief Compute the covariance of a world point
  */
 [[nodiscard]] WorldCoordinateCovariance get_world_point_covariance(

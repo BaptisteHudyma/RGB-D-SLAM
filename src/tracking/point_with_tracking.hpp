@@ -41,10 +41,16 @@ struct Point
 
 struct PointInverseDepth
 {
-  public:
+    utils::InverseDepthWorldPoint _coordinates;
+    matrix66 _covariance = matrix66::Zero();
+    cv::Mat _descriptor;
+
     PointInverseDepth(const utils::ScreenCoordinate2D& observation,
                       const CameraToWorldMatrix& c2w,
-                      const matrix33& stateCovariance);
+                      const matrix33& stateCovariance,
+                      const cv::Mat& descriptor);
+
+    PointInverseDepth(const PointInverseDepth& other);
 
     /**
      * \brief Add an new measurment to the tracking
@@ -55,7 +61,8 @@ struct PointInverseDepth
      */
     bool track(const utils::ScreenCoordinate2D& observation,
                const CameraToWorldMatrix& c2w,
-               const matrix33& stateCovariance);
+               const matrix33& stateCovariance,
+               const cv::Mat& descriptor);
 
     /**
      * \brief Compute th covariance of the cartesian projection of this inverse depth
@@ -66,13 +73,20 @@ struct PointInverseDepth
      * \brief Compute the covariance of the cartesian projection of this inverse depth, in camera space
      */
     [[nodiscard]] CameraCoordinateCovariance get_camera_coordinate_variance(
-            const WorldToCameraMatrix& w2c) const noexcept;
+            const WorldToCameraMatrix& w2c, const matrix33& stateCovariance) const noexcept;
 
     /**
      * \brief Compute the covariance of the cartesian projection of this inverse depth, in screen space
      */
     [[nodiscard]] ScreenCoordinateCovariance get_screen_coordinate_variance(
-            const WorldToCameraMatrix& w2c) const noexcept;
+            const WorldToCameraMatrix& w2c, const matrix33& stateCovariance) const noexcept;
+
+    /**
+     * \brief Get the inverse depth covariance from the world point covariance
+     */
+    [[nodiscard]] matrix66 get_inverse_depth_covariance(const utils::WorldCoordinate& point,
+                                                        const WorldCoordinateCovariance& pointCovariance,
+                                                        const matrix33& posevariance) const noexcept;
 
   protected:
     /**
@@ -80,7 +94,8 @@ struct PointInverseDepth
      */
     PointInverseDepth(const utils::CameraCoordinate& cameraCoordinates,
                       const CameraCoordinateCovariance& cameraCovariance,
-                      const CameraToWorldMatrix& c2w);
+                      const CameraToWorldMatrix& c2w,
+                      const matrix33& posevariance);
 
     /**
      * \brief Build the caracteristics of the kalman filter
@@ -89,10 +104,6 @@ struct PointInverseDepth
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::SharedKalmanFilter<6, 6>> _kalmanFilter = nullptr;
-
-  private:
-    utils::InverseDepthWorldPoint _coordinates;
-    matrix66 _covariance = matrix66::Zero();
 };
 
 } // namespace rgbd_slam::tracking

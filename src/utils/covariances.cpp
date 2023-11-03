@@ -45,6 +45,17 @@ ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& p
     return get_screen_point_covariance(point.base(), pointCovariance.base());
 }
 
+CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCovariance& worldPointCovariance,
+                                                       const WorldToCameraMatrix& worldToCamera,
+                                                       const matrix33& poseCovariance) noexcept
+{
+    const matrix33& rotation = worldToCamera.rotation();
+
+    CameraCoordinateCovariance cov;
+    cov << rotation * worldPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
+    return cov;
+}
+
 WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
                                                      const CameraToWorldMatrix& cameraToWorld,
                                                      const matrix33& poseCovariance) noexcept
