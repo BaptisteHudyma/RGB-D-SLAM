@@ -15,6 +15,11 @@ namespace rgbd_slam::utils {
 
 template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance) noexcept
 {
+    if (covariance.hasNaN())
+    {
+        outputs::log_warning("Covariance has invalid values");
+        return false;
+    }
     // covariance should be symetrical
     if (!covariance.isApprox(covariance.transpose()))
     {

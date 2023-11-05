@@ -52,6 +52,8 @@ struct PointInverseDepth
 
     PointInverseDepth(const PointInverseDepth& other);
 
+    matrix33 get_covariance_of_observed_pose() const noexcept { return _covariance.block<3, 3>(0, 0); }
+
     /**
      * \brief Add an new measurment to the tracking
      * \param[in] observation The new observation
@@ -65,38 +67,31 @@ struct PointInverseDepth
                              const cv::Mat& descriptor);
 
     /**
-     * \brief Compute th covariance of the cartesian projection of this inverse depth
-     */
-    [[nodiscard]] WorldCoordinateCovariance get_cartesian_covariance() const noexcept;
-
-    /**
      * \brief Compute the covariance of the cartesian projection of this inverse depth, in camera space
      */
     [[nodiscard]] CameraCoordinateCovariance get_camera_coordinate_variance(
-            const WorldToCameraMatrix& w2c, const matrix33& stateCovariance) const noexcept;
+            const WorldToCameraMatrix& w2c) const noexcept;
 
     /**
      * \brief Compute the covariance of the cartesian projection of this inverse depth, in screen space
      */
     [[nodiscard]] ScreenCoordinateCovariance get_screen_coordinate_variance(
-            const WorldToCameraMatrix& w2c, const matrix33& stateCovariance) const noexcept;
+            const WorldToCameraMatrix& w2c) const noexcept;
+
+    /**
+     * \brief Compute th covariance of the cartesian projection of this inverse depth
+     */
+    [[nodiscard]] static WorldCoordinateCovariance compute_cartesian_covariance(
+            const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance) noexcept;
 
     /**
      * \brief Get the inverse depth covariance from the world point covariance
      */
-    [[nodiscard]] matrix66 get_inverse_depth_covariance(const utils::WorldCoordinate& point,
-                                                        const WorldCoordinateCovariance& pointCovariance,
-                                                        const matrix33& posevariance) const noexcept;
+    [[nodiscard]] static matrix66 compute_inverse_depth_covariance(const vector3& observationVector,
+                                                                   const WorldCoordinateCovariance& pointCovariance,
+                                                                   const matrix33& posevariance) noexcept;
 
   protected:
-    /**
-     * \brief Construct an inverse depth point from a camera point (intend to be used for new observations)
-     */
-    PointInverseDepth(const utils::CameraCoordinate& cameraCoordinates,
-                      const CameraCoordinateCovariance& cameraCovariance,
-                      const CameraToWorldMatrix& c2w,
-                      const matrix33& posevariance);
-
     /**
      * \brief Build the caracteristics of the kalman filter
      */

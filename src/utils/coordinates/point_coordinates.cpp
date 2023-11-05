@@ -312,15 +312,22 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::CameraCoordinate& ob
                                                const CameraToWorldMatrix& c2w) :
     _firstObservation(c2w.translation())
 {
-    const vector3 directionalVector = c2w.rotation() * observation;
-    _theta_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
-    _phi_rad = atan2(directionalVector.x(), directionalVector.z());
-    _inverseDepth_mm = 1.0 / 5000.0; // 50 meters baseline (infinity is approx to 50 meters right ?)
+    const vector3 directionalVector = get_observation_vector(observation, c2w);
+    _theta_rad = atan2(directionalVector.x(), directionalVector.z());
+    _phi_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
+    _inverseDepth_mm = 1.0 / 50000.0; // 50 meters baseline (infinity is approx to 50 meters right ?)
+}
+
+vector3 InverseDepthWorldPoint::get_observation_vector(const utils::CameraCoordinate& observation,
+                                                       const CameraToWorldMatrix& c2w) noexcept
+{
+    // do not translate: this is just a direction vector
+    return vector3(c2w.rotation() * observation);
 }
 
 utils::WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
 {
-    assert(_inverseDepth_mm > 0.0);
+    assert(_inverseDepth_mm != 0.0);
     return utils::WorldCoordinate(_firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector());
 }
 

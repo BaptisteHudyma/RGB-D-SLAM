@@ -91,9 +91,6 @@ PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observatio
     _covariance(3, 3) = anglevariance; // theta angle covariance
     _covariance(4, 4) = anglevariance; // phi angle covariance
     _covariance(5, 5) = SQR(0.1);      // depth covariance
-
-    // for now _covariance is in camera space. project it to world space TODO
-
     assert(utils::is_covariance_valid(_covariance));
 }
 
@@ -102,19 +99,6 @@ PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
     _covariance(other._covariance),
     _descriptor(other._descriptor)
 {
-    assert(utils::is_covariance_valid(_covariance));
-}
-
-PointInverseDepth::PointInverseDepth(const utils::CameraCoordinate& cameraCoordinates,
-                                     const CameraCoordinateCovariance& cameraCovariance,
-                                     const CameraToWorldMatrix& c2w,
-                                     const matrix33& posevariance) :
-    _coordinates(cameraCoordinates, c2w)
-{
-    const WorldCoordinateCovariance& worldCovariance =
-            utils::get_world_point_covariance(cameraCovariance, c2w, matrix33::Zero());
-    _covariance =
-            get_inverse_depth_covariance(cameraCoordinates.to_world_coordinates(c2w), worldCovariance, posevariance);
     assert(utils::is_covariance_valid(_covariance));
 }
 
@@ -162,20 +146,24 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation
 }
 
 CameraCoordinateCovariance PointInverseDepth::get_camera_coordinate_variance(
-        const WorldToCameraMatrix& w2c, const matrix33& stateCovariance) const noexcept
+        const WorldToCameraMatrix& w2c) const noexcept
 {
     // get world coordinates covariance, transform it to camera
-    return utils::get_camera_point_covariance(get_cartesian_covariance(), w2c, stateCovariance);
+    return utils::get_camera_point_covariance(
+            PointInverseDepth::compute_cartesian_covariance(_coordinates, _covariance),
+            w2c,
+            get_covariance_of_observed_pose());
 }
 
 ScreenCoordinateCovariance PointInverseDepth::get_screen_coordinate_variance(
-        const WorldToCameraMatrix& w2c, const matrix33& stateCovariance) const noexcept
+        const WorldToCameraMatrix& w2c) const noexcept
 {
     return utils::get_screen_point_covariance(_coordinates.to_camera_coordinates(w2c),
-                                              get_camera_coordinate_variance(w2c, stateCovariance));
+                                              get_camera_coordinate_variance(w2c));
 }
 
-WorldCoordinateCovariance PointInverseDepth::get_cartesian_covariance() const noexcept
+WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(
+        const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance) noexcept
 {
     // jacobian of the to_world_coordinates() operation
     using matrix36 = Eigen::Matrix<double, 3, 6>;
@@ -183,58 +171,62 @@ WorldCoordinateCovariance PointInverseDepth::get_cartesian_covariance() const no
     jacobian.block<3, 3>(0, 0) = matrix33::Identity();
 
     // compute sin and cos in advance (opti)
-    const double cosTheta = cos(_coordinates._theta_rad);
-    const double sinTheta = sin(_coordinates._theta_rad);
-    const double cosPhi = cos(_coordinates._phi_rad);
-    const double sinPhi = sin(_coordinates._phi_rad);
+    const double cosTheta = cos(coordinates._theta_rad);
+    const double sinTheta = sin(coordinates._theta_rad);
+    const double cosPhi = cos(coordinates._phi_rad);
+    const double sinPhi = sin(coordinates._phi_rad);
 
-    const double depth = 1.0 / _coordinates._inverseDepth_mm;
-    const double depthSqr = 1.0 / SQR(_coordinates._inverseDepth_mm);
+    const double depth = 1.0 / coordinates._inverseDepth_mm;
+    const double depthSqr = 1.0 / SQR(coordinates._inverseDepth_mm);
     const double theta1 = cosPhi * sinTheta;
     const double theta2 = cosPhi * cosTheta;
+
     jacobian.block<3, 3>(0, 3) = matrix33({{theta2 * depth, -sinPhi * sinTheta * depth, -theta1 * depthSqr},
                                            {0, -cosPhi * depth, sinPhi * depthSqr},
                                            {-theta1 * depth, -cosTheta * sinPhi * depth, -theta2 * depthSqr}});
     // jacobian of:
     // _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
 
-    WorldCoordinateCovariance worldCovariance(jacobian * _covariance * jacobian.transpose());
+    WorldCoordinateCovariance worldCovariance(jacobian * covariance * jacobian.transpose());
     assert(utils::is_covariance_valid(worldCovariance));
     return worldCovariance;
 }
 
-matrix66 PointInverseDepth::get_inverse_depth_covariance(const utils::WorldCoordinate& point,
-                                                         const WorldCoordinateCovariance& pointCovariance,
-                                                         const matrix33& posevariance) const noexcept
+matrix66 PointInverseDepth::compute_inverse_depth_covariance(const vector3& observationVector,
+                                                             const WorldCoordinateCovariance& pointCovariance,
+                                                             const matrix33& posevariance) noexcept
 {
+    assert(utils::is_covariance_valid(pointCovariance));
     // jacobian of the from_cartesian() operation
     using matrix63 = Eigen::Matrix<double, 6, 3>;
     matrix63 jacobian(matrix63::Zero());
 
-    const double xSqr = SQR(point.x());
-    const double ySqr = SQR(point.y());
-    const double zSqr = SQR(point.z());
+    const double xSqr = SQR(observationVector.x());
+    const double ySqr = SQR(observationVector.y());
+    const double zSqr = SQR(observationVector.z());
 
     const double oneOverXZ = 1.0 / (xSqr + zSqr);
     const double sqrtXZ = sqrt(xSqr + zSqr);
-    const double theta1 = sqrtXZ * (xSqr + ySqr + zSqr);
+    const double theta1 = 1.0 / (sqrtXZ * (xSqr + ySqr + zSqr));
 
-    jacobian(3, 0) = point.x() * point.y() / theta1;
-    jacobian(3, 1) = -sqrtXZ / (xSqr + ySqr + zSqr);
-    jacobian(3, 2) = point.y() * point.z() / theta1;
+    jacobian(3, 0) = observationVector.z() * oneOverXZ;
+    jacobian(3, 2) = -observationVector.x() * oneOverXZ;
 
-    jacobian(4, 0) = point.z() * oneOverXZ;
-    jacobian(4, 2) = -point.x() * oneOverXZ;
+    jacobian(4, 0) = observationVector.x() * observationVector.y() * theta1;
+    jacobian(4, 1) = -sqrtXZ / (xSqr + ySqr + zSqr);
+    jacobian(4, 2) = observationVector.y() * observationVector.z() * theta1;
 
     jacobian(5, 2) = -1 / zSqr;
 
     // this is the jacobian of
-    //
-    // theta = atan2(-y, sqrt(x*x + z*z))
-    // phi = atan2(x, z)
+    // theta = atan2(x, z)
+    // phi = atan2(-y, sqrt(x*x + z*z))
     // invDepth = 1/z
 
     matrix66 resCovariance = jacobian * pointCovariance * jacobian.transpose();
+
+    std::cout << resCovariance << std::endl;
+
     // set pose base the covariance
     resCovariance.block<3, 3>(0, 0) = posevariance;
     assert(utils::is_covariance_valid(resCovariance));
@@ -248,7 +240,7 @@ void PointInverseDepth::build_kalman_filter() noexcept
         const matrix66 systemDynamics = matrix66::Identity(); // points are not supposed to move, so no dynamics
         const matrix66 outputMatrix = matrix66::Identity();   // we need all positions
 
-        const double parametersProcessNoise = 0; // TODO set in parameters
+        const double parametersProcessNoise = 0.0001; // TODO set in parameters
         const matrix66 processNoiseCovariance =
                 matrix66::Identity() * parametersProcessNoise; // Process noise covariance
 
