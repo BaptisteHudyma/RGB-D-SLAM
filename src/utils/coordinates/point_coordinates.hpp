@@ -266,6 +266,9 @@ struct InverseDepthWorldPoint
     [[nodiscard]] vector6 get_vector_state() const noexcept;
     void from_vector_state(const vector6& state) noexcept;
 
+    static vector3 get_observation_vector(const utils::CameraCoordinate& observation,
+                                          const CameraToWorldMatrix& c2w) noexcept;
+
     const WorldCoordinate _firstObservation; // position of the camera for the first observation
     double _theta_rad = 0.0;                 // azimuth angle of the first observation, in world space
     double _phi_rad = 0.0;                   // elevation angle of the first observation, in world space
