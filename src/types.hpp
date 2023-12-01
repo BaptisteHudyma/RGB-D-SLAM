@@ -3,6 +3,8 @@
 
 #include <Eigen/Dense>
 #include <Eigen/src/Core/Matrix.h>
+#include <Eigen/src/Core/util/Macros.h>
+#include <Eigen/src/Core/util/XprHelper.h>
 #include <vector>
 
 namespace rgbd_slam {
@@ -76,9 +78,43 @@ struct EulerAngles
 };
 
 // define an optimized squared
-#define SQR(x) ((x) * (x))
+template<class T> T constexpr inline SQR(const T x) { return x * x; }
 
 using vector3_vector = std::vector<vector3, Eigen::aligned_allocator<vector3>>;
+
 } // namespace rgbd_slam
+
+// alow to round eigen matrix when needed
+template<typename scalar> struct threshold_op
+{
+    scalar threshold;
+    threshold_op(const scalar& value) : threshold(value) {}
+    EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE const scalar operator()(const scalar& a) const
+    {
+        return threshold < std::abs(a) ? a : scalar(0);
+    }
+    template<typename packet> EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE const packet packetOp(const packet& a) const
+    {
+        using namespace Eigen::internal;
+        return pand(pcmp_lt(pset1<packet>(threshold), pabs(a)), a);
+    }
+};
+namespace Eigen {
+namespace internal {
+
+template<typename scalar> struct functor_traits<threshold_op<scalar>>
+{
+    enum
+    {
+        Cost = 3 * NumTraits<scalar>::AddCost,
+        PacketAccess = packet_traits<scalar>::HasAbs
+    };
+};
+
+/// round the given eigen matrix to zero
+#define ROUND_MAT(mat) mat.unaryExpr(threshold_op<double>(1e-10))
+
+} // namespace internal
+} // namespace Eigen
 
 #endif

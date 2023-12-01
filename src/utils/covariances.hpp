@@ -4,8 +4,6 @@
 #include "coordinates/plane_coordinates.hpp"
 #include "coordinates/point_coordinates.hpp"
 #include "logger.hpp"
-#include "matches_containers.hpp"
-#include "pose.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <algorithm>

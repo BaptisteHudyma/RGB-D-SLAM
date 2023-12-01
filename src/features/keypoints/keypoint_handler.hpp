@@ -2,7 +2,6 @@
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_HANDLER_HPP
 
 #include "../../utils/coordinates/point_coordinates.hpp"
-#include <list>
 #include <opencv2/core/types.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <utility>

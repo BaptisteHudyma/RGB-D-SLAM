@@ -1,5 +1,6 @@
 #include "local_map.hpp"
 
+#include "camera_transformation.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
 

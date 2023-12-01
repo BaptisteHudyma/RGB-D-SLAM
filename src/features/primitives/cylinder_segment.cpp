@@ -1,8 +1,6 @@
 #include "cylinder_segment.hpp"
-#include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
 #include "../../utils/random.hpp"
-#include "Eigen/Eigenvalues"
 
 namespace rgbd_slam::features::primitives {
 
@@ -131,7 +129,7 @@ Cylinder_Segment::Cylinder_Segment(const std::vector<Plane_Segment>& planeGrid,
             parameters::detection::cylinderRansacProbabilityOfSuccess; // probability of selecting only inliers in a
                                                                        // ransac iteration
     constexpr float w = parameters::detection::cylinderRansacInlierProportions; // inliers / all elements
-    constexpr uint maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(w, 3.0f)));
+    const static uint maximumIterations = static_cast<uint>(logf(1.0f - pSuccess) / logf(1.0f - powf(w, 3.0f)));
 
     uint planeSegmentsLeft = _cellActivatedCount;
     Matrixb idsLeftMask(1, _cellActivatedCount);

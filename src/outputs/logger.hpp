@@ -3,7 +3,6 @@
 
 #include <source_location>
 #include <string_view>
-#include <format>
 
 namespace rgbd_slam::outputs {
 

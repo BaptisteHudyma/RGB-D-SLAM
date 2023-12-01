@@ -98,7 +98,7 @@ struct PointInverseDepth
     static void build_kalman_filter() noexcept;
 
     // shared kalman filter, between all points
-    inline static std::unique_ptr<tracking::SharedKalmanFilter<6, 6>> _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
 };
 
 } // namespace rgbd_slam::tracking

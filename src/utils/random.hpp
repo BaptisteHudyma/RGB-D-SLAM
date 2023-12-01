@@ -4,7 +4,6 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <ctime>
 #include <random>
-#include "types.hpp"
 
 namespace rgbd_slam::utils {
 

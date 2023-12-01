@@ -6,7 +6,6 @@
 #include "histogram.hpp"
 #include "plane_segment.hpp"
 #include "shape_primitives.hpp"
-#include "polygon.hpp"
 #include <opencv2/opencv.hpp>
 #include <vector>
 

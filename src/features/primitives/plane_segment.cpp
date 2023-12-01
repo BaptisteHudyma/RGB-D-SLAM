@@ -1,7 +1,5 @@
 #include "plane_segment.hpp"
-#include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
-#include "Eigen/Eigenvalues"
 #include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "types.hpp"
@@ -325,7 +323,7 @@ double Plane_Segment::get_point_distance_squared(const vector3& point) const noe
 
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const noexcept
 {
-    constexpr double maximumMergeAngle = cos(parameters::detection::maximumPlaneAngleForMerge_d * M_PI / 180.0);
+    static const double maximumMergeAngle = cos(parameters::detection::maximumPlaneAngleForMerge_d * M_PI / 180.0);
     return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid()) < maxMatchDistance;
 }
 

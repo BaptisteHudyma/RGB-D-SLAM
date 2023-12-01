@@ -143,6 +143,7 @@ add_library(outputs SHARED
     )
 
 add_library(utils SHARED
+    ${UTILS}/coordinates/basis_changes.cpp
     ${UTILS}/coordinates/point_coordinates.cpp
     ${UTILS}/coordinates/plane_coordinates.cpp
     ${UTILS}/angle_utils.cpp

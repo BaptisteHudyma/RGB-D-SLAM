@@ -4,13 +4,10 @@
 #include "outputs/map_writer.hpp"
 #include "outputs/logger.hpp"
 
-#include "utils/camera_transformation.hpp"
 #include "utils/random.hpp"
-#include "utils/pose.hpp"
 
 #include "types.hpp"
 
-#include <cmath>
 #include <list>
 #include <memory>
 

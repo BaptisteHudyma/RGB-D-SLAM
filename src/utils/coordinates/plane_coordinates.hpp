@@ -3,7 +3,6 @@
 
 #include "../types.hpp"
 #include <cmath>
-#include <ostream>
 #include "point_coordinates.hpp"
 
 namespace rgbd_slam::utils {

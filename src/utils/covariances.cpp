@@ -1,9 +1,7 @@
 #include "covariances.hpp"
 
 #include "../parameters.hpp"
-#include "camera_transformation.hpp"
 #include "distance_utils.hpp"
-#include "logger.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/util/Constants.h>
 #include <cmath>

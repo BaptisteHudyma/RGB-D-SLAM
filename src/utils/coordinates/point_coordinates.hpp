@@ -2,8 +2,6 @@
 #define RGBDSLAM_UTILS_POINT_COORDINATES_HPP
 
 #include "../types.hpp"
-#include <cmath>
-#include <ostream>
 
 namespace rgbd_slam::utils {
 
@@ -238,6 +236,8 @@ struct InverseDepthWorldPoint
     InverseDepthWorldPoint(const utils::ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w);
     InverseDepthWorldPoint(const utils::CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
 
+    void from_cartesian(const WorldCoordinate& point, const WorldCoordinate& origin) noexcept;
+
     /**
      * \brief compute the cartesian projection of this point in world space.
      * \return The point in camera coordinates (the associated covariance can be huge)
@@ -266,13 +266,10 @@ struct InverseDepthWorldPoint
     [[nodiscard]] vector6 get_vector_state() const noexcept;
     void from_vector_state(const vector6& state) noexcept;
 
-    static vector3 get_observation_vector(const utils::CameraCoordinate& observation,
-                                          const CameraToWorldMatrix& c2w) noexcept;
-
-    const WorldCoordinate _firstObservation; // position of the camera for the first observation
-    double _theta_rad = 0.0;                 // azimuth angle of the first observation, in world space
-    double _phi_rad = 0.0;                   // elevation angle of the first observation, in world space
-    double _inverseDepth_mm = 0.0;           // inverse of the depth (>= 0)
+    WorldCoordinate _firstObservation; // position of the camera for the first observation
+    double _theta_rad = 0.0;           // azimuth angle of the first observation, in world space
+    double _phi_rad = 0.0;             // elevation angle of the first observation, in world space
+    double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)
 };
 
 } // namespace rgbd_slam::utils

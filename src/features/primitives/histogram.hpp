@@ -3,7 +3,7 @@
 
 #include "../../types.hpp"
 #include "../../outputs/logger.hpp"
-#include "parameters.hpp"
+#include <format>
 #include <vector>
 
 namespace rgbd_slam::features::primitives {
