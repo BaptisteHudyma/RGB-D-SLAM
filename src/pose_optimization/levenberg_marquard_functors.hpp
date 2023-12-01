@@ -3,7 +3,6 @@
 
 #include "types.hpp"
 #include "matches_containers.hpp"
-#include "utils/pose.hpp"
 
 // types
 #include <unsupported/Eigen/NonLinearOptimization>

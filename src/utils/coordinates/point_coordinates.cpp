@@ -1,7 +1,6 @@
 #include "point_coordinates.hpp"
 #include "../parameters.hpp"
 #include "../utils/distance_utils.hpp"
-#include "camera_transformation.hpp"
 #include "covariances.hpp"
 #include "types.hpp"
 #include <cmath>
@@ -304,25 +303,29 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::ScreenCoordinate2D& observation,
                                                const CameraToWorldMatrix& c2w) :
+    // use homogenous to create a vector from the camera center outward
     InverseDepthWorldPoint(utils::CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
 {
 }
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::CameraCoordinate& observation,
-                                               const CameraToWorldMatrix& c2w) :
-    _firstObservation(c2w.translation())
+                                               const CameraToWorldMatrix& c2w)
 {
-    const vector3 directionalVector = get_observation_vector(observation, c2w);
-    _theta_rad = atan2(directionalVector.x(), directionalVector.z());
-    _phi_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
-    _inverseDepth_mm = 1.0 / 50000.0; // 50 meters baseline (infinity is approx to 50 meters right ?)
+    from_cartesian(observation.to_world_coordinates(c2w), WorldCoordinate(c2w.translation()));
+
+    constexpr double dmin = 1000;
+    _inverseDepth_mm = (1.0 / dmin) / 2; // 10 meters baseline (infinity is approx to 10 meters right ?)
 }
 
-vector3 InverseDepthWorldPoint::get_observation_vector(const utils::CameraCoordinate& observation,
-                                                       const CameraToWorldMatrix& c2w) noexcept
+void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point, const WorldCoordinate& origin) noexcept
 {
-    // do not translate: this is just a direction vector
-    return vector3(c2w.rotation() * observation);
+    _firstObservation = origin;
+
+    const vector3 directionalVector(point - _firstObservation);
+
+    _theta_rad = atan2(directionalVector.x(), directionalVector.z());
+    _phi_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
+    _inverseDepth_mm = 1.0 / point.z();
 }
 
 utils::WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept

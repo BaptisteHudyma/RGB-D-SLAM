@@ -1,16 +1,12 @@
 #include "primitive_detection.hpp"
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
-#include "covariances.hpp"
 #include "cylinder_segment.hpp"
-#include "distance_utils.hpp"
 #include "plane_segment.hpp"
-#include "random.hpp"
 #include "shape_primitives.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/Array.h>
 #include <algorithm>
-#include <atomic>
 #include <bits/ranges_algo.h>
 #include <cstddef>
 #include <limits>
@@ -145,7 +141,7 @@ void Primitive_Detection::reset_data() noexcept
 
 void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArray) noexcept
 {
-    constexpr float sinAngleForMerge =
+    const static float sinAngleForMerge =
             sinf(static_cast<float>(parameters::detection::maximumPlaneAngleForMerge_d * M_PI / 180.0));
     constexpr float planeMergeDistanceThreshold = parameters::detection::maximumPlaneDistanceForMerge_mm;
 

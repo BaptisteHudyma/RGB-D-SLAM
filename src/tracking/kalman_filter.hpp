@@ -1,10 +1,9 @@
 #ifndef RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 #define RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 
-#include "types.hpp"
 #include "covariances.hpp"
 #include "distance_utils.hpp"
-#include "logger.hpp"
+#include "types.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <stdexcept>
 
@@ -78,7 +77,7 @@ template<int N, int M> class SharedKalmanFilter
             if (not utils::is_covariance_valid(estimateErrorCovariance))
             {
                 throw std::logic_error(
-                        "SharedKalmanFilter::get_new_state: produced and invalid covariance estimateErrorCovariance");
+                        "SharedKalmanFilter::get_new_state: produced an invalid covariance estimateErrorCovariance");
             }
             return std::make_pair(newStateEstimate, estimateErrorCovariance);
         }
@@ -104,7 +103,7 @@ template<int N, int M> class SharedKalmanFilter
 
         if (not utils::is_covariance_valid(newCovariance))
         {
-            throw std::logic_error("SharedKalmanFilter::get_new_state: produced and invalid covariance");
+            throw std::logic_error("SharedKalmanFilter::get_new_state: produced an invalid covariance");
         }
         // return the covariance and state estimation
         return std::make_pair(newState, newCovariance);

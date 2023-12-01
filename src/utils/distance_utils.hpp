@@ -1,7 +1,6 @@
 #ifndef RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 #define RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 
-#include <cmath>
 #include <limits>
 
 namespace rgbd_slam::utils {

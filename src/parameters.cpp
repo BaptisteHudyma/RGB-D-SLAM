@@ -3,8 +3,6 @@
 #include "camera_transformation.hpp"
 #include "outputs/logger.hpp"
 #include "types.hpp"
-#include <cfloat>
-#include <math.h>
 #include <opencv2/core/core.hpp>
 
 namespace rgbd_slam {

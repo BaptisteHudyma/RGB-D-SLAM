@@ -1,13 +1,9 @@
 #include "plane_coordinates.hpp"
 
-#include "../parameters.hpp"
 #include "../utils/distance_utils.hpp"
-#include "camera_transformation.hpp"
-#include "covariances.hpp"
 #include "types.hpp"
 #include <cmath>
 #include <math.h>
-#include <stdexcept>
 
 namespace rgbd_slam::utils {
 

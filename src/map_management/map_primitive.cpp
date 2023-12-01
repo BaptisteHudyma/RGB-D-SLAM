@@ -1,5 +1,6 @@
 #include "map_primitive.hpp"
 
+#include "camera_transformation.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "distance_utils.hpp"
@@ -80,6 +81,7 @@ bool MapPlane::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPlaneObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
+    // TODO: track 2D points
     // silence warning for unused parameters
     (void)worldToCamera;
     (void)trackedFeatures;

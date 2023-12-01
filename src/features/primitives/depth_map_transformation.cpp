@@ -1,9 +1,6 @@
 #include "depth_map_transformation.hpp"
 #include "../../parameters.hpp"
-#include "../../utils/angle_utils.hpp"
-#include "../../utils/random.hpp"
 #include "../../utils/coordinates/point_coordinates.hpp"
-#include <cstddef>
 #include <opencv2/core/eigen.hpp>
 #include <tbb/parallel_for.h>
 

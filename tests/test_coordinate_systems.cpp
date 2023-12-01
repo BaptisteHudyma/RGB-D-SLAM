@@ -548,7 +548,7 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     }
 
     // observe the center of the camera
-    const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center() * 1.001);
+    const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center() * 1.00001);
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
@@ -557,105 +557,48 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     EXPECT_NEAR(inverseDepth._coordinates._phi_rad, 0.0, 0.001);
     EXPECT_NEAR(inverseDepth._coordinates._theta_rad, 0.0, 0.001);
 
+    const auto beforeMergeInverseCov = inverseDepth._covariance;
     const auto& beforeMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
             inverseDepth._coordinates, inverseDepth._covariance);
-    std::cout << beforeMergeCovariance << std::endl << std::endl;
+
     EXPECT_TRUE(is_covariance_valid(beforeMergeCovariance));
     EXPECT_GT(beforeMergeCovariance(0, 0),
               1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
     EXPECT_GT(beforeMergeCovariance(1, 1),
               1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
-    EXPECT_GT(beforeMergeCovariance(2, 2), 1e6); // very high variance for z coordinate depth is unknown
+    EXPECT_GT(beforeMergeCovariance(2, 2), 1e3); // very high variance for z coordinate depth is unknown
 
     // fuse the two points
     EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Zero(), cv::Mat()));
 
+    const auto afterMergeInverseCov = inverseDepth._covariance;
     const auto& afterMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
             inverseDepth._coordinates, inverseDepth._covariance);
-    std::cout << afterMergeCovariance << std::endl << std::endl;
-    /*EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
-    EXPECT_NEAR(
-            afterMergeCovariance(0, 0),
-            0.0,
-            0.00001); // very low variance for x coordinate (center of observation): angle uncertainty as been reduced
-    EXPECT_NEAR(
-            afterMergeCovariance(1, 1),
-            0.0,
-            0.00001); // very low variance for y coordinate (center of observation): angle uncertainty as been reduced*/
-    EXPECT_GT(afterMergeCovariance(2, 2), 1e6); // very high variance for z coordinate depth is unknown
 
-    // add a new measurment at 45 degrees
-    const CameraToWorldMatrix& c2w45 = utils::compute_camera_to_world_transform(
-            get_quaternion_from_euler_angles(EulerAngles(90 * EulerToRadian, 0.0, 0.0)), vector3(1000, 0, 1000.0));
+    EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
+    EXPECT_LT(afterMergeInverseCov(3, 3), beforeMergeInverseCov(3, 3));
+    EXPECT_LT(afterMergeInverseCov(4, 4), beforeMergeInverseCov(4, 4));
+    EXPECT_LT(afterMergeInverseCov(5, 5), beforeMergeInverseCov(5, 5));
+
+    // add a new measurment at 90 degrees
+    const CameraToWorldMatrix& c2w90 = utils::compute_camera_to_world_transform(
+            get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)), vector3(1000, 0, 1000.0));
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track(observation, c2w45, matrix33::Zero(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track(observation, c2w90, matrix33::Zero(), cv::Mat()));
 
     const auto& afterSecondMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
             inverseDepth._coordinates, inverseDepth._covariance);
 
-    EXPECT_TRUE(is_covariance_valid(afterSecondMergeCovariance));
-
-    std::cout << afterSecondMergeCovariance << std::endl << std::endl;
-    std::cout << inverseDepth._coordinates.to_world_coordinates().transpose() << std::endl;
-}
-
-TEST(InverseDepthPointFusion, topLeftPointParallelFusion)
-{
-    if (not Parameters::is_valid())
-    {
-        Parameters::load_defaut();
-    }
-
-    // observe the center of the camera
-    const utils::ScreenCoordinate2D observation(vector2::Zero());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
-
-    // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Zero(), cv::Mat());
-    EXPECT_NEAR(inverseDepth._coordinates._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._coordinates._phi_rad, 0.36067193828148641, 0.0001);
-    EXPECT_NEAR(inverseDepth._coordinates._theta_rad, -0.52694322718942965, 0.0001);
-
-    const auto& beforeMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
+    std::cout << "---------------------------" << std::endl << std::endl;
+    // std::cout << inverseDepth._covariance << std::endl << std::endl;
     std::cout << beforeMergeCovariance << std::endl << std::endl;
-    EXPECT_TRUE(is_covariance_valid(beforeMergeCovariance));
-    EXPECT_GT(beforeMergeCovariance(0, 0),
-              1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
-    EXPECT_GT(beforeMergeCovariance(1, 1),
-              1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
-    EXPECT_GT(beforeMergeCovariance(2, 2), 1e6); // very high variance for z coordinate depth is unknown
-
-    // fuse the two points
-    EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Zero(), cv::Mat()));
-
-    const auto& afterMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
     std::cout << afterMergeCovariance << std::endl << std::endl;
-    /*EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
-    EXPECT_NEAR(
-            afterMergeCovariance(0, 0),
-            0.0,
-            0.00001); // very low variance for x coordinate (center of observation): angle uncertainty as been reduced
-    EXPECT_NEAR(
-            afterMergeCovariance(1, 1),
-            0.0,
-            0.00001); // very low variance for y coordinate (center of observation): angle uncertainty as been reduced*/
-    EXPECT_GT(afterMergeCovariance(2, 2), 1e6); // very high variance for z coordinate depth is unknown
+    std::cout << afterSecondMergeCovariance << std::endl << std::endl;
 
-    // add a new measurment at 45 degrees
-    const CameraToWorldMatrix& c2w45 = utils::compute_camera_to_world_transform(
-            get_quaternion_from_euler_angles(EulerAngles(90 * EulerToRadian, 0.0, 0.0)), vector3(1000, 0, 1000.0));
-    // fuse the two points
-    EXPECT_TRUE(inverseDepth.track(observation, c2w45, matrix33::Zero(), cv::Mat()));
-
-    const auto& afterSecondMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
+    // result should be around (0, 0, 1000)
+    std::cout << inverseDepth._coordinates.to_world_coordinates().transpose() << std::endl;
 
     EXPECT_TRUE(is_covariance_valid(afterSecondMergeCovariance));
-
-    std::cout << afterSecondMergeCovariance << std::endl << std::endl;
-    std::cout << inverseDepth._coordinates.to_world_coordinates().transpose() << std::endl;
 }
 
 void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates& planeB)

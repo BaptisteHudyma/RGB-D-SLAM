@@ -3,7 +3,6 @@
 #include "coordinates/point_coordinates.hpp"
 #include "types.hpp"
 #include "utils/covariances.hpp"
-#include "utils/camera_transformation.hpp"
 
 namespace rgbd_slam::tracking {
 
@@ -90,7 +89,9 @@ PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observatio
     constexpr double anglevariance = SQR(2 * EulerToRadian);
     _covariance(3, 3) = anglevariance; // theta angle covariance
     _covariance(4, 4) = anglevariance; // phi angle covariance
-    _covariance(5, 5) = SQR(0.1);      // depth covariance
+
+    constexpr double dmin = 1000;
+    _covariance(5, 5) = SQR((1.0 / dmin) / 4); // 1 meters depth covariance
     assert(utils::is_covariance_valid(_covariance));
 }
 
@@ -108,35 +109,35 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation
                               const cv::Mat& descriptor)
 {
     // get observation in world space
-    const PointInverseDepth newObservation(screenObservation, c2w, stateCovariance, descriptor);
-    /*
-        // project to this point coordinates to perform the fusion
-        const WorldToCameraMatrix& w2c = utils::compute_world_to_camera_transform(c2w);
-        const PointInverseDepth observationInSameSpace(newObservation._coordinates.to_camera_coordinates(w2c),
-                                                       // pose variance was already added, add 0 variance
-                                                       newObservation.get_camera_coordinate_variance(w2c,
-       matrix33::Zero()), c2w, stateCovariance);
-    */
+    PointInverseDepth newObservation(screenObservation, c2w, stateCovariance, descriptor);
+
+    // project to cartesian
+    const utils::WorldCoordinate& cartesianProj = newObservation._coordinates.to_world_coordinates();
+    WorldCoordinateCovariance covarianceProj =
+            compute_cartesian_covariance(newObservation._coordinates, newObservation._covariance);
+
+    assert(utils::is_covariance_valid(covarianceProj));
+
+    // pass it through the filter
     build_kalman_filter();
     assert(_kalmanFilter != nullptr);
-    const auto& [newState, newCovariance] = _kalmanFilter->get_new_state(_coordinates.get_vector_state(),
-                                                                         _covariance,
-                                                                         newObservation._coordinates.get_vector_state(),
-                                                                         newObservation._covariance);
 
-    /*std::cout << "first params was " << _coordinates.get_vector_state().transpose() << std::endl;
-    std::cout << "secon params was " << newObservation._coordinates.get_vector_state().transpose() << std::endl;
+    const auto& [newState, newCovariance] =
+            _kalmanFilter->get_new_state(_coordinates.to_world_coordinates(),
+                                         compute_cartesian_covariance(_coordinates, _covariance),
+                                         cartesianProj,
+                                         covarianceProj);
+    assert(utils::is_covariance_valid(newCovariance));
 
-    std::cout << "cov was " << std::endl;
-    std::cout << _covariance << std::endl;
-    std::cout << "observation cov is " << std::endl;
-    std::cout << newObservation._covariance << std::endl;
-    std::cout << "merge covariances are " << std::endl;
-    std::cout << newCovariance << std::endl;
-    std::cout << "after params are " << newState.transpose() << std::endl;*/
+    // put back in inverse depth coordinates
+    _coordinates.from_cartesian(utils::WorldCoordinate(newState), _coordinates._firstObservation);
+    const matrix33& finalCovar = compute_inverse_depth_covariance(newState - _coordinates._firstObservation,
+                                                                  WorldCoordinateCovariance(newCovariance),
+                                                                  stateCovariance)
+                                         .block<3, 3>(3, 3);
+    assert(utils::is_covariance_valid(finalCovar));
 
-    _coordinates.from_vector_state(newState);
-    _covariance = newCovariance;
+    _covariance.block<3, 3>(3, 3) = finalCovar;
     assert(utils::is_covariance_valid(_covariance));
 
     if (not descriptor.empty())
@@ -165,6 +166,8 @@ ScreenCoordinateCovariance PointInverseDepth::get_screen_coordinate_variance(
 WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(
         const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance) noexcept
 {
+    assert(utils::is_covariance_valid(covariance));
+
     // jacobian of the to_world_coordinates() operation
     using matrix36 = Eigen::Matrix<double, 3, 6>;
     matrix36 jacobian(matrix36::Zero());
@@ -178,12 +181,13 @@ WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(
 
     const double depth = 1.0 / coordinates._inverseDepth_mm;
     const double depthSqr = 1.0 / SQR(coordinates._inverseDepth_mm);
-    const double theta1 = cosPhi * sinTheta;
-    const double theta2 = cosPhi * cosTheta;
+    const double cosPhiSinTheta = cosPhi * sinTheta;
+    const double cosPhiCosTheta = cosPhi * cosTheta;
 
-    jacobian.block<3, 3>(0, 3) = matrix33({{theta2 * depth, -sinPhi * sinTheta * depth, -theta1 * depthSqr},
-                                           {0, -cosPhi * depth, sinPhi * depthSqr},
-                                           {-theta1 * depth, -cosTheta * sinPhi * depth, -theta2 * depthSqr}});
+    jacobian.block<3, 3>(0, 3) =
+            matrix33({{cosPhiCosTheta * depth, -sinPhi * sinTheta * depth, -cosPhiSinTheta * depthSqr},
+                      {0, -cosPhi * depth, sinPhi * depthSqr},
+                      {-cosPhiSinTheta * depth, -cosTheta * sinPhi * depth, -cosPhiCosTheta * depthSqr}});
     // jacobian of:
     // _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
 
@@ -225,8 +229,6 @@ matrix66 PointInverseDepth::compute_inverse_depth_covariance(const vector3& obse
 
     matrix66 resCovariance = jacobian * pointCovariance * jacobian.transpose();
 
-    std::cout << resCovariance << std::endl;
-
     // set pose base the covariance
     resCovariance.block<3, 3>(0, 0) = posevariance;
     assert(utils::is_covariance_valid(resCovariance));
@@ -237,14 +239,14 @@ void PointInverseDepth::build_kalman_filter() noexcept
 {
     if (_kalmanFilter == nullptr)
     {
-        const matrix66 systemDynamics = matrix66::Identity(); // points are not supposed to move, so no dynamics
-        const matrix66 outputMatrix = matrix66::Identity();   // we need all positions
+        const matrix33 systemDynamics = matrix33::Identity(); // points are not supposed to move, so no dynamics
+        const matrix33 outputMatrix = matrix33::Identity();   // we need all positions
 
         const double parametersProcessNoise = 0.0001; // TODO set in parameters
-        const matrix66 processNoiseCovariance =
-                matrix66::Identity() * parametersProcessNoise; // Process noise covariance
+        const matrix33 processNoiseCovariance =
+                matrix33::Identity() * parametersProcessNoise; // Process noise covariance
 
-        _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter<6, 6>>(
+        _kalmanFilter = std::make_unique<tracking::SharedKalmanFilter<3, 3>>(
                 systemDynamics, outputMatrix, processNoiseCovariance);
     }
 }

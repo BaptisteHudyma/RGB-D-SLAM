@@ -1,4 +1,5 @@
 #include "distance_utils.hpp"
+#include <cmath>
 
 namespace rgbd_slam::utils {
 

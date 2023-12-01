@@ -7,10 +7,7 @@
 #include "ransac.hpp"
 #include "types.hpp"
 
-#include "../../third_party/p3p.hpp"
-
 #include "utils/camera_transformation.hpp"
-#include "utils/covariances.hpp"
 #include "utils/random.hpp"
 #include "utils/coordinates/point_coordinates.hpp"
 #include "utils/coordinates/plane_coordinates.hpp"
@@ -20,6 +17,7 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <format>
 
 #include <tbb/parallel_for.h>
 

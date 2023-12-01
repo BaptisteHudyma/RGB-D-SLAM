@@ -2,7 +2,6 @@
 
 #include "logger.hpp"
 #include "parameters.hpp"
-#include "triangulation.hpp"
 #include "camera_transformation.hpp"
 
 namespace rgbd_slam::map_management {
