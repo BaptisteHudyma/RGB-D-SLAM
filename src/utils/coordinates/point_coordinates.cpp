@@ -328,10 +328,69 @@ void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point, const 
     _inverseDepth_mm = 1.0 / point.z();
 }
 
+void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
+                                            const WorldCoordinate& origin,
+                                            Eigen::Matrix<double, 6, 3>& jacobian) noexcept
+{
+    // this is the jacobian of
+    // theta = atan2(x, z)
+    // phi = atan2(-y, sqrt(x*x + z*z))
+    // invDepth = 1/z
+    const vector3 directionalVector(point - _firstObservation);
+
+    jacobian = Eigen::Matrix<double, 6, 3>::Zero();
+
+    const double xSqr = SQR(directionalVector.x());
+    const double ySqr = SQR(directionalVector.y());
+    const double zSqr = SQR(directionalVector.z());
+
+    const double oneOverXZ = 1.0 / (xSqr + zSqr);
+    const double sqrtXZ = sqrt(xSqr + zSqr);
+    const double theta1 = 1.0 / (sqrtXZ * (xSqr + ySqr + zSqr));
+
+    jacobian(3, 0) = directionalVector.z() * oneOverXZ;
+    jacobian(3, 2) = -directionalVector.x() * oneOverXZ;
+
+    jacobian(4, 0) = directionalVector.x() * directionalVector.y() * theta1;
+    jacobian(4, 1) = -sqrtXZ / (xSqr + ySqr + zSqr);
+    jacobian(4, 2) = directionalVector.y() * directionalVector.z() * theta1;
+
+    jacobian(5, 2) = -1 / zSqr;
+
+    from_cartesian(point, origin);
+}
+
 utils::WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
 {
     assert(_inverseDepth_mm != 0.0);
     return utils::WorldCoordinate(_firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector());
+}
+
+utils::WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(
+        Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
+{
+    // jacobian of:
+    // _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
+    jacobian = Eigen::Matrix<double, 3, 6>::Zero();
+    jacobian.block<3, 3>(0, 0) = matrix33::Identity();
+
+    // compute sin and cos in advance (opti)
+    const double cosTheta = cos(_theta_rad);
+    const double sinTheta = sin(_theta_rad);
+    const double cosPhi = cos(_phi_rad);
+    const double sinPhi = sin(_phi_rad);
+
+    const double depth = 1.0 / _inverseDepth_mm;
+    const double depthSqr = 1.0 / SQR(_inverseDepth_mm);
+    const double cosPhiSinTheta = cosPhi * sinTheta;
+    const double cosPhiCosTheta = cosPhi * cosTheta;
+
+    jacobian.block<3, 3>(0, 3) =
+            matrix33({{cosPhiCosTheta * depth, -sinPhi * sinTheta * depth, -cosPhiSinTheta * depthSqr},
+                      {0, -cosPhi * depth, sinPhi * depthSqr},
+                      {-cosPhiSinTheta * depth, -cosTheta * sinPhi * depth, -cosPhiCosTheta * depthSqr}});
+
+    return to_world_coordinates();
 }
 
 utils::CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept

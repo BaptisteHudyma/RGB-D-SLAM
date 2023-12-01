@@ -586,19 +586,21 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     // fuse the two points
     EXPECT_TRUE(inverseDepth.track(observation, c2w90, matrix33::Zero(), cv::Mat()));
 
-    const auto& afterSecondMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
+    const CameraToWorldMatrix& c2wMinus90 = utils::compute_camera_to_world_transform(
+            get_quaternion_from_euler_angles(EulerAngles(0.0, 90 * EulerToRadian, 0.0)), vector3(-10000, 0, 1000.0));
+    // fuse the two points
+    EXPECT_TRUE(inverseDepth.track(observation, c2wMinus90, matrix33::Zero(), cv::Mat()));
+
+    const auto& finalCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(inverseDepth._coordinates,
+                                                                                            inverseDepth._covariance);
 
     std::cout << "---------------------------" << std::endl << std::endl;
-    // std::cout << inverseDepth._covariance << std::endl << std::endl;
-    std::cout << beforeMergeCovariance << std::endl << std::endl;
-    std::cout << afterMergeCovariance << std::endl << std::endl;
-    std::cout << afterSecondMergeCovariance << std::endl << std::endl;
+    std::cout << finalCovariance << std::endl << std::endl;
 
     // result should be around (0, 0, 1000)
     std::cout << inverseDepth._coordinates.to_world_coordinates().transpose() << std::endl;
 
-    EXPECT_TRUE(is_covariance_valid(afterSecondMergeCovariance));
+    EXPECT_TRUE(is_covariance_valid(finalCovariance));
 }
 
 void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates& planeB)

@@ -236,13 +236,35 @@ struct InverseDepthWorldPoint
     InverseDepthWorldPoint(const utils::ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w);
     InverseDepthWorldPoint(const utils::CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
 
+    /**
+     * \brief Set the parameters of this instance from a cartesian point
+     * \param[in] point The observed point in world coordinates
+     * \param[in] origin The point where the point was observed
+     */
     void from_cartesian(const WorldCoordinate& point, const WorldCoordinate& origin) noexcept;
+
+    /**
+     * \brief Set the parameters of this instance from a cartesian point
+     * \param[in] point The observed point in world coordinates
+     * \param[in] origin The point where the point was observed
+     * \param[out] jacobian The jacobian of this transformation
+     */
+    void from_cartesian(const WorldCoordinate& point,
+                        const WorldCoordinate& origin,
+                        Eigen::Matrix<double, 6, 3>& jacobian) noexcept;
 
     /**
      * \brief compute the cartesian projection of this point in world space.
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
     [[nodiscard]] utils::WorldCoordinate to_world_coordinates() const noexcept;
+
+    /**
+     * \brief compute the cartesian projection of this point in world space.
+     * \param[out] jacobian The jacobian of this transformation
+     * \return The point in camera coordinates (the associated covariance can be huge)
+     */
+    utils::WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept;
 
     /**
      * \brief Compute the projected coordinates of this point to camera space

@@ -84,12 +84,16 @@ struct PointInverseDepth
     [[nodiscard]] static WorldCoordinateCovariance compute_cartesian_covariance(
             const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance) noexcept;
 
+    [[nodiscard]] static WorldCoordinateCovariance compute_cartesian_covariance(
+            const matrix66& covariance, const Eigen::Matrix<double, 3, 6>& jacobian) noexcept;
+
     /**
      * \brief Get the inverse depth covariance from the world point covariance
      */
-    [[nodiscard]] static matrix66 compute_inverse_depth_covariance(const vector3& observationVector,
-                                                                   const WorldCoordinateCovariance& pointCovariance,
-                                                                   const matrix33& posevariance) noexcept;
+    [[nodiscard]] static matrix66 compute_inverse_depth_covariance(
+            const WorldCoordinateCovariance& pointCovariance,
+            const matrix33& posevariance,
+            const Eigen::Matrix<double, 6, 3>& jacobian) noexcept;
 
   protected:
     /**
