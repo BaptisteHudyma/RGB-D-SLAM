@@ -130,14 +130,11 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation
     assert(utils::is_covariance_valid(newCovariance));
 
     // put back in inverse depth coordinates
-    _coordinates.from_cartesian(utils::WorldCoordinate(newState), _coordinates._firstObservation);
-    const matrix33& finalCovar = compute_inverse_depth_covariance(newState - _coordinates._firstObservation,
-                                                                  WorldCoordinateCovariance(newCovariance),
-                                                                  stateCovariance)
-                                         .block<3, 3>(3, 3);
-    assert(utils::is_covariance_valid(finalCovar));
-
-    _covariance.block<3, 3>(3, 3) = finalCovar;
+    Eigen::Matrix<double, 6, 3> fromCartesianJacobian;
+    _coordinates.from_cartesian(
+            utils::WorldCoordinate(newState), _coordinates._firstObservation, fromCartesianJacobian);
+    _covariance = compute_inverse_depth_covariance(
+            WorldCoordinateCovariance(newCovariance), _covariance.block<3, 3>(0, 0), fromCartesianJacobian);
     assert(utils::is_covariance_valid(_covariance));
 
     if (not descriptor.empty())
@@ -168,65 +165,25 @@ WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(
 {
     assert(utils::is_covariance_valid(covariance));
 
-    // jacobian of the to_world_coordinates() operation
-    using matrix36 = Eigen::Matrix<double, 3, 6>;
-    matrix36 jacobian(matrix36::Zero());
-    jacobian.block<3, 3>(0, 0) = matrix33::Identity();
+    Eigen::Matrix<double, 3, 6> jacobian;
+    coordinates.to_world_coordinates(jacobian);
+    return PointInverseDepth::compute_cartesian_covariance(covariance, jacobian);
+}
 
-    // compute sin and cos in advance (opti)
-    const double cosTheta = cos(coordinates._theta_rad);
-    const double sinTheta = sin(coordinates._theta_rad);
-    const double cosPhi = cos(coordinates._phi_rad);
-    const double sinPhi = sin(coordinates._phi_rad);
-
-    const double depth = 1.0 / coordinates._inverseDepth_mm;
-    const double depthSqr = 1.0 / SQR(coordinates._inverseDepth_mm);
-    const double cosPhiSinTheta = cosPhi * sinTheta;
-    const double cosPhiCosTheta = cosPhi * cosTheta;
-
-    jacobian.block<3, 3>(0, 3) =
-            matrix33({{cosPhiCosTheta * depth, -sinPhi * sinTheta * depth, -cosPhiSinTheta * depthSqr},
-                      {0, -cosPhi * depth, sinPhi * depthSqr},
-                      {-cosPhiSinTheta * depth, -cosTheta * sinPhi * depth, -cosPhiCosTheta * depthSqr}});
-    // jacobian of:
-    // _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
+WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(
+        const matrix66& covariance, const Eigen::Matrix<double, 3, 6>& jacobian) noexcept
+{
+    assert(utils::is_covariance_valid(covariance));
 
     WorldCoordinateCovariance worldCovariance(jacobian * covariance * jacobian.transpose());
     assert(utils::is_covariance_valid(worldCovariance));
     return worldCovariance;
 }
 
-matrix66 PointInverseDepth::compute_inverse_depth_covariance(const vector3& observationVector,
-                                                             const WorldCoordinateCovariance& pointCovariance,
-                                                             const matrix33& posevariance) noexcept
+matrix66 PointInverseDepth::compute_inverse_depth_covariance(const WorldCoordinateCovariance& pointCovariance,
+                                                             const matrix33& posevariance,
+                                                             const Eigen::Matrix<double, 6, 3>& jacobian) noexcept
 {
-    assert(utils::is_covariance_valid(pointCovariance));
-    // jacobian of the from_cartesian() operation
-    using matrix63 = Eigen::Matrix<double, 6, 3>;
-    matrix63 jacobian(matrix63::Zero());
-
-    const double xSqr = SQR(observationVector.x());
-    const double ySqr = SQR(observationVector.y());
-    const double zSqr = SQR(observationVector.z());
-
-    const double oneOverXZ = 1.0 / (xSqr + zSqr);
-    const double sqrtXZ = sqrt(xSqr + zSqr);
-    const double theta1 = 1.0 / (sqrtXZ * (xSqr + ySqr + zSqr));
-
-    jacobian(3, 0) = observationVector.z() * oneOverXZ;
-    jacobian(3, 2) = -observationVector.x() * oneOverXZ;
-
-    jacobian(4, 0) = observationVector.x() * observationVector.y() * theta1;
-    jacobian(4, 1) = -sqrtXZ / (xSqr + ySqr + zSqr);
-    jacobian(4, 2) = observationVector.y() * observationVector.z() * theta1;
-
-    jacobian(5, 2) = -1 / zSqr;
-
-    // this is the jacobian of
-    // theta = atan2(x, z)
-    // phi = atan2(-y, sqrt(x*x + z*z))
-    // invDepth = 1/z
-
     matrix66 resCovariance = jacobian * pointCovariance * jacobian.transpose();
 
     // set pose base the covariance
