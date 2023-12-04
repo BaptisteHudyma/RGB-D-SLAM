@@ -5,15 +5,16 @@ namespace rgbd_slam::utils {
 
 quaternion get_quaternion_from_euler_angles(const EulerAngles& eulerAngles) noexcept
 {
-    return quaternion(Eigen::AngleAxisd(eulerAngles.roll, vector3::UnitX()) *
-                      Eigen::AngleAxisd(eulerAngles.pitch, vector3::UnitY()) *
+    return quaternion(Eigen::AngleAxisd(eulerAngles.pitch, vector3::UnitX()) *
+                      Eigen::AngleAxisd(eulerAngles.roll, vector3::UnitY()) *
                       Eigen::AngleAxisd(eulerAngles.yaw, vector3::UnitZ()));
 }
 
 EulerAngles get_euler_angles_from_quaternion(const quaternion& quat) noexcept
 {
-    vector3 eulerXYZ = Eigen::EulerAngles<double, Eigen::EulerSystemXYZ>(quat.normalized().toRotationMatrix()).angles();
-    return EulerAngles(eulerXYZ.x(), eulerXYZ.y(), eulerXYZ.z());
+    const vector3& eulerXYZ =
+            Eigen::EulerAngles<double, Eigen::EulerSystemXYZ>(quat.normalized().toRotationMatrix()).angles();
+    return EulerAngles(eulerXYZ.z(), eulerXYZ.x(), eulerXYZ.y());
 }
 
 matrix33 get_rotation_matrix_from_euler_angles(const EulerAngles& eulerAngles) noexcept

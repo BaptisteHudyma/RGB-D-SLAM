@@ -125,7 +125,7 @@ void Local_Map::update(const utils::Pose& optimizedPose,
     _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.detectedPlanes, _mapWriter);
 
     // try to triangulate the new features
-    const std::vector<UpgradedPoint2DType>& newFeatures = _localPoint2DMap.get_upgraded_features(poseCovariance);
+    const std::vector<UpgradedPoint2DType>& newFeatures = _localPoint2DMap.get_upgraded_features(cameraToWorld);
     for (const auto& upgraded: newFeatures)
     {
         _localPointMap.add_local_map_point(

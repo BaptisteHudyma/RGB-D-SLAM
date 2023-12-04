@@ -1,6 +1,15 @@
 #include "camera_transformation.hpp"
+#include "angle_utils.hpp"
+#include "logger.hpp"
 
 namespace rgbd_slam::utils {
+
+/**
+ * \brief This is used to go from a camera based coordinate system (x right, z forward, y down) to the world
+ * coordinate system (x forward, y left, z up) and inverse
+ */
+static const auto CameraToWorldRot =
+        get_quaternion_from_euler_angles(EulerAngles(0.0, -90.0 * EulerToRadian, 90.0 * EulerToRadian));
 
 matrix44 get_transformation_matrix(const quaternion& rotation, const vector3& position) noexcept
 {
@@ -11,6 +20,20 @@ matrix44 get_transformation_matrix(const quaternion& rotation, const vector3& po
 
 CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position) noexcept
 {
+    return CameraToWorldMatrix(get_transformation_matrix(CameraToWorldRot * rotation, position));
+}
+
+CameraToWorldMatrix compute_camera_to_world_transform(const WorldToCameraMatrix& worldToCamera) noexcept
+{
+    CameraToWorldMatrix cameraToWorld;
+    cameraToWorld << worldToCamera.inverse();
+    return cameraToWorld;
+}
+
+CameraToWorldMatrix compute_camera_to_world_transform_no_correction(const quaternion& rotation,
+                                                                    const vector3& position) noexcept
+{
+    outputs::log_error("This function should not be used in any other context than testing !");
     return CameraToWorldMatrix(get_transformation_matrix(rotation, position));
 }
 
@@ -26,11 +49,11 @@ WorldToCameraMatrix compute_world_to_camera_transform(const CameraToWorldMatrix&
     return worldToCamera;
 }
 
-CameraToWorldMatrix compute_camera_to_world_transform(const WorldToCameraMatrix& worldToCamera) noexcept
+WorldToCameraMatrix compute_world_to_camera_transform_no_correction(const quaternion& rotation,
+                                                                    const vector3& position) noexcept
 {
-    CameraToWorldMatrix cameraToWorld;
-    cameraToWorld << worldToCamera.inverse();
-    return cameraToWorld;
+    outputs::log_error("This function should not be used in any other context than testing !");
+    return compute_world_to_camera_transform(compute_camera_to_world_transform_no_correction(rotation, position));
 }
 
 PlaneCameraToWorldMatrix compute_plane_camera_to_world_matrix(const CameraToWorldMatrix& cameraToWorld) noexcept

@@ -63,6 +63,10 @@ constexpr uint opticalFlowPyramidWindowSizeHeightCount = 9; // search size windo
 constexpr uint opticalFlowPyramidWindowSizeWidthCount =
         12; // search size window count (horizontal) at each pyramid level
 
+// inverse depth
+constexpr double inverseDepthBaseline = 1.0 / 1000.0; // baseline of the inverse depth, in 1/millimeters
+constexpr double inverseDepthAngleBaseline = 0.5;     // baseline of the inverse depth measurment angles, in degrees
+
 // plane detection
 constexpr double minimumPlaneSeedProportion =
         0.8 / 100.0; // grow planes only if we have more than this proportion of planes patch in this seed

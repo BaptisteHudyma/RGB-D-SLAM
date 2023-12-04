@@ -41,8 +41,18 @@ struct Point
 
 struct PointInverseDepth
 {
+    static constexpr uint firstPoseIndex = utils::InverseDepthWorldPoint::firstPoseIndex;
+    static constexpr uint inverseDepthIndex = utils::InverseDepthWorldPoint::inverseDepthIndex;
+    static constexpr uint thetaIndex = utils::InverseDepthWorldPoint::thetaIndex;
+    static constexpr uint phiIndex = utils::InverseDepthWorldPoint::phiIndex;
+
+    struct Covariance : public matrix66
+    {
+        matrix33 get_first_pose_covariance() const { return block<3, 3>(firstPoseIndex, firstPoseIndex); }
+    };
+
     utils::InverseDepthWorldPoint _coordinates;
-    matrix66 _covariance = matrix66::Zero();
+    Covariance _covariance;
     cv::Mat _descriptor;
 
     PointInverseDepth(const utils::ScreenCoordinate2D& observation,
@@ -65,37 +75,45 @@ struct PointInverseDepth
                              const CameraToWorldMatrix& c2w,
                              const matrix33& stateCovariance,
                              const cv::Mat& descriptor);
+    [[nodiscard]] bool track(const utils::ScreenCoordinate& observation,
+                             const CameraToWorldMatrix& c2w,
+                             const matrix33& stateCovariance,
+                             const cv::Mat& descriptor);
 
     /**
      * \brief Compute the covariance of the cartesian projection of this inverse depth, in camera space
      */
-    [[nodiscard]] CameraCoordinateCovariance get_camera_coordinate_variance(
-            const WorldToCameraMatrix& w2c) const noexcept;
+    [[nodiscard]] CameraCoordinateCovariance get_camera_coordinate_variance(const WorldToCameraMatrix& w2c) const;
 
     /**
      * \brief Compute the covariance of the cartesian projection of this inverse depth, in screen space
      */
-    [[nodiscard]] ScreenCoordinateCovariance get_screen_coordinate_variance(
-            const WorldToCameraMatrix& w2c) const noexcept;
+    [[nodiscard]] ScreenCoordinateCovariance get_screen_coordinate_variance(const WorldToCameraMatrix& w2c) const;
 
     /**
      * \brief Compute th covariance of the cartesian projection of this inverse depth
      */
     [[nodiscard]] static WorldCoordinateCovariance compute_cartesian_covariance(
-            const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance) noexcept;
+            const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance);
 
     [[nodiscard]] static WorldCoordinateCovariance compute_cartesian_covariance(
-            const matrix66& covariance, const Eigen::Matrix<double, 3, 6>& jacobian) noexcept;
+            const matrix66& covariance, const Eigen::Matrix<double, 3, 6>& jacobian);
 
     /**
      * \brief Get the inverse depth covariance from the world point covariance
      */
-    [[nodiscard]] static matrix66 compute_inverse_depth_covariance(
-            const WorldCoordinateCovariance& pointCovariance,
-            const matrix33& posevariance,
-            const Eigen::Matrix<double, 6, 3>& jacobian) noexcept;
+    [[nodiscard]] static Covariance compute_inverse_depth_covariance(const WorldCoordinateCovariance& pointCovariance,
+                                                                     const matrix33& firstPoseCovariance,
+                                                                     const Eigen::Matrix<double, 6, 6>& jacobian);
 
   protected:
+    /**
+     * \brief update the value of this point using an observation in cartesian space
+     */
+    bool update_with_cartesian(const utils::WorldCoordinate& point,
+                               const WorldCoordinateCovariance& covariance,
+                               const cv::Mat& descriptor);
+
     /**
      * \brief Build the caracteristics of the kalman filter
      */

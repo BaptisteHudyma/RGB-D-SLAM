@@ -233,8 +233,8 @@ struct WorldCoordinate : public vector3
 struct InverseDepthWorldPoint
 {
   public:
-    InverseDepthWorldPoint(const utils::ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w);
-    InverseDepthWorldPoint(const utils::CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
+    InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w);
+    InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
 
     /**
      * \brief Set the parameters of this instance from a cartesian point
@@ -251,27 +251,27 @@ struct InverseDepthWorldPoint
      */
     void from_cartesian(const WorldCoordinate& point,
                         const WorldCoordinate& origin,
-                        Eigen::Matrix<double, 6, 3>& jacobian) noexcept;
+                        Eigen::Matrix<double, 6, 6>& jacobian) noexcept;
 
     /**
      * \brief compute the cartesian projection of this point in world space.
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    [[nodiscard]] utils::WorldCoordinate to_world_coordinates() const noexcept;
+    [[nodiscard]] WorldCoordinate to_world_coordinates() const noexcept;
 
     /**
      * \brief compute the cartesian projection of this point in world space.
      * \param[out] jacobian The jacobian of this transformation
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    utils::WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept;
+    WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept;
 
     /**
      * \brief Compute the projected coordinates of this point to camera space
      * \param[in] w2c The matrix to go from world to camera space
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    [[nodiscard]] utils::CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept;
+    [[nodiscard]] CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept;
 
     /**
      * \brief Compute the projected coordinates of this point to screen space
@@ -280,7 +280,7 @@ struct InverseDepthWorldPoint
      * \return True if the process succeeded (the associated covariance can be huge)
      */
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                             utils::ScreenCoordinate2D& screenCoordinates) const noexcept;
+                                             ScreenCoordinate2D& screenCoordinates) const noexcept;
 
     // get the bearing vector that point from _firstObservation to the point
     vector3 get_bearing_vector() const noexcept;
@@ -289,9 +289,16 @@ struct InverseDepthWorldPoint
     void from_vector_state(const vector6& state) noexcept;
 
     WorldCoordinate _firstObservation; // position of the camera for the first observation
-    double _theta_rad = 0.0;           // azimuth angle of the first observation, in world space
-    double _phi_rad = 0.0;             // elevation angle of the first observation, in world space
     double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)
+    double _theta_rad = 0.0;           // elevation angle of the first observation, in world space
+    double _phi_rad = 0.0;             // theta angle of the first observation, in world space
+
+    // changing this implies that all computations should be changed, handle with care. Those should be
+    // always in [0, 5]
+    static constexpr uint firstPoseIndex = 0; // takes 3 spaces
+    static constexpr uint inverseDepthIndex = 3;
+    static constexpr uint thetaIndex = 4;
+    static constexpr uint phiIndex = 5;
 };
 
 } // namespace rgbd_slam::utils

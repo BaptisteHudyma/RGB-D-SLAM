@@ -1,7 +1,9 @@
 #include "map_point2d.hpp"
 
+#include "coordinates/point_coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam::map_management {
 
@@ -59,6 +61,7 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedPointsObject& trackedFeatures,
                                 const uint dropChance) const noexcept
 {
+    // TODO: should those points be tracked ? I think not
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
     if (shouldNotDropPoint)
@@ -104,9 +107,37 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
 
 void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept { (void)mapWriter; }
 
-bool MapPoint2D::compute_upgraded(const matrix33& poseCovariance, UpgradedPoint2DType& upgradedFeature) const noexcept
+bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
+                                  UpgradedPoint2DType& upgradedFeature) const noexcept
 {
-    // TODO : check threshold
+    Eigen::Matrix<double, 3, 6> jacobian;
+    const utils::WorldCoordinate& cartesian = _coordinates.to_world_coordinates(jacobian);
+
+    const vector3 hc(cartesian - cameraToWorld.translation());
+    const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();
+    const double thetad_meters =
+            (sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates._inverseDepth_mm)) /
+            1000.0;
+    const double d1_meters = hc.norm() / 1000.0;
+    const double upgradeThreshold = 4.0 * thetad_meters / d1_meters * abs(cosAlpha);
+
+    if (false and upgradeThreshold < 0.1) // 10% linearity index
+    {
+        try
+        {
+            upgradedFeature._covariance = compute_cartesian_covariance(_covariance, jacobian);
+            upgradedFeature._coordinates = cartesian;
+            upgradedFeature._descriptor = _descriptor;
+            upgradedFeature._matchIndex = _matchIndex;
+            return true;
+        }
+        catch (const std::exception& ex)
+        {
+            outputs::log_error("Catch exeption: " + std::string(ex.what()));
+            return false;
+        }
+    }
+
     return false;
 }
 
@@ -114,13 +145,21 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
                                    const matrix33& poseCovariance,
                                    const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    (void)poseCovariance;
     if (_matchIndex < 0)
     {
         outputs::log_error("Tries to call the function update_with_match with no associated match");
         return false;
     }
 
+    if (utils::is_depth_valid(matchedFeature._coordinates.z()))
+    {
+        // TODO: reactivate the following
+        return false;
+
+        // use the real observation, it will most likely overide the covariance inside the inverse depth point
+        return track(matchedFeature._coordinates, cameraToWorld, poseCovariance, matchedFeature._descriptor);
+    }
+    // use a 2D observation, that will be merged with the current one
     return track(matchedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, matchedFeature._descriptor);
 }
 
