@@ -100,9 +100,13 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
-    (void)worldToCamMatrix;
-    // screen point are always visible (by definition)
-    return true;
+    // Those points should laways be visible but we never know
+    utils::ScreenCoordinate2D screenCoord;
+    if (_coordinates.to_screen_coordinates(worldToCamMatrix, screenCoord))
+    {
+        return screenCoord.is_in_screen_boundaries();
+    }
+    return false;
 }
 
 void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept { (void)mapWriter; }
@@ -121,11 +125,13 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
     const double d1_meters = hc.norm() / 1000.0;
     const double upgradeThreshold = 4.0 * thetad_meters / d1_meters * abs(cosAlpha);
 
-    if (false and upgradeThreshold < 0.1) // 10% linearity index
+#if 0 // TODO reactivate
+    if (upgradeThreshold < 0.05) // linearity index (percentage)
     {
         try
         {
             upgradedFeature._covariance = compute_cartesian_covariance(_covariance, jacobian);
+            std::cout << upgradedFeature._covariance << std::endl << std::endl;
             upgradedFeature._coordinates = cartesian;
             upgradedFeature._descriptor = _descriptor;
             upgradedFeature._matchIndex = _matchIndex;
@@ -137,7 +143,7 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
             return false;
         }
     }
-
+#endif
     return false;
 }
 

@@ -542,7 +542,8 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotation)
     EXPECT_NEAR(screenCoordinates.x(), imageHeight, 0.01);
     EXPECT_NEAR(screenCoordinates.y(), imageWidth, 0.01);
 }
-
+*/
+#if 0
 TEST(InverseDepthPointFusion, centerPointParallelFusion)
 {
     if (not Parameters::is_valid())
@@ -551,12 +552,11 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     }
 
     // observe the center of the camera
-    const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center() * 1.00001);
-    const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3::Zero());
+    const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center());
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Zero(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
     EXPECT_NEAR(inverseDepth._coordinates._inverseDepth_mm, 0.0, 0.001);
     EXPECT_NEAR(inverseDepth._coordinates._phi_rad, 0.0, 0.001);
     EXPECT_NEAR(inverseDepth._coordinates._theta_rad, 0.0, 0.001);
@@ -574,59 +574,59 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     EXPECT_GT(beforeMergeCovariance(2, 2), 1e3); // very high variance for z coordinate depth is unknown
 
     /**
-     ** add a new measurment thta is the same point
+     ** add a new measurment that is the same point
      */
-/*EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Zero(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Identity(), cv::Mat()));
 
-const auto afterMergeInverseCov = inverseDepth._covariance;
-assert(is_covariance_valid(inverseDepth._covariance));
-const auto& afterMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-        inverseDepth._coordinates, inverseDepth._covariance);
+    const auto afterMergeInverseCov = inverseDepth._covariance;
+    assert(is_covariance_valid(inverseDepth._covariance));
+    const auto& afterMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
+            inverseDepth._coordinates, inverseDepth._covariance);
 
-EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
-EXPECT_LT(afterMergeInverseCov(3, 3), beforeMergeInverseCov(3, 3));
-EXPECT_LT(afterMergeInverseCov(4, 4), beforeMergeInverseCov(4, 4));
-EXPECT_LT(afterMergeInverseCov(5, 5), beforeMergeInverseCov(5, 5));
+    EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
+    EXPECT_LT(afterMergeInverseCov(3, 3), beforeMergeInverseCov(3, 3));
+    EXPECT_LT(afterMergeInverseCov(4, 4), beforeMergeInverseCov(4, 4));
+    EXPECT_LT(afterMergeInverseCov(5, 5), beforeMergeInverseCov(5, 5));
 
-/**
- ** add a new measurment at 90 degrees on the side
- */
+    /**
+     ** add a new measurment at 90 degrees on the side
+     */
 
-/*const CameraToWorldMatrix& c2wSide90 = utils::compute_camera_to_world_transform_no_correction(
-        // TODO: this angle is not placed where it should be
-        get_quaternion_from_euler_angles(EulerAngles(-90 * EulerToRadian, 0.0, 0.0)),
-        vector3(10, 0, 1000.0));
-// fuse the two points
-EXPECT_TRUE(inverseDepth.track(observation, c2wSide90, matrix33::Zero(), cv::Mat()));
+    const CameraToWorldMatrix& c2wSide90 = utils::compute_camera_to_world_transform(
+            get_quaternion_from_euler_angles(EulerAngles(-90 * EulerToRadian, 0.0, 0.0)), vector3(1000, 0, 1000.0));
+    // fuse the two points
+    EXPECT_TRUE(inverseDepth.track(observation, c2wSide90, matrix33::Identity(), cv::Mat()));
 
-// result should be around (0, 0, 1000)
+    // result should be around (0, 0, 1000)
 
-const auto sidePointPose = inverseDepth._coordinates.to_world_coordinates();
-EXPECT_TRUE(is_covariance_valid(tracking::PointInverseDepth::compute_cartesian_covariance(
-        inverseDepth._coordinates, inverseDepth._covariance)));
-EXPECT_NEAR(sidePointPose.x(), 0.0, 10.0);
-EXPECT_NEAR(sidePointPose.y(), 0.0, 10.0);
-EXPECT_NEAR(sidePointPose.z(), 1000.0, 100);
+    const auto sidePointPose = inverseDepth._coordinates.to_world_coordinates();
+    EXPECT_TRUE(is_covariance_valid(tracking::PointInverseDepth::compute_cartesian_covariance(
+            inverseDepth._coordinates, inverseDepth._covariance)));
+    EXPECT_NEAR(sidePointPose.x(), 0.0, 10.0);
+    EXPECT_NEAR(sidePointPose.y(), 0.0, 10.0);
+    EXPECT_NEAR(sidePointPose.z(), 1000.0, 100);
 
-/**
- ** add a new measurment at 90 degrees on the top
- */
-/*const CameraToWorldMatrix& c2wTop90 = utils::compute_camera_to_world_transform_no_correction(
-        // TODO: this angle is not placed where it should be
-        get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)),
-        vector3(0, 100, 1000.0));
-// fuse the two points
-EXPECT_TRUE(inverseDepth.track(observation, c2wTop90, matrix33::Zero(), cv::Mat()));
+    /**
+     ** add a new measurment at 90 degrees on the top
+     */
+    const CameraToWorldMatrix& c2wTop90 = utils::compute_camera_to_world_transform_no_correction(
+            get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)), vector3(0, 1000, 1000.0));
+    // fuse the two points
+    EXPECT_TRUE(inverseDepth.track(observation, c2wTop90, matrix33::Identity(), cv::Mat()));
 
-// result should be around (0, 0, 1000)
-const auto finalPose = inverseDepth._coordinates.to_world_coordinates();
-EXPECT_TRUE(is_covariance_valid(tracking::PointInverseDepth::compute_cartesian_covariance(
-        inverseDepth._coordinates, inverseDepth._covariance)));
-EXPECT_NEAR(finalPose.x(), 0.0, 10.0);
-EXPECT_NEAR(finalPose.y(), 0.0, 10.0);
-EXPECT_NEAR(finalPose.z(), 1000.0, 100);
-}*/
+    // result should be around (0, 0, 1000)
+    const auto finalPose = inverseDepth._coordinates.to_world_coordinates();
+    const auto finalCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(inverseDepth._coordinates,
+                                                                                           inverseDepth._covariance);
+    EXPECT_TRUE(is_covariance_valid(finalCovariance));
 
+    std::cout << finalPose.transpose() << " | " << finalPose.cwiseAbs().sum() << std::endl;
+
+    EXPECT_NEAR(finalPose.x(), 0.0, 10.0);
+    EXPECT_NEAR(finalPose.y(), 0.0, 10.0);
+    EXPECT_NEAR(finalPose.z(), 1000.0, 100);
+}
+#endif
 void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates& planeB)
 {
     const vector3& normalA = planeA.get_normal();

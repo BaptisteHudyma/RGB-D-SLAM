@@ -367,25 +367,26 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
 {
-    Spherical s;
-    s.p = 1.0 / _inverseDepth_mm;
-    s.theta = _theta_rad;
-    s.phi = _phi_rad;
-
+    // jacobian of _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
     jacobian = Eigen::Matrix<double, 3, 6>::Zero();
 
-    matrix33 reducedJacobian = matrix33::Zero();
-    const vector3& c = Cartesian::from(s, reducedJacobian).vec();
+    const double sinTheta = sin(_theta_rad);
+    const double cosTheta = cos(_theta_rad);
+    const double sinPhi = sin(_phi_rad);
+    const double cosPhi = cos(_phi_rad);
+    const double d = _inverseDepth_mm;
 
-    // correct jacobian to include inverse depth
-    const double invDD = 1.0 / SQR(s.p);
-    reducedJacobian.col(0) *= (-invDD);
-    reducedJacobian.col(1) *= invDD;
-    reducedJacobian.col(2) *= invDD;
+    const double theta1 = sinPhi * sinTheta;
+    const double theta2 = cosPhi * sinTheta;
+
+    matrix33 reducedJacobian({{-theta2 / SQR(d), cosTheta * cosPhi / d, -theta1 / d},
+                              {-theta1 / SQR(d), cosTheta * sinPhi / d, theta2 / d},
+                              {-cosTheta / SQR(d), -sinTheta / d, 0}});
 
     jacobian.block<3, 3>(0, firstPoseIndex) = matrix33::Identity();
     jacobian.block<3, 3>(0, inverseDepthIndex) = reducedJacobian;
-    return c;
+
+    return to_world_coordinates();
 }
 
 CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept

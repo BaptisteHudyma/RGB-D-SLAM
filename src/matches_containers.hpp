@@ -90,6 +90,8 @@ template<class Container> struct match_sets_template
 };
 
 // store a set of inliers and a set of outliers for points
+using point2D_match_sets = match_sets_template<match_point2D_container>;
+// store a set of inliers and a set of outliers for points
 using point_match_sets = match_sets_template<match_point_container>;
 // store a set of inliers and a set of outliers for planes
 using plane_match_sets = match_sets_template<match_plane_container>;
@@ -97,17 +99,20 @@ using plane_match_sets = match_sets_template<match_plane_container>;
 // store a set of inliers and a set of outliers for all features
 struct match_sets
 {
+    point2D_match_sets _point2DSets;
     point_match_sets _pointSets;
     plane_match_sets _planeSets;
 
     void clear() noexcept
     {
+        _point2DSets.clear();
         _pointSets.clear();
         _planeSets.clear();
     }
 
     void swap(match_sets& other) noexcept
     {
+        _point2DSets.swap(other._point2DSets);
         _pointSets.swap(other._pointSets);
         _planeSets.swap(other._planeSets);
     }
