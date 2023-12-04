@@ -1,6 +1,7 @@
 #include "point_coordinates.hpp"
 #include "../parameters.hpp"
 #include "../utils/distance_utils.hpp"
+#include "coordinates/basis_changes.hpp"
 #include "covariances.hpp"
 #include "types.hpp"
 #include <cmath>
@@ -99,7 +100,7 @@ matrix22 ScreenCoordinate2D::get_covariance() const
     const double xyVariance = SQR(0.1);
     matrix22 cov({{xyVariance, 0.0}, {0.0, xyVariance}});
 
-    if (not utils::is_covariance_valid(cov))
+    if (not is_covariance_valid(cov))
     {
         throw std::logic_error("ScreenCoordinate2D::get_covariance: invalid covariance");
     }
@@ -122,7 +123,7 @@ ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
     const double xyVariance = SQR(0.1);
     const matrix22 covariance2D({{xyVariance, 0.0}, {0.0, xyVariance}});
 
-    const double depthQuantization = utils::is_depth_valid(z()) ? get_depth_quantization(z()) : 1000.0;
+    const double depthQuantization = is_depth_valid(z()) ? get_depth_quantization(z()) : 1000.0;
     // a zero variance will break the kalman gain
     if (depthQuantization <= 0)
     {
@@ -132,7 +133,7 @@ ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
     ScreenCoordinateCovariance cov;
     cov << covariance2D, vector2::Zero(), 0.0, 0.0, depthQuantization;
 
-    if (not utils::is_covariance_valid(cov))
+    if (not is_covariance_valid(cov))
     {
         throw std::logic_error("ScreenCoordinate::get_covariance: invalid covariance");
     }
@@ -286,10 +287,6 @@ double WorldCoordinate::get_distance_mm(const ScreenCoordinate& screenPoint,
     return get_signed_distance_mm(screenPoint, cameraToWorld).lpNorm<1>();
 }
 
-/**
- *      CAMERA COORDINATES
- */
-
 CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     // WorldCoordinate
@@ -301,20 +298,18 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
  *      INVERSE DEPTH COORDINATES
  */
 
-InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::ScreenCoordinate2D& observation,
-                                               const CameraToWorldMatrix& c2w) :
+InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w) :
     // use homogenous to create a vector from the camera center outward
-    InverseDepthWorldPoint(utils::CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
+    InverseDepthWorldPoint(CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
 {
 }
 
-InverseDepthWorldPoint::InverseDepthWorldPoint(const utils::CameraCoordinate& observation,
-                                               const CameraToWorldMatrix& c2w)
+InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w)
 {
     from_cartesian(observation.to_world_coordinates(c2w), WorldCoordinate(c2w.translation()));
 
-    constexpr double dmin = 1000;
-    _inverseDepth_mm = (1.0 / dmin) / 2; // 10 meters baseline (infinity is approx to 10 meters right ?)
+    // baseline
+    _inverseDepth_mm = parameters::detection::inverseDepthBaseline / 2.0;
 }
 
 void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point, const WorldCoordinate& origin) noexcept
@@ -323,113 +318,123 @@ void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point, const 
 
     const vector3 directionalVector(point - _firstObservation);
 
-    _theta_rad = atan2(directionalVector.x(), directionalVector.z());
-    _phi_rad = atan2(-directionalVector.y(), sqrt(SQR(directionalVector.x()) + SQR(directionalVector.z())));
-    _inverseDepth_mm = 1.0 / point.z();
+    Cartesian c;
+    c.from_vec(directionalVector);
+
+    Spherical s = Spherical::from(c);
+
+    _inverseDepth_mm = 1.0 / s.p;
+    _theta_rad = s.theta;
+    _phi_rad = s.phi;
 }
 
 void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
                                             const WorldCoordinate& origin,
-                                            Eigen::Matrix<double, 6, 3>& jacobian) noexcept
+                                            Eigen::Matrix<double, 6, 6>& jacobian) noexcept
 {
-    // this is the jacobian of
-    // theta = atan2(x, z)
-    // phi = atan2(-y, sqrt(x*x + z*z))
-    // invDepth = 1/z
-    const vector3 directionalVector(point - _firstObservation);
+    jacobian.setZero();
+    jacobian.block<3, 3>(firstPoseIndex, firstPoseIndex) = matrix33::Identity();
 
-    jacobian = Eigen::Matrix<double, 6, 3>::Zero();
+    // jacobian of the [xo, yo, zo, x, y, z] =>
+    // [xo, yo, zo, inverse depth spherical projection of (x - xo, y - yo, z - zo)]
 
-    const double xSqr = SQR(directionalVector.x());
-    const double ySqr = SQR(directionalVector.y());
-    const double zSqr = SQR(directionalVector.z());
+    const vector3 v(point - _firstObservation);
+    const double theta6 = SQR(v.x()) + SQR(v.y());
+    const double theta8 = theta6 + SQR(v.z());
+    const double theta7 = pow(theta8, 3.0 / 2.0);
 
-    const double oneOverXZ = 1.0 / (xSqr + zSqr);
-    const double sqrtXZ = sqrt(xSqr + zSqr);
-    const double theta1 = 1.0 / (sqrtXZ * (xSqr + ySqr + zSqr));
+    const double theta1 = v.y() * v.z() / (sqrt(theta6) * theta8);
+    const double theta2 = v.y() * v.z() / (sqrt(theta6) * theta8);
+    const double theta3 = v.z() / theta7;
+    const double theta4 = v.y() / theta7;
+    const double theta5 = v.x() / theta7;
 
-    jacobian(3, 0) = directionalVector.z() * oneOverXZ;
-    jacobian(3, 2) = -directionalVector.x() * oneOverXZ;
+    matrix33 subJacobian({{theta5, theta4, theta3},
+                          {-theta2, -theta1, sqrt(theta6) / theta8},
+                          {v.y() / theta6, v.z() / theta6, 0.0}});
+    jacobian.block<3, 3>(inverseDepthIndex, 0) = subJacobian;
 
-    jacobian(4, 0) = directionalVector.x() * directionalVector.y() * theta1;
-    jacobian(4, 1) = -sqrtXZ / (xSqr + ySqr + zSqr);
-    jacobian(4, 2) = directionalVector.y() * directionalVector.z() * theta1;
-
-    jacobian(5, 2) = -1 / zSqr;
+    jacobian.block<3, 3>(inverseDepthIndex, inverseDepthIndex) = -subJacobian;
 
     from_cartesian(point, origin);
 }
 
-utils::WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
+WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
 {
     assert(_inverseDepth_mm != 0.0);
-    return utils::WorldCoordinate(_firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector());
+    return WorldCoordinate(_firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector());
 }
 
-utils::WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(
-        Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
+WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
 {
-    // jacobian of:
-    // _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
+    Spherical s;
+    s.p = 1.0 / _inverseDepth_mm;
+    s.theta = _theta_rad;
+    s.phi = _phi_rad;
+
     jacobian = Eigen::Matrix<double, 3, 6>::Zero();
-    jacobian.block<3, 3>(0, 0) = matrix33::Identity();
 
-    // compute sin and cos in advance (opti)
-    const double cosTheta = cos(_theta_rad);
-    const double sinTheta = sin(_theta_rad);
-    const double cosPhi = cos(_phi_rad);
-    const double sinPhi = sin(_phi_rad);
+    matrix33 reducedJacobian = matrix33::Zero();
+    const vector3& c = Cartesian::from(s, reducedJacobian).vec();
 
-    const double depth = 1.0 / _inverseDepth_mm;
-    const double depthSqr = 1.0 / SQR(_inverseDepth_mm);
-    const double cosPhiSinTheta = cosPhi * sinTheta;
-    const double cosPhiCosTheta = cosPhi * cosTheta;
+    // correct jacobian to include inverse depth
+    const double invDD = 1.0 / SQR(s.p);
+    reducedJacobian.col(0) *= (-invDD);
+    reducedJacobian.col(1) *= invDD;
+    reducedJacobian.col(2) *= invDD;
 
-    jacobian.block<3, 3>(0, 3) =
-            matrix33({{cosPhiCosTheta * depth, -sinPhi * sinTheta * depth, -cosPhiSinTheta * depthSqr},
-                      {0, -cosPhi * depth, sinPhi * depthSqr},
-                      {-cosPhiSinTheta * depth, -cosTheta * sinPhi * depth, -cosPhiCosTheta * depthSqr}});
-
-    return to_world_coordinates();
+    jacobian.block<3, 3>(0, firstPoseIndex) = matrix33::Identity();
+    jacobian.block<3, 3>(0, inverseDepthIndex) = reducedJacobian;
+    return c;
 }
 
-utils::CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept
+CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept
 {
     // this is a transformation of retroprojection of the inverse depth (world) to camera
     return to_world_coordinates().to_camera_coordinates(w2c);
     // this as the advantage of handling nicely a point at infinite distance (_inverseDepth_mm == 0)
-    // return utils::CameraCoordinate(w2c.rotation() * (_inverseDepth_mm * (_firstObservation - w2c.translation()) +
+    // return CameraCoordinate(w2c.rotation() * (_inverseDepth_mm * (_firstObservation - w2c.translation()) +
     // get_bearing_vector()));
 }
 
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                                   utils::ScreenCoordinate2D& screenCoordinates) const noexcept
+                                                   ScreenCoordinate2D& screenCoordinates) const noexcept
 {
     return to_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
 }
 
 vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
 {
-    const double cosPhi = cos(_phi_rad);
-    return vector3(cosPhi * sin(_theta_rad), -sin(_phi_rad), cosPhi * cos(_theta_rad)).normalized();
+    Spherical s;
+    s.p = 1.0 / _inverseDepth_mm;
+    s.theta = _theta_rad;
+    s.phi = _phi_rad;
+
+    return Cartesian::from(s).vec() / s.p;
 }
 
 vector6 InverseDepthWorldPoint::get_vector_state() const noexcept
 {
-    return vector6(_firstObservation.x(),
-                   _firstObservation.y(),
-                   _firstObservation.z(),
-                   _theta_rad,
-                   _phi_rad,
-                   _inverseDepth_mm);
+    vector6 vec;
+    vec(firstPoseIndex + 0) = _firstObservation.x();
+    vec(firstPoseIndex + 1) = _firstObservation.y();
+    vec(firstPoseIndex + 2) = _firstObservation.z();
+
+    vec(inverseDepthIndex) = _inverseDepth_mm;
+    vec(thetaIndex) = _theta_rad;
+    vec(phiIndex) = _phi_rad;
+    return vec;
 }
 
 void InverseDepthWorldPoint::from_vector_state(const vector6& state) noexcept
 {
-    // do not change the translation (for now !)
-    _theta_rad = state(3);
-    _phi_rad = state(4);
-    _inverseDepth_mm = state(5);
+    _firstObservation.x() = state(firstPoseIndex + 0);
+    _firstObservation.y() = state(firstPoseIndex + 1);
+    _firstObservation.z() = state(firstPoseIndex + 2);
+
+    _inverseDepth_mm = state(inverseDepthIndex);
+    _theta_rad = state(thetaIndex);
+    _phi_rad = state(phiIndex);
 }
 
 } // namespace rgbd_slam::utils

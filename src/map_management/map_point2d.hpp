@@ -78,7 +78,7 @@ class MapPoint2D :
 
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
-    [[nodiscard]] bool compute_upgraded(const matrix33& poseCovariance,
+    [[nodiscard]] bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                         UpgradedPoint2DType& upgradeFeature) const noexcept override;
 
   protected:

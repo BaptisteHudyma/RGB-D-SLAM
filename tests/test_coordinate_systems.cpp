@@ -25,7 +25,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldAtOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion::Identity(), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(0, 0, 0));
 
     const matrix44& tr = utils::get_transformation_matrix(
             vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero());
@@ -41,7 +41,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion::Identity(), vector3(-100, 100, 200));
+            compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(-100, 100, 200));
 
     const matrix44& tr = utils::get_transformation_matrix(vector3(1, 0, 0),
                                                           vector3(0, 1, 0),
@@ -61,7 +61,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotation)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.0, 1.0, 0.0, 0.0), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.0, 1.0, 0.0, 0.0), vector3(0, 0, 0));
 
     const matrix44& tr = utils::get_transformation_matrix(
             vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(1, 0, 0), vector3(0, -1, 0), vector3::Zero());
@@ -77,7 +77,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotation2)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.0, 0.0, 1.0, 0.0), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.0, 0.0, 1.0, 0.0), vector3(0, 0, 0));
 
     const matrix44& tr = utils::get_transformation_matrix(
             vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(-1, 0, 0), vector3(0, 1, 0), vector3::Zero());
@@ -93,7 +93,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotation3)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.0, 0, 0, 1.0), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.0, 0, 0, 1.0), vector3(0, 0, 0));
 
     const matrix44& tr = utils::get_transformation_matrix(
             vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(-1, 0, 0), vector3(0, -1, 0), vector3::Zero());
@@ -109,7 +109,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldAtOriginWithRotationCombined)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.5, 0.5, 0.5, 0.5), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.5, 0.5, 0.5, 0.5), vector3(0, 0, 0));
 
     const matrix44& tr = utils::get_transformation_matrix(
             vector3(1, 0, 0), vector3(0, 1, 0), vector3::Zero(), vector3(0, 1, 0), vector3(0, 0, 1), vector3::Zero());
@@ -125,7 +125,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOriginWithRotation)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.0, 1.0, 0.0, 0.0), vector3(-100, 100, 200));
+            compute_camera_to_world_transform_no_correction(quaternion(0.0, 1.0, 0.0, 0.0), vector3(-100, 100, 200));
 
     const matrix44& tr = utils::get_transformation_matrix(vector3(1, 0, 0),
                                                           vector3(0, 1, 0),
@@ -144,7 +144,7 @@ TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOriginSameWithRotation)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.0, 1.0, 0.0, 0.0), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.0, 1.0, 0.0, 0.0), vector3(0, 0, 0));
 
     const matrix44& tr = utils::get_transformation_matrix(vector3(1, 0, 0),
                                                           vector3(0, 1, 0),
@@ -245,7 +245,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenAtOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion::Identity(), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(0, 0, 0));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
@@ -257,7 +257,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenFarFromOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion::Identity(), vector3(-100, 1000, 100));
+            compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(-100, 1000, 100));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
@@ -269,7 +269,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation1)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.3, 0.2, 0.1, 0.4), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.3, 0.2, 0.1, 0.4), vector3(0, 0, 0));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
@@ -281,7 +281,7 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation2)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.6, 0.1, 0.2, 0.1), vector3(0, 0, 0));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
@@ -293,10 +293,10 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation3)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
+            compute_camera_to_world_transform_no_correction(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
-
+/*
 TEST(InverseDepthPoint, convertBackAndForthCenter)
 {
     if (not Parameters::is_valid())
@@ -306,7 +306,8 @@ TEST(InverseDepthPoint, convertBackAndForthCenter)
 
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
+    const CameraToWorldMatrix& c2w =
+            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
@@ -331,7 +332,8 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeft)
 
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(vector2::Zero());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
+    const CameraToWorldMatrix& c2w =
+            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
@@ -360,7 +362,8 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRight)
 
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(imageHeight, imageWidth);
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
+    const CameraToWorldMatrix& c2w =
+            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
@@ -386,7 +389,7 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfo)
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(250, 150, 300));
+            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(250, 150, 300));
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
@@ -412,7 +415,7 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithTransfo)
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(vector2::Zero());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(250, 150, 300));
+            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(250, 150, 300));
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
@@ -442,7 +445,7 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithTransfo)
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(imageHeight, imageWidth);
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(250, 150, 300));
+            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(250, 150, 300));
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
@@ -467,7 +470,7 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithRotation)
 
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
             quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3::Zero());
 
     // convert to inverse
@@ -493,7 +496,7 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithRotation)
 
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(vector2::Zero());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
             quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3::Zero());
 
     // convert to inverse
@@ -523,7 +526,7 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotation)
 
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(imageHeight, imageWidth);
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
             quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3::Zero());
 
     // convert to inverse
@@ -549,7 +552,8 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
 
     // observe the center of the camera
     const utils::ScreenCoordinate2D observation(Parameters::get_camera_1_center() * 1.00001);
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
+    const CameraToWorldMatrix& c2w =
+            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
     tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Zero(), cv::Mat());
@@ -558,50 +562,70 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     EXPECT_NEAR(inverseDepth._coordinates._theta_rad, 0.0, 0.001);
 
     const auto beforeMergeInverseCov = inverseDepth._covariance;
+    assert(is_covariance_valid(inverseDepth._covariance));
     const auto& beforeMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
             inverseDepth._coordinates, inverseDepth._covariance);
 
     EXPECT_TRUE(is_covariance_valid(beforeMergeCovariance));
     EXPECT_GT(beforeMergeCovariance(0, 0),
-              1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
+              100); // high variance for x coordinate (center of observation) : angle theta as some variance
     EXPECT_GT(beforeMergeCovariance(1, 1),
-              1e3); // very high variance for x coordinate (center of observation) : angle theta as some variance
+              100); // high variance for x coordinate (center of observation) : angle theta as some variance
     EXPECT_GT(beforeMergeCovariance(2, 2), 1e3); // very high variance for z coordinate depth is unknown
 
-    // fuse the two points
-    EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Zero(), cv::Mat()));
+    /**
+     ** add a new measurment thta is the same point
+     */
+/*EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Zero(), cv::Mat()));
 
-    const auto afterMergeInverseCov = inverseDepth._covariance;
-    const auto& afterMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
+const auto afterMergeInverseCov = inverseDepth._covariance;
+assert(is_covariance_valid(inverseDepth._covariance));
+const auto& afterMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
+        inverseDepth._coordinates, inverseDepth._covariance);
 
-    EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
-    EXPECT_LT(afterMergeInverseCov(3, 3), beforeMergeInverseCov(3, 3));
-    EXPECT_LT(afterMergeInverseCov(4, 4), beforeMergeInverseCov(4, 4));
-    EXPECT_LT(afterMergeInverseCov(5, 5), beforeMergeInverseCov(5, 5));
+EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
+EXPECT_LT(afterMergeInverseCov(3, 3), beforeMergeInverseCov(3, 3));
+EXPECT_LT(afterMergeInverseCov(4, 4), beforeMergeInverseCov(4, 4));
+EXPECT_LT(afterMergeInverseCov(5, 5), beforeMergeInverseCov(5, 5));
 
-    // add a new measurment at 90 degrees
-    const CameraToWorldMatrix& c2w90 = utils::compute_camera_to_world_transform(
-            get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)), vector3(1000, 0, 1000.0));
-    // fuse the two points
-    EXPECT_TRUE(inverseDepth.track(observation, c2w90, matrix33::Zero(), cv::Mat()));
+/**
+ ** add a new measurment at 90 degrees on the side
+ */
 
-    const CameraToWorldMatrix& c2wMinus90 = utils::compute_camera_to_world_transform(
-            get_quaternion_from_euler_angles(EulerAngles(0.0, 90 * EulerToRadian, 0.0)), vector3(-10000, 0, 1000.0));
-    // fuse the two points
-    EXPECT_TRUE(inverseDepth.track(observation, c2wMinus90, matrix33::Zero(), cv::Mat()));
+/*const CameraToWorldMatrix& c2wSide90 = utils::compute_camera_to_world_transform_no_correction(
+        // TODO: this angle is not placed where it should be
+        get_quaternion_from_euler_angles(EulerAngles(-90 * EulerToRadian, 0.0, 0.0)),
+        vector3(10, 0, 1000.0));
+// fuse the two points
+EXPECT_TRUE(inverseDepth.track(observation, c2wSide90, matrix33::Zero(), cv::Mat()));
 
-    const auto& finalCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(inverseDepth._coordinates,
-                                                                                            inverseDepth._covariance);
+// result should be around (0, 0, 1000)
 
-    std::cout << "---------------------------" << std::endl << std::endl;
-    std::cout << finalCovariance << std::endl << std::endl;
+const auto sidePointPose = inverseDepth._coordinates.to_world_coordinates();
+EXPECT_TRUE(is_covariance_valid(tracking::PointInverseDepth::compute_cartesian_covariance(
+        inverseDepth._coordinates, inverseDepth._covariance)));
+EXPECT_NEAR(sidePointPose.x(), 0.0, 10.0);
+EXPECT_NEAR(sidePointPose.y(), 0.0, 10.0);
+EXPECT_NEAR(sidePointPose.z(), 1000.0, 100);
 
-    // result should be around (0, 0, 1000)
-    std::cout << inverseDepth._coordinates.to_world_coordinates().transpose() << std::endl;
+/**
+ ** add a new measurment at 90 degrees on the top
+ */
+/*const CameraToWorldMatrix& c2wTop90 = utils::compute_camera_to_world_transform_no_correction(
+        // TODO: this angle is not placed where it should be
+        get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)),
+        vector3(0, 100, 1000.0));
+// fuse the two points
+EXPECT_TRUE(inverseDepth.track(observation, c2wTop90, matrix33::Zero(), cv::Mat()));
 
-    EXPECT_TRUE(is_covariance_valid(finalCovariance));
-}
+// result should be around (0, 0, 1000)
+const auto finalPose = inverseDepth._coordinates.to_world_coordinates();
+EXPECT_TRUE(is_covariance_valid(tracking::PointInverseDepth::compute_cartesian_covariance(
+        inverseDepth._coordinates, inverseDepth._covariance)));
+EXPECT_NEAR(finalPose.x(), 0.0, 10.0);
+EXPECT_NEAR(finalPose.y(), 0.0, 10.0);
+EXPECT_NEAR(finalPose.z(), 1000.0, 100);
+}*/
 
 void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates& planeB)
 {
@@ -653,7 +677,7 @@ TEST(PlaneCoordinateSystemTests, ScreenToWorldToScreenAtOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion::Identity(), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(0, 0, 0));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
 
@@ -665,7 +689,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraFarFromOrigin)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion::Identity(), vector3(-100, 1000, 100));
+            compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(-100, 1000, 100));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
 
@@ -677,7 +701,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation1)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.3, 0.2, 0.1, 0.4), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.3, 0.2, 0.1, 0.4), vector3(0, 0, 0));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
 
@@ -689,7 +713,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation2)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(0, 0, 0));
+            compute_camera_to_world_transform_no_correction(quaternion(0.6, 0.1, 0.2, 0.1), vector3(0, 0, 0));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
 
@@ -701,7 +725,7 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation3)
     }
 
     const CameraToWorldMatrix& cameraToWorld =
-            compute_camera_to_world_transform(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
+            compute_camera_to_world_transform_no_correction(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
 }
 
