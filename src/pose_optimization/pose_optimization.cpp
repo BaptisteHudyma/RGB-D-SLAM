@@ -374,8 +374,9 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     if (initialFeatureScore < 1.0)
     {
         // if there is not enough potential inliers to optimize a pose
-        outputs::log_warning(std::format("Not enough features to optimize a pose ({} points, {} planes)",
-                                         static_cast<int>(matched2dPointSize + matchedPointSize),
+        outputs::log_warning(std::format("Not enough features to optimize a pose ({} 2d points, {} points, {} planes)",
+                                         static_cast<int>(matched2dPointSize),
+                                         static_cast<int>(matchedPointSize),
                                          static_cast<int>(matchedPlaneSize)));
         return false;
     }

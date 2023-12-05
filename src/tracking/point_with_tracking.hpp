@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_TRACKING_POINT_WITH_TRACKING_HPP
 #define RGBDSLAM_TRACKING_POINT_WITH_TRACKING_HPP
 
+#include "types.hpp"
 #include "utils/coordinates/point_coordinates.hpp"
 #include "kalman_filter.hpp"
 #include <opencv2/opencv.hpp>
@@ -48,6 +49,7 @@ struct PointInverseDepth
 
     struct Covariance : public matrix66
     {
+        using matrix66::matrix66;
         matrix33 get_first_pose_covariance() const { return block<3, 3>(firstPoseIndex, firstPoseIndex); }
     };
 

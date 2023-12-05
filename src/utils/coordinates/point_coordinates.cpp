@@ -384,7 +384,7 @@ void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
     const double theta7 = pow(theta8, 3.0 / 2.0);
 
     const double theta1 = v.y() * v.z() / (sqrt(theta6) * theta8);
-    const double theta2 = v.y() * v.z() / (sqrt(theta6) * theta8);
+    const double theta2 = v.x() * v.z() / (sqrt(theta6) * theta8);
     const double theta3 = v.z() / theta7;
     const double theta4 = v.y() / theta7;
     const double theta5 = v.x() / theta7;
