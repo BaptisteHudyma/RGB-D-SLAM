@@ -85,7 +85,7 @@ void Plane::build_kalman_filter() noexcept
         const matrix44 systemDynamics = matrix44::Identity(); // planes are not supposed to move, so no dynamics
         const matrix44 outputMatrix = matrix44::Identity();   // we need all positions
 
-        const double parametersProcessNoise = 0; // TODO set in parameters
+        const double parametersProcessNoise = 0.000001; // TODO set in parameters
         const matrix44 processNoiseCovariance =
                 matrix44::Identity() * parametersProcessNoise; // Process noise covariance
 

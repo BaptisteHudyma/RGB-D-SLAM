@@ -55,7 +55,6 @@ double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
 
         _coordinates << newCoordinates;
         _covariance << newCovariance;
-        assert(not _coordinates.hasNaN());
         return score;
     }
     catch (const std::exception& ex)
@@ -72,7 +71,7 @@ void Point::build_kalman_filter() noexcept
         const matrix33 systemDynamics = matrix33::Identity(); // points are not supposed to move, so no dynamics
         const matrix33 outputMatrix = matrix33::Identity();   // we need all positions
 
-        const double parametersProcessNoise = 0; // TODO set in parameters
+        const double parametersProcessNoise = 0.001; // TODO set in parameters
         const matrix33 processNoiseCovariance =
                 matrix33::Identity() * parametersProcessNoise; // Process noise covariance
 
@@ -274,24 +273,26 @@ PointInverseDepth::Covariance PointInverseDepth::compute_inverse_depth_covarianc
     if (not utils::is_covariance_valid(pointCovariance))
         throw std::invalid_argument(
                 "compute_inverse_depth_covariance cannot use incorrect covariance in pointCovariance");
+    if (not utils::is_covariance_valid(firstPoseCovariance))
+        throw std::invalid_argument(
+                "compute_inverse_depth_covariance cannot use incorrect covariance in firstPoseCovariance");
 
     matrix66 pointCov;
     pointCov.setZero();
     pointCov.block<3, 3>(0, 0) = firstPoseCovariance;
     pointCov.block<3, 3>(3, 3) = pointCovariance;
-    pointCov.diagonal() += vector6::Constant(0.01);
+    // pointCov.diagonal() += vector6::Constant(0.01);
 
     if (not utils::is_covariance_valid(pointCov))
         throw std::logic_error("compute_inverse_depth_covariance cannot use invalid point covariance");
 
-    matrix66 resCovariance = jacobian * pointCov.selfadjointView<Eigen::Lower>() * jacobian.transpose();
+    Covariance resCovariance = jacobian * pointCov.selfadjointView<Eigen::Lower>() * jacobian.transpose();
+    resCovariance.diagonal() += vector6::Constant(0.000001);
 
     if (not utils::is_covariance_valid(resCovariance))
         throw std::logic_error("compute_inverse_depth_covariance produced an invalid covariance");
 
-    Covariance c;
-    c.base() = resCovariance;
-    return c;
+    return resCovariance;
 }
 
 double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cameraToWorld) const noexcept
@@ -316,7 +317,7 @@ void PointInverseDepth::build_kalman_filter() noexcept
         const matrix33 systemDynamics = matrix33::Identity(); // points are not supposed to move, so no dynamics
         const matrix33 outputMatrix = matrix33::Identity();   // we need all positions
 
-        const double parametersProcessNoise = 0.0; // TODO set in parameters
+        const double parametersProcessNoise = 0.0001; // TODO set in parameters
         const matrix33 processNoiseCovariance =
                 matrix33::Identity() * parametersProcessNoise; // Process noise covariance
 
