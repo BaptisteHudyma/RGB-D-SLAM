@@ -1,5 +1,6 @@
 #include "rgbd_slam.hpp"
 #include "camera_transformation.hpp"
+#include "covariances.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
 #include "pose_optimization/pose_optimization.hpp"
@@ -181,6 +182,11 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
                                         const cv::Mat_<float>& depthImage,
                                         const matrixf& cloudArrayOrganized) noexcept
 {
+    if (not utils::is_covariance_valid(_currentPose.get_pose_variance()))
+    {
+        outputs::log_error("The current stored pose has an invalid covariance, system is broken");
+        exit(-1);
+    }
     // every now and then, restart the search of points even if we have enough features
     _computeKeypointCount = (_computeKeypointCount % parameters::detection::keypointRefreshFrequency) + 1;
 
@@ -223,10 +229,23 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         _currentPose = optimizedPose;
 
         // Update local map if a valid transformation was found
-        _localMap->update(
-                optimizedPose, detectedFeatures, matchSets._pointSets._outliers, matchSets._planeSets._outliers);
-        _isTrackingLost = false;
-        _failedTrackingCount = 0;
+        try
+        {
+            _localMap->update(
+                    optimizedPose, detectedFeatures, matchSets._pointSets._outliers, matchSets._planeSets._outliers);
+            _isTrackingLost = false;
+            _failedTrackingCount = 0;
+        }
+        catch (const std::exception& ex)
+        {
+            outputs::log_error("Caught exeption while updating map: " + std::string(ex.what()));
+
+            // no valid transformation
+            _localMap->update_no_pose();
+
+            _isTrackingLost = (++_failedTrackingCount) > 3;
+            _motionModel.reset();
+        }
     }
     // else the refined pose will follow the motion model
     else
@@ -235,9 +254,9 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         _localMap->update_no_pose();
 
         // add unmatched features if not tracking could be done last call
-        if (_isTrackingLost)
+        const matrix33& poseCovariance = predictedPose.get_position_variance();
+        if (_isTrackingLost and utils::is_covariance_valid(poseCovariance))
         {
-            const matrix33& poseCovariance = predictedPose.get_position_variance();
             const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
                     predictedPose.get_orientation_quaternion(), predictedPose.get_position());
 

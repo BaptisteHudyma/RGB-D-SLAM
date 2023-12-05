@@ -1,7 +1,9 @@
 #include "levenberg_marquard_functors.hpp"
+#include "matches_containers.hpp"
 #include "utils/camera_transformation.hpp"
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
+#include <stdexcept>
 
 namespace rgbd_slam::pose_optimization {
 
@@ -41,25 +43,35 @@ quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizati
  * GLOBAL POSE ESTIMATOR members
  */
 constexpr uint scoreCountPerPoints = 2;
+constexpr uint scoreCountPer2DPoints = 3;
 constexpr uint scoreCountPerPlanes = 3;
 
-Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point_container* const points,
+Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point2D_container* const points2d,
+                                             const matches_containers::match_point_container* const points,
                                              const matches_containers::match_plane_container* const planes) :
-    Levenberg_Marquardt_Functor<double>(6, points->size() * scoreCountPerPoints + planes->size() * scoreCountPerPlanes),
+    Levenberg_Marquardt_Functor<double>(6,
+                                        points2d->size() * scoreCountPer2DPoints +
+                                                points->size() * scoreCountPerPoints +
+                                                planes->size() * scoreCountPerPlanes),
+    _points2d(points2d),
     _points(points),
     _planes(planes)
 {
-    assert(_points != nullptr and _planes != nullptr);
-    assert(not _points->empty() or not _planes->empty());
+    assert(_points2d != nullptr and _points != nullptr and _planes != nullptr);
+    if (_points2d->empty() and _points->empty() and _planes->empty())
+    {
+        throw std::logic_error("cannot optimize on empty vectors");
+    }
 }
 
 // Implementation of the objective function
 int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const
 {
-    assert(_points != nullptr and _planes != nullptr);
-    assert(not _points->empty() or not _planes->empty());
+    assert(_points2d != nullptr and _points != nullptr and _planes != nullptr);
+    assert(not _points2d->empty() or not _points->empty() or not _planes->empty());
     assert(static_cast<size_t>(outputScores.size()) ==
-           (_points->size() * scoreCountPerPoints + _planes->size() * scoreCountPerPlanes));
+           (_points2d->size() * scoreCountPer2DPoints + _points->size() * scoreCountPerPoints +
+            _planes->size() * scoreCountPerPlanes));
 
     // Get the new estimated pose
     const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
@@ -71,6 +83,16 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 
     // Compute retroprojection distances
     static constexpr double pointAlphaReduction = 1.0; // multiplier for points parameters in the equation
+    for (const matches_containers::PointMatch2D& match: *_points2d)
+    {
+        // Compute retroprojected distance
+        const Eigen::Vector<double, scoreCountPer2DPoints>& distance =
+                match._worldFeature.compute_signed_distance(match._screenFeature, transformationMatrix);
+
+        outputScores.segment<scoreCountPer2DPoints>(featureScoreIndex) = distance * pointAlphaReduction;
+        featureScoreIndex += scoreCountPer2DPoints;
+    }
+
     for (const matches_containers::PointMatch& match: *_points)
     {
         // Compute retroprojected distance

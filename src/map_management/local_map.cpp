@@ -107,15 +107,18 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
 void Local_Map::update(const utils::Pose& optimizedPose,
                        const DetectedFeatureContainer& detectedFeatures,
                        const matches_containers::match_point_container& outlierMatchedPoints,
-                       const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept
+                       const matches_containers::match_plane_container& outlierMatchedPlanes)
 {
     assert(_detectedFeatureId == detectedFeatures.id);
+
+    const matrix33& poseCovariance = optimizedPose.get_position_variance();
+    if (not utils::is_covariance_valid(poseCovariance))
+        throw std::invalid_argument("update: The given pose covariance is invalid, map wont be update");
 
     // Unmatch detected outliers
     mark_outliers_as_unmatched(outlierMatchedPoints);
     mark_outliers_as_unmatched(outlierMatchedPlanes);
 
-    const matrix33& poseCovariance = optimizedPose.get_position_variance();
     const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
@@ -142,8 +145,11 @@ void Local_Map::update(const utils::Pose& optimizedPose,
 void Local_Map::add_features_to_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
                                     const DetectedFeatureContainer& detectedFeatures,
-                                    const bool addAllFeatures) noexcept
+                                    const bool addAllFeatures)
 {
+    if (not utils::is_covariance_valid(poseCovariance))
+        throw std::invalid_argument("update: The given pose covariance is invalid, map wont be update");
+
     assert(_detectedFeatureId == detectedFeatures.id);
 
     _localPoint2DMap.add_features_to_staged_map(

@@ -1,9 +1,11 @@
 #include "point_with_tracking.hpp"
 
 #include "coordinates/point_coordinates.hpp"
+#include "logger.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
 #include "utils/covariances.hpp"
+#include <iostream>
 #include <stdexcept>
 
 namespace rgbd_slam::tracking {
@@ -21,8 +23,12 @@ Point::Point(const utils::WorldCoordinate& coordinates,
 {
     build_kalman_filter();
 
-    assert(not _descriptor.empty() and _descriptor.cols > 0);
-    assert(not _coordinates.hasNaN());
+    if (_descriptor.empty() or _descriptor.cols <= 0)
+        throw std::invalid_argument("Point constructor: descriptor is empty");
+    if (_coordinates.hasNaN())
+        throw std::invalid_argument("Point constructor: point coordinates contains NaN");
+    if (not utils::is_covariance_valid(_covariance))
+        throw std::invalid_argument("Point constructor: covariance in invalid");
 };
 
 double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
@@ -31,13 +37,13 @@ double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
     assert(_kalmanFilter != nullptr);
     if (not utils::is_covariance_valid(newDetectionCovariance))
     {
-        outputs::log_error("newDetectionCovariance: the covariance in invalid");
+        outputs::log_error("newDetectionCovariance: the covariance is invalid");
         return -1;
     }
     if (not utils::is_covariance_valid(_covariance))
     {
-        outputs::log_error("_covariance: the covariance in invalid");
-        return -1;
+        outputs::log_error("_covariance : the covariance is invalid");
+        exit(-1);
     }
 
     try
@@ -86,10 +92,16 @@ PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observatio
     _coordinates(observation, c2w),
     _descriptor(descriptor)
 {
+    if (not utils::is_covariance_valid(stateCovariance))
+    {
+        throw std::invalid_argument("Inverse depth stateCovariance is invalid in constructor");
+    }
+
     _covariance.setZero();
 
     // new mesurment always as the same uncertainty in depth (and another one in position)
     _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance;
+    _covariance.diagonal().head<3>() += vector3::Constant(0.001); // add small variance
 
     _covariance(inverseDepthIndex, inverseDepthIndex) =
             SQR(parameters::detection::inverseDepthBaseline / 4.0); // inverse depth covariance
@@ -99,7 +111,8 @@ PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observatio
     _covariance(thetaIndex, thetaIndex) = anglevariance;                           // theta angle covariance
     _covariance(phiIndex, phiIndex) = anglevariance;                               // phi angle covariance
 
-    assert(utils::is_covariance_valid(_covariance));
+    if (not utils::is_covariance_valid(_covariance))
+        throw std::invalid_argument("PointInverseDepth constructor: the builded covariance is invalid");
 }
 
 PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
@@ -107,7 +120,8 @@ PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
     _covariance(other._covariance),
     _descriptor(other._descriptor)
 {
-    assert(utils::is_covariance_valid(_covariance));
+    if (not utils::is_covariance_valid(_covariance))
+        throw std::invalid_argument("PointInverseDepth constructor: the given covariance is invalid");
 }
 
 bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation,
@@ -138,6 +152,12 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate& observation,
                               const matrix33& stateCovariance,
                               const cv::Mat& descriptor)
 {
+    if (not utils::is_depth_valid(observation.z()))
+    {
+        outputs::log_error("depth is invalid in a function depending on depth");
+        return false;
+    }
+
     try
     {
         // transform screen point to world point
@@ -159,6 +179,17 @@ bool PointInverseDepth::update_with_cartesian(const utils::WorldCoordinate& poin
                                               const WorldCoordinateCovariance& covariance,
                                               const cv::Mat& descriptor)
 {
+    if (not utils::is_covariance_valid(covariance))
+    {
+        outputs::log_error("covariance: covariance is invalid");
+        return false;
+    }
+    if (not utils::is_covariance_valid(_covariance))
+    {
+        outputs::log_error("_covariance: covariance is invalid");
+        exit(-1);
+    }
+
     try
     {
         // pass it through the filter
@@ -191,7 +222,7 @@ bool PointInverseDepth::update_with_cartesian(const utils::WorldCoordinate& poin
     }
     catch (const std::exception& ex)
     {
-        outputs::log_error("Catch exeption: " + std::string(ex.what()));
+        outputs::log_error("Caught exeption while tracking: " + std::string(ex.what()));
         return false;
     }
 }
@@ -248,6 +279,10 @@ PointInverseDepth::Covariance PointInverseDepth::compute_inverse_depth_covarianc
     pointCov.setZero();
     pointCov.block<3, 3>(0, 0) = firstPoseCovariance;
     pointCov.block<3, 3>(3, 3) = pointCovariance;
+    pointCov.diagonal() += vector6::Constant(0.01);
+
+    if (not utils::is_covariance_valid(pointCov))
+        throw std::logic_error("compute_inverse_depth_covariance cannot use invalid point covariance");
 
     matrix66 resCovariance = jacobian * pointCov.selfadjointView<Eigen::Lower>() * jacobian.transpose();
 
@@ -257,6 +292,21 @@ PointInverseDepth::Covariance PointInverseDepth::compute_inverse_depth_covarianc
     Covariance c;
     c.base() = resCovariance;
     return c;
+}
+
+double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cameraToWorld) const noexcept
+{
+    Eigen::Matrix<double, 3, 6> jacobian;
+    const utils::WorldCoordinate& cartesian = _coordinates.to_world_coordinates(jacobian);
+
+    const vector3 hc(cartesian - cameraToWorld.translation());
+    const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();
+    const double thetad_meters =
+            (sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates._inverseDepth_mm)) /
+            1000.0;
+    const double d1_meters = hc.norm() / 1000.0;
+
+    return 4.0 * thetad_meters / d1_meters * abs(cosAlpha);
 }
 
 void PointInverseDepth::build_kalman_filter() noexcept

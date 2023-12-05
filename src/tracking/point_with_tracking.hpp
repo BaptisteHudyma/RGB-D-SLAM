@@ -106,6 +106,12 @@ struct PointInverseDepth
                                                                      const matrix33& firstPoseCovariance,
                                                                      const Eigen::Matrix<double, 6, 6>& jacobian);
 
+    /**
+     * \brief compute a linearity score, indicating if this point can be converted to a cartesian coordinate with true
+     * gaussian covariance
+     */
+    [[nodiscard]] double compute_linearity_score(const CameraToWorldMatrix& cameraToWorld) const noexcept;
+
   protected:
     /**
      * \brief update the value of this point using an observation in cartesian space

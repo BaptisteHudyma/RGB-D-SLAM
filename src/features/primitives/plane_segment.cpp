@@ -4,6 +4,7 @@
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <cmath>
+#include <stdexcept>
 
 namespace rgbd_slam::features::primitives {
 
@@ -188,7 +189,7 @@ void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) noexcept
     _pointCount += planeSegment._pointCount;
 }
 
-matrix33 Plane_Segment::get_point_cloud_covariance() const noexcept
+matrix33 Plane_Segment::get_point_cloud_covariance() const
 {
     const matrix33 pointCloudHessian({{_Sxs, _Sxy, _Szx}, {_Sxy, _Sys, _Syz}, {_Szx, _Syz, _Szs}});
 
@@ -196,7 +197,8 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const noexcept
     assert(not utils::double_equal(pointCloudHessian.determinant(), 0.0));
 
     const matrix33& covariance = pointCloudHessian.inverse();
-    assert(utils::is_covariance_valid(covariance));
+    if (not utils::is_covariance_valid(covariance))
+        throw std::logic_error("get_point_cloud_covariance: the produced covariance is invalid");
     return covariance;
 }
 
