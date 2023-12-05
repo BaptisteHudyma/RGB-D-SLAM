@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 #define RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 
+#include "covariances.hpp"
 #include "outputs/map_writer.hpp"
 #include "outputs/logger.hpp"
 
@@ -13,6 +14,7 @@
 
 #include <opencv2/core/matx.hpp>
 #include <opencv2/core/types.hpp>
+#include <stdexcept>
 
 namespace rgbd_slam::map_management {
 
@@ -351,10 +353,13 @@ class Feature_Map
     void update_map(const CameraToWorldMatrix& cameraToWorld,
                     const matrix33& poseCovariance,
                     const DetectedFeaturesObject& detectedFeatureObject,
-                    std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
+                    std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
         if (not _isActivated)
             return;
+        if (not utils::is_covariance_valid(poseCovariance))
+            throw std::invalid_argument("update_map: The given pose covariance is invalid, map wont be update");
+
         assert(mapWriter != nullptr);
 
         update_local_map(cameraToWorld, poseCovariance, detectedFeatureObject, mapWriter);
@@ -386,10 +391,14 @@ class Feature_Map
     void add_features_to_staged_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
                                     const DetectedFeaturesObject& detectedFeatures,
-                                    const bool addAllFeatures) noexcept
+                                    const bool addAllFeatures)
     {
         if (not _isActivated)
             return;
+
+        if (not utils::is_covariance_valid(poseCovariance))
+            throw std::invalid_argument(
+                    "add_features_to_staged_map: The given pose covariance is invalid, map wont be update");
 
         // Add all unmatched points to staged point container
         const size_t featureVectorSize = detectedFeatures.size();
@@ -517,13 +526,9 @@ class Feature_Map
 
     /**
      * \brief compute the upgraded features and remove them from the map
-     * \param[in] poseCovariance The covariance of the global pose
      */
     [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_features(const CameraToWorldMatrix& cameraToWorld)
     {
-        // just compute map features
-        // return get_upgraded_map_features(poseCovariance);
-
         auto upgradedMapFeatures = get_upgraded_map_features(cameraToWorld);
         auto upgradedStagedFeatures = get_upgraded_staged_features(cameraToWorld);
         upgradedMapFeatures.insert(
@@ -538,8 +543,11 @@ class Feature_Map
     void update_local_map(const CameraToWorldMatrix& cameraToWorld,
                           const matrix33& poseCovariance,
                           const DetectedFeaturesObject& detectedFeatureObject,
-                          std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
+                          std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
+        if (not utils::is_covariance_valid(poseCovariance))
+            throw std::invalid_argument("update_local_map: The given pose covariance is invalid, map wont be update");
+
         typename localMapType::iterator featureMapIterator = _localMap.begin();
         while (featureMapIterator != _localMap.end())
         {
@@ -579,8 +587,11 @@ class Feature_Map
 
     void update_staged_map(const CameraToWorldMatrix& cameraToWorld,
                            const matrix33& poseCovariance,
-                           const DetectedFeaturesObject& detectedFeatureObject) noexcept
+                           const DetectedFeaturesObject& detectedFeatureObject)
     {
+        if (not utils::is_covariance_valid(poseCovariance))
+            throw std::invalid_argument("update_staged_map: The given pose covariance is invalid, map wont be update");
+
         // Add correct staged points to local map
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
         while (stagedFeatureIterator != _stagedMap.end())

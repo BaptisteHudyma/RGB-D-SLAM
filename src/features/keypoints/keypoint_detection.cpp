@@ -48,7 +48,7 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
     {
         _featureDetectors[i] = cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(detectorThreshold));
-        _advancedFeatureDetectors[i] = cv::FastFeatureDetector::create(std::max(1, detectorThreshold / 2));
+        _advancedFeatureDetectors[i] = cv::FastFeatureDetector::create(std::max(1, detectorThreshold / 4));
         assert(not _featureDetectors[i].empty());
         assert(not _advancedFeatureDetectors[i].empty());
     }
@@ -349,8 +349,8 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
     frameKeypoints.reserve(maxKeypointToDetect);
 #else
     constexpr uint detectorThreshold = parameters::detection::pointDetectorThreshold;
-    frameKeypoints.reserve(detectorThreshold);
     const size_t maxKeypointToDetectByCell = detectorThreshold * _detectionWindows.size();
+    frameKeypoints.reserve(maxKeypointToDetectByCell);
 #endif
 
 #ifndef MAKE_DETERMINISTIC

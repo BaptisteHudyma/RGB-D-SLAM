@@ -76,7 +76,7 @@ class Local_Map
     void update(const utils::Pose& optimizedPose,
                 const DetectedFeatureContainer& detectedFeatures,
                 const matches_containers::match_point_container& outlierMatchedPoints,
-                const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept;
+                const matches_containers::match_plane_container& outlierMatchedPlanes);
 
     /**
      * \brief Update the local map when no pose could be estimated. Consider all features as unmatched
@@ -94,7 +94,7 @@ class Local_Map
     void add_features_to_map(const matrix33& poseCovariance,
                              const CameraToWorldMatrix& cameraToWorld,
                              const DetectedFeatureContainer& detectedFeatures,
-                             const bool addAllFeatures) noexcept;
+                             const bool addAllFeatures);
 
     /**
      * \brief Hard clean the local and staged map

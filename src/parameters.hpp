@@ -20,6 +20,8 @@ constexpr double depthSigmaMargin = -0.53;    // It is the sigmaA
 // Optimisation (ransac)
 namespace optimization {
 namespace ransac {
+constexpr float maximumRetroprojectionErrorForPoint2DInliers_mm =
+        20.0; // Max retroprojection error between the line of two inverse depth points to reject match (mm)
 constexpr float maximumRetroprojectionErrorForPointInliers_px =
         10.0; // Max retroprojection error between two screen points before rejecting the match (pixels);
 constexpr float maximumRetroprojectionErrorForPlaneInliers_mm =
@@ -50,7 +52,7 @@ constexpr uint keypointCellDetectionWidthCount = 3;  // the number of the keypoi
 #ifdef USE_ORB_DETECTOR_AND_MATCHING
 constexpr uint pointDetectorOrbThreshold = 200; // number of points to detect (per frame)
 #else
-constexpr uint pointDetectorThreshold = 3; // point detector sensitivity (per cell detection window)
+constexpr uint pointDetectorThreshold = 10; // point detector sensitivity (per cell detection window)
 #endif
 constexpr uint maximumPointPerFrame =
         100; // maximum points per frame, over which we do not want to detect more points (optimization)
@@ -64,8 +66,8 @@ constexpr uint opticalFlowPyramidWindowSizeWidthCount =
         12; // search size window count (horizontal) at each pyramid level
 
 // inverse depth
-constexpr double inverseDepthBaseline = 1.0 / 1000.0; // baseline of the inverse depth, in 1/millimeters
-constexpr double inverseDepthAngleBaseline = 0.5;     // baseline of the inverse depth measurment angles, in degrees
+constexpr double inverseDepthBaseline = 1.0 / 10000.0; // baseline of the inverse depth, in 1/millimeters
+constexpr double inverseDepthAngleBaseline = 0.5;      // baseline of the inverse depth measurment angles, in degrees
 
 // plane detection
 constexpr double minimumPlaneSeedProportion =

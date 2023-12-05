@@ -76,7 +76,7 @@ class Pose : public PoseBase
     void display(std::ostream& os) const noexcept override;
 
   private:
-    matrix66 _poseVariance;
+    matrix66 _poseVariance = matrix66::Zero();
 };
 
 std::ostream& operator<<(std::ostream& os, const PoseBase& pose);

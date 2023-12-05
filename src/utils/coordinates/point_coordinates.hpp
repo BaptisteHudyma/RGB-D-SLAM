@@ -233,8 +233,18 @@ struct WorldCoordinate : public vector3
 struct InverseDepthWorldPoint
 {
   public:
+    InverseDepthWorldPoint(const WorldCoordinate& firstPose,
+                           const double inverseDepth,
+                           const double theta,
+                           const double phi);
     InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w);
     InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
+
+    /**
+     * \brief signed Line to line distance
+     */
+    vector3 compute_signed_distance(const InverseDepthWorldPoint& other) const;
+    vector3 compute_signed_distance(const ScreenCoordinate2D& other, const WorldToCameraMatrix& c2w) const;
 
     /**
      * \brief Set the parameters of this instance from a cartesian point

@@ -64,10 +64,12 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
 {
     // Simple constructor
     /**
+     * \param[in] points2d Matched 2D (screen) to 2D (inverse depth) points
      * \param[in] points Matched 2D (screen) to 3D (world) points
      * \param[in] planes Matched camera to world planes
      */
-    Global_Pose_Estimator(const matches_containers::match_point_container* const points,
+    Global_Pose_Estimator(const matches_containers::match_point2D_container* const points2d,
+                          const matches_containers::match_point_container* const points,
                           const matches_containers::match_plane_container* const planes);
 
     /**
@@ -80,6 +82,7 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
 
   private:
     // use pointers to prevent useless copy
+    const matches_containers::match_point2D_container* const _points2d;
     const matches_containers::match_point_container* const _points;
     const matches_containers::match_plane_container* const _planes;
 };

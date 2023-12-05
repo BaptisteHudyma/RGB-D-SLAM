@@ -1,10 +1,12 @@
 #include "point_coordinates.hpp"
 #include "../parameters.hpp"
 #include "../utils/distance_utils.hpp"
+#include "camera_transformation.hpp"
 #include "coordinates/basis_changes.hpp"
 #include "covariances.hpp"
 #include "types.hpp"
 #include <cmath>
+#include <iostream>
 #include <math.h>
 #include <stdexcept>
 
@@ -298,6 +300,17 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
  *      INVERSE DEPTH COORDINATES
  */
 
+InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
+                                               const double inverseDepth,
+                                               const double theta,
+                                               const double phi) :
+    _firstObservation(firstPose),
+    _inverseDepth_mm(inverseDepth),
+    _theta_rad(theta),
+    _phi_rad(phi)
+{
+}
+
 InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w) :
     // use homogenous to create a vector from the camera center outward
     InverseDepthWorldPoint(CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
@@ -310,6 +323,33 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observati
 
     // baseline
     _inverseDepth_mm = parameters::detection::inverseDepthBaseline / 2.0;
+}
+
+vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldPoint& other) const
+{
+    // we want to find a point that the two lines pass by, define by the origin of the line and the normal :
+    // P = P1 + n1 * t1
+    // P = P2 + n2 * t2
+
+    const vector3 n1 = get_bearing_vector().normalized();
+    const vector3 P1 = _firstObservation;
+
+    const vector3 n2 = other.get_bearing_vector().normalized();
+    const vector3 P2 = other._firstObservation;
+
+    const vector3 normalCross = n1.cross(n2);
+    const double t1 = ((P2 - P1).cross(n2).dot(normalCross)) / SQR(normalCross.norm());
+    const double t2 = ((P2 - P1).cross(n1).dot(normalCross)) / SQR(normalCross.norm());
+
+    const vector3 point1 = P1 + t1 * n1;
+    const vector3 point2 = P2 + t2 * n2;
+    return point1 - point2;
+}
+
+vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D& other,
+                                                        const WorldToCameraMatrix& c2w) const
+{
+    return compute_signed_distance(InverseDepthWorldPoint(other, compute_camera_to_world_transform(c2w)));
 }
 
 void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point, const WorldCoordinate& origin) noexcept

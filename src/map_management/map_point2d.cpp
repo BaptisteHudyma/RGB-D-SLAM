@@ -61,7 +61,7 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedPointsObject& trackedFeatures,
                                 const uint dropChance) const noexcept
 {
-    // TODO: should those points be tracked ? I think not
+#if 0 // activate if those points should be tracked with optical flow. I think they should not
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
     if (shouldNotDropPoint)
@@ -73,6 +73,7 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
             return true;
         }
     }
+#endif
     // point was not added
     return false;
 }
@@ -114,36 +115,25 @@ void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) 
 bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                   UpgradedPoint2DType& upgradedFeature) const noexcept
 {
-    Eigen::Matrix<double, 3, 6> jacobian;
-    const utils::WorldCoordinate& cartesian = _coordinates.to_world_coordinates(jacobian);
-
-    const vector3 hc(cartesian - cameraToWorld.translation());
-    const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();
-    const double thetad_meters =
-            (sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates._inverseDepth_mm)) /
-            1000.0;
-    const double d1_meters = hc.norm() / 1000.0;
-    const double upgradeThreshold = 4.0 * thetad_meters / d1_meters * abs(cosAlpha);
-
-#if 0 // TODO reactivate
-    if (upgradeThreshold < 0.05) // linearity index (percentage)
+    try
     {
-        try
+        if (compute_linearity_score(cameraToWorld) < 0.05) // linearity index (percentage)
         {
+#if 0 // TODO reactivate when the tracking of inverse depth points will work
+            Eigen::Matrix<double, 3, 6> jacobian;
+            upgradedFeature._coordinates = _coordinates.to_world_coordinates(jacobian);
             upgradedFeature._covariance = compute_cartesian_covariance(_covariance, jacobian);
-            std::cout << upgradedFeature._covariance << std::endl << std::endl;
-            upgradedFeature._coordinates = cartesian;
             upgradedFeature._descriptor = _descriptor;
             upgradedFeature._matchIndex = _matchIndex;
             return true;
-        }
-        catch (const std::exception& ex)
-        {
-            outputs::log_error("Catch exeption: " + std::string(ex.what()));
-            return false;
+#endif
         }
     }
-#endif
+    catch (const std::exception& ex)
+    {
+        outputs::log_error("Caught exeption while upgrading feature" + std::string(ex.what()));
+        return false;
+    }
     return false;
 }
 

@@ -83,7 +83,7 @@ class Plane_Segment
      * \brief Compute the covariance of the points in the plane
      * \return the filled covariance matrix of the point cloud
      */
-    [[nodiscard]] matrix33 get_point_cloud_covariance() const noexcept;
+    [[nodiscard]] matrix33 get_point_cloud_covariance() const;
 
     [[nodiscard]] double get_MSE() const noexcept { return _MSE; };
     [[nodiscard]] vector3 get_normal() const noexcept { return _parametrization.get_normal(); };
