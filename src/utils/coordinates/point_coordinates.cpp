@@ -6,7 +6,6 @@
 #include "covariances.hpp"
 #include "types.hpp"
 #include <cmath>
-#include <iostream>
 #include <math.h>
 #include <stdexcept>
 
@@ -327,23 +326,8 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observati
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldPoint& other) const
 {
-    // we want to find a point that the two lines pass by, define by the origin of the line and the normal :
-    // P = P1 + n1 * t1
-    // P = P2 + n2 * t2
-
-    const vector3 n1 = get_bearing_vector().normalized();
-    const vector3 P1 = _firstObservation;
-
-    const vector3 n2 = other.get_bearing_vector().normalized();
-    const vector3 P2 = other._firstObservation;
-
-    const vector3 normalCross = n1.cross(n2);
-    const double t1 = ((P2 - P1).cross(n2).dot(normalCross)) / SQR(normalCross.norm());
-    const double t2 = ((P2 - P1).cross(n1).dot(normalCross)) / SQR(normalCross.norm());
-
-    const vector3 point1 = P1 + t1 * n1;
-    const vector3 point2 = P2 + t2 * n2;
-    return point1 - point2;
+    return signed_line_distance(
+            _firstObservation, get_bearing_vector(), other._firstObservation, other.get_bearing_vector());
 }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D& other,
@@ -361,7 +345,7 @@ void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point, const 
     Cartesian c;
     c.from_vec(directionalVector);
 
-    Spherical s = Spherical::from(c);
+    const Spherical& s = Spherical::from(c);
 
     _inverseDepth_mm = 1.0 / s.p;
     _theta_rad = s.theta;
@@ -392,8 +376,8 @@ void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
     matrix33 subJacobian({{theta5, theta4, theta3},
                           {-theta2, -theta1, sqrt(theta6) / theta8},
                           {v.y() / theta6, v.z() / theta6, 0.0}});
-    jacobian.block<3, 3>(inverseDepthIndex, 0) = subJacobian;
 
+    jacobian.block<3, 3>(inverseDepthIndex, 0) = subJacobian;
     jacobian.block<3, 3>(inverseDepthIndex, inverseDepthIndex) = -subJacobian;
 
     from_cartesian(point, origin);
@@ -402,13 +386,17 @@ void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
 {
     assert(_inverseDepth_mm != 0.0);
-    return WorldCoordinate(_firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector());
+    return WorldCoordinate(_firstObservation + get_bearing_vector() / _inverseDepth_mm);
 }
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
 {
     // jacobian of _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
     jacobian = Eigen::Matrix<double, 3, 6>::Zero();
+
+    // x = xo + sin(theta) cos(phi) / d
+    // y = yo + sin(theta) sin(phi) / d
+    // z = zo + cos(theta) / d
 
     const double sinTheta = sin(_theta_rad);
     const double cosTheta = cos(_theta_rad);
@@ -419,9 +407,9 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<doubl
     const double theta1 = sinPhi * sinTheta;
     const double theta2 = cosPhi * sinTheta;
 
-    matrix33 reducedJacobian({{-theta2 / SQR(d), cosTheta * cosPhi / d, -theta1 / d},
-                              {-theta1 / SQR(d), cosTheta * sinPhi / d, theta2 / d},
-                              {-cosTheta / SQR(d), -sinTheta / d, 0}});
+    const matrix33 reducedJacobian({{-theta2 / SQR(d), cosTheta * cosPhi / d, -theta1 / d},
+                                    {-theta1 / SQR(d), cosTheta * sinPhi / d, theta2 / d},
+                                    {-cosTheta / SQR(d), -sinTheta / d, 0}});
 
     jacobian.block<3, 3>(0, firstPoseIndex) = matrix33::Identity();
     jacobian.block<3, 3>(0, inverseDepthIndex) = reducedJacobian;
@@ -447,11 +435,11 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
 vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
 {
     Spherical s;
-    s.p = 1.0 / _inverseDepth_mm;
+    s.p = 1.0; // no depth
     s.theta = _theta_rad;
     s.phi = _phi_rad;
 
-    return Cartesian::from(s).vec() / s.p;
+    return Cartesian::from(s).vec();
 }
 
 vector6 InverseDepthWorldPoint::get_vector_state() const noexcept

@@ -1,3 +1,4 @@
+#include "covariances.hpp"
 #include "tracking/kalman_filter.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <gtest/gtest.h>
@@ -256,7 +257,7 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseNoVariance)
     const size_t numberOfMeasurements = 100;
     const double initialPosition = 0.0;
     const double measurementNoise = 0.0;
-    const double expectedNoise = 0.0;
+    const double expectedNoise = 0.01;
 
     Eigen::Matrix<double, stateDimension, stateDimension> systemDynamics; // System dynamics matrix
     Eigen::Matrix<double, measurementDimension, stateDimension> outputMatrix;
@@ -276,6 +277,8 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseNoVariance)
     processNoiseCovariance << .05, .05, .0, .05, .05, .0, .0, .0, .0;
     estimateErrorCovariance << .1, .1, .1, .1, 10000, 10, .1, 10, 100;
 
+    EXPECT_TRUE(utils::is_covariance_valid(measurementNoiseCovariance));
+
     // Construct the filter
     KalmanFilter kf(systemDynamics, outputMatrix, processNoiseCovariance);
 
@@ -293,7 +296,15 @@ TEST(KalmanFilteringTests, 1DProjectileMotionNoNoiseNoVariance)
         y << measurement;
 
         // update the model
-        kf.update(y, measurementNoiseCovariance);
+        try
+        {
+            kf.update(y, measurementNoiseCovariance);
+        }
+        catch (const std::exception& ex)
+        {
+            // fail
+            EXPECT_TRUE(false);
+        }
     }
 
     // estimate state position

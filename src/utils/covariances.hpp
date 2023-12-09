@@ -13,11 +13,19 @@ namespace rgbd_slam::utils {
 
 template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance) noexcept
 {
+    // no invalid values
     if (covariance.hasNaN())
     {
         outputs::log_warning("Covariance has invalid values");
         return false;
     }
+
+    // special case: 1 dimention covariance
+    if (N == 1)
+    {
+        return covariance(0, 0) >= 0;
+    }
+
     // covariance should be symetrical
     if (!covariance.isApprox(covariance.transpose()))
     {
@@ -26,17 +34,13 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
     }
 
     // check that this covariance is positive semi definite
-    Eigen::SelfAdjointEigenSolver<const Eigen::Matrix<double, N, N>> solver(covariance);
-    // any value < 0 is an error
-    const bool isPositiveSemiDefinite = not std::ranges::any_of(solver.eigenvalues(), [](double value) {
-        return value < 0;
-    });
-
-    if (not isPositiveSemiDefinite)
+    const auto ldlt = covariance.template selfadjointView<Eigen::Upper>().ldlt();
+    if (ldlt.info() == Eigen::NumericalIssue || !ldlt.isPositive())
     {
         outputs::log_warning("Covariance is not positive semi definite");
+        return false;
     }
-    return isPositiveSemiDefinite;
+    return true;
 }
 
 /**
