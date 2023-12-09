@@ -420,10 +420,10 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                                                        planeFeatureScore * acceptablePlaneInliersForEarlyStop);
 
     // Compute maximum iteration with the original RANSAC formula
-    const uint maximumIterations =
-            static_cast<uint>(std::ceil(log(1.0 - parameters::optimization::ransac::probabilityOfSuccess) /
-                                        log(1.0 - pow(parameters::optimization::ransac::inlierProportion,
-                                                      parameters::optimization::minimumPointForOptimization))));
+    static const uint maximumIterations = static_cast<uint>(
+            std::ceil(std::log(1.0f - parameters::optimization::ransac::probabilityOfSuccess) /
+                      std::log(1.0f - std::pow(parameters::optimization::ransac::inlierProportion,
+                                               parameters::optimization::ransac::featureTrustCount))));
     if (maximumIterations <= 0)
     {
         outputs::log_error("maximumIterations should be > 0, no pose optimization will be made");

@@ -65,6 +65,11 @@ A good tracking/SLAM process will keep the same feature's colors during the whol
 
 The top bar displays the number of points in the local map, as well as the planes and their colors.
 
+
+At the end of the process, a file out.obj is produced.
+The map this program produced is in the physical convention coordinate system (x forward, y left, z up).
+
+
 #### CAPE
 CAPE provides the yoga and tunnel dataset, composed of low textured environment with cylinder primitives
 ```

@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 #define RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 
+#include "types.hpp"
 #include <limits>
 
 namespace rgbd_slam::utils {
@@ -22,6 +23,16 @@ namespace rgbd_slam::utils {
 [[nodiscard]] bool double_equal(const double a,
                                 const double b,
                                 const double epsilon = std::numeric_limits<double>::epsilon()) noexcept;
+
+/**
+ * \brief compute the distance between two lines.
+ * This is the distance between the two points closest to each others on each line
+ * \return a signed distance, in the same unit as the points
+ */
+[[nodiscard]] vector3 signed_line_distance(const vector3& line1point,
+                                           const vector3& line1normal,
+                                           const vector3& line2point,
+                                           const vector3& line2normal) noexcept;
 
 } // namespace rgbd_slam::utils
 

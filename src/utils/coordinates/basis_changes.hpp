@@ -38,17 +38,17 @@ struct Cartesian
 
 struct Spherical
 {
+    double p;
     double theta;
     double phi;
-    double p;
 
-    vector3 vec() const { return vector3(theta, phi, p); }
+    vector3 vec() const { return vector3(p, theta, phi); }
 
     void from_vec(const vector3& vec)
     {
-        theta = vec.x();
-        phi = vec.y();
-        p = vec.z();
+        p = vec.x();
+        theta = vec.y();
+        phi = vec.z();
     }
 
     /**

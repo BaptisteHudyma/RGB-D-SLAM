@@ -27,9 +27,12 @@ constexpr float maximumRetroprojectionErrorForPointInliers_px =
 constexpr float maximumRetroprojectionErrorForPlaneInliers_mm =
         20.0; // Max retroprojection error between two screen planes, in millimeters, before rejecting the match
 constexpr double minimumInliersProportionForEarlyStop =
-        0.90f;                               // proportion of inliers in total set, to stop RANSAC early
+        0.90f; // proportion of inliers in total set, to stop RANSAC early
+
+// RANSAC iteration parameters
 constexpr float probabilityOfSuccess = 0.8f; // probability of having at least one correct transformation
 constexpr float inlierProportion = 0.6f;     // number of inliers in data / number of points in data
+constexpr float featureTrustCount = 10.0;    // number of expected features expected to pass the test
 } // namespace ransac
 
 constexpr uint minimumPointForOptimization = 5; // Should be >= 5, the minimum point count for a 3D pose estimation

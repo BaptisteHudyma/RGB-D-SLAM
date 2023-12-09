@@ -1,5 +1,6 @@
 #include "angle_utils.hpp"
 #include "covariances.hpp"
+#include "distance_utils.hpp"
 #include "parameters.hpp"
 #include "point_with_tracking.hpp"
 #include "types.hpp"
@@ -559,19 +560,35 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
     EXPECT_NEAR(inverseDepth._coordinates._inverseDepth_mm, 0.0, 0.001);
     EXPECT_NEAR(inverseDepth._coordinates._phi_rad, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._coordinates._theta_rad, 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth._coordinates._theta_rad, 0.0, 1.5707963267948966);
 
+    // store the covariance at the start of the process
     const auto beforeMergeInverseCov = inverseDepth._covariance;
-    assert(is_covariance_valid(inverseDepth._covariance));
     const auto& beforeMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
             inverseDepth._coordinates, inverseDepth._covariance);
+    assert(is_covariance_valid(beforeMergeCovariance));
+    assert(is_covariance_valid(beforeMergeInverseCov));
+
+    std::cout << beforeMergeCovariance << std::endl;
+
+    std::cout << "cov1 " << std::endl << beforeMergeInverseCov << std::endl << std::endl;
+
+    const WorldCoordinate& firstCartesian = inverseDepth._coordinates.to_world_coordinates();
+    Eigen::Matrix<double, 6, 6> fromCartesianJacobian;
+    inverseDepth._coordinates.from_cartesian(
+            firstCartesian, inverseDepth._coordinates._firstObservation, fromCartesianJacobian);
+    std::cout << "cov2 " << std::endl
+              << tracking::PointInverseDepth::compute_inverse_depth_covariance(
+                         beforeMergeCovariance,
+                         inverseDepth._covariance.get_first_pose_covariance(),
+                         fromCartesianJacobian)
+              << std::endl;
 
     EXPECT_TRUE(is_covariance_valid(beforeMergeCovariance));
     EXPECT_GT(beforeMergeCovariance(0, 0),
-              100); // high variance for x coordinate (center of observation) : angle theta as some variance
-    EXPECT_GT(beforeMergeCovariance(1, 1),
-              100); // high variance for x coordinate (center of observation) : angle theta as some variance
-    EXPECT_GT(beforeMergeCovariance(2, 2), 1e3); // very high variance for z coordinate depth is unknown
+              1e5); // high variance for x coordinate (forward) very high variance for z coordinate depth is unknown
+    EXPECT_GT(beforeMergeCovariance(1, 1), 100); // high variance for y coordinate (left) : angle theta as some variance
+    EXPECT_GT(beforeMergeCovariance(2, 2), 100); // high variance for y coordinate (left) : angle phi as some variance
 
     /**
      ** add a new measurment that is the same point
@@ -579,12 +596,12 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     EXPECT_TRUE(inverseDepth.track(observation, c2w, matrix33::Identity(), cv::Mat()));
 
     const auto afterMergeInverseCov = inverseDepth._covariance;
-    assert(is_covariance_valid(inverseDepth._covariance));
+    assert(is_covariance_valid(afterMergeInverseCov));
     const auto& afterMergeCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
             inverseDepth._coordinates, inverseDepth._covariance);
 
     EXPECT_TRUE(is_covariance_valid(afterMergeCovariance));
-    EXPECT_LT(afterMergeInverseCov(3, 3), beforeMergeInverseCov(3, 3));
+    EXPECT_GT(afterMergeInverseCov(3, 3), beforeMergeInverseCov(3, 3)); // inverted covariance
     EXPECT_LT(afterMergeInverseCov(4, 4), beforeMergeInverseCov(4, 4));
     EXPECT_LT(afterMergeInverseCov(5, 5), beforeMergeInverseCov(5, 5));
 
@@ -727,6 +744,87 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation3)
     const CameraToWorldMatrix& cameraToWorld =
             compute_camera_to_world_transform_no_correction(quaternion(0.6, 0.1, 0.2, 0.1), vector3(100, -100, -100));
     test_plane_set_camera_to_world_to_camera(cameraToWorld);
+}
+
+/**
+ *      Test the line distance function
+ */
+
+TEST(LineDistances, LineDistancesAtZero)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // origin forward
+    const vector3 point1(0.0, 0.0, 0.0);
+    const vector3 normal1(1.0, 0.0, 0.0);
+
+    // test forward and backward normal
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point1, normal1).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point1, -normal1).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point1, -normal1).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point1, normal1).norm(), 0.0, 0.0001);
+
+    // point further on x
+    const vector3 point2(1000.0, 0.0, 0.0);
+    const vector3 normal2(1.0, 0.0, 0.0);
+    // test forward and backward normal, no difference
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, normal2).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, -normal2).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, -normal2).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, normal2).norm(), 0.0, 0.0001);
+
+    // point looking sideway
+    const vector3 point3(1000.0, 0.0, 0.0);
+    const vector3 normal3(0.0, 1.0, 0.0);
+    // test forward and backward normal, no difference
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, normal3).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, -normal3).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, -normal3).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, normal3).norm(), 0.0, 0.0001);
+
+    // point looking down
+    const vector3 point4(1000.0, 0.0, 0.0);
+    const vector3 normal4(0.0, 0.0, 1.0);
+    // test forward and backward normal, no difference
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point4, normal4).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point4, -normal4).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point4, -normal4).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point4, normal4).norm(), 0.0, 0.0001);
+}
+
+TEST(LineDistances, LineDistances)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // origin forward
+    const vector3 point1(0.0, 0.0, 0.0);
+    const vector3 normal1(1.0, 0.0, 0.0);
+
+    // high point, looking left
+    const vector3 point2(0.0, 0.0, 1000.0);
+    const vector3 normal2(0.0, 1.0, 0.0);
+
+    // test forward and backward normal
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, normal2).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, -normal2).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, -normal2).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, normal2).norm(), 1000.0, 0.0001);
+
+    // shifted parralel point
+    const vector3 point3(0.0, 0.0, 1000.0);
+    const vector3 normal3(1.0, 0.0, 0.0);
+
+    // test forward and backward normal
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, normal3).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, -normal3).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, -normal3).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, normal3).norm(), 1000.0, 0.0001);
 }
 
 } // namespace rgbd_slam::utils

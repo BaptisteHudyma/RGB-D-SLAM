@@ -5,7 +5,6 @@
 #include "parameters.hpp"
 #include "types.hpp"
 #include "utils/covariances.hpp"
-#include <iostream>
 #include <stdexcept>
 
 namespace rgbd_slam::tracking {
@@ -100,7 +99,6 @@ PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observatio
 
     // new mesurment always as the same uncertainty in depth (and another one in position)
     _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance;
-    _covariance.diagonal().head<3>() += vector3::Constant(0.001); // add small variance
 
     _covariance(inverseDepthIndex, inverseDepthIndex) =
             SQR(parameters::detection::inverseDepthBaseline / 4.0); // inverse depth covariance
@@ -134,7 +132,7 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation
         const PointInverseDepth newObservation(screenObservation, c2w, stateCovariance, descriptor);
         // project to cartesian
         const utils::WorldCoordinate& cartesianProj = newObservation._coordinates.to_world_coordinates();
-        WorldCoordinateCovariance covarianceProj =
+        const WorldCoordinateCovariance& covarianceProj =
                 compute_cartesian_covariance(newObservation._coordinates, newObservation._covariance);
 
         return update_with_cartesian(cartesianProj, covarianceProj, descriptor);
@@ -277,20 +275,24 @@ PointInverseDepth::Covariance PointInverseDepth::compute_inverse_depth_covarianc
         throw std::invalid_argument(
                 "compute_inverse_depth_covariance cannot use incorrect covariance in firstPoseCovariance");
 
+    // TODO: set only the lower part
     matrix66 pointCov;
     pointCov.setZero();
     pointCov.block<3, 3>(0, 0) = firstPoseCovariance;
     pointCov.block<3, 3>(3, 3) = pointCovariance;
-    // pointCov.diagonal() += vector6::Constant(0.01);
+    // pointCov.block<3, 3>(0, 3) = firstPoseCovariance;
+    // pointCov.block<3, 3>(3, 0) = firstPoseCovariance;
 
     if (not utils::is_covariance_valid(pointCov))
+    {
         throw std::logic_error("compute_inverse_depth_covariance cannot use invalid point covariance");
+    }
 
     Covariance resCovariance = jacobian * pointCov.selfadjointView<Eigen::Lower>() * jacobian.transpose();
-    resCovariance.diagonal() += vector6::Constant(0.000001);
-
     if (not utils::is_covariance_valid(resCovariance))
+    {
         throw std::logic_error("compute_inverse_depth_covariance produced an invalid covariance");
+    }
 
     return resCovariance;
 }

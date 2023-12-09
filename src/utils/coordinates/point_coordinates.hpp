@@ -301,7 +301,7 @@ struct InverseDepthWorldPoint
     WorldCoordinate _firstObservation; // position of the camera for the first observation
     double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)
     double _theta_rad = 0.0;           // elevation angle of the first observation, in world space
-    double _phi_rad = 0.0;             // theta angle of the first observation, in world space
+    double _phi_rad = 0.0;             // heading angle of the first observation, in world space
 
     // changing this implies that all computations should be changed, handle with care. Those should be
     // always in [0, 5]
