@@ -243,15 +243,17 @@ struct InverseDepthWorldPoint
     /**
      * \brief signed Line to line distance
      */
-    vector3 compute_signed_distance(const InverseDepthWorldPoint& other) const;
-    vector3 compute_signed_distance(const ScreenCoordinate2D& other, const WorldToCameraMatrix& c2w) const;
+    [[nodiscard]] vector3 compute_signed_distance(const InverseDepthWorldPoint& other) const;
+    [[nodiscard]] vector3 compute_signed_distance(const ScreenCoordinate2D& other,
+                                                  const WorldToCameraMatrix& c2w) const;
 
     /**
      * \brief Set the parameters of this instance from a cartesian point
      * \param[in] point The observed point in world coordinates
      * \param[in] origin The point where the point was observed
      */
-    void from_cartesian(const WorldCoordinate& point, const WorldCoordinate& origin) noexcept;
+    [[nodiscard]] static InverseDepthWorldPoint from_cartesian(const WorldCoordinate& point,
+                                                               const WorldCoordinate& origin) noexcept;
 
     /**
      * \brief Set the parameters of this instance from a cartesian point
@@ -259,9 +261,9 @@ struct InverseDepthWorldPoint
      * \param[in] origin The point where the point was observed
      * \param[out] jacobian The jacobian of this transformation
      */
-    void from_cartesian(const WorldCoordinate& point,
-                        const WorldCoordinate& origin,
-                        Eigen::Matrix<double, 6, 6>& jacobian) noexcept;
+    [[nodiscard]] static InverseDepthWorldPoint from_cartesian(const WorldCoordinate& point,
+                                                               const WorldCoordinate& origin,
+                                                               Eigen::Matrix<double, 6, 3>& jacobian) noexcept;
 
     /**
      * \brief compute the cartesian projection of this point in world space.
@@ -274,7 +276,7 @@ struct InverseDepthWorldPoint
      * \param[out] jacobian The jacobian of this transformation
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept;
+    [[nodiscard]] WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept;
 
     /**
      * \brief Compute the projected coordinates of this point to camera space
@@ -293,7 +295,7 @@ struct InverseDepthWorldPoint
                                              ScreenCoordinate2D& screenCoordinates) const noexcept;
 
     // get the bearing vector that point from _firstObservation to the point
-    vector3 get_bearing_vector() const noexcept;
+    [[nodiscard]] vector3 get_bearing_vector() const noexcept;
 
     [[nodiscard]] vector6 get_vector_state() const noexcept;
     void from_vector_state(const vector6& state) noexcept;

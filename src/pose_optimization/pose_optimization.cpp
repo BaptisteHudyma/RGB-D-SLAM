@@ -443,7 +443,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
 
     double minScore = maxFittingScore;
     utils::PoseBase bestPose = currentPose;
-    for (uint iteration = 0; iteration < maximumIterations; ++iteration)
+    uint iteration = 0;
+    for (; iteration < maximumIterations; ++iteration)
     {
         // get a random subset for this iteration
         const matches_containers::match_sets& selectedMatches =
@@ -496,7 +497,12 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                                static_cast<double>(featureSets._planeSets._inliers.size()) * planeFeatureScore;
     if (inlierScore < 1.0)
     {
-        outputs::log_warning("Could not find a transformation with enough inliers using RANSAC");
+        outputs::log_error(std::format(
+                "Could not find a transformation with enough inliers using RANSAC in {} over {} iterations. Final "
+                "inlier score is {}",
+                iteration,
+                maximumIterations,
+                inlierScore));
         return false;
     }
 
@@ -507,7 +513,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         return true;
     }
     // should never happen
-    outputs::log_warning("Could not compute a global pose, even though we found a valid inlier set");
+    outputs::log_warning("Could not compute a global pose, even when we found a valid inlier set");
     return false;
 }
 

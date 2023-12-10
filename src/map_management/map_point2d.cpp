@@ -117,16 +117,14 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
 {
     try
     {
-        if (compute_linearity_score(cameraToWorld) < 0.05) // linearity index (percentage)
+        if (compute_linearity_score(cameraToWorld) < 0.1) // linearity index (percentage) (TODO: add to parameters)
         {
-#if 0 // TODO reactivate when the tracking of inverse depth points will work
             Eigen::Matrix<double, 3, 6> jacobian;
             upgradedFeature._coordinates = _coordinates.to_world_coordinates(jacobian);
             upgradedFeature._covariance = compute_cartesian_covariance(_covariance, jacobian);
             upgradedFeature._descriptor = _descriptor;
             upgradedFeature._matchIndex = _matchIndex;
             return true;
-#endif
         }
     }
     catch (const std::exception& ex)
