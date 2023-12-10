@@ -64,7 +64,7 @@ struct PointInverseDepth
 
     PointInverseDepth(const PointInverseDepth& other);
 
-    matrix33 get_covariance_of_observed_pose() const noexcept { return _covariance.block<3, 3>(0, 0); }
+    [[nodiscard]] matrix33 get_covariance_of_observed_pose() const noexcept { return _covariance.block<3, 3>(0, 0); }
 
     /**
      * \brief Add an new measurment to the tracking
@@ -106,7 +106,7 @@ struct PointInverseDepth
      */
     [[nodiscard]] static Covariance compute_inverse_depth_covariance(const WorldCoordinateCovariance& pointCovariance,
                                                                      const matrix33& firstPoseCovariance,
-                                                                     const Eigen::Matrix<double, 6, 6>& jacobian);
+                                                                     const Eigen::Matrix<double, 6, 3>& jacobian);
 
     /**
      * \brief compute a linearity score, indicating if this point can be converted to a cartesian coordinate with true
@@ -118,9 +118,9 @@ struct PointInverseDepth
     /**
      * \brief update the value of this point using an observation in cartesian space
      */
-    bool update_with_cartesian(const utils::WorldCoordinate& point,
-                               const WorldCoordinateCovariance& covariance,
-                               const cv::Mat& descriptor);
+    [[nodiscard]] bool update_with_cartesian(const utils::WorldCoordinate& point,
+                                             const WorldCoordinateCovariance& covariance,
+                                             const cv::Mat& descriptor);
 
     /**
      * \brief Build the caracteristics of the kalman filter

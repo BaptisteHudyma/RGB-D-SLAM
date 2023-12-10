@@ -6,7 +6,6 @@
 #include "logger.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/Matrix.h>
-#include <algorithm>
 #include <bits/ranges_algo.h>
 
 namespace rgbd_slam::utils {

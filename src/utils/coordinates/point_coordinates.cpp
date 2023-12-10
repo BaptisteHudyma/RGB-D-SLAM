@@ -308,20 +308,30 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
     _theta_rad(theta),
     _phi_rad(phi)
 {
+    assert(_inverseDepth_mm >= 0.0);
+    assert(0 <= _theta_rad);
+    assert(_theta_rad <= M_PI);
+    assert(-M_PI <= _phi_rad);
+    assert(_phi_rad <= M_PI);
 }
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w) :
     // use homogenous to create a vector from the camera center outward
     InverseDepthWorldPoint(CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
 {
+    // no known depth, so set the baseline
+    _inverseDepth_mm = parameters::detection::inverseDepthBaseline / 2.0;
 }
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w)
 {
-    from_cartesian(observation.to_world_coordinates(c2w), WorldCoordinate(c2w.translation()));
+    const auto& inverseDepth =
+            from_cartesian(observation.to_world_coordinates(c2w), WorldCoordinate(c2w.translation()));
 
-    // baseline
-    _inverseDepth_mm = parameters::detection::inverseDepthBaseline / 2.0;
+    _firstObservation = inverseDepth._firstObservation;
+    _inverseDepth_mm = inverseDepth._inverseDepth_mm;
+    _theta_rad = inverseDepth._theta_rad;
+    _phi_rad = inverseDepth._phi_rad;
 }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldPoint& other) const
@@ -336,51 +346,43 @@ vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D
     return compute_signed_distance(InverseDepthWorldPoint(other, compute_camera_to_world_transform(c2w)));
 }
 
-void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point, const WorldCoordinate& origin) noexcept
+InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
+                                                              const WorldCoordinate& origin) noexcept
 {
-    _firstObservation = origin;
-
-    const vector3 directionalVector(point - _firstObservation);
+    const vector3 directionalVector(point - origin);
 
     Cartesian c;
     c.from_vec(directionalVector);
 
     const Spherical& s = Spherical::from(c);
-
-    _inverseDepth_mm = 1.0 / s.p;
-    _theta_rad = s.theta;
-    _phi_rad = s.phi;
+    return InverseDepthWorldPoint(origin, 1.0 / s.p, s.theta, s.phi);
 }
 
-void InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
-                                            const WorldCoordinate& origin,
-                                            Eigen::Matrix<double, 6, 6>& jacobian) noexcept
+InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
+                                                              const WorldCoordinate& origin,
+                                                              Eigen::Matrix<double, 6, 3>& jacobian) noexcept
 {
     jacobian.setZero();
-    jacobian.block<3, 3>(firstPoseIndex, firstPoseIndex) = matrix33::Identity();
+    jacobian.block<3, 3>(firstPoseIndex, firstPoseIndex) = matrix33::Zero();
 
     // jacobian of the [xo, yo, zo, x, y, z] =>
     // [xo, yo, zo, inverse depth spherical projection of (x - xo, y - yo, z - zo)]
 
-    const vector3 v(point - _firstObservation);
-    const double theta6 = SQR(v.x()) + SQR(v.y());
-    const double theta8 = theta6 + SQR(v.z());
-    const double theta7 = pow(theta8, 3.0 / 2.0);
+    const vector3 v(point - origin);
+    const double theta1 = SQR(v.x()) + SQR(v.y());
+    const double theta5 = theta1 + SQR(v.z());
+    const double theta2 = v.y();
+    const double theta3 = v.x();
+    const double theta4 = pow(theta5, 3.0 / 2.0);
 
-    const double theta1 = v.y() * v.z() / (sqrt(theta6) * theta8);
-    const double theta2 = v.x() * v.z() / (sqrt(theta6) * theta8);
-    const double theta3 = v.z() / theta7;
-    const double theta4 = v.y() / theta7;
-    const double theta5 = v.x() / theta7;
+    matrix33 jac({{-theta3 / theta4, -theta2 / theta4, -v.z() / theta4},
+                  {theta3 * v.z() / (sqrt(theta1) * theta5),
+                   theta2 * v.z() / (sqrt(theta1) * theta5),
+                   -sqrt(theta1) / theta5},
+                  {-v.y() / theta1, v.x() / theta1, 0}});
 
-    matrix33 subJacobian({{theta5, theta4, theta3},
-                          {-theta2, -theta1, sqrt(theta6) / theta8},
-                          {v.y() / theta6, v.z() / theta6, 0.0}});
-
-    jacobian.block<3, 3>(inverseDepthIndex, 0) = subJacobian;
-    jacobian.block<3, 3>(inverseDepthIndex, inverseDepthIndex) = -subJacobian;
-
-    from_cartesian(point, origin);
+    jacobian.block<3, 3>(inverseDepthIndex, 0) = jac;
+    return from_cartesian(point, origin);
 }
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept

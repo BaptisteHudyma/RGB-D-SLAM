@@ -20,9 +20,9 @@ const double CUBE_START_Y = 100;
 const double CUBE_START_Z = 100;
 
 const double END_POSITION = 10;
-const double END_ROTATION_YAW = 45 * EulerToRadian;   // [-180, 180] degrees
-const double END_ROTATION_PITCH = 45 * EulerToRadian; // [-90, 90] degrees
-const double END_ROTATION_ROLL = 20 * EulerToRadian;  // [-180, 180] degrees
+const double END_ROTATION_YAW = 45 * EulerToRadian;    // [-180, 180] degrees
+const double END_ROTATION_PITCH = -45 * EulerToRadian; // [-90, 90] degrees
+const double END_ROTATION_ROLL = 20 * EulerToRadian;   // [-180, 180] degrees
 
 const double GOOD_GUESS = 0.9;
 const double MEDIUM_GUESS = 0.5;
