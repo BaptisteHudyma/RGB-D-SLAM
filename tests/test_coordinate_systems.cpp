@@ -312,9 +312,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenter)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -337,9 +337,9 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeft)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, 1.2101243885134101, 0.0001); // left
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.52694322718942976, 0.0001);  // top
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), 1.2101243885134101, 0.0001); // left
+    EXPECT_NEAR(inverseDepth.get_phi(), 0.52694322718942976, 0.0001);  // top
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -364,9 +364,9 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRight)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, 1.931468265076383, 0.0001);  // right
-    EXPECT_NEAR(inverseDepth._phi_rad, -0.52694322718942932, 0.0001); // bottom
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), 1.931468265076383, 0.0001);  // right
+    EXPECT_NEAR(inverseDepth.get_phi(), -0.52694322718942932, 0.0001); // bottom
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -390,9 +390,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoX)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -416,9 +416,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoY)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -442,9 +442,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoZ)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -468,9 +468,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfo)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -494,9 +494,9 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithTransfo)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, 0.62879628641543905, 0.0001); // left
-    EXPECT_NEAR(inverseDepth._phi_rad, -2.4980915447965168, 0.0001);   // top
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), 0.62879628641543905, 0.0001); // left
+    EXPECT_NEAR(inverseDepth.get_phi(), -2.4980915447965168, 0.0001);   // top
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -522,9 +522,9 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithTransfo)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, 0.62879628641543905, 0.0001); // right
-    EXPECT_NEAR(inverseDepth._phi_rad, 0.6435011087932766, 0.0001);    // bottom
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), 0.62879628641543905, 0.0001); // right
+    EXPECT_NEAR(inverseDepth.get_phi(), 0.6435011087932766, 0.0001);    // bottom
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -548,9 +548,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithRotation)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, 2.5088563012979175, 0.0001);
-    EXPECT_NEAR(inverseDepth._phi_rad, -2.8220093192865892, 0.001);
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), 2.5088563012979175, 0.0001);
+    EXPECT_NEAR(inverseDepth.get_phi(), -2.8220093192865892, 0.001);
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -574,9 +574,9 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithRotation)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, 2.2516929542517667, 0.0001); // left
-    EXPECT_NEAR(inverseDepth._phi_rad, -1.965061641221322, 0.0001);   // top
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), 2.2516929542517667, 0.0001); // left
+    EXPECT_NEAR(inverseDepth.get_phi(), -1.965061641221322, 0.0001);   // top
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -602,9 +602,9 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotation)
 
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth._theta_rad, 2.3106902074817603, 0.0001); // right
-    EXPECT_NEAR(inverseDepth._phi_rad, 2.5408706082452479, 0.0001);   // bottom
+    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(inverseDepth.get_theta(), 2.3106902074817603, 0.0001); // right
+    EXPECT_NEAR(inverseDepth.get_phi(), 2.5408706082452479, 0.0001);   // bottom
 
     // retroproject to screen
     utils::ScreenCoordinate2D screenCoordinates;
@@ -630,9 +630,9 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
 
     const auto beforeMergeInverseDepthCoord = inverseDepth._coordinates;
 
-    EXPECT_NEAR(beforeMergeInverseDepthCoord._inverseDepth_mm, 0.0, 0.001);
-    EXPECT_NEAR(beforeMergeInverseDepthCoord._phi_rad, 0.0, 0.001);
-    EXPECT_NEAR(beforeMergeInverseDepthCoord._theta_rad, 0.0, M_PI / 2.0);
+    EXPECT_NEAR(beforeMergeInverseDepthCoord.get_inverse_depth(), 0.0, 0.001);
+    EXPECT_NEAR(beforeMergeInverseDepthCoord.get_theta(), 0.0, M_PI / 2.0);
+    EXPECT_NEAR(beforeMergeInverseDepthCoord.get_phi(), 0.0, 0.001);
 
     Eigen::Matrix<double, 3, 6> toCartesianJacobian;
     const WorldCoordinate& firstCartesian = beforeMergeInverseDepthCoord.to_world_coordinates(toCartesianJacobian);

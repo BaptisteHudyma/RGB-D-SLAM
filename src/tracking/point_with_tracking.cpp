@@ -212,7 +212,7 @@ bool PointInverseDepth::update_with_cartesian(const utils::WorldCoordinate& poin
         // put back in inverse depth coordinates
         Eigen::Matrix<double, 6, 3> fromCartesianJacobian;
         _coordinates = utils::InverseDepthWorldPoint::from_cartesian(
-                utils::WorldCoordinate(newState), _coordinates._firstObservation, fromCartesianJacobian);
+                utils::WorldCoordinate(newState), _coordinates.get_first_observation(), fromCartesianJacobian);
         _covariance = compute_inverse_depth_covariance(WorldCoordinateCovariance(newCovariance),
                                                        _covariance.get_first_pose_covariance(),
                                                        fromCartesianJacobian);
@@ -301,9 +301,9 @@ double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cam
 
     const vector3 hc(cartesian - cameraToWorld.translation());
     const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();
-    const double thetad_meters =
-            (sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates._inverseDepth_mm)) /
-            1000.0;
+    const double thetad_meters = (sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) /
+                                  SQR(_coordinates.get_inverse_depth())) /
+                                 1000.0;
     const double d1_meters = hc.norm() / 1000.0;
 
     return 4.0 * thetad_meters / d1_meters * abs(cosAlpha);

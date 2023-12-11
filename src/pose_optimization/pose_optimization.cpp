@@ -756,21 +756,22 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     matches_containers::match_sets variatedSet;
     for (const matches_containers::PointMatch2D& match: matchedFeatures._point2DSets._inliers)
     {
-        utils::WorldCoordinate variatedObservationPoint = match._worldFeature._firstObservation;
+        utils::WorldCoordinate variatedObservationPoint = match._worldFeature.get_first_observation();
         variatedObservationPoint +=
                 utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.diagonal().head<3>());
         const double variatedInverseDepth =
-                match._worldFeature._inverseDepth_mm; // do not variate the depth, the uncertainty is too great anyway
+                match._worldFeature
+                        .get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
         const double variatedTheta =
-                std::clamp(match._worldFeature._theta_rad + utils::Random::get_normal_double() *
-                                                                    match._worldFeatureCovariance.diagonal()(
-                                                                            utils::InverseDepthWorldPoint::thetaIndex),
+                std::clamp(match._worldFeature.get_theta() + utils::Random::get_normal_double() *
+                                                                     match._worldFeatureCovariance.diagonal()(
+                                                                             utils::InverseDepthWorldPoint::thetaIndex),
                            0.0,
                            M_PI);
         const double variatedPhi =
-                std::clamp(match._worldFeature._phi_rad + utils::Random::get_normal_double() *
-                                                                  match._worldFeatureCovariance.diagonal()(
-                                                                          utils::InverseDepthWorldPoint::phiIndex),
+                std::clamp(match._worldFeature.get_phi() + utils::Random::get_normal_double() *
+                                                                   match._worldFeatureCovariance.diagonal()(
+                                                                           utils::InverseDepthWorldPoint::phiIndex),
                            -M_PI,
                            M_PI);
         utils::InverseDepthWorldPoint variatedCoordinates(
