@@ -85,6 +85,13 @@ void Point::build_kalman_filter() noexcept
 
 PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observation,
                                      const CameraToWorldMatrix& c2w,
+                                     const matrix33& stateCovariance) :
+    PointInverseDepth(observation, c2w, stateCovariance, cv::Mat())
+{
+}
+
+PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observation,
+                                     const CameraToWorldMatrix& c2w,
                                      const matrix33& stateCovariance,
                                      const cv::Mat& descriptor) :
     _coordinates(observation, c2w),

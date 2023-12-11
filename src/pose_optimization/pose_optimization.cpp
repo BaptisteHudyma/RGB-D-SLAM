@@ -758,13 +758,23 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
         utils::WorldCoordinate variatedObservationPoint = match._worldFeature._firstObservation;
         variatedObservationPoint +=
                 utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.diagonal().head<3>());
-        const double variatedInverseDepth =
+        const double variatedInverseDepth = std::max(
+                0.00000000001,
                 match._worldFeature._inverseDepth_mm +
-                utils::Random::get_normal_double() * match._worldFeatureCovariance.diagonal()(3);
-        const double variatedTheta = match._worldFeature._theta_rad +
-                                     utils::Random::get_normal_double() * match._worldFeatureCovariance.diagonal()(4);
-        const double variatedPhi = match._worldFeature._phi_rad +
-                                   utils::Random::get_normal_double() * match._worldFeatureCovariance.diagonal()(5);
+                        utils::Random::get_normal_double() * match._worldFeatureCovariance.diagonal()(
+                                                                     utils::InverseDepthWorldPoint::inverseDepthIndex));
+        const double variatedTheta =
+                std::clamp(match._worldFeature._theta_rad + utils::Random::get_normal_double() *
+                                                                    match._worldFeatureCovariance.diagonal()(
+                                                                            utils::InverseDepthWorldPoint::thetaIndex),
+                           0.0,
+                           M_PI);
+        const double variatedPhi =
+                std::clamp(match._worldFeature._phi_rad + utils::Random::get_normal_double() *
+                                                                  match._worldFeatureCovariance.diagonal()(
+                                                                          utils::InverseDepthWorldPoint::phiIndex),
+                           -M_PI,
+                           M_PI);
         utils::InverseDepthWorldPoint variatedCoordinates(
                 variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi);
 
