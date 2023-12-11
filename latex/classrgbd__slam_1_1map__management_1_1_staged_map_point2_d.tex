@@ -1,0 +1,221 @@
+\doxysection{rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+Map\+Point2D Class Reference}
+\hypertarget{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d}{}\label{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d}\index{rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}}
+
+
+Candidate for a map point.  
+
+
+
+
+{\ttfamily \#include $<$map\+\_\+point2d.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+Map\+Point2D\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.597652cm]{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_ae5c931a3e5b547fb2dcc1d5d921ee63a}{Staged\+Map\+Point2D}} (const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a68cc84e10649b3cbc8ae92a48f75aa78}{Detected\+Point2\+DType}} \&detected\+Feature)
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a94851a3adac9f22aa7e9693371532a34}{should\+\_\+remove\+\_\+from\+\_\+staged}} () const noexcept override
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a29639f93d4343c8995db1b8234099543}{should\+\_\+add\+\_\+to\+\_\+local\+\_\+map}} () const noexcept override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Point2D}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_ac12dced73e8ae505947e344485ec6d10}{Map\+Point2D}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&coordinates, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&state\+Covariance, const cv\+::\+Mat \&descriptor)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_ae6b738248ebc3ebb06bb3a7a641b95e6}{Map\+Point2D}} (const \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{tracking\+::\+Point\+Inverse\+Depth}} \&coordinates, const size\+\_\+t id)
+\item 
+virtual \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_a0740cfcc7ba0906abfaed83580685cf3}{\texorpdfstring{$\sim$}{\string~}\+Map\+Point2D}} ()=default
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_a1789151c56d829c159d2a9addf3919a0}{find\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a95c21ce2a6639057adf799fea76af9b1}{Detected\+Keypoints\+Object}} \&detected\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera, const \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}} \&is\+Detected\+Feature\+Matched, std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a348e4ea8905aa24f30b2f7966bb97c40}{Point\+Match2\+DType}} $>$ \&matches, const bool should\+Add\+To\+Matches=true, const bool use\+Advanced\+Search=false) const noexcept override
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_ae14e13b8334b1349c2bb2276b224e3a4}{add\+\_\+to\+\_\+tracked}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1c750ff4cc7dbe8bb4fa3bc6092bdcf3}{Tracked\+Points\+Object}} \&tracked\+Features, const uint drop\+Chance=1000) const noexcept override
+\begin{DoxyCompactList}\small\item\em Add the current feature to the tracked\+Features object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_ae8fca5a2f527bbd142dce186b0245dfa}{draw}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix, cv\+::\+Mat \&debug\+Image, const cv\+::\+Scalar \&color) const noexcept override
+\begin{DoxyCompactList}\small\item\em Draw this feature on the given image. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_a88b50e1f9975f738687dad1e34dfd3aa}{is\+\_\+visible}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Cam\+Matrix) const noexcept override
+\begin{DoxyCompactList}\small\item\em Return true if the map feature is visible from the given position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_aab6b66ab13d879b5c187dcbac6261385}{write\+\_\+to\+\_\+file}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{outputs\+::\+IMap\+\_\+\+Writer}} $>$ map\+Writer) const noexcept override
+\begin{DoxyCompactList}\small\item\em should write this feature to a file, using the provided map\+Writer \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_ab7e2d3dc73247ce3caa55d729c6b5213}{compute\+\_\+upgraded}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_acfa196985403fa7c3570adc5b1db8653}{Upgraded\+Point2\+DType}} \&upgrade\+Feature) const noexcept override
+\begin{DoxyCompactList}\small\item\em Return true if this feature can be upgraded to Upgraded\+Feature\+Type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aa3095e5c84560470f42248ec7f452349}{Point\+Inverse\+Depth}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&observation, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&state\+Covariance, const cv\+::\+Mat \&descriptor)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a3e9ade9ee4d0859db94b0d087659fe0c}{Point\+Inverse\+Depth}} (const \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{Point\+Inverse\+Depth}} \&other)
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_af0febc65279ee9d326850362b5a80a05}{get\+\_\+covariance\+\_\+of\+\_\+observed\+\_\+pose}} () const noexcept
+\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a77ad40572be4e9f2d8659653dd38905c}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&observation, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&state\+Covariance, const cv\+::\+Mat \&descriptor)
+\begin{DoxyCompactList}\small\item\em Add an new measurment to the tracking. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a63e8fcc5198222fcf84364a6dc0e7d53}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}} \&observation, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&state\+Covariance, const cv\+::\+Mat \&descriptor)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ad1ff2f894dafa4d013e525a27531706c}{get\+\_\+camera\+\_\+coordinate\+\_\+variance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c) const
+\begin{DoxyCompactList}\small\item\em Compute the covariance of the cartesian projection of this inverse depth, in camera space. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a571fd7ca739c936b988cf2ecae7c1014}{get\+\_\+screen\+\_\+coordinate\+\_\+variance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c) const
+\begin{DoxyCompactList}\small\item\em Compute the covariance of the cartesian projection of this inverse depth, in screen space. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8b17c443f38edda979b7f9b831755c5b}{compute\+\_\+linearity\+\_\+score}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) const noexcept
+\begin{DoxyCompactList}\small\item\em compute a linearity score, indicating if this point can be converted to a cartesian coordinate with true gaussian covariance \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Keypoints\+Object, Detected\+Point2\+DType, Point\+Match2\+DType, Tracked\+Points\+Object, Upgraded\+Point2\+DType $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ac37bdb9581c9caa09196a8880b5eb418}{IMap\+Feature}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_abde08b40f6051ce2cc4684f4420e0070}{IMap\+Feature}} (const size\+\_\+t id)
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a56cf6f67d646f146ff8ba90e02031bb5}{is\+\_\+matched}} () const noexcept
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a7295a89e5df537372031956498f800bd}{mark\+\_\+unmatched}} () noexcept
+\begin{DoxyCompactList}\small\item\em mark this map feature as having no match \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a04b5f59e1348bc7c3d9cd591f8fdf4e4}{mark\+\_\+matched}} (const int match\+Index) noexcept
+\begin{DoxyCompactList}\small\item\em mark this map feature as having a match at the given index \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_afaa2581fdf89726e6a8e27740bc72cb1}{update\+\_\+matched}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a68cc84e10649b3cbc8ae92a48f75aa78}{Detected\+Point2\+DType}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept
+\begin{DoxyCompactList}\small\item\em Update the feature, with the corresponding match. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a5a0a1b9addb93051389a90bbab357e6a}{update\+\_\+unmatched}} () noexcept
+\begin{DoxyCompactList}\small\item\em Update the feature, with the no match status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a032449a43f91c43a52ea08fc94bbc9bd}{can\+\_\+add\+\_\+to\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a68cc84e10649b3cbc8ae92a48f75aa78}{Detected\+Point2\+DType}} \&detected\+Point) noexcept
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth}}}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a2298ef542cb305e8ab02a150c283b303}{compute\+\_\+cartesian\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&covariance)
+\begin{DoxyCompactList}\small\item\em Compute th covariance of the cartesian projection of this inverse depth. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8a34935f58b26e8a64e3860dbdfce57d}{compute\+\_\+cartesian\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&covariance, const Eigen\+::\+Matrix$<$ double, 3, 6 $>$ \&jacobian)
+\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a73bbe4f0d8281bcf580d644962194f62}{compute\+\_\+inverse\+\_\+depth\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&point\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&first\+Pose\+Covariance, const Eigen\+::\+Matrix$<$ double, 6, 3 $>$ \&jacobian)
+\begin{DoxyCompactList}\small\item\em Get the inverse depth covariance from the world point covariance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IStaged\+Map\+Feature$<$ Detected\+Point2\+DType $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature_a829b8ff0324b18df1205c9d77a867139}{can\+\_\+add\+\_\+to\+\_\+map}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a68cc84e10649b3cbc8ae92a48f75aa78}{Detected\+Point2\+DType}} \&detected\+Feature) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a398dade52c2b2f0c41e3e0da696369fb}{get\+\_\+confidence}} () const noexcept
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Point2D}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_a1ecc0bd2e7e911b4142cdaa28228cd9a}{update\+\_\+with\+\_\+match}} (const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a68cc84e10649b3cbc8ae92a48f75aa78}{Detected\+Point2\+DType}} \&matched\+Feature, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept override
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point2_d_ae5da3cec4dac783953cab273e3e62cde}{update\+\_\+no\+\_\+match}} () noexcept override
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aab6a6ec513d9599e85dce5909cc1bad4}{update\+\_\+with\+\_\+cartesian}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&point, const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&covariance, const cv\+::\+Mat \&descriptor)
+\begin{DoxyCompactList}\small\item\em update the value of this point using an observation in cartesian space \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ab9eb30c02653a7cc686748ca72970553}{\+\_\+coordinates}}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_afbe503c5bc1c4cedd9ea9198db7c4c19}{\+\_\+covariance}}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a930ef9e8df9ab3abeda7e9f964518556}{\+\_\+descriptor}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Keypoints\+Object, Detected\+Point2\+DType, Point\+Match2\+DType, Tracked\+Points\+Object, Upgraded\+Point2\+DType $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a552f55d83a86d31544735789b5d48f64}{\+\_\+failed\+Tracking\+Count}}
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_aa8b49abf893fe643edd021428f8233fd}{\+\_\+successiv\+Matched\+Count}}
+\item 
+const size\+\_\+t \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a551259d30d344c88d0700651ff5b3fee}{\+\_\+id}}
+\item 
+int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_addd7e58c5719c4a7c4fbc8f302ab0d4a}{\+\_\+match\+Index}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a83b35919a37da16dab6e41dd03fbe11c}{first\+Pose\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::first\+Pose\+Index
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a5c12b129f05a9a832fe4acd7037230f1}{inverse\+Depth\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::inverse\+Depth\+Index
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a7ad1e13aa6b8873aaf61f867d8816a65}{theta\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::theta\+Index
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a0f30a3ff2e7340276891a0f64b7874b5}{phi\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::phi\+Index
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IMap\+Feature$<$ Detected\+Keypoints\+Object, Detected\+Point2\+DType, Point\+Match2\+DType, Tracked\+Points\+Object, Upgraded\+Point2\+DType $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static const int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a3adb40391477bd2fae3f51b4e590801e}{UNMATCHED\+\_\+\+FEATURE\+\_\+\+INDEX}}
+\item 
+static const int \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_ae825e638237b4e32b4c99245963d520e}{FIRST\+\_\+\+DETECTION\+\_\+\+INDEX}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Member Functions inherited from \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a09d5189f0ebcb5bd066bc86941b67f45}{build\+\_\+kalman\+\_\+filter}} () noexcept
+\begin{DoxyCompactList}\small\item\em Build the caracteristics of the kalman filter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Attributes inherited from \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth}}}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{tracking\+::\+Shared\+Kalman\+Filter}}$<$ 3, 3 $>$ $>$ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ae88efe6d3f9b41cdea59bbabeeaef9e1}{\+\_\+kalman\+Filter}} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Candidate for a map point. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_ae5c931a3e5b547fb2dcc1d5d921ee63a}\label{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_ae5c931a3e5b547fb2dcc1d5d921ee63a} 
+\index{rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}!StagedMapPoint2D@{StagedMapPoint2D}}
+\index{StagedMapPoint2D@{StagedMapPoint2D}!rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}}
+\doxysubsubsection{\texorpdfstring{StagedMapPoint2D()}{StagedMapPoint2D()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+Map\+Point2\+D\+::\+Staged\+Map\+Point2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{pose\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&}]{camera\+To\+World,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a68cc84e10649b3cbc8ae92a48f75aa78}{Detected\+Point2\+DType}} \&}]{detected\+Feature }\end{DoxyParamCaption})}
+
+\doxylink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{Staged\+Map\+Point} 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a032449a43f91c43a52ea08fc94bbc9bd}\label{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a032449a43f91c43a52ea08fc94bbc9bd} 
+\index{rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}!can\_add\_to\_map@{can\_add\_to\_map}}
+\index{can\_add\_to\_map@{can\_add\_to\_map}!rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}}
+\doxysubsubsection{\texorpdfstring{can\_add\_to\_map()}{can\_add\_to\_map()}}
+{\footnotesize\ttfamily static bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+Map\+Point2\+D\+::can\+\_\+add\+\_\+to\+\_\+map (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a68cc84e10649b3cbc8ae92a48f75aa78}{Detected\+Point2\+DType}} \&}]{detected\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a398dade52c2b2f0c41e3e0da696369fb}\label{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a398dade52c2b2f0c41e3e0da696369fb} 
+\index{rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}!get\_confidence@{get\_confidence}}
+\index{get\_confidence@{get\_confidence}!rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}}
+\doxysubsubsection{\texorpdfstring{get\_confidence()}{get\_confidence()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+Map\+Point2\+D\+::get\+\_\+confidence (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a29639f93d4343c8995db1b8234099543}\label{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a29639f93d4343c8995db1b8234099543} 
+\index{rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}!should\_add\_to\_local\_map@{should\_add\_to\_local\_map}}
+\index{should\_add\_to\_local\_map@{should\_add\_to\_local\_map}!rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}}
+\doxysubsubsection{\texorpdfstring{should\_add\_to\_local\_map()}{should\_add\_to\_local\_map()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+Map\+Point2\+D\+::should\+\_\+add\+\_\+to\+\_\+local\+\_\+map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature_a5556fb9362eef0e962a8923defdbc2f6}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IStaged\+Map\+Feature$<$ Detected\+Point2\+DType $>$}}.
+
+\Hypertarget{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a94851a3adac9f22aa7e9693371532a34}\label{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d_a94851a3adac9f22aa7e9693371532a34} 
+\index{rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}!should\_remove\_from\_staged@{should\_remove\_from\_staged}}
+\index{should\_remove\_from\_staged@{should\_remove\_from\_staged}!rgbd\_slam::map\_management::StagedMapPoint2D@{rgbd\_slam::map\_management::StagedMapPoint2D}}
+\doxysubsubsection{\texorpdfstring{should\_remove\_from\_staged()}{should\_remove\_from\_staged()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::map\+\_\+management\+::\+Staged\+Map\+Point2\+D\+::should\+\_\+remove\+\_\+from\+\_\+staged (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Implements \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature_a6d64d551b672bb7aa2bc1f0a5567d841}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+IStaged\+Map\+Feature$<$ Detected\+Point2\+DType $>$}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point2d_8hpp}{map\+\_\+point2d.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/\mbox{\hyperlink{map__point2d_8cpp}{map\+\_\+point2d.\+cpp}}\end{DoxyCompactItemize}

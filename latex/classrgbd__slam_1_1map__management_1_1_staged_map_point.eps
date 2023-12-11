@@ -5,7 +5,7 @@
 %%For: 
 %Magnification: 1.00
 %%Orientation: Portrait
-%%BoundingBox: 0 0 500 26.007803
+%%BoundingBox: 0 0 500 22.497189
 %%Pages: 0
 %%BeginSetup
 %%EndSetup
@@ -19,7 +19,7 @@
 /marginwidth 10 def
 /distx 20 def
 /disty 40 def
-/boundaspect 19.225000 def  % aspect ratio of the BoundingBox (width/height)
+/boundaspect 22.225000 def  % aspect ratio of the BoundingBox (width/height)
 /boundx 500 def
 /boundy boundx boundaspect div def
 /xspacing 0 def
@@ -176,8 +176,8 @@ boxfont setfont
 (rgbd_slam::map_management::StagedMapPoint) cw
 (rgbd_slam::map_management::MapPoint) cw
 (rgbd_slam::map_management::IStagedMapFeature< DetectedPointType >) cw
-(rgbd_slam::map_management::Point) cw
-(rgbd_slam::map_management::IMapFeature< DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject >) cw
+(rgbd_slam::tracking::Point) cw
+(rgbd_slam::map_management::IMapFeature< DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject, UpgradedPointType >) cw
 /boxwidth boxwidth marginwidth 2 mul add def
 /xspacing boxwidth distx add def
 /yspacing boxheight disty add def
@@ -192,8 +192,8 @@ boundx scalefactor div boundy scalefactor div scale
  (rgbd_slam::map_management::StagedMapPoint) 1.000000 0.000000 box
  (rgbd_slam::map_management::MapPoint) 0.500000 1.000000 box
  (rgbd_slam::map_management::IStagedMapFeature< DetectedPointType >) 1.500000 1.000000 box
- (rgbd_slam::map_management::Point) 0.000000 2.000000 box
- (rgbd_slam::map_management::IMapFeature< DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject >) 1.000000 2.000000 box
+ (rgbd_slam::tracking::Point) 0.000000 2.000000 box
+ (rgbd_slam::map_management::IMapFeature< DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject, UpgradedPointType >) 1.000000 2.000000 box
 
 % ----- relations -----
 

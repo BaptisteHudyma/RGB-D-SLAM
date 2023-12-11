@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classrgbd__slam_1_1features_1_1lines_1_1_line___detection-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::features::lines::Line_Detection Class Reference</div></div>
 </div><!--header-->
@@ -96,6 +97,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a36e1be51d0e907754930e78e4978a87a" id="r_a36e1be51d0e907754930e78e4978a87a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1lines_1_1_line___detection.html#a36e1be51d0e907754930e78e4978a87a">get_image_with_lines</a> (const <a class="el" href="namespacergbd__slam_1_1features_1_1lines.html#aaabfdeb8b1381f117280b4b5e4760442">line_container</a> &amp;linesToDisplay, const cv::Mat_&lt; float &gt; &amp;depthImage, cv::Mat &amp;outImage) const noexcept</td></tr>
 <tr class="memdesc:a36e1be51d0e907754930e78e4978a87a"><td class="mdescLeft">&#160;</td><td class="mdescRight">display the given lines on an image  <br /></td></tr>
 <tr class="separator:a36e1be51d0e907754930e78e4978a87a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bcd94add5a31f258e07903632d1fe25" id="r_a6bcd94add5a31f258e07903632d1fe25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1lines_1_1_line___detection.html#a6bcd94add5a31f258e07903632d1fe25">show_statistics</a> (const double meanFrameTreatmentDuration, const uint frameCount) const noexcept</td></tr>
+<tr class="separator:a6bcd94add5a31f258e07903632d1fe25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:af2f120d6d4dbe2db56fc6ab44a12b785" id="r_af2f120d6d4dbe2db56fc6ab44a12b785"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1lines_1_1_line___detection.html#af2f120d6d4dbe2db56fc6ab44a12b785">_meanLineTreatmentDuration</a> = 0.0</td></tr>
+<tr class="separator:af2f120d6d4dbe2db56fc6ab44a12b785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A class to detect and store lines. </p>
@@ -224,6 +232,57 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a6bcd94add5a31f258e07903632d1fe25" name="a6bcd94add5a31f258e07903632d1fe25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bcd94add5a31f258e07903632d1fe25">&#9670;&#160;</a></span>show_statistics()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::features::lines::Line_Detection::show_statistics </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>meanFrameTreatmentDuration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>frameCount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="af2f120d6d4dbe2db56fc6ab44a12b785" name="af2f120d6d4dbe2db56fc6ab44a12b785"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2f120d6d4dbe2db56fc6ab44a12b785">&#9670;&#160;</a></span>_meanLineTreatmentDuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rgbd_slam::features::lines::Line_Detection::_meanLineTreatmentDuration = 0.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

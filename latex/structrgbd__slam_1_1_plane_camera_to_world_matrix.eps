@@ -5,7 +5,7 @@
 %%For: 
 %Magnification: 1.00
 %%Orientation: Portrait
-%%BoundingBox: 0 0 500 165.289261
+%%BoundingBox: 0 0 500 247.933884
 %%Pages: 0
 %%BeginSetup
 %%EndSetup
@@ -19,12 +19,12 @@
 /marginwidth 10 def
 /distx 20 def
 /disty 40 def
-/boundaspect 3.025000 def  % aspect ratio of the BoundingBox (width/height)
+/boundaspect 2.016667 def  % aspect ratio of the BoundingBox (width/height)
 /boundx 500 def
 /boundy boundx boundaspect div def
 /xspacing 0 def
 /yspacing 0 def
-/rows 2 def
+/rows 3 def
 /cols 1 def
 /scalefactor 0 def
 /boxfont /Times-Roman findfont fontheight scalefont def
@@ -174,6 +174,7 @@
 boxfont setfont
 1 boundaspect scale
 (rgbd_slam::PlaneCameraToWorldMatrix) cw
+(rgbd_slam::TransitionMatrix) cw
 (matrix44) cw
 /boxwidth boxwidth marginwidth 2 mul add def
 /xspacing boxwidth distx add def
@@ -187,7 +188,8 @@ boundx scalefactor div boundy scalefactor div scale
 % ----- classes -----
 
  (rgbd_slam::PlaneCameraToWorldMatrix) 0.000000 0.000000 box
- (matrix44) 0.000000 1.000000 box
+ (rgbd_slam::TransitionMatrix) 0.000000 1.000000 box
+ (matrix44) 0.000000 2.000000 box
 
 % ----- relations -----
 
@@ -195,3 +197,7 @@ solid
 0 0.000000 0.000000 out
 solid
 1 0.000000 1.000000 in
+solid
+0 0.000000 1.000000 out
+solid
+1 0.000000 2.000000 in

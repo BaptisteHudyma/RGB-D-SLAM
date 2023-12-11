@@ -1,23 +1,11 @@
 \doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/map\+\_\+primitive.hpp File Reference}
 \hypertarget{map__primitive_8hpp}{}\label{map__primitive_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_primitive.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_primitive.hpp}}
-{\ttfamily \#include "{}../features/primitives/shape\+\_\+primitives.\+hpp"{}}\newline
-{\ttfamily \#include "{}../parameters.\+hpp"{}}\newline
-{\ttfamily \#include "{}../tracking/kalman\+\_\+filter.\+hpp"{}}\newline
-{\ttfamily \#include "{}../utils/camera\+\_\+transformation.\+hpp"{}}\newline
-{\ttfamily \#include "{}../utils/coordinates.\+hpp"{}}\newline
-{\ttfamily \#include "{}../matches\+\_\+containers.\+hpp"{}}\newline
-{\ttfamily \#include "{}../utils/random.\+hpp"{}}\newline
-{\ttfamily \#include "{}covariances.\+hpp"{}}\newline
-{\ttfamily \#include "{}distance\+\_\+utils.\+hpp"{}}\newline
 {\ttfamily \#include "{}feature\+\_\+map.\+hpp"{}}\newline
-{\ttfamily \#include "{}polygon.\+hpp"{}}\newline
-{\ttfamily \#include "{}types.\+hpp"{}}\newline
-{\ttfamily \#include $<$bits/ranges\+\_\+algo.\+h$>$}\newline
-{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
+{\ttfamily \#include "{}features/primitives/shape\+\_\+primitives.\+hpp"{}}\newline
+{\ttfamily \#include "{}tracking/plane\+\_\+with\+\_\+tracking.\+hpp"{}}\newline
+{\ttfamily \#include "{}matches\+\_\+containers.\+hpp"{}}\newline
 \doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
-\item 
-class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane}}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Plane}}
 \item 
@@ -42,4 +30,8 @@ using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b3
 using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a672f8c0a672c4f640ac2bc6238a43bb9}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Plane\+Match\+Type}} = \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_af96e9f3a4c4be9fed04bec67ca966fb1}{matches\+\_\+containers\+::\+Plane\+Match}}
 \item 
 using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Tracked\+Plane\+Object}} = void \texorpdfstring{$\ast$}{*}
+\item 
+using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a816f331580113b2db0168e518d0455a4}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Upgraded\+Plane\+Type}} = void \texorpdfstring{$\ast$}{*}
+\item 
+using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a749b000b35d5d7ec2c4c7a19e111f15d}{rgbd\+\_\+slam\+::map\+\_\+management\+::local\+Plane\+Map}} = \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{Feature\+\_\+\+Map}}$<$ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_plane}{Local\+Map\+Plane}}, \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{Staged\+Map\+Plane}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{Detected\+Plane\+Object}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{Detected\+Plane\+Type}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a672f8c0a672c4f640ac2bc6238a43bb9}{Plane\+Match\+Type}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{Tracked\+Plane\+Object}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a816f331580113b2db0168e518d0455a4}{Upgraded\+Plane\+Type}} $>$
 \end{DoxyCompactItemize}

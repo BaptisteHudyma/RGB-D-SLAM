@@ -73,23 +73,16 @@
 \DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_isFirstTrackingCall\ =\ true;\ \textcolor{comment}{//\ first\ call\ to\ the\ tracking\ function\ (prevent\ erroneous\ error\ messages)}}
 \DoxyCodeLine{00114\ }
 \DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ debug}}
-\DoxyCodeLine{00116\ \ \ \ \ uint\ \_totalFrameTreated;}
-\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanDepthMapTreatmentDuration;}
-\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPoseOptimizationDuration;}
-\DoxyCodeLine{00119\ }
-\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPrimitiveTreatmentDuration;}
-\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanLineTreatmentDuration;}
-\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanFindMatchTime;}
-\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPoseOptimizationFromFeatures;}
-\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanLocalMapUpdateDuration;}
+\DoxyCodeLine{00116\ \ \ \ \ uint\ \_totalFrameTreated\ =\ 0;}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanDepthMapTreatmentDuration\ =\ 0;}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ remove\ copy\ constructors\ as\ we\ have\ dynamically\ instantiated\ members}}
+\DoxyCodeLine{00120\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}(const\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ rgbdSlam)\ =\ delete;}
+\DoxyCodeLine{00121\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ operator=(const\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ rgbdSlam)\ =\ delete;}
+\DoxyCodeLine{00122\ \};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
 \DoxyCodeLine{00125\ }
-\DoxyCodeLine{00126\ \ \ \ \ \textcolor{comment}{//\ remove\ copy\ constructors\ as\ we\ have\ dynamically\ instantiated\ members}}
-\DoxyCodeLine{00127\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}(const\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ rgbdSlam)\ =\ delete;}
-\DoxyCodeLine{00128\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ operator=(const\ \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\_SLAM}}\&\ rgbdSlam)\ =\ delete;}
-\DoxyCodeLine{00129\ \};}
-\DoxyCodeLine{00130\ }
-\DoxyCodeLine{00131\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam}}
-\DoxyCodeLine{00132\ }
-\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

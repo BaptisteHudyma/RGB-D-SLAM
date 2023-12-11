@@ -13,6 +13,9 @@
 \item {\bfseries{map\+\_\+management}} The "{}\+Mapping"{} part of SLAM. It\textquotesingle{}s a local map implementation, with no loop closures
 \item {\bfseries{outputs}} All the outputs that this program produces are stored here EXCEPT the images, that are handled by their classes (the map display is handled by the map class)
 \item {\bfseries{pose\+\_\+optimization}} Contains all the pose optimization functions. The optimization process uses a Levenberg-\/\+Marquardt algorithm for frame to frame optimization
-\item {\bfseries{tracking}} The tracking functions, as Kalman filters and observers motion model
-\item {\bfseries{utils}} Math and cameras utils functions. Also contains the main types (eg\+: Pose) 
+\item {\bfseries{tracking}} The tracking functions, as Kalman filters and observers motion model. it also handle the tracking of the feature used in the program (points, planes, inverse depth points)
+\item {\bfseries{utils}} Math and cameras utils functions. Also contains the main types (eg\+: Pose)
+\begin{DoxyItemize}
+\item {\bfseries{coordinates}} define the diverse coordinates used in this program (screen, camera and world point, inverse depth points, camera plane, world plane, ...) 
+\end{DoxyItemize}
 \end{DoxyItemize}

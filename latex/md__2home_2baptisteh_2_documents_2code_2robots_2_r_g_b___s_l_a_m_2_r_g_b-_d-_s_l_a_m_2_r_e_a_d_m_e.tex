@@ -52,7 +52,9 @@ Running this program will produce a map file (format is .xyz for now) at the loc
 
 While the program is running, an Open\+CV windows displays the current frame with the tracked features in it. Each feature is assigned to a random color, that will never change during the mapping process. A good tracking/\+SLAM process will keep the same feature\textquotesingle{}s colors during the whole process.
 
-The top bar displays the number of points in the local map, as well as the planes and their colors.\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md7}{}\doxysubsubsection{\texorpdfstring{CAPE}{CAPE}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md7}
+The top bar displays the number of points in the local map, as well as the planes and their colors.
+
+At the end of the process, a file out.\+obj is produced. The map this program produced is in the physical convention coordinate system (x forward, y left, z up).\hypertarget{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md7}{}\doxysubsubsection{\texorpdfstring{CAPE}{CAPE}}\label{md__2home_2baptisteh_2_documents_2code_2robots_2_r_g_b___s_l_a_m_2_r_g_b-_d-_s_l_a_m_2_r_e_a_d_m_e_autotoc_md7}
 CAPE provides the yoga and tunnel dataset, composed of low textured environment with cylinder primitives 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{./slam\_CAPE\ tunnel}

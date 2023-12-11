@@ -96,9 +96,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9efd1e5cd3a95375663ee00cbf9f23c" id="r_ad9efd1e5cd3a95375663ee00cbf9f23c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler.html">Keypoint_Handler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#ad9efd1e5cd3a95375663ee00cbf9f23c">compute_keypoints</a> (const cv::Mat &amp;grayImage, const cv::Mat_&lt; float &gt; &amp;depthImage, const <a class="el" href="structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct.html">KeypointsWithIdStruct</a> &amp;lastKeypointsWithIds, const bool forceKeypointDetection=false) noexcept</td></tr>
 <tr class="memdesc:ad9efd1e5cd3a95375663ee00cbf9f23c"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the keypoints in the gray image, using optical flow and/or generic feature detectors  <br /></td></tr>
 <tr class="separator:ad9efd1e5cd3a95375663ee00cbf9f23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b41f141fd062bf11489ca5a4d45c11e" id="r_a1b41f141fd062bf11489ca5a4d45c11e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a1b41f141fd062bf11489ca5a4d45c11e">show_statistics</a> (const double meanFrameTreatmentDuration, const uint frameCount) const noexcept</td></tr>
-<tr class="memdesc:a1b41f141fd062bf11489ca5a4d45c11e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the time statistics for certain parts of the program. Kind of a basic profiler.  <br /></td></tr>
-<tr class="separator:a1b41f141fd062bf11489ca5a4d45c11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2a0e9a727ae025b83ec49595738bf14" id="r_af2a0e9a727ae025b83ec49595738bf14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#af2a0e9a727ae025b83ec49595738bf14">show_statistics</a> (const double meanFrameTreatmentDuration, const uint frameCount, const bool shouldDisplayDetails=false) const noexcept</td></tr>
+<tr class="memdesc:af2a0e9a727ae025b83ec49595738bf14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the time statistics for certain parts of the program. Kind of a basic profiler.  <br /></td></tr>
+<tr class="separator:af2a0e9a727ae025b83ec49595738bf14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -230,7 +230,7 @@ Static Protected Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">grayImage</td><td>The input image from camera </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">depthImage</td><td>The input depth image from camera </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">lastKeypointsWithIds</td><td>The keypoints of the previous detection step, that will be tracked with optical flow</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lastKeypointsWithIds</td><td>The keypoints of the previous detection step, that will be tracked with optical flow </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">forceKeypointDetection</td><td>Force the detection of keypoints in the image</td></tr>
   </table>
   </dd>
@@ -418,8 +418,8 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1b41f141fd062bf11489ca5a4d45c11e" name="a1b41f141fd062bf11489ca5a4d45c11e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b41f141fd062bf11489ca5a4d45c11e">&#9670;&#160;</a></span>show_statistics()</h2>
+<a id="af2a0e9a727ae025b83ec49595738bf14" name="af2a0e9a727ae025b83ec49595738bf14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2a0e9a727ae025b83ec49595738bf14">&#9670;&#160;</a></span>show_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -437,7 +437,13 @@ Static Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const uint&#160;</td>
-          <td class="paramname"><em>frameCount</em>&#160;</td>
+          <td class="paramname"><em>frameCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>shouldDisplayDetails</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -455,8 +461,9 @@ Static Protected Attributes</h2></td></tr>
 <p>Show the time statistics for certain parts of the program. Kind of a basic profiler. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">meanFrameTreatmentDuration</td><td>The mean duration in seconds that this program used to treat one frame</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">meanFrameTreatmentDuration</td><td>The mean duration in seconds that this program used to treat one frame </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">frameCount</td><td>Total of frame treated by the program </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shouldDisplayDetails</td><td>If true, will display additional monitoring informations </td></tr>
   </table>
   </dd>
 </dl>
@@ -485,8 +492,8 @@ Static Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="namespacergbd__slam_1_1parameters_1_1detection.html#a58a53527a5861893bc07b540f2ebc3ff">parameters::detection::keypointCellDetectionHeightCount</a> *</div>
 <div class="line">                                                   <a class="code hl_variable" href="namespacergbd__slam_1_1parameters_1_1detection.html#a1ca69fcc3691ed6b94b96fa8a1bee75e">parameters::detection::keypointCellDetectionWidthCount</a></div>
-<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a1ca69fcc3691ed6b94b96fa8a1bee75e"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a1ca69fcc3691ed6b94b96fa8a1bee75e">rgbd_slam::parameters::detection::keypointCellDetectionWidthCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionWidthCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:49</div></div>
-<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a58a53527a5861893bc07b540f2ebc3ff"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a58a53527a5861893bc07b540f2ebc3ff">rgbd_slam::parameters::detection::keypointCellDetectionHeightCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionHeightCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:48</div></div>
+<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a1ca69fcc3691ed6b94b96fa8a1bee75e"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a1ca69fcc3691ed6b94b96fa8a1bee75e">rgbd_slam::parameters::detection::keypointCellDetectionWidthCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionWidthCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:56</div></div>
+<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a58a53527a5861893bc07b540f2ebc3ff"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a58a53527a5861893bc07b540f2ebc3ff">rgbd_slam::parameters::detection::keypointCellDetectionHeightCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionHeightCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:55</div></div>
 </div><!-- fragment -->
 </div>
 </div>

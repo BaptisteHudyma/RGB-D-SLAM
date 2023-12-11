@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RGB-D SLAM: rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt; Class Template Reference</title>
+<title>RGB-D SLAM: rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -78,7 +78,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1map__management_1_1_feature___map-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -86,72 +86,81 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1c4db6a5b1c21412eefbcb362df9ab3d" id="r_a1c4db6a5b1c21412eefbcb362df9ab3d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a1c4db6a5b1c21412eefbcb362df9ab3d">Feature_Map</a> ()</td></tr>
-<tr class="separator:a1c4db6a5b1c21412eefbcb362df9ab3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc926846f3b876d633bedb0b23facec3" id="r_abc926846f3b876d633bedb0b23facec3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#abc926846f3b876d633bedb0b23facec3">reset</a> () noexcept</td></tr>
-<tr class="memdesc:abc926846f3b876d633bedb0b23facec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the content of this map, empty all local maps.  <br /></td></tr>
-<tr class="separator:abc926846f3b876d633bedb0b23facec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e27f045413c05dc124aee5d6ff73082" id="r_a6e27f045413c05dc124aee5d6ff73082"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a6e27f045413c05dc124aee5d6ff73082">destroy</a> (std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) const noexcept</td></tr>
-<tr class="separator:a6e27f045413c05dc124aee5d6ff73082"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63a624843a991ec96c9136a972d2c7b3" id="r_a63a624843a991ec96c9136a972d2c7b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a63a624843a991ec96c9136a972d2c7b3">get_matches</a> (const DetectedFeaturesObject &amp;detectedFeatures, const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera, const bool useAdvancedMatch, std::list&lt; FeatureMatchType &gt; &amp;matches) noexcept</td></tr>
-<tr class="memdesc:a63a624843a991ec96c9136a972d2c7b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the object thta contains the matches between detected and map feature. Set the _isDetectedFeatureMatched flags  <br /></td></tr>
-<tr class="separator:a63a624843a991ec96c9136a972d2c7b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accbbce158b54b20725250ae7a59f8c09" id="r_accbbce158b54b20725250ae7a59f8c09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#accbbce158b54b20725250ae7a59f8c09">get_tracked_features</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera, TrackedFeaturesObject &amp;trackedFeatures, const uint localMapDropChance=1000) const noexcept</td></tr>
-<tr class="memdesc:accbbce158b54b20725250ae7a59f8c09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the feature that were tracked for the last tracking step.  <br /></td></tr>
-<tr class="separator:accbbce158b54b20725250ae7a59f8c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa806c9ce9064eb13f56b1f1b30a77b57" id="r_aa806c9ce9064eb13f56b1f1b30a77b57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aa806c9ce9064eb13f56b1f1b30a77b57">update_map</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject, std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) noexcept</td></tr>
-<tr class="memdesc:aa806c9ce9064eb13f56b1f1b30a77b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this local map with a succesful tracking.  <br /></td></tr>
-<tr class="separator:aa806c9ce9064eb13f56b1f1b30a77b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c151c3055ace48e2b1b1182cf4da689" id="r_a4c151c3055ace48e2b1b1182cf4da689"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a4c151c3055ace48e2b1b1182cf4da689">update_with_no_tracking</a> (std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) noexcept</td></tr>
-<tr class="memdesc:a4c151c3055ace48e2b1b1182cf4da689"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this local map with a failed tracking.  <br /></td></tr>
-<tr class="separator:a4c151c3055ace48e2b1b1182cf4da689"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f4f8e1e20f6f61fcd06a9a9fe6a5c10" id="r_a7f4f8e1e20f6f61fcd06a9a9fe6a5c10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7f4f8e1e20f6f61fcd06a9a9fe6a5c10">add_features_to_staged_map</a> (const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const DetectedFeaturesObject &amp;detectedFeatures, const bool addAllFeatures) noexcept</td></tr>
-<tr class="memdesc:a7f4f8e1e20f6f61fcd06a9a9fe6a5c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a set of detected features to the staged features.  <br /></td></tr>
-<tr class="separator:a7f4f8e1e20f6f61fcd06a9a9fe6a5c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0b24ef61c0fd7857a80919921aec366" id="r_af0b24ef61c0fd7857a80919921aec366"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af0b24ef61c0fd7857a80919921aec366">mark_feature_with_id_as_unmatched</a> (const size_t featureId) noexcept</td></tr>
-<tr class="memdesc:af0b24ef61c0fd7857a80919921aec366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the map feature with the given id as unmatched.  <br /></td></tr>
-<tr class="separator:af0b24ef61c0fd7857a80919921aec366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0076ed5ea74aa66f0e1a01a379593c59" id="r_a0076ed5ea74aa66f0e1a01a379593c59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0076ed5ea74aa66f0e1a01a379593c59">draw_on_image</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamMatrix, cv::Mat &amp;debugImage, const bool shouldDisplayStaged=false) const noexcept</td></tr>
-<tr class="memdesc:a0076ed5ea74aa66f0e1a01a379593c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw the content of this local map on the given image (draw only matched features)  <br /></td></tr>
-<tr class="separator:a0076ed5ea74aa66f0e1a01a379593c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3febcae85b5bc484dcfd752dc3ac4bb" id="r_ab3febcae85b5bc484dcfd752dc3ac4bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ab3febcae85b5bc484dcfd752dc3ac4bb">deactivate</a> () noexcept</td></tr>
-<tr class="memdesc:ab3febcae85b5bc484dcfd752dc3ac4bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dectivate this local map.  <br /></td></tr>
-<tr class="separator:ab3febcae85b5bc484dcfd752dc3ac4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a072636131bc8219476a127b2b988e79d" id="r_a072636131bc8219476a127b2b988e79d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a072636131bc8219476a127b2b988e79d">get_local_map_size</a> () const noexcept</td></tr>
-<tr class="separator:a072636131bc8219476a127b2b988e79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3c418fe893b42dcc04d472c34e99540" id="r_af3c418fe893b42dcc04d472c34e99540"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af3c418fe893b42dcc04d472c34e99540">get_staged_map_size</a> () const noexcept</td></tr>
-<tr class="separator:af3c418fe893b42dcc04d472c34e99540"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf3cf745c622618c672c5bfd952db49b" id="r_acf3cf745c622618c672c5bfd952db49b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#acf3cf745c622618c672c5bfd952db49b">size</a> () const noexcept</td></tr>
-<tr class="separator:acf3cf745c622618c672c5bfd952db49b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a346a9de5bc05bad3d1b1e50c5f164249" id="r_a346a9de5bc05bad3d1b1e50c5f164249"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a346a9de5bc05bad3d1b1e50c5f164249">Feature_Map</a> ()</td></tr>
+<tr class="separator:a346a9de5bc05bad3d1b1e50c5f164249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10c45ca8085359f457200d8924e84c6d" id="r_a10c45ca8085359f457200d8924e84c6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a10c45ca8085359f457200d8924e84c6d">reset</a> () noexcept</td></tr>
+<tr class="memdesc:a10c45ca8085359f457200d8924e84c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the content of this map, empty all local maps.  <br /></td></tr>
+<tr class="separator:a10c45ca8085359f457200d8924e84c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b505e44c5294586fec4711790d26453" id="r_a7b505e44c5294586fec4711790d26453"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7b505e44c5294586fec4711790d26453">destroy</a> (std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) const noexcept</td></tr>
+<tr class="separator:a7b505e44c5294586fec4711790d26453"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a641ff2b68092ec2c8940e08c86af316d" id="r_a641ff2b68092ec2c8940e08c86af316d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a641ff2b68092ec2c8940e08c86af316d">get_matches</a> (const DetectedFeaturesObject &amp;detectedFeatures, const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera, const bool useAdvancedMatch, const uint minimumFeaturesForOptimization, std::list&lt; FeatureMatchType &gt; &amp;matches) noexcept</td></tr>
+<tr class="memdesc:a641ff2b68092ec2c8940e08c86af316d"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the object thta contains the matches between detected and map feature. Set the _isDetectedFeatureMatched flags  <br /></td></tr>
+<tr class="separator:a641ff2b68092ec2c8940e08c86af316d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab88bdcd84df9c5a87ac0fc15544eb86d" id="r_ab88bdcd84df9c5a87ac0fc15544eb86d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ab88bdcd84df9c5a87ac0fc15544eb86d">get_tracked_features</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera, TrackedFeaturesObject &amp;trackedFeatures, const uint localMapDropChance=1000) const noexcept</td></tr>
+<tr class="memdesc:ab88bdcd84df9c5a87ac0fc15544eb86d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the feature that were tracked for the last tracking step.  <br /></td></tr>
+<tr class="separator:ab88bdcd84df9c5a87ac0fc15544eb86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee68dfe8484e43c4534fca09cf0caace" id="r_aee68dfe8484e43c4534fca09cf0caace"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aee68dfe8484e43c4534fca09cf0caace">update_map</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject, std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter)</td></tr>
+<tr class="memdesc:aee68dfe8484e43c4534fca09cf0caace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this local map with a succesful tracking.  <br /></td></tr>
+<tr class="separator:aee68dfe8484e43c4534fca09cf0caace"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e89ba7cab6c27786d4de01fa9a1b6ff" id="r_a4e89ba7cab6c27786d4de01fa9a1b6ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a4e89ba7cab6c27786d4de01fa9a1b6ff">update_with_no_tracking</a> (std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) noexcept</td></tr>
+<tr class="memdesc:a4e89ba7cab6c27786d4de01fa9a1b6ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update this local map with a failed tracking.  <br /></td></tr>
+<tr class="separator:a4e89ba7cab6c27786d4de01fa9a1b6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a526cd8aa8540a1a453fa1d6cab5ad2" id="r_a3a526cd8aa8540a1a453fa1d6cab5ad2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a3a526cd8aa8540a1a453fa1d6cab5ad2">add_features_to_staged_map</a> (const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const DetectedFeaturesObject &amp;detectedFeatures, const bool addAllFeatures)</td></tr>
+<tr class="memdesc:a3a526cd8aa8540a1a453fa1d6cab5ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a set of detected features to the staged features.  <br /></td></tr>
+<tr class="separator:a3a526cd8aa8540a1a453fa1d6cab5ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a458187fb4a3014205004fbaa310ba671" id="r_a458187fb4a3014205004fbaa310ba671"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a458187fb4a3014205004fbaa310ba671">mark_feature_with_id_as_unmatched</a> (const size_t featureId) noexcept</td></tr>
+<tr class="memdesc:a458187fb4a3014205004fbaa310ba671"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the map feature with the given id as unmatched.  <br /></td></tr>
+<tr class="separator:a458187fb4a3014205004fbaa310ba671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ea913d86db9f5f30e45a96833125119" id="r_a7ea913d86db9f5f30e45a96833125119"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7ea913d86db9f5f30e45a96833125119">draw_on_image</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamMatrix, cv::Mat &amp;debugImage, const bool shouldDisplayStaged=false) const noexcept</td></tr>
+<tr class="memdesc:a7ea913d86db9f5f30e45a96833125119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw the content of this local map on the given image (draw only matched features)  <br /></td></tr>
+<tr class="separator:a7ea913d86db9f5f30e45a96833125119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02a516784fa7dcff68f166d920bc5626" id="r_a02a516784fa7dcff68f166d920bc5626"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a02a516784fa7dcff68f166d920bc5626">deactivate</a> () noexcept</td></tr>
+<tr class="memdesc:a02a516784fa7dcff68f166d920bc5626"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dectivate this local map.  <br /></td></tr>
+<tr class="separator:a02a516784fa7dcff68f166d920bc5626"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60876198bf37320052f4bc2c3e53db2e" id="r_a60876198bf37320052f4bc2c3e53db2e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a60876198bf37320052f4bc2c3e53db2e">get_local_map_size</a> () const noexcept</td></tr>
+<tr class="separator:a60876198bf37320052f4bc2c3e53db2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a743d2e11cad5b9b57b41f612bf4af30b" id="r_a743d2e11cad5b9b57b41f612bf4af30b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a743d2e11cad5b9b57b41f612bf4af30b">get_staged_map_size</a> () const noexcept</td></tr>
+<tr class="separator:a743d2e11cad5b9b57b41f612bf4af30b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3a331a583d26f2f5d04a9f74cf3cdd" id="r_a0f3a331a583d26f2f5d04a9f74cf3cdd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0f3a331a583d26f2f5d04a9f74cf3cdd">size</a> () const noexcept</td></tr>
+<tr class="separator:a0f3a331a583d26f2f5d04a9f74cf3cdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40722cda41dcf90a37f3ea91c84fdde0" id="r_a40722cda41dcf90a37f3ea91c84fdde0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; UpgradedFeatureType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a40722cda41dcf90a37f3ea91c84fdde0">get_upgraded_features</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld)</td></tr>
+<tr class="memdesc:a40722cda41dcf90a37f3ea91c84fdde0"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the upgraded features and remove them from the map  <br /></td></tr>
+<tr class="separator:a40722cda41dcf90a37f3ea91c84fdde0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6d5cdb64de4eefc3af29ce3db600e1d" id="r_af6d5cdb64de4eefc3af29ce3db600e1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af6d5cdb64de4eefc3af29ce3db600e1d">add_local_map_point</a> (const MapFeatureType &amp;mapFeature)</td></tr>
+<tr class="separator:af6d5cdb64de4eefc3af29ce3db600e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a048f2c421ede75136f589d4c3af1df56" id="r_a048f2c421ede75136f589d4c3af1df56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a048f2c421ede75136f589d4c3af1df56">update_local_map</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject, std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) noexcept</td></tr>
-<tr class="separator:a048f2c421ede75136f589d4c3af1df56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f9d01c2c3b24806b3e110e65b3b689a" id="r_a7f9d01c2c3b24806b3e110e65b3b689a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7f9d01c2c3b24806b3e110e65b3b689a">update_staged_map</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject) noexcept</td></tr>
-<tr class="separator:a7f9d01c2c3b24806b3e110e65b3b689a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a379209a7ce4d762ca4084b97123eb4dd" id="r_a379209a7ce4d762ca4084b97123eb4dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a379209a7ce4d762ca4084b97123eb4dd">update_local_map_with_no_tracking</a> (std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) noexcept</td></tr>
-<tr class="separator:a379209a7ce4d762ca4084b97123eb4dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cdb4d5a0a183461c864538879dc27fe" id="r_a3cdb4d5a0a183461c864538879dc27fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a3cdb4d5a0a183461c864538879dc27fe">update_staged_map_with_no_tracking</a> () noexcept</td></tr>
-<tr class="separator:a3cdb4d5a0a183461c864538879dc27fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a859f3ff330c1ce69f920275f5c71c95a" id="r_a859f3ff330c1ce69f920275f5c71c95a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a859f3ff330c1ce69f920275f5c71c95a">update_local_map</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject, std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter)</td></tr>
+<tr class="separator:a859f3ff330c1ce69f920275f5c71c95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5786a636d4c71b8ed2fd80771a693dcc" id="r_a5786a636d4c71b8ed2fd80771a693dcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a5786a636d4c71b8ed2fd80771a693dcc">update_staged_map</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject)</td></tr>
+<tr class="separator:a5786a636d4c71b8ed2fd80771a693dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5e5526fac61428f5aa953c8f5d6a1aa" id="r_ae5e5526fac61428f5aa953c8f5d6a1aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ae5e5526fac61428f5aa953c8f5d6a1aa">update_local_map_with_no_tracking</a> (std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt; mapWriter) noexcept</td></tr>
+<tr class="separator:ae5e5526fac61428f5aa953c8f5d6a1aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad03909157c05ed07693ab5c16a07e248" id="r_ad03909157c05ed07693ab5c16a07e248"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ad03909157c05ed07693ab5c16a07e248">update_staged_map_with_no_tracking</a> () noexcept</td></tr>
+<tr class="separator:ad03909157c05ed07693ab5c16a07e248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae00b9b9caf80776f5707f66808c3b73" id="r_aae00b9b9caf80776f5707f66808c3b73"><td class="memItemLeft" align="right" valign="top">std::vector&lt; UpgradedFeatureType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aae00b9b9caf80776f5707f66808c3b73">get_upgraded_map_features</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld) noexcept</td></tr>
+<tr class="separator:aae00b9b9caf80776f5707f66808c3b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fc3bdbc68dff40bcd7078f4ca548c4d" id="r_a7fc3bdbc68dff40bcd7078f4ca548c4d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; UpgradedFeatureType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7fc3bdbc68dff40bcd7078f4ca548c4d">get_upgraded_staged_features</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld) noexcept</td></tr>
+<tr class="separator:a7fc3bdbc68dff40bcd7078f4ca548c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class MapFeatureType, class StagedFeatureType, class DetectedFeaturesObject, class DetectedFeatureType, class FeatureMatchType, class TrackedFeaturesObject&gt;<br />
-class rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;</div><p>Handle the storage and update of features in local and staged map </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class MapFeatureType, class StagedFeatureType, class DetectedFeaturesObject, class DetectedFeatureType, class FeatureMatchType, class TrackedFeaturesObject, class UpgradedFeatureType&gt;<br />
+class rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;</div><p>Handle the storage and update of features in local and staged map </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1c4db6a5b1c21412eefbcb362df9ab3d" name="a1c4db6a5b1c21412eefbcb362df9ab3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c4db6a5b1c21412eefbcb362df9ab3d">&#9670;&#160;</a></span>Feature_Map()</h2>
+<a id="a346a9de5bc05bad3d1b1e50c5f164249" name="a346a9de5bc05bad3d1b1e50c5f164249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a346a9de5bc05bad3d1b1e50c5f164249">&#9670;&#160;</a></span>Feature_Map()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::Feature_Map </td>
+          <td class="memname"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::Feature_Map </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -167,19 +176,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7f4f8e1e20f6f61fcd06a9a9fe6a5c10" name="a7f4f8e1e20f6f61fcd06a9a9fe6a5c10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f4f8e1e20f6f61fcd06a9a9fe6a5c10">&#9670;&#160;</a></span>add_features_to_staged_map()</h2>
+<a id="a3a526cd8aa8540a1a453fa1d6cab5ad2" name="a3a526cd8aa8540a1a453fa1d6cab5ad2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a526cd8aa8540a1a453fa1d6cab5ad2">&#9670;&#160;</a></span>add_features_to_staged_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::add_features_to_staged_map </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::add_features_to_staged_map </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;&#160;</td>
           <td class="paramname"><em>poseCovariance</em>, </td>
@@ -210,7 +219,7 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -228,19 +237,47 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="ab3febcae85b5bc484dcfd752dc3ac4bb" name="ab3febcae85b5bc484dcfd752dc3ac4bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3febcae85b5bc484dcfd752dc3ac4bb">&#9670;&#160;</a></span>deactivate()</h2>
+<a id="af6d5cdb64de4eefc3af29ce3db600e1d" name="af6d5cdb64de4eefc3af29ce3db600e1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6d5cdb64de4eefc3af29ce3db600e1d">&#9670;&#160;</a></span>add_local_map_point()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::deactivate </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::add_local_map_point </td>
+          <td>(</td>
+          <td class="paramtype">const MapFeatureType &amp;&#160;</td>
+          <td class="paramname"><em>mapFeature</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a02a516784fa7dcff68f166d920bc5626" name="a02a516784fa7dcff68f166d920bc5626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02a516784fa7dcff68f166d920bc5626">&#9670;&#160;</a></span>deactivate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::deactivate </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -257,19 +294,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="a6e27f045413c05dc124aee5d6ff73082" name="a6e27f045413c05dc124aee5d6ff73082"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e27f045413c05dc124aee5d6ff73082">&#9670;&#160;</a></span>destroy()</h2>
+<a id="a7b505e44c5294586fec4711790d26453" name="a7b505e44c5294586fec4711790d26453"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b505e44c5294586fec4711790d26453">&#9670;&#160;</a></span>destroy()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::destroy </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::destroy </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt;&#160;</td>
           <td class="paramname"><em>mapWriter</em></td><td>)</td>
@@ -285,19 +322,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="a0076ed5ea74aa66f0e1a01a379593c59" name="a0076ed5ea74aa66f0e1a01a379593c59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0076ed5ea74aa66f0e1a01a379593c59">&#9670;&#160;</a></span>draw_on_image()</h2>
+<a id="a7ea913d86db9f5f30e45a96833125119" name="a7ea913d86db9f5f30e45a96833125119"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ea913d86db9f5f30e45a96833125119">&#9670;&#160;</a></span>draw_on_image()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::draw_on_image </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::draw_on_image </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>worldToCamMatrix</em>, </td>
@@ -339,19 +376,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="a072636131bc8219476a127b2b988e79d" name="a072636131bc8219476a127b2b988e79d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a072636131bc8219476a127b2b988e79d">&#9670;&#160;</a></span>get_local_map_size()</h2>
+<a id="a60876198bf37320052f4bc2c3e53db2e" name="a60876198bf37320052f4bc2c3e53db2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60876198bf37320052f4bc2c3e53db2e">&#9670;&#160;</a></span>get_local_map_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::get_local_map_size </td>
+          <td class="memname">size_t <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::get_local_map_size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -366,19 +403,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="a63a624843a991ec96c9136a972d2c7b3" name="a63a624843a991ec96c9136a972d2c7b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63a624843a991ec96c9136a972d2c7b3">&#9670;&#160;</a></span>get_matches()</h2>
+<a id="a641ff2b68092ec2c8940e08c86af316d" name="a641ff2b68092ec2c8940e08c86af316d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a641ff2b68092ec2c8940e08c86af316d">&#9670;&#160;</a></span>get_matches()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::get_matches </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::get_matches </td>
           <td>(</td>
           <td class="paramtype">const DetectedFeaturesObject &amp;&#160;</td>
           <td class="paramname"><em>detectedFeatures</em>, </td>
@@ -394,6 +431,12 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
           <td></td>
           <td class="paramtype">const bool&#160;</td>
           <td class="paramname"><em>useAdvancedMatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>minimumFeaturesForOptimization</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -419,7 +462,8 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">detectedFeatures</td><td>The object of detected features to match </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">worldToCamera</td><td>A matrix to convert from world to camera space </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">useAdvancedMatch</td><td>If true, will restart the matching process to detected features further than if True. Also less precise </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">useAdvancedMatch</td><td>If true, will restart the matching process to detected features further than if True. Also less precise</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">minimumFeaturesForOptimization</td><td>The minimum feature count for a pose optimization</td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">matches</td><td>An object of matches between map object and detected features </td></tr>
   </table>
   </dd>
@@ -427,19 +471,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="af3c418fe893b42dcc04d472c34e99540" name="af3c418fe893b42dcc04d472c34e99540"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3c418fe893b42dcc04d472c34e99540">&#9670;&#160;</a></span>get_staged_map_size()</h2>
+<a id="a743d2e11cad5b9b57b41f612bf4af30b" name="a743d2e11cad5b9b57b41f612bf4af30b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a743d2e11cad5b9b57b41f612bf4af30b">&#9670;&#160;</a></span>get_staged_map_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::get_staged_map_size </td>
+          <td class="memname">size_t <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::get_staged_map_size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -454,19 +498,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="accbbce158b54b20725250ae7a59f8c09" name="accbbce158b54b20725250ae7a59f8c09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accbbce158b54b20725250ae7a59f8c09">&#9670;&#160;</a></span>get_tracked_features()</h2>
+<a id="ab88bdcd84df9c5a87ac0fc15544eb86d" name="ab88bdcd84df9c5a87ac0fc15544eb86d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab88bdcd84df9c5a87ac0fc15544eb86d">&#9670;&#160;</a></span>get_tracked_features()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::get_tracked_features </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::get_tracked_features </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>worldToCamera</em>, </td>
@@ -508,19 +552,105 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="af0b24ef61c0fd7857a80919921aec366" name="af0b24ef61c0fd7857a80919921aec366"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0b24ef61c0fd7857a80919921aec366">&#9670;&#160;</a></span>mark_feature_with_id_as_unmatched()</h2>
+<a id="a40722cda41dcf90a37f3ea91c84fdde0" name="a40722cda41dcf90a37f3ea91c84fdde0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40722cda41dcf90a37f3ea91c84fdde0">&#9670;&#160;</a></span>get_upgraded_features()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::mark_feature_with_id_as_unmatched </td>
+          <td class="memname">std::vector&lt; UpgradedFeatureType &gt; <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::get_upgraded_features </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>compute the upgraded features and remove them from the map </p>
+
+</div>
+</div>
+<a id="aae00b9b9caf80776f5707f66808c3b73" name="aae00b9b9caf80776f5707f66808c3b73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae00b9b9caf80776f5707f66808c3b73">&#9670;&#160;</a></span>get_upgraded_map_features()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; UpgradedFeatureType &gt; <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::get_upgraded_map_features </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7fc3bdbc68dff40bcd7078f4ca548c4d" name="a7fc3bdbc68dff40bcd7078f4ca548c4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fc3bdbc68dff40bcd7078f4ca548c4d">&#9670;&#160;</a></span>get_upgraded_staged_features()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; UpgradedFeatureType &gt; <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::get_upgraded_staged_features </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>cameraToWorld</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a458187fb4a3014205004fbaa310ba671" name="a458187fb4a3014205004fbaa310ba671"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a458187fb4a3014205004fbaa310ba671">&#9670;&#160;</a></span>mark_feature_with_id_as_unmatched()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::mark_feature_with_id_as_unmatched </td>
           <td>(</td>
           <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>featureId</em></td><td>)</td>
@@ -545,19 +675,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="abc926846f3b876d633bedb0b23facec3" name="abc926846f3b876d633bedb0b23facec3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc926846f3b876d633bedb0b23facec3">&#9670;&#160;</a></span>reset()</h2>
+<a id="a10c45ca8085359f457200d8924e84c6d" name="a10c45ca8085359f457200d8924e84c6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10c45ca8085359f457200d8924e84c6d">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::reset </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::reset </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -574,19 +704,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="acf3cf745c622618c672c5bfd952db49b" name="acf3cf745c622618c672c5bfd952db49b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf3cf745c622618c672c5bfd952db49b">&#9670;&#160;</a></span>size()</h2>
+<a id="a0f3a331a583d26f2f5d04a9f74cf3cdd" name="a0f3a331a583d26f2f5d04a9f74cf3cdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f3a331a583d26f2f5d04a9f74cf3cdd">&#9670;&#160;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::size </td>
+          <td class="memname">size_t <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -601,19 +731,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="a048f2c421ede75136f589d4c3af1df56" name="a048f2c421ede75136f589d4c3af1df56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a048f2c421ede75136f589d4c3af1df56">&#9670;&#160;</a></span>update_local_map()</h2>
+<a id="a859f3ff330c1ce69f920275f5c71c95a" name="a859f3ff330c1ce69f920275f5c71c95a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a859f3ff330c1ce69f920275f5c71c95a">&#9670;&#160;</a></span>update_local_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::update_local_map </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::update_local_map </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>cameraToWorld</em>, </td>
@@ -644,26 +774,26 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a379209a7ce4d762ca4084b97123eb4dd" name="a379209a7ce4d762ca4084b97123eb4dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a379209a7ce4d762ca4084b97123eb4dd">&#9670;&#160;</a></span>update_local_map_with_no_tracking()</h2>
+<a id="ae5e5526fac61428f5aa953c8f5d6a1aa" name="ae5e5526fac61428f5aa953c8f5d6a1aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5e5526fac61428f5aa953c8f5d6a1aa">&#9670;&#160;</a></span>update_local_map_with_no_tracking()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::update_local_map_with_no_tracking </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::update_local_map_with_no_tracking </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt;&#160;</td>
           <td class="paramname"><em>mapWriter</em></td><td>)</td>
@@ -679,19 +809,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="aa806c9ce9064eb13f56b1f1b30a77b57" name="aa806c9ce9064eb13f56b1f1b30a77b57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa806c9ce9064eb13f56b1f1b30a77b57">&#9670;&#160;</a></span>update_map()</h2>
+<a id="aee68dfe8484e43c4534fca09cf0caace" name="aee68dfe8484e43c4534fca09cf0caace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee68dfe8484e43c4534fca09cf0caace">&#9670;&#160;</a></span>update_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::update_map </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::update_map </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>cameraToWorld</em>, </td>
@@ -722,7 +852,7 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -740,19 +870,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="a7f9d01c2c3b24806b3e110e65b3b689a" name="a7f9d01c2c3b24806b3e110e65b3b689a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f9d01c2c3b24806b3e110e65b3b689a">&#9670;&#160;</a></span>update_staged_map()</h2>
+<a id="a5786a636d4c71b8ed2fd80771a693dcc" name="a5786a636d4c71b8ed2fd80771a693dcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5786a636d4c71b8ed2fd80771a693dcc">&#9670;&#160;</a></span>update_staged_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::update_staged_map </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::update_staged_map </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>cameraToWorld</em>, </td>
@@ -777,26 +907,26 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a3cdb4d5a0a183461c864538879dc27fe" name="a3cdb4d5a0a183461c864538879dc27fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cdb4d5a0a183461c864538879dc27fe">&#9670;&#160;</a></span>update_staged_map_with_no_tracking()</h2>
+<a id="ad03909157c05ed07693ab5c16a07e248" name="ad03909157c05ed07693ab5c16a07e248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad03909157c05ed07693ab5c16a07e248">&#9670;&#160;</a></span>update_staged_map_with_no_tracking()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::update_staged_map_with_no_tracking </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::update_staged_map_with_no_tracking </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -811,19 +941,19 @@ template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeatu
 
 </div>
 </div>
-<a id="a4c151c3055ace48e2b1b1182cf4da689" name="a4c151c3055ace48e2b1b1182cf4da689"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c151c3055ace48e2b1b1182cf4da689">&#9670;&#160;</a></span>update_with_no_tracking()</h2>
+<a id="a4e89ba7cab6c27786d4de01fa9a1b6ff" name="a4e89ba7cab6c27786d4de01fa9a1b6ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e89ba7cab6c27786d4de01fa9a1b6ff">&#9670;&#160;</a></span>update_with_no_tracking()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject &gt; </div>
+template&lt;class MapFeatureType , class StagedFeatureType , class DetectedFeaturesObject , class DetectedFeatureType , class FeatureMatchType , class TrackedFeaturesObject , class UpgradedFeatureType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;::update_with_no_tracking </td>
+          <td class="memname">void <a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a>&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;::update_with_no_tracking </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">outputs::IMap_Writer</a> &gt;&#160;</td>
           <td class="paramname"><em>mapWriter</em></td><td>)</td>

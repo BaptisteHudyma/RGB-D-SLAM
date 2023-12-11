@@ -5,5 +5,6 @@ var searchData=
   ['line_5fdetection_2',['Line_Detection',['../classrgbd__slam_1_1features_1_1lines_1_1_line___detection.html',1,'rgbd_slam::features::lines']]],
   ['local_5fmap_3',['Local_Map',['../classrgbd__slam_1_1map__management_1_1_local___map.html',1,'rgbd_slam::map_management']]],
   ['localmapplane_4',['LocalMapPlane',['../classrgbd__slam_1_1map__management_1_1_local_map_plane.html',1,'rgbd_slam::map_management']]],
-  ['localmappoint_5',['LocalMapPoint',['../classrgbd__slam_1_1map__management_1_1_local_map_point.html',1,'rgbd_slam::map_management']]]
+  ['localmappoint_5',['LocalMapPoint',['../classrgbd__slam_1_1map__management_1_1_local_map_point.html',1,'rgbd_slam::map_management']]],
+  ['localmappoint2d_6',['LocalMapPoint2D',['../classrgbd__slam_1_1map__management_1_1_local_map_point2_d.html',1,'rgbd_slam::map_management']]]
 ];

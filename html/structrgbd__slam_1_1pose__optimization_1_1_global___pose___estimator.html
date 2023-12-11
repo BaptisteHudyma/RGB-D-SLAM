@@ -97,8 +97,8 @@ Inheritance diagram for rgbd_slam::pose_optimization::Global_Pose_Estimator:</di
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:accf6ced405956f723c47d870694709ad" id="r_accf6ced405956f723c47d870694709ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#accf6ced405956f723c47d870694709ad">Global_Pose_Estimator</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a5dd025751281c2e733588e8229f68690">matches_containers::match_point_container</a> *const points, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#ae435b06d82751fed7f7d9dfebf3cf594">matches_containers::match_plane_container</a> *const planes)</td></tr>
-<tr class="separator:accf6ced405956f723c47d870694709ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e163a4e84ef8b57f0dd629ea9e55720" id="r_a5e163a4e84ef8b57f0dd629ea9e55720"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a5e163a4e84ef8b57f0dd629ea9e55720">Global_Pose_Estimator</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a68474edc07139f8ef4791e3eaef6e61b">matches_containers::match_point2D_container</a> *const points2d, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a5dd025751281c2e733588e8229f68690">matches_containers::match_point_container</a> *const points, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#ae435b06d82751fed7f7d9dfebf3cf594">matches_containers::match_plane_container</a> *const planes)</td></tr>
+<tr class="separator:a5e163a4e84ef8b57f0dd629ea9e55720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45d32727cad348886c646cfa84bba1a6" id="r_a45d32727cad348886c646cfa84bba1a6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator.html#a45d32727cad348886c646cfa84bba1a6">operator()</a> (const Eigen::Vector&lt; double, 6 &gt; &amp;optimizedParameters, <a class="el" href="namespacergbd__slam.html#a0b7f2c63b7da0314c015add649109878">vectorxd</a> &amp;outputScores) const</td></tr>
 <tr class="memdesc:a45d32727cad348886c646cfa84bba1a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the objective function.  <br /></td></tr>
 <tr class="separator:a45d32727cad348886c646cfa84bba1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,8 +132,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="accf6ced405956f723c47d870694709ad" name="accf6ced405956f723c47d870694709ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accf6ced405956f723c47d870694709ad">&#9670;&#160;</a></span>Global_Pose_Estimator()</h2>
+<a id="a5e163a4e84ef8b57f0dd629ea9e55720" name="a5e163a4e84ef8b57f0dd629ea9e55720"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e163a4e84ef8b57f0dd629ea9e55720">&#9670;&#160;</a></span>Global_Pose_Estimator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,6 +141,12 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">rgbd_slam::pose_optimization::Global_Pose_Estimator::Global_Pose_Estimator </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a68474edc07139f8ef4791e3eaef6e61b">matches_containers::match_point2D_container</a> *const&#160;</td>
+          <td class="paramname"><em>points2d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a5dd025751281c2e733588e8229f68690">matches_containers::match_point_container</a> *const&#160;</td>
           <td class="paramname"><em>points</em>, </td>
         </tr>
@@ -159,6 +165,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">points2d</td><td>Matched 2D (screen) to 2D (inverse depth) points </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">points</td><td>Matched 2D (screen) to 3D (world) points </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">planes</td><td>Matched camera to world planes </td></tr>
   </table>

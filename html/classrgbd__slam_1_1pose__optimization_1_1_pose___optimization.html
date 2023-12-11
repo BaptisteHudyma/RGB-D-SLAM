@@ -94,6 +94,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1bcea3b59274de253018e2cc661401c1" id="r_a1bcea3b59274de253018e2cc661401c1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a1bcea3b59274de253018e2cc661401c1">compute_pose_variance</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;optimizedPose, const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a> &amp;matchedFeatures, <a class="el" href="namespacergbd__slam.html#a502d6e9992f89238aab609e627445e55">matrix66</a> &amp;poseCovariance, const uint iterations=100) noexcept</td></tr>
 <tr class="memdesc:a1bcea3b59274de253018e2cc661401c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the variance of a given pose, using multiple iterations of the optimization process.  <br /></td></tr>
 <tr class="separator:a1bcea3b59274de253018e2cc661401c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17ea881c2a7691c155e387bf1ce86908" id="r_a17ea881c2a7691c155e387bf1ce86908"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html#a17ea881c2a7691c155e387bf1ce86908">show_statistics</a> (const double meanFrameTreatmentDuration, const uint frameCount, const bool shouldDisplayDetails=false) noexcept</td></tr>
+<tr class="separator:a17ea881c2a7691c155e387bf1ce86908"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Find the transformation between a matches feature sets, using a custom Levenberg Marquardt method. </p>
@@ -215,6 +217,48 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the process succeded, or False </dd></dl>
+
+</div>
+</div>
+<a id="a17ea881c2a7691c155e387bf1ce86908" name="a17ea881c2a7691c155e387bf1ce86908"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17ea881c2a7691c155e387bf1ce86908">&#9670;&#160;</a></span>show_statistics()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::pose_optimization::Pose_Optimization::show_statistics </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>meanFrameTreatmentDuration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>frameCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>shouldDisplayDetails</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

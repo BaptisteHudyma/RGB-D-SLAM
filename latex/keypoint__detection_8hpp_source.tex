@@ -15,49 +15,55 @@
 \DoxyCodeLine{00016\ \ \ \textcolor{keyword}{public}:}
 \DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_adf8a35140fc380cc46b4c7a1f5e5abc8}{Key\_Point\_Extraction}}();}
 \DoxyCodeLine{00018\ }
-\DoxyCodeLine{00029\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ad9efd1e5cd3a95375663ee00cbf9f23c}{compute\_keypoints}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<float>\&\ depthImage,}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\&\ lastKeypointsWithIds,}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ forceKeypointDetection\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1b41f141fd062bf11489ca5a4d45c11e}{show\_statistics}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ meanFrameTreatmentDuration,\ \textcolor{keyword}{const}\ uint\ frameCount)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{numberOfDetectionCells}}\ =\ \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a58a53527a5861893bc07b540f2ebc3ff}{parameters::detection::keypointCellDetectionHeightCount}}\ *}
-\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a1ca69fcc3691ed6b94b96fa8a1bee75e}{parameters::detection::keypointCellDetectionWidthCount}};}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6f136954f3db17de9bcb25c2f84f07e4}{get\_keypoints\_from\_optical\_flow}}(\textcolor{keyword}{const}\ std::vector<cv::Mat>\&\ imagePreviousPyramide,}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<cv::Mat>\&\ imageCurrentPyramide,}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\&\ lastKeypointsWithIds,}
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint\ pyramidDepth,}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Size\&\ windowSizeObject,}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ maxDistanceThreshold,}
-\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\&\ keypointStruct)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00065\ }
-\DoxyCodeLine{00072\ \ \ \ \ [[nodiscard]]\ std::vector<cv::Point2f>\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd17b8809f72dfccf19c7a683ba0a97}{detect\_keypoints}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<uchar>\&\ mask)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00074\ }
-\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a773c6a3f5cf7d3d9072921d5379ba452}{perform\_keypoint\_detection}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<uchar>\&\ mask,}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<cv::KeyPoint>\&\ frameKeypoints)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00085\ }
-\DoxyCodeLine{00086\ \ \ \ \ [[nodiscard]]\ cv::Mat\_<uchar>\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a221ade8e21ddd75719aedbc886f12661}{compute\_key\_point\_mask}}(}
-\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Size\ imageSize,\ \textcolor{keyword}{const}\ std::vector<cv::Point2f>\&\ keypointContainer)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00030\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\_Handler}}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ad9efd1e5cd3a95375663ee00cbf9f23c}{compute\_keypoints}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<float>\&\ depthImage,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\&\ lastKeypointsWithIds,}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ forceKeypointDetection\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_af2a0e9a727ae025b83ec49595738bf14}{show\_statistics}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ meanFrameTreatmentDuration,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint\ frameCount,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldDisplayDetails\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{numberOfDetectionCells}}\ =\ \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a58a53527a5861893bc07b540f2ebc3ff}{parameters::detection::keypointCellDetectionHeightCount}}\ *}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a1ca69fcc3691ed6b94b96fa8a1bee75e}{parameters::detection::keypointCellDetectionWidthCount}};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a6f136954f3db17de9bcb25c2f84f07e4}{get\_keypoints\_from\_optical\_flow}}(\textcolor{keyword}{const}\ std::vector<cv::Mat>\&\ imagePreviousPyramide,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<cv::Mat>\&\ imageCurrentPyramide,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\&\ lastKeypointsWithIds,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint\ pyramidDepth,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Size\&\ windowSizeObject,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ maxDistanceThreshold,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{KeypointsWithIdStruct}}\&\ keypointStruct)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00075\ \ \ \ \ [[nodiscard]]\ std::vector<cv::Point2f>\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd17b8809f72dfccf19c7a683ba0a97}{detect\_keypoints}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<uchar>\&\ mask)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a773c6a3f5cf7d3d9072921d5379ba452}{perform\_keypoint\_detection}}(\textcolor{keyword}{const}\ cv::Mat\&\ grayImage,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<uchar>\&\ mask,}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<cv::KeyPoint>\&\ frameKeypoints)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00088\ }
-\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00090\ \ \ \ \ std::array<cv::Ptr<cv::FeatureDetector>,\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{numberOfDetectionCells}}>\ \_featureDetectors;}
-\DoxyCodeLine{00091\ \ \ \ \ std::array<cv::Ptr<cv::FeatureDetector>,\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{numberOfDetectionCells}}>\ \_advancedFeatureDetectors;}
-\DoxyCodeLine{00092\ \ \ \ \ std::array<cv::Rect,\ numberOfDetectionCells>\ \_detectionWindows;}
-\DoxyCodeLine{00093\ }
-\DoxyCodeLine{00094\ \ \ \ \ cv::Ptr<cv::DescriptorExtractor>\ \_featureDescriptor;}
-\DoxyCodeLine{00095\ }
-\DoxyCodeLine{00096\ \ \ \ \ std::vector<cv::Mat>\ \_lastFramePyramide;}
-\DoxyCodeLine{00097\ }
-\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPointExtractionDuration;}
-\DoxyCodeLine{00099\ \};}
+\DoxyCodeLine{00089\ \ \ \ \ [[nodiscard]]\ cv::Mat\_<uchar>\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a221ade8e21ddd75719aedbc886f12661}{compute\_key\_point\_mask}}(}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Size\ imageSize,\ \textcolor{keyword}{const}\ std::vector<cv::Point2f>\&\ keypointContainer)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00093\ \ \ \ \ std::array<cv::Ptr<cv::FeatureDetector>,\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{numberOfDetectionCells}}>\ \_featureDetectors;}
+\DoxyCodeLine{00094\ \ \ \ \ std::array<cv::Ptr<cv::FeatureDetector>,\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{numberOfDetectionCells}}>\ \_advancedFeatureDetectors;}
+\DoxyCodeLine{00095\ \ \ \ \ std::array<cv::Rect,\ numberOfDetectionCells>\ \_detectionWindows;}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ cv::Ptr<cv::DescriptorExtractor>\ \_featureDescriptor;}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ std::vector<cv::Mat>\ \_lastFramePyramide;}
 \DoxyCodeLine{00100\ }
-\DoxyCodeLine{00101\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::features::keypoints}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPointExtractionDuration\ =\ 0.0;}
 \DoxyCodeLine{00102\ }
-\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPointOpticalFlowTrackingDuration\ =\ 0.0;}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPointDetectionDuration\ =\ 0.0;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{double}\ \_meanPointDescriptorDuration\ =\ 0.0;}
+\DoxyCodeLine{00106\ \};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::features::keypoints}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

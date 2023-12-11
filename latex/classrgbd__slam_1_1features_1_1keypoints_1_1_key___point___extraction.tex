@@ -16,7 +16,7 @@ A class to detect and track keypoints. This class will detect keypoints in gray 
 \item 
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{Keypoint\+\_\+\+Handler}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ad9efd1e5cd3a95375663ee00cbf9f23c}{compute\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, const \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{Keypoints\+With\+Id\+Struct}} \&last\+Keypoints\+With\+Ids, const bool force\+Keypoint\+Detection=false) noexcept
 \begin{DoxyCompactList}\small\item\em compute the keypoints in the gray image, using optical flow and/or generic feature detectors \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1b41f141fd062bf11489ca5a4d45c11e}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Duration, const uint frame\+Count) const noexcept
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_af2a0e9a727ae025b83ec49595738bf14}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Duration, const uint frame\+Count, const bool should\+Display\+Details=false) const noexcept
 \begin{DoxyCompactList}\small\item\em Show the time statistics for certain parts of the program. Kind of a basic profiler. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -74,7 +74,7 @@ compute the keypoints in the gray image, using optical flow and/or generic featu
 \hline
 \mbox{\texttt{ in}}  & {\em depth\+Image} & The input depth image from camera \\
 \hline
-\mbox{\texttt{ in}}  & {\em last\+Keypoints\+With\+Ids} & The keypoints of the previous detection step, that will be tracked with optical flow\\
+\mbox{\texttt{ in}}  & {\em last\+Keypoints\+With\+Ids} & The keypoints of the previous detection step, that will be tracked with optical flow \\
 \hline
 \mbox{\texttt{ in}}  & {\em force\+Keypoint\+Detection} & Force the detection of keypoints in the image\\
 \hline
@@ -148,11 +148,11 @@ Perform keypoint detection on the image, divided in smaller patches.
 \mbox{\texttt{ out}}  & {\em frame\+Keypoints} & The keypoint detected in this process keypoints in the image \\
 \hline
 \end{DoxyParams}
-\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1b41f141fd062bf11489ca5a4d45c11e}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1b41f141fd062bf11489ca5a4d45c11e} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_af2a0e9a727ae025b83ec49595738bf14}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_af2a0e9a727ae025b83ec49595738bf14} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!show\_statistics@{show\_statistics}}
 \index{show\_statistics@{show\_statistics}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Duration,  }\item[{const uint}]{frame\+Count }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Duration,  }\item[{const uint}]{frame\+Count,  }\item[{const bool}]{should\+Display\+Details = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 
@@ -160,9 +160,11 @@ Show the time statistics for certain parts of the program. Kind of a basic profi
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em mean\+Frame\+Treatment\+Duration} & The mean duration in seconds that this program used to treat one frame\\
+\mbox{\texttt{ in}}  & {\em mean\+Frame\+Treatment\+Duration} & The mean duration in seconds that this program used to treat one frame \\
 \hline
 \mbox{\texttt{ in}}  & {\em frame\+Count} & Total of frame treated by the program \\
+\hline
+\mbox{\texttt{ in}}  & {\em should\+Display\+Details} & If true, will display additional monitoring informations \\
 \hline
 \end{DoxyParams}
 

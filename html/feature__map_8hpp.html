@@ -80,33 +80,28 @@ $(function() {
   <div class="headertitle"><div class="title">feature_map.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="logger_8hpp_source.html">../outputs/logger.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="camera__transformation_8hpp_source.html">camera_transformation.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="coordinates_8hpp_source.html">coordinates.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="covariances_8hpp_source.html">covariances.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="map__writer_8hpp_source.html">map_writer.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="pose_8hpp_source.html">pose.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="random_8hpp_source.html">random.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="covariances_8hpp_source.html">covariances.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="map__writer_8hpp_source.html">outputs/map_writer.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="logger_8hpp_source.html">outputs/logger.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="random_8hpp_source.html">utils/random.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8hpp_source.html">types.hpp</a>&quot;</code><br />
-<code>#include &lt;exception&gt;</code><br />
 <code>#include &lt;list&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;opencv2/core/matx.hpp&gt;</code><br />
 <code>#include &lt;opencv2/core/types.hpp&gt;</code><br />
-<code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
 </div>
 <p><a href="feature__map_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_i_map_feature.html">rgbd_slam::map_management::IMapFeature&lt; DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_i_map_feature.html">rgbd_slam::map_management::IMapFeature&lt; DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_i_staged_map_feature.html">rgbd_slam::map_management::IStagedMapFeature&lt; DetectedFeatureType &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_i_local_map_feature.html">rgbd_slam::map_management::ILocalMapFeature&lt; StagedMapFeature &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map&lt; MapFeatureType, StagedFeatureType, DetectedFeaturesObject, DetectedFeatureType, FeatureMatchType, TrackedFeaturesObject, UpgradedFeatureType &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>

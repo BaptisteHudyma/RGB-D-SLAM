@@ -1,0 +1,47 @@
+\doxysection{plane\+\_\+with\+\_\+tracking.\+hpp}
+\hypertarget{plane__with__tracking_8hpp_source}{}\label{plane__with__tracking_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/plane\_with\_tracking.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/plane\_with\_tracking.hpp}}
+\mbox{\hyperlink{plane__with__tracking_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_TRACKING\_PLANE\_WITH\_TRACKING\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_TRACKING\_PLANE\_WITH\_TRACKING\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{plane__coordinates_8hpp}{utils/coordinates/plane\_coordinates.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{polygon_8hpp}{utils/polygon.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{shape__primitives_8hpp}{features/primitives/shape\_primitives.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{kalman__filter_8hpp}{tracking/kalman\_filter.hpp}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1tracking}{rgbd\_slam::tracking}}\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane}{Plane}}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_ae3d0fbabb76b305adc6b904e304c8b87}{Plane}}();}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils::PlaneWorldCoordinates}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_aa282431c75fe09725338b0bcaa3504d0}{get\_parametrization}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_a5ff68f22dec091c59dbfa0b62c113b9e}{\_parametrization}};\ \}}
+\DoxyCodeLine{00017\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_a692a5220a859a39dc85cfbda988e07e9}{get\_covariance}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_a6634df2cc4ce67470b674216fd56dd99}{\_covariance}};\ \};}
+\DoxyCodeLine{00018\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils::WorldPolygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_afc69bbdb4b4753f6ec4fb1fbc76db3b7}{get\_boundary\_polygon}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_a9ca0cf8afcae50fcf321bb7084750b57}{\_boundaryPolygon}};\ \};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_adf3af66c2e66e81efa39e7fd479bb760}{track}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{features::primitives::Plane}}\&\ matchedFeature,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils::PlaneWorldCoordinates}}\&\ newDetectionParameters,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}\&\ newDetectionCovariance);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils::PlaneWorldCoordinates}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_a5ff68f22dec091c59dbfa0b62c113b9e}{\_parametrization}};\ \textcolor{comment}{//\ parametrization\ of\ this\ plane\ in\ world\ space}}
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_a6634df2cc4ce67470b674216fd56dd99}{\_covariance}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ covariance\ of\ this\ plane\ in\ world\ space}}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils::WorldPolygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane_a9ca0cf8afcae50fcf321bb7084750b57}{\_boundaryPolygon}};\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ polygon\ describing\ the\ boundary\ of\ the\ plane,\ in\ plane\ space}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ update\_boundary\_polygon(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{utils::CameraPolygon}}\&\ detectedPolygon)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ build\_kalman\_filter()\ noexcept;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ shared\ kalman\ filter,\ between\ all\ planes}}
+\DoxyCodeLine{00052\ \ \ \ \ inline\ static\ std::unique\_ptr<tracking::\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}<4,\ 4>>\ \_kalmanFilter\ =\ \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::tracking}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

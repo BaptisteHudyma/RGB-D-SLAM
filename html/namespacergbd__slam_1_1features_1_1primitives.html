@@ -135,7 +135,7 @@ Variables</h2></td></tr>
 <tr class="separator:ac998207b791c1e44609a8b2a2b195017"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e2ebafb14544ecceef30f73f0c0fae9" id="r_a6e2ebafb14544ecceef30f73f0c0fae9"><td class="memItemLeft" align="right" valign="top">constexpr uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a6e2ebafb14544ecceef30f73f0c0fae9">blocSize</a> = <a class="el" href="namespacergbd__slam_1_1parameters_1_1detection.html#ae602f09cddfce36c6b341a491e3cc10b">parameters::detection::depthMapPatchSize_px</a></td></tr>
 <tr class="separator:a6e2ebafb14544ecceef30f73f0c0fae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfeee6fe2b8af94d381e401423daeb06" id="r_abfeee6fe2b8af94d381e401423daeb06"><td class="memItemLeft" align="right" valign="top">constexpr uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#abfeee6fe2b8af94d381e401423daeb06">pointsPerCellCount</a> = <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a6e2ebafb14544ecceef30f73f0c0fae9">blocSize</a> * <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a6e2ebafb14544ecceef30f73f0c0fae9">blocSize</a></td></tr>
+<tr class="memitem:abfeee6fe2b8af94d381e401423daeb06" id="r_abfeee6fe2b8af94d381e401423daeb06"><td class="memItemLeft" align="right" valign="top">constexpr uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#abfeee6fe2b8af94d381e401423daeb06">pointsPerCellCount</a> = <a class="el" href="namespacergbd__slam.html#ab4ee6d1939715f5ee55fac101b317049">SQR</a>(<a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a6e2ebafb14544ecceef30f73f0c0fae9">blocSize</a>)</td></tr>
 <tr class="separator:abfeee6fe2b8af94d381e401423daeb06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -335,7 +335,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint rgbd_slam::features::primitives::pointsPerCellCount = <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a6e2ebafb14544ecceef30f73f0c0fae9">blocSize</a> * <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a6e2ebafb14544ecceef30f73f0c0fae9">blocSize</a></td>
+          <td class="memname">constexpr uint rgbd_slam::features::primitives::pointsPerCellCount = <a class="el" href="namespacergbd__slam.html#ab4ee6d1939715f5ee55fac101b317049">SQR</a>(<a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a6e2ebafb14544ecceef30f73f0c0fae9">blocSize</a>)</td>
         </tr>
       </table>
   </td>

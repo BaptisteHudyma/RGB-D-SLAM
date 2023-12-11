@@ -1,0 +1,98 @@
+\doxysection{rgbd\+\_\+slam\+::utils\+::Spherical Struct Reference}
+\hypertarget{structrgbd__slam_1_1utils_1_1_spherical}{}\label{structrgbd__slam_1_1utils_1_1_spherical}\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+
+
+{\ttfamily \#include $<$basis\+\_\+changes.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}{vec}} () const
+\item 
+void \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_aa2368da2d292a84249743568208dedd0}{from\+\_\+vec}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}{vec}})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_a4c76b496b3a3123f49f666d5cc8ba69b}{from}} (\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}} coord)
+\begin{DoxyCompactList}\small\item\em Transform a given coordinate from cartesian to spherical space. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_ae4afbd0da7f1839375716510d7d53f74}{from}} (\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}} coord, \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&jacobian)
+\begin{DoxyCompactList}\small\item\em Transform a given coordinate from cartesian to spherical space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_ad872e53adbbd099dd00a7de42c3dabbb}{p}}
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_a8850394650bc0117b5344beeb0bf1ca8}{theta}}
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_aeaa2f71165cfb88931d2f0d3a2973ee8}{phi}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_a4c76b496b3a3123f49f666d5cc8ba69b}\label{structrgbd__slam_1_1utils_1_1_spherical_a4c76b496b3a3123f49f666d5cc8ba69b} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!from@{from}}
+\index{from@{from}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{from()}{from()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}} rgbd\+\_\+slam\+::utils\+::\+Spherical\+::from (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}}}]{coord }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Transform a given coordinate from cartesian to spherical space. 
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_ae4afbd0da7f1839375716510d7d53f74}\label{structrgbd__slam_1_1utils_1_1_spherical_ae4afbd0da7f1839375716510d7d53f74} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!from@{from}}
+\index{from@{from}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{from()}{from()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}} rgbd\+\_\+slam\+::utils\+::\+Spherical\+::from (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}}}]{coord,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{jacobian }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Transform a given coordinate from cartesian to spherical space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em coord} & \\
+\hline
+\mbox{\texttt{ out}}  & {\em jacobian} & the jacobian of this transformation \\
+\hline
+\end{DoxyParams}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_aa2368da2d292a84249743568208dedd0}\label{structrgbd__slam_1_1utils_1_1_spherical_aa2368da2d292a84249743568208dedd0} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!from\_vec@{from\_vec}}
+\index{from\_vec@{from\_vec}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{from\_vec()}{from\_vec()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Spherical\+::from\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}\label{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!vec@{vec}}
+\index{vec@{vec}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{vec()}{vec()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Spherical\+::vec (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_ad872e53adbbd099dd00a7de42c3dabbb}\label{structrgbd__slam_1_1utils_1_1_spherical_ad872e53adbbd099dd00a7de42c3dabbb} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!p@{p}}
+\index{p@{p}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{p}{p}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Spherical\+::p}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_aeaa2f71165cfb88931d2f0d3a2973ee8}\label{structrgbd__slam_1_1utils_1_1_spherical_aeaa2f71165cfb88931d2f0d3a2973ee8} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!phi@{phi}}
+\index{phi@{phi}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{phi}{phi}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Spherical\+::phi}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_a8850394650bc0117b5344beeb0bf1ca8}\label{structrgbd__slam_1_1utils_1_1_spherical_a8850394650bc0117b5344beeb0bf1ca8} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!theta@{theta}}
+\index{theta@{theta}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{theta}{theta}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Spherical\+::theta}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{basis__changes_8hpp}{basis\+\_\+changes.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{basis__changes_8cpp}{basis\+\_\+changes.\+cpp}}\end{DoxyCompactItemize}

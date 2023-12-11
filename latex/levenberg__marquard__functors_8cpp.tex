@@ -1,10 +1,11 @@
 \doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/pose\+\_\+optimization/levenberg\+\_\+marquard\+\_\+functors.cpp File Reference}
 \hypertarget{levenberg__marquard__functors_8cpp}{}\label{levenberg__marquard__functors_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/pose\_optimization/levenberg\_marquard\_functors.cpp}}
 {\ttfamily \#include "{}levenberg\+\_\+marquard\+\_\+functors.\+hpp"{}}\newline
-{\ttfamily \#include "{}../utils/camera\+\_\+transformation.\+hpp"{}}\newline
-{\ttfamily \#include "{}coordinates.\+hpp"{}}\newline
+{\ttfamily \#include "{}matches\+\_\+containers.\+hpp"{}}\newline
+{\ttfamily \#include "{}utils/camera\+\_\+transformation.\+hpp"{}}\newline
 {\ttfamily \#include $<$Eigen/src/\+Core/util/\+Meta.\+h$>$}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -25,6 +26,8 @@ std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9844c
 \begin{DoxyCompactItemize}
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a71463824933f93d135e28ac3ef500892}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::score\+Count\+Per\+Points}} = 2
+\item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a094f5c34ada58bb818875067bc375386}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::score\+Count\+Per2\+DPoints}} = 3
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a8ebc29e6687c48d14ec8459d86038a40}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::score\+Count\+Per\+Planes}} = 3
 \end{DoxyCompactItemize}

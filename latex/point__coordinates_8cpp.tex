@@ -1,0 +1,37 @@
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/point\+\_\+coordinates.cpp File Reference}
+\hypertarget{point__coordinates_8cpp}{}\label{point__coordinates_8cpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates/point\_coordinates.cpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates/point\_coordinates.cpp}}
+{\ttfamily \#include "{}point\+\_\+coordinates.\+hpp"{}}\newline
+{\ttfamily \#include "{}../parameters.\+hpp"{}}\newline
+{\ttfamily \#include "{}../utils/distance\+\_\+utils.\+hpp"{}}\newline
+{\ttfamily \#include "{}camera\+\_\+transformation.\+hpp"{}}\newline
+{\ttfamily \#include "{}coordinates/basis\+\_\+changes.\+hpp"{}}\newline
+{\ttfamily \#include "{}covariances.\+hpp"{}}\newline
+{\ttfamily \#include "{}types.\+hpp"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac85068e2a7fee034ef2c4879b1b9aee0}{rgbd\+\_\+slam\+::utils\+::is\+\_\+depth\+\_\+valid}} (const double depth) noexcept
+\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa1a33d67cf96690a98cf6c5a1b20e82f}{rgbd\+\_\+slam\+::utils\+::get\+\_\+transformation\+\_\+matrix}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+To, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+To, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center\+To)
+\begin{DoxyCompactList}\small\item\em Compute the transformation matrix between two coordinate systems. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac9c85c8bbeeb2058da61717b1bad8b37}{rgbd\+\_\+slam\+::utils\+::transform\+\_\+screen\+\_\+to\+\_\+camera}} (const \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \&screen\+Point)
+\begin{DoxyCompactList}\small\item\em Transform screen coordinates to camera coordinates. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2834b75d457fd5d0ce8e12c91ca0bbe1}{rgbd\+\_\+slam\+::utils\+::transform\+\_\+camera\+\_\+to\+\_\+screen}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&screen\+Point)
+\begin{DoxyCompactList}\small\item\em Transform camera coordinates to screen coordinates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const double \mbox{\hyperlink{namespacergbd__slam_1_1utils_afb0e42e07f9e12d67543af504e440506}{rgbd\+\_\+slam\+::utils\+::\+MIN\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 40
+\item 
+const double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7c711197a8776f474dea42a34838b675}{rgbd\+\_\+slam\+::utils\+::\+MAX\+\_\+\+DEPTH\+\_\+\+DISTANCE}} = 6000
+\end{DoxyCompactItemize}

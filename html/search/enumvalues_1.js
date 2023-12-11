@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['high_0',['HIGH',['../namespacergbd__slam_1_1outputs.html#ad32626c82c72b97572a771df8066a8f0ab89de3b4b81c4facfac906edf29aec8c',1,'rgbd_slam::outputs']]]
+  ['cost_0',['Cost',['../struct_eigen_1_1internal_1_1functor__traits_3_01threshold__op_3_01scalar_01_4_01_4.html#a809ea5b64f8835ea4b71d8b91ba4dae2a181c2daeb627a125af9763c5c3f6451e',1,'Eigen::internal::functor_traits&lt; threshold_op&lt; scalar &gt; &gt;']]]
 ];

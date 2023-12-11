@@ -24,20 +24,24 @@
 \DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\_<float>\&\ depthImage,}
 \DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ outImage)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//\ LineSegmentDetector}}
-\DoxyCodeLine{00043\ \ \ \ \ std::unique\_ptr<cv::LSD>\ \_lineDetector;}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a6bcd94add5a31f258e07903632d1fe25}{show\_statistics}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ meanFrameTreatmentDuration,\ \textcolor{keyword}{const}\ uint\ frameCount)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_af2f120d6d4dbe2db56fc6ab44a12b785}{\_meanLineTreatmentDuration}}\ =\ 0.0;}
 \DoxyCodeLine{00044\ }
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ kernel\ for\ morphological\ operations}}
-\DoxyCodeLine{00046\ \ \ \ \ cv::Mat\_<uchar>\ \_kernel;}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ remove\ copy\ constructors\ as\ we\ have\ dynamically\ instantiated\ members}}
-\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
-\DoxyCodeLine{00051\ \};}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::features::lines}}
-\DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ LineSegmentDetector}}
+\DoxyCodeLine{00047\ \ \ \ \ std::unique\_ptr<cv::LSD>\ \_lineDetector;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ kernel\ for\ morphological\ operations}}
+\DoxyCodeLine{00050\ \ \ \ \ cv::Mat\_<uchar>\ \_kernel;}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ remove\ copy\ constructors\ as\ we\ have\ dynamically\ instantiated\ members}}
+\DoxyCodeLine{00053\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00054\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection}{Line\_Detection}}\&\ lineDetector)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00055\ \};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::features::lines}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

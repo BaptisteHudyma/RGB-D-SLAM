@@ -2,17 +2,18 @@ var searchData=
 [
   ['parameters_0',['Parameters',['../classrgbd__slam_1_1_parameters.html',1,'rgbd_slam']]],
   ['pcd_5fmap_5fwriter_1',['PCD_Map_Writer',['../classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer.html',1,'rgbd_slam::outputs']]],
-  ['plane_2',['plane',['../classrgbd__slam_1_1features_1_1primitives_1_1_plane.html',1,'rgbd_slam::features::primitives::Plane'],['../classrgbd__slam_1_1map__management_1_1_plane.html',1,'rgbd_slam::map_management::Plane']]],
+  ['plane_2',['plane',['../classrgbd__slam_1_1features_1_1primitives_1_1_plane.html',1,'rgbd_slam::features::primitives::Plane'],['../classrgbd__slam_1_1tracking_1_1_plane.html',1,'rgbd_slam::tracking::Plane']]],
   ['plane_5fsegment_3',['Plane_Segment',['../classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html',1,'rgbd_slam::features::primitives']]],
   ['planecameracoordinates_4',['PlaneCameraCoordinates',['../structrgbd__slam_1_1utils_1_1_plane_camera_coordinates.html',1,'rgbd_slam::utils']]],
   ['planecameratoworldmatrix_5',['PlaneCameraToWorldMatrix',['../structrgbd__slam_1_1_plane_camera_to_world_matrix.html',1,'rgbd_slam']]],
   ['planecoordinates_6',['PlaneCoordinates',['../structrgbd__slam_1_1utils_1_1_plane_coordinates.html',1,'rgbd_slam::utils']]],
   ['planeworldcoordinates_7',['PlaneWorldCoordinates',['../structrgbd__slam_1_1utils_1_1_plane_world_coordinates.html',1,'rgbd_slam::utils']]],
   ['planeworldtocameramatrix_8',['PlaneWorldToCameraMatrix',['../structrgbd__slam_1_1_plane_world_to_camera_matrix.html',1,'rgbd_slam']]],
-  ['point_9',['Point',['../structrgbd__slam_1_1map__management_1_1_point.html',1,'rgbd_slam::map_management']]],
-  ['polygon_10',['Polygon',['../classrgbd__slam_1_1utils_1_1_polygon.html',1,'rgbd_slam::utils']]],
-  ['pose_11',['Pose',['../classrgbd__slam_1_1utils_1_1_pose.html',1,'rgbd_slam::utils']]],
-  ['pose_5foptimization_12',['Pose_Optimization',['../classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html',1,'rgbd_slam::pose_optimization']]],
-  ['posebase_13',['PoseBase',['../classrgbd__slam_1_1utils_1_1_pose_base.html',1,'rgbd_slam::utils']]],
-  ['primitive_5fdetection_14',['Primitive_Detection',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html',1,'rgbd_slam::features::primitives']]]
+  ['point_9',['Point',['../structrgbd__slam_1_1tracking_1_1_point.html',1,'rgbd_slam::tracking']]],
+  ['pointinversedepth_10',['PointInverseDepth',['../structrgbd__slam_1_1tracking_1_1_point_inverse_depth.html',1,'rgbd_slam::tracking']]],
+  ['polygon_11',['Polygon',['../classrgbd__slam_1_1utils_1_1_polygon.html',1,'rgbd_slam::utils']]],
+  ['pose_12',['Pose',['../classrgbd__slam_1_1utils_1_1_pose.html',1,'rgbd_slam::utils']]],
+  ['pose_5foptimization_13',['Pose_Optimization',['../classrgbd__slam_1_1pose__optimization_1_1_pose___optimization.html',1,'rgbd_slam::pose_optimization']]],
+  ['posebase_14',['PoseBase',['../classrgbd__slam_1_1utils_1_1_pose_base.html',1,'rgbd_slam::utils']]],
+  ['primitive_5fdetection_15',['Primitive_Detection',['../classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html',1,'rgbd_slam::features::primitives']]]
 ];

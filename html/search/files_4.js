@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['histogram_2ehpp_0',['histogram.hpp',['../histogram_8hpp.html',1,'']]]
+  ['feature_5fmap_2ehpp_0',['feature_map.hpp',['../feature__map_8hpp.html',1,'']]]
 ];

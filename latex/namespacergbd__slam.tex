@@ -36,7 +36,11 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1_plane_world_to_camera_matrix}{Plane
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1_r_g_b_d___s_l_a_m}{RGBD\+\_\+\+SLAM}}
 \begin{DoxyCompactList}\small\item\em Main Simultaneous localisation and tracking class. This is the input of the program, the only needed interaction from a user view point. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate2_d_covariance}{Screen\+Coordinate2\+DCovariance}}
+\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1_transition_matrix}{Transition\+Matrix}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}}
 \item 
@@ -83,11 +87,13 @@ using \mbox{\hyperlink{namespacergbd__slam_a2ef82ebfa76f6740a67599bab7004e84}{ve
 \begin{DoxyCompactItemize}
 \item 
 double \mbox{\hyperlink{namespacergbd__slam_ab4da88e71fa2bbc18cacac5778297397}{get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time}} (const double treatment\+Time, const double total\+Time\+Elapsed) noexcept
+\item 
+{\footnotesize template$<$class T $>$ }\\T constexpr \mbox{\hyperlink{namespacergbd__slam_ab4ee6d1939715f5ee55fac101b317049}{SQR}} (const T x)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}{Euler\+To\+Radian}} = M\+\_\+\+PI / 180.\+0
+constexpr double \mbox{\hyperlink{namespacergbd__slam_a34e95e94436fca45a1b9a36dc735b79f}{Euler\+To\+Radian}} = M\+\_\+\+PI / 180.\+0
 \end{DoxyCompactItemize}
 
 
@@ -203,12 +209,19 @@ const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec
 \doxysubsubsection{\texorpdfstring{get\_percent\_of\_elapsed\_time()}{get\_percent\_of\_elapsed\_time()}}
 {\footnotesize\ttfamily double rgbd\+\_\+slam\+::get\+\_\+percent\+\_\+of\+\_\+elapsed\+\_\+time (\begin{DoxyParamCaption}\item[{const double}]{treatment\+Time,  }\item[{const double}]{total\+Time\+Elapsed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
+\Hypertarget{namespacergbd__slam_ab4ee6d1939715f5ee55fac101b317049}\label{namespacergbd__slam_ab4ee6d1939715f5ee55fac101b317049} 
+\index{rgbd\_slam@{rgbd\_slam}!SQR@{SQR}}
+\index{SQR@{SQR}!rgbd\_slam@{rgbd\_slam}}
+\doxysubsubsection{\texorpdfstring{SQR()}{SQR()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T constexpr rgbd\+\_\+slam\+::\+SQR (\begin{DoxyParamCaption}\item[{const T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
 
 
 \doxysubsection{Variable Documentation}
-\Hypertarget{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}\label{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9} 
+\Hypertarget{namespacergbd__slam_a34e95e94436fca45a1b9a36dc735b79f}\label{namespacergbd__slam_a34e95e94436fca45a1b9a36dc735b79f} 
 \index{rgbd\_slam@{rgbd\_slam}!EulerToRadian@{EulerToRadian}}
 \index{EulerToRadian@{EulerToRadian}!rgbd\_slam@{rgbd\_slam}}
 \doxysubsubsection{\texorpdfstring{EulerToRadian}{EulerToRadian}}
-{\footnotesize\ttfamily const double rgbd\+\_\+slam\+::\+Euler\+To\+Radian = M\+\_\+\+PI / 180.\+0}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::\+Euler\+To\+Radian = M\+\_\+\+PI / 180.\+0\hspace{0.3cm}{\ttfamily [constexpr]}}
 

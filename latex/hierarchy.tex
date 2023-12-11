@@ -1,13 +1,16 @@
 \doxysection{Class Hierarchy}
 This inheritance list is sorted roughly, but not completely, alphabetically\+:\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Cartesian}{\pageref{structrgbd__slam_1_1utils_1_1_cartesian}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::features\+::primitives\+::Cylinder\+\_\+\+Segment}{\pageref{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder___segment}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::features\+::primitives\+::Depth\+\_\+\+Map\+\_\+\+Transformation}{\pageref{classrgbd__slam_1_1features_1_1primitives_1_1_depth___map___transformation}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Detected\+Feature\+Container}{\pageref{structrgbd__slam_1_1map__management_1_1_detected_feature_container}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::features\+::keypoints\+::Detected\+Key\+Point}{\pageref{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::Euler\+Angles}{\pageref{structrgbd__slam_1_1_euler_angles}}{}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_feature___map}}{}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Local\+Map\+Plane, Staged\+Map\+Plane, Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_feature___map}}{}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Local\+Map\+Point, Staged\+Map\+Point, Detected\+Keypoints\+Object, Detected\+Point\+Type, Point\+Match\+Type, Tracked\+Points\+Object \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_feature___map}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Map\+Feature\+Type, Staged\+Feature\+Type, Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object, Upgraded\+Feature\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_feature___map}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Local\+Map\+Plane, Staged\+Map\+Plane, Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object, Upgraded\+Plane\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_feature___map}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Local\+Map\+Point, Staged\+Map\+Point, Detected\+Keypoints\+Object, Detected\+Point\+Type, Point\+Match\+Type, Tracked\+Points\+Object, Upgraded\+Point\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_feature___map}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Feature\+\_\+\+Map\texorpdfstring{$<$}{<} Local\+Map\+Point2D, Staged\+Map\+Point2D, Detected\+Keypoints\+Object, Detected\+Point2\+DType, Point\+Match2\+DType, Tracked\+Points\+Object, Upgraded\+Point2\+DType \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_feature___map}}{}
+\item \contentsline{section}{Eigen\+::internal\+::functor\+\_\+traits\texorpdfstring{$<$}{<} threshold\+\_\+op\texorpdfstring{$<$}{<} scalar \texorpdfstring{$>$}{>} \texorpdfstring{$>$}{>}}{\pageref{struct_eigen_1_1internal_1_1functor__traits_3_01threshold__op_3_01scalar_01_4_01_4}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::features\+::primitives\+::Histogram\texorpdfstring{$<$}{<} Size \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::features\+::primitives\+::Histogram\texorpdfstring{$<$}{<} parameters\+::detection\+::depth\+Map\+Patch\+Size\+\_\+px \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1features_1_1primitives_1_1_histogram}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::ILocal\+Map\+Feature\texorpdfstring{$<$}{<} Staged\+Map\+Feature \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}}{}
@@ -19,14 +22,26 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Local\+Map\+Point}{\pageref{classrgbd__slam_1_1map__management_1_1_local_map_point}}{}
 \end{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::ILocal\+Map\+Feature\texorpdfstring{$<$}{<} Staged\+Map\+Point2D \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Local\+Map\+Point2D}{\pageref{classrgbd__slam_1_1map__management_1_1_local_map_point2_d}}{}
+\end{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::outputs\+::IMap\+\_\+\+Writer}{\pageref{classrgbd__slam_1_1outputs_1_1_i_map___writer}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::outputs\+::OBJ\+\_\+\+Map\+\_\+\+Writer}{\pageref{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::outputs\+::PCD\+\_\+\+Map\+\_\+\+Writer}{\pageref{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::outputs\+::XYZ\+\_\+\+Map\+\_\+\+Writer}{\pageref{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+Feature\texorpdfstring{$<$}{<} Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_map_feature}}{}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+Feature\texorpdfstring{$<$}{<} Detected\+Keypoints\+Object, Detected\+Point\+Type, Point\+Match\+Type, Tracked\+Points\+Object \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_map_feature}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+Feature\texorpdfstring{$<$}{<} Detected\+Features\+Object, Detected\+Feature\+Type, Feature\+Match\+Type, Tracked\+Features\+Object, Upgraded\+Feature\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_map_feature}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+Feature\texorpdfstring{$<$}{<} Detected\+Keypoints\+Object, Detected\+Point2\+DType, Point\+Match2\+DType, Tracked\+Points\+Object, Upgraded\+Point2\+DType \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_map_feature}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Point2D}{\pageref{classrgbd__slam_1_1map__management_1_1_map_point2_d}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Local\+Map\+Point2D}{\pageref{classrgbd__slam_1_1map__management_1_1_local_map_point2_d}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+Map\+Point2D}{\pageref{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d}}{}
+\end{DoxyCompactList}
+\end{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+Feature\texorpdfstring{$<$}{<} Detected\+Keypoints\+Object, Detected\+Point\+Type, Point\+Match\+Type, Tracked\+Points\+Object, Upgraded\+Point\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_map_feature}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Point}{\pageref{classrgbd__slam_1_1map__management_1_1_map_point}}{}
 \begin{DoxyCompactList}
@@ -34,7 +49,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+Map\+Point}{\pageref{classrgbd__slam_1_1map__management_1_1_staged_map_point}}{}
 \end{DoxyCompactList}
 \end{DoxyCompactList}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+Feature\texorpdfstring{$<$}{<} Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_map_feature}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IMap\+Feature\texorpdfstring{$<$}{<} Detected\+Plane\+Object, Detected\+Plane\+Type, Plane\+Match\+Type, Tracked\+Plane\+Object, Upgraded\+Plane\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_map_feature}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Plane}{\pageref{classrgbd__slam_1_1map__management_1_1_map_plane}}{}
 \begin{DoxyCompactList}
@@ -42,6 +57,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+Map\+Plane}{\pageref{classrgbd__slam_1_1map__management_1_1_staged_map_plane}}{}
 \end{DoxyCompactList}
 \end{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Inverse\+Depth\+World\+Point}{\pageref{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::features\+::primitives\+::IPrimitive}{\pageref{classrgbd__slam_1_1features_1_1primitives_1_1_i_primitive}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::features\+::primitives\+::Cylinder}{\pageref{classrgbd__slam_1_1features_1_1primitives_1_1_cylinder}}{}
@@ -51,6 +67,10 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IStaged\+Map\+Feature\texorpdfstring{$<$}{<} Detected\+Plane\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+Map\+Plane}{\pageref{classrgbd__slam_1_1map__management_1_1_staged_map_plane}}{}
+\end{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IStaged\+Map\+Feature\texorpdfstring{$<$}{<} Detected\+Point2\+DType \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Staged\+Map\+Point2D}{\pageref{classrgbd__slam_1_1map__management_1_1_staged_map_point2_d}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::IStaged\+Map\+Feature\texorpdfstring{$<$}{<} Detected\+Point\+Type \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}}{}
 \begin{DoxyCompactList}
@@ -70,26 +90,36 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+sets}{\pageref{structrgbd__slam_1_1matches__containers_1_1match__sets}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+sets\+\_\+template\texorpdfstring{$<$}{<} Container \texorpdfstring{$>$}{>}}{\pageref{structrgbd__slam_1_1matches__containers_1_1match__sets__template}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+sets\+\_\+template\texorpdfstring{$<$}{<} match\+\_\+plane\+\_\+container \texorpdfstring{$>$}{>}}{\pageref{structrgbd__slam_1_1matches__containers_1_1match__sets__template}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+sets\+\_\+template\texorpdfstring{$<$}{<} match\+\_\+point2\+D\+\_\+container \texorpdfstring{$>$}{>}}{\pageref{structrgbd__slam_1_1matches__containers_1_1match__sets__template}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+sets\+\_\+template\texorpdfstring{$<$}{<} match\+\_\+point\+\_\+container \texorpdfstring{$>$}{>}}{\pageref{structrgbd__slam_1_1matches__containers_1_1match__sets__template}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+Container}{\pageref{structrgbd__slam_1_1matches__containers_1_1match_container}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::Match\+Template\texorpdfstring{$<$}{<} Feature\+Camera\+Space, Feature\+World\+Space, World\+Feature\+Covariance \texorpdfstring{$>$}{>}}{\pageref{structrgbd__slam_1_1matches__containers_1_1_match_template}}{}
+\item matrix22\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::Screen\+Coordinate2\+DCovariance}{\pageref{structrgbd__slam_1_1_screen_coordinate2_d_covariance}}{}
+\end{DoxyCompactList}
 \item matrix33\begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::Camera\+Coordinate\+Covariance}{\pageref{structrgbd__slam_1_1_camera_coordinate_covariance}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::Screen\+Coordinate\+Covariance}{\pageref{structrgbd__slam_1_1_screen_coordinate_covariance}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::World\+Coordinate\+Covariance}{\pageref{structrgbd__slam_1_1_world_coordinate_covariance}}{}
 \end{DoxyCompactList}
 \item matrix44\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::Transition\+Matrix}{\pageref{structrgbd__slam_1_1_transition_matrix}}{}
+\begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::Camera\+To\+World\+Matrix}{\pageref{structrgbd__slam_1_1_camera_to_world_matrix}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::Plane\+Camera\+To\+World\+Matrix}{\pageref{structrgbd__slam_1_1_plane_camera_to_world_matrix}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::Plane\+World\+To\+Camera\+Matrix}{\pageref{structrgbd__slam_1_1_plane_world_to_camera_matrix}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::World\+To\+Camera\+Matrix}{\pageref{structrgbd__slam_1_1_world_to_camera_matrix}}{}
+\end{DoxyCompactList}
+\end{DoxyCompactList}
+\item matrix66\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::tracking\+::Point\+Inverse\+Depth\+::Covariance}{\pageref{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::tracking\+::Motion\+\_\+\+Model}{\pageref{classrgbd__slam_1_1tracking_1_1_motion___model}}{}
 \item Eigen\+::Numerical\+Diff\begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+\+Pose\+\_\+\+Functor}{\pageref{structrgbd__slam_1_1pose__optimization_1_1_global___pose___functor}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::Parameters}{\pageref{classrgbd__slam_1_1_parameters}}{}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Plane}{\pageref{classrgbd__slam_1_1map__management_1_1_plane}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::tracking\+::Plane}{\pageref{classrgbd__slam_1_1tracking_1_1_plane}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Plane}{\pageref{classrgbd__slam_1_1map__management_1_1_map_plane}}{}
 \end{DoxyCompactList}
@@ -99,9 +129,13 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Plane\+Camera\+Coordinates}{\pageref{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Plane\+World\+Coordinates}{\pageref{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Point}{\pageref{structrgbd__slam_1_1map__management_1_1_point}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::tracking\+::Point}{\pageref{structrgbd__slam_1_1tracking_1_1_point}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Point}{\pageref{classrgbd__slam_1_1map__management_1_1_map_point}}{}
+\end{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::tracking\+::Point\+Inverse\+Depth}{\pageref{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Map\+Point2D}{\pageref{classrgbd__slam_1_1map__management_1_1_map_point2_d}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Polygon}{\pageref{classrgbd__slam_1_1utils_1_1_polygon}}{}
 \begin{DoxyCompactList}
@@ -120,7 +154,10 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::tracking\+::Kalman\+Filter\texorpdfstring{$<$}{<} N, M \texorpdfstring{$>$}{>}}{\pageref{classrgbd__slam_1_1tracking_1_1_kalman_filter}}{}
 \end{DoxyCompactList}
+\item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Spherical}{\pageref{structrgbd__slam_1_1utils_1_1_spherical}}{}
+\item \contentsline{section}{threshold\+\_\+op\texorpdfstring{$<$}{<} scalar \texorpdfstring{$>$}{>}}{\pageref{structthreshold__op}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::tracking\+::Triangulation}{\pageref{classrgbd__slam_1_1tracking_1_1_triangulation}}{}
+\item \contentsline{section}{rgbd\+\_\+slam\+::map\+\_\+management\+::Upgraded\+Point2D}{\pageref{structrgbd__slam_1_1map__management_1_1_upgraded_point2_d}}{}
 \item vector2\begin{DoxyCompactList}
 \item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Camera\+Coordinate2D}{\pageref{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}}{}
 \item \contentsline{section}{rgbd\+\_\+slam\+::utils\+::Screen\+Coordinate2D}{\pageref{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}}{}

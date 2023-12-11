@@ -81,6 +81,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="distance__utils_8hpp_source.html">distance_utils.hpp</a>&quot;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -97,6 +98,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4e8db2e9701462cd35d1800efc98f387" id="r_a4e8db2e9701462cd35d1800efc98f387"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a4e8db2e9701462cd35d1800efc98f387">rgbd_slam::utils::double_equal</a> (const double a, const double b, const double epsilon=std::numeric_limits&lt; double &gt;::epsilon()) noexcept</td></tr>
 <tr class="memdesc:a4e8db2e9701462cd35d1800efc98f387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check an equality between two doubles, with an epsilon: TODO move this to a more sensible location.  <br /></td></tr>
 <tr class="separator:a4e8db2e9701462cd35d1800efc98f387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68a1b2e241cceac86f0e40b7fc5c6259" id="r_a68a1b2e241cceac86f0e40b7fc5c6259"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a68a1b2e241cceac86f0e40b7fc5c6259">rgbd_slam::utils::signed_line_distance</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line1point, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line1normal, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line2point, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line2normal) noexcept</td></tr>
+<tr class="memdesc:a68a1b2e241cceac86f0e40b7fc5c6259"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the distance between two lines. This is the distance between the two points closest to each others on each line  <br /></td></tr>
+<tr class="separator:a68a1b2e241cceac86f0e40b7fc5c6259"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

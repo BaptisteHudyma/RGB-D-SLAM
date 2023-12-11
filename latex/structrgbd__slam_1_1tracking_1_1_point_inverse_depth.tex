@@ -1,0 +1,267 @@
+\doxysection{rgbd\+\_\+slam\+::tracking\+::Point\+Inverse\+Depth Struct Reference}
+\hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+
+
+{\ttfamily \#include $<$point\+\_\+with\+\_\+tracking.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::tracking\+::Point\+Inverse\+Depth\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.818792cm]{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aa3095e5c84560470f42248ec7f452349}{Point\+Inverse\+Depth}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&observation, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&state\+Covariance, const cv\+::\+Mat \&descriptor)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a3e9ade9ee4d0859db94b0d087659fe0c}{Point\+Inverse\+Depth}} (const \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{Point\+Inverse\+Depth}} \&other)
+\item 
+\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_af0febc65279ee9d326850362b5a80a05}{get\+\_\+covariance\+\_\+of\+\_\+observed\+\_\+pose}} () const noexcept
+\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a77ad40572be4e9f2d8659653dd38905c}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&observation, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&state\+Covariance, const cv\+::\+Mat \&descriptor)
+\begin{DoxyCompactList}\small\item\em Add an new measurment to the tracking. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a63e8fcc5198222fcf84364a6dc0e7d53}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}} \&observation, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&state\+Covariance, const cv\+::\+Mat \&descriptor)
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ad1ff2f894dafa4d013e525a27531706c}{get\+\_\+camera\+\_\+coordinate\+\_\+variance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c) const
+\begin{DoxyCompactList}\small\item\em Compute the covariance of the cartesian projection of this inverse depth, in camera space. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a571fd7ca739c936b988cf2ecae7c1014}{get\+\_\+screen\+\_\+coordinate\+\_\+variance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c) const
+\begin{DoxyCompactList}\small\item\em Compute the covariance of the cartesian projection of this inverse depth, in screen space. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8b17c443f38edda979b7f9b831755c5b}{compute\+\_\+linearity\+\_\+score}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) const noexcept
+\begin{DoxyCompactList}\small\item\em compute a linearity score, indicating if this point can be converted to a cartesian coordinate with true gaussian covariance \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a2298ef542cb305e8ab02a150c283b303}{compute\+\_\+cartesian\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}} \&coordinates, const \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&covariance)
+\begin{DoxyCompactList}\small\item\em Compute th covariance of the cartesian projection of this inverse depth. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8a34935f58b26e8a64e3860dbdfce57d}{compute\+\_\+cartesian\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&covariance, const Eigen\+::\+Matrix$<$ double, 3, 6 $>$ \&jacobian)
+\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a73bbe4f0d8281bcf580d644962194f62}{compute\+\_\+inverse\+\_\+depth\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&point\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&first\+Pose\+Covariance, const Eigen\+::\+Matrix$<$ double, 6, 3 $>$ \&jacobian)
+\begin{DoxyCompactList}\small\item\em Get the inverse depth covariance from the world point covariance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ab9eb30c02653a7cc686748ca72970553}{\+\_\+coordinates}}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_afbe503c5bc1c4cedd9ea9198db7c4c19}{\+\_\+covariance}}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a930ef9e8df9ab3abeda7e9f964518556}{\+\_\+descriptor}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a83b35919a37da16dab6e41dd03fbe11c}{first\+Pose\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::first\+Pose\+Index
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a5c12b129f05a9a832fe4acd7037230f1}{inverse\+Depth\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::inverse\+Depth\+Index
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a7ad1e13aa6b8873aaf61f867d8816a65}{theta\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::theta\+Index
+\item 
+static constexpr uint \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a0f30a3ff2e7340276891a0f64b7874b5}{phi\+Index}} = utils\+::\+Inverse\+Depth\+World\+Point\+::phi\+Index
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aab6a6ec513d9599e85dce5909cc1bad4}{update\+\_\+with\+\_\+cartesian}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&point, const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&covariance, const cv\+::\+Mat \&descriptor)
+\begin{DoxyCompactList}\small\item\em update the value of this point using an observation in cartesian space \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a09d5189f0ebcb5bd066bc86941b67f45}{build\+\_\+kalman\+\_\+filter}} () noexcept
+\begin{DoxyCompactList}\small\item\em Build the caracteristics of the kalman filter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{tracking\+::\+Shared\+Kalman\+Filter}}$<$ 3, 3 $>$ $>$ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ae88efe6d3f9b41cdea59bbabeeaef9e1}{\+\_\+kalman\+Filter}} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aa3095e5c84560470f42248ec7f452349}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aa3095e5c84560470f42248ec7f452349} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!PointInverseDepth@{PointInverseDepth}}
+\index{PointInverseDepth@{PointInverseDepth}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{PointInverseDepth()}{PointInverseDepth()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::\+Point\+Inverse\+Depth (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{observation,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&}]{c2w,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{state\+Covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+
+\doxylink{structrgbd__slam_1_1tracking_1_1_point}{Point} Inverse Depth \Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a3e9ade9ee4d0859db94b0d087659fe0c}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a3e9ade9ee4d0859db94b0d087659fe0c} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!PointInverseDepth@{PointInverseDepth}}
+\index{PointInverseDepth@{PointInverseDepth}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{PointInverseDepth()}{PointInverseDepth()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::\+Point\+Inverse\+Depth (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{Point\+Inverse\+Depth}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a09d5189f0ebcb5bd066bc86941b67f45}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a09d5189f0ebcb5bd066bc86941b67f45} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!build\_kalman\_filter@{build\_kalman\_filter}}
+\index{build\_kalman\_filter@{build\_kalman\_filter}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{build\_kalman\_filter()}{build\_kalman\_filter()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::build\+\_\+kalman\+\_\+filter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Build the caracteristics of the kalman filter. 
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8a34935f58b26e8a64e3860dbdfce57d}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8a34935f58b26e8a64e3860dbdfce57d} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!compute\_cartesian\_covariance@{compute\_cartesian\_covariance}}
+\index{compute\_cartesian\_covariance@{compute\_cartesian\_covariance}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{compute\_cartesian\_covariance()}{compute\_cartesian\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::compute\+\_\+cartesian\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&}]{covariance,  }\item[{const Eigen\+::\+Matrix$<$ double, 3, 6 $>$ \&}]{jacobian }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a2298ef542cb305e8ab02a150c283b303}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a2298ef542cb305e8ab02a150c283b303} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!compute\_cartesian\_covariance@{compute\_cartesian\_covariance}}
+\index{compute\_cartesian\_covariance@{compute\_cartesian\_covariance}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{compute\_cartesian\_covariance()}{compute\_cartesian\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::compute\+\_\+cartesian\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&}]{covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Compute th covariance of the cartesian projection of this inverse depth. 
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a73bbe4f0d8281bcf580d644962194f62}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a73bbe4f0d8281bcf580d644962194f62} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!compute\_inverse\_depth\_covariance@{compute\_inverse\_depth\_covariance}}
+\index{compute\_inverse\_depth\_covariance@{compute\_inverse\_depth\_covariance}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{compute\_inverse\_depth\_covariance()}{compute\_inverse\_depth\_covariance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Point\+Inverse\+Depth\+::\+Covariance}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::compute\+\_\+inverse\+\_\+depth\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&}]{point\+Covariance,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{first\+Pose\+Covariance,  }\item[{const Eigen\+::\+Matrix$<$ double, 6, 3 $>$ \&}]{jacobian }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Get the inverse depth covariance from the world point covariance. 
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8b17c443f38edda979b7f9b831755c5b}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8b17c443f38edda979b7f9b831755c5b} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!compute\_linearity\_score@{compute\_linearity\_score}}
+\index{compute\_linearity\_score@{compute\_linearity\_score}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{compute\_linearity\_score()}{compute\_linearity\_score()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::compute\+\_\+linearity\+\_\+score (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&}]{camera\+To\+World }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+compute a linearity score, indicating if this point can be converted to a cartesian coordinate with true gaussian covariance 
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ad1ff2f894dafa4d013e525a27531706c}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ad1ff2f894dafa4d013e525a27531706c} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!get\_camera\_coordinate\_variance@{get\_camera\_coordinate\_variance}}
+\index{get\_camera\_coordinate\_variance@{get\_camera\_coordinate\_variance}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{get\_camera\_coordinate\_variance()}{get\_camera\_coordinate\_variance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::get\+\_\+camera\+\_\+coordinate\+\_\+variance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{w2c }\end{DoxyParamCaption}) const}
+
+
+
+Compute the covariance of the cartesian projection of this inverse depth, in camera space. 
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_af0febc65279ee9d326850362b5a80a05}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_af0febc65279ee9d326850362b5a80a05} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!get\_covariance\_of\_observed\_pose@{get\_covariance\_of\_observed\_pose}}
+\index{get\_covariance\_of\_observed\_pose@{get\_covariance\_of\_observed\_pose}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{get\_covariance\_of\_observed\_pose()}{get\_covariance\_of\_observed\_pose()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::get\+\_\+covariance\+\_\+of\+\_\+observed\+\_\+pose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a571fd7ca739c936b988cf2ecae7c1014}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a571fd7ca739c936b988cf2ecae7c1014} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!get\_screen\_coordinate\_variance@{get\_screen\_coordinate\_variance}}
+\index{get\_screen\_coordinate\_variance@{get\_screen\_coordinate\_variance}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{get\_screen\_coordinate\_variance()}{get\_screen\_coordinate\_variance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::get\+\_\+screen\+\_\+coordinate\+\_\+variance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{w2c }\end{DoxyParamCaption}) const}
+
+
+
+Compute the covariance of the cartesian projection of this inverse depth, in screen space. 
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a63e8fcc5198222fcf84364a6dc0e7d53}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a63e8fcc5198222fcf84364a6dc0e7d53} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!track@{track}}
+\index{track@{track}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils\+::\+Screen\+Coordinate}} \&}]{observation,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&}]{c2w,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{state\+Covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a77ad40572be4e9f2d8659653dd38905c}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a77ad40572be4e9f2d8659653dd38905c} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!track@{track}}
+\index{track@{track}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}} \&}]{observation,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&}]{c2w,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{state\+Covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+
+
+
+Add an new measurment to the tracking. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em observation} & The new observation \\
+\hline
+\mbox{\texttt{ in}}  & {\em c2w} & The cam to world matrix \\
+\hline
+\mbox{\texttt{ in}}  & {\em state\+Covariance} & The covariance of the observer position \\
+\hline
+\mbox{\texttt{ in}}  & {\em descriptor} & The descriptor of this point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the tracking succeeded, false if something is wrong 
+\end{DoxyReturn}
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aab6a6ec513d9599e85dce5909cc1bad4}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aab6a6ec513d9599e85dce5909cc1bad4} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!update\_with\_cartesian@{update\_with\_cartesian}}
+\index{update\_with\_cartesian@{update\_with\_cartesian}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{update\_with\_cartesian()}{update\_with\_cartesian()}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::update\+\_\+with\+\_\+cartesian (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+update the value of this point using an observation in cartesian space 
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ab9eb30c02653a7cc686748ca72970553}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ab9eb30c02653a7cc686748ca72970553} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!\_coordinates@{\_coordinates}}
+\index{\_coordinates@{\_coordinates}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{\_coordinates}{\_coordinates}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::\+\_\+coordinates}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_afbe503c5bc1c4cedd9ea9198db7c4c19}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_afbe503c5bc1c4cedd9ea9198db7c4c19} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!\_covariance@{\_covariance}}
+\index{\_covariance@{\_covariance}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{\_covariance}{\_covariance}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}} rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::\+\_\+covariance}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a930ef9e8df9ab3abeda7e9f964518556}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a930ef9e8df9ab3abeda7e9f964518556} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!\_descriptor@{\_descriptor}}
+\index{\_descriptor@{\_descriptor}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{\_descriptor}{\_descriptor}}
+{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::\+\_\+descriptor}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ae88efe6d3f9b41cdea59bbabeeaef9e1}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ae88efe6d3f9b41cdea59bbabeeaef9e1} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!\_kalmanFilter@{\_kalmanFilter}}
+\index{\_kalmanFilter@{\_kalmanFilter}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{\_kalmanFilter}{\_kalmanFilter}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{tracking\+::\+Shared\+Kalman\+Filter}}$<$3, 3$>$ $>$ rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::\+\_\+kalman\+Filter = nullptr\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a83b35919a37da16dab6e41dd03fbe11c}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a83b35919a37da16dab6e41dd03fbe11c} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!firstPoseIndex@{firstPoseIndex}}
+\index{firstPoseIndex@{firstPoseIndex}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{firstPoseIndex}{firstPoseIndex}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::first\+Pose\+Index = utils\+::\+Inverse\+Depth\+World\+Point\+::first\+Pose\+Index\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a5c12b129f05a9a832fe4acd7037230f1}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a5c12b129f05a9a832fe4acd7037230f1} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!inverseDepthIndex@{inverseDepthIndex}}
+\index{inverseDepthIndex@{inverseDepthIndex}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{inverseDepthIndex}{inverseDepthIndex}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::inverse\+Depth\+Index = utils\+::\+Inverse\+Depth\+World\+Point\+::inverse\+Depth\+Index\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a0f30a3ff2e7340276891a0f64b7874b5}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a0f30a3ff2e7340276891a0f64b7874b5} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!phiIndex@{phiIndex}}
+\index{phiIndex@{phiIndex}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{phiIndex}{phiIndex}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::phi\+Index = utils\+::\+Inverse\+Depth\+World\+Point\+::phi\+Index\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a7ad1e13aa6b8873aaf61f867d8816a65}\label{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a7ad1e13aa6b8873aaf61f867d8816a65} 
+\index{rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}!thetaIndex@{thetaIndex}}
+\index{thetaIndex@{thetaIndex}!rgbd\_slam::tracking::PointInverseDepth@{rgbd\_slam::tracking::PointInverseDepth}}
+\doxysubsubsection{\texorpdfstring{thetaIndex}{thetaIndex}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::tracking\+::\+Point\+Inverse\+Depth\+::theta\+Index = utils\+::\+Inverse\+Depth\+World\+Point\+::theta\+Index\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/tracking/\mbox{\hyperlink{point__with__tracking_8hpp}{point\+\_\+with\+\_\+tracking.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/tracking/\mbox{\hyperlink{point__with__tracking_8cpp}{point\+\_\+with\+\_\+tracking.\+cpp}}\end{DoxyCompactItemize}

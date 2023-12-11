@@ -2,15 +2,21 @@
 \hypertarget{types_8hpp}{}\label{types_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/types.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/types.hpp}}
 {\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
 {\ttfamily \#include $<$Eigen/src/\+Core/\+Matrix.\+h$>$}\newline
+{\ttfamily \#include $<$Eigen/src/\+Core/util/\+Macros.\+h$>$}\newline
+{\ttfamily \#include $<$Eigen/src/\+Core/util/\+Xpr\+Helper.\+h$>$}\newline
 {\ttfamily \#include $<$vector$>$}\newline
 \doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate2_d_covariance}{rgbd\+\_\+slam\+::\+Screen\+Coordinate2\+DCovariance}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{rgbd\+\_\+slam\+::\+Screen\+Coordinate\+Covariance}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{rgbd\+\_\+slam\+::\+Camera\+Coordinate\+Covariance}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{rgbd\+\_\+slam\+::\+World\+Coordinate\+Covariance}}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1_transition_matrix}{rgbd\+\_\+slam\+::\+Transition\+Matrix}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{rgbd\+\_\+slam\+::\+World\+To\+Camera\+Matrix}}
 \item 
@@ -21,12 +27,25 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1_plane_world_to_camera_matrix}{rgbd\
 struct \mbox{\hyperlink{structrgbd__slam_1_1_plane_camera_to_world_matrix}{rgbd\+\_\+slam\+::\+Plane\+Camera\+To\+World\+Matrix}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1_euler_angles}{rgbd\+\_\+slam\+::\+Euler\+Angles}}
+\item 
+struct \mbox{\hyperlink{structthreshold__op}{threshold\+\_\+op$<$ scalar $>$}}
+\item 
+struct \mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits_3_01threshold__op_3_01scalar_01_4_01_4}{Eigen\+::internal\+::functor\+\_\+traits$<$ threshold\+\_\+op$<$ scalar $>$ $>$}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespace_eigen}{Eigen}}
+\item 
+namespace \mbox{\hyperlink{namespace_eigen_1_1internal}{Eigen\+::internal}}
 \end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{types_8hpp_a77b1f6065d5b4e163d2b7ee908a86ed3}{ROUND\+\_\+\+MAT}}(mat)~mat.\+unary\+Expr(\mbox{\hyperlink{structthreshold__op}{threshold\+\_\+op}}$<$double$>$(1e-\/10))
+\begin{DoxyCompactList}\small\item\em round the given eigen matrix to zero \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
@@ -64,8 +83,26 @@ using \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{rg
 \item 
 using \mbox{\hyperlink{namespacergbd__slam_a2ef82ebfa76f6740a67599bab7004e84}{rgbd\+\_\+slam\+::vector3\+\_\+vector}} = std\+::vector$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}, Eigen\+::aligned\+\_\+allocator$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ $>$
 \end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T $>$ }\\T constexpr \mbox{\hyperlink{namespacergbd__slam_ab4ee6d1939715f5ee55fac101b317049}{rgbd\+\_\+slam\+::\+SQR}} (const T x)
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const double \mbox{\hyperlink{namespacergbd__slam_a377c6ad409881df230ffac24f94ec9c9}{rgbd\+\_\+slam\+::\+Euler\+To\+Radian}} = M\+\_\+\+PI / 180.\+0
+constexpr double \mbox{\hyperlink{namespacergbd__slam_a34e95e94436fca45a1b9a36dc735b79f}{rgbd\+\_\+slam\+::\+Euler\+To\+Radian}} = M\+\_\+\+PI / 180.\+0
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{types_8hpp_a77b1f6065d5b4e163d2b7ee908a86ed3}\label{types_8hpp_a77b1f6065d5b4e163d2b7ee908a86ed3} 
+\index{types.hpp@{types.hpp}!ROUND\_MAT@{ROUND\_MAT}}
+\index{ROUND\_MAT@{ROUND\_MAT}!types.hpp@{types.hpp}}
+\doxysubsubsection{\texorpdfstring{ROUND\_MAT}{ROUND\_MAT}}
+{\footnotesize\ttfamily \#define ROUND\+\_\+\+MAT(\begin{DoxyParamCaption}\item[{}]{mat }\end{DoxyParamCaption})~mat.\+unary\+Expr(\mbox{\hyperlink{structthreshold__op}{threshold\+\_\+op}}$<$double$>$(1e-\/10))}
+
+
+
+round the given eigen matrix to zero 
+

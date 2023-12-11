@@ -5,123 +5,109 @@
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_MAPMANAGEMENT\_MAPRIMITIVE\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_MAPMANAGEMENT\_MAPRIMITIVE\_HPP}}
 \DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../features/primitives/shape\_primitives.hpp"{}}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../parameters.hpp"{}}}
-\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../tracking/kalman\_filter.hpp"{}}}
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}../utils/camera\_transformation.hpp"{}}}
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}../utils/coordinates.hpp"{}}}
-\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}../matches\_containers.hpp"{}}}
-\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../utils/random.hpp"{}}}
-\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{covariances_8hpp}{covariances.hpp}}"{}}}
-\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{distance__utils_8hpp}{distance\_utils.hpp}}"{}}}
-\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{feature__map_8hpp}{feature\_map.hpp}}"{}}}
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{polygon_8hpp}{polygon.hpp}}"{}}}
-\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
-\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <bits/ranges\_algo.h>}}
-\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <opencv2/opencv.hpp>}}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\_slam::map\_management}}\ \{}
-\DoxyCodeLine{00020\ }
-\DoxyCodeLine{00021\ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\ =\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{features::primitives::Plane}};}
-\DoxyCodeLine{00022\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}}\ =\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a}{features::primitives::plane\_container}};}
-\DoxyCodeLine{00023\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatchType}}\ =\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_af96e9f3a4c4be9fed04bec67ca966fb1}{matches\_containers::PlaneMatch}};}
-\DoxyCodeLine{00024\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}}\ =\ \textcolor{keywordtype}{void}*;\ \textcolor{comment}{//\ TODO\ implement}}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{Plane}}}
-\DoxyCodeLine{00027\ \{}
-\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_ac45ff8a02b6c0158d345d7adb69ab632}{Plane}}();}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils::PlaneWorldCoordinates}}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a8c27b07da30efe8adf896f54fb4fcd40}{get\_parametrization}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}{\_parametrization}};\ \}}
-\DoxyCodeLine{00032\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a7f911a99bfcf97170ed4a3c8b4bc1f17}{get\_covariance}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}{\_covariance}};\ \};}
-\DoxyCodeLine{00033\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils::WorldPolygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a2240000e79d48701d6c886a3fb4e26db}{get\_boundary\_polygon}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a7f6e2e303f928e468b9a6d9fa9bb33b8}{\_boundaryPolygon}};\ \};}
-\DoxyCodeLine{00034\ }
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_ab0f6d8e071c6e4cdc199a44863925248}{track}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
-\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\&\ matchedFeature,}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils::PlaneWorldCoordinates}}\&\ newDetectionParameters,}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}\&\ newDetectionCovariance);}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils::PlaneWorldCoordinates}}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_abc89e03e637ab75696af42160790e6dc}{\_parametrization}};\ \textcolor{comment}{//\ parametrization\ of\ this\ plane\ in\ world\ space}}
-\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_aa924b98843c55cbe3a9907d3b78feaf3}{\_covariance}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ covariance\ of\ this\ plane\ in\ world\ space}}
-\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{utils::WorldPolygon}}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane_a7f6e2e303f928e468b9a6d9fa9bb33b8}{\_boundaryPolygon}};\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ polygon\ describing\ the\ boundary\ of\ the\ plane,\ in\ plane\ space}}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{bool}\ update\_boundary\_polygon(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{utils::CameraPolygon}}\&\ detectedPolygon)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00060\ }
-\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ build\_kalman\_filter()\ noexcept;}
-\DoxyCodeLine{00065\ }
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//\ shared\ kalman\ filter,\ between\ all\ planes}}
-\DoxyCodeLine{00067\ \ \ \ \ inline\ static\ std::unique\_ptr<tracking::SharedKalmanFilter<4,\ 4>>\ \_kalmanFilter\ =\ \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{00068\ \};}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00070\ class\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{MapPlane}}\ :}
-\DoxyCodeLine{00071\ \ \ \ \ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_plane}{Plane}},}
-\DoxyCodeLine{00072\ \ \ \ \ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}},\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatchType}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}}>}
-\DoxyCodeLine{00073\ \{}
-\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00075\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ad567f0b086924d9411d2ab4e17f05123}{MapPlane}}()\ :\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}},\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatchType}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}}>()}
-\DoxyCodeLine{00076\ \ \ \ \ \{}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ assert(\_id\ >\ 0);}
-\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{feature__map_8hpp}{feature\_map.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{shape__primitives_8hpp}{features/primitives/shape\_primitives.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{plane__with__tracking_8hpp}{tracking/plane\_with\_tracking.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{matches__containers_8hpp}{matches\_containers.hpp}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\_slam::map\_management}}\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\ =\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{features::primitives::Plane}};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}}\ =\ \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a}{features::primitives::plane\_container}};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatchType}}\ =\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_af96e9f3a4c4be9fed04bec67ca966fb1}{matches\_containers::PlaneMatch}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}}\ =\ \textcolor{keywordtype}{void}*;\ \textcolor{comment}{//\ TODO\ implement}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a816f331580113b2db0168e518d0455a4}{UpgradedPlaneType}}\ =\ \textcolor{keywordtype}{void}*;\ \ \textcolor{comment}{//\ no\ upgrades\ for\ planes}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{MapPlane}}\ :}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_plane}{tracking::Plane}},}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<DetectedPlaneObject,\ DetectedPlaneType,\ PlaneMatchType,\ TrackedPlaneObject,\ UpgradedPlaneType>}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ad567f0b086924d9411d2ab4e17f05123}{MapPlane}}()\ :}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}},\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatchType}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a816f331580113b2db0168e518d0455a4}{UpgradedPlaneType}}>()}
+\DoxyCodeLine{00024\ \ \ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ assert(\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a551259d30d344c88d0700651ff5b3fee}{\_id}}\ >\ 0);}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ad85eeb2c411dd8cd60873c95c442e030}{MapPlane}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}},\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatchType}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a816f331580113b2db0168e518d0455a4}{UpgradedPlaneType}}>(id)}
+\DoxyCodeLine{00030\ \ \ \ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ assert(\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a551259d30d344c88d0700651ff5b3fee}{\_id}}\ >\ 0);}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_aa2fc9458bd11d60c3c515211cac4d01d}{\string~MapPlane}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ace0734a5ce9d2f3f701ce04989ab71a5}{find\_match}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}}\&\ detectedFeatures,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}}\&\ isDetectedFeatureMatched,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::list<PlaneMatchType>\&\ matches,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldAddToMatches\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ useAdvancedSearch\ =\ \textcolor{keyword}{false})\ const\ noexcept\ override;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_af5c73a06092eac5a25f354c731d3a50e}{add\_to\_tracked}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}}\&\ trackedFeatures,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ uint\ dropChance\ =\ 1000)\ const\ noexcept\ override;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a821627d0be6ebefc5bfe0ce277d27281}{draw}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ debugImage,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ cv::Scalar\&\ color)\ const\ noexcept\ override;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_afa5962a2b020993fbb71df2a882324d4}{is\_visible}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix)\ const\ noexcept\ override;}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a1c4d38e6aa6ff364e805d61a268cd70c}{write\_to\_file}}(std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)\ const\ noexcept\ override;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_afd96dd48d87a7b3556f19e96205b7da3}{compute\_upgraded}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a816f331580113b2db0168e518d0455a4}{UpgradedPlaneType}}\&\ upgradeFeature)\ const\ noexcept\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ (void)cameraToWorld;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ (void)upgradeFeature;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00064\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_a0921dfae483dcd83f35af09a4ca0be91}{update\_with\_match}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\&\ matchedFeature,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_af2f161c54ce198b2fdf5be8990a6fc1f}{update\_no\_match}}()\ noexcept\ override;}
+\DoxyCodeLine{00069\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ class\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{StagedMapPlane}}\ :\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{MapPlane}},\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}{IStagedMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}>}
+\DoxyCodeLine{00072\ \{}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00074\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{StagedMapPlane}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\&\ detectedFeature);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_remove\_from\_staged()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00079\ }
-\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_ad85eeb2c411dd8cd60873c95c442e030}{MapPlane}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}},\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PlaneMatchType}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}}>(id)}
-\DoxyCodeLine{00082\ \ \ \ \ \{}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ assert(\_id\ >\ 0);}
-\DoxyCodeLine{00084\ \ \ \ \ \}}
-\DoxyCodeLine{00085\ }
-\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane_aa2fc9458bd11d60c3c515211cac4d01d}{\string~MapPlane}}()\ =\ \textcolor{keywordflow}{default};}
-\DoxyCodeLine{00087\ }
-\DoxyCodeLine{00088\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{int}\ find\_match(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}}\&\ detectedFeatures,}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
-\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}}\&\ isDetectedFeatureMatched,}
-\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::list<PlaneMatchType>\&\ matches,}
-\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldAddToMatches\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ useAdvancedSearch\ =\ \textcolor{keyword}{false})\ const\ noexcept\ override;}
-\DoxyCodeLine{00094\ }
-\DoxyCodeLine{00095\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ add\_to\_tracked(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
-\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}}\&\ trackedFeatures,}
-\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ uint\ dropChance\ =\ 1000)\ const\ noexcept\ override;}
-\DoxyCodeLine{00098\ }
-\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ draw(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix,}
-\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ debugImage,}
-\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ cv::Scalar\&\ color)\ const\ noexcept\ override;}
-\DoxyCodeLine{00102\ }
-\DoxyCodeLine{00103\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ is\_visible(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix)\ const\ noexcept\ override;}
+\DoxyCodeLine{00080\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_add\_to\_local\_map()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane_abda3b28e2b65c90185012b6f91044822}{can\_add\_to\_map}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\&\ detectedPlane)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00083\ \ \ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ (void)detectedPlane;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_plane}{LocalMapPlane}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{MapPlane}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}{ILocalMapFeature}}<StagedMapPlane>}
+\DoxyCodeLine{00090\ \{}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_plane}{LocalMapPlane}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{StagedMapPlane}}\&\ stagedPlane);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ is\_lost()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00095\ \};}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{localPlaneMap}}\ =\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{Feature\_Map}}<\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_plane}{LocalMapPlane}},}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{StagedMapPlane}},}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a0518eb2c14d5f45b399da54a33aff1cb}{DetectedPlaneObject}},}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aecce2c9b26ca5dd01f1f6883f40c95a6}{DetectedPlaneType}},}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a672f8c0a672c4f640ac2bc6238a43bb9}{PlaneMatchType}},}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a812007e7a8def3a8a07d067b30b68364}{TrackedPlaneObject}},}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a816f331580113b2db0168e518d0455a4}{UpgradedPlaneType}}>;}
 \DoxyCodeLine{00104\ }
-\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{void}\ write\_to\_file(std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)\ const\ noexcept\ override;}
+\DoxyCodeLine{00105\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::map\_management}}
 \DoxyCodeLine{00106\ }
-\DoxyCodeLine{00107\ \ \ protected:}
-\DoxyCodeLine{00108\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ update\_with\_match(const\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\&\ matchedFeature,}
-\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
-\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ noexcept\ override;}
-\DoxyCodeLine{00111\ }
-\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{void}\ update\_no\_match()\ noexcept\ override;}
-\DoxyCodeLine{00113\ \};}
-\DoxyCodeLine{00114\ }
-\DoxyCodeLine{00115\ class\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{StagedMapPlane}}\ :\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{MapPlane}},\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}{IStagedMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}>}
-\DoxyCodeLine{00116\ \{}
-\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00118\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{StagedMapPlane}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
-\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
-\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane}{DetectedPlaneType}}\&\ detectedFeature);}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_remove\_from\_staged()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00123\ }
-\DoxyCodeLine{00124\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_add\_to\_local\_map()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00125\ \};}
-\DoxyCodeLine{00126\ }
-\DoxyCodeLine{00127\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_plane}{LocalMapPlane}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_plane}{MapPlane}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}{ILocalMapFeature}}<StagedMapPlane>}
-\DoxyCodeLine{00128\ \{}
-\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_plane}{LocalMapPlane}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_plane}{StagedMapPlane}}\&\ stagedPlane);}
-\DoxyCodeLine{00131\ }
-\DoxyCodeLine{00132\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ is\_lost()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00133\ \};}
-\DoxyCodeLine{00134\ }
-\DoxyCodeLine{00135\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::map\_management}}
-\DoxyCodeLine{00136\ }
-\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

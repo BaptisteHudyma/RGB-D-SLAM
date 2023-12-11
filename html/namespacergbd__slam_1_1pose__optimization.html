@@ -113,28 +113,109 @@ Functions</h2></td></tr>
 <tr class="memitem:ad9844c916b02700c139e7caeb702cb4a" id="r_ad9844c916b02700c139e7caeb702cb4a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ad9844c916b02700c139e7caeb702cb4a">get_human_readable_end_message</a> (Eigen::LevenbergMarquardtSpace::Status status) noexcept</td></tr>
 <tr class="memdesc:ad9844c916b02700c139e7caeb702cb4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a string corresponding to the end status of the optimization.  <br /></td></tr>
 <tr class="separator:ad9844c916b02700c139e7caeb702cb4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb2f0ad8c073aa5e33944cccb8463c70" id="r_adb2f0ad8c073aa5e33944cccb8463c70"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#adb2f0ad8c073aa5e33944cccb8463c70">get_min_max_number_of_features</a> (const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;numberOfFeature)</td></tr>
+<tr class="separator:adb2f0ad8c073aa5e33944cccb8463c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dbb4e7143835db9c0a4e1806dadcb84" id="r_a4dbb4e7143835db9c0a4e1806dadcb84"><td class="memItemLeft" align="right" valign="top">std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a4dbb4e7143835db9c0a4e1806dadcb84">get_random_selection</a> (const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;featuresCounts, const std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;minMaxNumberOfFeatures)</td></tr>
+<tr class="separator:a4dbb4e7143835db9c0a4e1806dadcb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7678171fe584a72b7cc1302ba000ec82" id="r_a7678171fe584a72b7cc1302ba000ec82"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a7678171fe584a72b7cc1302ba000ec82">get_2Dpoint_inliers_outliers</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a68474edc07139f8ef4791e3eaef6e61b">matches_containers::match_point2D_container</a> &amp;pointsToEvaluate, const double point2dMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a2f21600d4c751179e9e524e61d4d176a">matches_containers::point2D_match_sets</a> &amp;pointMatcheSets) noexcept</td></tr>
+<tr class="memdesc:a7678171fe584a72b7cc1302ba000ec82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a score for a transformation, and compute an inlier and outlier set.  <br /></td></tr>
+<tr class="separator:a7678171fe584a72b7cc1302ba000ec82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6887cef030e154a5837d40eadda8f0c0" id="r_a6887cef030e154a5837d40eadda8f0c0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a6887cef030e154a5837d40eadda8f0c0">get_point_inliers_outliers</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a5dd025751281c2e733588e8229f68690">matches_containers::match_point_container</a> &amp;pointsToEvaluate, const double pointMaxRetroprojectionError_px, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a9555085cb256703cf45880077a789c7a">matches_containers::point_match_sets</a> &amp;pointMatcheSets) noexcept</td></tr>
 <tr class="memdesc:a6887cef030e154a5837d40eadda8f0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a score for a transformation, and compute an inlier and outlier set.  <br /></td></tr>
 <tr class="separator:a6887cef030e154a5837d40eadda8f0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae93d7b6432703034ffbcd6879ee720fb" id="r_ae93d7b6432703034ffbcd6879ee720fb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae93d7b6432703034ffbcd6879ee720fb">get_plane_inliers_outliers</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#ae435b06d82751fed7f7d9dfebf3cf594">matches_containers::match_plane_container</a> &amp;planesToEvaluate, const double planeMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a064c556345ab975d37ba817b97b99712">matches_containers::plane_match_sets</a> &amp;planeMatchSets) noexcept</td></tr>
 <tr class="memdesc:ae93d7b6432703034ffbcd6879ee720fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a score for a transformation, and compute an inlier and outlier set.  <br /></td></tr>
 <tr class="separator:ae93d7b6432703034ffbcd6879ee720fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac181abaf8b164dab6d2cdb86964b5eab" id="r_ac181abaf8b164dab6d2cdb86964b5eab"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ac181abaf8b164dab6d2cdb86964b5eab">get_features_inliers_outliers</a> (const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;featuresToEvaluate, const double pointMaxRetroprojectionError_px, const double planeMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a> &amp;featureSet) noexcept</td></tr>
-<tr class="separator:ac181abaf8b164dab6d2cdb86964b5eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c6009cd413f9d2614f3b1dd94ef36d4" id="r_a0c6009cd413f9d2614f3b1dd94ef36d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a0c6009cd413f9d2614f3b1dd94ef36d4">get_random_subset</a> (const uint numberOfPointsToSample, const uint numberOfPlanesToSample, const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;matchedFeatures)</td></tr>
-<tr class="memdesc:a0c6009cd413f9d2614f3b1dd94ef36d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a subset of a given inlier set.  <br /></td></tr>
-<tr class="separator:a0c6009cd413f9d2614f3b1dd94ef36d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99cd77bbbd8bb570723c11c432403f00" id="r_a99cd77bbbd8bb570723c11c432403f00"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a99cd77bbbd8bb570723c11c432403f00">get_features_inliers_outliers</a> (const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;featuresToEvaluate, const double point2dMaxRetroprojectionError_mm, const double pointMaxRetroprojectionError_px, const double planeMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a> &amp;featureSet) noexcept</td></tr>
+<tr class="separator:a99cd77bbbd8bb570723c11c432403f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c32bdedf5ae76ea4db2a10522d5789f" id="r_a7c32bdedf5ae76ea4db2a10522d5789f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a7c32bdedf5ae76ea4db2a10522d5789f">get_random_subset</a> (const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;featuresCounts, const std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;minMaxNumberOfFeatures, const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;matchedFeatures)</td></tr>
+<tr class="memdesc:a7c32bdedf5ae76ea4db2a10522d5789f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a subset of features.  <br /></td></tr>
+<tr class="separator:a7c32bdedf5ae76ea4db2a10522d5789f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a71463824933f93d135e28ac3ef500892" id="r_a71463824933f93d135e28ac3ef500892"><td class="memItemLeft" align="right" valign="top">constexpr uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a71463824933f93d135e28ac3ef500892">scoreCountPerPoints</a> = 2</td></tr>
 <tr class="separator:a71463824933f93d135e28ac3ef500892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a094f5c34ada58bb818875067bc375386" id="r_a094f5c34ada58bb818875067bc375386"><td class="memItemLeft" align="right" valign="top">constexpr uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a094f5c34ada58bb818875067bc375386">scoreCountPer2DPoints</a> = 3</td></tr>
+<tr class="separator:a094f5c34ada58bb818875067bc375386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ebc29e6687c48d14ec8459d86038a40" id="r_a8ebc29e6687c48d14ec8459d86038a40"><td class="memItemLeft" align="right" valign="top">constexpr uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a8ebc29e6687c48d14ec8459d86038a40">scoreCountPerPlanes</a> = 3</td></tr>
 <tr class="separator:a8ebc29e6687c48d14ec8459d86038a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae445858e4a042eba60344aa29aab58e5" id="r_ae445858e4a042eba60344aa29aab58e5"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> = 3</td></tr>
+<tr class="separator:ae445858e4a042eba60344aa29aab58e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad750a85b4337af9806967bc8e34b9e2c" id="r_ad750a85b4337af9806967bc8e34b9e2c"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ad750a85b4337af9806967bc8e34b9e2c">featureIndexPlane</a> = 0</td></tr>
+<tr class="separator:ad750a85b4337af9806967bc8e34b9e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae80aa5582d84262b0917afa4ff5be964" id="r_ae80aa5582d84262b0917afa4ff5be964"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae80aa5582d84262b0917afa4ff5be964">featureIndexPoint</a> = 1</td></tr>
+<tr class="separator:ae80aa5582d84262b0917afa4ff5be964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a5a0cdcf61d6ac82308887aff82bec9" id="r_a8a5a0cdcf61d6ac82308887aff82bec9"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a8a5a0cdcf61d6ac82308887aff82bec9">featureIndex2dPoint</a> = 2</td></tr>
+<tr class="separator:a8a5a0cdcf61d6ac82308887aff82bec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6716e7f90aba42fbe972a637935f73e2" id="r_a6716e7f90aba42fbe972a637935f73e2"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2">minNumberOfFeatureForOpti</a></td></tr>
+<tr class="separator:a6716e7f90aba42fbe972a637935f73e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9329d7a888752732b20979d3e89f0506" id="r_a9329d7a888752732b20979d3e89f0506"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; double, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a9329d7a888752732b20979d3e89f0506">scorePerFeature</a></td></tr>
+<tr class="separator:a9329d7a888752732b20979d3e89f0506"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ac181abaf8b164dab6d2cdb86964b5eab" name="ac181abaf8b164dab6d2cdb86964b5eab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac181abaf8b164dab6d2cdb86964b5eab">&#9670;&#160;</a></span>get_features_inliers_outliers()</h2>
+<a id="a7678171fe584a72b7cc1302ba000ec82" name="a7678171fe584a72b7cc1302ba000ec82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7678171fe584a72b7cc1302ba000ec82">&#9670;&#160;</a></span>get_2Dpoint_inliers_outliers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rgbd_slam::pose_optimization::get_2Dpoint_inliers_outliers </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a68474edc07139f8ef4791e3eaef6e61b">matches_containers::match_point2D_container</a> &amp;&#160;</td>
+          <td class="paramname"><em>pointsToEvaluate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>point2dMaxRetroprojectionError_mm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>transformationPose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacergbd__slam_1_1matches__containers.html#a2f21600d4c751179e9e524e61d4d176a">matches_containers::point2D_match_sets</a> &amp;&#160;</td>
+          <td class="paramname"><em>pointMatcheSets</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute a score for a transformation, and compute an inlier and outlier set. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointsToEvaluate</td><td>The set of points to evaluate the transformation on </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">point2dMaxRetroprojectionError_mm</td><td>The maximum retroprojection error between two point, below which we classifying the match as inlier </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">transformationPose</td><td>The transformation that needs to be evaluated </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pointMatcheSets</td><td>The set of inliers/outliers of this transformation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The transformation score (sum of retroprojection distances) </dd></dl>
+
+</div>
+</div>
+<a id="a99cd77bbbd8bb570723c11c432403f00" name="a99cd77bbbd8bb570723c11c432403f00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99cd77bbbd8bb570723c11c432403f00">&#9670;&#160;</a></span>get_features_inliers_outliers()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -147,6 +228,12 @@ Variables</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;&#160;</td>
           <td class="paramname"><em>featuresToEvaluate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>point2dMaxRetroprojectionError_mm</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -219,7 +306,25 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns a string with the human readable version of Eigen LevenbergMarquardt output status </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns a string with the human readable version of <a class="el" href="namespace_eigen.html">Eigen</a> LevenbergMarquardt output status </dd></dl>
+
+</div>
+</div>
+<a id="adb2f0ad8c073aa5e33944cccb8463c70" name="adb2f0ad8c073aa5e33944cccb8463c70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb2f0ad8c073aa5e33944cccb8463c70">&#9670;&#160;</a></span>get_min_max_number_of_features()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; rgbd_slam::pose_optimization::get_min_max_number_of_features </td>
+          <td>(</td>
+          <td class="paramtype">const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>numberOfFeature</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -370,8 +475,36 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a0c6009cd413f9d2614f3b1dd94ef36d4" name="a0c6009cd413f9d2614f3b1dd94ef36d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c6009cd413f9d2614f3b1dd94ef36d4">&#9670;&#160;</a></span>get_random_subset()</h2>
+<a id="a4dbb4e7143835db9c0a4e1806dadcb84" name="a4dbb4e7143835db9c0a4e1806dadcb84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dbb4e7143835db9c0a4e1806dadcb84">&#9670;&#160;</a></span>get_random_selection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; rgbd_slam::pose_optimization::get_random_selection </td>
+          <td>(</td>
+          <td class="paramtype">const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>featuresCounts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>minMaxNumberOfFeatures</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7c32bdedf5ae76ea4db2a10522d5789f" name="a7c32bdedf5ae76ea4db2a10522d5789f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c32bdedf5ae76ea4db2a10522d5789f">&#9670;&#160;</a></span>get_random_subset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -379,14 +512,14 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a> rgbd_slam::pose_optimization::get_random_subset </td>
           <td>(</td>
-          <td class="paramtype">const uint&#160;</td>
-          <td class="paramname"><em>numberOfPointsToSample</em>, </td>
+          <td class="paramtype">const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>featuresCounts</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const uint&#160;</td>
-          <td class="paramname"><em>numberOfPlanesToSample</em>, </td>
+          <td class="paramtype">const std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>minMaxNumberOfFeatures</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -402,7 +535,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return a subset of a given inlier set. </p>
+<p>Return a subset of features. </p>
 
 </div>
 </div>
@@ -434,6 +567,142 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a8a5a0cdcf61d6ac82308887aff82bec9" name="a8a5a0cdcf61d6ac82308887aff82bec9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a5a0cdcf61d6ac82308887aff82bec9">&#9670;&#160;</a></span>featureIndex2dPoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t rgbd_slam::pose_optimization::featureIndex2dPoint = 2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad750a85b4337af9806967bc8e34b9e2c" name="ad750a85b4337af9806967bc8e34b9e2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad750a85b4337af9806967bc8e34b9e2c">&#9670;&#160;</a></span>featureIndexPlane</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t rgbd_slam::pose_optimization::featureIndexPlane = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae80aa5582d84262b0917afa4ff5be964" name="ae80aa5582d84262b0917afa4ff5be964"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae80aa5582d84262b0917afa4ff5be964">&#9670;&#160;</a></span>featureIndexPoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t rgbd_slam::pose_optimization::featureIndexPoint = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6716e7f90aba42fbe972a637935f73e2" name="a6716e7f90aba42fbe972a637935f73e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6716e7f90aba42fbe972a637935f73e2">&#9670;&#160;</a></span>minNumberOfFeatureForOpti</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::array&lt;uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a>&gt; rgbd_slam::pose_optimization::minNumberOfFeatureForOpti</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">        parameters::optimization::minimumPlanesForOptimization,</div>
+<div class="line">        parameters::optimization::minimumPointForOptimization,</div>
+<div class="line">        parameters::optimization::minimumPointForOptimization}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae445858e4a042eba60344aa29aab58e5" name="ae445858e4a042eba60344aa29aab58e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae445858e4a042eba60344aa29aab58e5">&#9670;&#160;</a></span>numberOfFeatures</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t rgbd_slam::pose_optimization::numberOfFeatures = 3</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a094f5c34ada58bb818875067bc375386" name="a094f5c34ada58bb818875067bc375386"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a094f5c34ada58bb818875067bc375386">&#9670;&#160;</a></span>scoreCountPer2DPoints</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint rgbd_slam::pose_optimization::scoreCountPer2DPoints = 3</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a8ebc29e6687c48d14ec8459d86038a40" name="a8ebc29e6687c48d14ec8459d86038a40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ebc29e6687c48d14ec8459d86038a40">&#9670;&#160;</a></span>scoreCountPerPlanes</h2>
 
@@ -477,6 +746,31 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>GLOBAL POSE ESTIMATOR members </p>
 
+</div>
+</div>
+<a id="a9329d7a888752732b20979d3e89f0506" name="a9329d7a888752732b20979d3e89f0506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9329d7a888752732b20979d3e89f0506">&#9670;&#160;</a></span>scorePerFeature</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::array&lt;double, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a>&gt; rgbd_slam::pose_optimization::scorePerFeature</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">        1.0 / <a class="code hl_variable" href="namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2">minNumberOfFeatureForOpti</a>[0], 1.0 / <a class="code hl_variable" href="namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2">minNumberOfFeatureForOpti</a>[1], 1.0 / <a class="code hl_variable" href="namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2">minNumberOfFeatureForOpti</a>[2]}</div>
+<div class="ttc" id="anamespacergbd__slam_1_1pose__optimization_html_a6716e7f90aba42fbe972a637935f73e2"><div class="ttname"><a href="namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2">rgbd_slam::pose_optimization::minNumberOfFeatureForOpti</a></div><div class="ttdeci">constexpr std::array&lt; uint, numberOfFeatures &gt; minNumberOfFeatureForOpti</div><div class="ttdef"><b>Definition</b> pose_optimization.cpp:39</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

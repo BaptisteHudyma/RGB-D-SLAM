@@ -5,69 +5,70 @@
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_POSEOPTIMIZATION\_LMFUNCTORS\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_POSEOPTIMIZATION\_LMFUNCTORS\_HPP}}
 \DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../types.hpp"{}}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../matches\_containers.hpp"{}}}
-\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../utils/pose.hpp"{}}}
-\DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ \textcolor{comment}{//\ types}}
-\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <unsupported/Eigen/NonLinearOptimization>}}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\_slam::pose\_optimization}}\ \{}
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00018\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ NX\ =\ Eigen::Dynamic,\ \textcolor{keywordtype}{int}\ NY\ =\ Eigen::Dynamic>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{Levenberg\_Marquardt\_Functor}}}
-\DoxyCodeLine{00019\ \{}
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//\ tell\ the\ called\ the\ numerical\ type\ and\ input/ouput\ size}}
-\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a0d66cd7752d88a76197c87391c51d225}{Scalar}}\ =\ \_Scalar;}
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{enum}}
-\DoxyCodeLine{00023\ \ \ \ \ \{}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa934a64e8c19364010a4f60b41230effa}{InputsAtCompileTime}}\ =\ NX,}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa174d6ee09a4be818644994b27ac40733}{ValuesAtCompileTime}}\ =\ NY}
-\DoxyCodeLine{00026\ \ \ \ \ \};}
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//\ typedefs\ for\ the\ original\ functor}}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_af98cb60a281530375b47fdd15584ca7e}{InputType}}\ =\ Eigen::Matrix<Scalar,\ InputsAtCompileTime,\ 1>;}
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a724643616d3c02b8b58d14936503f146}{ValueType}}\ =\ Eigen::Matrix<Scalar,\ ValuesAtCompileTime,\ 1>;}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_abe7b0b5112eed1b000b20f6cd3029b7b}{JacobianType}}\ =\ Eigen::Matrix<Scalar,\ ValuesAtCompileTime,\ InputsAtCompileTime>;}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_af4f370c6c3ccf4cc97fcfe53f83323ca}{Levenberg\_Marquardt\_Functor}}(\textcolor{keyword}{const}\ uint\ inputCount,\ \textcolor{keyword}{const}\ uint\ outputCount)\ :}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ad8ec8a4b845359edf29c4d47c130d815}{\_inputCount}}(inputCount),}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a484d665c3300570e6fe93554fc6c1a4d}{\_outputCount}}(outputCount)}
-\DoxyCodeLine{00036\ \ \ \ \ \{}
-\DoxyCodeLine{00037\ \ \ \ \ \}}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00039\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_abb503ea719d2b2c9792bed7f271e5418}{values}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a484d665c3300570e6fe93554fc6c1a4d}{\_outputCount}};\ \}}
-\DoxyCodeLine{00040\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a63d94e30ab19e862fad26f9c55e0ca51}{inputs}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ad8ec8a4b845359edf29c4d47c130d815}{\_inputCount}};\ \}}
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00042\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ad8ec8a4b845359edf29c4d47c130d815}{\_inputCount}};}
-\DoxyCodeLine{00043\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a484d665c3300570e6fe93554fc6c1a4d}{\_outputCount}};}
-\DoxyCodeLine{00044\ \};}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00051\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{get\_scaled\_axis\_coefficients\_from\_quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\&\ quat);}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00058\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}{get\_quaternion\_from\_scale\_axis\_coefficients}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ optimizationCoefficients);}
-\DoxyCodeLine{00059\ }
-\DoxyCodeLine{00064\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}{Global\_Pose\_Estimator}}\ :\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{Levenberg\_Marquardt\_Functor}}<double>}
-\DoxyCodeLine{00065\ \{}
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//\ Simple\ constructor}}
-\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}{Global\_Pose\_Estimator}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\_containers::match\_point\_container}}*\ \textcolor{keyword}{const}\ points,}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\_containers::match\_plane\_container}}*\ \textcolor{keyword}{const}\ planes);}
-\DoxyCodeLine{00073\ }
-\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a45d32727cad348886c646cfa84bba1a6}{operator()}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ 6>\&\ optimizedParameters,\ \mbox{\hyperlink{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}{vectorxd}}\&\ outputScores)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00081\ }
-\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ use\ pointers\ to\ prevent\ useless\ copy}}
-\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\_containers::match\_point\_container}}*\ \textcolor{keyword}{const}\ \_points;}
-\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\_containers::match\_plane\_container}}*\ \textcolor{keyword}{const}\ \_planes;}
-\DoxyCodeLine{00086\ \};}
-\DoxyCodeLine{00087\ }
-\DoxyCodeLine{00088\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___functor}{Global\_Pose\_Functor}}\ :\ Eigen::NumericalDiff<Global\_Pose\_Estimator>}
-\DoxyCodeLine{00089\ \{}
-\DoxyCodeLine{00090\ \};}
-\DoxyCodeLine{00091\ }
-\DoxyCodeLine{00097\ [[nodiscard]]\ std::string\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9844c916b02700c139e7caeb702cb4a}{get\_human\_readable\_end\_message}}(Eigen::LevenbergMarquardtSpace::Status\ status)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00098\ }
-\DoxyCodeLine{00099\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::pose\_optimization}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{matches__containers_8hpp}{matches\_containers.hpp}}"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ types}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <unsupported/Eigen/NonLinearOptimization>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization}{rgbd\_slam::pose\_optimization}}\ \{}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ NX\ =\ Eigen::Dynamic,\ \textcolor{keywordtype}{int}\ NY\ =\ Eigen::Dynamic>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{Levenberg\_Marquardt\_Functor}}}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//\ tell\ the\ called\ the\ numerical\ type\ and\ input/ouput\ size}}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a0d66cd7752d88a76197c87391c51d225}{Scalar}}\ =\ \_Scalar;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{enum}}
+\DoxyCodeLine{00022\ \ \ \ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa934a64e8c19364010a4f60b41230effa}{InputsAtCompileTime}}\ =\ NX,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a57fd7781446e7e2a922b8f787beb907fa174d6ee09a4be818644994b27ac40733}{ValuesAtCompileTime}}\ =\ NY}
+\DoxyCodeLine{00025\ \ \ \ \ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//\ typedefs\ for\ the\ original\ functor}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_af98cb60a281530375b47fdd15584ca7e}{InputType}}\ =\ Eigen::Matrix<Scalar,\ InputsAtCompileTime,\ 1>;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a724643616d3c02b8b58d14936503f146}{ValueType}}\ =\ Eigen::Matrix<Scalar,\ ValuesAtCompileTime,\ 1>;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_abe7b0b5112eed1b000b20f6cd3029b7b}{JacobianType}}\ =\ Eigen::Matrix<Scalar,\ ValuesAtCompileTime,\ InputsAtCompileTime>;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_af4f370c6c3ccf4cc97fcfe53f83323ca}{Levenberg\_Marquardt\_Functor}}(\textcolor{keyword}{const}\ uint\ inputCount,\ \textcolor{keyword}{const}\ uint\ outputCount)\ :}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ad8ec8a4b845359edf29c4d47c130d815}{\_inputCount}}(inputCount),}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a484d665c3300570e6fe93554fc6c1a4d}{\_outputCount}}(outputCount)}
+\DoxyCodeLine{00035\ \ \ \ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_abb503ea719d2b2c9792bed7f271e5418}{values}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a484d665c3300570e6fe93554fc6c1a4d}{\_outputCount}};\ \}}
+\DoxyCodeLine{00039\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a63d94e30ab19e862fad26f9c55e0ca51}{inputs}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ad8ec8a4b845359edf29c4d47c130d815}{\_inputCount}};\ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_ad8ec8a4b845359edf29c4d47c130d815}{\_inputCount}};}
+\DoxyCodeLine{00042\ \ \ \ \ uint\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor_a484d665c3300570e6fe93554fc6c1a4d}{\_outputCount}};}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00050\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}{get\_scaled\_axis\_coefficients\_from\_quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\&\ quat);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00057\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_aa1b3f2a476887ecd8c938a73f1ca57da}{get\_quaternion\_from\_scale\_axis\_coefficients}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ optimizationCoefficients);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}{Global\_Pose\_Estimator}}\ :\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___marquardt___functor}{Levenberg\_Marquardt\_Functor}}<double>}
+\DoxyCodeLine{00064\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ Simple\ constructor}}
+\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator}{Global\_Pose\_Estimator}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{matches\_containers::match\_point2D\_container}}*\ \textcolor{keyword}{const}\ points2d,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\_containers::match\_point\_container}}*\ \textcolor{keyword}{const}\ points,}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\_containers::match\_plane\_container}}*\ \textcolor{keyword}{const}\ planes);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a45d32727cad348886c646cfa84bba1a6}{operator()}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ 6>\&\ optimizedParameters,\ \mbox{\hyperlink{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}{vectorxd}}\&\ outputScores)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ use\ pointers\ to\ prevent\ useless\ copy}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{matches\_containers::match\_point2D\_container}}*\ \textcolor{keyword}{const}\ \_points2d;}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\_containers::match\_point\_container}}*\ \textcolor{keyword}{const}\ \_points;}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\_containers::match\_plane\_container}}*\ \textcolor{keyword}{const}\ \_planes;}
+\DoxyCodeLine{00088\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___functor}{Global\_Pose\_Functor}}\ :\ Eigen::NumericalDiff<Global\_Pose\_Estimator>}
+\DoxyCodeLine{00091\ \{}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00099\ [[nodiscard]]\ std::string\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9844c916b02700c139e7caeb702cb4a}{get\_human\_readable\_end\_message}}(Eigen::LevenbergMarquardtSpace::Status\ status)\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00100\ }
-\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00101\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::pose\_optimization}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

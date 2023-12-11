@@ -1,0 +1,32 @@
+\doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/point\+\_\+coordinates.hpp File Reference}
+\hypertarget{point__coordinates_8hpp}{}\label{point__coordinates_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates/point\_coordinates.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/coordinates/point\_coordinates.hpp}}
+{\ttfamily \#include "{}../types.\+hpp"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate2D}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{rgbd\+\_\+slam\+::utils\+::\+Screen\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate2D}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in camera space. Camera space is defined as (x, y), relative to the camera center. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{rgbd\+\_\+slam\+::utils\+::\+Camera\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in camera space. Camera space is defined as (x, y, z) in distance (millimeters), relative to the camera center. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{rgbd\+\_\+slam\+::utils\+::\+World\+Coordinate}}
+\begin{DoxyCompactList}\small\item\em Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point}}
+\begin{DoxyCompactList}\small\item\em Contain an inverse depth representation of a world point. This is used to represent point with an unknown depth. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam}{rgbd\+\_\+slam}}
+\item 
+namespace \mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\+\_\+slam\+::utils}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac85068e2a7fee034ef2c4879b1b9aee0}{rgbd\+\_\+slam\+::utils\+::is\+\_\+depth\+\_\+valid}} (const double depth) noexcept
+\begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa1a33d67cf96690a98cf6c5a1b20e82f}{rgbd\+\_\+slam\+::utils\+::get\+\_\+transformation\+\_\+matrix}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+To, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+To, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center\+To)
+\begin{DoxyCompactList}\small\item\em Compute the transformation matrix between two coordinate systems. \end{DoxyCompactList}\end{DoxyCompactItemize}

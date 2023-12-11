@@ -17,7 +17,14 @@ A class to detect and store lines.
 \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\+\_\+container}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a7714f09bbb8f49776a14403a15ec558f}{detect\+\_\+lines}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image) noexcept
 \begin{DoxyCompactList}\small\item\em Search for lines in an gray image. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a36e1be51d0e907754930e78e4978a87a}{get\+\_\+image\+\_\+with\+\_\+lines}} (const \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1lines_aaabfdeb8b1381f117280b4b5e4760442}{line\+\_\+container}} \&lines\+To\+Display, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, cv\+::\+Mat \&out\+Image) const noexcept
-\begin{DoxyCompactList}\small\item\em display the given lines on an image \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em display the given lines on an image \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a6bcd94add5a31f258e07903632d1fe25}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Duration, const uint frame\+Count) const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_af2f120d6d4dbe2db56fc6ab44a12b785}{\+\_\+mean\+Line\+Treatment\+Duration}} = 0.\+0
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -72,6 +79,21 @@ display the given lines on an image
 \mbox{\texttt{ in,out}}  & {\em out\+Image} & The image on which to display the lines \\
 \hline
 \end{DoxyParams}
+\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a6bcd94add5a31f258e07903632d1fe25}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_a6bcd94add5a31f258e07903632d1fe25} 
+\index{rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}!show\_statistics@{show\_statistics}}
+\index{show\_statistics@{show\_statistics}!rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}}
+\doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::lines\+::\+Line\+\_\+\+Detection\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Duration,  }\item[{const uint}]{frame\+Count }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_af2f120d6d4dbe2db56fc6ab44a12b785}\label{classrgbd__slam_1_1features_1_1lines_1_1_line___detection_af2f120d6d4dbe2db56fc6ab44a12b785} 
+\index{rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}!\_meanLineTreatmentDuration@{\_meanLineTreatmentDuration}}
+\index{\_meanLineTreatmentDuration@{\_meanLineTreatmentDuration}!rgbd\_slam::features::lines::Line\_Detection@{rgbd\_slam::features::lines::Line\_Detection}}
+\doxysubsubsection{\texorpdfstring{\_meanLineTreatmentDuration}{\_meanLineTreatmentDuration}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::lines\+::\+Line\+\_\+\+Detection\+::\+\_\+mean\+Line\+Treatment\+Duration = 0.\+0}
+
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

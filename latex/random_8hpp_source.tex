@@ -8,52 +8,51 @@
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <Eigen/src/Core/Matrix.h>}}
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <ctime>}}
 \DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <random>}}
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
-\DoxyCodeLine{00008\ }
-\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\_slam::utils}}\ \{}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random}{Random}}}
-\DoxyCodeLine{00012\ \{}
-\DoxyCodeLine{00013\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00017\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a02642467c5f9ce3c9e90d58a8a0ae88c}{get\_random\_double}}()}
-\DoxyCodeLine{00018\ \ \ \ \ \{}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::mt19937\ randomEngine(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}});}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::uniform\_real\_distribution\ distribution(0.0,\ 1.0);}
-\DoxyCodeLine{00021\ }
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ distribution(randomEngine);}
-\DoxyCodeLine{00023\ \ \ \ \ \}}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00028\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_afc9258a32d5bf61f8021510e56f0b601}{get\_normal\_double}}()}
-\DoxyCodeLine{00029\ \ \ \ \ \{}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::mt19937\ randomEngine(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}});}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::normal\_distribution\ distribution(0.0,\ 1.0);}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ distribution(randomEngine);}
-\DoxyCodeLine{00034\ \ \ \ \ \}}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Size>\ [[nodiscard]]\ \textcolor{keyword}{static}\ Eigen::Vector<double,\ Size>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a7d16569c224ee6546dc5295c80b6b53e}{get\_normal\_doubles}}()}
-\DoxyCodeLine{00037\ \ \ \ \ \{}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ Eigen::Vector<double,\ Size>\ vec;}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\ i\ =\ 0;\ i\ <\ Size;\ ++i)}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ vec(i)\ =\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_afc9258a32d5bf61f8021510e56f0b601}{get\_normal\_double}}();}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ vec;}
-\DoxyCodeLine{00042\ \ \ \ \ \}}
-\DoxyCodeLine{00043\ }
-\DoxyCodeLine{00044\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_aa1a557874759dc86cc5b19cc18a32894}{get\_random\_uint}}(\textcolor{keyword}{const}\ uint\ maxValue)}
-\DoxyCodeLine{00045\ \ \ \ \ \{}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint\textcolor{keyword}{>}(maxValue\ *\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a02642467c5f9ce3c9e90d58a8a0ae88c}{get\_random\_double}}());}
-\DoxyCodeLine{00047\ \ \ \ \ \}}
-\DoxyCodeLine{00048\ }
-\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#ifndef\ MAKE\_DETERMINISTIC}}
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}}\ =\ std::time(0);}
-\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ whatever\ seed}}
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}}\ =\ 0;}
-\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00055\ \};}
-\DoxyCodeLine{00056\ }
-\DoxyCodeLine{00057\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::utils}}
-\DoxyCodeLine{00058\ }
-\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\_slam::utils}}\ \{}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random}{Random}}}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a02642467c5f9ce3c9e90d58a8a0ae88c}{get\_random\_double}}()}
+\DoxyCodeLine{00017\ \ \ \ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::mt19937\ randomEngine(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}});}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::uniform\_real\_distribution\ distribution(0.0,\ 1.0);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ distribution(randomEngine);}
+\DoxyCodeLine{00022\ \ \ \ \ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00027\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_afc9258a32d5bf61f8021510e56f0b601}{get\_normal\_double}}()}
+\DoxyCodeLine{00028\ \ \ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::mt19937\ randomEngine(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}});}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::normal\_distribution\ distribution(0.0,\ 1.0);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ distribution(randomEngine);}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Size>\ [[nodiscard]]\ \textcolor{keyword}{static}\ Eigen::Vector<double,\ Size>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a7d16569c224ee6546dc5295c80b6b53e}{get\_normal\_doubles}}()}
+\DoxyCodeLine{00036\ \ \ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ Eigen::Vector<double,\ Size>\ vec;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint\ i\ =\ 0;\ i\ <\ Size;\ ++i)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ vec(i)\ =\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_afc9258a32d5bf61f8021510e56f0b601}{get\_normal\_double}}();}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ vec;}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_aa1a557874759dc86cc5b19cc18a32894}{get\_random\_uint}}(\textcolor{keyword}{const}\ uint\ maxValue)}
+\DoxyCodeLine{00044\ \ \ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint\textcolor{keyword}{>}(maxValue\ *\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a02642467c5f9ce3c9e90d58a8a0ae88c}{get\_random\_double}}());}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#ifndef\ MAKE\_DETERMINISTIC}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}}\ =\ std::time(0);}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ whatever\ seed}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_random_a0c638e5750ed57a2ed9706651a4f36da}{\_seed}}\ =\ 0;}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::utils}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

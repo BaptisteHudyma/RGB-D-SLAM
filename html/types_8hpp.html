@@ -77,24 +77,32 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">types.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;Eigen/Dense&gt;</code><br />
 <code>#include &lt;Eigen/src/Core/Matrix.h&gt;</code><br />
+<code>#include &lt;Eigen/src/Core/util/Macros.h&gt;</code><br />
+<code>#include &lt;Eigen/src/Core/util/XprHelper.h&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div>
 <p><a href="types_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_screen_coordinate2_d_covariance.html">rgbd_slam::ScreenCoordinate2DCovariance</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_screen_coordinate_covariance.html">rgbd_slam::ScreenCoordinateCovariance</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_camera_coordinate_covariance.html">rgbd_slam::CameraCoordinateCovariance</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_world_coordinate_covariance.html">rgbd_slam::WorldCoordinateCovariance</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_transition_matrix.html">rgbd_slam::TransitionMatrix</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">rgbd_slam::WorldToCameraMatrix</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,11 +114,25 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1_euler_angles.html">rgbd_slam::EulerAngles</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthreshold__op.html">threshold_op&lt; scalar &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_eigen_1_1internal_1_1functor__traits_3_01threshold__op_3_01scalar_01_4_01_4.html">Eigen::internal::functor_traits&lt; threshold_op&lt; scalar &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacergbd__slam" id="r_namespacergbd__slam"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html">rgbd_slam</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespace_eigen" id="r_namespace_eigen"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_eigen.html">Eigen</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespace_eigen_1_1internal" id="r_namespace_eigen_1_1internal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_eigen_1_1internal.html">Eigen::internal</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a77b1f6065d5b4e163d2b7ee908a86ed3" id="r_a77b1f6065d5b4e163d2b7ee908a86ed3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="types_8hpp.html#a77b1f6065d5b4e163d2b7ee908a86ed3">ROUND_MAT</a>(mat)&#160;&#160;&#160;mat.unaryExpr(<a class="el" href="structthreshold__op.html">threshold_op</a>&lt;double&gt;(1e-10))</td></tr>
+<tr class="memdesc:a77b1f6065d5b4e163d2b7ee908a86ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">round the given eigen matrix to zero  <br /></td></tr>
+<tr class="separator:a77b1f6065d5b4e163d2b7ee908a86ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -149,11 +171,38 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a2ef82ebfa76f6740a67599bab7004e84" id="r_a2ef82ebfa76f6740a67599bab7004e84"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a2ef82ebfa76f6740a67599bab7004e84">rgbd_slam::vector3_vector</a> = std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>, Eigen::aligned_allocator&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &gt;</td></tr>
 <tr class="separator:a2ef82ebfa76f6740a67599bab7004e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ab4ee6d1939715f5ee55fac101b317049" id="r_ab4ee6d1939715f5ee55fac101b317049"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab4ee6d1939715f5ee55fac101b317049"><td class="memTemplItemLeft" align="right" valign="top">T constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#ab4ee6d1939715f5ee55fac101b317049">rgbd_slam::SQR</a> (const T x)</td></tr>
+<tr class="separator:ab4ee6d1939715f5ee55fac101b317049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a377c6ad409881df230ffac24f94ec9c9" id="r_a377c6ad409881df230ffac24f94ec9c9"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a377c6ad409881df230ffac24f94ec9c9">rgbd_slam::EulerToRadian</a> = M_PI / 180.0</td></tr>
-<tr class="separator:a377c6ad409881df230ffac24f94ec9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34e95e94436fca45a1b9a36dc735b79f" id="r_a34e95e94436fca45a1b9a36dc735b79f"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam.html#a34e95e94436fca45a1b9a36dc735b79f">rgbd_slam::EulerToRadian</a> = M_PI / 180.0</td></tr>
+<tr class="separator:a34e95e94436fca45a1b9a36dc735b79f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a77b1f6065d5b4e163d2b7ee908a86ed3" name="a77b1f6065d5b4e163d2b7ee908a86ed3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77b1f6065d5b4e163d2b7ee908a86ed3">&#9670;&#160;</a></span>ROUND_MAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ROUND_MAT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">mat</td><td>)</td>
+          <td>&#160;&#160;&#160;mat.unaryExpr(<a class="el" href="structthreshold__op.html">threshold_op</a>&lt;double&gt;(1e-10))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>round the given eigen matrix to zero </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

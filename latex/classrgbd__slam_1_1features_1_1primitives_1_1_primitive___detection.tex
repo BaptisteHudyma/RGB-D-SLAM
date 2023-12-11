@@ -15,19 +15,8 @@ Main extraction class. Extracts shape primitives from an organized cloud of poin
 \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a88bc0e3d45242b2b7381effc69be0c75}{Primitive\+\_\+\+Detection}} (const uint width, const uint height)
 \item 
 void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a79fff3701b2f62f6711b1467e740baa4}{find\+\_\+primitives}} (const \mbox{\hyperlink{namespacergbd__slam_aa6b0e6b8a392e7cd07dbc77199e05144}{matrixf}} \&depth\+Matrix, const cv\+::\+Mat\+\_\+$<$ float $>$ \&depth\+Image, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_a7bca8fa43a44adbda4b5e9bbeb373d8a}{plane\+\_\+container}} \&plane\+Container, \mbox{\hyperlink{namespacergbd__slam_1_1features_1_1primitives_ad1597638f286a73a6099675b2c0458a7}{cylinder\+\_\+container}} \&primitive\+Container) noexcept
-\begin{DoxyCompactList}\small\item\em Main compute function\+: computes the primitives in the depth imahe. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsubsection*{Public Attributes}
-\begin{DoxyCompactItemize}
-\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1e6576f91cd41de4316f20c41cbf365a}{reset\+Time}}
-\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8e4334b78d47adf54a76b32812c18080}{init\+Time}}
-\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8bd7311ff1c1968b338c80fa710b5f18}{grow\+Time}}
-\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_afa8239c91447b7a5b6f2590a7024e5b1}{merge\+Time}}
-\item 
-double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_acee4e990aaeeec273775cf0fc944fa61}{refine\+Time}}
+\begin{DoxyCompactList}\small\item\em Main compute function\+: computes the primitives in the depth imahe. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_af274b8414051a400365fa12d966ab761}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Duration, const uint frame\+Count, const bool should\+Display\+Details=false) const noexcept
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Types}
 \begin{DoxyCompactItemize}
@@ -405,38 +394,11 @@ Recursively Grow a plane seed and merge it with it\textquotesingle{}s neighbors.
 
 Reset the stored data in prevision of another analysis. 
 
-
-
-\doxysubsection{Member Data Documentation}
-\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8bd7311ff1c1968b338c80fa710b5f18}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8bd7311ff1c1968b338c80fa710b5f18} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!growTime@{growTime}}
-\index{growTime@{growTime}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{growTime}{growTime}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::grow\+Time}
-
-\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8e4334b78d47adf54a76b32812c18080}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a8e4334b78d47adf54a76b32812c18080} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!initTime@{initTime}}
-\index{initTime@{initTime}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{initTime}{initTime}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::init\+Time}
-
-\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_afa8239c91447b7a5b6f2590a7024e5b1}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_afa8239c91447b7a5b6f2590a7024e5b1} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!mergeTime@{mergeTime}}
-\index{mergeTime@{mergeTime}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{mergeTime}{mergeTime}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::merge\+Time}
-
-\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_acee4e990aaeeec273775cf0fc944fa61}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_acee4e990aaeeec273775cf0fc944fa61} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!refineTime@{refineTime}}
-\index{refineTime@{refineTime}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{refineTime}{refineTime}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::refine\+Time}
-
-\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1e6576f91cd41de4316f20c41cbf365a}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_a1e6576f91cd41de4316f20c41cbf365a} 
-\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!resetTime@{resetTime}}
-\index{resetTime@{resetTime}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
-\doxysubsubsection{\texorpdfstring{resetTime}{resetTime}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::reset\+Time}
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_af274b8414051a400365fa12d966ab761}\label{classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection_af274b8414051a400365fa12d966ab761} 
+\index{rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}!show\_statistics@{show\_statistics}}
+\index{show\_statistics@{show\_statistics}!rgbd\_slam::features::primitives::Primitive\_Detection@{rgbd\_slam::features::primitives::Primitive\_Detection}}
+\doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::primitives\+::\+Primitive\+\_\+\+Detection\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Duration,  }\item[{const uint}]{frame\+Count,  }\item[{const bool}]{should\+Display\+Details = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 

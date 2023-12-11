@@ -5,165 +5,164 @@
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_KALMAN\_FILTER\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_UTILS\_KALMAN\_FILTER\_HPP}}
 \DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../../types.hpp"{}}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{covariances_8hpp}{covariances.hpp}}"{}}}
-\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{distance__utils_8hpp}{distance\_utils.hpp}}"{}}}
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{logger_8hpp}{logger.hpp}}"{}}}
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <Eigen/src/Core/Matrix.h>}}
-\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1tracking}{rgbd\_slam::tracking}}\ \{}
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00019\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N,\ \textcolor{keywordtype}{int}\ M>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}}
-\DoxyCodeLine{00020\ \{}
-\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1a0f005a9ea05d72b898ee035905c098}{SharedKalmanFilter}}(\textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ systemDynamics,}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ N>\&\ outputMatrix,}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ processNoiseCovariance)\ :}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}(systemDynamics),}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}(outputMatrix),}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aad36466419b9ebbfb0866293d6046636}{\_processNoiseCovariance}}(processNoiseCovariance),}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a7a9450b6df1114180328996c2f8e3b9b}{\_identity}}(Eigen::Matrix<double,\ N,\ N>::Identity())}
-\DoxyCodeLine{00035\ \ \ \ \ \{}
-\DoxyCodeLine{00036\ \ \ \ \ \}}
-\DoxyCodeLine{00037\ }
-\DoxyCodeLine{00047\ \ \ \ \ std::pair<Eigen::Vector<double,\ N>,\ Eigen::Matrix<double,\ N,\ N>>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_abc306e2038088f7b12aa681151d2f298}{get\_new\_state}}(}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ currentState,}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ stateNoiseCovariance,}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ M>\&\ newMeasurement,}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ M>\&\ measurementNoiseCovariance)}
-\DoxyCodeLine{00052\ \ \ \ \ \{}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ parameters}}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(stateNoiseCovariance))}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ stateNoiseCovariance\ is\ an\ invalid\ covariance\ matrix"{}});}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(measurementNoiseCovariance))}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ measurementNoiseCovariance\ is\ an\ invalid\ covariance\ matrix"{}});}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00064\ }
-\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ new\ raw\ estimate}}
-\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ newStateEstimate\ =\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}\ *\ currentState;}
-\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ estimateErrorCovariance\ =}
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}\ *\ stateNoiseCovariance\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}.transpose()\ +\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aad36466419b9ebbfb0866293d6046636}{\_processNoiseCovariance}};}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ compute\ inovation\ covariance}}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ M>\&\ inovationCovariance\ =}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}\ *\ estimateErrorCovariance\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}.transpose()\ +\ measurementNoiseCovariance;}
-\DoxyCodeLine{00073\ }
-\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cannot\ inverse\ the\ inovation\ covariance\ matrix,\ no\ gain\ to\ compute\ (gain\ too\ small)}}
-\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387}{utils::double\_equal}}(inovationCovariance.determinant(),\ 0))}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ do\ not\ update\ state\ or\ covariance}}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(estimateErrorCovariance))}
-\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::logic\_error(}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ produced\ and\ invalid\ covariance\ estimateErrorCovariance"{}});}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(newStateEstimate,\ estimateErrorCovariance);}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00085\ }
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ compute\ Kalman\ gain}}
-\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ M>\&\ kalmanGain\ =}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (estimateErrorCovariance.template\ selfadjointView<Eigen::Lower>())\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}.transpose()\ *}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inovationCovariance.inverse();}
-\DoxyCodeLine{00090\ }
-\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ newState\ =}
-\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newStateEstimate\ +\ kalmanGain\ *\ (newMeasurement\ -\/\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}\ *\ newStateEstimate);}
-\DoxyCodeLine{00093\ }
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ Eigen::Matrix<double,\ N,\ N>\ newCovariance\ =\ (\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a7a9450b6df1114180328996c2f8e3b9b}{\_identity}}\ -\/\ kalmanGain\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}})\ *}
-\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (estimateErrorCovariance.template\ selfadjointView<Eigen::Lower>());}
-\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ force\ symetrie\ for\ covariance}}
-\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ newCovariance\ =\ newCovariance.template\ selfadjointView<Eigen::Lower>();}
-\DoxyCodeLine{00098\ }
-\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Alternative\ non\ Joseph\ form}}
-\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*const\ Eigen::Matrix<double,\ N,\ N>\&\ temp\ =\ \_identity\ -\/\ kalmanGain\ *\ \_outputMatrix;}}
-\DoxyCodeLine{00101\ \textcolor{comment}{\ \ \ \ \ \ \ \ const\ Eigen::Matrix<double,\ N,\ N>\&\ newCovariance\ =}}
-\DoxyCodeLine{00102\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ temp\ *\ estimateErrorCovariance\ *\ temp.transpose()\ +}}
-\DoxyCodeLine{00103\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kalmanGain\ *\ measurementNoiseCovariance\ *\ kalmanGain.transpose();*/}}
-\DoxyCodeLine{00104\ }
-\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(newCovariance))}
-\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::logic\_error(\textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ produced\ and\ invalid\ covariance"{}});}
-\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ return\ the\ covariance\ and\ state\ estimation}}
-\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(newState,\ newCovariance);}
-\DoxyCodeLine{00111\ \ \ \ \ \}}
-\DoxyCodeLine{00112\ }
-\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{//\ Matrices\ for\ computation}}
-\DoxyCodeLine{00114\ \ \ \ \ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}};}
-\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}};}
-\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aad36466419b9ebbfb0866293d6046636}{\_processNoiseCovariance}};}
-\DoxyCodeLine{00117\ }
-\DoxyCodeLine{00118\ \ \ \ \ \textcolor{comment}{//\ stateDimension-\/size\ identity}}
-\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a7a9450b6df1114180328996c2f8e3b9b}{\_identity}};}
-\DoxyCodeLine{00120\ \};}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00125\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N,\ \textcolor{keywordtype}{int}\ M>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter}{KalmanFilter}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}<N,\ M>}
-\DoxyCodeLine{00126\ \{}
-\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00134\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_ac36c265b2267ac931d7a234711509bde}{KalmanFilter}}(\textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ systemDynamics,}
-\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ N>\&\ outputMatrix,}
-\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ processNoiseCovariance)\ :}
-\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}<N,\ M>(systemDynamics,\ outputMatrix,\ processNoiseCovariance),}
-\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \_isInitialized(false),}
-\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \_stateEstimate(systemDynamics.rows())}
-\DoxyCodeLine{00140\ \ \ \ \ \{}
-\DoxyCodeLine{00141\ \ \ \ \ \}}
-\DoxyCodeLine{00142\ }
-\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1ded6a2cd57ca20c47b938883739dc4b}{init}}(\textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ firstEstimateErrorCovariance,}
-\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ x0)\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00150\ \ \ \ \ \{}
-\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \_estimateErrorCovariance\ =\ firstEstimateErrorCovariance;}
-\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \_stateEstimate\ =\ x0;}
-\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \_isInitialized\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00154\ \ \ \ \ \}}
-\DoxyCodeLine{00155\ }
-\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_aacd9c8e0efdbffa74407f6412bcc6719}{update}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ M>\&\ newMeasurement,}
-\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ M>\&\ measurementNoiseCovariance)}
-\DoxyCodeLine{00163\ \ \ \ \ \{}
-\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1456d99edeaceac2424d9e1b8fa9ce49}{is\_initialized}}())}
-\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::logic\_error(\textcolor{stringliteral}{"{}KalmanFilter::update:\ called\ before\ initialization"{}});}
-\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00168\ }
-\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ covariance\ and\ state\ estimation}}
-\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::pair<Eigen::Vector<double,\ N>,\ Eigen::Matrix<double,\ N,\ N>>\&\ res\ =\ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_abc306e2038088f7b12aa681151d2f298}{get\_new\_state}}(}
-\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_stateEstimate,\ \_estimateErrorCovariance,\ newMeasurement,\ measurementNoiseCovariance);}
-\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \_stateEstimate\ =\ res.first;}
-\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \_estimateErrorCovariance\ =\ res.second;}
-\DoxyCodeLine{00174\ \ \ \ \ \}}
-\DoxyCodeLine{00175\ }
-\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a58626950e3ba592f30659db5de341ac3}{update}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ newMeasurement,}
-\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ measurementNoiseCovariance,}
-\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ systemDynamics)}
-\DoxyCodeLine{00185\ \ \ \ \ \{}
-\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}\ =\ systemDynamics;}
-\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_aacd9c8e0efdbffa74407f6412bcc6719}{update}}(newMeasurement,\ measurementNoiseCovariance);}
-\DoxyCodeLine{00188\ \ \ \ \ \}}
-\DoxyCodeLine{00189\ }
-\DoxyCodeLine{00190\ \ \ \ \ [[nodiscard]]\ Eigen::Vector<double,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a9146ca80f330ec370fa41eb0ed9debde}{get\_state}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_stateEstimate;\ \};}
-\DoxyCodeLine{00191\ \ \ \ \ [[nodiscard]]\ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1c279a6bcc34db3aef795c445df15dc7}{get\_state\_covariance}}()\ const\ noexcept}
-\DoxyCodeLine{00192\ \ \ \ \ \{}
-\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_estimateErrorCovariance;}
-\DoxyCodeLine{00194\ \ \ \ \ \};}
-\DoxyCodeLine{00195\ }
-\DoxyCodeLine{00196\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1456d99edeaceac2424d9e1b8fa9ce49}{is\_initialized}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_isInitialized;\ \}}
-\DoxyCodeLine{00197\ }
-\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00199\ \ \ \ \ \textcolor{comment}{//\ Is\ the\ filter\ isInitialized?}}
-\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_isInitialized;}
-\DoxyCodeLine{00201\ }
-\DoxyCodeLine{00202\ \ \ \ \ \textcolor{comment}{//\ Estimated\ state}}
-\DoxyCodeLine{00203\ \ \ \ \ Eigen::Vector<double,\ N>\ \_stateEstimate;}
-\DoxyCodeLine{00204\ \ \ \ \ Eigen::Matrix<double,\ N,\ N>\ \_estimateErrorCovariance;}
-\DoxyCodeLine{00205\ \};}
-\DoxyCodeLine{00206\ }
-\DoxyCodeLine{00207\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::tracking}}
-\DoxyCodeLine{00208\ }
-\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{covariances_8hpp}{covariances.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{distance__utils_8hpp}{distance\_utils.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <Eigen/src/Core/Matrix.h>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1tracking}{rgbd\_slam::tracking}}\ \{}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N,\ \textcolor{keywordtype}{int}\ M>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a1a0f005a9ea05d72b898ee035905c098}{SharedKalmanFilter}}(\textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ systemDynamics,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ N>\&\ outputMatrix,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ processNoiseCovariance)\ :}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}(systemDynamics),}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}(outputMatrix),}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aad36466419b9ebbfb0866293d6046636}{\_processNoiseCovariance}}(processNoiseCovariance),}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a7a9450b6df1114180328996c2f8e3b9b}{\_identity}}(\mbox{\hyperlink{namespace_eigen}{Eigen}}::Matrix<double,\ N,\ N>::Identity())}
+\DoxyCodeLine{00034\ \ \ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00046\ \ \ \ \ [[nodiscard]]\ std::pair<Eigen::Vector<double,\ N>,\ Eigen::Matrix<double,\ N,\ N>>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_abc306e2038088f7b12aa681151d2f298}{get\_new\_state}}(}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ currentState,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ stateNoiseCovariance,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ M>\&\ newMeasurement,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ M>\&\ measurementNoiseCovariance)}
+\DoxyCodeLine{00051\ \ \ \ \ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ parameters}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(stateNoiseCovariance))}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ stateNoiseCovariance\ is\ an\ invalid\ covariance\ matrix"{}});}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(measurementNoiseCovariance))}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ measurementNoiseCovariance\ is\ an\ invalid\ covariance\ matrix"{}});}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ new\ raw\ estimate}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ newStateEstimate\ =\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}\ *\ currentState;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ estimateErrorCovariance\ =}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}\ *\ stateNoiseCovariance\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}.transpose()\ +\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aad36466419b9ebbfb0866293d6046636}{\_processNoiseCovariance}};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ compute\ inovation\ covariance}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ M>\&\ inovationCovariance\ =}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}\ *\ estimateErrorCovariance\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}.transpose()\ +\ measurementNoiseCovariance;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cannot\ inverse\ the\ inovation\ covariance\ matrix,\ no\ gain\ to\ compute\ (gain\ too\ small)}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387}{utils::double\_equal}}(inovationCovariance.determinant(),\ 0))}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ do\ not\ update\ state\ or\ covariance}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(estimateErrorCovariance))}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::logic\_error(}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ produced\ an\ invalid\ covariance\ estimateErrorCovariance"{}});}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(newStateEstimate,\ estimateErrorCovariance);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ compute\ Kalman\ gain}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ M>\&\ kalmanGain\ =}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (estimateErrorCovariance.template\ selfadjointView<Eigen::Lower>())\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}.transpose()\ *}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inovationCovariance.inverse();}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ newState\ =}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newStateEstimate\ +\ kalmanGain\ *\ (newMeasurement\ -\/\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}}\ *\ newStateEstimate);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ Eigen::Matrix<double,\ N,\ N>\ newCovariance\ =\ (\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a7a9450b6df1114180328996c2f8e3b9b}{\_identity}}\ -\/\ kalmanGain\ *\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}})\ *}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (estimateErrorCovariance.template\ selfadjointView<Eigen::Lower>());}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ force\ symetrie\ for\ covariance}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ newCovariance\ =\ newCovariance.template\ selfadjointView<Eigen::Lower>();}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Alternative\ non\ Joseph\ form}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*const\ Eigen::Matrix<double,\ N,\ N>\&\ temp\ =\ \_identity\ -\/\ kalmanGain\ *\ \_outputMatrix;}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ \ \ \ \ \ \ const\ Eigen::Matrix<double,\ N,\ N>\&\ newCovariance\ =}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ temp\ *\ estimateErrorCovariance\ *\ temp.transpose()\ +}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kalmanGain\ *\ measurementNoiseCovariance\ *\ kalmanGain.transpose();*/}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{utils::is\_covariance\_valid}}(newCovariance))}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::logic\_error(\textcolor{stringliteral}{"{}SharedKalmanFilter::get\_new\_state:\ produced\ an\ invalid\ covariance"{}});}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ return\ the\ covariance\ and\ state\ estimation}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(newState,\ newCovariance);}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{comment}{//\ Matrices\ for\ computation}}
+\DoxyCodeLine{00113\ \ \ \ \ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}};}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_ac2d9ee7e59d4c38c584b942475b0bea2}{\_outputMatrix}};}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aad36466419b9ebbfb0866293d6046636}{\_processNoiseCovariance}};}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ stateDimension-\/size\ identity}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_a7a9450b6df1114180328996c2f8e3b9b}{\_identity}};}
+\DoxyCodeLine{00119\ \};}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00124\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N,\ \textcolor{keywordtype}{int}\ M>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter}{KalmanFilter}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}<N,\ M>}
+\DoxyCodeLine{00125\ \{}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00133\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_ac36c265b2267ac931d7a234711509bde}{KalmanFilter}}(\textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ systemDynamics,}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ N>\&\ outputMatrix,}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ processNoiseCovariance)\ :}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}<N,\ M>(systemDynamics,\ outputMatrix,\ processNoiseCovariance),}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \_isInitialized(false),}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \_stateEstimate(systemDynamics.rows())}
+\DoxyCodeLine{00139\ \ \ \ \ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1ded6a2cd57ca20c47b938883739dc4b}{init}}(\textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ firstEstimateErrorCovariance,}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ x0)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00149\ \ \ \ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \_estimateErrorCovariance\ =\ firstEstimateErrorCovariance;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \_stateEstimate\ =\ x0;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_aacd9c8e0efdbffa74407f6412bcc6719}{update}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ M>\&\ newMeasurement,}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ M,\ M>\&\ measurementNoiseCovariance)}
+\DoxyCodeLine{00162\ \ \ \ \ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1456d99edeaceac2424d9e1b8fa9ce49}{is\_initialized}}())}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::logic\_error(\textcolor{stringliteral}{"{}KalmanFilter::update:\ called\ before\ initialization"{}});}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ covariance\ and\ state\ estimation}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::pair<Eigen::Vector<double,\ N>,\ Eigen::Matrix<double,\ N,\ N>>\&\ res\ =\ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_abc306e2038088f7b12aa681151d2f298}{get\_new\_state}}(}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_stateEstimate,\ \_estimateErrorCovariance,\ newMeasurement,\ measurementNoiseCovariance);}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \_stateEstimate\ =\ res.first;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \_estimateErrorCovariance\ =\ res.second;}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a58626950e3ba592f30659db5de341ac3}{update}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ N>\&\ newMeasurement,}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ measurementNoiseCovariance,}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ N,\ N>\&\ systemDynamics)}
+\DoxyCodeLine{00184\ \ \ \ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter_aa6649a8ddf6d8e965d60f653e2a632fb}{\_systemDynamics}}\ =\ systemDynamics;}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_aacd9c8e0efdbffa74407f6412bcc6719}{update}}(newMeasurement,\ measurementNoiseCovariance);}
+\DoxyCodeLine{00187\ \ \ \ \ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ [[nodiscard]]\ Eigen::Vector<double,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a9146ca80f330ec370fa41eb0ed9debde}{get\_state}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_stateEstimate;\ \};}
+\DoxyCodeLine{00190\ \ \ \ \ [[nodiscard]]\ Eigen::Matrix<double,\ N,\ N>\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1c279a6bcc34db3aef795c445df15dc7}{get\_state\_covariance}}()\ const\ noexcept}
+\DoxyCodeLine{00191\ \ \ \ \ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_estimateErrorCovariance;}
+\DoxyCodeLine{00193\ \ \ \ \ \};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_kalman_filter_a1456d99edeaceac2424d9e1b8fa9ce49}{is\_initialized}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_isInitialized;\ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{comment}{//\ Is\ the\ filter\ isInitialized?}}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_isInitialized;}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{comment}{//\ Estimated\ state}}
+\DoxyCodeLine{00202\ \ \ \ \ Eigen::Vector<double,\ N>\ \_stateEstimate;}
+\DoxyCodeLine{00203\ \ \ \ \ Eigen::Matrix<double,\ N,\ N>\ \_estimateErrorCovariance;}
+\DoxyCodeLine{00204\ \};}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::tracking}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

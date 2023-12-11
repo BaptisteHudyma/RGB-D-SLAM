@@ -99,21 +99,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad85d6c99d87675150803c70440a480ee" id="r_ad85d6c99d87675150803c70440a480ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#ad85d6c99d87675150803c70440a480ee">find_feature_matches</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;currentPose, const <a class="el" href="structrgbd__slam_1_1map__management_1_1_detected_feature_container.html">DetectedFeatureContainer</a> &amp;detectedFeatures) noexcept</td></tr>
 <tr class="memdesc:ad85d6c99d87675150803c70440a480ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find all matches for the given detected features.  <br /></td></tr>
 <tr class="separator:ad85d6c99d87675150803c70440a480ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9bd0a623d63e183be5d482d098fe72a" id="r_ae9bd0a623d63e183be5d482d098fe72a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#ae9bd0a623d63e183be5d482d098fe72a">update</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;optimizedPose, const <a class="el" href="structrgbd__slam_1_1map__management_1_1_detected_feature_container.html">DetectedFeatureContainer</a> &amp;detectedFeatures, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a5dd025751281c2e733588e8229f68690">matches_containers::match_point_container</a> &amp;outlierMatchedPoints, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#ae435b06d82751fed7f7d9dfebf3cf594">matches_containers::match_plane_container</a> &amp;outlierMatchedPlanes) noexcept</td></tr>
-<tr class="memdesc:ae9bd0a623d63e183be5d482d098fe72a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the local and global map. Add new points to staged and map container.  <br /></td></tr>
-<tr class="separator:ae9bd0a623d63e183be5d482d098fe72a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1720d44f9fc682ec0565e8b2d2d764c0" id="r_a1720d44f9fc682ec0565e8b2d2d764c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a1720d44f9fc682ec0565e8b2d2d764c0">update</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;optimizedPose, const <a class="el" href="structrgbd__slam_1_1map__management_1_1_detected_feature_container.html">DetectedFeatureContainer</a> &amp;detectedFeatures, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a5dd025751281c2e733588e8229f68690">matches_containers::match_point_container</a> &amp;outlierMatchedPoints, const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#ae435b06d82751fed7f7d9dfebf3cf594">matches_containers::match_plane_container</a> &amp;outlierMatchedPlanes)</td></tr>
+<tr class="memdesc:a1720d44f9fc682ec0565e8b2d2d764c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the local and global map. Add new points to staged and map container.  <br /></td></tr>
+<tr class="separator:a1720d44f9fc682ec0565e8b2d2d764c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c6e847e5a35751a5b3a48a8c06933cd" id="r_a8c6e847e5a35751a5b3a48a8c06933cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a8c6e847e5a35751a5b3a48a8c06933cd">update_no_pose</a> () noexcept</td></tr>
 <tr class="memdesc:a8c6e847e5a35751a5b3a48a8c06933cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the local map when no pose could be estimated. Consider all features as unmatched.  <br /></td></tr>
 <tr class="separator:a8c6e847e5a35751a5b3a48a8c06933cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19f9c3cec66360f56932f90d811a6bb5" id="r_a19f9c3cec66360f56932f90d811a6bb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a19f9c3cec66360f56932f90d811a6bb5">add_features_to_map</a> (const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="structrgbd__slam_1_1map__management_1_1_detected_feature_container.html">DetectedFeatureContainer</a> &amp;detectedFeatures, const bool addAllFeatures) noexcept</td></tr>
-<tr class="memdesc:a19f9c3cec66360f56932f90d811a6bb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add features to staged map.  <br /></td></tr>
-<tr class="separator:a19f9c3cec66360f56932f90d811a6bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41ac9a96c400379c725484676d2245f1" id="r_a41ac9a96c400379c725484676d2245f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a41ac9a96c400379c725484676d2245f1">add_features_to_map</a> (const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance, const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="structrgbd__slam_1_1map__management_1_1_detected_feature_container.html">DetectedFeatureContainer</a> &amp;detectedFeatures, const bool addAllFeatures)</td></tr>
+<tr class="memdesc:a41ac9a96c400379c725484676d2245f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add features to staged map.  <br /></td></tr>
+<tr class="separator:a41ac9a96c400379c725484676d2245f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5496939c0c06ca6a811d9e31730046c5" id="r_a5496939c0c06ca6a811d9e31730046c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#a5496939c0c06ca6a811d9e31730046c5">reset</a> () noexcept</td></tr>
 <tr class="memdesc:a5496939c0c06ca6a811d9e31730046c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hard clean the local and staged map.  <br /></td></tr>
 <tr class="separator:a5496939c0c06ca6a811d9e31730046c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2b5dbdd4d467490e091ed2cc27300d4" id="r_aa2b5dbdd4d467490e091ed2cc27300d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#aa2b5dbdd4d467490e091ed2cc27300d4">get_debug_image</a> (const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose.html">utils::Pose</a> &amp;camPose, const bool shouldDisplayStaged, const bool shouldDisplayPlaneMasks, cv::Mat &amp;debugImage) const noexcept</td></tr>
 <tr class="memdesc:aa2b5dbdd4d467490e091ed2cc27300d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a debug image to display the keypoints &amp; planes.  <br /></td></tr>
 <tr class="separator:aa2b5dbdd4d467490e091ed2cc27300d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1b27eb21bba835f09975a6005edbabd" id="r_ae1b27eb21bba835f09975a6005edbabd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1map__management_1_1_local___map.html#ae1b27eb21bba835f09975a6005edbabd">show_statistics</a> (const double meanFrameTreatmentDuration, const uint frameCount, const bool shouldDisplayDetails=false) const noexcept</td></tr>
+<tr class="separator:ae1b27eb21bba835f09975a6005edbabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -168,14 +170,11 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a19f9c3cec66360f56932f90d811a6bb5" name="a19f9c3cec66360f56932f90d811a6bb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19f9c3cec66360f56932f90d811a6bb5">&#9670;&#160;</a></span>add_features_to_map()</h2>
+<a id="a41ac9a96c400379c725484676d2245f1" name="a41ac9a96c400379c725484676d2245f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41ac9a96c400379c725484676d2245f1">&#9670;&#160;</a></span>add_features_to_map()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void rgbd_slam::map_management::Local_Map::add_features_to_map </td>
@@ -207,11 +206,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Add features to staged map. </p>
@@ -489,14 +483,53 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae9bd0a623d63e183be5d482d098fe72a" name="ae9bd0a623d63e183be5d482d098fe72a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9bd0a623d63e183be5d482d098fe72a">&#9670;&#160;</a></span>update()</h2>
+<a id="ae1b27eb21bba835f09975a6005edbabd" name="ae1b27eb21bba835f09975a6005edbabd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1b27eb21bba835f09975a6005edbabd">&#9670;&#160;</a></span>show_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::map_management::Local_Map::show_statistics </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>meanFrameTreatmentDuration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>frameCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>shouldDisplayDetails</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1720d44f9fc682ec0565e8b2d2d764c0" name="a1720d44f9fc682ec0565e8b2d2d764c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1720d44f9fc682ec0565e8b2d2d764c0">&#9670;&#160;</a></span>update()</h2>
+
+<div class="memitem">
+<div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void rgbd_slam::map_management::Local_Map::update </td>
@@ -528,11 +561,6 @@ Protected Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Update the local and global map. Add new points to staged and map container. </p>

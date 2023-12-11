@@ -9,6 +9,10 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate2_d}{Came
 \begin{DoxyCompactList}\small\item\em Contains a single of coordinate in camera space. Camera space is defined as (x, y), relative to the camera center. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{Camera\+Polygon}}
 \begin{DoxyCompactList}\small\item\em Describe a polygon in camera coordinates. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}}
+\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{Inverse\+Depth\+World\+Point}}
+\begin{DoxyCompactList}\small\item\em Contain an inverse depth representation of a world point. This is used to represent point with an unknown depth. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{Plane\+Camera\+Coordinates}}
 \begin{DoxyCompactList}\small\item\em The parametrization of a plane in camera coordinates. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}}
@@ -27,6 +31,8 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\
 \begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters) \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}}
 \begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}}
+\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}}
 \begin{DoxyCompactList}\small\item\em Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_world_polygon}{World\+Polygon}}
@@ -49,16 +55,22 @@ using \mbox{\hyperlink{namespacergbd__slam_1_1utils_aba8243faeece6c766b7d18fa69e
 \item 
 \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5ebcc138398dd5eb327a7f3511a27c8d}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&position) noexcept
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a206878e4f0b9589162acdfbea3c7316c}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera) noexcept
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a54eeff8e58b720f2a6b226c321c3a1cc}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform\+\_\+no\+\_\+correction}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&position) noexcept
+\begin{DoxyCompactList}\small\item\em DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3cab8d3e798d09c4d39a14f58d2edd78}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&position) noexcept
 \begin{DoxyCompactList}\small\item\em Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3305d4173d2bf66546c1d3a956b84d16}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a206878e4f0b9589162acdfbea3c7316c}{compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera) noexcept
-\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a0e98d59dd3cae8a250b7a04a9e765c06}{compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform\+\_\+no\+\_\+correction}} (const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&rotation, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&position) noexcept
+\begin{DoxyCompactList}\small\item\em DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_plane_camera_to_world_matrix}{Plane\+Camera\+To\+World\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aefd412bfec46952817ed7f4248d5c069}{compute\+\_\+plane\+\_\+camera\+\_\+to\+\_\+world\+\_\+matrix}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World) noexcept
 \begin{DoxyCompactList}\small\item\em Transform a \doxylink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix} to a special plane camera\+To\+World matrix. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_plane_world_to_camera_matrix}{Plane\+World\+To\+Camera\+Matrix}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a06af923843a4356694463fccfa499697}{compute\+\_\+plane\+\_\+world\+\_\+to\+\_\+camera\+\_\+matrix}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera) noexcept
 \begin{DoxyCompactList}\small\item\em Transform a \doxylink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix} to a special plane world\+To\+Camera matrix. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_add99b78dd35f5fbd29ed8e386dc2309e}{get\+\_\+plane\+\_\+transformation}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&plane) noexcept
+\begin{DoxyCompactList}\small\item\em Compute a reduced plane form, allowing for better optimization. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac85068e2a7fee034ef2c4879b1b9aee0}{is\+\_\+depth\+\_\+valid}} (const double depth) noexcept
 \begin{DoxyCompactList}\small\item\em Return true is a measurement is in the measurement range. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aa1a33d67cf96690a98cf6c5a1b20e82f}{get\+\_\+transformation\+\_\+matrix}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center\+From, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&x\+To, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&y\+To, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&center\+To)
@@ -67,8 +79,6 @@ bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac85068e2a7fee034ef2c4879b1b9
 \begin{DoxyCompactList}\small\item\em Transform screen coordinates to camera coordinates. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a2834b75d457fd5d0ce8e12c91ca0bbe1}{transform\+\_\+camera\+\_\+to\+\_\+screen}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&screen\+Point)
 \begin{DoxyCompactList}\small\item\em Transform camera coordinates to screen coordinates. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_add99b78dd35f5fbd29ed8e386dc2309e}{get\+\_\+plane\+\_\+transformation}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&plane) noexcept
-\begin{DoxyCompactList}\small\item\em Compute a reduced plane form, allowing for better optimization. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a034845c6434a68e6e6002f4f6277ab2c}{get\+\_\+depth\+\_\+quantization}} (const double depht) noexcept
 \begin{DoxyCompactList}\small\item\em Return the expected depth quantization at this depth value. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a1e7d30fceb1656c046225f4885da0a31}{get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&point, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&point\+Covariance) noexcept
@@ -77,6 +87,8 @@ double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a034845c6434a68e6e6002f4f62
 \begin{DoxyCompactList}\small\item\em Compute a screen point covariance from a given point. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a7bb51a5bdb779e18aa2fef3309765094}{get\+\_\+screen\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} \&point, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \&point\+Covariance) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a screen point covariance from a given point. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a115c8ecf807d5970f1ad789bfedb04b4}{get\+\_\+camera\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&world\+Point\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&world\+To\+Camera, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance) noexcept
+\begin{DoxyCompactList}\small\item\em Compute the covariance of the camera point from the world coordinates. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_aea0efe85d8571e80a7c8665704cb0d9e}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} \&camera\+Point\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance) noexcept
 \begin{DoxyCompactList}\small\item\em Compute the covariance of a world point. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9778cf1395973f4bb8b77e72cb1335c8}{get\+\_\+world\+\_\+point\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&screen\+Point, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&pose\+Covariance) noexcept
@@ -88,7 +100,7 @@ double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a034845c6434a68e6e6002f4f62
 \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3735cd614fe750dfe0dc7ade7346b158}{compute\+\_\+plane\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&plane\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&point\+Cloud\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute the covariance of a plane using it\textquotesingle{}s point cloud covariance matrix. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a071e281f17fe3f487e25e9cc9349a5a3}{compute\+\_\+reduced\+\_\+plane\+\_\+point\+\_\+cloud\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&plane\+Parameters, const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&plane\+Cloud\+Covariance)
-\item 
+\begin{DoxyCompactList}\small\item\em Compute the covariance of a plane as the covariance of the equivalent point cloud. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_adb9b794ab09890567eb981adabe2b566}{get\+\_\+world\+\_\+plane\+\_\+covariance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{Plane\+Camera\+Coordinates}} \&plane\+Coordinates, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&camera\+To\+World\+Matrix, const \mbox{\hyperlink{structrgbd__slam_1_1_plane_camera_to_world_matrix}{Plane\+Camera\+To\+World\+Matrix}} \&plane\+Camera\+To\+World\+Matrix, const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&plane\+Covariance, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&world\+Pose\+Covariance)
 \begin{DoxyCompactList}\small\item\em Compute the covariance of the world plane. \end{DoxyCompactList}\item 
 {\footnotesize template$<$int N$>$ }\\bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9cbda3c897f333211ee9d67b329dcec5}{is\+\_\+covariance\+\_\+valid}} (const Eigen\+::\+Matrix$<$ double, N, N $>$ \&covariance) noexcept
@@ -97,6 +109,8 @@ double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a16a02447a90e06cbf50b708dad
 \begin{DoxyCompactList}\small\item\em compute a distance bewteen two angles in radian \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387}{double\+\_\+equal}} (const double a, const double b, const double epsilon=std\+::numeric\+\_\+limits$<$ double $>$\+::epsilon()) noexcept
 \begin{DoxyCompactList}\small\item\em Check an equality between two doubles, with an epsilon\+: TODO move this to a more sensible location. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a68a1b2e241cceac86f0e40b7fc5c6259}{signed\+\_\+line\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line1point, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line1normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line2point, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line2normal) noexcept
+\begin{DoxyCompactList}\small\item\em compute the distance between two lines. This is the distance between the two points closest to each others on each line \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a82917c7b90b3b7cc6a00354c63d07089}{select\+\_\+correct\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal) noexcept
 \begin{DoxyCompactList}\small\item\em Select the transform vector furthest from the normal. \end{DoxyCompactList}\item 
 std\+::pair$<$ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}, \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a247e4c7ebf1febb62f368e4a9ef970e3}{get\+\_\+plane\+\_\+coordinate\+\_\+system}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal)
@@ -163,6 +177,16 @@ Given a camera pose, returns a transformation matrix to convert a camera point (
 \doxysubsubsection{\texorpdfstring{compute\_camera\_to\_world\_transform()}{compute\_camera\_to\_world\_transform()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
+\Hypertarget{namespacergbd__slam_1_1utils_a54eeff8e58b720f2a6b226c321c3a1cc}\label{namespacergbd__slam_1_1utils_a54eeff8e58b720f2a6b226c321c3a1cc} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_camera\_to\_world\_transform\_no\_correction@{compute\_camera\_to\_world\_transform\_no\_correction}}
+\index{compute\_camera\_to\_world\_transform\_no\_correction@{compute\_camera\_to\_world\_transform\_no\_correction}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{compute\_camera\_to\_world\_transform\_no\_correction()}{compute\_camera\_to\_world\_transform\_no\_correction()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+camera\+\_\+to\+\_\+world\+\_\+transform\+\_\+no\+\_\+correction (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED. 
+
 \Hypertarget{namespacergbd__slam_1_1utils_aefd412bfec46952817ed7f4248d5c069}\label{namespacergbd__slam_1_1utils_aefd412bfec46952817ed7f4248d5c069} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_plane\_camera\_to\_world\_matrix@{compute\_plane\_camera\_to\_world\_matrix}}
 \index{compute\_plane\_camera\_to\_world\_matrix@{compute\_plane\_camera\_to\_world\_matrix}!rgbd\_slam::utils@{rgbd\_slam::utils}}
@@ -209,6 +233,20 @@ Transform a \doxylink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Ca
 \doxysubsubsection{\texorpdfstring{compute\_reduced\_plane\_point\_cloud\_covariance()}{compute\_reduced\_plane\_point\_cloud\_covariance()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+reduced\+\_\+plane\+\_\+point\+\_\+cloud\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}} \&}]{plane\+Parameters,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} \&}]{plane\+Cloud\+Covariance }\end{DoxyParamCaption})}
 
+
+
+Compute the covariance of a plane as the covariance of the equivalent point cloud. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em plane\+Parameters} & The plane parameters to compute covariance for \\
+\hline
+\mbox{\texttt{ in}}  & {\em plane\+Cloud\+Covariance} & The covariance of the plane parameters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the equivalent point cloud parameter covariance 
+\end{DoxyReturn}
 \Hypertarget{namespacergbd__slam_1_1utils_a3305d4173d2bf66546c1d3a956b84d16}\label{namespacergbd__slam_1_1utils_a3305d4173d2bf66546c1d3a956b84d16} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}}
 \index{compute\_world\_to\_camera\_transform@{compute\_world\_to\_camera\_transform}!rgbd\_slam::utils@{rgbd\_slam::utils}}
@@ -224,6 +262,16 @@ Transform a \doxylink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Ca
 
 
 Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd) 
+
+\Hypertarget{namespacergbd__slam_1_1utils_a0e98d59dd3cae8a250b7a04a9e765c06}\label{namespacergbd__slam_1_1utils_a0e98d59dd3cae8a250b7a04a9e765c06} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!compute\_world\_to\_camera\_transform\_no\_correction@{compute\_world\_to\_camera\_transform\_no\_correction}}
+\index{compute\_world\_to\_camera\_transform\_no\_correction@{compute\_world\_to\_camera\_transform\_no\_correction}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{compute\_world\_to\_camera\_transform\_no\_correction()}{compute\_world\_to\_camera\_transform\_no\_correction()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} rgbd\+\_\+slam\+::utils\+::compute\+\_\+world\+\_\+to\+\_\+camera\+\_\+transform\+\_\+no\+\_\+correction (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}} \&}]{rotation,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED. 
 
 \Hypertarget{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387}\label{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!double\_equal@{double\_equal}}
@@ -250,7 +298,7 @@ true if the two values are equal at +-\/ epsilon
 \Hypertarget{namespacergbd__slam_1_1utils_a556ccbd966f58a0f76d9a53405072745}\label{namespacergbd__slam_1_1utils_a556ccbd966f58a0f76d9a53405072745} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_camera\_point\_covariance@{get\_camera\_point\_covariance}}
 \index{get\_camera\_point\_covariance@{get\_camera\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_camera\_point\_covariance()}{get\_camera\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\doxysubsubsection{\texorpdfstring{get\_camera\_point\_covariance()}{get\_camera\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
@@ -268,7 +316,7 @@ the covariance of the 3D camera point
 \Hypertarget{namespacergbd__slam_1_1utils_a09ee9e17b91f1e9ef5fdd7d24bcace6d}\label{namespacergbd__slam_1_1utils_a09ee9e17b91f1e9ef5fdd7d24bcace6d} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_camera\_point\_covariance@{get\_camera\_point\_covariance}}
 \index{get\_camera\_point\_covariance@{get\_camera\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
-\doxysubsubsection{\texorpdfstring{get\_camera\_point\_covariance()}{get\_camera\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\doxysubsubsection{\texorpdfstring{get\_camera\_point\_covariance()}{get\_camera\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
 {\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\+Coordinate}} \&}]{screen\+Point,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{Screen\+Coordinate\+Covariance}} \&}]{screen\+Point\+Covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
@@ -285,6 +333,25 @@ Compute the associated Gaussian error of a screen point when it will be transfor
 \begin{DoxyReturn}{Returns}
 the covariance of the 3D camera point 
 \end{DoxyReturn}
+\Hypertarget{namespacergbd__slam_1_1utils_a115c8ecf807d5970f1ad789bfedb04b4}\label{namespacergbd__slam_1_1utils_a115c8ecf807d5970f1ad789bfedb04b4} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_camera\_point\_covariance@{get\_camera\_point\_covariance}}
+\index{get\_camera\_point\_covariance@{get\_camera\_point\_covariance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{get\_camera\_point\_covariance()}{get\_camera\_point\_covariance()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{Camera\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::utils\+::get\+\_\+camera\+\_\+point\+\_\+covariance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&}]{world\+Point\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{world\+To\+Camera,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{pose\+Covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Compute the covariance of the camera point from the world coordinates. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em world\+Point\+Covariance} & The covariance of the world point to convert \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+To\+Camera} & The matrix to convert world to camera coordinates \\
+\hline
+\mbox{\texttt{ in}}  & {\em pose\+Covariance} & The covariance of the pose \\
+\hline
+\end{DoxyParams}
 \Hypertarget{namespacergbd__slam_1_1utils_a034845c6434a68e6e6002f4f6277ab2c}\label{namespacergbd__slam_1_1utils_a034845c6434a68e6e6002f4f6277ab2c} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!get\_depth\_quantization@{get\_depth\_quantization}}
 \index{get\_depth\_quantization@{get\_depth\_quantization}!rgbd\_slam::utils@{rgbd\_slam::utils}}
@@ -569,6 +636,19 @@ Return true is a measurement is in the measurement range.
 
 Select the transform vector furthest from the normal. 
 
+\Hypertarget{namespacergbd__slam_1_1utils_a68a1b2e241cceac86f0e40b7fc5c6259}\label{namespacergbd__slam_1_1utils_a68a1b2e241cceac86f0e40b7fc5c6259} 
+\index{rgbd\_slam::utils@{rgbd\_slam::utils}!signed\_line\_distance@{signed\_line\_distance}}
+\index{signed\_line\_distance@{signed\_line\_distance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
+\doxysubsubsection{\texorpdfstring{signed\_line\_distance()}{signed\_line\_distance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::signed\+\_\+line\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line1point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line1normal,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line2point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line2normal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+compute the distance between two lines. This is the distance between the two points closest to each others on each line 
+
+\begin{DoxyReturn}{Returns}
+a signed distance, in the same unit as the points 
+\end{DoxyReturn}
 \Hypertarget{namespacergbd__slam_1_1utils_a2834b75d457fd5d0ce8e12c91ca0bbe1}\label{namespacergbd__slam_1_1utils_a2834b75d457fd5d0ce8e12c91ca0bbe1} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!transform\_camera\_to\_screen@{transform\_camera\_to\_screen}}
 \index{transform\_camera\_to\_screen@{transform\_camera\_to\_screen}!rgbd\_slam::utils@{rgbd\_slam::utils}}

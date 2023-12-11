@@ -32,7 +32,7 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segm
 \begin{DoxyCompactList}\small\item\em Fit a plane to the contained points using PCA. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_aa9eaa39bfe792a52e32bf7f23dde4e11}{clear\+\_\+plane\+\_\+parameters}} () noexcept
 \begin{DoxyCompactList}\small\item\em Clears this segment parameters to restart analysis. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee}{get\+\_\+point\+\_\+cloud\+\_\+covariance}} () const noexcept
+\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a673e1b4c7064c6b04a0c35c4e787ab16}{get\+\_\+point\+\_\+cloud\+\_\+covariance}} () const
 \begin{DoxyCompactList}\small\item\em Compute the covariance of the points in the plane. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a0f7705197d19b80c42c2894f626360ad}{get\+\_\+\+MSE}} () const noexcept
 \item 
@@ -146,7 +146,7 @@ Merge the PCA saved values in prevision of a plane fitting. This function do not
 
 Fit a plane to the contained points using PCA. 
 
-Alternative plane parameter computation const matrix33\& pcc = \doxylink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee}{get\+\_\+point\+\_\+cloud\+\_\+covariance()}; const vector3 e(-\/\+\_\+\+Sx, -\/\+\_\+\+Sy, -\/\+\_\+\+Sz); const vector3 params = (pcc \texorpdfstring{$\ast$}{*} e).transpose(); const vector3 normal = params / params.\+norm(); const double d = 1.\+0 / params.\+norm();\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a75dde572fa10243009891c6a08355018}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a75dde572fa10243009891c6a08355018} 
+Alternative plane parameter computation const matrix33\& pcc = \doxylink{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a673e1b4c7064c6b04a0c35c4e787ab16}{get\+\_\+point\+\_\+cloud\+\_\+covariance()}; const vector3 e(-\/\+\_\+\+Sx, -\/\+\_\+\+Sy, -\/\+\_\+\+Sz); const vector3 params = (pcc \texorpdfstring{$\ast$}{*} e).transpose(); const vector3 normal = params / params.\+norm(); const double d = 1.\+0 / params.\+norm();\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a75dde572fa10243009891c6a08355018}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a75dde572fa10243009891c6a08355018} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_center@{get\_center}}
 \index{get\_center@{get\_center}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_center()}{get\_center()}}
@@ -200,11 +200,11 @@ A number between -\/1 and 1
 \doxysubsubsection{\texorpdfstring{get\_plane\_d()}{get\_plane\_d()}}
 {\footnotesize\ttfamily double rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+plane\+\_\+d (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_ab583877ebb2b9670297f4ac06693b0ee} 
+\Hypertarget{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a673e1b4c7064c6b04a0c35c4e787ab16}\label{classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment_a673e1b4c7064c6b04a0c35c4e787ab16} 
 \index{rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}!get\_point\_cloud\_covariance@{get\_point\_cloud\_covariance}}
 \index{get\_point\_cloud\_covariance@{get\_point\_cloud\_covariance}!rgbd\_slam::features::primitives::Plane\_Segment@{rgbd\_slam::features::primitives::Plane\_Segment}}
 \doxysubsubsection{\texorpdfstring{get\_point\_cloud\_covariance()}{get\_point\_cloud\_covariance()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+cloud\+\_\+covariance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} rgbd\+\_\+slam\+::features\+::primitives\+::\+Plane\+\_\+\+Segment\+::get\+\_\+point\+\_\+cloud\+\_\+covariance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
 
 
 

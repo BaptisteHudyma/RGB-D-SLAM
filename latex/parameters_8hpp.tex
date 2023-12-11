@@ -36,6 +36,8 @@ constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_a73dececcff9
 \item 
 constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_aa3568d0db63ed98fd20287f341a220c7}{rgbd\+\_\+slam\+::parameters\+::depth\+Sigma\+Margin}} = -\/0.\+53
 \item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a93671622ce56374058087c6b619e8136}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::maximum\+Retroprojection\+Error\+For\+Point2\+DInliers\+\_\+mm}}
+\item 
 constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a0cadff9b4af49317efe33fa87556caf5}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::maximum\+Retroprojection\+Error\+For\+Point\+Inliers\+\_\+px}}
 \item 
 constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a191c4131ca672f1090af70205166bb93}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::maximum\+Retroprojection\+Error\+For\+Plane\+Inliers\+\_\+mm}}
@@ -45,6 +47,8 @@ constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimizat
 constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a975f315740a68e5e6b6d472e0dc18da5}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::probability\+Of\+Success}} = 0.\+8f
 \item 
 constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_a2804f816542663a78bfdae0bba005677}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::inlier\+Proportion}} = 0.\+6f
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac_ade9ac83e8da2b4cefdf575c9e41a2c5c}{rgbd\+\_\+slam\+::parameters\+::optimization\+::ransac\+::feature\+Trust\+Count}} = 10.\+0
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a6ac6911f7e441e728d91ce0550be308b}{rgbd\+\_\+slam\+::parameters\+::optimization\+::minimum\+Point\+For\+Optimization}} = 5
 \item 
@@ -62,15 +66,15 @@ constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimizati
 \item 
 constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a2b6ef5e9d14af05461fb51aadbff10f6}{rgbd\+\_\+slam\+::parameters\+::optimization\+::diagonal\+Step\+Bound\+Shift}} = 100.\+0f
 \item 
-constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a1ff6c8f50286f530620dfb70beeacb14}{rgbd\+\_\+slam\+::parameters\+::optimization\+::maximum\+Retroprojection\+Error}}
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1optimization_a064f259a0155bfc3ac28b57d1ca7b814}{rgbd\+\_\+slam\+::parameters\+::optimization\+::maximum\+Retroprojection\+Error\+\_\+px}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a9c1c16f90d0ef0886713da5c90d21005}{rgbd\+\_\+slam\+::parameters\+::detection\+::tracked\+Mask\+Radius\+\_\+px}}
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a58a53527a5861893bc07b540f2ebc3ff}{rgbd\+\_\+slam\+::parameters\+::detection\+::keypoint\+Cell\+Detection\+Height\+Count}} = 3
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a1ca69fcc3691ed6b94b96fa8a1bee75e}{rgbd\+\_\+slam\+::parameters\+::detection\+::keypoint\+Cell\+Detection\+Width\+Count}} = 3
 \item 
-constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a506067cae6131ac70a83826b45e76f7a}{rgbd\+\_\+slam\+::parameters\+::detection\+::point\+Detector\+Threshold}} = 3
-\item 
-constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a537cb4cb1ed112c441da8cc5b63d49f2}{rgbd\+\_\+slam\+::parameters\+::detection\+::maximum\+Point\+Per\+Frame}}
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a537cb4cb1ed112c441da8cc5b63d49f2}{rgbd\+\_\+slam\+::parameters\+::detection\+::maximum\+Point\+Per\+Frame}} = 100
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_aae5ff5bf2d15f50d6f0c460def49111e}{rgbd\+\_\+slam\+::parameters\+::detection\+::keypoint\+Refresh\+Frequency}} = 5
 \item 
@@ -79,6 +83,10 @@ constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ad3c2f5e4467af4bb31ce581f573d3359}{rgbd\+\_\+slam\+::parameters\+::detection\+::optical\+Flow\+Pyramid\+Window\+Size\+Height\+Count}} = 9
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_aeaf82d3c2f7fc505b2bfc740d977c56e}{rgbd\+\_\+slam\+::parameters\+::detection\+::optical\+Flow\+Pyramid\+Window\+Size\+Width\+Count}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a648653ae67df200981ea81f3e4759d10}{rgbd\+\_\+slam\+::parameters\+::detection\+::inverse\+Depth\+Baseline}} = 1.\+0 / 1000.\+0
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a3ee4cac0889a03acd221bcecfa2393c0}{rgbd\+\_\+slam\+::parameters\+::detection\+::inverse\+Depth\+Angle\+Baseline}} = 0.\+5
 \item 
 constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a38767713312f98351c7843ff4a849c04}{rgbd\+\_\+slam\+::parameters\+::detection\+::minimum\+Plane\+Seed\+Proportion}}
 \item 
@@ -117,4 +125,6 @@ constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_afb
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_ad34e74384fbe29f820ffff019a564871}{rgbd\+\_\+slam\+::parameters\+::mapping\+::point\+Staged\+Age\+Confidence}} = 3
 \item 
 constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_a279a6537837d4c7483e76dbf9b19948f}{rgbd\+\_\+slam\+::parameters\+::mapping\+::point\+Minimum\+Confidence\+For\+Map}} = 0.\+9
+\item 
+constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1mapping_a1775ae0ba4b1aba0f07e50505a209019}{rgbd\+\_\+slam\+::parameters\+::mapping\+::maximum\+Retroprojection\+Error\+For\+Triangulate\+Pow\+\_\+px}}
 \end{DoxyCompactItemize}

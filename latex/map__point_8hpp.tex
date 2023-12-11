@@ -1,18 +1,11 @@
 \doxysection{/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/map\+\_\+management/map\+\_\+point.hpp File Reference}
 \hypertarget{map__point_8hpp}{}\label{map__point_8hpp}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_point.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/map\_management/map\_point.hpp}}
-{\ttfamily \#include "{}../features/keypoints/keypoint\+\_\+handler.\+hpp"{}}\newline
-{\ttfamily \#include "{}../tracking/kalman\+\_\+filter.\+hpp"{}}\newline
-{\ttfamily \#include "{}../utils/coordinates.\+hpp"{}}\newline
 {\ttfamily \#include "{}feature\+\_\+map.\+hpp"{}}\newline
+{\ttfamily \#include "{}features/keypoints/keypoint\+\_\+handler.\+hpp"{}}\newline
+{\ttfamily \#include "{}tracking/point\+\_\+with\+\_\+tracking.\+hpp"{}}\newline
 {\ttfamily \#include "{}matches\+\_\+containers.\+hpp"{}}\newline
-{\ttfamily \#include "{}parameters.\+hpp"{}}\newline
-{\ttfamily \#include "{}types.\+hpp"{}}\newline
-{\ttfamily \#include $<$memory$>$}\newline
-{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
 \doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
-\item 
-struct \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point}}
 \item 
 class \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Map\+Point}}
 \item 
@@ -30,13 +23,17 @@ namespace \mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\+\_\+sla
 \doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_aac0c80fadeb6bc233d18d5a562f5e6d4}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Keypoints\+Object}} = \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}}
+using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a95c21ce2a6639057adf799fea76af9b1}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Keypoints\+Object}} = \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features\+::keypoints\+::\+Keypoint\+\_\+\+Handler}}
 \item 
 using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a96089616c3d98a7f8aa8c3384649c57c}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Detected\+Point\+Type}} = \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{features\+::keypoints\+::\+Detected\+Key\+Point}}
 \item 
 using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a5dbe12f897b8d358fda312430b52d5df}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Point\+Match\+Type}} = \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae86119c8c6f92b18124aea62632c3276}{matches\+\_\+containers\+::\+Point\+Match}}
 \item 
-using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a5333eab93113d2bf50629b4519d91ae2}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Tracked\+Points\+Object}} = \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct}}
+using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1c750ff4cc7dbe8bb4fa3bc6092bdcf3}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Tracked\+Points\+Object}} = \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{features\+::keypoints\+::\+Keypoints\+With\+Id\+Struct}}
+\item 
+using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_abe8a38cde4bc86f123fbe2afb0f6146f}{rgbd\+\_\+slam\+::map\+\_\+management\+::\+Upgraded\+Point\+Type}} = void \texorpdfstring{$\ast$}{*}
+\item 
+using \mbox{\hyperlink{namespacergbd__slam_1_1map__management_af0417f3f6ae92080ca4a95215c94e0de}{rgbd\+\_\+slam\+::map\+\_\+management\+::local\+Point\+Map}} = \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{Feature\+\_\+\+Map}}$<$ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{Local\+Map\+Point}}, \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{Staged\+Map\+Point}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a95c21ce2a6639057adf799fea76af9b1}{Detected\+Keypoints\+Object}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a96089616c3d98a7f8aa8c3384649c57c}{Detected\+Point\+Type}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a5dbe12f897b8d358fda312430b52d5df}{Point\+Match\+Type}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1c750ff4cc7dbe8bb4fa3bc6092bdcf3}{Tracked\+Points\+Object}}, \mbox{\hyperlink{namespacergbd__slam_1_1map__management_abe8a38cde4bc86f123fbe2afb0f6146f}{Upgraded\+Point\+Type}} $>$
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}

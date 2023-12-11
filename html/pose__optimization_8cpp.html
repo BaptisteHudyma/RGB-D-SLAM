@@ -76,28 +76,35 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">pose_optimization.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="pose__optimization_8hpp_source.html">pose_optimization.hpp</a>&quot;</code><br />
-<code>#include &quot;../../third_party/p3p.hpp&quot;</code><br />
-<code>#include &quot;<a class="el" href="logger_8hpp_source.html">../outputs/logger.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">../parameters.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="camera__transformation_8hpp_source.html">../utils/camera_transformation.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="covariances_8hpp_source.html">../utils/covariances.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="random_8hpp_source.html">../utils/random.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="coordinates_8hpp_source.html">coordinates.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="covariances_8hpp_source.html">covariances.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="logger_8hpp_source.html">outputs/logger.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="levenberg__marquard__functors_8hpp_source.html">levenberg_marquard_functors.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="matches__containers_8hpp_source.html">matches_containers.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ransac_8hpp_source.html">ransac.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8hpp_source.html">types.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="camera__transformation_8hpp_source.html">utils/camera_transformation.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="random_8hpp_source.html">utils/random.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="point__coordinates_8hpp_source.html">utils/coordinates/point_coordinates.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="plane__coordinates_8hpp_source.html">utils/coordinates/plane_coordinates.hpp</a>&quot;</code><br />
 <code>#include &lt;Eigen/StdVector&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;exception&gt;</code><br />
+<code>#include &lt;opencv2/core/utility.hpp&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;format&gt;</code><br />
 <code>#include &lt;tbb/parallel_for.h&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -106,20 +113,62 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacergbd__slam_1_1pose__optimization" id="r_namespacergbd__slam_1_1pose__optimization"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html">rgbd_slam::pose_optimization</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a7df3026aa6b8fa177b22bced195d0d57" id="r_a7df3026aa6b8fa177b22bced195d0d57"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pose__optimization_8cpp.html#a7df3026aa6b8fa177b22bced195d0d57">SHOULD_USE_INVERSE_POINTS</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a7df3026aa6b8fa177b22bced195d0d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:adb2f0ad8c073aa5e33944cccb8463c70" id="r_adb2f0ad8c073aa5e33944cccb8463c70"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#adb2f0ad8c073aa5e33944cccb8463c70">rgbd_slam::pose_optimization::get_min_max_number_of_features</a> (const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;numberOfFeature)</td></tr>
+<tr class="separator:adb2f0ad8c073aa5e33944cccb8463c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dbb4e7143835db9c0a4e1806dadcb84" id="r_a4dbb4e7143835db9c0a4e1806dadcb84"><td class="memItemLeft" align="right" valign="top">std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a4dbb4e7143835db9c0a4e1806dadcb84">rgbd_slam::pose_optimization::get_random_selection</a> (const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;featuresCounts, const std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;minMaxNumberOfFeatures)</td></tr>
+<tr class="separator:a4dbb4e7143835db9c0a4e1806dadcb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7678171fe584a72b7cc1302ba000ec82" id="r_a7678171fe584a72b7cc1302ba000ec82"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a7678171fe584a72b7cc1302ba000ec82">rgbd_slam::pose_optimization::get_2Dpoint_inliers_outliers</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a68474edc07139f8ef4791e3eaef6e61b">matches_containers::match_point2D_container</a> &amp;pointsToEvaluate, const double point2dMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a2f21600d4c751179e9e524e61d4d176a">matches_containers::point2D_match_sets</a> &amp;pointMatcheSets) noexcept</td></tr>
+<tr class="memdesc:a7678171fe584a72b7cc1302ba000ec82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a score for a transformation, and compute an inlier and outlier set.  <br /></td></tr>
+<tr class="separator:a7678171fe584a72b7cc1302ba000ec82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6887cef030e154a5837d40eadda8f0c0" id="r_a6887cef030e154a5837d40eadda8f0c0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a6887cef030e154a5837d40eadda8f0c0">rgbd_slam::pose_optimization::get_point_inliers_outliers</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a5dd025751281c2e733588e8229f68690">matches_containers::match_point_container</a> &amp;pointsToEvaluate, const double pointMaxRetroprojectionError_px, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a9555085cb256703cf45880077a789c7a">matches_containers::point_match_sets</a> &amp;pointMatcheSets) noexcept</td></tr>
 <tr class="memdesc:a6887cef030e154a5837d40eadda8f0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a score for a transformation, and compute an inlier and outlier set.  <br /></td></tr>
 <tr class="separator:a6887cef030e154a5837d40eadda8f0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae93d7b6432703034ffbcd6879ee720fb" id="r_ae93d7b6432703034ffbcd6879ee720fb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae93d7b6432703034ffbcd6879ee720fb">rgbd_slam::pose_optimization::get_plane_inliers_outliers</a> (const <a class="el" href="namespacergbd__slam_1_1matches__containers.html#ae435b06d82751fed7f7d9dfebf3cf594">matches_containers::match_plane_container</a> &amp;planesToEvaluate, const double planeMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="namespacergbd__slam_1_1matches__containers.html#a064c556345ab975d37ba817b97b99712">matches_containers::plane_match_sets</a> &amp;planeMatchSets) noexcept</td></tr>
 <tr class="memdesc:ae93d7b6432703034ffbcd6879ee720fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a score for a transformation, and compute an inlier and outlier set.  <br /></td></tr>
 <tr class="separator:ae93d7b6432703034ffbcd6879ee720fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac181abaf8b164dab6d2cdb86964b5eab" id="r_ac181abaf8b164dab6d2cdb86964b5eab"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ac181abaf8b164dab6d2cdb86964b5eab">rgbd_slam::pose_optimization::get_features_inliers_outliers</a> (const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;featuresToEvaluate, const double pointMaxRetroprojectionError_px, const double planeMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a> &amp;featureSet) noexcept</td></tr>
-<tr class="separator:ac181abaf8b164dab6d2cdb86964b5eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c6009cd413f9d2614f3b1dd94ef36d4" id="r_a0c6009cd413f9d2614f3b1dd94ef36d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a0c6009cd413f9d2614f3b1dd94ef36d4">rgbd_slam::pose_optimization::get_random_subset</a> (const uint numberOfPointsToSample, const uint numberOfPlanesToSample, const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;matchedFeatures)</td></tr>
-<tr class="memdesc:a0c6009cd413f9d2614f3b1dd94ef36d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a subset of a given inlier set.  <br /></td></tr>
-<tr class="separator:a0c6009cd413f9d2614f3b1dd94ef36d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99cd77bbbd8bb570723c11c432403f00" id="r_a99cd77bbbd8bb570723c11c432403f00"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a99cd77bbbd8bb570723c11c432403f00">rgbd_slam::pose_optimization::get_features_inliers_outliers</a> (const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;featuresToEvaluate, const double point2dMaxRetroprojectionError_mm, const double pointMaxRetroprojectionError_px, const double planeMaxRetroprojectionError_mm, const <a class="el" href="classrgbd__slam_1_1utils_1_1_pose_base.html">utils::PoseBase</a> &amp;transformationPose, <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a> &amp;featureSet) noexcept</td></tr>
+<tr class="separator:a99cd77bbbd8bb570723c11c432403f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c32bdedf5ae76ea4db2a10522d5789f" id="r_a7c32bdedf5ae76ea4db2a10522d5789f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1matches__containers_1_1match__sets.html">matches_containers::match_sets</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a7c32bdedf5ae76ea4db2a10522d5789f">rgbd_slam::pose_optimization::get_random_subset</a> (const std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;featuresCounts, const std::array&lt; std::pair&lt; uint, uint &gt;, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt; &amp;minMaxNumberOfFeatures, const <a class="el" href="structrgbd__slam_1_1matches__containers_1_1match_container.html">matches_containers::matchContainer</a> &amp;matchedFeatures)</td></tr>
+<tr class="memdesc:a7c32bdedf5ae76ea4db2a10522d5789f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a subset of features.  <br /></td></tr>
+<tr class="separator:a7c32bdedf5ae76ea4db2a10522d5789f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ae445858e4a042eba60344aa29aab58e5" id="r_ae445858e4a042eba60344aa29aab58e5"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">rgbd_slam::pose_optimization::numberOfFeatures</a> = 3</td></tr>
+<tr class="separator:ae445858e4a042eba60344aa29aab58e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad750a85b4337af9806967bc8e34b9e2c" id="r_ad750a85b4337af9806967bc8e34b9e2c"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ad750a85b4337af9806967bc8e34b9e2c">rgbd_slam::pose_optimization::featureIndexPlane</a> = 0</td></tr>
+<tr class="separator:ad750a85b4337af9806967bc8e34b9e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae80aa5582d84262b0917afa4ff5be964" id="r_ae80aa5582d84262b0917afa4ff5be964"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae80aa5582d84262b0917afa4ff5be964">rgbd_slam::pose_optimization::featureIndexPoint</a> = 1</td></tr>
+<tr class="separator:ae80aa5582d84262b0917afa4ff5be964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a5a0cdcf61d6ac82308887aff82bec9" id="r_a8a5a0cdcf61d6ac82308887aff82bec9"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a8a5a0cdcf61d6ac82308887aff82bec9">rgbd_slam::pose_optimization::featureIndex2dPoint</a> = 2</td></tr>
+<tr class="separator:a8a5a0cdcf61d6ac82308887aff82bec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6716e7f90aba42fbe972a637935f73e2" id="r_a6716e7f90aba42fbe972a637935f73e2"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; uint, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2">rgbd_slam::pose_optimization::minNumberOfFeatureForOpti</a></td></tr>
+<tr class="separator:a6716e7f90aba42fbe972a637935f73e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9329d7a888752732b20979d3e89f0506" id="r_a9329d7a888752732b20979d3e89f0506"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; double, <a class="el" href="namespacergbd__slam_1_1pose__optimization.html#ae445858e4a042eba60344aa29aab58e5">numberOfFeatures</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1pose__optimization.html#a9329d7a888752732b20979d3e89f0506">rgbd_slam::pose_optimization::scorePerFeature</a></td></tr>
+<tr class="separator:a9329d7a888752732b20979d3e89f0506"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a7df3026aa6b8fa177b22bced195d0d57" name="a7df3026aa6b8fa177b22bced195d0d57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7df3026aa6b8fa177b22bced195d0d57">&#9670;&#160;</a></span>SHOULD_USE_INVERSE_POINTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SHOULD_USE_INVERSE_POINTS&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

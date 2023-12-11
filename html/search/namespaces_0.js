@@ -1,21 +1,5 @@
 var searchData=
 [
-  ['rgbd_5fslam_0',['rgbd_slam',['../namespacergbd__slam.html',1,'']]],
-  ['rgbd_5fslam_3a_3afeatures_1',['features',['../namespacergbd__slam_1_1features.html',1,'rgbd_slam']]],
-  ['rgbd_5fslam_3a_3afeatures_3a_3akeypoints_2',['keypoints',['../namespacergbd__slam_1_1features_1_1keypoints.html',1,'rgbd_slam::features']]],
-  ['rgbd_5fslam_3a_3afeatures_3a_3alines_3',['lines',['../namespacergbd__slam_1_1features_1_1lines.html',1,'rgbd_slam::features']]],
-  ['rgbd_5fslam_3a_3afeatures_3a_3aprimitives_4',['primitives',['../namespacergbd__slam_1_1features_1_1primitives.html',1,'rgbd_slam::features']]],
-  ['rgbd_5fslam_3a_3amap_5fmanagement_5',['map_management',['../namespacergbd__slam_1_1map__management.html',1,'rgbd_slam']]],
-  ['rgbd_5fslam_3a_3amatches_5fcontainers_6',['matches_containers',['../namespacergbd__slam_1_1matches__containers.html',1,'rgbd_slam']]],
-  ['rgbd_5fslam_3a_3aoutputs_7',['outputs',['../namespacergbd__slam_1_1outputs.html',1,'rgbd_slam']]],
-  ['rgbd_5fslam_3a_3aparameters_8',['parameters',['../namespacergbd__slam_1_1parameters.html',1,'rgbd_slam']]],
-  ['rgbd_5fslam_3a_3aparameters_3a_3adetection_9',['detection',['../namespacergbd__slam_1_1parameters_1_1detection.html',1,'rgbd_slam::parameters']]],
-  ['rgbd_5fslam_3a_3aparameters_3a_3amapping_10',['mapping',['../namespacergbd__slam_1_1parameters_1_1mapping.html',1,'rgbd_slam::parameters']]],
-  ['rgbd_5fslam_3a_3aparameters_3a_3amatching_11',['matching',['../namespacergbd__slam_1_1parameters_1_1matching.html',1,'rgbd_slam::parameters']]],
-  ['rgbd_5fslam_3a_3aparameters_3a_3aoptimization_12',['optimization',['../namespacergbd__slam_1_1parameters_1_1optimization.html',1,'rgbd_slam::parameters']]],
-  ['rgbd_5fslam_3a_3aparameters_3a_3aoptimization_3a_3aransac_13',['ransac',['../namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac.html',1,'rgbd_slam::parameters::optimization']]],
-  ['rgbd_5fslam_3a_3apose_5foptimization_14',['pose_optimization',['../namespacergbd__slam_1_1pose__optimization.html',1,'rgbd_slam']]],
-  ['rgbd_5fslam_3a_3apose_5foptimization_3a_3aransac_15',['ransac',['../namespacergbd__slam_1_1pose__optimization_1_1ransac.html',1,'rgbd_slam::pose_optimization']]],
-  ['rgbd_5fslam_3a_3atracking_16',['tracking',['../namespacergbd__slam_1_1tracking.html',1,'rgbd_slam']]],
-  ['rgbd_5fslam_3a_3autils_17',['utils',['../namespacergbd__slam_1_1utils.html',1,'rgbd_slam']]]
+  ['eigen_0',['Eigen',['../namespace_eigen.html',1,'']]],
+  ['eigen_3a_3ainternal_1',['internal',['../namespace_eigen_1_1internal.html',1,'Eigen']]]
 ];

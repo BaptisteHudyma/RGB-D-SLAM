@@ -76,7 +76,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection-members.html">List of all members</a>  </div>
@@ -96,19 +95,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a79fff3701b2f62f6711b1467e740baa4" id="r_a79fff3701b2f62f6711b1467e740baa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a79fff3701b2f62f6711b1467e740baa4">find_primitives</a> (const <a class="el" href="namespacergbd__slam.html#aa6b0e6b8a392e7cd07dbc77199e05144">matrixf</a> &amp;depthMatrix, const cv::Mat_&lt; float &gt; &amp;depthImage, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#a7bca8fa43a44adbda4b5e9bbeb373d8a">plane_container</a> &amp;planeContainer, <a class="el" href="namespacergbd__slam_1_1features_1_1primitives.html#ad1597638f286a73a6099675b2c0458a7">cylinder_container</a> &amp;primitiveContainer) noexcept</td></tr>
 <tr class="memdesc:a79fff3701b2f62f6711b1467e740baa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main compute function: computes the primitives in the depth imahe.  <br /></td></tr>
 <tr class="separator:a79fff3701b2f62f6711b1467e740baa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a1e6576f91cd41de4316f20c41cbf365a" id="r_a1e6576f91cd41de4316f20c41cbf365a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a1e6576f91cd41de4316f20c41cbf365a">resetTime</a></td></tr>
-<tr class="separator:a1e6576f91cd41de4316f20c41cbf365a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e4334b78d47adf54a76b32812c18080" id="r_a8e4334b78d47adf54a76b32812c18080"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a8e4334b78d47adf54a76b32812c18080">initTime</a></td></tr>
-<tr class="separator:a8e4334b78d47adf54a76b32812c18080"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bd7311ff1c1968b338c80fa710b5f18" id="r_a8bd7311ff1c1968b338c80fa710b5f18"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#a8bd7311ff1c1968b338c80fa710b5f18">growTime</a></td></tr>
-<tr class="separator:a8bd7311ff1c1968b338c80fa710b5f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa8239c91447b7a5b6f2590a7024e5b1" id="r_afa8239c91447b7a5b6f2590a7024e5b1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#afa8239c91447b7a5b6f2590a7024e5b1">mergeTime</a></td></tr>
-<tr class="separator:afa8239c91447b7a5b6f2590a7024e5b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acee4e990aaeeec273775cf0fc944fa61" id="r_acee4e990aaeeec273775cf0fc944fa61"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#acee4e990aaeeec273775cf0fc944fa61">refineTime</a></td></tr>
-<tr class="separator:acee4e990aaeeec273775cf0fc944fa61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af274b8414051a400365fa12d966ab761" id="r_af274b8414051a400365fa12d966ab761"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_primitive___detection.html#af274b8414051a400365fa12d966ab761">show_statistics</a> (const double meanFrameTreatmentDuration, const uint frameCount, const bool shouldDisplayDetails=false) const noexcept</td></tr>
+<tr class="separator:af274b8414051a400365fa12d966ab761"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
 Protected Types</h2></td></tr>
@@ -1032,73 +1020,44 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a8bd7311ff1c1968b338c80fa710b5f18" name="a8bd7311ff1c1968b338c80fa710b5f18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bd7311ff1c1968b338c80fa710b5f18">&#9670;&#160;</a></span>growTime</h2>
+<a id="af274b8414051a400365fa12d966ab761" name="af274b8414051a400365fa12d966ab761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af274b8414051a400365fa12d966ab761">&#9670;&#160;</a></span>show_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double rgbd_slam::features::primitives::Primitive_Detection::growTime</td>
+          <td class="memname">void rgbd_slam::features::primitives::Primitive_Detection::show_statistics </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>meanFrameTreatmentDuration</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8e4334b78d47adf54a76b32812c18080" name="a8e4334b78d47adf54a76b32812c18080"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e4334b78d47adf54a76b32812c18080">&#9670;&#160;</a></span>initTime</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">double rgbd_slam::features::primitives::Primitive_Detection::initTime</td>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint&#160;</td>
+          <td class="paramname"><em>frameCount</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="afa8239c91447b7a5b6f2590a7024e5b1" name="afa8239c91447b7a5b6f2590a7024e5b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa8239c91447b7a5b6f2590a7024e5b1">&#9670;&#160;</a></span>mergeTime</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">double rgbd_slam::features::primitives::Primitive_Detection::mergeTime</td>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>shouldDisplayDetails</em> = <code>false</code>&#160;</td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="acee4e990aaeeec273775cf0fc944fa61" name="acee4e990aaeeec273775cf0fc944fa61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acee4e990aaeeec273775cf0fc944fa61">&#9670;&#160;</a></span>refineTime</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">double rgbd_slam::features::primitives::Primitive_Detection::refineTime</td>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1e6576f91cd41de4316f20c41cbf365a" name="a1e6576f91cd41de4316f20c41cbf365a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e6576f91cd41de4316f20c41cbf365a">&#9670;&#160;</a></span>resetTime</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::features::primitives::Primitive_Detection::resetTime</td>
-        </tr>
-      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

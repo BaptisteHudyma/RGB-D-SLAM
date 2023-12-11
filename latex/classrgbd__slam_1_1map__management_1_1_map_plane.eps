@@ -5,7 +5,7 @@
 %%For: 
 %Magnification: 1.00
 %%Orientation: Portrait
-%%BoundingBox: 0 0 500 39.893616
+%%BoundingBox: 0 0 500 34.246574
 %%Pages: 0
 %%BeginSetup
 %%EndSetup
@@ -19,7 +19,7 @@
 /marginwidth 10 def
 /distx 20 def
 /disty 40 def
-/boundaspect 12.533334 def  % aspect ratio of the BoundingBox (width/height)
+/boundaspect 14.600000 def  % aspect ratio of the BoundingBox (width/height)
 /boundx 500 def
 /boundy boundx boundaspect div def
 /xspacing 0 def
@@ -174,8 +174,8 @@
 boxfont setfont
 1 boundaspect scale
 (rgbd_slam::map_management::MapPlane) cw
-(rgbd_slam::map_management::Plane) cw
-(rgbd_slam::map_management::IMapFeature< DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject >) cw
+(rgbd_slam::tracking::Plane) cw
+(rgbd_slam::map_management::IMapFeature< DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType >) cw
 (rgbd_slam::map_management::LocalMapPlane) cw
 (rgbd_slam::map_management::StagedMapPlane) cw
 /boxwidth boxwidth marginwidth 2 mul add def
@@ -190,8 +190,8 @@ boundx scalefactor div boundy scalefactor div scale
 % ----- classes -----
 
  (rgbd_slam::map_management::MapPlane) 0.500000 1.000000 box
- (rgbd_slam::map_management::Plane) 0.000000 2.000000 box
- (rgbd_slam::map_management::IMapFeature< DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject >) 1.000000 2.000000 box
+ (rgbd_slam::tracking::Plane) 0.000000 2.000000 box
+ (rgbd_slam::map_management::IMapFeature< DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType >) 1.000000 2.000000 box
  (rgbd_slam::map_management::LocalMapPlane) 0.000000 0.000000 box
  (rgbd_slam::map_management::StagedMapPlane) 1.000000 0.000000 box
 

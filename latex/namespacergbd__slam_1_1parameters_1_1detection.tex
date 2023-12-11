@@ -3,13 +3,13 @@
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a9c1c16f90d0ef0886713da5c90d21005}{tracked\+Mask\+Radius\+\_\+px}}
+\item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a58a53527a5861893bc07b540f2ebc3ff}{keypoint\+Cell\+Detection\+Height\+Count}} = 3
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a1ca69fcc3691ed6b94b96fa8a1bee75e}{keypoint\+Cell\+Detection\+Width\+Count}} = 3
 \item 
-constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a506067cae6131ac70a83826b45e76f7a}{point\+Detector\+Threshold}} = 3
-\item 
-constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a537cb4cb1ed112c441da8cc5b63d49f2}{maximum\+Point\+Per\+Frame}}
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a537cb4cb1ed112c441da8cc5b63d49f2}{maximum\+Point\+Per\+Frame}} = 100
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_aae5ff5bf2d15f50d6f0c460def49111e}{keypoint\+Refresh\+Frequency}} = 5
 \item 
@@ -18,6 +18,10 @@ constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_ad3c2f5e4467af4bb31ce581f573d3359}{optical\+Flow\+Pyramid\+Window\+Size\+Height\+Count}} = 9
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_aeaf82d3c2f7fc505b2bfc740d977c56e}{optical\+Flow\+Pyramid\+Window\+Size\+Width\+Count}}
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a648653ae67df200981ea81f3e4759d10}{inverse\+Depth\+Baseline}} = 1.\+0 / 1000.\+0
+\item 
+constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a3ee4cac0889a03acd221bcecfa2393c0}{inverse\+Depth\+Angle\+Baseline}} = 0.\+5
 \item 
 constexpr double \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_a38767713312f98351c7843ff4a849c04}{minimum\+Plane\+Seed\+Proportion}}
 \item 
@@ -78,6 +82,18 @@ constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_
 \DoxyCodeLine{\ \ \ \ \ \ \ \ 20}
 
 \end{DoxyCode}
+\Hypertarget{namespacergbd__slam_1_1parameters_1_1detection_a3ee4cac0889a03acd221bcecfa2393c0}\label{namespacergbd__slam_1_1parameters_1_1detection_a3ee4cac0889a03acd221bcecfa2393c0} 
+\index{rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}!inverseDepthAngleBaseline@{inverseDepthAngleBaseline}}
+\index{inverseDepthAngleBaseline@{inverseDepthAngleBaseline}!rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}}
+\doxysubsubsection{\texorpdfstring{inverseDepthAngleBaseline}{inverseDepthAngleBaseline}}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::parameters\+::detection\+::inverse\+Depth\+Angle\+Baseline = 0.\+5\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1parameters_1_1detection_a648653ae67df200981ea81f3e4759d10}\label{namespacergbd__slam_1_1parameters_1_1detection_a648653ae67df200981ea81f3e4759d10} 
+\index{rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}!inverseDepthBaseline@{inverseDepthBaseline}}
+\index{inverseDepthBaseline@{inverseDepthBaseline}!rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}}
+\doxysubsubsection{\texorpdfstring{inverseDepthBaseline}{inverseDepthBaseline}}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::parameters\+::detection\+::inverse\+Depth\+Baseline = 1.\+0 / 1000.\+0\hspace{0.3cm}{\ttfamily [constexpr]}}
+
 \Hypertarget{namespacergbd__slam_1_1parameters_1_1detection_a58a53527a5861893bc07b540f2ebc3ff}\label{namespacergbd__slam_1_1parameters_1_1detection_a58a53527a5861893bc07b540f2ebc3ff} 
 \index{rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}!keypointCellDetectionHeightCount@{keypointCellDetectionHeightCount}}
 \index{keypointCellDetectionHeightCount@{keypointCellDetectionHeightCount}!rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}}
@@ -124,14 +140,8 @@ constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_
 \index{rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}!maximumPointPerFrame@{maximumPointPerFrame}}
 \index{maximumPointPerFrame@{maximumPointPerFrame}!rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}}
 \doxysubsubsection{\texorpdfstring{maximumPointPerFrame}{maximumPointPerFrame}}
-{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::parameters\+::detection\+::maximum\+Point\+Per\+Frame\hspace{0.3cm}{\ttfamily [constexpr]}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::parameters\+::detection\+::maximum\+Point\+Per\+Frame = 100\hspace{0.3cm}{\ttfamily [constexpr]}}
 
-{\bfseries Initial value\+:}
-\begin{DoxyCode}{0}
-\DoxyCodeLine{=}
-\DoxyCodeLine{\ \ \ \ \ \ \ \ 100}
-
-\end{DoxyCode}
 \Hypertarget{namespacergbd__slam_1_1parameters_1_1detection_a34c926edfe5fdcc4a59e488e4ff536dd}\label{namespacergbd__slam_1_1parameters_1_1detection_a34c926edfe5fdcc4a59e488e4ff536dd} 
 \index{rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}!minimumCellActivatedProportion@{minimumCellActivatedProportion}}
 \index{minimumCellActivatedProportion@{minimumCellActivatedProportion}!rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}}
@@ -198,9 +208,15 @@ constexpr float \mbox{\hyperlink{namespacergbd__slam_1_1parameters_1_1detection_
 \DoxyCodeLine{\ \ \ \ \ \ \ \ 12}
 
 \end{DoxyCode}
-\Hypertarget{namespacergbd__slam_1_1parameters_1_1detection_a506067cae6131ac70a83826b45e76f7a}\label{namespacergbd__slam_1_1parameters_1_1detection_a506067cae6131ac70a83826b45e76f7a} 
-\index{rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}!pointDetectorThreshold@{pointDetectorThreshold}}
-\index{pointDetectorThreshold@{pointDetectorThreshold}!rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}}
-\doxysubsubsection{\texorpdfstring{pointDetectorThreshold}{pointDetectorThreshold}}
-{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::parameters\+::detection\+::point\+Detector\+Threshold = 3\hspace{0.3cm}{\ttfamily [constexpr]}}
+\Hypertarget{namespacergbd__slam_1_1parameters_1_1detection_a9c1c16f90d0ef0886713da5c90d21005}\label{namespacergbd__slam_1_1parameters_1_1detection_a9c1c16f90d0ef0886713da5c90d21005} 
+\index{rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}!trackedMaskRadius\_px@{trackedMaskRadius\_px}}
+\index{trackedMaskRadius\_px@{trackedMaskRadius\_px}!rgbd\_slam::parameters::detection@{rgbd\_slam::parameters::detection}}
+\doxysubsubsection{\texorpdfstring{trackedMaskRadius\_px}{trackedMaskRadius\_px}}
+{\footnotesize\ttfamily constexpr double rgbd\+\_\+slam\+::parameters\+::detection\+::tracked\+Mask\+Radius\+\_\+px\hspace{0.3cm}{\ttfamily [constexpr]}}
 
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ 15}
+
+\end{DoxyCode}

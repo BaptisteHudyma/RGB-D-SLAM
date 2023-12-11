@@ -25,29 +25,73 @@ class \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimiza
 \begin{DoxyCompactList}\small\item\em Compute a quaternion from the Lie projection (Scaled Axis representation) \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad9844c916b02700c139e7caeb702cb4a}{get\+\_\+human\+\_\+readable\+\_\+end\+\_\+message}} (Eigen\+::\+Levenberg\+Marquardt\+Space\+::\+Status status) noexcept
 \begin{DoxyCompactList}\small\item\em Return a string corresponding to the end status of the optimization. \end{DoxyCompactList}\item 
+std\+::array$<$ std\+::pair$<$ uint, uint $>$, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_adb2f0ad8c073aa5e33944cccb8463c70}{get\+\_\+min\+\_\+max\+\_\+number\+\_\+of\+\_\+features}} (const std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&number\+Of\+Feature)
+\item 
+std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a4dbb4e7143835db9c0a4e1806dadcb84}{get\+\_\+random\+\_\+selection}} (const std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&features\+Counts, const std\+::array$<$ std\+::pair$<$ uint, uint $>$, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&min\+Max\+Number\+Of\+Features)
+\item 
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a7678171fe584a72b7cc1302ba000ec82}{get\+\_\+2\+Dpoint\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{matches\+\_\+containers\+::match\+\_\+point2\+D\+\_\+container}} \&points\+To\+Evaluate, const double point2d\+Max\+Retroprojection\+Error\+\_\+mm, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a2f21600d4c751179e9e524e61d4d176a}{matches\+\_\+containers\+::point2\+D\+\_\+match\+\_\+sets}} \&point\+Matche\+Sets) noexcept
+\begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a6887cef030e154a5837d40eadda8f0c0}{get\+\_\+point\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \&points\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error\+\_\+px, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a9555085cb256703cf45880077a789c7a}{matches\+\_\+containers\+::point\+\_\+match\+\_\+sets}} \&point\+Matche\+Sets) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae93d7b6432703034ffbcd6879ee720fb}{get\+\_\+plane\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \&planes\+To\+Evaluate, const double plane\+Max\+Retroprojection\+Error\+\_\+mm, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a064c556345ab975d37ba817b97b99712}{matches\+\_\+containers\+::plane\+\_\+match\+\_\+sets}} \&plane\+Match\+Sets) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a score for a transformation, and compute an inlier and outlier set. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ac181abaf8b164dab6d2cdb86964b5eab}{get\+\_\+features\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&features\+To\+Evaluate, const double point\+Max\+Retroprojection\+Error\+\_\+px, const double plane\+Max\+Retroprojection\+Error\+\_\+mm, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&feature\+Set) noexcept
+double \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a99cd77bbbd8bb570723c11c432403f00}{get\+\_\+features\+\_\+inliers\+\_\+outliers}} (const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&features\+To\+Evaluate, const double point2d\+Max\+Retroprojection\+Error\+\_\+mm, const double point\+Max\+Retroprojection\+Error\+\_\+px, const double plane\+Max\+Retroprojection\+Error\+\_\+mm, const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&transformation\+Pose, \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&feature\+Set) noexcept
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}{get\+\_\+random\+\_\+subset}} (const uint number\+Of\+Points\+To\+Sample, const uint number\+Of\+Planes\+To\+Sample, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&matched\+Features)
-\begin{DoxyCompactList}\small\item\em Return a subset of a given inlier set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a7c32bdedf5ae76ea4db2a10522d5789f}{get\+\_\+random\+\_\+subset}} (const std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&features\+Counts, const std\+::array$<$ std\+::pair$<$ uint, uint $>$, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&min\+Max\+Number\+Of\+Features, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&matched\+Features)
+\begin{DoxyCompactList}\small\item\em Return a subset of features. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a71463824933f93d135e28ac3ef500892}{score\+Count\+Per\+Points}} = 2
 \item 
+constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a094f5c34ada58bb818875067bc375386}{score\+Count\+Per2\+DPoints}} = 3
+\item 
 constexpr uint \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a8ebc29e6687c48d14ec8459d86038a40}{score\+Count\+Per\+Planes}} = 3
+\item 
+constexpr size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} = 3
+\item 
+constexpr size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ad750a85b4337af9806967bc8e34b9e2c}{feature\+Index\+Plane}} = 0
+\item 
+constexpr size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae80aa5582d84262b0917afa4ff5be964}{feature\+Index\+Point}} = 1
+\item 
+constexpr size\+\_\+t \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a8a5a0cdcf61d6ac82308887aff82bec9}{feature\+Index2d\+Point}} = 2
+\item 
+constexpr std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a6716e7f90aba42fbe972a637935f73e2}{min\+Number\+Of\+Feature\+For\+Opti}}
+\item 
+constexpr std\+::array$<$ double, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a9329d7a888752732b20979d3e89f0506}{score\+Per\+Feature}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\Hypertarget{namespacergbd__slam_1_1pose__optimization_ac181abaf8b164dab6d2cdb86964b5eab}\label{namespacergbd__slam_1_1pose__optimization_ac181abaf8b164dab6d2cdb86964b5eab} 
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_a7678171fe584a72b7cc1302ba000ec82}\label{namespacergbd__slam_1_1pose__optimization_a7678171fe584a72b7cc1302ba000ec82} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_2Dpoint\_inliers\_outliers@{get\_2Dpoint\_inliers\_outliers}}
+\index{get\_2Dpoint\_inliers\_outliers@{get\_2Dpoint\_inliers\_outliers}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_2Dpoint\_inliers\_outliers()}{get\_2Dpoint\_inliers\_outliers()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+2\+Dpoint\+\_\+inliers\+\_\+outliers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{matches\+\_\+containers\+::match\+\_\+point2\+D\+\_\+container}} \&}]{points\+To\+Evaluate,  }\item[{const double}]{point2d\+Max\+Retroprojection\+Error\+\_\+mm,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{transformation\+Pose,  }\item[{\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a2f21600d4c751179e9e524e61d4d176a}{matches\+\_\+containers\+::point2\+D\+\_\+match\+\_\+sets}} \&}]{point\+Matche\+Sets }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Compute a score for a transformation, and compute an inlier and outlier set. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em points\+To\+Evaluate} & The set of points to evaluate the transformation on \\
+\hline
+\mbox{\texttt{ in}}  & {\em point2d\+Max\+Retroprojection\+Error\+\_\+mm} & The maximum retroprojection error between two point, below which we classifying the match as inlier \\
+\hline
+\mbox{\texttt{ in}}  & {\em transformation\+Pose} & The transformation that needs to be evaluated \\
+\hline
+\mbox{\texttt{ out}}  & {\em point\+Matche\+Sets} & The set of inliers/outliers of this transformation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The transformation score (sum of retroprojection distances) 
+\end{DoxyReturn}
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_a99cd77bbbd8bb570723c11c432403f00}\label{namespacergbd__slam_1_1pose__optimization_a99cd77bbbd8bb570723c11c432403f00} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_features\_inliers\_outliers@{get\_features\_inliers\_outliers}}
 \index{get\_features\_inliers\_outliers@{get\_features\_inliers\_outliers}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_features\_inliers\_outliers()}{get\_features\_inliers\_outliers()}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+features\+\_\+inliers\+\_\+outliers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{features\+To\+Evaluate,  }\item[{const double}]{point\+Max\+Retroprojection\+Error\+\_\+px,  }\item[{const double}]{plane\+Max\+Retroprojection\+Error\+\_\+mm,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{transformation\+Pose,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&}]{feature\+Set }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+features\+\_\+inliers\+\_\+outliers (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{features\+To\+Evaluate,  }\item[{const double}]{point2d\+Max\+Retroprojection\+Error\+\_\+mm,  }\item[{const double}]{point\+Max\+Retroprojection\+Error\+\_\+px,  }\item[{const double}]{plane\+Max\+Retroprojection\+Error\+\_\+mm,  }\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&}]{transformation\+Pose,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&}]{feature\+Set }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 \Hypertarget{namespacergbd__slam_1_1pose__optimization_ad9844c916b02700c139e7caeb702cb4a}\label{namespacergbd__slam_1_1pose__optimization_ad9844c916b02700c139e7caeb702cb4a} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_human\_readable\_end\_message@{get\_human\_readable\_end\_message}}
@@ -67,8 +111,14 @@ Use for debug.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Returns a string with the human readable version of Eigen Levenberg\+Marquardt output status 
+Returns a string with the human readable version of \doxylink{namespace_eigen}{Eigen} Levenberg\+Marquardt output status 
 \end{DoxyReturn}
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_adb2f0ad8c073aa5e33944cccb8463c70}\label{namespacergbd__slam_1_1pose__optimization_adb2f0ad8c073aa5e33944cccb8463c70} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_min\_max\_number\_of\_features@{get\_min\_max\_number\_of\_features}}
+\index{get\_min\_max\_number\_of\_features@{get\_min\_max\_number\_of\_features}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_min\_max\_number\_of\_features()}{get\_min\_max\_number\_of\_features()}}
+{\footnotesize\ttfamily std\+::array$<$ std\+::pair$<$ uint, uint $>$, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+min\+\_\+max\+\_\+number\+\_\+of\+\_\+features (\begin{DoxyParamCaption}\item[{const std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&}]{number\+Of\+Feature }\end{DoxyParamCaption})}
+
 \Hypertarget{namespacergbd__slam_1_1pose__optimization_ae93d7b6432703034ffbcd6879ee720fb}\label{namespacergbd__slam_1_1pose__optimization_ae93d7b6432703034ffbcd6879ee720fb} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_plane\_inliers\_outliers@{get\_plane\_inliers\_outliers}}
 \index{get\_plane\_inliers\_outliers@{get\_plane\_inliers\_outliers}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -135,15 +185,21 @@ Compute a quaternion from the Lie projection (Scaled Axis representation)
 \begin{DoxyReturn}{Returns}
 The quaternion obtained from the coefficients 
 \end{DoxyReturn}
-\Hypertarget{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4}\label{namespacergbd__slam_1_1pose__optimization_a0c6009cd413f9d2614f3b1dd94ef36d4} 
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_a4dbb4e7143835db9c0a4e1806dadcb84}\label{namespacergbd__slam_1_1pose__optimization_a4dbb4e7143835db9c0a4e1806dadcb84} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_random\_selection@{get\_random\_selection}}
+\index{get\_random\_selection@{get\_random\_selection}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{get\_random\_selection()}{get\_random\_selection()}}
+{\footnotesize\ttfamily std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+selection (\begin{DoxyParamCaption}\item[{const std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&}]{features\+Counts,  }\item[{const std\+::array$<$ std\+::pair$<$ uint, uint $>$, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&}]{min\+Max\+Number\+Of\+Features }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_a7c32bdedf5ae76ea4db2a10522d5789f}\label{namespacergbd__slam_1_1pose__optimization_a7c32bdedf5ae76ea4db2a10522d5789f} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_random\_subset@{get\_random\_subset}}
 \index{get\_random\_subset@{get\_random\_subset}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
 \doxysubsubsection{\texorpdfstring{get\_random\_subset()}{get\_random\_subset()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+subset (\begin{DoxyParamCaption}\item[{const uint}]{number\+Of\+Points\+To\+Sample,  }\item[{const uint}]{number\+Of\+Planes\+To\+Sample,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{matched\+Features }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} rgbd\+\_\+slam\+::pose\+\_\+optimization\+::get\+\_\+random\+\_\+subset (\begin{DoxyParamCaption}\item[{const std\+::array$<$ uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&}]{features\+Counts,  }\item[{const std\+::array$<$ std\+::pair$<$ uint, uint $>$, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}} $>$ \&}]{min\+Max\+Number\+Of\+Features,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&}]{matched\+Features }\end{DoxyParamCaption})}
 
 
 
-Return a subset of a given inlier set. 
+Return a subset of features. 
 
 \Hypertarget{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201}\label{namespacergbd__slam_1_1pose__optimization_a5631cae47389e44a75b184bf60db8201} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!get\_scaled\_axis\_coefficients\_from\_quaternion@{get\_scaled\_axis\_coefficients\_from\_quaternion}}
@@ -166,6 +222,50 @@ The coefficients corresponding to this quaternion
 
 
 \doxysubsection{Variable Documentation}
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_a8a5a0cdcf61d6ac82308887aff82bec9}\label{namespacergbd__slam_1_1pose__optimization_a8a5a0cdcf61d6ac82308887aff82bec9} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!featureIndex2dPoint@{featureIndex2dPoint}}
+\index{featureIndex2dPoint@{featureIndex2dPoint}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{featureIndex2dPoint}{featureIndex2dPoint}}
+{\footnotesize\ttfamily constexpr size\+\_\+t rgbd\+\_\+slam\+::pose\+\_\+optimization\+::feature\+Index2d\+Point = 2\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_ad750a85b4337af9806967bc8e34b9e2c}\label{namespacergbd__slam_1_1pose__optimization_ad750a85b4337af9806967bc8e34b9e2c} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!featureIndexPlane@{featureIndexPlane}}
+\index{featureIndexPlane@{featureIndexPlane}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{featureIndexPlane}{featureIndexPlane}}
+{\footnotesize\ttfamily constexpr size\+\_\+t rgbd\+\_\+slam\+::pose\+\_\+optimization\+::feature\+Index\+Plane = 0\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_ae80aa5582d84262b0917afa4ff5be964}\label{namespacergbd__slam_1_1pose__optimization_ae80aa5582d84262b0917afa4ff5be964} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!featureIndexPoint@{featureIndexPoint}}
+\index{featureIndexPoint@{featureIndexPoint}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{featureIndexPoint}{featureIndexPoint}}
+{\footnotesize\ttfamily constexpr size\+\_\+t rgbd\+\_\+slam\+::pose\+\_\+optimization\+::feature\+Index\+Point = 1\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_a6716e7f90aba42fbe972a637935f73e2}\label{namespacergbd__slam_1_1pose__optimization_a6716e7f90aba42fbe972a637935f73e2} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!minNumberOfFeatureForOpti@{minNumberOfFeatureForOpti}}
+\index{minNumberOfFeatureForOpti@{minNumberOfFeatureForOpti}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{minNumberOfFeatureForOpti}{minNumberOfFeatureForOpti}}
+{\footnotesize\ttfamily constexpr std\+::array$<$uint, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}}$>$ rgbd\+\_\+slam\+::pose\+\_\+optimization\+::min\+Number\+Of\+Feature\+For\+Opti\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ parameters::optimization::minimumPlanesForOptimization,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ parameters::optimization::minimumPointForOptimization,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ parameters::optimization::minimumPointForOptimization\}}
+
+\end{DoxyCode}
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}\label{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!numberOfFeatures@{numberOfFeatures}}
+\index{numberOfFeatures@{numberOfFeatures}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{numberOfFeatures}{numberOfFeatures}}
+{\footnotesize\ttfamily constexpr size\+\_\+t rgbd\+\_\+slam\+::pose\+\_\+optimization\+::number\+Of\+Features = 3\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{namespacergbd__slam_1_1pose__optimization_a094f5c34ada58bb818875067bc375386}\label{namespacergbd__slam_1_1pose__optimization_a094f5c34ada58bb818875067bc375386} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!scoreCountPer2DPoints@{scoreCountPer2DPoints}}
+\index{scoreCountPer2DPoints@{scoreCountPer2DPoints}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{scoreCountPer2DPoints}{scoreCountPer2DPoints}}
+{\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::pose\+\_\+optimization\+::score\+Count\+Per2\+DPoints = 3\hspace{0.3cm}{\ttfamily [constexpr]}}
+
 \Hypertarget{namespacergbd__slam_1_1pose__optimization_a8ebc29e6687c48d14ec8459d86038a40}\label{namespacergbd__slam_1_1pose__optimization_a8ebc29e6687c48d14ec8459d86038a40} 
 \index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!scoreCountPerPlanes@{scoreCountPerPlanes}}
 \index{scoreCountPerPlanes@{scoreCountPerPlanes}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
@@ -178,4 +278,15 @@ The coefficients corresponding to this quaternion
 \doxysubsubsection{\texorpdfstring{scoreCountPerPoints}{scoreCountPerPoints}}
 {\footnotesize\ttfamily constexpr uint rgbd\+\_\+slam\+::pose\+\_\+optimization\+::score\+Count\+Per\+Points = 2\hspace{0.3cm}{\ttfamily [constexpr]}}
 
-GLOBAL POSE ESTIMATOR members 
+GLOBAL POSE ESTIMATOR members \Hypertarget{namespacergbd__slam_1_1pose__optimization_a9329d7a888752732b20979d3e89f0506}\label{namespacergbd__slam_1_1pose__optimization_a9329d7a888752732b20979d3e89f0506} 
+\index{rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}!scorePerFeature@{scorePerFeature}}
+\index{scorePerFeature@{scorePerFeature}!rgbd\_slam::pose\_optimization@{rgbd\_slam::pose\_optimization}}
+\doxysubsubsection{\texorpdfstring{scorePerFeature}{scorePerFeature}}
+{\footnotesize\ttfamily constexpr std\+::array$<$double, \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_ae445858e4a042eba60344aa29aab58e5}{number\+Of\+Features}}$>$ rgbd\+\_\+slam\+::pose\+\_\+optimization\+::score\+Per\+Feature\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ 1.0\ /\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a6716e7f90aba42fbe972a637935f73e2}{minNumberOfFeatureForOpti}}[0],\ 1.0\ /\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a6716e7f90aba42fbe972a637935f73e2}{minNumberOfFeatureForOpti}}[1],\ 1.0\ /\ \mbox{\hyperlink{namespacergbd__slam_1_1pose__optimization_a6716e7f90aba42fbe972a637935f73e2}{minNumberOfFeatureForOpti}}[2]\}}
+
+\end{DoxyCode}

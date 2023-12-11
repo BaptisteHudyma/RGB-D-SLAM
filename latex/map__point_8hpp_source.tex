@@ -5,123 +5,132 @@
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_MAPMANAGEMENT\_MAPPOINT\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_MAPMANAGEMENT\_MAPPOINT\_HPP}}
 \DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../features/keypoints/keypoint\_handler.hpp"{}}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../tracking/kalman\_filter.hpp"{}}}
-\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../utils/coordinates.hpp"{}}}
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{feature__map_8hpp}{feature\_map.hpp}}"{}}}
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{matches__containers_8hpp}{matches\_containers.hpp}}"{}}}
-\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{parameters_8hpp}{parameters.hpp}}"{}}}
-\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
-\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <memory>}}
-\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <opencv2/opencv.hpp>}}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\_slam::map\_management}}\ \{}
-\DoxyCodeLine{00015\ }
-\DoxyCodeLine{00016\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad715b0460102980c8d6fcaa81b1107d3}{INVALID\_POINT\_UNIQ\_ID}}\ =\ 0;\ \textcolor{comment}{//\ This\ id\ indicates\ an\ invalid\ unique\ id\ for\ a\ map\ point}}
-\DoxyCodeLine{00017\ }
-\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}}}
-\DoxyCodeLine{00019\ \{}
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//\ world\ coordinates}}
-\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_aa538c84e53a30f94804c77fbfa6dda0c}{\_coordinates}};}
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ 3D\ descriptor\ (ORB)}}
-\DoxyCodeLine{00023\ \ \ \ \ cv::Mat\ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_acb78f641c06c5c7ad59b03bc4cebed47}{\_descriptor}};}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{//\ position\ covariance}}
-\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_ac69b33b227c43f4afed0ffab3137c9e2}{\_covariance}};}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ coordinates,}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ covariance,}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor);}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point_a1bafdb653895c1efb23e3979d2ba1375}{track}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ newDetectionCoordinates,}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ newDetectionCovariance)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ build\_kalman\_filter()\ noexcept;}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ shared\ kalman\ filter,\ between\ all\ points}}
-\DoxyCodeLine{00047\ \ \ \ \ inline\ static\ std::unique\_ptr<tracking::SharedKalmanFilter<3,\ 3>>\ \_kalmanFilter\ =\ \textcolor{keywordtype}{nullptr};}
-\DoxyCodeLine{00048\ \};}
-\DoxyCodeLine{00049\ }
-\DoxyCodeLine{00050\ using\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}}\ =\ features::keypoints::Keypoint\_Handler;}
-\DoxyCodeLine{00051\ using\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}\ =\ features::keypoints::DetectedKeyPoint;}
-\DoxyCodeLine{00052\ using\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatchType}}\ =\ matches\_containers::PointMatch;}
-\DoxyCodeLine{00053\ using\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}}\ =\ features::keypoints::KeypointsWithIdStruct;}
-\DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ class\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{MapPoint}}\ :}
-\DoxyCodeLine{00056\ \ \ \ \ public\ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}},}
-\DoxyCodeLine{00057\ \ \ \ \ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatchType}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}}>}
-\DoxyCodeLine{00058\ \{}
-\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00060\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_aa83643c790d2d6a161659e1b744b5d1d}{MapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ coordinates,}
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ covariance,}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor)\ :}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}}(coordinates,\ covariance,\ descriptor),}
-\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatchType}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}}>()}
-\DoxyCodeLine{00065\ \ \ \ \ \{}
-\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ assert(\_id\ >\ 0);}
-\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{feature__map_8hpp}{feature\_map.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{keypoint__handler_8hpp}{features/keypoints/keypoint\_handler.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{point__with__tracking_8hpp}{tracking/point\_with\_tracking.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{matches__containers_8hpp}{matches\_containers.hpp}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management}{rgbd\_slam::map\_management}}\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_ad715b0460102980c8d6fcaa81b1107d3}{INVALID\_POINT\_UNIQ\_ID}}\ =\ 0;\ \textcolor{comment}{//\ This\ id\ indicates\ an\ invalid\ unique\ id\ for\ a\ map\ point}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}}\ =\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{features::keypoints::Keypoint\_Handler}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{features::keypoints::DetectedKeyPoint}};}
+\DoxyCodeLine{00015\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatchType}}\ =\ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae86119c8c6f92b18124aea62632c3276}{matches\_containers::PointMatch}};}
+\DoxyCodeLine{00016\ \textcolor{keyword}{using\ }\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{features::keypoints::KeypointsWithIdStruct}};}
+\DoxyCodeLine{00017\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacergbd__slam_1_1map__management_abe8a38cde4bc86f123fbe2afb0f6146f}{UpgradedPointType}}\ =\ \textcolor{keywordtype}{void}*;\ \textcolor{comment}{//\ no\ upgrade\ for\ 3D\ points}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{MapPoint}}\ :}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point}{tracking::Point}},}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<DetectedKeypointsObject,}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DetectedPointType,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PointMatchType,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TrackedPointsObject,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ UpgradedPointType>}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_aa83643c790d2d6a161659e1b744b5d1d}{MapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ coordinates,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ covariance,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor)\ :}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ tracking::\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_a07d6e559a637510a92b05d4c3afecaa4}{Point}}(coordinates,\ covariance,\ descriptor),}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}},}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}},}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatchType}},}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}},}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_abe8a38cde4bc86f123fbe2afb0f6146f}{UpgradedPointType}}>()}
+\DoxyCodeLine{00037\ \ \ \ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ assert(\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a551259d30d344c88d0700651ff5b3fee}{\_id}}\ >\ 0);}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a28eaeb656c0642169b0cd72e47d1d7c8}{MapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ coordinates,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ covariance,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ tracking::\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_a07d6e559a637510a92b05d4c3afecaa4}{Point}}(coordinates,\ covariance,\ descriptor),}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatchType}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}},\ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_abe8a38cde4bc86f123fbe2afb0f6146f}{UpgradedPointType}}>(}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ id)}
+\DoxyCodeLine{00048\ \ \ \ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ assert(\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature_a551259d30d344c88d0700651ff5b3fee}{\_id}}\ >\ 0);}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a437a50bd147d22b04ca78acc82f4915a}{\string~MapPoint}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a042f3b18d928096838176147d2439123}{find\_match}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}}\&\ detectedFeatures,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}}\&\ isDetectedFeatureMatched,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::list<PointMatchType>\&\ matches,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldAddToMatches\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ useAdvancedSearch\ =\ \textcolor{keyword}{false})\ const\ noexcept\ override;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a9a72561717b39d8134d1373957d0b23c}{add\_to\_tracked}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}}\&\ trackedFeatures,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ uint\ dropChance\ =\ 1000)\ const\ noexcept\ override;}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a27fe0cf20f0cc71c7d0c2ecf4abe21df}{draw}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ debugImage,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ cv::Scalar\&\ color)\ const\ noexcept\ override;}
 \DoxyCodeLine{00068\ }
-\DoxyCodeLine{00069\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a28eaeb656c0642169b0cd72e47d1d7c8}{MapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ coordinates,}
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ covariance,}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor,}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1map__management_1_1_point}{Point}}(coordinates,\ covariance,\ descriptor),}
-\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_map_feature}{IMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}},\ \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{PointMatchType}},\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}}>(id)}
-\DoxyCodeLine{00075\ \ \ \ \ \{}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ assert(\_id\ >\ 0);}
-\DoxyCodeLine{00077\ \ \ \ \ \}}
-\DoxyCodeLine{00078\ }
-\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a437a50bd147d22b04ca78acc82f4915a}{\string~MapPoint}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00069\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a2de79e7bbdefa89be45b5ba21e025d1b}{is\_visible}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix)\ const\ noexcept\ override;}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_ad6f560f4d03beb6005e9c42ce2929b63}{write\_to\_file}}(std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)\ const\ noexcept\ override;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a14b3d11435da263143f5b8fbf103e641}{compute\_upgraded}}(const\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_abe8a38cde4bc86f123fbe2afb0f6146f}{UpgradedPointType}}\&\ upgradeFeature)\ const\ noexcept\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00075\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ (void)cameraToWorld;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ (void)upgradeFeature;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
 \DoxyCodeLine{00080\ }
-\DoxyCodeLine{00081\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{int}\ find\_match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_keypoint___handler}{DetectedKeypointsObject}}\&\ detectedFeatures,}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}}\&\ isDetectedFeatureMatched,}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::list<PointMatchType>\&\ matches,}
-\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ shouldAddToMatches\ =\ \textcolor{keyword}{true},}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ useAdvancedSearch\ =\ \textcolor{keyword}{false})\ const\ noexcept\ override;}
-\DoxyCodeLine{00087\ }
-\DoxyCodeLine{00088\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ add\_to\_tracked(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamera,}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_keypoints_with_id_struct}{TrackedPointsObject}}\&\ trackedFeatures,}
-\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ uint\ dropChance\ =\ 1000)\ const\ noexcept\ override;}
-\DoxyCodeLine{00091\ }
-\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ draw(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix,}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cv::Mat\&\ debugImage,}
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ cv::Scalar\&\ color)\ const\ noexcept\ override;}
-\DoxyCodeLine{00095\ }
-\DoxyCodeLine{00096\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ is\_visible(const\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ worldToCamMatrix)\ const\ noexcept\ override;}
-\DoxyCodeLine{00097\ }
-\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ write\_to\_file(std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)\ const\ noexcept\ override;}
-\DoxyCodeLine{00099\ }
-\DoxyCodeLine{00100\ \ \ protected:}
-\DoxyCodeLine{00101\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ update\_with\_match(const\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}\&\ matchedFeature,}
-\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
-\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ noexcept\ override;}
-\DoxyCodeLine{00104\ }
-\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{void}\ update\_no\_match()\ noexcept\ override;}
-\DoxyCodeLine{00106\ \};}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00082\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a1f83ed622bf5442f78d807eaa4f77b72}{update\_with\_match}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}\&\ matchedFeature,}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point_a6f8dc9ef3726a6f57a7f063d1018a64b}{update\_no\_match}}()\ noexcept\ override;}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00092\ class\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}}\ :\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{MapPoint}},\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}{IStagedMapFeature}}<\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}>}
+\DoxyCodeLine{00093\ \{}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00095\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}\&\ detectedFeature);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_remove\_from\_staged()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_add\_to\_local\_map()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point_ac97b2a192fa09700a0c8bef22b23aa9e}{can\_add\_to\_map}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}\&\ detectedPoint)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00104\ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ not\ detectedPoint.\_descriptor.empty()\ and\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_ac85068e2a7fee034ef2c4879b1b9aee0}{utils::is\_depth\_valid}}(detectedPoint.\_coordinates.z());}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
 \DoxyCodeLine{00107\ }
-\DoxyCodeLine{00111\ class\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}}\ :\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{MapPoint}},\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_staged_map_feature}{IStagedMapFeature}}<\mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}>}
-\DoxyCodeLine{00112\ \{}
-\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00114\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
-\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
-\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1features_1_1keypoints_1_1_detected_key_point}{DetectedPointType}}\&\ detectedFeature);}
-\DoxyCodeLine{00117\ }
-\DoxyCodeLine{00118\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_remove\_from\_staged()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{double}\ get\_confidence()\ const\ noexcept;}
+\DoxyCodeLine{00110\ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00115\ class\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{LocalMapPoint}}\ :\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{MapPoint}},\ public\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}{ILocalMapFeature}}<\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}}>}
+\DoxyCodeLine{00116\ \{}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{LocalMapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}}\&\ stagedPoint);}
 \DoxyCodeLine{00119\ }
-\DoxyCodeLine{00120\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ should\_add\_to\_local\_map()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{double}\ get\_confidence()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{comment}{//\ constructor\ for\ upgraded\ features}}
+\DoxyCodeLine{00121\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{LocalMapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ coordinates,}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ covariance,}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor,}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ matchIndex);}
 \DoxyCodeLine{00125\ }
-\DoxyCodeLine{00129\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{LocalMapPoint}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_map_point}{MapPoint}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_i_local_map_feature}{ILocalMapFeature}}<StagedMapPoint>}
-\DoxyCodeLine{00130\ \{}
-\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{LocalMapPoint}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}}\&\ stagedPoint);}
-\DoxyCodeLine{00133\ }
-\DoxyCodeLine{00134\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ is\_lost()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00135\ \};}
+\DoxyCodeLine{00126\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ is\_lost()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00127\ \};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{keyword}{using\ }\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{localPointMap}}\ =\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map}{Feature\_Map}}<\mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_local_map_point}{LocalMapPoint}},}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_staged_map_point}{StagedMapPoint}},}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a95c21ce2a6639057adf799fea76af9b1}{DetectedKeypointsObject}},}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a96089616c3d98a7f8aa8c3384649c57c}{DetectedPointType}},}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a5dbe12f897b8d358fda312430b52d5df}{PointMatchType}},}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_a1c750ff4cc7dbe8bb4fa3bc6092bdcf3}{TrackedPointsObject}},}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_1_1map__management_abe8a38cde4bc86f123fbe2afb0f6146f}{UpgradedPointType}}>;}
 \DoxyCodeLine{00136\ }
 \DoxyCodeLine{00137\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::map\_management}}
 \DoxyCodeLine{00138\ }

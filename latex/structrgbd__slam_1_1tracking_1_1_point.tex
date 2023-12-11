@@ -1,0 +1,87 @@
+\doxysection{rgbd\+\_\+slam\+::tracking\+::Point Struct Reference}
+\hypertarget{structrgbd__slam_1_1tracking_1_1_point}{}\label{structrgbd__slam_1_1tracking_1_1_point}\index{rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}}
+
+
+{\ttfamily \#include $<$point\+\_\+with\+\_\+tracking.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::tracking\+::Point\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.978723cm]{structrgbd__slam_1_1tracking_1_1_point}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_a07d6e559a637510a92b05d4c3afecaa4}{Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&coordinates, const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&covariance, const cv\+::\+Mat \&descriptor)
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_a9810f9ce335c96239bd3ce6ddcd741ff}{track}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&new\+Detection\+Coordinates, const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&new\+Detection\+Covariance) noexcept
+\begin{DoxyCompactList}\small\item\em update this point coordinates using a new detection \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_a75e07e9b01144c947284523c17d3a193}{\+\_\+coordinates}}
+\item 
+cv\+::\+Mat \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_a40203f7ccabaf74c9ea9499b75167c1b}{\+\_\+descriptor}}
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_acf3c0b42c865a47fc66f674177ff314b}{\+\_\+covariance}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_a07d6e559a637510a92b05d4c3afecaa4}\label{structrgbd__slam_1_1tracking_1_1_point_a07d6e559a637510a92b05d4c3afecaa4} 
+\index{rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}!Point@{Point}}
+\index{Point@{Point}!rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}}
+\doxysubsubsection{\texorpdfstring{Point()}{Point()}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::tracking\+::\+Point\+::\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{coordinates,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} \&}]{covariance,  }\item[{const cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+
+\doxylink{structrgbd__slam_1_1tracking_1_1_point}{Point} 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_a9810f9ce335c96239bd3ce6ddcd741ff}\label{structrgbd__slam_1_1tracking_1_1_point_a9810f9ce335c96239bd3ce6ddcd741ff} 
+\index{rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}!track@{track}}
+\index{track@{track}!rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::tracking\+::\+Point\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \&}]{new\+Detection\+Coordinates,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{new\+Detection\+Covariance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+update this point coordinates using a new detection 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em new\+Detection\+Coordinates} & The newly detected point \\
+\hline
+\mbox{\texttt{ in}}  & {\em new\+Detection\+Covariance} & The newly detected point covariance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the updated position ans the previous one, -\/1 if an error occured 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_a75e07e9b01144c947284523c17d3a193}\label{structrgbd__slam_1_1tracking_1_1_point_a75e07e9b01144c947284523c17d3a193} 
+\index{rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}!\_coordinates@{\_coordinates}}
+\index{\_coordinates@{\_coordinates}!rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}}
+\doxysubsubsection{\texorpdfstring{\_coordinates}{\_coordinates}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} rgbd\+\_\+slam\+::tracking\+::\+Point\+::\+\_\+coordinates}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_acf3c0b42c865a47fc66f674177ff314b}\label{structrgbd__slam_1_1tracking_1_1_point_acf3c0b42c865a47fc66f674177ff314b} 
+\index{rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}!\_covariance@{\_covariance}}
+\index{\_covariance@{\_covariance}!rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}}
+\doxysubsubsection{\texorpdfstring{\_covariance}{\_covariance}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{World\+Coordinate\+Covariance}} rgbd\+\_\+slam\+::tracking\+::\+Point\+::\+\_\+covariance}
+
+\Hypertarget{structrgbd__slam_1_1tracking_1_1_point_a40203f7ccabaf74c9ea9499b75167c1b}\label{structrgbd__slam_1_1tracking_1_1_point_a40203f7ccabaf74c9ea9499b75167c1b} 
+\index{rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}!\_descriptor@{\_descriptor}}
+\index{\_descriptor@{\_descriptor}!rgbd\_slam::tracking::Point@{rgbd\_slam::tracking::Point}}
+\doxysubsubsection{\texorpdfstring{\_descriptor}{\_descriptor}}
+{\footnotesize\ttfamily cv\+::\+Mat rgbd\+\_\+slam\+::tracking\+::\+Point\+::\+\_\+descriptor}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/tracking/\mbox{\hyperlink{point__with__tracking_8hpp}{point\+\_\+with\+\_\+tracking.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/tracking/\mbox{\hyperlink{point__with__tracking_8cpp}{point\+\_\+with\+\_\+tracking.\+cpp}}\end{DoxyCompactItemize}

@@ -18,7 +18,7 @@ Inheritance diagram for rgbd\+\_\+slam\+::pose\+\_\+optimization\+::Global\+\_\+
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_accf6ced405956f723c47d870694709ad}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \texorpdfstring{$\ast$}{*}const points, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \texorpdfstring{$\ast$}{*}const planes)
+\mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a5e163a4e84ef8b57f0dd629ea9e55720}{Global\+\_\+\+Pose\+\_\+\+Estimator}} (const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{matches\+\_\+containers\+::match\+\_\+point2\+D\+\_\+container}} \texorpdfstring{$\ast$}{*}const points2d, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \texorpdfstring{$\ast$}{*}const points, const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \texorpdfstring{$\ast$}{*}const planes)
 \item 
 int \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a45d32727cad348886c646cfa84bba1a6}{operator()}} (const Eigen\+::\+Vector$<$ double, 6 $>$ \&optimized\+Parameters, \mbox{\hyperlink{namespacergbd__slam_a0b7f2c63b7da0314c015add649109878}{vectorxd}} \&output\+Scores) const
 \begin{DoxyCompactList}\small\item\em Implementation of the objective function. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -58,14 +58,16 @@ uint \mbox{\hyperlink{structrgbd__slam_1_1pose__optimization_1_1_levenberg___mar
 Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard optimisator. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_accf6ced405956f723c47d870694709ad}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_accf6ced405956f723c47d870694709ad} 
+\Hypertarget{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a5e163a4e84ef8b57f0dd629ea9e55720}\label{structrgbd__slam_1_1pose__optimization_1_1_global___pose___estimator_a5e163a4e84ef8b57f0dd629ea9e55720} 
 \index{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}!Global\_Pose\_Estimator@{Global\_Pose\_Estimator}}
 \index{Global\_Pose\_Estimator@{Global\_Pose\_Estimator}!rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator@{rgbd\_slam::pose\_optimization::Global\_Pose\_Estimator}}
 \doxysubsubsection{\texorpdfstring{Global\_Pose\_Estimator()}{Global\_Pose\_Estimator()}}
-{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \texorpdfstring{$\ast$}{*}const}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \texorpdfstring{$\ast$}{*}const}]{planes }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator\+::\+Global\+\_\+\+Pose\+\_\+\+Estimator (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{matches\+\_\+containers\+::match\+\_\+point2\+D\+\_\+container}} \texorpdfstring{$\ast$}{*}const}]{points2d,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{matches\+\_\+containers\+::match\+\_\+point\+\_\+container}} \texorpdfstring{$\ast$}{*}const}]{points,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} \texorpdfstring{$\ast$}{*}const}]{planes }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em points2d} & Matched 2D (screen) to 2D (inverse depth) points \\
+\hline
 \mbox{\texttt{ in}}  & {\em points} & Matched 2D (screen) to 3D (world) points \\
 \hline
 \mbox{\texttt{ in}}  & {\em planes} & Matched camera to world planes \\

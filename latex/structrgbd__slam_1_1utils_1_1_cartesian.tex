@@ -1,0 +1,103 @@
+\doxysection{rgbd\+\_\+slam\+::utils\+::Cartesian Struct Reference}
+\hypertarget{structrgbd__slam_1_1utils_1_1_cartesian}{}\label{structrgbd__slam_1_1utils_1_1_cartesian}\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+
+
+{\ttfamily \#include $<$basis\+\_\+changes.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}{vec}} () const
+\item 
+void \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_aae61c33a31e5afe74242e656a3614c35}{from\+\_\+vec}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}{vec}})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_af6750abec6626475528209065d8dc7e2}{from}} (\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}} coord)
+\begin{DoxyCompactList}\small\item\em Transform a given coordinate from shperical to cartesian space. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a9da90893ec30b4744e93c7af1fd2ac30}{from}} (\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}} coord, \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&jacobian)
+\begin{DoxyCompactList}\small\item\em Transform a given coordinate from shperical to cartesian space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_aca0b5ad61c3edcacdd679bbeb6e5f916}{x}}
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a25279a92f7244d1d894e06b5779953a8}{y}}
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a730ec2bd9ad7e104e2c3dda182f7c1fb}{z}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_af6750abec6626475528209065d8dc7e2}\label{structrgbd__slam_1_1utils_1_1_cartesian_af6750abec6626475528209065d8dc7e2} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!from@{from}}
+\index{from@{from}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{from()}{from()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}} rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::from (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}}}]{coord }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Transform a given coordinate from shperical to cartesian space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em coord} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_a9da90893ec30b4744e93c7af1fd2ac30}\label{structrgbd__slam_1_1utils_1_1_cartesian_a9da90893ec30b4744e93c7af1fd2ac30} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!from@{from}}
+\index{from@{from}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{from()}{from()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}} rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::from (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}}}]{coord,  }\item[{\mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}} \&}]{jacobian }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Transform a given coordinate from shperical to cartesian space. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em coord} & \\
+\hline
+\mbox{\texttt{ out}}  & {\em jacobian} & the jacobian of this transformation \\
+\hline
+\end{DoxyParams}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_aae61c33a31e5afe74242e656a3614c35}\label{structrgbd__slam_1_1utils_1_1_cartesian_aae61c33a31e5afe74242e656a3614c35} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!from\_vec@{from\_vec}}
+\index{from\_vec@{from\_vec}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{from\_vec()}{from\_vec()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::from\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}\label{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!vec@{vec}}
+\index{vec@{vec}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{vec()}{vec()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::vec (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_aca0b5ad61c3edcacdd679bbeb6e5f916}\label{structrgbd__slam_1_1utils_1_1_cartesian_aca0b5ad61c3edcacdd679bbeb6e5f916} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!x@{x}}
+\index{x@{x}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::x}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_a25279a92f7244d1d894e06b5779953a8}\label{structrgbd__slam_1_1utils_1_1_cartesian_a25279a92f7244d1d894e06b5779953a8} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!y@{y}}
+\index{y@{y}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::y}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_a730ec2bd9ad7e104e2c3dda182f7c1fb}\label{structrgbd__slam_1_1utils_1_1_cartesian_a730ec2bd9ad7e104e2c3dda182f7c1fb} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!z@{z}}
+\index{z@{z}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{z}{z}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::z}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{basis__changes_8hpp}{basis\+\_\+changes.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{basis__changes_8cpp}{basis\+\_\+changes.\+cpp}}\end{DoxyCompactItemize}

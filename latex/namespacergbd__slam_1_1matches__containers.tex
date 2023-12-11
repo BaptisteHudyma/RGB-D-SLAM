@@ -18,9 +18,15 @@ using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae86119c8c6f92
 \item 
 using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{match\+\_\+point\+\_\+container}} = std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae86119c8c6f92b18124aea62632c3276}{Point\+Match}} $>$
 \item 
+using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a3c4fa90379f157a0b5df935d2a8ed2b4}{Point\+Match2D}} = \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}}, \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} $>$
+\item 
+using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{match\+\_\+point2\+D\+\_\+container}} = std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a3c4fa90379f157a0b5df935d2a8ed2b4}{Point\+Match2D}} $>$
+\item 
 using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_af96e9f3a4c4be9fed04bec67ca966fb1}{Plane\+Match}} = \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}}, \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}} $>$
 \item 
 using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{match\+\_\+plane\+\_\+container}} = std\+::list$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_af96e9f3a4c4be9fed04bec67ca966fb1}{Plane\+Match}} $>$
+\item 
+using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a2f21600d4c751179e9e524e61d4d176a}{point2\+D\+\_\+match\+\_\+sets}} = \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{match\+\_\+point2\+D\+\_\+container}} $>$
 \item 
 using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a9555085cb256703cf45880077a789c7a}{point\+\_\+match\+\_\+sets}} = \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}$<$ \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}{match\+\_\+point\+\_\+container}} $>$
 \item 
@@ -34,6 +40,12 @@ using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a064c556345ab9
 \index{match\_plane\_container@{match\_plane\_container}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
 \doxysubsubsection{\texorpdfstring{match\_plane\_container}{match\_plane\_container}}
 {\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae435b06d82751fed7f7d9dfebf3cf594}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+plane\+\_\+container}} = typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_af96e9f3a4c4be9fed04bec67ca966fb1}{Plane\+Match}}$>$}
+
+\Hypertarget{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}\label{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!match\_point2D\_container@{match\_point2D\_container}}
+\index{match\_point2D\_container@{match\_point2D\_container}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{match\_point2D\_container}{match\_point2D\_container}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::match\+\_\+point2\+D\+\_\+container}} = typedef std\+::list$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a3c4fa90379f157a0b5df935d2a8ed2b4}{Point\+Match2D}}$>$}
 
 \Hypertarget{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690}\label{namespacergbd__slam_1_1matches__containers_a5dd025751281c2e733588e8229f68690} 
 \index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!match\_point\_container@{match\_point\_container}}
@@ -53,6 +65,12 @@ using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a064c556345ab9
 \doxysubsubsection{\texorpdfstring{PlaneMatch}{PlaneMatch}}
 {\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_af96e9f3a4c4be9fed04bec67ca966fb1}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Plane\+Match}} = typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{utils\+::\+Plane\+Camera\+Coordinates}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_world_coordinates}{utils\+::\+Plane\+World\+Coordinates}}, \mbox{\hyperlink{namespacergbd__slam_a70f681ee932c57b80130eb960ccf435f}{matrix44}}$>$}
 
+\Hypertarget{namespacergbd__slam_1_1matches__containers_a2f21600d4c751179e9e524e61d4d176a}\label{namespacergbd__slam_1_1matches__containers_a2f21600d4c751179e9e524e61d4d176a} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!point2D\_match\_sets@{point2D\_match\_sets}}
+\index{point2D\_match\_sets@{point2D\_match\_sets}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{point2D\_match\_sets}{point2D\_match\_sets}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a2f21600d4c751179e9e524e61d4d176a}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::point2\+D\+\_\+match\+\_\+sets}} = typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets__template}{match\+\_\+sets\+\_\+template}}$<$\mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a68474edc07139f8ef4791e3eaef6e61b}{match\+\_\+point2\+D\+\_\+container}}$>$}
+
 \Hypertarget{namespacergbd__slam_1_1matches__containers_a9555085cb256703cf45880077a789c7a}\label{namespacergbd__slam_1_1matches__containers_a9555085cb256703cf45880077a789c7a} 
 \index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!point\_match\_sets@{point\_match\_sets}}
 \index{point\_match\_sets@{point\_match\_sets}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
@@ -64,4 +82,10 @@ using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a064c556345ab9
 \index{PointMatch@{PointMatch}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
 \doxysubsubsection{\texorpdfstring{PointMatch}{PointMatch}}
 {\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_ae86119c8c6f92b18124aea62632c3276}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Point\+Match}} = typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}}, \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}$>$}
+
+\Hypertarget{namespacergbd__slam_1_1matches__containers_a3c4fa90379f157a0b5df935d2a8ed2b4}\label{namespacergbd__slam_1_1matches__containers_a3c4fa90379f157a0b5df935d2a8ed2b4} 
+\index{rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}!PointMatch2D@{PointMatch2D}}
+\index{PointMatch2D@{PointMatch2D}!rgbd\_slam::matches\_containers@{rgbd\_slam::matches\_containers}}
+\doxysubsubsection{\texorpdfstring{PointMatch2D}{PointMatch2D}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacergbd__slam_1_1matches__containers_a3c4fa90379f157a0b5df935d2a8ed2b4}{rgbd\+\_\+slam\+::matches\+\_\+containers\+::\+Point\+Match2D}} = typedef \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1_match_template}{Match\+Template}}$<$\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils\+::\+Screen\+Coordinate2D}}, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils\+::\+Inverse\+Depth\+World\+Point}}, \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}}$>$}
 

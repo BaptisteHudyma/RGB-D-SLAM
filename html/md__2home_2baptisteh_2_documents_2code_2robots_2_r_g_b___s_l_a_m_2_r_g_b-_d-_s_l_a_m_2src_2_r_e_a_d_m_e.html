@@ -83,8 +83,11 @@ $(function() {
 <li><b>map_management</b> The "Mapping" part of SLAM. It's a local map implementation, with no loop closures</li>
 <li><b>outputs</b> All the outputs that this program produces are stored here EXCEPT the images, that are handled by their classes (the map display is handled by the map class)</li>
 <li><b>pose_optimization</b> Contains all the pose optimization functions. The optimization process uses a Levenberg-Marquardt algorithm for frame to frame optimization</li>
-<li><b>tracking</b> The tracking functions, as Kalman filters and observers motion model</li>
-<li><b>utils</b> Math and cameras utils functions. Also contains the main types (eg: Pose) </li>
+<li><b>tracking</b> The tracking functions, as Kalman filters and observers motion model. it also handle the tracking of the feature used in the program (points, planes, inverse depth points)</li>
+<li><b>utils</b> Math and cameras utils functions. Also contains the main types (eg: Pose)<ul>
+<li><b>coordinates</b> define the diverse coordinates used in this program (screen, camera and world point, inverse depth points, camera plane, world plane, ...) </li>
+</ul>
+</li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

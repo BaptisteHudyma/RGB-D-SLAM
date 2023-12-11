@@ -110,6 +110,7 @@ How to use</h2>
 <p>Running this program will produce a map file (format is .xyz for now) at the location of the executable.</p>
 <p>While the program is running, an OpenCV windows displays the current frame with the tracked features in it. Each feature is assigned to a random color, that will never change during the mapping process. A good tracking/SLAM process will keep the same feature's colors during the whole process.</p>
 <p>The top bar displays the number of points in the local map, as well as the planes and their colors.</p>
+<p>At the end of the process, a file out.obj is produced. The map this program produced is in the physical convention coordinate system (x forward, y left, z up).</p>
 <h3><a class="anchor" id="autotoc_md7"></a>
 CAPE</h3>
 <p>CAPE provides the yoga and tunnel dataset, composed of low textured environment with cylinder primitives </p><div class="fragment"><div class="line">./slam_CAPE tunnel</div>

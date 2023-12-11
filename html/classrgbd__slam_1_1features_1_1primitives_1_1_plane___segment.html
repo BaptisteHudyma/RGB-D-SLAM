@@ -117,9 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9eaa39bfe792a52e32bf7f23dde4e11" id="r_aa9eaa39bfe792a52e32bf7f23dde4e11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#aa9eaa39bfe792a52e32bf7f23dde4e11">clear_plane_parameters</a> () noexcept</td></tr>
 <tr class="memdesc:aa9eaa39bfe792a52e32bf7f23dde4e11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears this segment parameters to restart analysis.  <br /></td></tr>
 <tr class="separator:aa9eaa39bfe792a52e32bf7f23dde4e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab583877ebb2b9670297f4ac06693b0ee" id="r_ab583877ebb2b9670297f4ac06693b0ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ab583877ebb2b9670297f4ac06693b0ee">get_point_cloud_covariance</a> () const noexcept</td></tr>
-<tr class="memdesc:ab583877ebb2b9670297f4ac06693b0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the covariance of the points in the plane.  <br /></td></tr>
-<tr class="separator:ab583877ebb2b9670297f4ac06693b0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a673e1b4c7064c6b04a0c35c4e787ab16" id="r_a673e1b4c7064c6b04a0c35c4e787ab16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a673e1b4c7064c6b04a0c35c4e787ab16">get_point_cloud_covariance</a> () const</td></tr>
+<tr class="memdesc:a673e1b4c7064c6b04a0c35c4e787ab16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the covariance of the points in the plane.  <br /></td></tr>
+<tr class="separator:a673e1b4c7064c6b04a0c35c4e787ab16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f7705197d19b80c42c2894f626360ad" id="r_a0f7705197d19b80c42c2894f626360ad"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a0f7705197d19b80c42c2894f626360ad">get_MSE</a> () const noexcept</td></tr>
 <tr class="separator:a0f7705197d19b80c42c2894f626360ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2df4152acd16ff960b3daa5cb2de4c63" id="r_a2df4152acd16ff960b3daa5cb2de4c63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a2df4152acd16ff960b3daa5cb2de4c63">get_normal</a> () const noexcept</td></tr>
@@ -328,7 +328,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Fit a plane to the contained points using PCA. </p>
-<p>Alternative plane parameter computation const matrix33&amp; pcc = <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#ab583877ebb2b9670297f4ac06693b0ee" title="Compute the covariance of the points in the plane.">get_point_cloud_covariance()</a>; const vector3 e(-_Sx, -_Sy, -_Sz); const vector3 params = (pcc * e).transpose(); const vector3 normal = params / params.norm(); const double d = 1.0 / params.norm();</p>
+<p>Alternative plane parameter computation const matrix33&amp; pcc = <a class="el" href="classrgbd__slam_1_1features_1_1primitives_1_1_plane___segment.html#a673e1b4c7064c6b04a0c35c4e787ab16" title="Compute the covariance of the points in the plane.">get_point_cloud_covariance()</a>; const vector3 e(-_Sx, -_Sy, -_Sz); const vector3 params = (pcc * e).transpose(); const vector3 normal = params / params.norm(); const double d = 1.0 / params.norm();</p>
 
 </div>
 </div>
@@ -517,14 +517,11 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab583877ebb2b9670297f4ac06693b0ee" name="ab583877ebb2b9670297f4ac06693b0ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab583877ebb2b9670297f4ac06693b0ee">&#9670;&#160;</a></span>get_point_cloud_covariance()</h2>
+<a id="a673e1b4c7064c6b04a0c35c4e787ab16" name="a673e1b4c7064c6b04a0c35c4e787ab16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a673e1b4c7064c6b04a0c35c4e787ab16">&#9670;&#160;</a></span>get_point_cloud_covariance()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> rgbd_slam::features::primitives::Plane_Segment::get_point_cloud_covariance </td>
@@ -533,11 +530,6 @@ Protected Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Compute the covariance of the points in the plane. </p>

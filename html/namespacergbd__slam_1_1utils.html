@@ -94,6 +94,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_camera_polygon.html">CameraPolygon</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describe a polygon in camera coordinates.  <a href="classrgbd__slam_1_1utils_1_1_camera_polygon.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_cartesian.html">Cartesian</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html">InverseDepthWorldPoint</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contain an inverse depth representation of a world point. This is used to represent point with an unknown depth.  <a href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_plane_camera_coordinates.html">PlaneCameraCoordinates</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parametrization of a plane in camera coordinates.  <a href="structrgbd__slam_1_1utils_1_1_plane_camera_coordinates.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,6 +124,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html">ScreenCoordinate2D</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels.  <a href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_spherical.html">Spherical</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a single of coordinate in world space. World space is defined as (x, y, z) in distance (millimeters), relative to the world center.  <a href="structrgbd__slam_1_1utils_1_1_world_coordinate.html#details">More...</a><br /></td></tr>
@@ -148,19 +155,28 @@ Functions</h2></td></tr>
 <tr class="memitem:a5ebcc138398dd5eb327a7f3511a27c8d" id="r_a5ebcc138398dd5eb327a7f3511a27c8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a5ebcc138398dd5eb327a7f3511a27c8d">compute_camera_to_world_transform</a> (const <a class="el" href="namespacergbd__slam.html#a93a0925863fdadf4e9f70b21fa87e627">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;position) noexcept</td></tr>
 <tr class="memdesc:a5ebcc138398dd5eb327a7f3511a27c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz)  <br /></td></tr>
 <tr class="separator:a5ebcc138398dd5eb327a7f3511a27c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a206878e4f0b9589162acdfbea3c7316c" id="r_a206878e4f0b9589162acdfbea3c7316c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a206878e4f0b9589162acdfbea3c7316c">compute_camera_to_world_transform</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera) noexcept</td></tr>
+<tr class="separator:a206878e4f0b9589162acdfbea3c7316c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54eeff8e58b720f2a6b226c321c3a1cc" id="r_a54eeff8e58b720f2a6b226c321c3a1cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a54eeff8e58b720f2a6b226c321c3a1cc">compute_camera_to_world_transform_no_correction</a> (const <a class="el" href="namespacergbd__slam.html#a93a0925863fdadf4e9f70b21fa87e627">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;position) noexcept</td></tr>
+<tr class="memdesc:a54eeff8e58b720f2a6b226c321c3a1cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED.  <br /></td></tr>
+<tr class="separator:a54eeff8e58b720f2a6b226c321c3a1cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cab8d3e798d09c4d39a14f58d2edd78" id="r_a3cab8d3e798d09c4d39a14f58d2edd78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a3cab8d3e798d09c4d39a14f58d2edd78">compute_world_to_camera_transform</a> (const <a class="el" href="namespacergbd__slam.html#a93a0925863fdadf4e9f70b21fa87e627">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;position) noexcept</td></tr>
 <tr class="memdesc:a3cab8d3e798d09c4d39a14f58d2edd78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd)  <br /></td></tr>
 <tr class="separator:a3cab8d3e798d09c4d39a14f58d2edd78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3305d4173d2bf66546c1d3a956b84d16" id="r_a3305d4173d2bf66546c1d3a956b84d16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a3305d4173d2bf66546c1d3a956b84d16">compute_world_to_camera_transform</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld) noexcept</td></tr>
 <tr class="separator:a3305d4173d2bf66546c1d3a956b84d16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a206878e4f0b9589162acdfbea3c7316c" id="r_a206878e4f0b9589162acdfbea3c7316c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a206878e4f0b9589162acdfbea3c7316c">compute_camera_to_world_transform</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera) noexcept</td></tr>
-<tr class="separator:a206878e4f0b9589162acdfbea3c7316c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e98d59dd3cae8a250b7a04a9e765c06" id="r_a0e98d59dd3cae8a250b7a04a9e765c06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a0e98d59dd3cae8a250b7a04a9e765c06">compute_world_to_camera_transform_no_correction</a> (const <a class="el" href="namespacergbd__slam.html#a93a0925863fdadf4e9f70b21fa87e627">quaternion</a> &amp;rotation, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;position) noexcept</td></tr>
+<tr class="memdesc:a0e98d59dd3cae8a250b7a04a9e765c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED.  <br /></td></tr>
+<tr class="separator:a0e98d59dd3cae8a250b7a04a9e765c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefd412bfec46952817ed7f4248d5c069" id="r_aefd412bfec46952817ed7f4248d5c069"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_plane_camera_to_world_matrix.html">PlaneCameraToWorldMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#aefd412bfec46952817ed7f4248d5c069">compute_plane_camera_to_world_matrix</a> (const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld) noexcept</td></tr>
 <tr class="memdesc:aefd412bfec46952817ed7f4248d5c069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> to a special plane cameraToWorld matrix.  <br /></td></tr>
 <tr class="separator:aefd412bfec46952817ed7f4248d5c069"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06af923843a4356694463fccfa499697" id="r_a06af923843a4356694463fccfa499697"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_plane_world_to_camera_matrix.html">PlaneWorldToCameraMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a06af923843a4356694463fccfa499697">compute_plane_world_to_camera_matrix</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera) noexcept</td></tr>
 <tr class="memdesc:a06af923843a4356694463fccfa499697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform a <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> to a special plane worldToCamera matrix.  <br /></td></tr>
 <tr class="separator:a06af923843a4356694463fccfa499697"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add99b78dd35f5fbd29ed8e386dc2309e" id="r_add99b78dd35f5fbd29ed8e386dc2309e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#add99b78dd35f5fbd29ed8e386dc2309e">get_plane_transformation</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_plane_coordinates.html">PlaneCoordinates</a> &amp;plane) noexcept</td></tr>
+<tr class="memdesc:add99b78dd35f5fbd29ed8e386dc2309e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a reduced plane form, allowing for better optimization.  <br /></td></tr>
+<tr class="separator:add99b78dd35f5fbd29ed8e386dc2309e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac85068e2a7fee034ef2c4879b1b9aee0" id="r_ac85068e2a7fee034ef2c4879b1b9aee0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#ac85068e2a7fee034ef2c4879b1b9aee0">is_depth_valid</a> (const double depth) noexcept</td></tr>
 <tr class="memdesc:ac85068e2a7fee034ef2c4879b1b9aee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true is a measurement is in the measurement range.  <br /></td></tr>
 <tr class="separator:ac85068e2a7fee034ef2c4879b1b9aee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,9 +189,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a2834b75d457fd5d0ce8e12c91ca0bbe1" id="r_a2834b75d457fd5d0ce8e12c91ca0bbe1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a30d53a3c1b9189dbd47cba5f8e1b87a1">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a2834b75d457fd5d0ce8e12c91ca0bbe1">transform_camera_to_screen</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;screenPoint)</td></tr>
 <tr class="memdesc:a2834b75d457fd5d0ce8e12c91ca0bbe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform camera coordinates to screen coordinates.  <br /></td></tr>
 <tr class="separator:a2834b75d457fd5d0ce8e12c91ca0bbe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add99b78dd35f5fbd29ed8e386dc2309e" id="r_add99b78dd35f5fbd29ed8e386dc2309e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#add99b78dd35f5fbd29ed8e386dc2309e">get_plane_transformation</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_plane_coordinates.html">PlaneCoordinates</a> &amp;plane) noexcept</td></tr>
-<tr class="memdesc:add99b78dd35f5fbd29ed8e386dc2309e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a reduced plane form, allowing for better optimization.  <br /></td></tr>
-<tr class="separator:add99b78dd35f5fbd29ed8e386dc2309e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a034845c6434a68e6e6002f4f6277ab2c" id="r_a034845c6434a68e6e6002f4f6277ab2c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a034845c6434a68e6e6002f4f6277ab2c">get_depth_quantization</a> (const double depht) noexcept</td></tr>
 <tr class="memdesc:a034845c6434a68e6e6002f4f6277ab2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the expected depth quantization at this depth value.  <br /></td></tr>
 <tr class="separator:a034845c6434a68e6e6002f4f6277ab2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,6 +200,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7bb51a5bdb779e18aa2fef3309765094" id="r_a7bb51a5bdb779e18aa2fef3309765094"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_screen_coordinate_covariance.html">ScreenCoordinateCovariance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a7bb51a5bdb779e18aa2fef3309765094">get_screen_point_covariance</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_camera_coordinate.html">CameraCoordinate</a> &amp;point, const <a class="el" href="structrgbd__slam_1_1_camera_coordinate_covariance.html">CameraCoordinateCovariance</a> &amp;pointCovariance) noexcept</td></tr>
 <tr class="memdesc:a7bb51a5bdb779e18aa2fef3309765094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a screen point covariance from a given point.  <br /></td></tr>
 <tr class="separator:a7bb51a5bdb779e18aa2fef3309765094"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a115c8ecf807d5970f1ad789bfedb04b4" id="r_a115c8ecf807d5970f1ad789bfedb04b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_camera_coordinate_covariance.html">CameraCoordinateCovariance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a115c8ecf807d5970f1ad789bfedb04b4">get_camera_point_covariance</a> (const <a class="el" href="structrgbd__slam_1_1_world_coordinate_covariance.html">WorldCoordinateCovariance</a> &amp;worldPointCovariance, const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;worldToCamera, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance) noexcept</td></tr>
+<tr class="memdesc:a115c8ecf807d5970f1ad789bfedb04b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the covariance of the camera point from the world coordinates.  <br /></td></tr>
+<tr class="separator:a115c8ecf807d5970f1ad789bfedb04b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea0efe85d8571e80a7c8665704cb0d9e" id="r_aea0efe85d8571e80a7c8665704cb0d9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1_world_coordinate_covariance.html">WorldCoordinateCovariance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#aea0efe85d8571e80a7c8665704cb0d9e">get_world_point_covariance</a> (const <a class="el" href="structrgbd__slam_1_1_camera_coordinate_covariance.html">CameraCoordinateCovariance</a> &amp;cameraPointCovariance, const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorld, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;poseCovariance) noexcept</td></tr>
 <tr class="memdesc:aea0efe85d8571e80a7c8665704cb0d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the covariance of a world point.  <br /></td></tr>
 <tr class="separator:aea0efe85d8571e80a7c8665704cb0d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +219,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a3735cd614fe750dfe0dc7ade7346b158"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the covariance of a plane using it's point cloud covariance matrix.  <br /></td></tr>
 <tr class="separator:a3735cd614fe750dfe0dc7ade7346b158"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a071e281f17fe3f487e25e9cc9349a5a3" id="r_a071e281f17fe3f487e25e9cc9349a5a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a071e281f17fe3f487e25e9cc9349a5a3">compute_reduced_plane_point_cloud_covariance</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_plane_coordinates.html">PlaneCoordinates</a> &amp;planeParameters, const <a class="el" href="namespacergbd__slam.html#a70f681ee932c57b80130eb960ccf435f">matrix44</a> &amp;planeCloudCovariance)</td></tr>
+<tr class="memdesc:a071e281f17fe3f487e25e9cc9349a5a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the covariance of a plane as the covariance of the equivalent point cloud.  <br /></td></tr>
 <tr class="separator:a071e281f17fe3f487e25e9cc9349a5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb9b794ab09890567eb981adabe2b566" id="r_adb9b794ab09890567eb981adabe2b566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a70f681ee932c57b80130eb960ccf435f">matrix44</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#adb9b794ab09890567eb981adabe2b566">get_world_plane_covariance</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_plane_camera_coordinates.html">PlaneCameraCoordinates</a> &amp;planeCoordinates, const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;cameraToWorldMatrix, const <a class="el" href="structrgbd__slam_1_1_plane_camera_to_world_matrix.html">PlaneCameraToWorldMatrix</a> &amp;planeCameraToWorldMatrix, const <a class="el" href="namespacergbd__slam.html#a70f681ee932c57b80130eb960ccf435f">matrix44</a> &amp;planeCovariance, const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;worldPoseCovariance)</td></tr>
 <tr class="memdesc:adb9b794ab09890567eb981adabe2b566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the covariance of the world plane.  <br /></td></tr>
@@ -216,6 +233,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4e8db2e9701462cd35d1800efc98f387" id="r_a4e8db2e9701462cd35d1800efc98f387"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a4e8db2e9701462cd35d1800efc98f387">double_equal</a> (const double a, const double b, const double epsilon=std::numeric_limits&lt; double &gt;::epsilon()) noexcept</td></tr>
 <tr class="memdesc:a4e8db2e9701462cd35d1800efc98f387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check an equality between two doubles, with an epsilon: TODO move this to a more sensible location.  <br /></td></tr>
 <tr class="separator:a4e8db2e9701462cd35d1800efc98f387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68a1b2e241cceac86f0e40b7fc5c6259" id="r_a68a1b2e241cceac86f0e40b7fc5c6259"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a68a1b2e241cceac86f0e40b7fc5c6259">signed_line_distance</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line1point, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line1normal, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line2point, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line2normal) noexcept</td></tr>
+<tr class="memdesc:a68a1b2e241cceac86f0e40b7fc5c6259"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the distance between two lines. This is the distance between the two points closest to each others on each line  <br /></td></tr>
+<tr class="separator:a68a1b2e241cceac86f0e40b7fc5c6259"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82917c7b90b3b7cc6a00354c63d07089" id="r_a82917c7b90b3b7cc6a00354c63d07089"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a82917c7b90b3b7cc6a00354c63d07089">select_correct_transform</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;normal) noexcept</td></tr>
 <tr class="memdesc:a82917c7b90b3b7cc6a00354c63d07089"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the transform vector furthest from the normal.  <br /></td></tr>
 <tr class="separator:a82917c7b90b3b7cc6a00354c63d07089"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -367,6 +387,44 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a54eeff8e58b720f2a6b226c321c3a1cc" name="a54eeff8e58b720f2a6b226c321c3a1cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54eeff8e58b720f2a6b226c321c3a1cc">&#9670;&#160;</a></span>compute_camera_to_world_transform_no_correction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> rgbd_slam::utils::compute_camera_to_world_transform_no_correction </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a93a0925863fdadf4e9f70b21fa87e627">quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>rotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED. </p>
+
+</div>
+</div>
 <a id="aefd412bfec46952817ed7f4248d5c069" name="aefd412bfec46952817ed7f4248d5c069"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aefd412bfec46952817ed7f4248d5c069">&#9670;&#160;</a></span>compute_plane_camera_to_world_matrix()</h2>
 
@@ -487,6 +545,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Compute the covariance of a plane as the covariance of the equivalent point cloud. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">planeParameters</td><td>The plane parameters to compute covariance for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">planeCloudCovariance</td><td>The covariance of the plane parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the equivalent point cloud parameter covariance </dd></dl>
+
 </div>
 </div>
 <a id="a3305d4173d2bf66546c1d3a956b84d16" name="a3305d4173d2bf66546c1d3a956b84d16"></a>
@@ -553,6 +621,44 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a0e98d59dd3cae8a250b7a04a9e765c06" name="a0e98d59dd3cae8a250b7a04a9e765c06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e98d59dd3cae8a250b7a04a9e765c06">&#9670;&#160;</a></span>compute_world_to_camera_transform_no_correction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> rgbd_slam::utils::compute_world_to_camera_transform_no_correction </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a93a0925863fdadf4e9f70b21fa87e627">quaternion</a> &amp;&#160;</td>
+          <td class="paramname"><em>rotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>DO NOT USE EXPECT FOR TESTING. This returns the transformation matrix UNRECTIFIED. </p>
+
+</div>
+</div>
 <a id="a4e8db2e9701462cd35d1800efc98f387" name="a4e8db2e9701462cd35d1800efc98f387"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e8db2e9701462cd35d1800efc98f387">&#9670;&#160;</a></span>double_equal()</h2>
 
@@ -607,7 +713,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="a556ccbd966f58a0f76d9a53405072745" name="a556ccbd966f58a0f76d9a53405072745"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a556ccbd966f58a0f76d9a53405072745">&#9670;&#160;</a></span>get_camera_point_covariance() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a556ccbd966f58a0f76d9a53405072745">&#9670;&#160;</a></span>get_camera_point_covariance() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -642,7 +748,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="a09ee9e17b91f1e9ef5fdd7d24bcace6d" name="a09ee9e17b91f1e9ef5fdd7d24bcace6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09ee9e17b91f1e9ef5fdd7d24bcace6d">&#9670;&#160;</a></span>get_camera_point_covariance() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a09ee9e17b91f1e9ef5fdd7d24bcace6d">&#9670;&#160;</a></span>get_camera_point_covariance() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -684,6 +790,58 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the covariance of the 3D camera point </dd></dl>
+
+</div>
+</div>
+<a id="a115c8ecf807d5970f1ad789bfedb04b4" name="a115c8ecf807d5970f1ad789bfedb04b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a115c8ecf807d5970f1ad789bfedb04b4">&#9670;&#160;</a></span>get_camera_point_covariance() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrgbd__slam_1_1_camera_coordinate_covariance.html">CameraCoordinateCovariance</a> rgbd_slam::utils::get_camera_point_covariance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_world_coordinate_covariance.html">WorldCoordinateCovariance</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldPointCovariance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldToCamera</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a> &amp;&#160;</td>
+          <td class="paramname"><em>poseCovariance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the covariance of the camera point from the world coordinates. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldPointCovariance</td><td>The covariance of the world point to convert </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">worldToCamera</td><td>The matrix to convert world to camera coordinates </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">poseCovariance</td><td>The covariance of the pose </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1496,6 +1654,57 @@ template&lt;int N&gt; </div>
 </div><div class="memdoc">
 
 <p>Select the transform vector furthest from the normal. </p>
+
+</div>
+</div>
+<a id="a68a1b2e241cceac86f0e40b7fc5c6259" name="a68a1b2e241cceac86f0e40b7fc5c6259"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68a1b2e241cceac86f0e40b7fc5c6259">&#9670;&#160;</a></span>signed_line_distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> rgbd_slam::utils::signed_line_distance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>line1point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>line1normal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>line2point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>line2normal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>compute the distance between two lines. This is the distance between the two points closest to each others on each line </p>
+<dl class="section return"><dt>Returns</dt><dd>a signed distance, in the same unit as the points </dd></dl>
 
 </div>
 </div>

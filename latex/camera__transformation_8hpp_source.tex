@@ -16,18 +16,24 @@
 \DoxyCodeLine{00015\ }
 \DoxyCodeLine{00016\ [[nodiscard]]\ WorldToCameraMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a3cab8d3e798d09c4d39a14f58d2edd78}{compute\_world\_to\_camera\_transform}}(\textcolor{keyword}{const}\ CameraToWorldMatrix\&\ cameraToWorld)\ \textcolor{keyword}{noexcept};}
 \DoxyCodeLine{00017\ }
-\DoxyCodeLine{00021\ [[nodiscard]]\ CameraToWorldMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5ebcc138398dd5eb327a7f3511a27c8d}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\&\ rotation,}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ position)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ [[nodiscard]]\ CameraToWorldMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5ebcc138398dd5eb327a7f3511a27c8d}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const}\ WorldToCameraMatrix\&\ worldToCamera)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00029\ [[nodiscard]]\ PlaneCameraToWorldMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_aefd412bfec46952817ed7f4248d5c069}{compute\_plane\_camera\_to\_world\_matrix}}(}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ CameraToWorldMatrix\&\ cameraToWorld)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00034\ [[nodiscard]]\ PlaneWorldToCameraMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a06af923843a4356694463fccfa499697}{compute\_plane\_world\_to\_camera\_matrix}}(}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ WorldToCameraMatrix\&\ worldToCamera)\ \textcolor{keyword}{noexcept};}
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::utils}}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00022\ [[nodiscard]]\ WorldToCameraMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a0e98d59dd3cae8a250b7a04a9e765c06}{compute\_world\_to\_camera\_transform\_no\_correction}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\&\ rotation,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ position)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00028\ [[nodiscard]]\ CameraToWorldMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5ebcc138398dd5eb327a7f3511a27c8d}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\&\ rotation,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ position)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ [[nodiscard]]\ CameraToWorldMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a5ebcc138398dd5eb327a7f3511a27c8d}{compute\_camera\_to\_world\_transform}}(\textcolor{keyword}{const}\ WorldToCameraMatrix\&\ worldToCamera)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00037\ [[nodiscard]]\ CameraToWorldMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a54eeff8e58b720f2a6b226c321c3a1cc}{compute\_camera\_to\_world\_transform\_no\_correction}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a93a0925863fdadf4e9f70b21fa87e627}{quaternion}}\&\ rotation,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ position)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00043\ [[nodiscard]]\ PlaneCameraToWorldMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_aefd412bfec46952817ed7f4248d5c069}{compute\_plane\_camera\_to\_world\_matrix}}(}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ CameraToWorldMatrix\&\ cameraToWorld)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00048\ [[nodiscard]]\ PlaneWorldToCameraMatrix\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a06af923843a4356694463fccfa499697}{compute\_plane\_world\_to\_camera\_matrix}}(}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ WorldToCameraMatrix\&\ worldToCamera)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::utils}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

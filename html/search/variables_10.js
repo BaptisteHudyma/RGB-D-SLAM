@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unmatched_5ffeature_5findex_0',['UNMATCHED_FEATURE_INDEX',['../classrgbd__slam_1_1map__management_1_1_i_map_feature.html#a965a94a5ffa851e7fb3851aa47b9ce09',1,'rgbd_slam::map_management::IMapFeature']]]
+  ['x_0',['x',['../structrgbd__slam_1_1utils_1_1_cartesian.html#aca0b5ad61c3edcacdd679bbeb6e5f916',1,'rgbd_slam::utils::Cartesian']]]
 ];

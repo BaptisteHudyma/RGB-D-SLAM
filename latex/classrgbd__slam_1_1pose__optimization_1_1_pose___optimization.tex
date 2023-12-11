@@ -15,7 +15,9 @@ Find the transformation between a matches feature sets, using a custom Levenberg
 static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_adc5cc03e3b5200e03d71003b2267e60e}{compute\+\_\+optimized\+\_\+pose}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&current\+Pose, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match_container}{matches\+\_\+containers\+::match\+Container}} \&matched\+Features, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose}{utils\+::\+Pose}} \&optimized\+Pose, \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&feature\+Sets) noexcept
 \begin{DoxyCompactList}\small\item\em Compute a new observer global pose, to replace the current estimated pose. \end{DoxyCompactList}\item 
 static bool \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a1bcea3b59274de253018e2cc661401c1}{compute\+\_\+pose\+\_\+variance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_pose_base}{utils\+::\+Pose\+Base}} \&optimized\+Pose, const \mbox{\hyperlink{structrgbd__slam_1_1matches__containers_1_1match__sets}{matches\+\_\+containers\+::match\+\_\+sets}} \&matched\+Features, \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}} \&pose\+Covariance, const uint iterations=100) noexcept
-\begin{DoxyCompactList}\small\item\em Compute the variance of a given pose, using multiple iterations of the optimization process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Compute the variance of a given pose, using multiple iterations of the optimization process. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a17ea881c2a7691c155e387bf1ce86908}{show\+\_\+statistics}} (const double mean\+Frame\+Treatment\+Duration, const uint frame\+Count, const bool should\+Display\+Details=false) noexcept
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -70,6 +72,12 @@ Compute the variance of a given pose, using multiple iterations of the optimizat
 \begin{DoxyReturn}{Returns}
 True if the process succeded, or False 
 \end{DoxyReturn}
+\Hypertarget{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a17ea881c2a7691c155e387bf1ce86908}\label{classrgbd__slam_1_1pose__optimization_1_1_pose___optimization_a17ea881c2a7691c155e387bf1ce86908} 
+\index{rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}!show\_statistics@{show\_statistics}}
+\index{show\_statistics@{show\_statistics}!rgbd\_slam::pose\_optimization::Pose\_Optimization@{rgbd\_slam::pose\_optimization::Pose\_Optimization}}
+\doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::pose\+\_\+optimization\+::\+Pose\+\_\+\+Optimization\+::show\+\_\+statistics (\begin{DoxyParamCaption}\item[{const double}]{mean\+Frame\+Treatment\+Duration,  }\item[{const uint}]{frame\+Count,  }\item[{const bool}]{should\+Display\+Details = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [noexcept]}}
+
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
