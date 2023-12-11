@@ -4,7 +4,6 @@
 #include "camera_transformation.hpp"
 #include "coordinates/basis_changes.hpp"
 #include "covariances.hpp"
-#include "logger.hpp"
 #include "types.hpp"
 #include <cmath>
 #include <math.h>
@@ -373,15 +372,15 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
     const vector3 v(point - origin);
     const double theta1 = SQR(v.x()) + SQR(v.y());
     const double theta5 = theta1 + SQR(v.z());
-    const double theta2 = v.y();
-    const double theta3 = v.x();
-    const double theta4 = pow(theta5, 3.0 / 2.0);
+    const double theta4 = 1.0 / pow(theta5, 3.0 / 2.0);
 
-    matrix33 jac({{-theta3 / theta4, -theta2 / theta4, -v.z() / theta4},
-                  {theta3 * v.z() / (sqrt(theta1) * theta5),
-                   theta2 * v.z() / (sqrt(theta1) * theta5),
-                   -sqrt(theta1) / theta5},
-                  {-v.y() / theta1, v.x() / theta1, 0}});
+    const double oneOverTheta1 = 1.0 / theta1;
+    const double sqrtTheta1 = sqrt(theta1);
+    const double sqrtTheta1Theta5 = 1.0 / (sqrtTheta1 * theta5);
+
+    matrix33 jac({{-v.x() * theta4, -v.y() * theta4, -v.z() * theta4},
+                  {v.x() * v.z() * sqrtTheta1Theta5, v.y() * v.z() * sqrtTheta1Theta5, -sqrtTheta1 / theta5},
+                  {-v.y() * oneOverTheta1, v.x() * oneOverTheta1, 0}});
 
     jacobian.block<3, 3>(inverseDepthIndex, 0) = jac;
     return from_cartesian(point, origin);
@@ -406,14 +405,16 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<doubl
     const double cosTheta = cos(_theta_rad);
     const double sinPhi = sin(_phi_rad);
     const double cosPhi = cos(_phi_rad);
-    const double d = _inverseDepth_mm;
+    const double d = 1.0 / _inverseDepth_mm;
+    const double dSqr = 1.0 / SQR(_inverseDepth_mm);
 
     const double theta1 = sinPhi * sinTheta;
     const double theta2 = cosPhi * sinTheta;
+    const double cosThetaOverd = cosTheta * d;
 
-    const matrix33 reducedJacobian({{-theta2 / SQR(d), cosTheta * cosPhi / d, -theta1 / d},
-                                    {-theta1 / SQR(d), cosTheta * sinPhi / d, theta2 / d},
-                                    {-cosTheta / SQR(d), -sinTheta / d, 0}});
+    const matrix33 reducedJacobian({{-theta2 * dSqr, cosPhi * cosThetaOverd, -theta1 * d},
+                                    {-theta1 * dSqr, sinPhi * cosThetaOverd, theta2 * d},
+                                    {-cosTheta * dSqr, -sinTheta * d, 0}});
 
     jacobian.block<3, 3>(0, firstPoseIndex) = matrix33::Identity();
     jacobian.block<3, 3>(0, inverseDepthIndex) = reducedJacobian;

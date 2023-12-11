@@ -91,15 +91,15 @@ std::array<uint, numberOfFeatures> get_random_selection(
     {
         for (size_t i = 0; i < numberOfFeatures; ++i)
         {
+            const auto select = selection[i];
+            const auto& minmax = minMaxNumberOfFeatures[i];
             const double scoreLeft = 1.0 - std::clamp(scoreAccumulation, 0.0, 1.0);
             const uint selectedFeatureCount =
                     (uint)std::ceil(utils::Random::get_normal_double() * scoreLeft / scorePerFeature[i]);
-            const uint newVal = std::clamp(selection[i] + selectedFeatureCount,
-                                           minMaxNumberOfFeatures[i].first,
-                                           minMaxNumberOfFeatures[i].second);
-            if (newVal > selection[i])
+            const uint newVal = std::clamp(select + selectedFeatureCount, minmax.first, minmax.second);
+            if (newVal > select)
             {
-                scoreAccumulation += (newVal - selection[i]) * scorePerFeature[i];
+                scoreAccumulation += (newVal - select) * scorePerFeature[i];
                 selection[i] = newVal;
             }
         }
@@ -108,16 +108,17 @@ std::array<uint, numberOfFeatures> get_random_selection(
     // sanity check loop
     for (size_t i = 0; i < numberOfFeatures; ++i)
     {
-        if (selection[i] < minMaxNumberOfFeatures[i].first or selection[i] > minMaxNumberOfFeatures[i].second or
-            selection[i] > featuresCounts[i])
+        const auto& minmax = minMaxNumberOfFeatures[i];
+        const auto select = selection[i];
+        if (select < minmax.first or select > minmax.second or select > featuresCounts[i])
         {
             outputs::log_warning(
                     std::format("Selected {} feature at index {} but we have {} available [min {}, max {}]",
-                                selection[i],
+                                select,
                                 i,
                                 featuresCounts[i],
-                                minMaxNumberOfFeatures[i].first,
-                                minMaxNumberOfFeatures[i].second));
+                                minmax.first,
+                                minmax.second));
         }
     }
 
@@ -758,11 +759,8 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
         utils::WorldCoordinate variatedObservationPoint = match._worldFeature._firstObservation;
         variatedObservationPoint +=
                 utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.diagonal().head<3>());
-        const double variatedInverseDepth = std::max(
-                0.00000000001,
-                match._worldFeature._inverseDepth_mm +
-                        utils::Random::get_normal_double() * match._worldFeatureCovariance.diagonal()(
-                                                                     utils::InverseDepthWorldPoint::inverseDepthIndex));
+        const double variatedInverseDepth =
+                match._worldFeature._inverseDepth_mm; // do not variate the depth, the uncertainty is too great anyway
         const double variatedTheta =
                 std::clamp(match._worldFeature._theta_rad + utils::Random::get_normal_double() *
                                                                     match._worldFeatureCovariance.diagonal()(
