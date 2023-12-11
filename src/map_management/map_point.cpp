@@ -3,7 +3,6 @@
 #include "coordinates/point_coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
-#include "camera_transformation.hpp"
 #include "point_with_tracking.hpp"
 
 namespace rgbd_slam::map_management {
