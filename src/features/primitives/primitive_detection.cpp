@@ -584,7 +584,7 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         }
         else
         {
-            std::cout << "Polyfit error: " << debug << std::endl;
+            outputs::log_error("Polyfit error: " + debug);
         }
     }
 

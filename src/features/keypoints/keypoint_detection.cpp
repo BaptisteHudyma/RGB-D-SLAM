@@ -3,6 +3,7 @@
 #include "../../parameters.hpp"
 
 // circle
+#include <cmath>
 #include <mutex>
 #include <tbb/parallel_for.h>
 #include <opencv2/features2d.hpp>
@@ -30,8 +31,8 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 
     // Create feature extractor and matcher
 #ifdef USE_ORB_DETECTOR_AND_MATCHING
-    constexpr uint maxKeypointToDetect = parameters::detection::pointDetectorOrbThreshold;
-    const int detectorThreshold = std::max(1, static_cast<int>(maxKeypointToDetect / numberOfDetectionCells));
+    const int detectorThreshold =
+            std::max(1, static_cast<int>(parameters::detection::maximumPointPerFrame / numberOfDetectionCells));
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
     {
         _featureDetectors[i] = cv::Ptr<cv::FeatureDetector>(cv::ORB::create(detectorThreshold));
@@ -42,13 +43,22 @@ Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
 
     _featureDescriptor = _featureDetectors[0];
 #else
-    constexpr uint detectorthreshold = parameters::detection::pointDetectorThreshold;
-    const int detectorThreshold = static_cast<int>(detectorthreshold * numberOfDetectionCells);
+
+    // the parameters for this threshold is based on measurments on the FAST detector thresholds
+    static auto get_fast_threshold = [](double pointsToDetects) {
+        return 41.2378 * pow(0.99945, pointsToDetects);
+    };
+
+    // put more points to detect in the threshold, not expensive at all, gives better results
+    static const int detectorThreshold =
+            static_cast<int>(ceil(get_fast_threshold(10.0 * (double)parameters::detection::maximumPointPerFrame)));
+    static const int advanceDetectorThreshold =
+            static_cast<int>(ceil(get_fast_threshold(30.0 * (double)parameters::detection::maximumPointPerFrame)));
 
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
     {
         _featureDetectors[i] = cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(detectorThreshold));
-        _advancedFeatureDetectors[i] = cv::FastFeatureDetector::create(std::max(1, detectorThreshold / 4));
+        _advancedFeatureDetectors[i] = cv::FastFeatureDetector::create(advanceDetectorThreshold);
         assert(not _featureDetectors[i].empty());
         assert(not _advancedFeatureDetectors[i].empty());
     }
@@ -101,7 +111,7 @@ std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& g
 cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(
         const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept
 {
-    constexpr int radiusOfAreaAroundPoint = static_cast<int>(parameters::matching::matchSearchRadius_px); // in pixels
+    constexpr int radiusOfAreaAroundPoint = static_cast<int>(parameters::detection::trackedMaskRadius_px); // in pixels
     const static cv::Scalar fillColor(0);
     cv::Mat_<uchar> mask(imageSize, 255);
     for (const cv::Point2f& point: keypointContainer)
@@ -329,9 +339,9 @@ void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDurati
     if (frameCount > 0)
     {
         const double meanPointExtractionDuration = _meanPointExtractionDuration / static_cast<double>(frameCount);
-        std::cout << "\tMean point extraction time is " << meanPointExtractionDuration << " seconds ("
-                  << get_percent_of_elapsed_time(meanPointExtractionDuration, meanFrameTreatmentDuration) << "%)"
-                  << std::endl;
+        outputs::log(std::format("\tMean point extraction time is {} seconds ({}%)",
+                                 meanPointExtractionDuration,
+                                 get_percent_of_elapsed_time(meanPointExtractionDuration, meanFrameTreatmentDuration)));
     }
 }
 
@@ -343,20 +353,15 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
     frameKeypoints.clear();
     std::mutex mut;
 
-#ifdef USE_ORB_DETECTOR_AND_MATCHING
-    constexpr uint maxKeypointToDetect = parameters::detection::pointDetectorOrbThreshold;
-    const size_t maxKeypointToDetectByCell = maxKeypointToDetect / _detectionWindows.size();
-    frameKeypoints.reserve(maxKeypointToDetect);
-#else
-    constexpr uint detectorThreshold = parameters::detection::pointDetectorThreshold;
-    const size_t maxKeypointToDetectByCell = detectorThreshold * _detectionWindows.size();
-    frameKeypoints.reserve(maxKeypointToDetectByCell);
-#endif
+    constexpr size_t maxKeypointToDetectByCell =
+            parameters::detection::maximumPointPerFrame / (parameters::detection::keypointCellDetectionHeightCount *
+                                                           parameters::detection::keypointCellDetectionWidthCount);
+    frameKeypoints.reserve(parameters::detection::maximumPointPerFrame);
 
 #ifndef MAKE_DETERMINISTIC
     tbb::parallel_for(size_t(0),
                       static_cast<size_t>(numberOfDetectionCells),
-                      [this, &grayImage, &mask, &maxKeypointToDetectByCell, &frameKeypoints, &mut](size_t i)
+                      [this, &grayImage, &mask, &frameKeypoints, &mut](size_t i)
 #else
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
 #endif
@@ -374,17 +379,15 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
                           _featureDetectors[i]->detect(subImg, keypoints, subMask);
 
                           // Not enough keypoints detected: restart with a more precise detector
-                          static constexpr uint8_t maxPointPerSubFrame =
-                                  parameters::detection::maximumPointPerFrame /
-                                  (parameters::detection::keypointCellDetectionHeightCount *
-                                   parameters::detection::keypointCellDetectionWidthCount);
-                          if (keypoints.size() <= maxPointPerSubFrame)
+                          if (keypoints.size() < maxKeypointToDetectByCell)
                           {
                               keypoints.clear();
                               assert(!_advancedFeatureDetectors[i].empty());
                               _advancedFeatureDetectors[i]->detect(subImg, keypoints, subMask);
                           }
 
+                          // filter the keypoints by score, if we have too much
+                          cv::KeyPointsFilter::retainBest(keypoints, maxKeypointToDetectByCell);
                           for (cv::KeyPoint& keypoint: keypoints)
                           {
                               keypoint.pt.x += (float)detectionWindow.x;
@@ -396,6 +399,7 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
 #ifndef MAKE_DETERMINISTIC
     );
 #endif
+    cv::KeyPointsFilter::removeDuplicated(frameKeypoints);
 }
 
 } // namespace rgbd_slam::features::keypoints
