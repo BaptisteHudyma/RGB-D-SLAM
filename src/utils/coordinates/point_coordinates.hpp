@@ -294,22 +294,30 @@ struct InverseDepthWorldPoint
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                              ScreenCoordinate2D& screenCoordinates) const noexcept;
 
-    /**
-     * \brief get the bearing vector that point from _firstObservation to the point
-     */
-    [[nodiscard]] vector3 get_bearing_vector() const noexcept;
-
-    WorldCoordinate _firstObservation; // position of the camera for the first observation
-    double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)
-    double _theta_rad = 0.0;           // elevation angle of the first observation, in world space
-    double _phi_rad = 0.0;             // heading angle of the first observation, in world space
-
     // changing this implies that all computations should be changed, handle with care. Those should be
     // always in [0, 5]
     static constexpr uint firstPoseIndex = 0; // takes 3 spaces
     static constexpr uint inverseDepthIndex = 3;
     static constexpr uint thetaIndex = 4;
     static constexpr uint phiIndex = 5;
+
+    /**
+     * GETTERS
+     */
+
+    [[nodiscard]] WorldCoordinate get_first_observation() const noexcept { return _firstObservation; };
+    [[nodiscard]] double get_inverse_depth() const noexcept { return _inverseDepth_mm; };
+    [[nodiscard]] double get_theta() const noexcept { return _theta_rad; };
+    [[nodiscard]] double get_phi() const noexcept { return _phi_rad; };
+    [[nodiscard]] vector3 get_bearing_vector() const noexcept { return _bearingVector; };
+
+  private:
+    WorldCoordinate _firstObservation; // position of the camera for the first observation
+    double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)
+    double _theta_rad = 0.0;           // elevation angle of the first observation, in world space
+    double _phi_rad = 0.0;             // heading angle of the first observation, in world space
+
+    vector3 _bearingVector; // get the bearing vector that point from _firstObservation to the point
 };
 
 } // namespace rgbd_slam::utils

@@ -306,7 +306,8 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
     _firstObservation(firstPose),
     _inverseDepth_mm(inverseDepth),
     _theta_rad(theta),
-    _phi_rad(phi)
+    _phi_rad(phi),
+    _bearingVector(Cartesian::from(Spherical(1.0, _theta_rad, _phi_rad)).vec())
 {
     if (_inverseDepth_mm < 0.0)
         throw std::invalid_argument("Constructor of InverseDepthWorldPoint: Inverse depth should be >= 0");
@@ -324,21 +325,14 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observa
     _inverseDepth_mm = parameters::detection::inverseDepthBaseline / 2.0;
 }
 
-InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w)
+InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w) :
+    InverseDepthWorldPoint(from_cartesian(observation.to_world_coordinates(c2w), WorldCoordinate(c2w.translation())))
 {
-    const auto& inverseDepth =
-            from_cartesian(observation.to_world_coordinates(c2w), WorldCoordinate(c2w.translation()));
-
-    _firstObservation = inverseDepth._firstObservation;
-    _inverseDepth_mm = inverseDepth._inverseDepth_mm;
-    _theta_rad = inverseDepth._theta_rad;
-    _phi_rad = inverseDepth._phi_rad;
 }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldPoint& other) const
 {
-    return signed_line_distance(
-            _firstObservation, get_bearing_vector(), other._firstObservation, other.get_bearing_vector());
+    return signed_line_distance(_firstObservation, _bearingVector, other._firstObservation, other._bearingVector);
 }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D& other,
@@ -352,10 +346,7 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
 {
     const vector3 directionalVector(point - origin);
 
-    Cartesian c;
-    c.from_vec(directionalVector);
-
-    const Spherical& s = Spherical::from(c);
+    const Spherical& s = Spherical::from(Cartesian(directionalVector));
     return InverseDepthWorldPoint(origin, 1.0 / s.p, s.theta, s.phi);
 }
 
@@ -389,12 +380,12 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
 {
     assert(_inverseDepth_mm != 0.0);
-    return WorldCoordinate(_firstObservation + get_bearing_vector() / _inverseDepth_mm);
+    return WorldCoordinate(_firstObservation + _bearingVector / _inverseDepth_mm);
 }
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
 {
-    // jacobian of _firstObservation + 1.0 / _inverseDepth_mm * get_bearing_vector()
+    // jacobian of _firstObservation + 1.0 / _inverseDepth_mm * _bearingVector
     jacobian = Eigen::Matrix<double, 3, 6>::Zero();
 
     // x = xo + sin(theta) cos(phi) / d
@@ -428,23 +419,13 @@ CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCame
     return to_world_coordinates().to_camera_coordinates(w2c);
     // this as the advantage of handling nicely a point at infinite distance (_inverseDepth_mm == 0)
     // return CameraCoordinate(w2c.rotation() * (_inverseDepth_mm * (_firstObservation - w2c.translation()) +
-    // get_bearing_vector()));
+    // _bearingVector));
 }
 
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                                    ScreenCoordinate2D& screenCoordinates) const noexcept
 {
     return to_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
-}
-
-vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
-{
-    Spherical s;
-    s.p = 1.0; // no depth
-    s.theta = _theta_rad;
-    s.phi = _phi_rad;
-
-    return Cartesian::from(s).vec();
 }
 
 } // namespace rgbd_slam::utils

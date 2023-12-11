@@ -14,13 +14,10 @@ struct Cartesian
     double y;
     double z;
 
+    Cartesian(const vector3& vec) : x(vec.x()), y(vec.y()), z(vec.z()) {};
+    Cartesian(const double x, const double y, const double z) : x(x), y(y), z(z) {};
+
     vector3 vec() const { return vector3(x, y, z); }
-    void from_vec(const vector3& vec)
-    {
-        x = vec.x();
-        y = vec.y();
-        z = vec.z();
-    }
 
     /**
      * \brief Transform a given coordinate from shperical to cartesian space.
@@ -42,14 +39,10 @@ struct Spherical
     double theta;
     double phi;
 
-    vector3 vec() const { return vector3(p, theta, phi); }
+    Spherical(const double radius, const double theta, const double phi) : p(radius), theta(theta), phi(phi) {}
+    Spherical(const vector3& vec) : Spherical(vec.x(), vec.y(), vec.z()) {};
 
-    void from_vec(const vector3& vec)
-    {
-        p = vec.x();
-        theta = vec.y();
-        phi = vec.z();
-    }
+    vector3 vec() const { return vector3(p, theta, phi); }
 
     /**
      * \brief Transform a given coordinate from cartesian to spherical space.

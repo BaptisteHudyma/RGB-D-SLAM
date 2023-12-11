@@ -5,12 +5,8 @@ namespace rgbd_slam::utils {
 Cartesian Cartesian::from(Spherical coord)
 {
     const double sinTheta = sin(coord.theta);
-
-    Cartesian res;
-    res.x = coord.p * sinTheta * cos(coord.phi);
-    res.y = coord.p * sinTheta * sin(coord.phi);
-    res.z = coord.p * cos(coord.theta);
-    return res;
+    return Cartesian(
+            coord.p * sinTheta * cos(coord.phi), coord.p * sinTheta * sin(coord.phi), coord.p * cos(coord.theta));
 }
 
 Cartesian Cartesian::from(Spherical coord, matrix33& jacobian)
@@ -33,11 +29,7 @@ Cartesian Cartesian::from(Spherical coord, matrix33& jacobian)
 
 Spherical Spherical::from(Cartesian coord)
 {
-    Spherical res;
-    res.p = coord.vec().norm();
-    res.theta = atan2(sqrt(SQR(coord.x) + SQR(coord.y)), coord.z);
-    res.phi = atan2(coord.y, coord.x);
-    return res;
+    return Spherical(coord.vec().norm(), atan2(sqrt(SQR(coord.x) + SQR(coord.y)), coord.z), atan2(coord.y, coord.x));
 }
 
 Spherical Spherical::from(Cartesian coord, matrix33& jacobian)
