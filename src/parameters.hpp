@@ -50,16 +50,12 @@ constexpr float maximumRetroprojectionError_px =
 
 namespace detection {
 // point detection
-constexpr uint keypointCellDetectionHeightCount = 3; // the number of the keypoint detection window in height
-constexpr uint keypointCellDetectionWidthCount = 3;  // the number of the keypoint detection window in width
-#ifdef USE_ORB_DETECTOR_AND_MATCHING
-constexpr uint pointDetectorOrbThreshold = 200; // number of points to detect (per frame)
-#else
-constexpr uint pointDetectorThreshold = 10; // point detector sensitivity (per cell detection window)
-#endif
-constexpr uint maximumPointPerFrame =
-        100; // maximum points per frame, over which we do not want to detect more points (optimization)
-constexpr uint keypointRefreshFrequency = 5; // Update the keypoint list every N calls (opti)
+constexpr double trackedMaskRadius_px =
+        15; // Radius of the space around a tracked point where we will not detect other points
+constexpr uint keypointCellDetectionHeightCount = 3; // the number of the keypoint detection windows in height
+constexpr uint keypointCellDetectionWidthCount = 3;  // the number of the keypoint detection windows in width
+constexpr uint maximumPointPerFrame = 100; // maximum points per frame, over which we do not want to detect more points
+constexpr uint keypointRefreshFrequency = 5; // force update the keypoint list every N calls (opti)
 
 // point tracking
 constexpr uint opticalFlowPyramidDepth =
