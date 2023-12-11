@@ -64,13 +64,56 @@ Primitive_Detection::Primitive_Detection(const uint width, const uint height) :
         // fill with empty nodes
         _planeGrid.push_back(defaultPlaneSegment);
     }
+}
 
-    // perf measurments
-    resetTime = 0;
-    initTime = 0;
-    growTime = 0;
-    mergeTime = 0;
-    refineTime = 0;
+void Primitive_Detection::show_statistics(const double meanFrameTreatmentDuration,
+                                          const uint frameCount,
+                                          const bool shouldDisplayDetails) const noexcept
+{
+    static auto get_percent_of_elapsed_time = [](double treatmentTime, double totalTimeElapsed) {
+        if (totalTimeElapsed <= 0)
+            return 0.0;
+        return (treatmentTime / totalTimeElapsed) * 100.0;
+    };
+
+    if (frameCount > 0)
+    {
+        const double meanPrimitiveExtractionDuration =
+                _meanPrimitiveTreatmentDuration / static_cast<double>(frameCount);
+        outputs::log(
+                std::format("\tMean primitive extraction time is {:.4f} seconds ({:.2f}%)",
+                            meanPrimitiveExtractionDuration,
+                            get_percent_of_elapsed_time(meanPrimitiveExtractionDuration, meanFrameTreatmentDuration)));
+
+        if (shouldDisplayDetails)
+        {
+            const double meanPrimitiveResetDuration = _resetTime / static_cast<double>(frameCount);
+            const double meanPrimitiveInitDuration = _initTime / static_cast<double>(frameCount);
+            const double meanPrimitiveGrowDuration = _growTime / static_cast<double>(frameCount);
+            const double meanPrimitiveMergeDuration = _mergeTime / static_cast<double>(frameCount);
+            const double meanPrimitiveRefineDuration = _refineTime / static_cast<double>(frameCount);
+            outputs::log(std::format(
+                    "\t\tMean primitive reset time is {:.4f} seconds ({:.2f}%)",
+                    meanPrimitiveResetDuration,
+                    get_percent_of_elapsed_time(meanPrimitiveResetDuration, meanPrimitiveExtractionDuration)));
+            outputs::log(std::format(
+                    "\t\tMean primitive init time is {:.4f} seconds ({:.2f}%)",
+                    meanPrimitiveInitDuration,
+                    get_percent_of_elapsed_time(meanPrimitiveInitDuration, meanPrimitiveExtractionDuration)));
+            outputs::log(std::format(
+                    "\t\tMean primitive grow time is {:.4f} seconds ({:.2f}%)",
+                    meanPrimitiveGrowDuration,
+                    get_percent_of_elapsed_time(meanPrimitiveGrowDuration, meanPrimitiveExtractionDuration)));
+            outputs::log(std::format(
+                    "\t\tMean primitive merge time is {:.4f} seconds ({:.2f}%)",
+                    meanPrimitiveMergeDuration,
+                    get_percent_of_elapsed_time(meanPrimitiveMergeDuration, meanPrimitiveExtractionDuration)));
+            outputs::log(std::format(
+                    "\t\tMean primitive refine time is {:.4f} seconds ({:.2f}%)",
+                    meanPrimitiveRefineDuration,
+                    get_percent_of_elapsed_time(meanPrimitiveRefineDuration, meanPrimitiveExtractionDuration)));
+        }
+    }
 }
 
 void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
@@ -78,46 +121,48 @@ void Primitive_Detection::find_primitives(const matrixf& depthMatrix,
                                           plane_container& planeContainer,
                                           cylinder_container& primitiveContainer) noexcept
 {
-    // reset used data structures
-    reset_data();
+    const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
 
+    // reset used data structures
     int64 t1 = cv::getTickCount();
-    // init planar grid
-    init_planar_cell_fitting(depthMatrix);
+    reset_data();
     double td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
-    resetTime += td;
+    _resetTime += td;
+
+    // init planar grid
+    t1 = cv::getTickCount();
+    init_planar_cell_fitting(depthMatrix);
 
     // init and fill histogram
-    t1 = cv::getTickCount();
     const uint remainingPlanarCells = init_histogram();
     td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
-    initTime += td;
+    _initTime += td;
 
     t1 = cv::getTickCount();
     const intpair_vector& cylinder2regionMap = grow_planes_and_cylinders(remainingPlanarCells);
     td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
-    growTime += td;
+    _growTime += td;
 
     // merge sparse planes
     t1 = cv::getTickCount();
     const uint_vector& planeMergeLabels = merge_planes();
     td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
-    initTime += td;
-    mergeTime += td;
+    _mergeTime += td;
 
     t1 = cv::getTickCount();
     // fill the final planes vector
     add_planes_to_primitives(planeMergeLabels, depthImage, planeContainer);
     td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
-    initTime += td;
-    refineTime += td;
+    _refineTime += td;
 
     t1 = cv::getTickCount();
     // refine cylinders boundaries and fill the final cylinders vector
     add_cylinders_to_primitives(cylinder2regionMap, primitiveContainer);
     td = static_cast<double>(cv::getTickCount() - t1) / cv::getTickFrequency();
-    initTime += td;
-    refineTime += td;
+    _refineTime += td;
+
+    _meanPrimitiveTreatmentDuration +=
+            (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
 }
 
 void Primitive_Detection::reset_data() noexcept

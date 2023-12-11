@@ -38,6 +38,10 @@ class Line_Detection
                               const cv::Mat_<float>& depthImage,
                               cv::Mat& outImage) const noexcept;
 
+    void show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const noexcept;
+
+    double _meanLineTreatmentDuration = 0.0;
+
   private:
     // LineSegmentDetector
     std::unique_ptr<cv::LSD> _lineDetector;

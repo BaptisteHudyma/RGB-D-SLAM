@@ -444,28 +444,4 @@ vector3 InverseDepthWorldPoint::get_bearing_vector() const noexcept
     return Cartesian::from(s).vec();
 }
 
-vector6 InverseDepthWorldPoint::get_vector_state() const noexcept
-{
-    vector6 vec;
-    vec(firstPoseIndex + 0) = _firstObservation.x();
-    vec(firstPoseIndex + 1) = _firstObservation.y();
-    vec(firstPoseIndex + 2) = _firstObservation.z();
-
-    vec(inverseDepthIndex) = _inverseDepth_mm;
-    vec(thetaIndex) = _theta_rad;
-    vec(phiIndex) = _phi_rad;
-    return vec;
-}
-
-void InverseDepthWorldPoint::from_vector_state(const vector6& state) noexcept
-{
-    _firstObservation.x() = state(firstPoseIndex + 0);
-    _firstObservation.y() = state(firstPoseIndex + 1);
-    _firstObservation.z() = state(firstPoseIndex + 2);
-
-    _inverseDepth_mm = state(inverseDepthIndex);
-    _theta_rad = state(thetaIndex);
-    _phi_rad = state(phiIndex);
-}
-
 } // namespace rgbd_slam::utils

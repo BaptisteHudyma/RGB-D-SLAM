@@ -21,8 +21,9 @@ class Key_Point_Extraction
      *
      * \param[in] grayImage The input image from camera
      * \param[in] depthImage The input depth image from camera
-     * \param[in] lastKeypointsWithIds The keypoints of the previous detection step, that will be tracked
-     * with optical flow \param[in] forceKeypointDetection Force the detection of keypoints in the image
+     * \param[in] lastKeypointsWithIds The keypoints of the previous detection step, that will be tracked with optical
+     * flow
+     * \param[in] forceKeypointDetection Force the detection of keypoints in the image
      *
      * \return An object that contains the detected keypoints
      */
@@ -33,11 +34,13 @@ class Key_Point_Extraction
 
     /**
      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler
-     *
-     * \param[in] meanFrameTreatmentDuration The mean duration in seconds that this program used to treat
-     * one frame \param[in] frameCount Total of frame treated by the program
+     * \param[in] meanFrameTreatmentDuration The mean duration in seconds that this program used to treat one frame
+     * \param[in] frameCount Total of frame treated by the program
+     * \param[in] shouldDisplayDetails If true, will display additional monitoring informations
      */
-    void show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const noexcept;
+    void show_statistics(const double meanFrameTreatmentDuration,
+                         const uint frameCount,
+                         const bool shouldDisplayDetails = false) const noexcept;
 
   protected:
     static constexpr uint numberOfDetectionCells = parameters::detection::keypointCellDetectionHeightCount *
@@ -95,7 +98,11 @@ class Key_Point_Extraction
 
     std::vector<cv::Mat> _lastFramePyramide;
 
-    double _meanPointExtractionDuration;
+    double _meanPointExtractionDuration = 0.0;
+
+    double _meanPointOpticalFlowTrackingDuration = 0.0;
+    double _meanPointDetectionDuration = 0.0;
+    double _meanPointDescriptorDuration = 0.0;
 };
 
 } // namespace rgbd_slam::features::keypoints

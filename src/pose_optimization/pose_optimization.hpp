@@ -45,6 +45,10 @@ class Pose_Optimization
                                                     matrix66& poseCovariance,
                                                     const uint iterations = 100) noexcept;
 
+    static void show_statistics(const double meanFrameTreatmentDuration,
+                                const uint frameCount,
+                                const bool shouldDisplayDetails = false) noexcept;
+
   private:
     /**
      * \brief Optimize a global pose (orientation/translation) of the observer, given a match set
@@ -87,6 +91,14 @@ class Pose_Optimization
     [[nodiscard]] static bool compute_random_variation_of_pose(const utils::PoseBase& currentPose,
                                                                const matches_containers::match_sets& matchedFeatures,
                                                                utils::PoseBase& optimizedPose) noexcept;
+
+    // perf monitoring
+    inline static double _meanPoseRANSACDuration = 0.0;
+    inline static double _meanComputePoseVarianceDuration = 0.0;
+
+    inline static double _meanGetRandomSubsetDuration = 0.0;
+    inline static double _meanRANSACPoseOptimizationDuration = 0.0;
+    inline static double _meanRANSACGetInliersDuration = 0.0;
 };
 
 } // namespace rgbd_slam::pose_optimization

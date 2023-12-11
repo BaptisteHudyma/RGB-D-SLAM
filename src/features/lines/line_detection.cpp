@@ -69,4 +69,21 @@ void Line_Detection::get_image_with_lines(const line_container& linesToDisplay,
     }
 }
 
+void Line_Detection::show_statistics(const double meanFrameTreatmentDuration, const uint frameCount) const noexcept
+{
+    static auto get_percent_of_elapsed_time = [](double treatmentTime, double totalTimeElapsed) {
+        if (totalTimeElapsed <= 0)
+            return 0.0;
+        return (treatmentTime / totalTimeElapsed) * 100.0;
+    };
+
+    if (frameCount > 0)
+    {
+        const double meanLineExtractionDuration = _meanLineTreatmentDuration / static_cast<double>(frameCount);
+        outputs::log(std::format("\tMean line extraction time is {:.4f} seconds ({:.2f}%)",
+                                 meanLineExtractionDuration,
+                                 get_percent_of_elapsed_time(meanLineExtractionDuration, meanFrameTreatmentDuration)));
+    }
+}
+
 } // namespace rgbd_slam::features::lines

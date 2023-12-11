@@ -19,16 +19,7 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
     _height(imageHeight),
     _isTrackingLost(true),
     _failedTrackingCount(0),
-    _isFirstTrackingCall(true),
-
-    _totalFrameTreated(0),
-    _meanDepthMapTreatmentDuration(0.0),
-    _meanPoseOptimizationDuration(0.0),
-    _meanPrimitiveTreatmentDuration(0.0),
-    _meanLineTreatmentDuration(0.0),
-    _meanFindMatchTime(0.0),
-    _meanPoseOptimizationFromFeatures(0.0),
-    _meanLocalMapUpdateDuration(0.0)
+    _isFirstTrackingCall(true)
 {
     // set random seed
     const uint seed = utils::Random::_seed;
@@ -130,10 +121,7 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat_<float>
     cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
     // this frame points and  assoc
-    const double computePoseStartTime = static_cast<double>(cv::getTickCount());
     const utils::Pose& refinedPose = this->compute_new_pose(grayImage, inputDepthImage, cloudArrayOrganized);
-    _meanPoseOptimizationDuration +=
-            (static_cast<double>(cv::getTickCount()) - computePoseStartTime) / cv::getTickFrequency();
 
     _totalFrameTreated += 1;
     return refinedPose;
@@ -201,10 +189,8 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     const auto& detectedFeatures = detect_features(predictedPose, grayImage, depthImage, cloudArrayOrganized);
 
     // Find matches by the pose predicted by motion model
-    const double findMatchesStartTime = static_cast<double>(cv::getTickCount());
     const matches_containers::matchContainer& matchedFeatures =
             _localMap->find_feature_matches(predictedPose, detectedFeatures);
-    _meanFindMatchTime += (static_cast<double>(cv::getTickCount()) - findMatchesStartTime) / cv::getTickFrequency();
 
     // The new pose, after optimization
     utils::Pose newPose = predictedPose;
@@ -214,14 +200,10 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     matches_containers::match_sets matchSets;
 
     // optimize the pose, but not if it is the first call (no pose to compute)
-    const double optimizePoseStartTime = static_cast<double>(cv::getTickCount());
     const bool isPoseValid =
             (not _isFirstTrackingCall) and pose_optimization::Pose_Optimization::compute_optimized_pose(
                                                    predictedPose, matchedFeatures, optimizedPose, matchSets);
-    _meanPoseOptimizationFromFeatures +=
-            (static_cast<double>(cv::getTickCount()) - optimizePoseStartTime) / cv::getTickFrequency();
 
-    const double updateLocalMapStartTime = static_cast<double>(cv::getTickCount());
     if (isPoseValid)
     {
         // Update current pose if tracking is ongoing
@@ -274,8 +256,6 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             outputs::log_error("Could not find an optimized pose");
         }
     }
-    _meanLocalMapUpdateDuration +=
-            (static_cast<double>(cv::getTickCount()) - updateLocalMapStartTime) / cv::getTickFrequency();
 
     // set firstCall to false after the first iteration
     _isFirstTrackingCall = false;
@@ -313,13 +293,9 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
     // plane detection
     auto planeHandler = std::async(std::launch::async, [this, &cloudArrayOrganized, &depthImage]() {
         // Run primitive detection
-        const double primitiveDetectionStartTime = static_cast<double>(cv::getTickCount());
         features::primitives::plane_container detectedPlanes;
         features::primitives::cylinder_container detectedCylinders; // TODO: handle detected cylinders in local map
         _primitiveDetector->find_primitives(cloudArrayOrganized, depthImage, detectedPlanes, detectedCylinders);
-        _meanPrimitiveTreatmentDuration +=
-                (static_cast<double>(cv::getTickCount()) - primitiveDetectionStartTime) / cv::getTickFrequency();
-
         return detectedPlanes;
     });
 #else
@@ -331,12 +307,7 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
 #ifdef USE_LINE_DETECTION
     // line detection
     auto lineHandler = std::async([this, &grayImage, &depthImage]() {
-        const double lineDetectionStartTime = static_cast<double>(cv::getTickCount());
-        const features::lines::line_container& detectedLines = _lineDetector->detect_lines(grayImage, depthImage);
-        _meanLineTreatmentDuration +=
-                (static_cast<double>(cv::getTickCount()) - lineDetectionStartTime) / cv::getTickFrequency();
-
-        return detectedLines;
+        return _lineDetector->detect_lines(grayImage, depthImage);
     });
 #else
     auto lineHandler = std::async([]() {
@@ -351,7 +322,7 @@ double get_percent_of_elapsed_time(const double treatmentTime, const double tota
 {
     if (totalTimeElapsed <= 0)
         return 0;
-    return std::round(treatmentTime / totalTimeElapsed * 10000) / 100;
+    return (treatmentTime / totalTimeElapsed) * 100;
 }
 
 void RGBD_SLAM::show_statistics(const double meanFrameTreatmentDuration) const noexcept
@@ -359,42 +330,22 @@ void RGBD_SLAM::show_statistics(const double meanFrameTreatmentDuration) const n
     if (_totalFrameTreated > 0)
     {
         const double pointCloudTreatmentDuration = _meanDepthMapTreatmentDuration / _totalFrameTreated;
-        std::cout << "Mean image to point cloud treatment duration is " << pointCloudTreatmentDuration << " seconds ("
-                  << get_percent_of_elapsed_time(pointCloudTreatmentDuration, meanFrameTreatmentDuration) << "%)"
-                  << std::endl;
-        const double poseTreatmentDuration = _meanPoseOptimizationDuration / _totalFrameTreated;
-        std::cout << "Mean pose estimation duration is " << poseTreatmentDuration << " seconds ("
-                  << get_percent_of_elapsed_time(poseTreatmentDuration, meanFrameTreatmentDuration) << "%)"
-                  << std::endl;
+        outputs::log(std::format("Mean image to point cloud treatment duration is {:.4f} seconds ({:.2f}%)",
+                                 pointCloudTreatmentDuration,
+                                 get_percent_of_elapsed_time(pointCloudTreatmentDuration, meanFrameTreatmentDuration)));
 
-        std::cout << std::endl;
-        std::cout << "Pose optimization profiling details:" << std::endl;
         // display primitive detection statistic
-        const double primitiveTreatmentDuration = _meanPrimitiveTreatmentDuration / _totalFrameTreated;
-        std::cout << "\tMean primitive treatment duration is " << primitiveTreatmentDuration << " seconds ("
-                  << get_percent_of_elapsed_time(primitiveTreatmentDuration, meanFrameTreatmentDuration) << "%)"
-                  << std::endl;
+        _primitiveDetector->show_statistics(meanFrameTreatmentDuration, _totalFrameTreated, false);
         // display line detection statistics
-        const double lineDetectionDuration = _meanLineTreatmentDuration / _totalFrameTreated;
-        std::cout << "\tMean line detection duration is " << lineDetectionDuration << " seconds ("
-                  << get_percent_of_elapsed_time(lineDetectionDuration, meanFrameTreatmentDuration) << "%)"
-                  << std::endl;
+        _lineDetector->show_statistics(meanFrameTreatmentDuration, _totalFrameTreated);
         // display point detection statistics
-        _pointDetector->show_statistics(meanFrameTreatmentDuration, _totalFrameTreated);
-        // display find match statistics
-        const double findMatchDuration = _meanFindMatchTime / _totalFrameTreated;
-        std::cout << "\tMean find match duration is " << findMatchDuration << " seconds ("
-                  << get_percent_of_elapsed_time(findMatchDuration, meanFrameTreatmentDuration) << "%)" << std::endl;
+        _pointDetector->show_statistics(meanFrameTreatmentDuration, _totalFrameTreated, false);
+
+        // display local map update statistics (find matches, map update)
+        _localMap->show_statistics(meanFrameTreatmentDuration, _totalFrameTreated, false);
+
         // display pose optimization from features statistics
-        const double poseOptimizationDuration = _meanPoseOptimizationFromFeatures / _totalFrameTreated;
-        std::cout << "\tMean pose optimization duration is " << poseOptimizationDuration << " seconds ("
-                  << get_percent_of_elapsed_time(poseOptimizationDuration, meanFrameTreatmentDuration) << "%)"
-                  << std::endl;
-        // display local map update statistics
-        const double localMapUpdateDuration = _meanLocalMapUpdateDuration / _totalFrameTreated;
-        std::cout << "\tMean local map update duration is " << localMapUpdateDuration << " seconds ("
-                  << get_percent_of_elapsed_time(localMapUpdateDuration, meanFrameTreatmentDuration) << "%)"
-                  << std::endl;
+        pose_optimization::Pose_Optimization::show_statistics(meanFrameTreatmentDuration, _totalFrameTreated, false);
     }
 }
 

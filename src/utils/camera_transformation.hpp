@@ -19,8 +19,8 @@ namespace rgbd_slam::utils {
  * \brief DO NOT USE EXPECT FOR TESTING.
  * This returns the transformation matrix UNRECTIFIED.
  */
-[[nodiscard]] WorldToCameraMatrix compute_world_to_camera_transform(const quaternion& rotation,
-                                                                    const vector3& position) noexcept;
+[[nodiscard]] WorldToCameraMatrix compute_world_to_camera_transform_no_correction(const quaternion& rotation,
+                                                                                  const vector3& position) noexcept;
 
 /**
  * \brief Given a camera pose, returns a transformation matrix to convert a camera point (uvd) to world point (xyz)

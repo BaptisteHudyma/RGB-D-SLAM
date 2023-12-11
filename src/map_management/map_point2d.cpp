@@ -61,20 +61,10 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedPointsObject& trackedFeatures,
                                 const uint dropChance) const noexcept
 {
-#if 0 // activate if those points should be tracked with optical flow. I think they should not
-    const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
-
-    if (shouldNotDropPoint)
-    {
-        utils::ScreenCoordinate2D screenCoordinates;
-        if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
-        {
-            trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
-            return true;
-        }
-    }
-#endif
-    // point was not added
+    std::ignore = worldToCamera;
+    std::ignore = trackedFeatures;
+    std::ignore = dropChance;
+    // do not track inverse depth points, it gives incorrect triangulation
     return false;
 }
 

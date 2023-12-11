@@ -114,6 +114,10 @@ class Local_Map
                          const bool shouldDisplayPlaneMasks,
                          cv::Mat& debugImage) const noexcept;
 
+    void show_statistics(const double meanFrameTreatmentDuration,
+                         const uint frameCount,
+                         const bool shouldDisplayDetails = false) const noexcept;
+
   protected:
     /**
      * \brief Clean the local map so it stays local, and update the global map with the good features
@@ -147,6 +151,14 @@ class Local_Map
     // Remove copy operators
     Local_Map(const Local_Map& map) = delete;
     void operator=(const Local_Map& map) = delete;
+
+    // perf measurments
+    double find2DPointMatchDuration = 0.0;
+    double findPointMatchDuration = 0.0;
+    double findPlaneMatchDuration = 0.0;
+
+    double mapUpdateDuration = 0.0;
+    double mapAddFeaturesDuration = 0.0;
 };
 
 } // namespace rgbd_slam::map_management
