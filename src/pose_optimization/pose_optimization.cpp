@@ -18,6 +18,7 @@
 #include <array>
 #include <cmath>
 #include <exception>
+#include <opencv2/core/utility.hpp>
 #include <stdexcept>
 #include <string>
 #include <format>
@@ -126,7 +127,7 @@ std::array<uint, numberOfFeatures> get_random_selection(
 /**
  * \brief Compute a score for a transformation, and compute an inlier and outlier set
  * \param[in] pointsToEvaluate The set of points to evaluate the transformation on
- * \param[in] pointMaxRetroprojectionError_px The maximum retroprojection error between two point, below which we
+ * \param[in] point2dMaxRetroprojectionError_mm The maximum retroprojection error between two point, below which we
  * classifying the match as inlier
  * \param[in] transformationPose The transformation that needs to be evaluated
  * \param[out] pointMatcheSets The set of inliers/outliers of this transformation
@@ -354,6 +355,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                                                  utils::PoseBase& finalPose,
                                                  matches_containers::match_sets& featureSets) noexcept
 {
+    const double computePoseRansacStartTime = static_cast<double>(cv::getTickCount());
+
     featureSets.clear();
 
     const double matched2dPointSize = static_cast<double>(matchedFeatures._points2D.size());
@@ -378,6 +381,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                                          static_cast<int>(matched2dPointSize),
                                          static_cast<int>(matchedPointSize),
                                          static_cast<int>(matchedPlaneSize)));
+        _meanPoseRANSACDuration +=
+                (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
         return false;
     }
 
@@ -427,6 +432,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     if (maximumIterations <= 0)
     {
         outputs::log_error("maximumIterations should be > 0, no pose optimization will be made");
+        _meanPoseRANSACDuration +=
+                (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
         return false;
     }
 
@@ -438,6 +445,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     {
         // the minimum feature score. Below that, no optimization can be made
         outputs::log_error("max fitting score should be >= 1.0");
+        _meanPoseRANSACDuration +=
+                (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
         return false;
     }
 
@@ -446,16 +455,23 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     uint iteration = 0;
     for (; iteration < maximumIterations; ++iteration)
     {
+        const double getRandomSubsetStartTime = static_cast<double>(cv::getTickCount());
         // get a random subset for this iteration
         const matches_containers::match_sets& selectedMatches =
                 get_random_subset(featureCount, minMaxPerFeature, matchedFeatures);
+        _meanGetRandomSubsetDuration +=
+                (static_cast<double>(cv::getTickCount()) - getRandomSubsetStartTime) / cv::getTickFrequency();
 
         // compute a new candidate pose to evaluate
+        const double computeOptimisedPoseTime = static_cast<double>(cv::getTickCount());
         utils::PoseBase candidatePose;
         if (not Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, candidatePose))
             continue;
+        _meanRANSACPoseOptimizationDuration +=
+                (static_cast<double>(cv::getTickCount()) - computeOptimisedPoseTime) / cv::getTickFrequency();
 
         // get inliers and outliers for this transformation
+        const double getRANSACInliersTime = static_cast<double>(cv::getTickCount());
         matches_containers::match_sets potentialInliersOutliers;
         const double transformationScore = get_features_inliers_outliers(matchedFeatures,
                                                                          point2dMaxRetroprojectionError_mm,
@@ -463,6 +479,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                                                                          planeMaxRetroprojectionError_mm,
                                                                          candidatePose,
                                                                          potentialInliersOutliers);
+        _meanRANSACGetInliersDuration +=
+                (static_cast<double>(cv::getTickCount()) - getRANSACInliersTime) / cv::getTickFrequency();
 
         // safety
         if (transformationScore > maxFittingScore)
@@ -503,6 +521,9 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                 iteration,
                 maximumIterations,
                 inlierScore));
+
+        _meanPoseRANSACDuration +=
+                (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
         return false;
     }
 
@@ -510,10 +531,15 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, featureSets, finalPose);
     if (isPoseValid)
     {
+        _meanPoseRANSACDuration +=
+                (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
         return true;
     }
+
     // should never happen
     outputs::log_warning("Could not compute a global pose, even when we found a valid inlier set");
+    _meanPoseRANSACDuration +=
+            (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
     return false;
 }
 
@@ -608,6 +634,8 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
                                               matrix66& poseCovariance,
                                               const uint iterations) noexcept
 {
+    const double computePoseVarianceStartTime = static_cast<double>(cv::getTickCount());
+
     if (iterations == 0)
     {
         outputs::log_error("Cannot compute pose variance with 0 iterations");
@@ -650,6 +678,8 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
     if (poses.size() < iterations / 2)
     {
         outputs::log_error("Could not compute covariance: too many faileds iterations");
+        _meanComputePoseVarianceDuration +=
+                (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
         return false;
     }
     medium /= static_cast<double>(poses.size());
@@ -666,9 +696,56 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
     if (not utils::is_covariance_valid(poseCovariance))
     {
         outputs::log_error("Could not compute covariance: final covariance is ill formed");
+        _meanComputePoseVarianceDuration +=
+                (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
         return false;
     }
+    _meanComputePoseVarianceDuration +=
+            (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
     return true;
+}
+
+void Pose_Optimization::show_statistics(const double meanFrameTreatmentDuration,
+                                        const uint frameCount,
+                                        const bool shouldDisplayDetails) noexcept
+{
+    static auto get_percent_of_elapsed_time = [](double treatmentTime, double totalTimeElapsed) {
+        if (totalTimeElapsed <= 0)
+            return 0.0;
+        return (treatmentTime / totalTimeElapsed) * 100.0;
+    };
+
+    if (frameCount > 0)
+    {
+        const double meanPoseRANSACDuration = _meanPoseRANSACDuration / static_cast<double>(frameCount);
+        outputs::log(std::format("\tMean pose optimisation with RANSAC time is {:.4f} seconds ({:.2f}%)",
+                                 meanPoseRANSACDuration,
+                                 get_percent_of_elapsed_time(meanPoseRANSACDuration, meanFrameTreatmentDuration)));
+        if (shouldDisplayDetails)
+        {
+            const double meanGetRandomSubsetDuration = _meanGetRandomSubsetDuration / static_cast<double>(frameCount);
+            outputs::log(std::format("\t\tMean pose RANSAC get subset time is {:.4f} seconds ({:.2f}%)",
+                                     meanGetRandomSubsetDuration,
+                                     get_percent_of_elapsed_time(meanGetRandomSubsetDuration, meanPoseRANSACDuration)));
+
+            const double meanRANSACPoseOptiDuration =
+                    _meanRANSACPoseOptimizationDuration / static_cast<double>(frameCount);
+            outputs::log(std::format("\t\tMean pose RANSAC optimize pose time is {:.4f} seconds ({:.2f}%)",
+                                     meanRANSACPoseOptiDuration,
+                                     get_percent_of_elapsed_time(meanRANSACPoseOptiDuration, meanPoseRANSACDuration)));
+
+            const double meanRANSACgetInliersDuration = _meanRANSACGetInliersDuration / static_cast<double>(frameCount);
+            outputs::log(
+                    std::format("\t\tMean pose RANSAC get inliers time is {:.4f} seconds ({:.2f}%)",
+                                meanRANSACgetInliersDuration,
+                                get_percent_of_elapsed_time(meanRANSACgetInliersDuration, meanPoseRANSACDuration)));
+        }
+
+        const double meanPoseVarianceDuration = _meanComputePoseVarianceDuration / static_cast<double>(frameCount);
+        outputs::log(std::format("\tMean pose variance computation time is {:.4f} seconds ({:.2f}%)",
+                                 meanPoseVarianceDuration,
+                                 get_percent_of_elapsed_time(meanPoseVarianceDuration, meanFrameTreatmentDuration)));
+    }
 }
 
 bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& currentPose,

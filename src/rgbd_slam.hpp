@@ -75,7 +75,7 @@ class RGBD_SLAM
      * \brief Compute a new pose from the keypoints points between two following images. It uses only the keypoints with
      * an associated depth
      *
-     * \param[in, out] grayImage The input image from the camera, as a gray image
+     * \param[in] grayImage The input image from the camera, as a gray image
      * \param[in] depthImage The associated depth image, already corrected with camera parameters
      * \param[in] cloudArrayOrganized Organized depth image as a connected cloud
      *
@@ -113,15 +113,8 @@ class RGBD_SLAM
     bool _isFirstTrackingCall = true; // first call to the tracking function (prevent erroneous error messages)
 
     // debug
-    uint _totalFrameTreated;
-    double _meanDepthMapTreatmentDuration;
-    double _meanPoseOptimizationDuration;
-
-    double _meanPrimitiveTreatmentDuration;
-    double _meanLineTreatmentDuration;
-    double _meanFindMatchTime;
-    double _meanPoseOptimizationFromFeatures;
-    double _meanLocalMapUpdateDuration;
+    uint _totalFrameTreated = 0;
+    double _meanDepthMapTreatmentDuration = 0;
 
     // remove copy constructors as we have dynamically instantiated members
     RGBD_SLAM(const RGBD_SLAM& rgbdSlam) = delete;

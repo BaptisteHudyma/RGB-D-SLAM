@@ -26,7 +26,7 @@ void log(const std::string_view& message, const std::source_location& location) 
                   << location.line() << ":" << location.column()
                   << ") "
                   //<< location.function_name() << " | "
-                  << message << "\033[0m" << std::endl;
+                  << message << "\033[0m\n";
     }
 }
 void log_warning(const std::string_view& message, const std::source_location& location) noexcept
@@ -38,7 +38,7 @@ void log_warning(const std::string_view& message, const std::source_location& lo
                   << location.line() << ":" << location.column()
                   << ") "
                   //<< location.function_name() << " | "
-                  << message << "\033[0m" << std::endl;
+                  << message << "\033[0m\n";
     }
 }
 void log_error(const std::string_view& message, const std::source_location& location) noexcept
@@ -50,7 +50,7 @@ void log_error(const std::string_view& message, const std::source_location& loca
                   << location.line() << ":" << location.column()
                   << ") "
                   //<< location.function_name() << " | "
-                  << message << "\033[0m" << std::endl;
+                  << message << "\033[0m\n";
     }
 }
 

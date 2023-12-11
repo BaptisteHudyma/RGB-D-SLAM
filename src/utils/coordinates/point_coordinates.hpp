@@ -294,11 +294,10 @@ struct InverseDepthWorldPoint
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                              ScreenCoordinate2D& screenCoordinates) const noexcept;
 
-    // get the bearing vector that point from _firstObservation to the point
+    /**
+     * \brief get the bearing vector that point from _firstObservation to the point
+     */
     [[nodiscard]] vector3 get_bearing_vector() const noexcept;
-
-    [[nodiscard]] vector6 get_vector_state() const noexcept;
-    void from_vector_state(const vector6& state) noexcept;
 
     WorldCoordinate _firstObservation; // position of the camera for the first observation
     double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)

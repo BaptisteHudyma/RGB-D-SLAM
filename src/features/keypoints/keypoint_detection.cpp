@@ -18,7 +18,7 @@ namespace rgbd_slam::features::keypoints {
  * Keypoint extraction
  */
 
-Key_Point_Extraction::Key_Point_Extraction() : _meanPointExtractionDuration(0.0)
+Key_Point_Extraction::Key_Point_Extraction()
 {
     static const size_t imageHeight = Parameters::get_camera_1_image_size().y();
     static const size_t imageWidth = Parameters::get_camera_1_image_size().x();
@@ -160,6 +160,7 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     // redetection
     if (not _lastFramePyramide.empty() and not lastKeypointsWithIds.empty())
     {
+        const auto opticalFlowStartTime = cv::getTickCount();
         get_keypoints_from_optical_flow(_lastFramePyramide,
                                         newImagePyramide,
                                         lastKeypointsWithIds,
@@ -167,6 +168,8 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
                                         pyramidSize,
                                         maxDistance,
                                         newKeypointsObject);
+        _meanPointOpticalFlowTrackingDuration +=
+                static_cast<double>(cv::getTickCount() - opticalFlowStartTime) / cv::getTickFrequency();
     }
     // else: No optical flow for the first frame or no optical flow for this frame
     _lastFramePyramide = newImagePyramide;
@@ -183,14 +186,19 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     cv::Mat keypointDescriptors;
     if (forceKeypointDetection or opticalFlowTrackedPointCount < parameters::detection::maximumPointPerFrame)
     {
+        const auto pointDetectionStartTime = cv::getTickCount();
         // create a mask at current keypoint location
         const cv::Mat_<uchar>& keypointMask =
                 compute_key_point_mask(grayImage.size(), newKeypointsObject.get_keypoints());
 
         // get new keypoints
         detectedKeypoints = detect_keypoints(grayImage, keypointMask);
+        _meanPointDetectionDuration +=
+                static_cast<double>(cv::getTickCount() - pointDetectionStartTime) / cv::getTickFrequency();
+
         if (not detectedKeypoints.empty())
         {
+            const auto pointDescriptorsStartTime = cv::getTickCount();
             /**
              *  DESCRIPTORS
              */
@@ -212,6 +220,9 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
                 cv::vconcat(detectedKeypointDescriptors, keypointDescriptors, keypointDescriptors);
             else
                 keypointDescriptors = detectedKeypointDescriptors;
+
+            _meanPointDescriptorDuration +=
+                    static_cast<double>(cv::getTickCount() - pointDescriptorsStartTime) / cv::getTickFrequency();
         }
     }
 
@@ -326,22 +337,44 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
     }
 }
 
-double get_percent_of_elapsed_time(const double treatmentTime, const double totalTimeElapsed) noexcept
-{
-    if (totalTimeElapsed <= 0)
-        return 0;
-    return std::round(treatmentTime / totalTimeElapsed * 10000.0) / 100.0;
-}
-
 void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDuration,
-                                           const uint frameCount) const noexcept
+                                           const uint frameCount,
+                                           const bool shouldDisplayDetails) const noexcept
 {
+    static auto get_percent_of_elapsed_time = [](double treatmentTime, double totalTimeElapsed) {
+        if (totalTimeElapsed <= 0)
+            return 0.0;
+        return (treatmentTime / totalTimeElapsed) * 100.0;
+    };
+
     if (frameCount > 0)
     {
         const double meanPointExtractionDuration = _meanPointExtractionDuration / static_cast<double>(frameCount);
-        outputs::log(std::format("\tMean point extraction time is {} seconds ({}%)",
+        outputs::log(std::format("\tMean point extraction time is {:.4f} seconds ({:.2f}%)",
                                  meanPointExtractionDuration,
                                  get_percent_of_elapsed_time(meanPointExtractionDuration, meanFrameTreatmentDuration)));
+
+        if (shouldDisplayDetails)
+        {
+            const double meanPointOpticalFlowDuration =
+                    _meanPointOpticalFlowTrackingDuration / static_cast<double>(frameCount);
+            outputs::log(std::format(
+                    "\t\tMean point optical flow time is {:.4f} seconds ({:.2f}%)",
+                    meanPointOpticalFlowDuration,
+                    get_percent_of_elapsed_time(meanPointOpticalFlowDuration, meanPointExtractionDuration)));
+
+            const double meanPointDetectionDuration = _meanPointDetectionDuration / static_cast<double>(frameCount);
+            outputs::log(
+                    std::format("\t\tMean point detection time is {:.4f} seconds ({:.2f}%)",
+                                meanPointDetectionDuration,
+                                get_percent_of_elapsed_time(meanPointDetectionDuration, meanPointExtractionDuration)));
+
+            const double meanPointDescriptorDuration = _meanPointDescriptorDuration / static_cast<double>(frameCount);
+            outputs::log(
+                    std::format("\t\tMean point descriptor time is {:.4f} seconds ({:.2f}%)",
+                                meanPointDescriptorDuration,
+                                get_percent_of_elapsed_time(meanPointDescriptorDuration, meanPointExtractionDuration)));
+        }
     }
 }
 

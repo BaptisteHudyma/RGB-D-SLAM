@@ -628,8 +628,6 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     // convert to inverse
     tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
 
-    std::cout << inverseDepth._coordinates.get_vector_state().transpose() << std::endl;
-
     const auto beforeMergeInverseDepthCoord = inverseDepth._coordinates;
 
     EXPECT_NEAR(beforeMergeInverseDepthCoord._inverseDepth_mm, 0.0, 0.001);

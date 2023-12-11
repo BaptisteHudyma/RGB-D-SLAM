@@ -44,12 +44,9 @@ class Primitive_Detection
                          plane_container& planeContainer,
                          cylinder_container& primitiveContainer) noexcept;
 
-    // perf measurments
-    double resetTime;
-    double initTime;
-    double growTime;
-    double mergeTime;
-    double refineTime;
+    void show_statistics(const double meanFrameTreatmentDuration,
+                         const uint frameCount,
+                         const bool shouldDisplayDetails = false) const noexcept;
 
   protected:
     /**
@@ -231,6 +228,15 @@ class Primitive_Detection
     // prevent backend copy
     Primitive_Detection(const Primitive_Detection&);
     Primitive_Detection& operator=(const Primitive_Detection&);
+
+    // perf measurments
+    double _resetTime = 0.0;
+    double _initTime = 0.0;
+    double _growTime = 0.0;
+    double _mergeTime = 0.0;
+    double _refineTime = 0.0;
+
+    double _meanPrimitiveTreatmentDuration = 0.0;
 };
 
 } // namespace rgbd_slam::features::primitives

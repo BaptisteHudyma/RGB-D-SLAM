@@ -59,6 +59,7 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
     matches_containers::matchContainer matchSets;
 
     // find point matches
+    const double find2dPointMatchesStartTime = static_cast<double>(cv::getTickCount());
     _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
                                  worldToCamera,
                                  false,
@@ -75,8 +76,11 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
                                      parameters::optimization::minimumPointForOptimization,
                                      matchSets._points2D);
     }
+    find2DPointMatchDuration +=
+            (static_cast<double>(cv::getTickCount()) - find2dPointMatchesStartTime) / cv::getTickFrequency();
 
     // find point matches
+    const double findPointMatchesStartTime = static_cast<double>(cv::getTickCount());
     _localPointMap.get_matches(detectedFeatures.keypointObject,
                                worldToCamera,
                                false,
@@ -93,13 +97,18 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
                                    parameters::optimization::minimumPointForOptimization,
                                    matchSets._points);
     }
+    findPointMatchDuration +=
+            (static_cast<double>(cv::getTickCount()) - findPointMatchesStartTime) / cv::getTickFrequency();
 
     // find plane matches
+    const double findPlaneMatchesStartTime = static_cast<double>(cv::getTickCount());
     _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
                                worldToCamera,
                                false,
                                parameters::optimization::minimumPlanesForOptimization,
                                matchSets._planes);
+    findPlaneMatchDuration +=
+            (static_cast<double>(cv::getTickCount()) - findPlaneMatchesStartTime) / cv::getTickFrequency();
 
     return matchSets;
 }
@@ -109,6 +118,7 @@ void Local_Map::update(const utils::Pose& optimizedPose,
                        const matches_containers::match_point_container& outlierMatchedPoints,
                        const matches_containers::match_plane_container& outlierMatchedPlanes)
 {
+    const double updateMapStartTime = static_cast<double>(cv::getTickCount());
     assert(_detectedFeatureId == detectedFeatures.id);
 
     const matrix33& poseCovariance = optimizedPose.get_position_variance();
@@ -140,6 +150,8 @@ void Local_Map::update(const utils::Pose& optimizedPose,
 
     // add local map points to global map
     update_local_to_global();
+
+    mapUpdateDuration += (static_cast<double>(cv::getTickCount()) - updateMapStartTime) / cv::getTickFrequency();
 }
 
 void Local_Map::add_features_to_map(const matrix33& poseCovariance,
@@ -147,6 +159,8 @@ void Local_Map::add_features_to_map(const matrix33& poseCovariance,
                                     const DetectedFeatureContainer& detectedFeatures,
                                     const bool addAllFeatures)
 {
+    const double addfeaturesStartTime = static_cast<double>(cv::getTickCount());
+
     if (not utils::is_covariance_valid(poseCovariance))
         throw std::invalid_argument("update: The given pose covariance is invalid, map wont be update");
 
@@ -161,6 +175,8 @@ void Local_Map::add_features_to_map(const matrix33& poseCovariance,
     // Add unmatched poins to the staged map, to unsure tracking of new features
     _localPlaneMap.add_features_to_staged_map(
             poseCovariance, cameraToWorld, detectedFeatures.detectedPlanes, addAllFeatures);
+
+    mapAddFeaturesDuration += (static_cast<double>(cv::getTickCount()) - addfeaturesStartTime) / cv::getTickFrequency();
 }
 
 void Local_Map::update_local_to_global() noexcept
@@ -232,6 +248,55 @@ void Local_Map::get_debug_image(const utils::Pose& camPose,
     _localPointMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
     if (shouldDisplayPlaneMasks)
         _localPlaneMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
+}
+
+void Local_Map::show_statistics(const double meanFrameTreatmentDuration,
+                                const uint frameCount,
+                                const bool shouldDisplayDetails) const noexcept
+{
+    static auto get_percent_of_elapsed_time = [](double treatmentTime, double totalTimeElapsed) {
+        if (totalTimeElapsed <= 0)
+            return 0.0;
+        return (treatmentTime / totalTimeElapsed) * 100.0;
+    };
+
+    if (frameCount > 0)
+    {
+        const double meanMapUpdateDuration = mapUpdateDuration / static_cast<double>(frameCount);
+        outputs::log(std::format("\tMean map update time is {:.4f} seconds ({:.2f}%)",
+                                 meanMapUpdateDuration,
+                                 get_percent_of_elapsed_time(meanMapUpdateDuration, meanFrameTreatmentDuration)));
+
+        const double meanMapAddFeaturesDuration = mapAddFeaturesDuration / static_cast<double>(frameCount);
+        outputs::log(std::format("\tMean map add features time is {:.4f} seconds ({:.2f}%)",
+                                 meanMapAddFeaturesDuration,
+                                 get_percent_of_elapsed_time(meanMapAddFeaturesDuration, meanFrameTreatmentDuration)));
+
+        const double meanFindMatchDuration =
+                (find2DPointMatchDuration + findPointMatchDuration + findPlaneMatchDuration) /
+                static_cast<double>(frameCount);
+        outputs::log(std::format("\tMean find match time is {:.4f} seconds ({:.2f}%)",
+                                 meanFindMatchDuration,
+                                 get_percent_of_elapsed_time(meanFindMatchDuration, meanFrameTreatmentDuration)));
+
+        if (shouldDisplayDetails)
+        {
+            const double meanFind2DPointMatchDuration = find2DPointMatchDuration / static_cast<double>(frameCount);
+            outputs::log(std::format("\t\tMean find 2D point match time is {:.4f} seconds ({:.2f}%)",
+                                     meanFind2DPointMatchDuration,
+                                     get_percent_of_elapsed_time(meanFind2DPointMatchDuration, meanFindMatchDuration)));
+
+            const double meanFindPointMatchDuration = findPointMatchDuration / static_cast<double>(frameCount);
+            outputs::log(std::format("\t\tMean find point match time is {:.4f} seconds ({:.2f}%)",
+                                     meanFindPointMatchDuration,
+                                     get_percent_of_elapsed_time(meanFindPointMatchDuration, meanFindMatchDuration)));
+
+            const double meanFindPlaneMatchDuration = findPlaneMatchDuration / static_cast<double>(frameCount);
+            outputs::log(std::format("\t\tMean find plane match time is {:.4f} seconds ({:.2f}%)",
+                                     meanFindPlaneMatchDuration,
+                                     get_percent_of_elapsed_time(meanFindPlaneMatchDuration, meanFindMatchDuration)));
+        }
+    }
 }
 
 void Local_Map::mark_outliers_as_unmatched(
