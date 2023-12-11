@@ -59,6 +59,9 @@ struct PointInverseDepth
 
     PointInverseDepth(const utils::ScreenCoordinate2D& observation,
                       const CameraToWorldMatrix& c2w,
+                      const matrix33& stateCovariance);
+    PointInverseDepth(const utils::ScreenCoordinate2D& observation,
+                      const CameraToWorldMatrix& c2w,
                       const matrix33& stateCovariance,
                       const cv::Mat& descriptor);
 

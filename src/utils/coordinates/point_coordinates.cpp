@@ -4,6 +4,7 @@
 #include "camera_transformation.hpp"
 #include "coordinates/basis_changes.hpp"
 #include "covariances.hpp"
+#include "logger.hpp"
 #include "types.hpp"
 #include <cmath>
 #include <math.h>
@@ -308,11 +309,12 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
     _theta_rad(theta),
     _phi_rad(phi)
 {
-    assert(_inverseDepth_mm >= 0.0);
-    assert(0 <= _theta_rad);
-    assert(_theta_rad <= M_PI);
-    assert(-M_PI <= _phi_rad);
-    assert(_phi_rad <= M_PI);
+    if (_inverseDepth_mm < 0.0)
+        throw std::invalid_argument("Constructor of InverseDepthWorldPoint: Inverse depth should be >= 0");
+    if (_theta_rad < 0.0 or _theta_rad > M_PI)
+        throw std::invalid_argument("Constructor of InverseDepthWorldPoint: Theta should be in [0, M_PI]");
+    if (_phi_rad < -M_PI or _phi_rad > M_PI)
+        throw std::invalid_argument("Constructor of InverseDepthWorldPoint: Phi should be in [-Pi, Pi]");
 }
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w) :

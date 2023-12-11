@@ -1,8 +1,10 @@
 #include "map_point.hpp"
 
+#include "coordinates/point_coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "camera_transformation.hpp"
+#include "point_with_tracking.hpp"
 
 namespace rgbd_slam::map_management {
 
@@ -130,8 +132,8 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
         return false;
     }
 
-    if (const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
-        utils::is_depth_valid(matchedScreenPoint.z()))
+    const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
+    if (utils::is_depth_valid(matchedScreenPoint.z()))
     {
         // transform screen point to world point
         const utils::WorldCoordinate& worldPointCoordinates = matchedScreenPoint.to_world_coordinates(cameraToWorld);
@@ -151,16 +153,22 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     }
     else
     {
-        // Point is 2D, check retroprojection
-        const auto& worldToCamera = utils::compute_world_to_camera_transform(cameraToWorld);
-        utils::ScreenCoordinate2D projection;
-        if (_coordinates.to_screen_coordinates(worldToCamera, projection))
-        {
-            // tracking is valid if retroprojection is not too far
-            return (projection - matchedScreenPoint.get_2D()).squaredNorm() <=
-                   parameters::mapping::maximumRetroprojectionErrorForTriangulatePow_px;
-            // TODO: triangulate ?
-        }
+        // Point is 2D, compute projection
+        tracking::PointInverseDepth observation(
+                utils::ScreenCoordinate2D(matchedScreenPoint.head<2>()), cameraToWorld, poseCovariance);
+        Eigen::Matrix<double, 3, 6> inverseToWorldJacobian;
+        const auto projectedObservation = observation._coordinates.to_world_coordinates(inverseToWorldJacobian);
+        const auto observationCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
+                observation._covariance, inverseToWorldJacobian);
+
+        // track the high uncertainty point
+        const double mergeScore = track(projectedObservation, observationCovariance);
+        if (mergeScore < 0)
+            return false;
+
+        // If a new descriptor is available, update it
+        if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
+            _descriptor = descriptor;
     }
     return false;
 }
