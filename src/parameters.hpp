@@ -20,8 +20,8 @@ constexpr double depthSigmaMargin = -0.53;    // It is the sigmaA
 // Optimisation (ransac)
 namespace optimization {
 namespace ransac {
-constexpr float maximumRetroprojectionErrorForPoint2DInliers_mm =
-        20.0; // Max retroprojection error between the line of two inverse depth points to reject match (mm)
+constexpr float maximumRetroprojectionErrorForPoint2DInliers_px =
+        10.0; // Max retroprojection error between the line of two inverse depth points to reject match (pixels)
 constexpr float maximumRetroprojectionErrorForPointInliers_px =
         10.0; // Max retroprojection error between two screen points before rejecting the match (pixels);
 constexpr float maximumRetroprojectionErrorForPlaneInliers_mm =

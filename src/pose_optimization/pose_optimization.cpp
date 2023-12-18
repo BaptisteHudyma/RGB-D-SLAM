@@ -29,6 +29,7 @@
 namespace rgbd_slam::pose_optimization {
 
 constexpr size_t numberOfFeatures = 3;
+
 constexpr size_t featureIndexPlane = 0;
 constexpr size_t featureIndexPoint = 1;
 constexpr size_t featureIndex2dPoint = 2;
@@ -41,7 +42,7 @@ constexpr std::array<double, numberOfFeatures> scorePerFeature = {
         1.0 / minNumberOfFeatureForOpti[0], 1.0 / minNumberOfFeatureForOpti[1], 1.0 / minNumberOfFeatureForOpti[2]};
 
 std::array<std::pair<uint, uint>, numberOfFeatures> get_min_max_number_of_features(
-        const std::array<uint, numberOfFeatures>& numberOfFeature)
+        const std::array<uint, numberOfFeatures>& numberOfFeature) noexcept
 {
     std::array<std::pair<uint, uint>, numberOfFeatures> minMaxFeatures;
     // set the max
@@ -51,16 +52,11 @@ std::array<std::pair<uint, uint>, numberOfFeatures> get_min_max_number_of_featur
     }
 
     // set min for features
-    for (int i = 0; i < 3; ++i)
+    for (size_t i = 0; i < numberOfFeatures; ++i)
     {
-        if (i == featureIndex2dPoint)
-        {
-            minMaxFeatures[i].first = 0;
-            minMaxFeatures[i].second = 0;
-        }
         // feature index loop
         double otherFeatureScore = 0.0;
-        for (int j = 0; j < 3; j++)
+        for (size_t j = 0; j < numberOfFeatures; j++)
         {
             // other feature index loop
             if (i == j)
@@ -80,11 +76,23 @@ std::array<std::pair<uint, uint>, numberOfFeatures> get_min_max_number_of_featur
  */
 std::array<uint, numberOfFeatures> get_random_selection(
         const std::array<uint, numberOfFeatures>& featuresCounts,
-        const std::array<std::pair<uint, uint>, numberOfFeatures>& minMaxNumberOfFeatures)
+        const std::array<std::pair<uint, uint>, numberOfFeatures>& minMaxNumberOfFeatures) noexcept
 {
     std::array<uint, numberOfFeatures> selection = {0, 0, 0};
+
     double scoreAccumulation = 0.0;
-    while (scoreAccumulation < 1.0)
+    // set the minimum features
+    for (size_t i = 0; i < numberOfFeatures; ++i)
+    {
+        const auto& minmax = minMaxNumberOfFeatures[i];
+        scoreAccumulation += minmax.first * scorePerFeature[i];
+        selection[i] = minmax.first;
+    }
+
+    // fill the remaining space with random features
+    static constexpr size_t MAX_ITERATIONS = 10;
+    for (size_t currentIteration = 0; (scoreAccumulation < 1.0) and (currentIteration < MAX_ITERATIONS);
+         ++currentIteration)
     {
         for (size_t i = 0; i < numberOfFeatures; ++i)
         {
@@ -98,6 +106,23 @@ std::array<uint, numberOfFeatures> get_random_selection(
             {
                 scoreAccumulation += (newVal - select) * scorePerFeature[i];
                 selection[i] = newVal;
+            }
+        }
+    }
+
+    // fill the remaining features (maybe not needed)
+    if (scoreAccumulation < 1.0)
+    {
+        outputs::log_warning("filling remaining features with non random loop");
+        for (size_t i = 0; i < numberOfFeatures; ++i)
+        {
+            const auto select = selection[i];
+            const auto& minmax = minMaxNumberOfFeatures[i];
+            const uint maxFeatures = minmax.second;
+            if (maxFeatures > select)
+            {
+                scoreAccumulation += (maxFeatures - select) * scorePerFeature[i];
+                selection[i] = maxFeatures;
             }
         }
     }
@@ -125,14 +150,14 @@ std::array<uint, numberOfFeatures> get_random_selection(
 /**
  * \brief Compute a score for a transformation, and compute an inlier and outlier set
  * \param[in] pointsToEvaluate The set of points to evaluate the transformation on
- * \param[in] point2dMaxRetroprojectionError_mm The maximum retroprojection error between two point, below which we
+ * \param[in] point2dMaxRetroprojectionError_px The maximum retroprojection error between two point, below which we
  * classifying the match as inlier
  * \param[in] transformationPose The transformation that needs to be evaluated
  * \param[out] pointMatcheSets The set of inliers/outliers of this transformation
  * \return The transformation score (sum of retroprojection distances)
  */
 [[nodiscard]] double get_2Dpoint_inliers_outliers(const matches_containers::match_point2D_container& pointsToEvaluate,
-                                                  const double point2dMaxRetroprojectionError_mm,
+                                                  const double point2dMaxRetroprojectionError_px,
                                                   const utils::PoseBase& transformationPose,
                                                   matches_containers::point2D_match_sets& pointMatcheSets) noexcept
 {
@@ -149,9 +174,9 @@ std::array<uint, numberOfFeatures> get_random_selection(
         try
         {
             const double distance =
-                    match._worldFeature.compute_signed_distance(match._screenFeature, worldToCamera).lpNorm<1>();
+                    match._worldFeature.compute_signed_screen_distance(match._screenFeature, worldToCamera).lpNorm<1>();
             // inlier
-            if (distance < point2dMaxRetroprojectionError_mm)
+            if (distance < point2dMaxRetroprojectionError_px)
             {
                 pointMatcheSets._inliers.insert(pointMatcheSets._inliers.end(), match);
             }
@@ -160,7 +185,7 @@ std::array<uint, numberOfFeatures> get_random_selection(
             {
                 pointMatcheSets._outliers.insert(pointMatcheSets._outliers.end(), match);
             }
-            retroprojectionScore += std::min(point2dMaxRetroprojectionError_mm, distance);
+            retroprojectionScore += std::min(point2dMaxRetroprojectionError_px, distance);
         }
         catch (const std::exception& ex)
         {
@@ -168,7 +193,7 @@ std::array<uint, numberOfFeatures> get_random_selection(
             outputs::log_error("get_2Dpoint_inliers_outliers: caught exeption while computing distance: " +
                                std::string(ex.what()));
             pointMatcheSets._outliers.insert(pointMatcheSets._outliers.end(), match);
-            retroprojectionScore += point2dMaxRetroprojectionError_mm;
+            retroprojectionScore += point2dMaxRetroprojectionError_px;
         }
     }
     return retroprojectionScore;
@@ -278,14 +303,14 @@ std::array<uint, numberOfFeatures> get_random_selection(
 }
 
 [[nodiscard]] double get_features_inliers_outliers(const matches_containers::matchContainer& featuresToEvaluate,
-                                                   const double point2dMaxRetroprojectionError_mm,
+                                                   const double point2dMaxRetroprojectionError_px,
                                                    const double pointMaxRetroprojectionError_px,
                                                    const double planeMaxRetroprojectionError_mm,
                                                    const utils::PoseBase& transformationPose,
                                                    matches_containers::match_sets& featureSet) noexcept
 {
     return get_2Dpoint_inliers_outliers(featuresToEvaluate._points2D,
-                                        point2dMaxRetroprojectionError_mm,
+                                        point2dMaxRetroprojectionError_px,
                                         transformationPose,
                                         featureSet._point2DSets) +
            get_point_inliers_outliers(featuresToEvaluate._points,
@@ -308,11 +333,7 @@ std::array<uint, numberOfFeatures> get_random_selection(
 {
     matches_containers::match_sets matchSubset;
     const auto selection = get_random_selection(featuresCounts, minMaxNumberOfFeatures);
-#if SHOULD_USE_INVERSE_POINTS
     const uint numberOfPoint2dToSample = selection[featureIndex2dPoint];
-#else
-    const uint numberOfPoint2dToSample = 0;
-#endif
     const uint numberOfPointsToSample = selection[featureIndexPoint];
     const uint numberOfPlanesToSample = selection[featureIndexPlane];
 
@@ -364,11 +385,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     constexpr double planeFeatureScore = scorePerFeature[featureIndexPlane];
 
     // check that we have enough features for minimal pose optimization
-    const double initialFeatureScore =
-#if SHOULD_NOT_USE_INVERSE_POINTS
-            point2dFeatureScore * matched2dPointSize +
-#endif
-            pointFeatureScore * matchedPointSize + planeFeatureScore * matchedPlaneSize;
+    const double initialFeatureScore = point2dFeatureScore * matched2dPointSize + pointFeatureScore * matchedPointSize +
+                                       planeFeatureScore * matchedPlaneSize;
     if (initialFeatureScore < 1.0)
     {
         // if there is not enough potential inliers to optimize a pose
@@ -381,14 +399,14 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         return false;
     }
 
-    constexpr double point2dMaxRetroprojectionError_mm =
-            parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_mm; // maximum inlier
+    constexpr double point2dMaxRetroprojectionError_px =
+            parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px; // maximum inlier
     constexpr double pointMaxRetroprojectionError_px =
             parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px; // maximum inlier threshold
     constexpr double planeMaxRetroprojectionError_mm =
             parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm; // maximum inlier threshold
                                                                                              // threshold
-    static_assert(point2dMaxRetroprojectionError_mm > 0);
+    static_assert(point2dMaxRetroprojectionError_px > 0);
     static_assert(pointMaxRetroprojectionError_px > 0);
     static_assert(planeMaxRetroprojectionError_mm > 0);
     const uint acceptablePointInliersForEarlyStop = static_cast<uint>(
@@ -433,7 +451,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     }
 
     // set the start score to the maximum score
-    const double maxFittingScore = matched2dPointSize * point2dMaxRetroprojectionError_mm +
+    const double maxFittingScore = matched2dPointSize * point2dMaxRetroprojectionError_px +
                                    matchedPointSize * pointMaxRetroprojectionError_px +
                                    matchedPlaneSize * planeMaxRetroprojectionError_mm;
     if (maxFittingScore < enoughInliersScore)
@@ -469,7 +487,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         const double getRANSACInliersTime = static_cast<double>(cv::getTickCount());
         matches_containers::match_sets potentialInliersOutliers;
         const double transformationScore = get_features_inliers_outliers(matchedFeatures,
-                                                                         point2dMaxRetroprojectionError_mm,
+                                                                         point2dMaxRetroprojectionError_px,
                                                                          pointMaxRetroprojectionError_px,
                                                                          planeMaxRetroprojectionError_mm,
                                                                          candidatePose,

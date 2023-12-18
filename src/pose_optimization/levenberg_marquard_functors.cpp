@@ -43,7 +43,7 @@ quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizati
  * GLOBAL POSE ESTIMATOR members
  */
 constexpr uint scoreCountPerPoints = 2;
-constexpr uint scoreCountPer2DPoints = 3;
+constexpr uint scoreCountPer2DPoints = 2;
 constexpr uint scoreCountPerPlanes = 3;
 
 Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point2D_container* const points2d,
@@ -82,17 +82,17 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
     int featureScoreIndex = 0; // index of the match being treated
 
     // Compute retroprojection distances
-    static constexpr double pointAlphaReduction = 1.0; // multiplier for points parameters in the equation
+    static constexpr double point2dAlphaReduction = 0.3; // multiplier for points parameters in the equation
     for (const matches_containers::PointMatch2D& match: *_points2d)
     {
-        // Compute retroprojected distance
-        const Eigen::Vector<double, scoreCountPer2DPoints>& distance =
-                match._worldFeature.compute_signed_distance(match._screenFeature, transformationMatrix);
+        const vector2& distance =
+                match._worldFeature.compute_signed_screen_distance(match._screenFeature, transformationMatrix);
 
-        outputScores.segment<scoreCountPer2DPoints>(featureScoreIndex) = distance * pointAlphaReduction;
+        outputScores.segment<scoreCountPer2DPoints>(featureScoreIndex) = distance * point2dAlphaReduction;
         featureScoreIndex += scoreCountPer2DPoints;
     }
 
+    static constexpr double pointAlphaReduction = 1.0; // multiplier for points parameters in the equation
     for (const matches_containers::PointMatch& match: *_points)
     {
         // Compute retroprojected distance

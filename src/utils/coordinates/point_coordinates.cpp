@@ -336,9 +336,15 @@ vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldP
 }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D& other,
-                                                        const WorldToCameraMatrix& c2w) const
+                                                        const WorldToCameraMatrix& w2c) const
 {
-    return compute_signed_distance(InverseDepthWorldPoint(other, compute_camera_to_world_transform(c2w)));
+    return compute_signed_distance(InverseDepthWorldPoint(other, compute_camera_to_world_transform(w2c)));
+}
+
+vector2 InverseDepthWorldPoint::compute_signed_screen_distance(const ScreenCoordinate2D& other,
+                                                               const WorldToCameraMatrix& w2c) const
+{
+    return to_world_coordinates().get_signed_distance_2D_px(other, w2c);
 }
 
 InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,

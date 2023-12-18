@@ -242,10 +242,27 @@ struct InverseDepthWorldPoint
 
     /**
      * \brief signed Line to line distance
+     * \param[in] other
+     * \return The distance between the two closest points on the lines
      */
     [[nodiscard]] vector3 compute_signed_distance(const InverseDepthWorldPoint& other) const;
+
+    /**
+     * \brief signed Line to line distance
+     * \param[in] other The 2d observation to put in inverse depth coordinates
+     * \param[in] w2c The matrix to go from world to camera space
+     * \return The distance between the two closest points on the lines
+     */
     [[nodiscard]] vector3 compute_signed_distance(const ScreenCoordinate2D& other,
-                                                  const WorldToCameraMatrix& c2w) const;
+                                                  const WorldToCameraMatrix& w2c) const;
+    /**
+     * \brief compute distance of the screen projections
+     * \param[in] other The 2d observation in the new image
+     * \param[in] w2c The matrix to go from world to camera space
+     * \return The distance between the two observations, in pixels
+     */
+    [[nodiscard]] vector2 compute_signed_screen_distance(const ScreenCoordinate2D& other,
+                                                         const WorldToCameraMatrix& w2c) const;
 
     /**
      * \brief Set the parameters of this instance from a cartesian point
