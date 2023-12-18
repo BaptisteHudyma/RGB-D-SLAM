@@ -28,9 +28,6 @@
 
 namespace rgbd_slam::pose_optimization {
 
-// put to true to use inverse depht in opti
-#define SHOULD_USE_INVERSE_POINTS 0
-
 constexpr size_t numberOfFeatures = 3;
 constexpr size_t featureIndexPlane = 0;
 constexpr size_t featureIndexPoint = 1;
@@ -287,21 +284,18 @@ std::array<uint, numberOfFeatures> get_random_selection(
                                                    const utils::PoseBase& transformationPose,
                                                    matches_containers::match_sets& featureSet) noexcept
 {
-    return
-#if SHOULD_USE_INVERSE_POINTS
-            get_2Dpoint_inliers_outliers(featuresToEvaluate._points2D,
-                                         point2dMaxRetroprojectionError_mm,
-                                         transformationPose,
-                                         featureSet._point2DSets) +
-#endif
-            get_point_inliers_outliers(featuresToEvaluate._points,
-                                       pointMaxRetroprojectionError_px,
-                                       transformationPose,
-                                       featureSet._pointSets) +
-            get_plane_inliers_outliers(featuresToEvaluate._planes,
-                                       planeMaxRetroprojectionError_mm,
-                                       transformationPose,
-                                       featureSet._planeSets);
+    return get_2Dpoint_inliers_outliers(featuresToEvaluate._points2D,
+                                        point2dMaxRetroprojectionError_mm,
+                                        transformationPose,
+                                        featureSet._point2DSets) +
+           get_point_inliers_outliers(featuresToEvaluate._points,
+                                      pointMaxRetroprojectionError_px,
+                                      transformationPose,
+                                      featureSet._pointSets) +
+           get_plane_inliers_outliers(featuresToEvaluate._planes,
+                                      planeMaxRetroprojectionError_mm,
+                                      transformationPose,
+                                      featureSet._planeSets);
 }
 
 /**
@@ -757,8 +751,9 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     for (const matches_containers::PointMatch2D& match: matchedFeatures._point2DSets._inliers)
     {
         utils::WorldCoordinate variatedObservationPoint = match._worldFeature.get_first_observation();
-        variatedObservationPoint +=
-                utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.diagonal().head<3>());
+        // TODO: variate the observation point
+        // variatedObservationPoint +=
+        // utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.diagonal().head<3>());
         const double variatedInverseDepth =
                 match._worldFeature
                         .get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
