@@ -1,7 +1,8 @@
 #ifndef RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 #define RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 
-#include "types.hpp"
+#include <Eigen/Dense>
+#include <Eigen/src/Core/Matrix.h>
 #include <limits>
 
 namespace rgbd_slam::utils {
@@ -29,10 +30,34 @@ namespace rgbd_slam::utils {
  * This is the distance between the two points closest to each others on each line
  * \return a signed distance, in the same unit as the points
  */
-[[nodiscard]] vector3 signed_line_distance(const vector3& line1point,
-                                           const vector3& line1normal,
-                                           const vector3& line2point,
-                                           const vector3& line2normal) noexcept;
+template<int Dim>
+[[nodiscard]] Eigen::Vector<double, Dim> signed_line_distance(const Eigen::Vector<double, Dim>& line1point,
+                                                              const Eigen::Vector<double, Dim>& line1normal,
+                                                              const Eigen::Vector<double, Dim>& line2point,
+                                                              const Eigen::Vector<double, Dim>& line2normal) noexcept
+{
+    // we want to find a point that the two lines pass by, define by the origin of the line and the normal :
+    // P = p1 + t1 * d1
+    // P = p2 + t2 * d2
+
+    const Eigen::Vector<double, Dim> n = line1normal.cross(line2normal);
+    // normals are parallels, distance is the distance between points
+    if (n.isApproxToConstant(0.0))
+    {
+        // parallel line distance
+        return line1normal.cross(line1point - line2point);
+    }
+
+    const Eigen::Vector<double, Dim>& n1 = line1normal.cross(n);
+    const Eigen::Vector<double, Dim>& n2 = line2normal.cross(n);
+
+    const double t1 = (line2point - line1point).dot(n2) / line1normal.dot(n2);
+    const double t2 = (line1point - line2point).dot(n1) / line2normal.dot(n1);
+
+    const Eigen::Vector<double, Dim> c1 = line1point + t1 * line1normal; // closest point to line 2 on line 1
+    const Eigen::Vector<double, Dim> c2 = line2point + t2 * line2normal; // closest point to line 1 on line 2
+    return c1 - c2;
+}
 
 } // namespace rgbd_slam::utils
 

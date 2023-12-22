@@ -65,8 +65,8 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
                                  false,
                                  parameters::optimization::minimumPointForOptimization,
                                  matchSets._points2D);
-    if (matchSets._points.size() < parameters::optimization::minimumPointForOptimization or
-        matchSets._points.size() <
+    if (matchSets._points2D.size() < parameters::optimization::minimumPointForOptimization or
+        matchSets._points2D.size() <
                 std::min(detectedFeatures.keypointObject.size(), _localPoint2DMap.get_local_map_size()) / 2)
     {
         // if the process as not enough matches, retry matches with a greater margin

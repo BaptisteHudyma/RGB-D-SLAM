@@ -2,6 +2,7 @@
 #define RGBDSLAM_UTILS_POINT_COORDINATES_HPP
 
 #include "../types.hpp"
+#include "../utils/line.hpp"
 
 namespace rgbd_slam::utils {
 
@@ -258,10 +259,12 @@ struct InverseDepthWorldPoint
     /**
      * \brief compute distance of the screen projections
      * \param[in] other The 2d observation in the new image
+     * \param[in] inverseDepthCovariance The covariance of the inverse depth
      * \param[in] w2c The matrix to go from world to camera space
      * \return The distance between the two observations, in pixels
      */
     [[nodiscard]] vector2 compute_signed_screen_distance(const ScreenCoordinate2D& other,
+                                                         const double inverseDepthCovariance,
                                                          const WorldToCameraMatrix& w2c) const;
 
     /**
@@ -310,6 +313,18 @@ struct InverseDepthWorldPoint
      */
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                              ScreenCoordinate2D& screenCoordinates) const noexcept;
+
+    /**
+     * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
+     * uncertainty
+     * \param[in] w2c The world to camera matrix
+     * \param[in] inverseDepthCovariance The covariance of the inverse depth
+     * \param[out] screenSegment the projection of this point as a segment
+     * \return true if screenSegment is valid
+     */
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                             const double inverseDepthCovariance,
+                                             utils::Segment<2>& screenSegment) const noexcept;
 
     // changing this implies that all computations should be changed, handle with care. Those should be
     // always in [0, 5]

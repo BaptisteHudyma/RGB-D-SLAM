@@ -44,6 +44,7 @@ class MapPoint2D :
                     UpgradedPoint2DType>()
     {
         assert(_id > 0);
+        assert(not _descriptor.empty());
     }
 
     MapPoint2D(const tracking::PointInverseDepth& coordinates, const size_t id) :
@@ -55,6 +56,7 @@ class MapPoint2D :
                     UpgradedPoint2DType>(id)
     {
         assert(_id > 0);
+        assert(not _descriptor.empty());
     }
 
     virtual ~MapPoint2D() = default;

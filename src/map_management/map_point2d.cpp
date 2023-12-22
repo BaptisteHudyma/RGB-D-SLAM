@@ -1,6 +1,7 @@
 #include "map_point2d.hpp"
 
 #include "coordinates/point_coordinates.hpp"
+#include "line.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
@@ -18,6 +19,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
                            const bool shouldAddToMatches,
                            const bool useAdvancedSearch) const noexcept
 {
+    assert(not _descriptor.empty());
     constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
     constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;
     const double searchRadius = useAdvancedSearch ? advancedSearchSpaceRadius : searchSpaceRadius;
@@ -72,12 +74,23 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
                       cv::Mat& debugImage,
                       const cv::Scalar& color) const noexcept
 {
-    utils::ScreenCoordinate2D screenCoordinates;
-    if (!_coordinates.to_screen_coordinates(worldToCamMatrix, screenCoordinates))
+    utils::Segment<2> screenCoordinates;
+    if (!to_screen_coordinates(worldToCamMatrix, screenCoordinates))
         return;
 
+    const utils::ScreenCoordinate2D startPoint(screenCoordinates.get_start_point());
+    const utils::ScreenCoordinate2D endPoint(screenCoordinates.get_end_point());
+
+    // prevent a display out of the screen (visual bug)
+    if (startPoint.is_in_screen_boundaries() and endPoint.is_in_screen_boundaries())
+    {
+        const cv::Point p1(static_cast<int>(startPoint.x()), static_cast<int>(startPoint.y()));
+        const cv::Point p2(static_cast<int>(endPoint.x()), static_cast<int>(endPoint.y()));
+        cv::line(debugImage, p1, p2, color, 5);
+    }
+
     // small blue circle around it
-    cv::circle(debugImage,
+    /*cv::circle(debugImage,
                cv::Point(static_cast<int>(screenCoordinates.x()), static_cast<int>(screenCoordinates.y())),
                5,
                cv::Scalar(255, 0, 0),
@@ -86,7 +99,7 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
                cv::Point(static_cast<int>(screenCoordinates.x()), static_cast<int>(screenCoordinates.y())),
                3,
                color,
-               -1);
+               -1);*/
 }
 
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept

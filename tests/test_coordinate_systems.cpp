@@ -790,37 +790,37 @@ TEST(LineDistances, LineDistancesAtZero)
     const vector3 normal1(1.0, 0.0, 0.0);
 
     // test forward and backward normal
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point1, normal1).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point1, -normal1).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point1, -normal1).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point1, normal1).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point1, normal1).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point1, -normal1).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point1, -normal1).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point1, normal1).norm(), 0.0, 0.0001);
 
     // point further on x
     const vector3 point2(1000.0, 0.0, 0.0);
     const vector3 normal2(1.0, 0.0, 0.0);
     // test forward and backward normal, no difference
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, normal2).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, -normal2).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, -normal2).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, normal2).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point2, normal2).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point2, -normal2).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point2, -normal2).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point2, normal2).norm(), 0.0, 0.0001);
 
     // point looking sideway
     const vector3 point3(1000.0, 0.0, 0.0);
     const vector3 normal3(0.0, 1.0, 0.0);
     // test forward and backward normal, no difference
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, normal3).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, -normal3).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, -normal3).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, normal3).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point3, normal3).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point3, -normal3).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point3, -normal3).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point3, normal3).norm(), 0.0, 0.0001);
 
     // point looking down
     const vector3 point4(1000.0, 0.0, 0.0);
     const vector3 normal4(0.0, 0.0, 1.0);
     // test forward and backward normal, no difference
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point4, normal4).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point4, -normal4).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point4, -normal4).norm(), 0.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point4, normal4).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point4, normal4).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point4, -normal4).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point4, -normal4).norm(), 0.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point4, normal4).norm(), 0.0, 0.0001);
 }
 
 TEST(LineDistances, LineDistances)
@@ -839,20 +839,20 @@ TEST(LineDistances, LineDistances)
     const vector3 normal2(0.0, 1.0, 0.0);
 
     // test forward and backward normal
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, normal2).norm(), 1000.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point2, -normal2).norm(), 1000.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, -normal2).norm(), 1000.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point2, normal2).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point2, normal2).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point2, -normal2).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point2, -normal2).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point2, normal2).norm(), 1000.0, 0.0001);
 
     // shifted parralel point
     const vector3 point3(0.0, 0.0, 1000.0);
     const vector3 normal3(1.0, 0.0, 0.0);
 
     // test forward and backward normal
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, normal3).norm(), 1000.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, normal1, point3, -normal3).norm(), 1000.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, -normal3).norm(), 1000.0, 0.0001);
-    ASSERT_NEAR(signed_line_distance(point1, -normal1, point3, normal3).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point3, normal3).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, normal1, point3, -normal3).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point3, -normal3).norm(), 1000.0, 0.0001);
+    ASSERT_NEAR(signed_line_distance<3>(point1, -normal1, point3, normal3).norm(), 1000.0, 0.0001);
 }
 
 } // namespace rgbd_slam::utils

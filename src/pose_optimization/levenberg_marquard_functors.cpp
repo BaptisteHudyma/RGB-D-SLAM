@@ -85,8 +85,8 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
     static constexpr double point2dAlphaReduction = 0.3; // multiplier for points parameters in the equation
     for (const matches_containers::PointMatch2D& match: *_points2d)
     {
-        const vector2& distance =
-                match._worldFeature.compute_signed_screen_distance(match._screenFeature, transformationMatrix);
+        const vector2& distance = match._worldFeature.compute_signed_screen_distance(
+                match._screenFeature, match._worldFeatureCovariance.diagonal()(3), transformationMatrix);
 
         outputScores.segment<scoreCountPer2DPoints>(featureScoreIndex) = distance * point2dAlphaReduction;
         featureScoreIndex += scoreCountPer2DPoints;
