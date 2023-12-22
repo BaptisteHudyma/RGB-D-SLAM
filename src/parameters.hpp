@@ -21,7 +21,7 @@ constexpr double depthSigmaMargin = -0.53;    // It is the sigmaA
 namespace optimization {
 namespace ransac {
 constexpr float maximumRetroprojectionErrorForPoint2DInliers_px =
-        10.0; // Max retroprojection error between the line of two inverse depth points to reject match (pixels)
+        3.0; // Max retroprojection error between the line of two inverse depth points to reject match (pixels)
 constexpr float maximumRetroprojectionErrorForPointInliers_px =
         10.0; // Max retroprojection error between two screen points before rejecting the match (pixels);
 constexpr float maximumRetroprojectionErrorForPlaneInliers_mm =
@@ -36,6 +36,8 @@ constexpr float featureTrustCount = 10.0;    // number of expected features expe
 } // namespace ransac
 
 constexpr uint minimumPointForOptimization = 5; // Should be >= 5, the minimum point count for a 3D pose estimation
+constexpr uint minimumPoint2dForOptimization =
+        5; // 2d points can be insufficiant for pose optimization, for now we ignore this
 constexpr uint minimumPlanesForOptimization =
         3;                             // Should be >= 3, the minimum infinite plane count for a 3D pose estimation
 constexpr uint maximumIterations = 64; // Max iteration of the Levenberg Marquart optimisation

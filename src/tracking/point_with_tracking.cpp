@@ -325,4 +325,11 @@ void PointInverseDepth::build_kalman_filter() noexcept
     }
 }
 
+bool PointInverseDepth::to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                              utils::Segment<2>& screenSegment) const noexcept
+{
+    const double depthCovariance = _covariance.diagonal()(inverseDepthIndex);
+    return _coordinates.to_screen_coordinates(w2c, depthCovariance, screenSegment);
+}
+
 } // namespace rgbd_slam::tracking

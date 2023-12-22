@@ -4,7 +4,10 @@
 #include "camera_transformation.hpp"
 #include "coordinates/basis_changes.hpp"
 #include "covariances.hpp"
+#include "line.hpp"
 #include "types.hpp"
+
+#include <Eigen/src/Core/Matrix.h>
 #include <cmath>
 #include <math.h>
 #include <stdexcept>
@@ -332,7 +335,7 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observati
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldPoint& other) const
 {
-    return signed_line_distance(_firstObservation, _bearingVector, other._firstObservation, other._bearingVector);
+    return signed_line_distance<3>(_firstObservation, _bearingVector, other._firstObservation, other._bearingVector);
 }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D& other,
@@ -342,9 +345,15 @@ vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D
 }
 
 vector2 InverseDepthWorldPoint::compute_signed_screen_distance(const ScreenCoordinate2D& other,
+                                                               const double inverseDepthCovariance,
                                                                const WorldToCameraMatrix& w2c) const
 {
-    return to_world_coordinates().get_signed_distance_2D_px(other, w2c);
+    utils::Segment<2> screenLine;
+    if (to_screen_coordinates(w2c, inverseDepthCovariance, screenLine))
+    {
+        return screenLine.distance(other);
+    }
+    return vector2::Constant(std::numeric_limits<double>::max());
 }
 
 InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
@@ -432,6 +441,29 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
                                                    ScreenCoordinate2D& screenCoordinates) const noexcept
 {
     return to_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
+}
+
+bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                                   const double inverseDepthCovariance,
+                                                   utils::Segment<2>& screenSegment) const noexcept
+{
+    const double depthVariation = sqrt(inverseDepthCovariance);
+    const utils::WorldCoordinate firstPoint(_firstObservation + _bearingVector / (_inverseDepth_mm - depthVariation));
+    const utils::WorldCoordinate endPoint(_firstObservation + _bearingVector / (_inverseDepth_mm + depthVariation));
+
+    utils::ScreenCoordinate firstScreenPoint;
+    utils::ScreenCoordinate endScreenPoint;
+    if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
+    {
+        // TODO: limit to the screen coordinates
+        // if (firstScreenPoint.is_in_screen_boundaries() and endScreenPoint.is_in_screen_boundaries())
+        {
+            screenSegment.set_points(firstScreenPoint.get_2D(), endScreenPoint.get_2D());
+            return true;
+        }
+    }
+
+    return false;
 }
 
 } // namespace rgbd_slam::utils

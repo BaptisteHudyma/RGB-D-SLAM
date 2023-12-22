@@ -37,7 +37,7 @@ constexpr size_t featureIndex2dPoint = 2;
 constexpr std::array<uint, numberOfFeatures> minNumberOfFeatureForOpti = {
         parameters::optimization::minimumPlanesForOptimization,
         parameters::optimization::minimumPointForOptimization,
-        parameters::optimization::minimumPointForOptimization};
+        parameters::optimization::minimumPoint2dForOptimization};
 constexpr std::array<double, numberOfFeatures> scorePerFeature = {
         1.0 / minNumberOfFeatureForOpti[0], 1.0 / minNumberOfFeatureForOpti[1], 1.0 / minNumberOfFeatureForOpti[2]};
 
@@ -173,8 +173,11 @@ std::array<uint, numberOfFeatures> get_random_selection(
         // Retroproject world point to screen, and compute screen distance
         try
         {
-            const double distance =
-                    match._worldFeature.compute_signed_screen_distance(match._screenFeature, worldToCamera).lpNorm<1>();
+            const double distance = match._worldFeature
+                                            .compute_signed_screen_distance(match._screenFeature,
+                                                                            match._worldFeatureCovariance.diagonal()(3),
+                                                                            worldToCamera)
+                                            .lpNorm<1>();
             // inlier
             if (distance < point2dMaxRetroprojectionError_px)
             {
@@ -427,7 +430,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
 
     const std::array<uint, numberOfFeatures> featureCount = {
             (uint)matchedPlaneSize, (uint)matchedPointSize, (uint)matched2dPointSize};
-    const std::array<std::pair<uint, uint>, numberOfFeatures> minMaxPerFeature =
+    const std::array<std::pair<uint, uint>, numberOfFeatures>& minMaxPerFeature =
             get_min_max_number_of_features(featureCount);
 
     // check that we have enough inlier features for a pose optimization with RANSAC
@@ -511,7 +514,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
             featureSets.swap(potentialInliersOutliers);
 
             const double inlierScore =
-                    static_cast<double>(featureSets._point2DSets._inliers.size()) * pointFeatureScore +
+                    static_cast<double>(featureSets._point2DSets._inliers.size()) * point2dFeatureScore +
                     static_cast<double>(featureSets._pointSets._inliers.size()) * pointFeatureScore +
                     static_cast<double>(featureSets._planeSets._inliers.size()) * planeFeatureScore;
             if (inlierScore >= enoughInliersScore)
@@ -523,7 +526,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     }
 
     // We do not have enough inliers to consider this optimization as valid
-    const double inlierScore = static_cast<double>(featureSets._point2DSets._inliers.size()) * pointFeatureScore +
+    const double inlierScore = static_cast<double>(featureSets._point2DSets._inliers.size()) * point2dFeatureScore +
                                static_cast<double>(featureSets._pointSets._inliers.size()) * pointFeatureScore +
                                static_cast<double>(featureSets._planeSets._inliers.size()) * planeFeatureScore;
     if (inlierScore < 1.0)

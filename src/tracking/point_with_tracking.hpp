@@ -4,6 +4,8 @@
 #include "types.hpp"
 #include "utils/coordinates/point_coordinates.hpp"
 #include "kalman_filter.hpp"
+#include "../utils/line.hpp"
+
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::tracking {
@@ -85,6 +87,16 @@ struct PointInverseDepth
                              const CameraToWorldMatrix& c2w,
                              const matrix33& stateCovariance,
                              const cv::Mat& descriptor);
+
+    /**
+     * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
+     * uncertainty
+     * \param[in] w2c The world to camera matrix
+     * \param[out] screenSegment the projection of this point as a segment
+     * \return true if screenSegment is valid
+     */
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                             utils::Segment<2>& screenSegment) const noexcept;
 
     /**
      * \brief Compute the covariance of the cartesian projection of this inverse depth, in camera space
