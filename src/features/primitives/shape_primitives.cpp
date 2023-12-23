@@ -4,17 +4,10 @@
 #include "covariances.hpp"
 #include "cylinder_segment.hpp"
 #include "distance_utils.hpp"
-#include "polygon.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/VectorBlock.h>
 
 namespace rgbd_slam::features::primitives {
-
-/*
- *
- *      PRIMITIVE
- *
- */
 
 /*
  *
@@ -52,7 +45,7 @@ double Cylinder::get_distance(const vector3& point) const noexcept
  *        PLANE
  *
  */
-Plane::Plane(const Plane_Segment& planeSeg, const utils::CameraPolygon& boundaryPolygon) :
+Plane::Plane(const Plane_Segment& planeSeg, const CameraPolygon& boundaryPolygon) :
     _parametrization(planeSeg.get_normal(), planeSeg.get_plane_d()),
     _pointCloudCovariance(planeSeg.get_point_cloud_covariance()),
     _boundaryPolygon(boundaryPolygon)

@@ -59,7 +59,7 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
 }
 
 bool Plane::update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
-                                    const utils::CameraPolygon& detectedPolygon) noexcept
+                                    const CameraPolygon& detectedPolygon) noexcept
 {
     // correct the projection of the boundary polygon to correspond to the parametrization
     const vector3& worldPolygonNormal = _parametrization.get_normal();
@@ -71,7 +71,7 @@ bool Plane::update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
     }
 
     // convert detected polygon to world space, it is supposed to be aligned with the world polygon
-    const utils::WorldPolygon& projectedPolygon = detectedPolygon.to_world_space(cameraToWorld);
+    const WorldPolygon& projectedPolygon = detectedPolygon.to_world_space(cameraToWorld);
 
     // merge the projected observed polygon with optimized parameters with the current world polygon
     _boundaryPolygon.merge(projectedPolygon);

@@ -17,7 +17,29 @@
 #include "correct_boost_polygon.hpp"
 #include <format>
 
+#include "coordinates/point_coordinates.hpp"
+
 namespace rgbd_slam::utils {
+
+Polygon::polygon get_static_screen_boundary_polygon() noexcept
+{
+    // define a polygon that span the screen space
+    static const uint screenSizeX = Parameters::get_camera_1_image_size().x();
+    static const uint screenSizeY = Parameters::get_camera_1_image_size().y();
+    static const std::array<Polygon::point_2d, 5> screenBoundaryPoints(
+            {Polygon::point_2d(0, 0),
+             Polygon::point_2d(static_cast<int>(round(screenSizeX)), 0),
+             Polygon::point_2d(static_cast<int>(round(screenSizeX)), static_cast<int>(round(screenSizeY))),
+             Polygon::point_2d(0, static_cast<int>(round(screenSizeY))),
+             Polygon::point_2d(0, 0)});
+    static Polygon::polygon boundary;
+    if (boundary.outer().size() <= 0)
+    {
+        boost::geometry::assign_points(boundary, screenBoundaryPoints);
+        boost::geometry::correct(boundary);
+    }
+    return boundary;
+}
 
 /**
  * \brief Select the transform vector furthest from the normal
@@ -118,14 +140,6 @@ vector2 get_projected_plan_coordinates(const vector3& pointToProject,
     return vector2(xAxis.dot(reducedPoint), yAxis.dot(reducedPoint));
 }
 
-/**
- * \brief Compute the projection of a point from the plane coordinate system to world
- * \param[in] pointToProject The point to project to world, in plane coordinates
- * \param[in] planeCenter The center point of the plane
- * \param[in] xAxis The unit x vector of the plane, othogonal to the normal
- * \param[in] yAxis The unit y vector of the plane, othogonal to the normal and u
- * \return A 3D point corresponding to pointToProject, in world coordinate system
- */
 vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
                                          const vector3& planeCenter,
                                          const vector3& xAxis,
@@ -145,26 +159,6 @@ vector3 get_point_from_plane_coordinates(const vector2& pointToProject,
     }
 
     return planeCenter + pointToProject.x() * xAxis + pointToProject.y() * yAxis;
-}
-
-Polygon::polygon get_static_screen_boundary_polygon() noexcept
-{
-    // define a polygon that span the screen space
-    static const uint screenSizeX = Parameters::get_camera_1_image_size().x();
-    static const uint screenSizeY = Parameters::get_camera_1_image_size().y();
-    static const std::array<Polygon::point_2d, 5> screenBoundaryPoints(
-            {Polygon::point_2d(0, 0),
-             Polygon::point_2d(static_cast<int>(round(screenSizeX)), 0),
-             Polygon::point_2d(static_cast<int>(round(screenSizeX)), static_cast<int>(round(screenSizeY))),
-             Polygon::point_2d(0, static_cast<int>(round(screenSizeY))),
-             Polygon::point_2d(0, 0)});
-    static Polygon::polygon boundary;
-    if (boundary.outer().size() <= 0)
-    {
-        boost::geometry::assign_points(boundary, screenBoundaryPoints);
-        boost::geometry::correct(boundary);
-    }
-    return boundary;
 }
 
 Polygon::Polygon(const std::vector<vector3>& points, const vector3& normal, const vector3& center) : _center(center)
@@ -617,162 +611,6 @@ std::vector<vector3> Polygon::get_unprojected_boundary() const
     }
 
     return projectedBoundary;
-}
-
-/**
- *
- * CAMERA POLYGON
- *
- */
-
-void CameraPolygon::display(const cv::Scalar& color, cv::Mat& debugImage) const noexcept
-{
-    ScreenCoordinate previousPoint;
-    bool isPreviousPointSet = false;
-    for (const ScreenCoordinate& screenPoint: get_screen_points())
-    {
-        if (isPreviousPointSet and previousPoint.z() > 0 and screenPoint.z() > 0)
-        {
-            cv::line(debugImage,
-                     cv::Point(static_cast<int>(previousPoint.x()), static_cast<int>(previousPoint.y())),
-                     cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
-                     color,
-                     2);
-        }
-
-        // set the previous point for the new line
-        previousPoint = screenPoint;
-        isPreviousPointSet = true;
-    }
-}
-
-WorldPolygon CameraPolygon::to_world_space(const CameraToWorldMatrix& cameraToWorld) const
-{
-    const WorldCoordinate& newCenter = CameraCoordinate(_center).to_world_coordinates(cameraToWorld);
-
-    // rotate axis
-    const matrix33& rotationMatrix = cameraToWorld.rotation();
-    const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
-    const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
-
-    if (not double_equal(newXAxis.norm(), 1.0))
-    {
-        throw std::invalid_argument("Polygon::to_world_space: newXAxis norm should be 1");
-    }
-    if (not double_equal(newYAxis.norm(), 1.0))
-    {
-        throw std::invalid_argument("Polygon::to_world_space: newYAxis norm should be 1");
-    }
-    if (abs(newYAxis.dot(newXAxis)) > .01)
-    {
-        throw std::invalid_argument("Polygon::to_world_space: newYAxis and newXAxis should be orthogonals");
-    }
-
-    // project the boundary to the new space
-    const std::vector<point_2d>& newBoundary = transform_boundary(cameraToWorld, newXAxis, newYAxis, newCenter);
-
-    // compute new polygon
-    return WorldPolygon(newBoundary, newXAxis, newYAxis, newCenter);
-}
-
-std::vector<ScreenCoordinate> CameraPolygon::get_screen_points() const
-{
-    std::vector<ScreenCoordinate> screenBoundary;
-    screenBoundary.reserve(_polygon.outer().size());
-
-    for (const point_2d& p: _polygon.outer())
-    {
-        const CameraCoordinate& projectedPoint =
-                utils::get_point_from_plane_coordinates(vector2(p.x(), p.y()), _center, _xAxis, _yAxis);
-
-        ScreenCoordinate screenpoint;
-        if (not projectedPoint.to_screen_coordinates(screenpoint))
-        {
-            // happens only if the projection center z coordinate is 0
-            outputs::log_warning("Could not transform polygon boundary to screen coordinates");
-            return std::vector<ScreenCoordinate>();
-        }
-        else
-        {
-            screenBoundary.emplace_back(screenpoint);
-        }
-    }
-    return screenBoundary;
-}
-
-Polygon::polygon CameraPolygon::to_screen_space() const
-{
-    const std::vector<ScreenCoordinate>& t = get_screen_points();
-
-    std::vector<point_2d> boundary;
-    boundary.reserve(t.size());
-
-    // convert to point_2d vector, inneficient but rare use
-    std::ranges::transform(t.cbegin(), t.cend(), std::back_inserter(boundary), [](const ScreenCoordinate& s) {
-        return boost::geometry::make<point_2d>(s.x(), s.y());
-    });
-
-    polygon pol;
-    boost::geometry::assign_points(pol, boundary);
-    boost::geometry::correct(pol);
-    return pol;
-}
-
-bool CameraPolygon::is_visible_in_screen_space() const
-{
-    // intersecton of this polygon in screen space, and the screen limits; if it exists, the polygon is visible
-    multi_polygon res;
-    // TODO: can this be a problem  when the polygon is behind the camera ?
-    boost::geometry::intersection(to_screen_space(), get_static_screen_boundary_polygon(), res);
-    return not res.empty(); // intersection exists, polygon is visible
-}
-
-/**
- *
- * WORLD POLYGON
- *
- */
-
-CameraPolygon WorldPolygon::to_camera_space(const WorldToCameraMatrix& worldToCamera) const
-{
-    const CameraCoordinate& newCenter = WorldCoordinate(_center).to_camera_coordinates(worldToCamera);
-
-    // rotate axis
-    const matrix33& rotationMatrix = worldToCamera.rotation();
-    const vector3 newXAxis = (rotationMatrix * _xAxis).normalized();
-    const vector3 newYAxis = (rotationMatrix * _yAxis).normalized();
-
-    if (not double_equal(newXAxis.norm(), 1.0))
-    {
-        throw std::invalid_argument("Polygon::to_camera_space: newXAxis norm should be 1");
-    }
-    if (not double_equal(newYAxis.norm(), 1.0))
-    {
-        throw std::invalid_argument("Polygon::to_camera_space: newYAxis norm should be 1");
-    }
-    if (abs(newYAxis.dot(newXAxis)) > .01)
-    {
-        throw std::invalid_argument("Polygon::to_camera_space: newYAxis and newXAxis should be orthogonals");
-    }
-
-    // project the boundary to the new space
-    const std::vector<point_2d>& newBoundary = transform_boundary(worldToCamera, newXAxis, newYAxis, newCenter);
-
-    // compute new polygon
-    return CameraPolygon(newBoundary, newXAxis, newYAxis, newCenter);
-}
-
-void WorldPolygon::merge(const WorldPolygon& other)
-{
-    Polygon::merge_union(other.Polygon::project(_xAxis, _yAxis, _center));
-    // no need to correct to polygon
-};
-
-void WorldPolygon::display(const WorldToCameraMatrix& worldToCamera,
-                           const cv::Scalar& color,
-                           cv::Mat& debugImage) const noexcept
-{
-    this->to_camera_space(worldToCamera).display(color, debugImage);
 }
 
 } // namespace rgbd_slam::utils

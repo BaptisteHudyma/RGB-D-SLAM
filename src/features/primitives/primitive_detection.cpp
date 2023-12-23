@@ -620,7 +620,7 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
             continue; // ignore this polygon
         }
 
-        const utils::CameraPolygon polygon(orderedBoundary, planeSegment.get_normal(), planeSegment.get_center());
+        const CameraPolygon polygon(orderedBoundary, planeSegment.get_normal(), planeSegment.get_center());
         std::string debug;
         if (polygon.is_valid(debug) and polygon.boundary_length() >= 3)
         {

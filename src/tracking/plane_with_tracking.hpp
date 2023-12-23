@@ -2,7 +2,7 @@
 #define RGBDSLAM_TRACKING_PLANE_WITH_TRACKING_HPP
 
 #include "coordinates/plane_coordinates.hpp"
-#include "utils/polygon.hpp"
+#include "coordinates/polygon_coordinates.hpp"
 #include "features/primitives/shape_primitives.hpp"
 #include "tracking/kalman_filter.hpp"
 
@@ -15,7 +15,7 @@ class Plane
 
     [[nodiscard]] PlaneWorldCoordinates get_parametrization() const noexcept { return _parametrization; }
     [[nodiscard]] matrix44 get_covariance() const noexcept { return _covariance; };
-    [[nodiscard]] utils::WorldPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
+    [[nodiscard]] WorldPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
 
     /**
      * \brief Update this plane coordinates using a new detection
@@ -32,7 +32,7 @@ class Plane
 
     PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                   // covariance of this plane in world space
-    utils::WorldPolygon _boundaryPolygon;   // polygon describing the boundary of the plane, in plane space
+    WorldPolygon _boundaryPolygon;          // polygon describing the boundary of the plane, in plane space
 
   private:
     /**
@@ -41,7 +41,7 @@ class Plane
      * \param[in] detectedPolygon The boundary polygon of the matched feature, to project to this plane space
      */
     bool update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
-                                 const utils::CameraPolygon& detectedPolygon) noexcept;
+                                 const CameraPolygon& detectedPolygon) noexcept;
 
     /**
      * \brief Build the parameter kalman filter
