@@ -109,7 +109,7 @@ void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) co
 {
     if (mapWriter != nullptr)
     {
-        mapWriter->add_polygon(_boundaryPolygon.get_unprojected_boundary());
+        mapWriter->add_polygon(_boundaryPolygon.get_unprojected_boundary(), _boundaryPolygon.get_normal());
     }
     else
     {

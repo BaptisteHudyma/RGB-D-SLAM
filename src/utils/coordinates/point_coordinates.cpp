@@ -443,24 +443,36 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     return to_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
 }
 
+utils::WorldCoordinate InverseDepthWorldPoint::get_furthest_estimation(const double inverseDepthStandardDev) const
+{
+    // 3 standard deviations (>99% of certainty in this interval)
+    const double depthVariation = inverseDepthStandardDev * 3;
+    return utils::WorldCoordinate(_firstObservation +
+                                  _bearingVector / std::min(_inverseDepth_mm - depthVariation, 1e-9));
+}
+
+utils::WorldCoordinate InverseDepthWorldPoint::get_closest_estimation(const double inverseDepthStandardDev) const
+{
+    // 3 standard deviations (>99% of certainty in this interval)
+    const double depthVariation = inverseDepthStandardDev * 3;
+    return utils::WorldCoordinate(_firstObservation +
+                                  _bearingVector / std::min(_inverseDepth_mm + depthVariation, 1e-9));
+}
+
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                                    const double inverseDepthCovariance,
                                                    utils::Segment<2>& screenSegment) const noexcept
 {
-    const double depthVariation = sqrt(inverseDepthCovariance);
-    const utils::WorldCoordinate firstPoint(_firstObservation + _bearingVector / (_inverseDepth_mm - depthVariation));
-    const utils::WorldCoordinate endPoint(_firstObservation + _bearingVector / (_inverseDepth_mm + depthVariation));
+    const double depthStandardDev = sqrt(inverseDepthCovariance);
+    const utils::WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
+    const utils::WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
 
     utils::ScreenCoordinate firstScreenPoint;
     utils::ScreenCoordinate endScreenPoint;
     if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
     {
-        // TODO: limit to the screen coordinates
-        // if (firstScreenPoint.is_in_screen_boundaries() and endScreenPoint.is_in_screen_boundaries())
-        {
-            screenSegment.set_points(firstScreenPoint.get_2D(), endScreenPoint.get_2D());
-            return true;
-        }
+        screenSegment.set_points(firstScreenPoint.get_2D(), endScreenPoint.get_2D());
+        return true;
     }
 
     return false;

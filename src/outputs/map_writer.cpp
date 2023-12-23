@@ -36,11 +36,13 @@ void XYZ_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
     _file << pointCoordinates.x() << " " << pointCoordinates.y() << " " << pointCoordinates.z() << "\n";
 }
 
-void XYZ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates) noexcept
+void XYZ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates, const vector3& normal) noexcept
 {
-    (void)coordinates;
-    // not implemented for xyz
+    std::ignore = coordinates;
+    std::ignore = normal;
 }
+
+void XYZ_Map_Writer::add_line(const std::vector<vector3>& coordinates) noexcept { std::ignore = coordinates; }
 
 /**
  *     PCD format
@@ -78,19 +80,20 @@ void PCD_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
     _file << pointCoordinates.x() << " " << pointCoordinates.y() << " " << pointCoordinates.z() << "\n";
 }
 
-void PCD_Map_Writer::add_polygon(const std::vector<vector3>& coordinates) noexcept
+void PCD_Map_Writer::add_polygon(const std::vector<vector3>& coordinates, const vector3& normal) noexcept
 {
-    (void)coordinates;
-    // not implemented for pcd
+    std::ignore = coordinates;
+    std::ignore = normal;
 }
 
+void PCD_Map_Writer::add_line(const std::vector<vector3>& coordinates) noexcept { std::ignore = coordinates; }
 /**
  *     OBJ format
  */
 
 OBJ_Map_Writer::OBJ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".obj") {}
 
-void OBJ_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
+void OBJ_Map_Writer::add_point(const vector3& point) noexcept
 {
     if (not _file.is_open())
     {
@@ -99,11 +102,12 @@ void OBJ_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
     }
 
     // points are not really visible
-    _file << "v " << pointCoordinates.transpose() << "\n";
-    _file << "p -1\n";
+    _file << "v " << point.x() << " " << point.y() << " " << point.z() << "\n";
+    _vertexIndex++;
+    _file << "p " << _vertexIndex << "\n";
 }
 
-void OBJ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates) noexcept
+void OBJ_Map_Writer::add_line(const std::vector<vector3>& coordinates) noexcept
 {
     if (not _file.is_open())
     {
@@ -111,15 +115,44 @@ void OBJ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates) noexce
         exit(-1);
     }
 
-    // not implemented for pcd
     std::string vertices = "";
-    for (uint i = 0; i < coordinates.size(); ++i)
+    for (const vector3& point: coordinates)
     {
-        const vector3& point = coordinates[i];
-        _file << "v " << point.transpose() << "\n";
-        vertices += " -" + std::to_string(i + 1);
+        _file << "v " << point.x() << " " << point.y() << " " << point.z() << "\n";
+        vertices += " " + std::to_string(_vertexIndex);
+        _vertexIndex++;
     }
-    _file << "f" << vertices << "\n";
+    _file << "l" << vertices << "\n";
+}
+
+void OBJ_Map_Writer::add_polygon(const std::vector<vector3>& coordinates, const vector3& normal) noexcept
+{
+    if (not _file.is_open())
+    {
+        log_error("File is not opened");
+        exit(-1);
+    }
+
+    // normal can be ignored for now (enforcer by the boundary order)
+    std::ignore = normal;
+
+    std::string vertices = "";
+    // the order is reversed in .obj
+    if (not coordinates.empty())
+    {
+        for (uint i = coordinates.size() - 1; i > 0; --i)
+        {
+            const auto& point = coordinates[i];
+            _file << "v " << point.x() << " " << point.y() << " " << point.z() << "\n";
+            vertices += " " + std::to_string(_vertexIndex); // + "//" + normalIndex;
+            _vertexIndex++;
+        }
+        _file << "f" << vertices << "\n";
+    }
+    else
+    {
+        log_error("Cannot write empty polygon to file");
+    }
 }
 
 } // namespace rgbd_slam::outputs

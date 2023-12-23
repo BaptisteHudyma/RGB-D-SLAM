@@ -17,7 +17,9 @@ class IMap_Writer
 
     virtual void add_point(const vector3& pointCoordinates) noexcept = 0;
 
-    virtual void add_polygon(const std::vector<vector3>& coordinates) noexcept = 0;
+    virtual void add_line(const std::vector<vector3>& coordinates) noexcept = 0;
+
+    virtual void add_polygon(const std::vector<vector3>& coordinates, const vector3& normal) noexcept = 0;
 
   protected:
     std::ofstream _file;
@@ -34,7 +36,9 @@ class XYZ_Map_Writer : public IMap_Writer
 
     void add_point(const vector3& pointCoordinates) noexcept override;
 
-    void add_polygon(const std::vector<vector3>& coordinates) noexcept override;
+    void add_line(const std::vector<vector3>& coordinates) noexcept override;
+
+    void add_polygon(const std::vector<vector3>& coordinates, const vector3& normal) noexcept override;
 };
 
 /**
@@ -48,7 +52,9 @@ class PCD_Map_Writer : public IMap_Writer
 
     void add_point(const vector3& pointCoordinates) noexcept override;
 
-    void add_polygon(const std::vector<vector3>& coordinates) noexcept override;
+    void add_line(const std::vector<vector3>& coordinates) noexcept override;
+
+    void add_polygon(const std::vector<vector3>& coordinates, const vector3& normal) noexcept override;
 };
 
 /**
@@ -62,7 +68,13 @@ class OBJ_Map_Writer : public IMap_Writer
 
     void add_point(const vector3& pointCoordinates) noexcept override;
 
-    void add_polygon(const std::vector<vector3>& coordinates) noexcept override;
+    void add_line(const std::vector<vector3>& coordinates) noexcept override;
+
+    void add_polygon(const std::vector<vector3>& coordinates, const vector3& normal) noexcept override;
+
+  protected:
+    size_t _vertexIndex = 1;
+    size_t _vectorIndex = 1;
 };
 
 } // namespace rgbd_slam::outputs

@@ -326,6 +326,9 @@ struct InverseDepthWorldPoint
                                              const double inverseDepthCovariance,
                                              utils::Segment<2>& screenSegment) const noexcept;
 
+    utils::WorldCoordinate get_closest_estimation(const double inverseDepthStandardDev) const;
+    utils::WorldCoordinate get_furthest_estimation(const double inverseDepthStandardDev) const;
+
     // changing this implies that all computations should be changed, handle with care. Those should be
     // always in [0, 5]
     static constexpr uint firstPoseIndex = 0; // takes 3 spaces
