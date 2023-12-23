@@ -4,7 +4,7 @@
 #include "coordinates/point_coordinates.hpp"
 #include "feature_map.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
-#include "tracking/point_with_tracking.hpp"
+#include "tracking/inverse_depth_with_tracking.hpp"
 #include "matches_containers.hpp"
 
 namespace rgbd_slam::map_management {

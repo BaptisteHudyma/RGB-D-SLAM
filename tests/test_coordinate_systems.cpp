@@ -2,13 +2,13 @@
 #include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "parameters.hpp"
-#include "point_with_tracking.hpp"
+#include "inverse_depth_with_tracking.hpp"
 #include "types.hpp"
 #include "utils/camera_transformation.hpp"
+#include "utils/coordinates/inverse_depth_coordinates.hpp"
 #include "utils/coordinates/point_coordinates.hpp"
 #include "utils/coordinates/plane_coordinates.hpp"
 #include <gtest/gtest.h>
-#include <iostream>
 
 namespace rgbd_slam::utils {
 

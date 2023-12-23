@@ -73,6 +73,7 @@ set(MAP         ${SRC}/map_management)
 set(TRACKING    ${SRC}/tracking)
 set(OUTPUTS     ${SRC}/outputs)
 set(UTILS       ${SRC}/utils)
+set(COORDINATES ${UTILS}/coordinates)
 
 set(EXAMPLES    examples)
 
@@ -133,6 +134,7 @@ add_library(poseOptimization SHARED
 add_library(tracking SHARED
     ${TRACKING}/motion_model.cpp
     ${TRACKING}/triangulation.cpp
+    ${TRACKING}/inverse_depth_with_tracking.cpp
     ${TRACKING}/plane_with_tracking.cpp
     ${TRACKING}/point_with_tracking.cpp
 )
@@ -143,9 +145,10 @@ add_library(outputs SHARED
     )
 
 add_library(utils SHARED
-    ${UTILS}/coordinates/basis_changes.cpp
-    ${UTILS}/coordinates/point_coordinates.cpp
-    ${UTILS}/coordinates/plane_coordinates.cpp
+    ${COORDINATES}/basis_changes.cpp
+    ${COORDINATES}/inverse_depth_coordinates.cpp
+    ${COORDINATES}/point_coordinates.cpp
+    ${COORDINATES}/plane_coordinates.cpp
     ${UTILS}/angle_utils.cpp
     ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
