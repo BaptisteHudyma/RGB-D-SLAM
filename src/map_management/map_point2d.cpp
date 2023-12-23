@@ -117,7 +117,23 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
     return false;
 }
 
-void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept { (void)mapWriter; }
+void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
+{
+    const double inverseDepthStandardDev = sqrt(_covariance.diagonal()(inverseDepthIndex));
+
+    // TODO find a way to add 2D points without breaking stuff (those line can be kilometers long)
+    // Maybe reduce the furthest estimation to a maximum ?
+    if (false)
+    {
+        // convert to line
+        std::vector<vector3> pointsOnLine;
+        pointsOnLine.emplace_back(_coordinates.get_closest_estimation(inverseDepthStandardDev));
+        // pointsOnLine.emplace_back(_coordinates.to_world_coordinates());
+        pointsOnLine.emplace_back(_coordinates.get_furthest_estimation(inverseDepthStandardDev));
+
+        mapWriter->add_line(pointsOnLine);
+    }
+}
 
 bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                   UpgradedPoint2DType& upgradedFeature) const noexcept
