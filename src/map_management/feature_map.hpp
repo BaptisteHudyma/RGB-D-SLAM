@@ -500,18 +500,16 @@ class Feature_Map
         {
             for (const auto& [id, mapFeature]: _stagedMap)
             {
+                // macthed staged points are orange, unmacthed are red
                 const cv::Scalar stagedColor =
-                        (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);
+                        (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 0, 255);
                 mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);
             }
         }
 
         for (const auto& [id, mapFeature]: _localMap)
         {
-            if (mapFeature.is_matched())
-            {
-                mapFeature.draw(worldToCamMatrix, debugImage, mapFeature._color);
-            }
+            mapFeature.draw(worldToCamMatrix, debugImage, mapFeature._color);
         }
     }
 

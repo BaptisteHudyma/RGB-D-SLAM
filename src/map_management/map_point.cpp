@@ -89,13 +89,23 @@ void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
     const bool isCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint);
 
     // do not display points behind the camera
-    if (isCoordinatesValid and screenPoint.z() > 0)
+    if (isCoordinatesValid and screenPoint.z() > 0 and screenPoint.is_in_screen_boundaries())
     {
         cv::circle(debugImage,
                    cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
                    3,
                    color,
                    -1);
+
+        if (not is_matched())
+        {
+            // small red dot in the center
+            cv::circle(debugImage,
+                       cv::Point(static_cast<int>(screenPoint.x()), static_cast<int>(screenPoint.y())),
+                       1,
+                       cv::Scalar(0, 0, 255),
+                       -1);
+        }
     }
 }
 
