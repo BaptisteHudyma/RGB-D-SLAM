@@ -3,9 +3,9 @@
 #include "camera_transformation.hpp"
 #include "coordinates/basis_changes.hpp"
 
-#include "../parameters.hpp"
+#include "parameters.hpp"
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 /**
  *      INVERSE DEPTH COORDINATES
@@ -44,13 +44,14 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observati
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldPoint& other) const
 {
-    return signed_line_distance<3>(_firstObservation, _bearingVector, other._firstObservation, other._bearingVector);
+    return utils::signed_line_distance<3>(
+            _firstObservation, _bearingVector, other._firstObservation, other._bearingVector);
 }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const ScreenCoordinate2D& other,
                                                         const WorldToCameraMatrix& w2c) const
 {
-    return compute_signed_distance(InverseDepthWorldPoint(other, compute_camera_to_world_transform(w2c)));
+    return compute_signed_distance(InverseDepthWorldPoint(other, utils::compute_camera_to_world_transform(w2c)));
 }
 
 vector2 InverseDepthWorldPoint::compute_signed_screen_distance(const ScreenCoordinate2D& other,
@@ -152,20 +153,18 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     return to_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
 }
 
-utils::WorldCoordinate InverseDepthWorldPoint::get_furthest_estimation(const double inverseDepthStandardDev) const
+WorldCoordinate InverseDepthWorldPoint::get_furthest_estimation(const double inverseDepthStandardDev) const
 {
     // 3 standard deviations (>99% of certainty in this interval)
     const double depthVariation = inverseDepthStandardDev * 3;
-    return utils::WorldCoordinate(_firstObservation +
-                                  _bearingVector / std::min(_inverseDepth_mm - depthVariation, 1e-9));
+    return WorldCoordinate(_firstObservation + _bearingVector / std::min(_inverseDepth_mm - depthVariation, 1e-9));
 }
 
-utils::WorldCoordinate InverseDepthWorldPoint::get_closest_estimation(const double inverseDepthStandardDev) const
+WorldCoordinate InverseDepthWorldPoint::get_closest_estimation(const double inverseDepthStandardDev) const
 {
     // 3 standard deviations (>99% of certainty in this interval)
     const double depthVariation = inverseDepthStandardDev * 3;
-    return utils::WorldCoordinate(_firstObservation +
-                                  _bearingVector / std::min(_inverseDepth_mm + depthVariation, 1e-9));
+    return WorldCoordinate(_firstObservation + _bearingVector / std::min(_inverseDepth_mm + depthVariation, 1e-9));
 }
 
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
@@ -173,11 +172,11 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
                                                    utils::Segment<2>& screenSegment) const noexcept
 {
     const double depthStandardDev = sqrt(inverseDepthCovariance);
-    const utils::WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
-    const utils::WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
+    const WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
+    const WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
 
-    utils::ScreenCoordinate firstScreenPoint;
-    utils::ScreenCoordinate endScreenPoint;
+    ScreenCoordinate firstScreenPoint;
+    ScreenCoordinate endScreenPoint;
     if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
     {
         screenSegment.set_points(firstScreenPoint.get_2D(), endScreenPoint.get_2D());
@@ -187,4 +186,4 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     return false;
 }
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam

@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_UTILS_TRIANGULATION_HPP
 #define RGBDSLAM_UTILS_TRIANGULATION_HPP
 
-#include "utils/coordinates/point_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include "utils/pose.hpp"
 
 namespace rgbd_slam::tracking {
@@ -26,9 +26,9 @@ class Triangulation
      */
     [[nodiscard]] static bool triangulate(const WorldToCameraMatrix& currentWorldToCamera,
                                           const WorldToCameraMatrix& newWorldToCamera,
-                                          const utils::ScreenCoordinate2D& point2Da,
-                                          const utils::ScreenCoordinate2D& point2Db,
-                                          utils::WorldCoordinate& triangulatedPoint) noexcept;
+                                          const ScreenCoordinate2D& point2Da,
+                                          const ScreenCoordinate2D& point2Db,
+                                          WorldCoordinate& triangulatedPoint) noexcept;
 
     /**
      * \brief Return a weak supposition of a new pose, from an optimized pose
@@ -42,8 +42,8 @@ class Triangulation
      *
      * \return True if the retroprojection is valid
      */
-    [[nodiscard]] static bool is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
-                                                       const utils::ScreenCoordinate2D& screenPoint,
+    [[nodiscard]] static bool is_retroprojection_valid(const WorldCoordinate& worldPoint,
+                                                       const ScreenCoordinate2D& screenPoint,
                                                        const WorldToCameraMatrix& worldToCamera,
                                                        const double maximumRetroprojectionErrorSqr_px) noexcept;
 };

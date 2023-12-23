@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_TRACKING_PLANE_WITH_TRACKING_HPP
 #define RGBDSLAM_TRACKING_PLANE_WITH_TRACKING_HPP
 
-#include "utils/coordinates/plane_coordinates.hpp"
+#include "coordinates/plane_coordinates.hpp"
 #include "utils/polygon.hpp"
 #include "features/primitives/shape_primitives.hpp"
 #include "tracking/kalman_filter.hpp"
@@ -13,7 +13,7 @@ class Plane
   public:
     Plane();
 
-    [[nodiscard]] utils::PlaneWorldCoordinates get_parametrization() const noexcept { return _parametrization; }
+    [[nodiscard]] PlaneWorldCoordinates get_parametrization() const noexcept { return _parametrization; }
     [[nodiscard]] matrix44 get_covariance() const noexcept { return _covariance; };
     [[nodiscard]] utils::WorldPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
 
@@ -27,12 +27,12 @@ class Plane
      */
     double track(const CameraToWorldMatrix& cameraToWorld,
                  const features::primitives::Plane& matchedFeature,
-                 const utils::PlaneWorldCoordinates& newDetectionParameters,
+                 const PlaneWorldCoordinates& newDetectionParameters,
                  const matrix44& newDetectionCovariance);
 
-    utils::PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
-    matrix44 _covariance;                          // covariance of this plane in world space
-    utils::WorldPolygon _boundaryPolygon;          // polygon describing the boundary of the plane, in plane space
+    PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
+    matrix44 _covariance;                   // covariance of this plane in world space
+    utils::WorldPolygon _boundaryPolygon;   // polygon describing the boundary of the plane, in plane space
 
   private:
     /**

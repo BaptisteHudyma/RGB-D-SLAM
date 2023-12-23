@@ -15,7 +15,7 @@ Plane::Plane()
 
 double Plane::track(const CameraToWorldMatrix& cameraToWorld,
                     const features::primitives::Plane& matchedFeature,
-                    const utils::PlaneWorldCoordinates& newDetectionParameters,
+                    const PlaneWorldCoordinates& newDetectionParameters,
                     const matrix44& newDetectionCovariance)
 {
     assert(_kalmanFilter != nullptr);
@@ -34,7 +34,7 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
                                                                            _covariance,
                                                                            newDetectionParameters.get_parametrization(),
                                                                            newDetectionCovariance);
-    const utils::PlaneWorldCoordinates newEstimatedParameters(res.first);
+    const PlaneWorldCoordinates newEstimatedParameters(res.first);
     const matrix44& newEstimatedCovariance = res.second;
     const double score = (_parametrization.get_parametrization() - newEstimatedParameters.get_parametrization()).norm();
 
@@ -42,7 +42,7 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
     _covariance = newEstimatedCovariance;
 
     // parameters update
-    _parametrization = utils::PlaneWorldCoordinates(newEstimatedParameters);
+    _parametrization = PlaneWorldCoordinates(newEstimatedParameters);
 
     // merge the boundary polygon (after optimization) with the observed polygon
     if (not update_boundary_polygon(cameraToWorld, matchedFeature.get_boundary_polygon()))

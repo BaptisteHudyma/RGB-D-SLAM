@@ -1,11 +1,11 @@
 #include "plane_coordinates.hpp"
 
-#include "../utils/distance_utils.hpp"
+#include "distance_utils.hpp"
 #include "types.hpp"
 #include <cmath>
 #include <math.h>
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 /**
  *      PLANE COORDINATES
@@ -26,13 +26,13 @@ PlaneCameraCoordinates PlaneWorldCoordinates::to_camera_coordinates(
 vector4 PlaneWorldCoordinates::get_signed_distance(const PlaneCameraCoordinates& cameraPlane,
                                                    const PlaneWorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
+    const PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
     const vector3& cameraNormal = cameraPlane.get_normal();
     const vector3& projectedNormal = projectedWorldPlane.get_normal();
 
-    return vector4(angle_distance(cameraNormal.x(), projectedNormal.x()),
-                   angle_distance(cameraNormal.y(), projectedNormal.y()),
-                   angle_distance(cameraNormal.z(), projectedNormal.z()),
+    return vector4(utils::angle_distance(cameraNormal.x(), projectedNormal.x()),
+                   utils::angle_distance(cameraNormal.y(), projectedNormal.y()),
+                   utils::angle_distance(cameraNormal.z(), projectedNormal.z()),
                    cameraPlane.get_d() - projectedWorldPlane.get_d());
 }
 
@@ -49,10 +49,10 @@ vector3 get_plane_transformation(const PlaneCoordinates& plane) noexcept
 vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
                                                            const PlaneWorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const utils::PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
+    const PlaneCameraCoordinates& projectedWorldPlane = to_camera_coordinates(worldToCamera);
 
     return cameraPlane.get_d() * cameraPlane.get_normal() -
            projectedWorldPlane.get_d() * projectedWorldPlane.get_normal();
 }
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam

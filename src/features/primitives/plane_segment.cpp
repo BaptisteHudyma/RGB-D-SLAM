@@ -268,9 +268,9 @@ void Plane_Segment::fit_plane() noexcept
 
     // point normal toward the camera
     if (d <= 0)
-        _parametrization = utils::PlaneCoordinates(-normal, -d);
+        _parametrization = PlaneCoordinates(-normal, -d);
     else
-        _parametrization = utils::PlaneCoordinates(normal, d);
+        _parametrization = PlaneCoordinates(normal, d);
     assert(utils::double_equal(normal.norm(), 1.0));
 
     // variance of points in our plane divided by number of points in the plane
@@ -295,7 +295,7 @@ void Plane_Segment::clear_plane_parameters() noexcept
     _MSE = std::numeric_limits<double>::max();
 
     _centroid.setZero();
-    _parametrization = utils::PlaneCoordinates();
+    _parametrization = PlaneCoordinates();
 
     // Clear saved plane parameters
     _Sx = 0;

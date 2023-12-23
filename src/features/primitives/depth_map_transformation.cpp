@@ -1,6 +1,6 @@
 #include "depth_map_transformation.hpp"
 #include "../../parameters.hpp"
-#include "../../utils/coordinates/point_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include <opencv2/core/eigen.hpp>
 #include <tbb/parallel_for.h>
 
@@ -56,8 +56,8 @@ bool Depth_Map_Transformation::rectify_depth(const cv::Mat_<float>& depthImage,
                             (Parameters::get_camera_2_to_camera_1_transformation() * original.homogeneous()).head<3>();
 
                     // distord to align with camera1 image
-                    utils::ScreenCoordinate2D screenCoordinates;
-                    if (utils::CameraCoordinate(projected).to_screen_coordinates(screenCoordinates))
+                    ScreenCoordinate2D screenCoordinates;
+                    if (CameraCoordinate(projected).to_screen_coordinates(screenCoordinates))
                     {
                         const uint projCoordColumn = static_cast<uint>(floor(screenCoordinates.x()));
                         const uint projCoordRow = static_cast<uint>(floor(screenCoordinates.y()));
@@ -109,8 +109,7 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
                 const int id = _cellMap.at<int>(static_cast<int>(row), static_cast<int>(column));
                 assert(id >= 0 and id < organizedCloudArray.rows());
 
-                const utils::CameraCoordinate& cameraCoordinates =
-                        utils::ScreenCoordinate(column, row, z).to_camera_coordinates();
+                const CameraCoordinate& cameraCoordinates = ScreenCoordinate(column, row, z).to_camera_coordinates();
 
                 // undistorded depth
                 organizedCloudArray(id, 0) = static_cast<float>(cameraCoordinates.x());
@@ -128,8 +127,8 @@ bool Depth_Map_Transformation::get_organized_cloud_array(const cv::Mat_<float>& 
             const int id = _cellMap(position[0], position[1]);
             assert(id >= 0 and id < organizedCloudArray.rows());
 
-            const utils::CameraCoordinate& cameraCoordinates =
-                    utils::ScreenCoordinate(position[1], position[0], z).to_camera_coordinates();
+            const CameraCoordinate& cameraCoordinates =
+                    ScreenCoordinate(position[1], position[0], z).to_camera_coordinates();
 
             // undistorded depth
             organizedCloudArray(id, 0) = static_cast<float>(cameraCoordinates.x());
@@ -157,8 +156,7 @@ void Depth_Map_Transformation::init_matrices() noexcept
 
         for (uint colum = 0; colum < _width; ++colum)
         {
-            const utils::CameraCoordinate2D& cameraProjection =
-                    utils::ScreenCoordinate2D(colum, row).to_camera_coordinates();
+            const CameraCoordinate2D& cameraProjection = ScreenCoordinate2D(colum, row).to_camera_coordinates();
 
             // Not efficient but at this stage doesn t matter
             _Xpre.at<float>(static_cast<int>(row), static_cast<int>(colum)) = static_cast<float>(cameraProjection.x());

@@ -11,12 +11,12 @@ utils::Pose Triangulation::get_supposed_pose(const utils::Pose& pose, const doub
     return utils::Pose(newPosition, pose.get_orientation_quaternion());
 }
 
-bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& worldPoint,
-                                             const utils::ScreenCoordinate2D& screenPoint,
+bool Triangulation::is_retroprojection_valid(const WorldCoordinate& worldPoint,
+                                             const ScreenCoordinate2D& screenPoint,
                                              const WorldToCameraMatrix& worldToCamera,
                                              const double maximumRetroprojectionErrorSqr_px) noexcept
 {
-    utils::ScreenCoordinate projectedScreenPoint;
+    ScreenCoordinate projectedScreenPoint;
     if (worldPoint.to_screen_coordinates(worldToCamera, projectedScreenPoint) and
         projectedScreenPoint.is_in_screen_boundaries() and projectedScreenPoint.z() > 0)
     {
@@ -29,13 +29,13 @@ bool Triangulation::is_retroprojection_valid(const utils::WorldCoordinate& world
 
 bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
                                 const WorldToCameraMatrix& newWorldToCamera,
-                                const utils::ScreenCoordinate2D& point2Da,
-                                const utils::ScreenCoordinate2D& newPoint2Db,
-                                utils::WorldCoordinate& triangulatedPoint) noexcept
+                                const ScreenCoordinate2D& point2Da,
+                                const ScreenCoordinate2D& newPoint2Db,
+                                WorldCoordinate& triangulatedPoint) noexcept
 {
     // project x and y coordinates
-    const utils::CameraCoordinate2D& pointA = point2Da.to_camera_coordinates();
-    const utils::CameraCoordinate2D& pointB = newPoint2Db.to_camera_coordinates();
+    const CameraCoordinate2D& pointA = point2Da.to_camera_coordinates();
+    const CameraCoordinate2D& pointB = newPoint2Db.to_camera_coordinates();
 
     // Linear-LS triangulation
     matrix44 triangulationMatrix;
@@ -51,9 +51,9 @@ bool Triangulation::triangulate(const WorldToCameraMatrix& currentWorldToCamera,
     }
 
     // singular value decomposition
-    const utils::WorldCoordinate worldPoint = triangulationMatrix.leftCols<3>()
-                                                      .jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV)
-                                                      .solve(-triangulationMatrix.col(3));
+    const WorldCoordinate worldPoint = triangulationMatrix.leftCols<3>()
+                                               .jacobiSvd(Eigen::ComputeFullU | Eigen::ComputeFullV)
+                                               .solve(-triangulationMatrix.col(3));
 
     // Check retroprojection of point in frame A
     if (not worldPoint.hasNaN() and std::isfinite(worldPoint.x()) and std::isfinite(worldPoint.y()) and

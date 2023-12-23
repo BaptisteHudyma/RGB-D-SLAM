@@ -2,7 +2,7 @@
 #define RGBDSLAM_TRACKING_POINT_WITH_TRACKING_HPP
 
 #include "types.hpp"
-#include "utils/coordinates/point_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include "kalman_filter.hpp"
 
 #include <opencv2/opencv.hpp>
@@ -12,15 +12,13 @@ namespace rgbd_slam::tracking {
 struct Point
 {
     // world coordinates
-    utils::WorldCoordinate _coordinates;
+    WorldCoordinate _coordinates;
     // 3D descriptor (ORB)
     cv::Mat _descriptor;
     // position covariance
     WorldCoordinateCovariance _covariance;
 
-    Point(const utils::WorldCoordinate& coordinates,
-          const WorldCoordinateCovariance& covariance,
-          const cv::Mat& descriptor);
+    Point(const WorldCoordinate& coordinates, const WorldCoordinateCovariance& covariance, const cv::Mat& descriptor);
 
     /**
      * \brief update this point coordinates using a new detection
@@ -28,8 +26,7 @@ struct Point
      * \param[in] newDetectionCovariance The newly detected point covariance
      * \return The distance between the updated position ans the previous one, -1 if an error occured
      */
-    double track(const utils::WorldCoordinate& newDetectionCoordinates,
-                 const matrix33& newDetectionCovariance) noexcept;
+    double track(const WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance) noexcept;
 
   private:
     /**

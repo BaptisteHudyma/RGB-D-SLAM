@@ -5,8 +5,8 @@
 #include "types.hpp"
 #include "utils/angle_utils.hpp"
 #include "utils/camera_transformation.hpp"
-#include "utils/coordinates/point_coordinates.hpp"
-#include "utils/coordinates/plane_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
+#include "coordinates/plane_coordinates.hpp"
 #include "utils/pose.hpp"
 #include <gtest/gtest.h>
 #include <random>
@@ -51,7 +51,7 @@ const point_container get_cube_points(const uint numberOfPoints, const double er
     const double numberOfPointsByLineDouble = CUBE_SIDE_SIZE / static_cast<double>(numberOfPointsByLine - 1);
 
     point_container pointContainer;
-    pointContainer.reserve(pow(numberOfPointsByLine, 3));
+    pointContainer.reserve(pow(numberOfPointsByLine, 3u));
 
     for (uint cubePlaneIndex = 0; cubePlaneIndex <= numberOfPointsByLine; ++cubePlaneIndex)
     {
@@ -85,9 +85,9 @@ matches_containers::match_point_container get_matched_points(const utils::Pose& 
     for (const Point point: get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error))
     {
         // world coordinates
-        const utils::WorldCoordinate worldPointStart(point.x, point.y, point.z);
+        const WorldCoordinate worldPointStart(point.x, point.y, point.z);
         //
-        utils::ScreenCoordinate2D transformedPoint;
+        ScreenCoordinate2D transformedPoint;
         const bool isScreenCoordinatesValid = worldPointStart.to_screen_coordinates(worldToCamera, transformedPoint);
         if (isScreenCoordinatesValid)
         {
@@ -118,15 +118,15 @@ matches_containers::match_plane_container get_matched_planes(const utils::Pose& 
 
     matches_containers::match_plane_container matchedPlanes;
 
-    const std::vector<utils::PlaneWorldCoordinates> planes = {
-            utils::PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 10),
-            utils::PlaneWorldCoordinates(vector3(-0.585607, -0.43009, 0.687085), 30),
-            utils::PlaneWorldCoordinates(vector3(-0.498271, 0.767552, -0.403223), -20),
-            utils::PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 150)};
+    const std::vector<PlaneWorldCoordinates> planes = {
+            PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 10),
+            PlaneWorldCoordinates(vector3(-0.585607, -0.43009, 0.687085), 30),
+            PlaneWorldCoordinates(vector3(-0.498271, 0.767552, -0.403223), -20),
+            PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 150)};
 
-    for (const utils::PlaneWorldCoordinates& worldPlane: planes)
+    for (const PlaneWorldCoordinates& worldPlane: planes)
     {
-        const utils::PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
+        const PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
 
         matchedPlanes.emplace_back(cameraPlane, worldPlane, matrix44::Identity(), 0);
     }

@@ -1,11 +1,11 @@
-#ifndef RGBDSLAM_UTILS_PLANE_COORDINATES_HPP
-#define RGBDSLAM_UTILS_PLANE_COORDINATES_HPP
+#ifndef RGBDSLAM_PLANE_COORDINATES_HPP
+#define RGBDSLAM_PLANE_COORDINATES_HPP
 
-#include "../types.hpp"
+#include "types.hpp"
 #include <cmath>
 #include "point_coordinates.hpp"
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 struct PlaneCameraCoordinates;
 struct PlaneWorldCoordinates;
@@ -119,6 +119,6 @@ struct PlaneWorldCoordinates : public PlaneCoordinates
                                                       const PlaneWorldToCameraMatrix& worldToCamera) const noexcept;
 };
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam
 
 #endif

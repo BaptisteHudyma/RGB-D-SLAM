@@ -63,6 +63,8 @@ enable_testing()
 set(SRC src)
 set(THIRD_PARTY third_party)
 
+set(COORDINATES ${SRC}/coordinates)
+
 set(FEATS       ${SRC}/features)
 set(KEYPOINTS   ${FEATS}/keypoints)
 set(LINES       ${FEATS}/lines)
@@ -73,7 +75,6 @@ set(MAP         ${SRC}/map_management)
 set(TRACKING    ${SRC}/tracking)
 set(OUTPUTS     ${SRC}/outputs)
 set(UTILS       ${SRC}/utils)
-set(COORDINATES ${UTILS}/coordinates)
 
 set(EXAMPLES    examples)
 
@@ -93,6 +94,13 @@ include_directories(
     ${OUTPUTS}
     ${UTILS}
     ${EXAMPLES}
+    )
+
+add_library(coordinates SHARED
+    ${COORDINATES}/basis_changes.cpp
+    ${COORDINATES}/inverse_depth_coordinates.cpp
+    ${COORDINATES}/point_coordinates.cpp
+    ${COORDINATES}/plane_coordinates.cpp
     )
 
 add_library(keypoints SHARED
@@ -145,10 +153,6 @@ add_library(outputs SHARED
     )
 
 add_library(utils SHARED
-    ${COORDINATES}/basis_changes.cpp
-    ${COORDINATES}/inverse_depth_coordinates.cpp
-    ${COORDINATES}/point_coordinates.cpp
-    ${COORDINATES}/plane_coordinates.cpp
     ${UTILS}/angle_utils.cpp
     ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
@@ -163,6 +167,7 @@ add_library(${PROJECT_NAME} SHARED
     )
 
 target_link_libraries(${PROJECT_NAME}
+    coordinates
     keypoints
     lines
     primitives

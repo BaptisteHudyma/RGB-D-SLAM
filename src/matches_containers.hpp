@@ -1,9 +1,9 @@
 #ifndef RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 #define RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 
-#include "utils/coordinates/inverse_depth_coordinates.hpp"
-#include "utils/coordinates/point_coordinates.hpp"
-#include "utils/coordinates/plane_coordinates.hpp"
+#include "coordinates/inverse_depth_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
+#include "coordinates/plane_coordinates.hpp"
 #include <list>
 
 namespace rgbd_slam::matches_containers {
@@ -29,21 +29,21 @@ template<class FeatureCameraSpace, class FeatureWorldSpace, class WorldFeatureCo
 //      - the coordinates of the detected point in screen space
 //      - the coordinates of the matched point in world space
 //      - the diagonal of the covariance of the world point in world space
-using PointMatch = MatchTemplate<utils::ScreenCoordinate2D, utils::WorldCoordinate, vector3>;
+using PointMatch = MatchTemplate<ScreenCoordinate2D, WorldCoordinate, vector3>;
 using match_point_container = std::list<PointMatch>;
 
 // KeyPoint matching: contains :
 //      - the coordinates of the detected point in screen space
 //      - the coordinates of the matched point in inverse depth space
 //      - the diagonal of the covariance of the screen point in screen space
-using PointMatch2D = MatchTemplate<utils::ScreenCoordinate2D, utils::InverseDepthWorldPoint, matrix66>;
+using PointMatch2D = MatchTemplate<ScreenCoordinate2D, InverseDepthWorldPoint, matrix66>;
 using match_point2D_container = std::list<PointMatch2D>;
 
 // MapPlane matching: contains :
 //      - the normal vector of the plane in camera space
 //      - the normal vector of the plane in world space
 //      - the covariance of the world plane in world space
-using PlaneMatch = MatchTemplate<utils::PlaneCameraCoordinates, utils::PlaneWorldCoordinates, matrix44>;
+using PlaneMatch = MatchTemplate<PlaneCameraCoordinates, PlaneWorldCoordinates, matrix44>;
 using match_plane_container = std::list<PlaneMatch>;
 
 struct matchContainer

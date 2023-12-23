@@ -1,6 +1,7 @@
 # Sources
 
 The program source files are organized as so:
+- **coordinates** define the diverse coordinates used in this program (screen, camera and world point, inverse depth points, camera plane, world plane, ...)
 - **features**: Handles the feature detection and matching.
     - **keypoints**: detect and match keypoints, using their descriptors and short term optical flow
     - **lines**: detect and match lines
@@ -10,4 +11,3 @@ The program source files are organized as so:
 - **pose_optimization** Contains all the pose optimization functions. The optimization process uses a Levenberg-Marquardt algorithm for frame to frame optimization
 - **tracking** The tracking functions, as Kalman filters and observers motion model. it also handle the tracking of the feature used in the program (points, planes, inverse depth points)
 - **utils** Math and cameras utils functions. Also contains the main types (eg: Pose)
-    - **coordinates** define the diverse coordinates used in this program (screen, camera and world point, inverse depth points, camera plane, world plane, ...)

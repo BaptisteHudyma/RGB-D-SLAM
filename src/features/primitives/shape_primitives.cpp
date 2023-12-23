@@ -74,7 +74,7 @@ Plane::Plane(const Plane& plane) :
 
 bool Plane::is_normal_similar(const Plane& plane) const noexcept { return is_normal_similar(plane._parametrization); }
 
-bool Plane::is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept
+bool Plane::is_normal_similar(const PlaneCameraCoordinates& planeParametrization) const noexcept
 {
     static const double minimumNormalDotDiff =
             abs(cos(parameters::matching::maximumAngleForPlaneMatch_d * M_PI / 180.0));
@@ -86,7 +86,7 @@ bool Plane::is_distance_similar(const Plane& plane) const noexcept
     return is_distance_similar(plane._parametrization);
 }
 
-bool Plane::is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept
+bool Plane::is_distance_similar(const PlaneCameraCoordinates& planeParametrization) const noexcept
 {
     constexpr double maximumPlanMatchDistance = parameters::matching::maximumDistanceForPlaneMatch_mm;
     return abs(_parametrization.get_d() - planeParametrization.get_d()) < maximumPlanMatchDistance;

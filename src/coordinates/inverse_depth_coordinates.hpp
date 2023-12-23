@@ -1,11 +1,11 @@
-#ifndef RGBDSLAM_UTILS_INVERSE_DEPTH_COORDINATES_HPP
-#define RGBDSLAM_UTILS_INVERSE_DEPTH_COORDINATES_HPP
+#ifndef RGBDSLAM_INVERSE_DEPTH_COORDINATES_HPP
+#define RGBDSLAM_INVERSE_DEPTH_COORDINATES_HPP
 
-#include "../types.hpp"
-#include "../line.hpp"
+#include "types.hpp"
+#include "line.hpp"
 #include "point_coordinates.hpp"
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 /**
  * \brief Contain an inverse depth representation of a world point.
@@ -106,8 +106,8 @@ struct InverseDepthWorldPoint
                                              const double inverseDepthCovariance,
                                              utils::Segment<2>& screenSegment) const noexcept;
 
-    utils::WorldCoordinate get_closest_estimation(const double inverseDepthStandardDev) const;
-    utils::WorldCoordinate get_furthest_estimation(const double inverseDepthStandardDev) const;
+    WorldCoordinate get_closest_estimation(const double inverseDepthStandardDev) const;
+    WorldCoordinate get_furthest_estimation(const double inverseDepthStandardDev) const;
 
     // changing this implies that all computations should be changed, handle with care. Those should be
     // always in [0, 5]
@@ -135,6 +135,6 @@ struct InverseDepthWorldPoint
     vector3 _bearingVector; // get the bearing vector that point from _firstObservation to the point
 };
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam
 
 #endif

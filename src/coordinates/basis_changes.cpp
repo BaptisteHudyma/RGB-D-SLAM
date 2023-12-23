@@ -1,6 +1,6 @@
 #include "basis_changes.hpp"
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 Cartesian Cartesian::from(Spherical coord)
 {
@@ -53,4 +53,4 @@ Spherical Spherical::from(Cartesian coord, matrix33& jacobian)
     return from(coord);
 }
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam

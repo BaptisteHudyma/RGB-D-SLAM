@@ -12,7 +12,7 @@ namespace rgbd_slam::tracking {
  * Point
  */
 
-Point::Point(const utils::WorldCoordinate& coordinates,
+Point::Point(const WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
     _coordinates(coordinates),
@@ -29,8 +29,7 @@ Point::Point(const utils::WorldCoordinate& coordinates,
         throw std::invalid_argument("Point constructor: covariance in invalid");
 };
 
-double Point::track(const utils::WorldCoordinate& newDetectionCoordinates,
-                    const matrix33& newDetectionCovariance) noexcept
+double Point::track(const WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance) noexcept
 {
     assert(_kalmanFilter != nullptr);
     if (not utils::is_covariance_valid(newDetectionCovariance))

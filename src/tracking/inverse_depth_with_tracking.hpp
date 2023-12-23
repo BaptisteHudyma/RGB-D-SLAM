@@ -3,7 +3,7 @@
 #define RGBDSLAM_TRACKING_INVERSE_DEPTH_WITH_TRACKING_HPP
 
 #include "types.hpp"
-#include "utils/coordinates/inverse_depth_coordinates.hpp"
+#include "coordinates/inverse_depth_coordinates.hpp"
 #include "kalman_filter.hpp"
 #include "../utils/line.hpp"
 
@@ -13,10 +13,10 @@ namespace rgbd_slam::tracking {
 
 struct PointInverseDepth
 {
-    static constexpr uint firstPoseIndex = utils::InverseDepthWorldPoint::firstPoseIndex;
-    static constexpr uint inverseDepthIndex = utils::InverseDepthWorldPoint::inverseDepthIndex;
-    static constexpr uint thetaIndex = utils::InverseDepthWorldPoint::thetaIndex;
-    static constexpr uint phiIndex = utils::InverseDepthWorldPoint::phiIndex;
+    static constexpr uint firstPoseIndex = InverseDepthWorldPoint::firstPoseIndex;
+    static constexpr uint inverseDepthIndex = InverseDepthWorldPoint::inverseDepthIndex;
+    static constexpr uint thetaIndex = InverseDepthWorldPoint::thetaIndex;
+    static constexpr uint phiIndex = InverseDepthWorldPoint::phiIndex;
 
     struct Covariance : public matrix66
     {
@@ -24,14 +24,14 @@ struct PointInverseDepth
         matrix33 get_first_pose_covariance() const { return block<3, 3>(firstPoseIndex, firstPoseIndex); }
     };
 
-    utils::InverseDepthWorldPoint _coordinates;
+    InverseDepthWorldPoint _coordinates;
     Covariance _covariance;
     cv::Mat _descriptor;
 
-    PointInverseDepth(const utils::ScreenCoordinate2D& observation,
+    PointInverseDepth(const ScreenCoordinate2D& observation,
                       const CameraToWorldMatrix& c2w,
                       const matrix33& stateCovariance);
-    PointInverseDepth(const utils::ScreenCoordinate2D& observation,
+    PointInverseDepth(const ScreenCoordinate2D& observation,
                       const CameraToWorldMatrix& c2w,
                       const matrix33& stateCovariance,
                       const cv::Mat& descriptor);
@@ -48,11 +48,11 @@ struct PointInverseDepth
      * \param[in] descriptor The descriptor of this point
      * \return True if the tracking succeeded, false if something is wrong
      */
-    [[nodiscard]] bool track(const utils::ScreenCoordinate2D& observation,
+    [[nodiscard]] bool track(const ScreenCoordinate2D& observation,
                              const CameraToWorldMatrix& c2w,
                              const matrix33& stateCovariance,
                              const cv::Mat& descriptor);
-    [[nodiscard]] bool track(const utils::ScreenCoordinate& observation,
+    [[nodiscard]] bool track(const ScreenCoordinate& observation,
                              const CameraToWorldMatrix& c2w,
                              const matrix33& stateCovariance,
                              const cv::Mat& descriptor);
@@ -81,7 +81,7 @@ struct PointInverseDepth
      * \brief Compute th covariance of the cartesian projection of this inverse depth
      */
     [[nodiscard]] static WorldCoordinateCovariance compute_cartesian_covariance(
-            const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance);
+            const InverseDepthWorldPoint& coordinates, const matrix66& covariance);
 
     [[nodiscard]] static WorldCoordinateCovariance compute_cartesian_covariance(
             const matrix66& covariance, const Eigen::Matrix<double, 3, 6>& jacobian);
@@ -103,7 +103,7 @@ struct PointInverseDepth
     /**
      * \brief update the value of this point using an observation in cartesian space
      */
-    [[nodiscard]] bool update_with_cartesian(const utils::WorldCoordinate& point,
+    [[nodiscard]] bool update_with_cartesian(const WorldCoordinate& point,
                                              const WorldCoordinateCovariance& covariance,
                                              const cv::Mat& descriptor);
 

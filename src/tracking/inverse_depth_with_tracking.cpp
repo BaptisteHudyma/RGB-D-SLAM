@@ -13,14 +13,14 @@ namespace rgbd_slam::tracking {
  * Point Inverse Depth
  */
 
-PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observation,
+PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
                                      const CameraToWorldMatrix& c2w,
                                      const matrix33& stateCovariance) :
     PointInverseDepth(observation, c2w, stateCovariance, cv::Mat())
 {
 }
 
-PointInverseDepth::PointInverseDepth(const utils::ScreenCoordinate2D& observation,
+PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
                                      const CameraToWorldMatrix& c2w,
                                      const matrix33& stateCovariance,
                                      const cv::Mat& descriptor) :
@@ -58,7 +58,7 @@ PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
         throw std::invalid_argument("PointInverseDepth constructor: the given covariance is invalid");
 }
 
-bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation,
+bool PointInverseDepth::track(const ScreenCoordinate2D& screenObservation,
                               const CameraToWorldMatrix& c2w,
                               const matrix33& stateCovariance,
                               const cv::Mat& descriptor)
@@ -68,7 +68,7 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation
         // get observation in world space
         const PointInverseDepth newObservation(screenObservation, c2w, stateCovariance, descriptor);
         // project to cartesian
-        const utils::WorldCoordinate& cartesianProj = newObservation._coordinates.to_world_coordinates();
+        const WorldCoordinate& cartesianProj = newObservation._coordinates.to_world_coordinates();
         const WorldCoordinateCovariance& covarianceProj =
                 compute_cartesian_covariance(newObservation._coordinates, newObservation._covariance);
 
@@ -81,12 +81,12 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate2D& screenObservation
     }
 }
 
-bool PointInverseDepth::track(const utils::ScreenCoordinate& observation,
+bool PointInverseDepth::track(const ScreenCoordinate& observation,
                               const CameraToWorldMatrix& c2w,
                               const matrix33& stateCovariance,
                               const cv::Mat& descriptor)
 {
-    if (not utils::is_depth_valid(observation.z()))
+    if (not is_depth_valid(observation.z()))
     {
         outputs::log_error("depth is invalid in a function depending on depth");
         return false;
@@ -95,7 +95,7 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate& observation,
     try
     {
         // transform screen point to world point
-        const utils::WorldCoordinate& worldPointCoordinates = observation.to_world_coordinates(c2w);
+        const WorldCoordinate& worldPointCoordinates = observation.to_world_coordinates(c2w);
         // get a measure of the estimated variance of the new world point
         const WorldCoordinateCovariance& worldCovariance =
                 utils::get_world_point_covariance(observation, c2w, stateCovariance);
@@ -109,7 +109,7 @@ bool PointInverseDepth::track(const utils::ScreenCoordinate& observation,
     }
 }
 
-bool PointInverseDepth::update_with_cartesian(const utils::WorldCoordinate& point,
+bool PointInverseDepth::update_with_cartesian(const WorldCoordinate& point,
                                               const WorldCoordinateCovariance& covariance,
                                               const cv::Mat& descriptor)
 {
@@ -141,8 +141,8 @@ bool PointInverseDepth::update_with_cartesian(const utils::WorldCoordinate& poin
 
         // put back in inverse depth coordinates
         Eigen::Matrix<double, 6, 3> fromCartesianJacobian;
-        _coordinates = utils::InverseDepthWorldPoint::from_cartesian(
-                utils::WorldCoordinate(newState), _coordinates.get_first_observation(), fromCartesianJacobian);
+        _coordinates = InverseDepthWorldPoint::from_cartesian(
+                WorldCoordinate(newState), _coordinates.get_first_observation(), fromCartesianJacobian);
         _covariance = compute_inverse_depth_covariance(WorldCoordinateCovariance(newCovariance),
                                                        _covariance.get_first_pose_covariance(),
                                                        fromCartesianJacobian);
@@ -177,8 +177,8 @@ ScreenCoordinateCovariance PointInverseDepth::get_screen_coordinate_variance(con
                                               get_camera_coordinate_variance(w2c));
 }
 
-WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(
-        const utils::InverseDepthWorldPoint& coordinates, const matrix66& covariance)
+WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(const InverseDepthWorldPoint& coordinates,
+                                                                          const matrix66& covariance)
 {
     if (not utils::is_covariance_valid(covariance))
         throw std::invalid_argument("compute_cartesian_covariance cannot use incorrect covariance in covariance");
@@ -227,7 +227,7 @@ PointInverseDepth::Covariance PointInverseDepth::compute_inverse_depth_covarianc
 double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     Eigen::Matrix<double, 3, 6> jacobian;
-    const utils::WorldCoordinate& cartesian = _coordinates.to_world_coordinates(jacobian);
+    const WorldCoordinate& cartesian = _coordinates.to_world_coordinates(jacobian);
 
     const vector3 hc(cartesian - cameraToWorld.translation());
     const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();

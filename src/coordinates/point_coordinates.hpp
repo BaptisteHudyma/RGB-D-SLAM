@@ -1,9 +1,9 @@
-#ifndef RGBDSLAM_UTILS_POINT_COORDINATES_HPP
-#define RGBDSLAM_UTILS_POINT_COORDINATES_HPP
+#ifndef RGBDSLAM_POINT_COORDINATES_HPP
+#define RGBDSLAM_POINT_COORDINATES_HPP
 
-#include "../types.hpp"
+#include "types.hpp"
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 struct ScreenCoordinate2D;
 struct ScreenCoordinate;
@@ -224,6 +224,6 @@ struct WorldCoordinate : public vector3
     };
 };
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam
 
 #endif
