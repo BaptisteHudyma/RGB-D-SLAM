@@ -79,22 +79,6 @@ struct InverseDepthWorldPoint
     [[nodiscard]] WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept;
 
     /**
-     * \brief Compute the projected coordinates of this point to camera space
-     * \param[in] w2c The matrix to go from world to camera space
-     * \return The point in camera coordinates (the associated covariance can be huge)
-     */
-    [[nodiscard]] CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept;
-
-    /**
-     * \brief Compute the projected coordinates of this point to screen space
-     * \param[in] w2c The matrix to go from world to camera space
-     * \param[out] screenCoordinates The projected coordinates, only valid if the function returned true
-     * \return True if the process succeeded (the associated covariance can be huge)
-     */
-    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                             ScreenCoordinate2D& screenCoordinates) const noexcept;
-
-    /**
      * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
      * uncertainty
      * \param[in] w2c The world to camera matrix
@@ -105,6 +89,18 @@ struct InverseDepthWorldPoint
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                              const double inverseDepthCovariance,
                                              utils::Segment<2>& screenSegment) const noexcept;
+
+    /**
+     * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
+     * uncertainty
+     * \param[in] w2c The world to camera matrix
+     * \param[in] inverseDepthCovariance The covariance of the inverse depth
+     * \param[out] screenSegment the projection of this point as a segment (with depth !)
+     * \return true if screenSegment is valid
+     */
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                             const double inverseDepthCovariance,
+                                             utils::Segment<3>& screenSegment) const noexcept;
 
     WorldCoordinate get_closest_estimation(const double inverseDepthStandardDev) const;
     WorldCoordinate get_furthest_estimation(const double inverseDepthStandardDev) const;

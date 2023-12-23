@@ -22,6 +22,9 @@ struct PointInverseDepth
     {
         using matrix66::matrix66;
         matrix33 get_first_pose_covariance() const { return block<3, 3>(firstPoseIndex, firstPoseIndex); }
+        double get_inverse_depth_variance() const { return diagonal()(inverseDepthIndex); };
+        double get_theta_variance() const { return diagonal()(thetaIndex); };
+        double get_phi_variance() const { return diagonal()(phiIndex); };
     };
 
     InverseDepthWorldPoint _coordinates;

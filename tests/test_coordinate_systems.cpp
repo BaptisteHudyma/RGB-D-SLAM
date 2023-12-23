@@ -318,7 +318,8 @@ TEST(InverseDepthPoint, convertBackAndForthCenter)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -343,7 +344,8 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeft)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -370,7 +372,8 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRight)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -396,7 +399,8 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoX)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -422,7 +426,8 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoY)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -448,7 +453,8 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoZ)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -474,7 +480,8 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfo)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -500,7 +507,8 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithTransfo)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -528,7 +536,8 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithTransfo)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -554,7 +563,8 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithRotation)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -580,7 +590,8 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithRotation)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
@@ -608,7 +619,8 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotation)
 
     // retroproject to screen
     ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), screenCoordinates));
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
+                                                                          screenCoordinates));
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), imageSize.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), imageSize.y(), 0.01);
