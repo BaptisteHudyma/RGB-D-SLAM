@@ -33,6 +33,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
         utils::ScreenCoordinate2D screenCoordinates;
         if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
         {
+            // TODO use a real match to 2D function, this one will fail for 2D points
             matchIndex = detectedFeatures.get_match_index(
                     screenCoordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
         }

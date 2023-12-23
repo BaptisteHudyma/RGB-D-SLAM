@@ -3,7 +3,7 @@
 #include "coordinates/point_coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
-#include "point_with_tracking.hpp"
+#include "inverse_depth_with_tracking.hpp"
 
 namespace rgbd_slam::map_management {
 
